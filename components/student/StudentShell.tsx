@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
+import BrandMark from "@/components/BrandMark";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import { isCoachAccount } from "@/lib/roles";
@@ -11,23 +11,11 @@ import { getSupabase } from "@/lib/supabase";
 import { useStudentSession } from "@/lib/student-session";
 import { StudentNavProvider, useStudentNav } from "@/lib/student-nav";
 
-function Brand() {
-  return (
-    <Link href="/student" className="student-player-brand">
-      <span className="dot" aria-hidden="true" />
-      <span>
-        <strong>Accounting Study Advice</strong>
-        <em>IAC Skills Course</em>
-      </span>
-    </Link>
-  );
-}
-
 function LoadingFrame({ label }: { label: string }) {
   return (
     <div className="student-player">
       <header className="student-player-bar">
-        <Brand />
+        <BrandMark />
       </header>
       <p className="student-loading">{label}</p>
     </div>
@@ -54,7 +42,7 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
   return (
     <div className="student-player">
       <header className="topbar">
-        <Brand />
+        <BrandMark />
         <div className="topbar-right">
           {user?.email ? <span className="muted small student-email">{user.email}</span> : null}
           {isCoachAccount(user) ? <RoleSwitcher current="students" /> : null}
@@ -107,7 +95,7 @@ function StudentGate({ children }: { children: ReactNode }) {
     return (
       <div className="student-player">
         <header className="student-player-bar">
-          <Brand />
+          <BrandMark />
           {isCoachAccount(user) ? <RoleSwitcher current="students" /> : null}
         </header>
         {children}

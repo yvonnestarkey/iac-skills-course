@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import BrandMark from "@/components/BrandMark";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import { unreadForCoach, unreadForStudent } from "@/lib/comms";
 import { waitingQuestions } from "@/lib/course";
@@ -28,13 +29,7 @@ export default function TopBar() {
 
   return (
     <header className="topbar">
-      <div className="mark">
-        <span className="dot" />
-        <div>
-          <strong>{data.company}</strong>
-          <span className="muted">{data.className}</span>
-        </div>
-      </div>
+      <BrandMark href={isCoach ? "/coach" : "/"} />
       <div className="topbar-right">
         {isCoach ? (
           <button className={`notify-btn ${pathname.startsWith("/coach/inbox") ? "on" : ""}`} onClick={() => router.push(inboxHref)}>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ICONS } from "@/lib/constants";
 import { fileFor, progressFor, surveyFor, textFor, unansweredQuestion } from "@/lib/course";
@@ -14,9 +15,16 @@ export default function Sidebar() {
   const courseNav = useStudentNav();
   const pathname = usePathname();
   const router = useRouter();
-  if (!student) return null;
-
+  const [openChapters, setOpenChapters] = useState<Record<string, boolean>>({});
   const activeLessonId = pathname.startsWith("/learn/") ? pathname.split("/")[2] : null;
+
+  useEffect(() => {
+    if (!activeLessonId) return;
+    const chapter = data.chapters.find((item) => item.lessons.some((lesson) => lesson.id === activeLessonId));
+    if (chapter) setOpenChapters((current) => ({ ...current, [chapter.id]: true }));
+  }, [activeLessonId, data.chapters]);
+
+  if (!student) return null;
   const onPlanner = pathname === "/planner";
   const p = progressFor(data, student);
 
@@ -62,29 +70,52 @@ export default function Sidebar() {
         <p>{planLine}</p>
         <button onClick={() => go("/planner")}>{plan ? "Update My Study Plan" : "Create My Study Plan"}</button>
       </div>
-      {data.chapters.map((chapter) => (
-        <section className="chapter" key={chapter.id}>
-          <h3>{chapter.title}</h3>
-          <p className="chapter-summary">{chapter.summary}</p>
-          {chapter.lessons.map((lesson) => {
-            const active = lesson.id === activeLessonId;
-            const done = (student.completed || []).includes(lesson.id);
-            return (
-              <button
-                key={lesson.id}
-                className={`lesson-link ${active ? "active" : ""} ${lesson.type}`}
-                onClick={() => go(`/learn/${lesson.id}`)}
-              >
-                <span className="icon">{done ? "✓" : ICONS[lesson.type]}</span>
-                <span className="label">
-                  <span className="lesson-title">{lesson.title}</span>
-                  <span className="lesson-meta">{metaFor(lesson)}</span>
+      {data.chapters.map((chapter) => {
+        const isOpen = Boolean(openChapters[chapter.id]);
+        return (
+          <section className={`chapter ${isOpen ? "open" : "collapsed"}`} key={chapter.id}>
+            <button
+              className="chapter-toggle"
+              type="button"
+              aria-expanded={isOpen}
+              onClick={() => setOpenChapters((current) => ({ ...current, [chapter.id]: !current[chapter.id] }))}
+            >
+              <span>
+                <h3>{chapter.title}</h3>
+                <span className="muted small">
+                  {chapter.lessons.filter((lesson) => (student.completed || []).includes(lesson.id)).length} of{" "}
+                  {chapter.lessons.length} complete
                 </span>
-              </button>
-            );
-          })}
-        </section>
-      ))}
+              </span>
+              <span className="chapter-caret" aria-hidden="true">
+                {isOpen ? "▾" : "▸"}
+              </span>
+            </button>
+            {isOpen ? (
+              <>
+                <p className="chapter-summary">{chapter.summary}</p>
+                {chapter.lessons.map((lesson) => {
+                  const active = lesson.id === activeLessonId;
+                  const done = (student.completed || []).includes(lesson.id);
+                  return (
+                    <button
+                      key={lesson.id}
+                      className={`lesson-link ${active ? "active" : ""} ${lesson.type}`}
+                      onClick={() => go(`/learn/${lesson.id}`)}
+                    >
+                      <span className="icon">{done ? "✓" : ICONS[lesson.type]}</span>
+                      <span className="label">
+                        <span className="lesson-title">{lesson.title}</span>
+                        <span className="lesson-meta">{metaFor(lesson)}</span>
+                      </span>
+                    </button>
+                  );
+                })}
+              </>
+            ) : null}
+          </section>
+        );
+      })}
     </>
   );
 }
