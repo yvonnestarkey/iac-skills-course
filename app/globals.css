@@ -2505,6 +2505,10 @@ input[type="password"]:focus {
   margin: 8px 0 18px;
 }
 
+.student-plan-preview {
+  margin: 20px 0 14px;
+}
+
 .student-planner .subscribe-card {
   margin-bottom: 18px;
 }

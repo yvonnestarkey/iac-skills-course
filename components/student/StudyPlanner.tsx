@@ -6,9 +6,9 @@ import ScheduleView from "@/components/planner/ScheduleView";
 import SubscribeCard from "@/components/planner/SubscribeCard";
 import { DAYS, DEFAULT_PLAN, PERIODS } from "@/lib/constants";
 import { studentFromPlan } from "@/lib/calendar-student";
-import { isoDate, today } from "@/lib/dates";
+import { isoDate, longDate, today } from "@/lib/dates";
 import { buildIcs, countEvents, feedStamp, feedUrls } from "@/lib/ics";
-import { sortSlots } from "@/lib/planner";
+import { planCapacity, planStatus, sortSlots } from "@/lib/planner";
 import { clearStudyPlan, fetchStudyPlan, saveStudyPlan } from "@/lib/student-plan";
 import { useStudentSession } from "@/lib/student-session";
 import { useStore } from "@/lib/store";
@@ -77,6 +77,10 @@ export default function StudyPlanner() {
       calendar: calendar || undefined,
     };
   }, [user, draft, doneIds, calendar]);
+
+  const hours = Math.max(0.5, Number(draft.hours) || 1);
+  const sessionMinutes = planCapacity(draft);
+  const preview = student ? planStatus(data, student, draft) : null;
 
   const change = (next: Partial<StudyPlan>) => setDraft((current) => ({ ...current, ...next }));
   const toggleSlot = (id: string, on: boolean) => {
@@ -299,6 +303,20 @@ export default function StudyPlanner() {
             </div>
           </div>
           {editing ? <AdjustPanel draft={draft} onChange={change} /> : null}
+          <div className="plan-summary student-plan-preview" role="status" aria-live="polite">
+            {draft.slots.length && preview?.finish ? (
+              <>
+                At {hours} hours a week you finish on <strong>{longDate(preview.finish)}</strong>. Sessions are
+                capped at {sessionMinutes} minutes
+                {sessionMinutes >= 60 ? ` (${(sessionMinutes / 60).toFixed(1)} hours per session)` : ""}.
+              </>
+            ) : (
+              <>
+                Pick at least one morning, afternoon, or evening slot to see your finish date. Weekly hours will
+                be split evenly across the sessions you tick.
+              </>
+            )}
+          </div>
           <div className="actions">
             {saved ? (
               <>
