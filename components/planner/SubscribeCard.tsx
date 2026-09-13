@@ -40,7 +40,8 @@ export default function SubscribeCard({ student, onStop }: { student: Student; o
         <div>
           <h3>Calendar subscription</h3>
           <p className="muted small">
-            {cal.events} events · updated {cal.updatedAt || "just now"}
+            {cal.events != null ? `${cal.events} events · ` : ""}
+            updated {cal.updatedAt || "just now"}
           </p>
         </div>
         <span className="score-chip small">Live</span>

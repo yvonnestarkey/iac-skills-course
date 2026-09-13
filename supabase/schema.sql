@@ -254,3 +254,26 @@ set student_id = p.id
 from public.profiles p
 where m.student_id is null
   and lower(m.student_email) = lower(p.email);
+
+-- Calendar apps fetch without a user session. Token is the student's user id.
+create or replace function public.calendar_plan(token text)
+returns table (
+  user_id uuid,
+  start_date text,
+  hours numeric,
+  slots jsonb,
+  makeups jsonb
+)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select p.user_id, p.start_date, p.hours, p.slots, p.makeups
+  from public.study_plans p
+  where p.user_id::text = token
+  limit 1;
+$$;
+
+revoke all on function public.calendar_plan(text) from public;
+grant execute on function public.calendar_plan(text) to anon, authenticated;

@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
+import { buildCalendarIcs } from "@/lib/calendar-feed";
 
 // The browser owns the .ics generator, so it publishes the finished feed here
 // and this route just hosts it for subscribers.
@@ -21,21 +22,27 @@ function feedPath(raw: string): string | null {
 
 type Context = { params: Promise<{ token: string }> };
 
-export async function GET(_request: Request, { params }: Context) {
+function calendarResponse(ics: string) {
+  return new NextResponse(ics, {
+    headers: {
+      ...CORS,
+      "Content-Type": "text/calendar; charset=utf-8",
+      "Cache-Control": "no-cache, must-revalidate",
+    },
+  });
+}
+
+export async function GET(request: Request, { params }: Context) {
   const { token } = await params;
   const file = feedPath(token);
   if (!file) return NextResponse.json({ error: "Bad feed token" }, { status: 400, headers: CORS });
   try {
     const ics = await fs.readFile(file, "utf8");
-    return new NextResponse(ics, {
-      headers: {
-        ...CORS,
-        "Content-Type": "text/calendar; charset=utf-8",
-        // Subscribers should always see the current plan.
-        "Cache-Control": "no-cache, must-revalidate",
-      },
-    });
+    return calendarResponse(ics);
   } catch {
+    const origin = new URL(request.url).origin;
+    const generated = await buildCalendarIcs(token.replace(/\.ics$/i, ""), origin);
+    if (generated) return calendarResponse(generated);
     return NextResponse.json({ error: "No such feed" }, { status: 404, headers: CORS });
   }
 }

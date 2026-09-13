@@ -8,9 +8,6 @@ export const metadata: Metadata = {
 export default function StudentPlannerPage() {
   return (
     <article className="lesson-body wide">
-      <p className="kicker">Study planner</p>
-      <h1>Your study schedule</h1>
-      <p className="lead">Set your start date, weekly hours, and study slots. We date the rest of the course from there.</p>
       <StudyPlanner />
     </article>
   );

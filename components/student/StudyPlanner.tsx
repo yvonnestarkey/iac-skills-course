@@ -2,13 +2,17 @@
 
 import { useEffect, useMemo, useState } from "react";
 import AdjustPanel from "@/components/planner/AdjustPanel";
-import { DAYS, DEFAULT_PLAN, ICONS, PERIODS } from "@/lib/constants";
-import { isoDate, longDate, today } from "@/lib/dates";
-import { planCapacity, planStatus, sortSlots } from "@/lib/planner";
-import { SEED } from "@/lib/seed";
+import ScheduleView from "@/components/planner/ScheduleView";
+import SubscribeCard from "@/components/planner/SubscribeCard";
+import { DAYS, DEFAULT_PLAN, PERIODS } from "@/lib/constants";
+import { studentFromPlan } from "@/lib/calendar-student";
+import { isoDate, today } from "@/lib/dates";
+import { buildIcs, countEvents, feedStamp, feedUrls } from "@/lib/ics";
+import { sortSlots } from "@/lib/planner";
 import { clearStudyPlan, fetchStudyPlan, saveStudyPlan } from "@/lib/student-plan";
 import { useStudentSession } from "@/lib/student-session";
-import type { Student, StudyPlan } from "@/lib/types";
+import { useStore } from "@/lib/store";
+import type { CalendarFeed, StudyPlan } from "@/lib/types";
 
 function emptyPlan(): StudyPlan {
   return {
@@ -20,12 +24,17 @@ function emptyPlan(): StudyPlan {
 }
 
 export default function StudyPlanner() {
+  const { data } = useStore();
   const { user, completed } = useStudentSession();
   const [draft, setDraft] = useState<StudyPlan>(emptyPlan);
-  const [saved, setSaved] = useState(false);
-  const [adjust, setAdjust] = useState(false);
+  const [savedPlan, setSavedPlan] = useState<StudyPlan | null>(null);
+  const [ready, setReady] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
+  const [calendar, setCalendar] = useState<CalendarFeed | null>(null);
+
+  const saved = Boolean(savedPlan);
 
   useEffect(() => {
     if (!user) return;
@@ -34,178 +43,284 @@ export default function StudyPlanner() {
       if (cancelled) return;
       if (!result.ok) {
         setStatus(result.error || "Could not load your study plan.");
+        setReady(true);
         return;
       }
       if (result.plan) {
         setDraft(result.plan);
-        setSaved(true);
+        setSavedPlan(result.plan);
+        setCalendar({ token: user.id, subscribed: true });
       }
+      setReady(true);
     });
     return () => {
       cancelled = true;
     };
   }, [user]);
 
-  const student: Student | null = useMemo(() => {
-    if (!user) return null;
-    const doneIds = Object.entries(completed)
-      .filter(([, done]) => done)
-      .map(([id]) => id);
-    const submissions: Record<string, string> = {};
-    doneIds.forEach((id) => {
-      submissions[id] = "Completed";
-    });
-    return {
-      id: user.id,
-      name: user.email || "Student",
-      email: user.email || "",
-      cohort: "autumn26",
-      status: "active",
-      completed: doneIds,
-      submissions,
-      plan: draft,
-    };
-  }, [user, completed, draft]);
+  const doneIds = useMemo(
+    () =>
+      Object.entries(completed)
+        .filter(([, done]) => done)
+        .map(([id]) => id),
+    [completed]
+  );
 
-  const schedule = student ? planStatus(SEED, student, draft) : null;
+  const student = useMemo(() => {
+    if (!user) return null;
+    return {
+      ...studentFromPlan(user.id, draft, {
+        email: user.email,
+        name: user.email || "Student",
+        completed: doneIds,
+      }),
+      calendar: calendar || undefined,
+    };
+  }, [user, draft, doneIds, calendar]);
 
   const change = (next: Partial<StudyPlan>) => setDraft((current) => ({ ...current, ...next }));
   const toggleSlot = (id: string, on: boolean) => {
     change({ slots: on ? [...draft.slots, id] : draft.slots.filter((slot) => slot !== id) });
   };
 
-  const save = async () => {
-    if (!user) return;
+  const persist = async (plan: StudyPlan, nextStatus: string) => {
+    if (!user || !student) return false;
+    setBusy(true);
+    setStatus("");
+    const result = await saveStudyPlan(user.id, plan);
+    if (!result.ok) {
+      setBusy(false);
+      setStatus(result.error || "Could not save your plan. Run the study_plans SQL in Supabase if this table is new.");
+      return false;
+    }
+    setDraft(plan);
+    setSavedPlan(plan);
+    setEditing(false);
+    await publish(plan, { ...student, plan });
+    setBusy(false);
+    setStatus(nextStatus);
+    return true;
+  };
+
+  const publish = async (plan: StudyPlan, owner = student) => {
+    if (!user || !owner) return false;
+    const token = user.id;
+    const ics = buildIcs(data, { ...owner, calendar: { ...(owner.calendar || {}), token }, plan }, plan);
+    try {
+      const res = await fetch(feedUrls(token).http, {
+        method: "PUT",
+        headers: { "Content-Type": "text/calendar" },
+        body: ics,
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setCalendar({ token, subscribed: true, updatedAt: feedStamp(), events: countEvents(ics) });
+      return true;
+    } catch {
+      setCalendar({ token, subscribed: false, failed: true });
+      return false;
+    }
+  };
+
+  const createPlan = async () => {
+    if (!draft.slots.length) {
+      setStatus("Pick at least one study slot first.");
+      return;
+    }
     const plan: StudyPlan = {
       startDate: draft.startDate,
       hours: Math.max(0.5, Number(draft.hours) || 1),
       slots: sortSlots(draft.slots),
       makeups: draft.makeups.map((item) => ({ ...item })),
     };
-    setBusy(true);
-    setStatus("");
-    const result = await saveStudyPlan(user.id, plan);
-    setBusy(false);
-    if (!result.ok) {
-      setStatus(result.error || "Could not save your plan. Run the study_plans SQL in Supabase if this table is new.");
-      return;
-    }
-    setDraft(plan);
-    setSaved(true);
-    setStatus("Plan saved. Your target dates will stay with this account.");
+    await persist(plan, "Plan created. Download or subscribe to add it to your calendar.");
   };
 
-  const clear = async () => {
+  const saveChanges = async () => {
+    if (!draft.slots.length) {
+      setStatus("Pick at least one study slot first.");
+      return;
+    }
+    const plan: StudyPlan = {
+      startDate: draft.startDate,
+      hours: Math.max(0.5, Number(draft.hours) || 1),
+      slots: sortSlots(draft.slots),
+      makeups: draft.makeups.map((item) => ({ ...item })),
+    };
+    await persist(plan, "Plan updated. Your calendar feed will pick this up on the next refresh.");
+  };
+
+  const cancelEdit = () => {
+    if (savedPlan) setDraft(savedPlan);
+    setEditing(false);
+    setStatus("");
+  };
+
+  const startOver = async () => {
     if (!user) return;
+    if (!window.confirm("Start over? This clears your saved study plan and calendar feed.")) return;
     setBusy(true);
     const result = await clearStudyPlan(user.id);
-    setBusy(false);
     if (!result.ok) {
+      setBusy(false);
       setStatus(result.error || "Could not clear your plan.");
       return;
     }
+    fetch(feedUrls(user.id).http, { method: "DELETE" }).catch(() => {});
     setDraft(emptyPlan());
-    setSaved(false);
-    setStatus("Saved plan cleared.");
+    setSavedPlan(null);
+    setEditing(false);
+    setCalendar(null);
+    setBusy(false);
+    setStatus("");
+  };
+
+  const download = () => {
+    if (!student) return;
+    const ics = buildIcs(data, student, draft);
+    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "iac-skills-study-plan.ics";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    setStatus("Planner downloaded. Import iac-skills-study-plan.ics into Apple Calendar, Google Calendar, or Outlook.");
+  };
+
+  const subscribe = async () => {
+    if (!student) return;
+    const okay = await publish(draft);
+    if (okay) {
+      const urls = feedUrls(user!.id);
+      setStatus("Subscription link is ready. Add it to Apple Calendar, Outlook, or Google Calendar below.");
+      window.open(urls.webcal, "_blank", "noopener");
+    } else {
+      setStatus("Could not publish a live feed. Use Download iCal for a one-off file instead.");
+    }
+  };
+
+  const stopFeed = () => {
+    if (!user) return;
+    fetch(feedUrls(user.id).http, { method: "DELETE" }).catch(() => {});
+    setCalendar({ token: user.id, subscribed: false });
+    setStatus("Feed stopped. Remove the subscription in your calendar app too.");
   };
 
   if (!user) return null;
+  if (!ready) return <p className="student-loading">Loading your study plan…</p>;
+  if (!student) return null;
+
+  const showForm = !saved || editing;
 
   return (
     <section className="student-planner" id="study-planner">
-      <div className="plan-field">
-        <label htmlFor="student-start">
-          <strong>Study start date</strong>
-        </label>
-        <input
-          id="student-start"
-          type="date"
-          className="select-line"
-          value={draft.startDate}
-          onChange={(event) => change({ startDate: event.target.value || isoDate(today()) })}
-        />
-      </div>
-      <div className="plan-field">
-        <label htmlFor="student-hours">
-          <strong>Hours available per week</strong>
-        </label>
-        <div className="hours-row">
-          <input
-            id="student-hours"
-            type="number"
-            min={1}
-            max={40}
-            step={0.5}
-            value={draft.hours}
-            onChange={(event) => change({ hours: Number(event.target.value) || 1 })}
-          />
-          <span className="muted small">hours per week</span>
-        </div>
-      </div>
-      <div className="plan-field">
-        <label>
-          <strong>When can you study?</strong>
-        </label>
-        <div className="slot-grid">
-          {DAYS.map((day) => (
-            <div className="slot-day" key={day.id}>
-              <span className="slot-day-label">{day.label}</span>
-              {PERIODS.map((period) => {
-                const id = `${day.id}-${period.id}`;
-                const on = draft.slots.includes(id);
-                return (
-                  <label className={`slot ${on ? "on" : ""}`} key={id}>
-                    <input type="checkbox" checked={on} onChange={(event) => toggleSlot(id, event.target.checked)} />
-                    <span>{period.label}</span>
-                  </label>
-                );
-              })}
+      {saved ? (
+        <>
+          <p className="kicker">Study planner</p>
+          <h1>Your study schedule</h1>
+          <p className="lead">Your dated sessions are ready. Export them to a calendar, or adjust the plan any time.</p>
+          <div className="actions student-planner-export">
+            <button className="primary" type="button" onClick={download}>
+              Download iCal (.ics)
+            </button>
+            <button className="ghost" type="button" onClick={subscribe}>
+              Subscribe to iCal Link
+            </button>
+            <button className="ghost" type="button" disabled={busy} onClick={() => setEditing((open) => !open)}>
+              {editing ? "Hide setup" : "Adjust Plan"}
+            </button>
+            <button className="ghost" type="button" disabled={busy} onClick={startOver}>
+              Start Over
+            </button>
+          </div>
+          {calendar?.subscribed ? <SubscribeCard student={student} onStop={stopFeed} /> : null}
+        </>
+      ) : (
+        <>
+          <p className="kicker">Study planner</p>
+          <h1>Create your study plan</h1>
+          <p className="lead">Set your start date, weekly hours, and study slots. We date the rest of the course from there.</p>
+        </>
+      )}
+
+      {showForm ? (
+        <div className="student-planner-form">
+          <div className="plan-field">
+            <label htmlFor="student-start">
+              <strong>Study start date</strong>
+            </label>
+            <input
+              id="student-start"
+              type="date"
+              className="select-line"
+              value={draft.startDate}
+              onChange={(event) => change({ startDate: event.target.value || isoDate(today()) })}
+            />
+          </div>
+          <div className="plan-field">
+            <label htmlFor="student-hours">
+              <strong>Hours available per week</strong>
+            </label>
+            <div className="hours-row">
+              <input
+                id="student-hours"
+                type="number"
+                min={1}
+                max={40}
+                step={0.5}
+                value={draft.hours}
+                onChange={(event) => change({ hours: Number(event.target.value) || 1 })}
+              />
+              <span className="muted small">hours per week</span>
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="actions">
-        <button className="primary" type="button" disabled={busy} onClick={save}>
-          Save my plan
-        </button>
-        {saved ? (
-          <button className="ghost" type="button" disabled={busy} onClick={clear}>
-            Clear saved plan
-          </button>
-        ) : null}
-        <button className="ghost" type="button" onClick={() => setAdjust((open) => !open)}>
-          {adjust ? "Hide Adjust me" : "Adjust me"}
-        </button>
-      </div>
-      {status ? <p className="notice">{status}</p> : null}
-      {adjust ? <AdjustPanel draft={draft} onChange={change} /> : null}
-      {schedule && schedule.finish ? (
-        <div className="plan-summary">
-          At {Math.max(0.5, Number(draft.hours) || 1)} hours a week you finish on{" "}
-          <strong>{longDate(schedule.finish)}</strong>. Sessions are capped at {planCapacity(draft)} minutes.
-          {schedule.overdue.length
-            ? ` You are ${schedule.overdue.length} item${schedule.overdue.length === 1 ? "" : "s"} behind.`
-            : ""}
+          </div>
+          <div className="plan-field">
+            <label>
+              <strong>When can you study?</strong>
+            </label>
+            <div className="slot-grid">
+              {DAYS.map((day) => (
+                <div className="slot-day" key={day.id}>
+                  <span className="slot-day-label">{day.label}</span>
+                  {PERIODS.map((period) => {
+                    const id = `${day.id}-${period.id}`;
+                    const on = draft.slots.includes(id);
+                    return (
+                      <label className={`slot ${on ? "on" : ""}`} key={id}>
+                        <input type="checkbox" checked={on} onChange={(event) => toggleSlot(id, event.target.checked)} />
+                        <span>{period.label}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+          {editing ? <AdjustPanel draft={draft} onChange={change} /> : null}
+          <div className="actions">
+            {saved ? (
+              <>
+                <button className="primary" type="button" disabled={busy} onClick={saveChanges}>
+                  Save changes
+                </button>
+                <button className="ghost" type="button" disabled={busy} onClick={cancelEdit}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button className="primary" type="button" disabled={busy} onClick={createPlan}>
+                Create My Plan
+              </button>
+            )}
+          </div>
         </div>
       ) : null}
-      {schedule && schedule.cells.length ? (
-        <ol className="student-plan-upcoming">
-          {schedule.cells.slice(0, 6).map((cell) => (
-            <li key={`${isoDate(cell.date)}-${cell.period}`}>
-              <strong>
-                {longDate(cell.date)} · {cell.period}
-              </strong>
-              <span className="muted small">
-                {cell.items
-                  .map((item) => `${ICONS[item.lesson.type] || ""} ${item.lesson.title}`)
-                  .join(" · ")}
-              </span>
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <p className="empty">Pick at least one session and save to see your dated schedule.</p>
-      )}
+
+      {status ? <p className="notice">{status}</p> : null}
+
+      {saved ? <ScheduleView student={student} draft={draft} /> : null}
     </section>
   );
 }
