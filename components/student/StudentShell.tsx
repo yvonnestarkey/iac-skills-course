@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import type { ReactNode } from "react";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
-import { safeStudentPath } from "@/lib/student-lesson";
+import { getSupabase } from "@/lib/supabase";
 import { useStudentSession } from "@/lib/student-session";
 import { StudentNavProvider, useStudentNav } from "@/lib/student-nav";
 
@@ -34,7 +34,7 @@ function LoadingFrame({ label }: { label: string }) {
 }
 
 function AuthenticatedShell({ children }: { children: ReactNode }) {
-  const { user, signOut } = useStudentSession();
+  const { user } = useStudentSession();
   const nav = useStudentNav();
   const pathname = usePathname();
   const router = useRouter();
@@ -45,7 +45,8 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
   }, [pathname, closeNav]);
 
   const leave = async () => {
-    await signOut();
+    const supabase = getSupabase();
+    if (supabase) await supabase.auth.signOut();
     router.replace("/student/login");
   };
 
@@ -57,7 +58,7 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
           {user?.email ? <span className="muted small student-email">{user.email}</span> : null}
           <RoleSwitcher current="students" />
           <button className="ghost student-signout" type="button" onClick={leave}>
-            Sign out
+            Sign Out
           </button>
           {nav ? (
             <button
@@ -88,21 +89,17 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
 function StudentGate({ children }: { children: ReactNode }) {
   const { ready, user } = useStudentSession();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const router = useRouter();
   const isLogin = pathname === "/student/login";
 
   useEffect(() => {
     if (!ready) return;
     if (isLogin) {
-      if (user) router.replace(safeStudentPath(searchParams.get("next")));
+      if (user) router.replace("/student");
       return;
     }
-    if (!user) {
-      const next = encodeURIComponent(pathname || "/student");
-      router.replace(`/student/login?next=${next}`);
-    }
-  }, [ready, user, isLogin, pathname, router, searchParams]);
+    if (!user) router.replace("/student/login");
+  }, [ready, user, isLogin, pathname, router]);
 
   if (!ready) return <LoadingFrame label="Loading your course…" />;
   if (isLogin) {
@@ -126,9 +123,5 @@ function StudentGate({ children }: { children: ReactNode }) {
 }
 
 export default function StudentShell({ children }: { children: ReactNode }) {
-  return (
-    <Suspense fallback={<LoadingFrame label="Loading your course…" />}>
-      <StudentGate>{children}</StudentGate>
-    </Suspense>
-  );
+  return <StudentGate>{children}</StudentGate>;
 }

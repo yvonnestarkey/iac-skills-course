@@ -1,52 +1,97 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
-import { supabaseConfigured } from "@/lib/supabase";
-import { safeStudentPath, signInStudent, signUpStudent } from "@/lib/student-lesson";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
-function LoginForm() {
+type Mode = "signin" | "signup";
+
+export default function StudentLoginForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
-  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
 
-  const goNext = () => {
-    router.replace(safeStudentPath(searchParams.get("next")));
+  const goToDashboard = () => {
+    router.replace("/student");
   };
 
-  const run = async (mode: "in" | "up") => {
+  const submit = async (event: FormEvent) => {
+    event.preventDefault();
+    setError("");
+
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail || !password) {
+      setError("Enter your email and password.");
+      return;
+    }
+    if (mode === "signup" && password !== confirm) {
+      setError("Passwords do not match.");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
+    const supabase = getSupabase();
+    if (!supabase) {
+      setError("Supabase is not configured, so sign-in is unavailable.");
+      return;
+    }
+
     setBusy(true);
-    setStatus("");
-    const result = mode === "in" ? await signInStudent(email, password) : await signUpStudent(email, password);
-    if (!result.ok) {
-      setStatus(result.error || "Could not sign in.");
+    if (mode === "signin") {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: trimmedEmail,
+        password,
+      });
       setBusy(false);
+      if (signInError) {
+        setError(signInError.message);
+        return;
+      }
+      goToDashboard();
       return;
     }
-    if ("needsConfirm" in result && result.needsConfirm) {
-      setStatus("Account created. Confirm the email we sent, then sign in.");
-      setBusy(false);
+
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email: trimmedEmail,
+      password,
+    });
+    setBusy(false);
+    if (signUpError) {
+      setError(signUpError.message);
       return;
     }
-    goNext();
+    if (!data.session) {
+      setError("Account created. Confirm the email we sent, then sign in.");
+      setMode("signin");
+      setPassword("");
+      setConfirm("");
+      return;
+    }
+    goToDashboard();
   };
 
   return (
     <section className="card login student-login">
-      <h1 className="brand">Student sign in</h1>
-      <p className="muted">Use your course email to open the IAC Skills Course player.</p>
+      <h1 className="brand">{mode === "signin" ? "Student sign in" : "Create your account"}</h1>
+      <p className="muted">
+        {mode === "signin"
+          ? "Sign in with your email and password to open the IAC Skills Course."
+          : "Register with your email and a password to start the IAC Skills Course."}
+      </p>
       {!supabaseConfigured ? (
-        <p className="notice">Supabase is not configured on this machine, so sign-in is unavailable.</p>
+        <p className="student-auth-error" role="alert">
+          Supabase is not configured on this machine, so sign-in is unavailable.
+        </p>
       ) : null}
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          run("in");
-        }}
-      >
+      <form onSubmit={submit}>
         <label className="student-notes-label" htmlFor="student-email">
           Email
         </label>
@@ -65,31 +110,53 @@ function LoginForm() {
         <input
           id="student-password"
           type="password"
-          autoComplete="current-password"
+          autoComplete={mode === "signin" ? "current-password" : "new-password"}
           placeholder="Password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           required
           minLength={6}
         />
-        {status ? <p className="notice">{status}</p> : null}
+        {mode === "signup" ? (
+          <>
+            <label className="student-notes-label" htmlFor="student-password-confirm">
+              Confirm password
+            </label>
+            <input
+              id="student-password-confirm"
+              type="password"
+              autoComplete="new-password"
+              placeholder="Confirm password"
+              value={confirm}
+              onChange={(event) => setConfirm(event.target.value)}
+              required
+              minLength={6}
+            />
+          </>
+        ) : null}
+        {error ? (
+          <p className="student-auth-error" role="alert">
+            {error}
+          </p>
+        ) : null}
         <div className="actions">
           <button className="primary" type="submit" disabled={busy || !supabaseConfigured}>
-            Sign in
+            {mode === "signin" ? "Sign in" : "Create account"}
           </button>
-          <button className="ghost" type="button" disabled={busy || !supabaseConfigured} onClick={() => run("up")}>
-            Create account
+          <button
+            className="ghost"
+            type="button"
+            disabled={busy}
+            onClick={() => {
+              setError("");
+              setConfirm("");
+              setMode(mode === "signin" ? "signup" : "signin");
+            }}
+          >
+            {mode === "signin" ? "Need an account? Register" : "Already registered? Sign in"}
           </button>
         </div>
       </form>
     </section>
-  );
-}
-
-export default function StudentLoginForm() {
-  return (
-    <Suspense fallback={<p className="student-loading">Loading sign in…</p>}>
-      <LoginForm />
-    </Suspense>
   );
 }

@@ -2287,6 +2287,17 @@ input[type="password"]:focus {
   margin-top: 16px;
 }
 
+.student-auth-error {
+  margin: 16px 0 0;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: #f8e8ee;
+  border: 1px solid #e4b3c3;
+  color: var(--link);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .student-signout {
   padding: 6px 12px;
   font-size: 13.5px;
