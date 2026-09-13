@@ -59,3 +59,38 @@ create policy "progress is the student's own"
   to authenticated
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- Student questions, coach replies, and assignment feedback for /student and /coach.
+create table if not exists public.inbox_messages (
+  id             uuid primary key default gen_random_uuid(),
+  student_id     uuid,
+  student_email  text not null,
+  from_role      text not null check (from_role in ('student', 'coach')),
+  kind           text not null check (kind in ('question', 'reply', 'feedback')),
+  body           text not null,
+  context        text,
+  lesson_id      text,
+  created_at     timestamptz not null default now()
+);
+
+create index if not exists inbox_messages_student_idx
+  on public.inbox_messages (student_email, created_at);
+
+create index if not exists inbox_messages_created_idx
+  on public.inbox_messages (created_at desc);
+
+alter table public.inbox_messages enable row level security;
+
+-- Prototype: the coach panel still uses the publishable key, and a signed-in
+-- student in the same browser also needs to read and write this table.
+drop policy if exists "inbox readable by course users" on public.inbox_messages;
+create policy "inbox readable by course users"
+  on public.inbox_messages for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "inbox writable by course users" on public.inbox_messages;
+create policy "inbox writable by course users"
+  on public.inbox_messages for insert
+  to anon, authenticated
+  with check (true);

@@ -1,37 +1,30 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import RoleSwitcher from "@/components/RoleSwitcher";
 import { unreadForCoach, unreadForStudent } from "@/lib/comms";
 import { waitingQuestions } from "@/lib/course";
 import { useStore } from "@/lib/store";
 import { useStudentNav } from "@/lib/student-nav";
+import { useInboxWaiting } from "@/lib/use-inbox-waiting";
 
 export default function TopBar() {
-  const { data, session, setSession, setNotice, setPlannerAdjust } = useStore();
+  const { data, session } = useStore();
   const router = useRouter();
   const pathname = usePathname();
-  const waiting = waitingQuestions(data).length;
+  const demoWaiting = waitingQuestions(data).length;
+  const inboxWaiting = useInboxWaiting();
   const unread =
     session && session.role === "coach"
       ? unreadForCoach(data)
       : session && session.role === "student"
         ? unreadForStudent(data, session.id)
         : 0;
-  const inboxHref = session && session.role === "coach" ? "/coach/notifications" : "/notifications";
+  const isCoach = Boolean(session && session.role === "coach");
+  const inboxHref = isCoach ? "/coach/inbox" : "/notifications";
+  const notifyHref = isCoach ? "/coach/notifications" : "/notifications";
   const courseNav = useStudentNav();
-
-  const switchRole = (value: string) => {
-    setNotice("");
-    setPlannerAdjust(false);
-    if (value === "coach") {
-      setSession({ role: "coach", id: "coach" });
-      router.push("/coach");
-      return;
-    }
-    // Students pick themselves on the sign-in page — the list will not fit here.
-    setSession(null);
-    router.push("/");
-  };
+  const waiting = isCoach ? inboxWaiting + demoWaiting : 0;
 
   return (
     <header className="topbar">
@@ -43,27 +36,20 @@ export default function TopBar() {
         </div>
       </div>
       <div className="topbar-right">
+        {isCoach ? (
+          <button className={`notify-btn ${pathname.startsWith("/coach/inbox") ? "on" : ""}`} onClick={() => router.push(inboxHref)}>
+            Inbox
+            {inboxWaiting ? <span className="pill">{inboxWaiting}</span> : null}
+          </button>
+        ) : null}
         {session ? (
-          <button
-            className={`notify-btn ${pathname.startsWith(inboxHref) ? "on" : ""}`}
-            onClick={() => router.push(inboxHref)}
-          >
+          <button className={`notify-btn ${pathname.startsWith(notifyHref) ? "on" : ""}`} onClick={() => router.push(notifyHref)}>
             Notifications
             {unread ? <span className="pill">{unread}</span> : null}
           </button>
         ) : null}
-        {session && session.role === "coach" && waiting ? <span className="pill">{waiting} waiting</span> : null}
-        <label className="role-chip">
-          View as
-          <select
-            id="role"
-            value={session && session.role === "coach" ? "coach" : "students"}
-            onChange={(event) => switchRole(event.target.value)}
-          >
-            <option value="students">Students</option>
-            <option value="coach">Coach</option>
-          </select>
-        </label>
+        {waiting ? <span className="pill">{waiting} waiting</span> : null}
+        <RoleSwitcher current={isCoach ? "coach" : "students"} />
         {courseNav ? (
           <button
             className={`course-menu-btn ${courseNav.open ? "on" : ""}`}

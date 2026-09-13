@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 import type { ReactNode } from "react";
+import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import { safeStudentPath } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
@@ -54,6 +55,7 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
         <Brand />
         <div className="topbar-right">
           {user?.email ? <span className="muted small student-email">{user.email}</span> : null}
+          <RoleSwitcher current="students" />
           <button className="ghost student-signout" type="button" onClick={leave}>
             Sign out
           </button>
@@ -108,6 +110,7 @@ function StudentGate({ children }: { children: ReactNode }) {
       <div className="student-player">
         <header className="student-player-bar">
           <Brand />
+          <RoleSwitcher current="students" />
         </header>
         {children}
       </div>

@@ -10,9 +10,10 @@ import { averageSurveyScore, cohortCompletion, cohortStudents, pendingSubmission
 import { useStore } from "@/lib/store";
 
 const TABS = [
-  { id: "assignments", label: "Assignments" },
-  { id: "surveys", label: "Module Surveys" },
-  { id: "roster", label: "Student Roster" },
+  { id: "assignments", label: "Assignments", href: null },
+  { id: "surveys", label: "Module Surveys", href: null },
+  { id: "roster", label: "Student Roster", href: null },
+  { id: "inbox", label: "Inbox", href: "/coach/inbox" },
 ] as const;
 
 export default function StudentListsPage() {
@@ -109,7 +110,13 @@ export default function StudentListsPage() {
           <button
             key={t.id}
             className={`tab ${coach.tab === t.id ? "active" : ""}`}
-            onClick={() => setCoach({ tab: t.id })}
+            onClick={() => {
+              if (t.href) {
+                router.push(t.href);
+                return;
+              }
+              setCoach({ tab: t.id as "assignments" | "surveys" | "roster" });
+            }}
           >
             {t.label}
           </button>

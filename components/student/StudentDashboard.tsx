@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import StudentCoachThread from "@/components/student/StudentCoachThread";
 import { ICONS } from "@/lib/constants";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -29,6 +30,7 @@ export default function StudentDashboard() {
           </Link>
         ) : null}
       </div>
+      <StudentCoachThread />
       {outline.map((chapter) => {
         const chapterDone = chapter.lessons.filter((lesson) => completed[lesson.id]).length;
         return (

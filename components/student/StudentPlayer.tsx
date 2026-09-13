@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import VideoPlayer from "@/components/lesson/VideoPlayer";
+import StudentCoachThread from "@/components/student/StudentCoachThread";
 import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
 import type { LessonType } from "@/lib/types";
@@ -126,6 +127,14 @@ export default function StudentPlayer({ lesson }: { lesson: StudentLesson }) {
             </Link>
           ) : null}
         </div>
+        {lesson.type === "ask" || lesson.type === "assignment" || lesson.type === "upload" ? (
+          <StudentCoachThread
+            compact
+            title={lesson.type === "ask" ? "Ask the Coach" : "Message your coach about this work"}
+            context={`${lesson.chapterTitle} · ${lesson.title}`}
+            lessonId={lesson.id}
+          />
+        ) : null}
       </article>
     </>
   );
