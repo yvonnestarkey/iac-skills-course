@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
-import { fetchInboxMessages, isWaiting, postInboxMessage, type InboxMessage } from "@/lib/inbox";
+import { fetchOwnInboxMessages, isWaiting, postInboxMessage, type InboxMessage } from "@/lib/inbox";
 import { useStudentSession } from "@/lib/student-session";
 
 export default function StudentCoachThread({
@@ -23,11 +23,11 @@ export default function StudentCoachThread({
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    if (!user?.email) return;
-    const result = await fetchInboxMessages(user.email);
+    if (!user?.id) return;
+    const result = await fetchOwnInboxMessages();
     if (result.ok) setMessages(result.data);
     else setStatus(result.error || "Could not load messages.");
-  }, [user?.email]);
+  }, [user?.id]);
 
   useEffect(() => {
     load();

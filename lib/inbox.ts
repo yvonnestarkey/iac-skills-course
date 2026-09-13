@@ -101,9 +101,19 @@ export function groupInboxByStudent(messages: InboxMessage[]): InboxThread[] {
     });
 }
 
-export async function fetchInboxMessages(studentEmail?: string): Promise<{ ok: boolean; error?: string; data: InboxMessage[] }> {
+async function authClient() {
   const client = getSupabase();
-  if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
+  if (!client) return { client: null, user: null, error: "Supabase is not configured." };
+  const { data, error } = await client.auth.getUser();
+  if (error || !data.user) return { client, user: null, error: "Sign in to load your messages." };
+  return { client, user: data.user, error: null };
+}
+
+/** Coach roster view. RLS still hides other students' rows from non-staff. */
+export async function fetchInboxMessages(studentEmail?: string): Promise<{ ok: boolean; error?: string; data: InboxMessage[] }> {
+  const { client, user, error: authError } = await authClient();
+  if (!client) return { ok: false, error: authError || "Supabase is not configured.", data: [] };
+  if (!user) return { ok: false, error: authError || "Sign in required.", data: [] };
 
   let query = client.from("inbox_messages").select("*").order("created_at", { ascending: true });
   if (studentEmail) query = query.eq("student_email", studentEmail);
@@ -113,18 +123,59 @@ export async function fetchInboxMessages(studentEmail?: string): Promise<{ ok: b
   return { ok: true, data: ((data || []) as InboxRow[]).map(fromRow) };
 }
 
+/** Student inbox: only rows owned by auth.uid(). */
+export async function fetchOwnInboxMessages(): Promise<{ ok: boolean; error?: string; data: InboxMessage[] }> {
+  const { client, user, error: authError } = await authClient();
+  if (!client || !user) return { ok: false, error: authError || "Sign in required.", data: [] };
+
+  const { data, error } = await client
+    .from("inbox_messages")
+    .select("*")
+    .eq("student_id", user.id)
+    .order("created_at", { ascending: true });
+
+  if (error) return { ok: false, error: describe(error), data: [] };
+  return { ok: true, data: ((data || []) as InboxRow[]).map(fromRow) };
+}
+
+/** Student notifications: own coach notes / feedback, scoped to auth.uid(). */
+export async function fetchOwnNotifications(): Promise<{ ok: boolean; error?: string; data: InboxMessage[] }> {
+  const { client, user, error: authError } = await authClient();
+  if (!client || !user) return { ok: false, error: authError || "Sign in required.", data: [] };
+
+  const { data, error } = await client
+    .from("notifications")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: true });
+
+  if (!error) return { ok: true, data: ((data || []) as InboxRow[]).map(fromRow) };
+
+  const fallback = await client
+    .from("inbox_messages")
+    .select("*")
+    .eq("student_id", user.id)
+    .or("kind.eq.feedback,from_role.eq.coach")
+    .order("created_at", { ascending: true });
+
+  if (fallback.error) return { ok: false, error: describe(error), data: [] };
+  return { ok: true, data: ((fallback.data || []) as InboxRow[]).map(fromRow) };
+}
+
 export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean; error?: string; message?: InboxMessage }> {
-  const client = getSupabase();
-  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const { client, user, error: authError } = await authClient();
+  if (!client) return { ok: false, error: authError || "Supabase is not configured." };
+  if (!user) return { ok: false, error: authError || "Sign in required." };
 
   const body = draft.body.trim();
   if (!body) return { ok: false, error: "Write a message first." };
 
+  const studentOwned = draft.from === "student";
   const { data, error } = await client
     .from("inbox_messages")
     .insert({
-      student_id: draft.studentId || null,
-      student_email: draft.studentEmail,
+      student_id: studentOwned ? user.id : draft.studentId || null,
+      student_email: studentOwned ? user.email || draft.studentEmail : draft.studentEmail,
       from_role: draft.from,
       kind: draft.kind,
       body,

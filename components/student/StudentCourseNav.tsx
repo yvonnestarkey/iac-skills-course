@@ -11,7 +11,8 @@ export default function StudentCourseNav() {
   const { outline, completed } = useStudentSession();
   const nav = useStudentNav();
   const pathname = usePathname();
-  const activeLessonId = pathname.startsWith("/student/") ? pathname.split("/")[2] : null;
+  const segment = pathname.startsWith("/student/") ? pathname.split("/")[2] : null;
+  const activeLessonId = segment && segment !== "inbox" && segment !== "notifications" ? segment : null;
   const onDashboard = pathname === "/student";
   const lessons = outline.flatMap((chapter) => chapter.lessons);
   const done = lessons.filter((lesson) => completed[lesson.id]).length;
@@ -46,6 +47,16 @@ export default function StudentCourseNav() {
         </Link>
         <Link href="/student#study-planner" className="dash-link" onClick={close}>
           Study planner
+        </Link>
+        <Link href="/student/inbox" className={`dash-link ${pathname.startsWith("/student/inbox") ? "active" : ""}`} onClick={close}>
+          Inbox
+        </Link>
+        <Link
+          href="/student/notifications"
+          className={`dash-link ${pathname.startsWith("/student/notifications") ? "active" : ""}`}
+          onClick={close}
+        >
+          Notifications
         </Link>
       </div>
       {outline.map((chapter) => {

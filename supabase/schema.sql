@@ -82,24 +82,15 @@ create table if not exists public.inbox_messages (
 create index if not exists inbox_messages_student_idx
   on public.inbox_messages (student_email, created_at);
 
+create index if not exists inbox_messages_student_id_idx
+  on public.inbox_messages (student_id, created_at);
+
 create index if not exists inbox_messages_created_idx
   on public.inbox_messages (created_at desc);
 
 alter table public.inbox_messages enable row level security;
 
--- Prototype: the coach panel still uses the publishable key, and a signed-in
--- student in the same browser also needs to read and write this table.
-drop policy if exists "inbox readable by course users" on public.inbox_messages;
-create policy "inbox readable by course users"
-  on public.inbox_messages for select
-  to anon, authenticated
-  using (true);
-
-drop policy if exists "inbox writable by course users" on public.inbox_messages;
-create policy "inbox writable by course users"
-  on public.inbox_messages for insert
-  to anon, authenticated
-  with check (true);
+-- Inbox RLS is applied after public.profiles exists (see is_course_staff below).
 
 -- Per-student study planner (start date, weekly hours, sessions).
 create table if not exists public.study_plans (
@@ -182,3 +173,84 @@ select
   split_part(coalesce(u.email, 'student'), '@', 1)
 from auth.users u
 on conflict (id) do nothing;
+
+-- student_id is the owning Auth user. Students may only read and write their
+-- own inbox rows. Course staff (coach/admin) can read and write every thread.
+create or replace function public.is_course_staff()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select
+    coalesce((auth.jwt() -> 'user_metadata' ->> 'role') in ('coach', 'admin'), false)
+    or coalesce((auth.jwt() -> 'app_metadata' ->> 'role') in ('coach', 'admin'), false)
+    or exists (
+      select 1 from public.profiles
+      where id = auth.uid()
+        and role in ('coach', 'admin')
+    )
+    or lower(coalesce(auth.jwt() ->> 'email', '')) in (
+      'coach@accountingstudyadvice.com',
+      'admin@accountingstudyadvice.com',
+      'yvonne@accountingstudyadvice.com'
+    );
+$$;
+
+revoke all on function public.is_course_staff() from public;
+grant execute on function public.is_course_staff() to authenticated;
+
+drop policy if exists "inbox readable by course users" on public.inbox_messages;
+drop policy if exists "inbox writable by course users" on public.inbox_messages;
+drop policy if exists "students read own inbox" on public.inbox_messages;
+drop policy if exists "staff read inbox" on public.inbox_messages;
+drop policy if exists "students insert own inbox" on public.inbox_messages;
+drop policy if exists "staff insert inbox" on public.inbox_messages;
+
+create policy "students read own inbox"
+  on public.inbox_messages for select
+  to authenticated
+  using (auth.uid() = student_id);
+
+create policy "staff read inbox"
+  on public.inbox_messages for select
+  to authenticated
+  using (public.is_course_staff());
+
+create policy "students insert own inbox"
+  on public.inbox_messages for insert
+  to authenticated
+  with check (auth.uid() = student_id and from_role = 'student');
+
+create policy "staff insert inbox"
+  on public.inbox_messages for insert
+  to authenticated
+  with check (public.is_course_staff());
+
+-- Notifications are the student's own coach notes / assignment feedback.
+-- The view is security_invoker so inbox RLS (auth.uid() = student_id) still applies.
+create or replace view public.notifications
+with (security_invoker = true) as
+select
+  id,
+  student_id,
+  student_id as user_id,
+  student_email,
+  from_role,
+  kind,
+  body,
+  context,
+  lesson_id,
+  created_at
+from public.inbox_messages
+where kind = 'feedback' or from_role = 'coach';
+
+grant select on public.notifications to authenticated;
+
+-- Attach older email-only inbox rows to the matching Auth account.
+update public.inbox_messages m
+set student_id = p.id
+from public.profiles p
+where m.student_id is null
+  and lower(m.student_email) = lower(p.email);

@@ -9,6 +9,7 @@ import StudentCourseNav from "@/components/student/StudentCourseNav";
 import { isCoachAccount } from "@/lib/roles";
 import { getSupabase } from "@/lib/supabase";
 import { useStudentSession } from "@/lib/student-session";
+import { useStudentInbox } from "@/lib/use-student-inbox";
 import { StudentNavProvider, useStudentNav } from "@/lib/student-nav";
 
 function LoadingFrame({ label }: { label: string }) {
@@ -24,9 +25,11 @@ function LoadingFrame({ label }: { label: string }) {
 
 function AuthenticatedShell({ children }: { children: ReactNode }) {
   const { user } = useStudentSession();
+  const { inboxWaiting, notifications } = useStudentInbox();
   const nav = useStudentNav();
   const pathname = usePathname();
   const router = useRouter();
+  const notifyCount = notifications.length;
   const closeNav = nav?.setOpen;
 
   useEffect(() => {
@@ -44,6 +47,22 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
       <header className="topbar">
         <BrandMark />
         <div className="topbar-right">
+          <button
+            className={`notify-btn ${pathname.startsWith("/student/inbox") ? "on" : ""}`}
+            type="button"
+            onClick={() => router.push("/student/inbox")}
+          >
+            Inbox
+            {inboxWaiting ? <span className="pill">{inboxWaiting}</span> : null}
+          </button>
+          <button
+            className={`notify-btn ${pathname.startsWith("/student/notifications") ? "on" : ""}`}
+            type="button"
+            onClick={() => router.push("/student/notifications")}
+          >
+            Notifications
+            {notifyCount ? <span className="pill">{notifyCount}</span> : null}
+          </button>
           {user?.email ? <span className="muted small student-email">{user.email}</span> : null}
           {isCoachAccount(user) ? <RoleSwitcher current="students" /> : null}
           <button className="ghost student-signout" type="button" onClick={leave}>
