@@ -11,7 +11,7 @@ interface Props {
 
 export default function AdjustPanel({ draft, onChange }: Props) {
   const [date, setDate] = useState(shiftISO(2));
-  const [period, setPeriod] = useState<"morning" | "evening">("evening");
+  const [period, setPeriod] = useState<"morning" | "afternoon" | "evening">("evening");
   const [minutes, setMinutes] = useState("90");
 
   const addMakeup = () => {
@@ -73,9 +73,10 @@ export default function AdjustPanel({ draft, onChange }: Props) {
         <select
           id="makeup-period"
           value={period}
-          onChange={(event) => setPeriod(event.target.value as "morning" | "evening")}
+          onChange={(event) => setPeriod(event.target.value as "morning" | "afternoon" | "evening")}
         >
           <option value="morning">morning</option>
+          <option value="afternoon">afternoon</option>
           <option value="evening">evening</option>
         </select>
         <input

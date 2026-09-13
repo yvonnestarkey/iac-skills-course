@@ -59,7 +59,7 @@ export interface SurveyAnswer {
 
 export interface MakeupSession {
   date: string;
-  period: "morning" | "evening";
+  period: "morning" | "afternoon" | "evening";
   minutes: number;
 }
 
@@ -159,7 +159,7 @@ export interface CourseData {
 /** One dated study session with the work packed into it. */
 export interface ScheduledSession {
   date: Date;
-  period: "morning" | "evening";
+  period: "morning" | "afternoon" | "evening";
   capacity: number;
   slotId: string;
   makeup?: boolean;

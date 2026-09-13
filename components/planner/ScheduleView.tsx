@@ -20,7 +20,10 @@ function weekGroups(data: CourseData, cells: ScheduledSession[]) {
   const entries: Entry[] = [
     ...cells.map((c) => ({ kind: "study" as const, date: c.date, period: c.period, cell: c })),
     ...live.map((s) => ({ kind: "live" as const, date: s.when, period: "evening", live: s })),
-  ].sort((a, b) => a.date.getTime() - b.date.getTime() || (a.period === "morning" ? -1 : 1));
+  ].sort((a, b) => {
+    const order = ["morning", "afternoon", "evening"];
+    return a.date.getTime() - b.date.getTime() || order.indexOf(a.period) - order.indexOf(b.period);
+  });
 
   const groups: Array<{ key: string; monday: Date; entries: Entry[] }> = [];
   entries.forEach((entry) => {

@@ -1626,7 +1626,7 @@ input[type="password"]:focus {
 
 .slot-day {
   display: grid;
-  grid-template-columns: 44px 1fr 1fr;
+  grid-template-columns: 44px 1fr 1fr 1fr;
   gap: 7px;
   align-items: center;
 }

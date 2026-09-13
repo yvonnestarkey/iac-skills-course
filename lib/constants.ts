@@ -22,12 +22,15 @@ export const DAYS = [
 
 export const PERIODS = [
   { id: "morning", label: "morning" },
+  { id: "afternoon", label: "afternoon" },
   { id: "evening", label: "evening" },
-];
+] as const;
+
+export type StudyPeriod = (typeof PERIODS)[number]["id"];
 
 export const DEFAULT_PLAN = { hours: 5, slots: ["tue-evening", "thu-evening", "sat-morning"] };
 
-export const SLOT_TIMES: Record<string, number[]> = { morning: [9, 0], evening: [18, 30] };
+export const SLOT_TIMES: Record<string, number[]> = { morning: [9, 0], afternoon: [14, 0], evening: [18, 30] };
 
 export const SURVEY_QUESTIONS = [
   { id: "clarity", label: "How clear was this chapter?" },

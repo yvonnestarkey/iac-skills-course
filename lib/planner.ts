@@ -13,7 +13,7 @@ export function slotLabel(slotId: string): string {
 export function sortSlots(slots: string[]): string[] {
   const order = (slotId: string) => {
     const [dayId, periodId] = slotId.split("-");
-    return DAYS.findIndex((d) => d.id === dayId) * 2 + PERIODS.findIndex((p) => p.id === periodId);
+    return DAYS.findIndex((d) => d.id === dayId) * PERIODS.length + PERIODS.findIndex((p) => p.id === periodId);
   };
   return [...slots].sort((a, b) => order(a) - order(b));
 }
@@ -46,7 +46,10 @@ export function planSessions(plan: StudyPlan, weeks: number) {
       makeup: true,
     });
   });
-  const rank = (s) => s.date.getTime() + (s.period === "morning" ? 0 : 1);
+  const rank = (s) => {
+    const periodOrder = PERIODS.findIndex((p) => p.id === s.period);
+    return s.date.getTime() + (periodOrder >= 0 ? periodOrder : PERIODS.length);
+  };
   return sessions.sort((a, b) => rank(a) - rank(b));
 }
 

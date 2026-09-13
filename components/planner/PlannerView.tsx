@@ -177,7 +177,7 @@ export default function PlannerView() {
                 <strong>When can you study?</strong>
               </label>
               <p className="muted small">
-                Tick each session you can realistically keep, for example Mon evening or Sat morning.
+                Tick each session you can realistically keep, for example Mon afternoon or Sat morning.
               </p>
               <div className="slot-grid">
                 {DAYS.map((day) => (
