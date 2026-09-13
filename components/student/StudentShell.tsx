@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import type { ReactNode } from "react";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
+import { isCoachAccount } from "@/lib/roles";
 import { getSupabase } from "@/lib/supabase";
 import { useStudentSession } from "@/lib/student-session";
 import { StudentNavProvider, useStudentNav } from "@/lib/student-nav";
@@ -56,7 +57,7 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
         <Brand />
         <div className="topbar-right">
           {user?.email ? <span className="muted small student-email">{user.email}</span> : null}
-          <RoleSwitcher current="students" />
+          {isCoachAccount(user) ? <RoleSwitcher current="students" /> : null}
           <button className="ghost student-signout" type="button" onClick={leave}>
             Sign Out
           </button>
@@ -107,7 +108,7 @@ function StudentGate({ children }: { children: ReactNode }) {
       <div className="student-player">
         <header className="student-player-bar">
           <Brand />
-          <RoleSwitcher current="students" />
+          {isCoachAccount(user) ? <RoleSwitcher current="students" /> : null}
         </header>
         {children}
       </div>

@@ -2395,6 +2395,42 @@ input[type="password"]:focus {
   font-size: 11px;
 }
 
+.student-planner {
+  margin-top: 28px;
+  padding-top: 8px;
+}
+
+.student-planner .plan-field {
+  margin-top: 16px;
+}
+
+.student-planner .notice {
+  margin-top: 14px;
+}
+
+.student-planner .adjust-panel {
+  margin-top: 16px;
+}
+
+.student-plan-upcoming {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.student-plan-upcoming li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+}
+
 .student-inbox {
   margin-top: 28px;
   padding-top: 8px;

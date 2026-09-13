@@ -94,3 +94,22 @@ create policy "inbox writable by course users"
   on public.inbox_messages for insert
   to anon, authenticated
   with check (true);
+
+-- Per-student study planner (start date, weekly hours, sessions).
+create table if not exists public.study_plans (
+  user_id     uuid primary key references auth.users (id) on delete cascade,
+  start_date  text not null,
+  hours       numeric not null default 5,
+  slots       jsonb not null default '[]'::jsonb,
+  makeups     jsonb not null default '[]'::jsonb,
+  updated_at  timestamptz not null default now()
+);
+
+alter table public.study_plans enable row level security;
+
+drop policy if exists "study plans are the student's own" on public.study_plans;
+create policy "study plans are the student's own"
+  on public.study_plans for all
+  to authenticated
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);

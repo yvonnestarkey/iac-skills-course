@@ -33,6 +33,9 @@ export default function StudentCourseNav() {
         <Link href="/student" className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
           Student dashboard
         </Link>
+        <Link href="/student#study-planner" className="dash-link" onClick={close}>
+          Study planner
+        </Link>
       </div>
       {outline.map((chapter) => (
         <section className="chapter" key={chapter.id}>

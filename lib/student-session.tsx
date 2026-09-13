@@ -8,6 +8,7 @@ import {
   fetchCourseOutline,
   getStudentUser,
   signOutStudent,
+  studentUserFromAuth,
   type OutlineChapter,
   type StudentUser,
 } from "./student-lesson";
@@ -55,7 +56,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
 
     const client = getSupabase();
     const subscription = client?.auth.onAuthStateChange((_event, session) => {
-      const nextUser = session?.user ? { id: session.user.id, email: session.user.email || null } : null;
+      const nextUser = session?.user ? studentUserFromAuth(session.user) : null;
       setUser(nextUser);
       if (nextUser) {
         loadProgress(nextUser.id);

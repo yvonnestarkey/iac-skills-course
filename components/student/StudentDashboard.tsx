@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
+import StudyPlanner from "@/components/student/StudyPlanner";
 import { ICONS } from "@/lib/constants";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -30,6 +31,7 @@ export default function StudentDashboard() {
           </Link>
         ) : null}
       </div>
+      <StudyPlanner />
       <StudentCoachThread />
       {outline.map((chapter) => {
         const chapterDone = chapter.lessons.filter((lesson) => completed[lesson.id]).length;

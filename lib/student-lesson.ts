@@ -42,6 +42,7 @@ export interface OutlineChapter {
 export interface StudentUser {
   id: string;
   email: string | null;
+  role: string | null;
 }
 
 function asStringList(value: unknown): string[] | undefined {
@@ -136,13 +137,22 @@ export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
   return outlineFromSeed();
 }
 
+export function studentUserFromAuth(user: { id: string; email?: string | null; user_metadata?: Record<string, unknown>; app_metadata?: Record<string, unknown> }): StudentUser {
+  const role = user.user_metadata?.role || user.app_metadata?.role || null;
+  return {
+    id: user.id,
+    email: user.email || null,
+    role: role ? String(role) : null,
+  };
+}
+
 export async function getStudentUser(): Promise<StudentUser | null> {
   const client = getSupabase();
   if (!client) return null;
   const { data } = await client.auth.getSession();
   const user = data.session?.user;
   if (!user) return null;
-  return { id: user.id, email: user.email || null };
+  return studentUserFromAuth(user);
 }
 
 export async function fetchCompletedLessonIds(userId: string): Promise<string[]> {
