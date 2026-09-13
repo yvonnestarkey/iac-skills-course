@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { unreadForCoach, unreadForStudent } from "@/lib/comms";
 import { waitingQuestions } from "@/lib/course";
 import { useStore } from "@/lib/store";
+import { useStudentNav } from "@/lib/student-nav";
 
 export default function TopBar() {
   const { data, session, setSession, setNotice, setPlannerAdjust } = useStore();
@@ -17,6 +18,7 @@ export default function TopBar() {
         ? unreadForStudent(data, session.id)
         : 0;
   const inboxHref = session && session.role === "coach" ? "/coach/notifications" : "/notifications";
+  const courseNav = useStudentNav();
 
   const switchRole = (value: string) => {
     setNotice("");
@@ -62,6 +64,16 @@ export default function TopBar() {
             <option value="coach">Coach</option>
           </select>
         </label>
+        {courseNav ? (
+          <button
+            className={`course-menu-btn ${courseNav.open ? "on" : ""}`}
+            aria-expanded={courseNav.open}
+            aria-controls="course-nav"
+            onClick={courseNav.toggle}
+          >
+            {courseNav.open ? "Close" : "Course"}
+          </button>
+        ) : null}
       </div>
     </header>
   );

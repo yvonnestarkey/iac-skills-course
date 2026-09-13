@@ -6,10 +6,12 @@ import { fileFor, progressFor, surveyFor, textFor, unansweredQuestion } from "@/
 import { longDate } from "@/lib/dates";
 import { planStatus } from "@/lib/planner";
 import { useStore } from "@/lib/store";
+import { useStudentNav } from "@/lib/student-nav";
 import type { Lesson } from "@/lib/types";
 
 export default function Sidebar() {
   const { data, student, setNotice } = useStore();
+  const courseNav = useStudentNav();
   const pathname = usePathname();
   const router = useRouter();
   if (!student) return null;
@@ -37,6 +39,7 @@ export default function Sidebar() {
 
   const go = (href: string) => {
     setNotice("");
+    courseNav?.setOpen(false);
     router.push(href);
   };
 
