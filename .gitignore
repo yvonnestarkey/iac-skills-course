@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+
+# Published calendar feeds (runtime data)
+calendars/
+
+.DS_Store
+.env*.local
