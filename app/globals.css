@@ -192,7 +192,7 @@ h1 {
 /* Sidebar */
 
 .sidebar {
-  background: var(--light);
+  background: #b6c6c3;
   color: var(--ink);
   padding: 22px 16px 40px;
   min-height: calc(100vh - 53px);
