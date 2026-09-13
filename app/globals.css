@@ -2506,7 +2506,25 @@ input[type="password"]:focus {
 }
 
 .student-plan-preview {
-  margin: 20px 0 14px;
+  position: sticky;
+  top: 61px;
+  z-index: 4;
+  margin: 0 0 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  box-shadow: var(--shadow);
+}
+
+.student-plan-preview.empty {
+  background: var(--paper);
+  border-color: var(--line);
+  color: var(--muted);
+  box-shadow: none;
+}
+
+.student-plan-preview.active {
+  background: var(--sand);
+  border-color: var(--sand-line);
 }
 
 .student-planner .subscribe-card {
