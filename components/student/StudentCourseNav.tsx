@@ -12,7 +12,8 @@ export default function StudentCourseNav() {
   const nav = useStudentNav();
   const pathname = usePathname();
   const segment = pathname.startsWith("/student/") ? pathname.split("/")[2] : null;
-  const activeLessonId = segment && segment !== "inbox" && segment !== "notifications" ? segment : null;
+  const reserved = new Set(["inbox", "notifications", "planner"]);
+  const activeLessonId = segment && !reserved.has(segment) ? segment : null;
   const onDashboard = pathname === "/student";
   const lessons = outline.flatMap((chapter) => chapter.lessons);
   const done = lessons.filter((lesson) => completed[lesson.id]).length;
@@ -34,6 +35,9 @@ export default function StudentCourseNav() {
   return (
     <>
       <div className="course-head">
+        <Link href="/student" className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
+          Student dashboard
+        </Link>
         <h2>Course modules</h2>
         <p className="muted">IAC Skills Course</p>
         <div className="bar">
@@ -42,22 +46,6 @@ export default function StudentCourseNav() {
         <p className="muted small">
           {done} of {total} lessons complete
         </p>
-        <Link href="/student" className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
-          Student dashboard
-        </Link>
-        <Link href="/student#study-planner" className="dash-link" onClick={close}>
-          Study planner
-        </Link>
-        <Link href="/student/inbox" className={`dash-link ${pathname.startsWith("/student/inbox") ? "active" : ""}`} onClick={close}>
-          Inbox
-        </Link>
-        <Link
-          href="/student/notifications"
-          className={`dash-link ${pathname.startsWith("/student/notifications") ? "active" : ""}`}
-          onClick={close}
-        >
-          Notifications
-        </Link>
       </div>
       {outline.map((chapter) => {
         const isOpen = Boolean(openChapters[chapter.id]);

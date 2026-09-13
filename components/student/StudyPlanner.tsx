@@ -113,10 +113,6 @@ export default function StudyPlanner() {
 
   return (
     <section className="student-planner" id="study-planner">
-      <h2>Study planner</h2>
-      <p className="muted">
-        Set your start date and weekly sessions. We date the rest of the course so you can see when you finish.
-      </p>
       <div className="plan-field">
         <label htmlFor="student-start">
           <strong>Study start date</strong>

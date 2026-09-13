@@ -2250,6 +2250,10 @@ input[type="password"]:focus {
     grid-template-columns: 1fr;
   }
 
+  .student-hub {
+    grid-template-columns: 1fr;
+  }
+
   .inbox-layout {
     grid-template-columns: 1fr;
   }
@@ -2365,11 +2369,57 @@ input[type="password"]:focus {
   font-weight: 700;
 }
 
+.course-head .dash-link:first-child {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
 .dash-link:hover,
 .dash-link.active {
   background: var(--medium);
   color: #fff;
   text-decoration: none;
+}
+
+.student-hub {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 8px 0 8px;
+}
+
+.student-hub-card {
+  display: block;
+  padding: 16px 16px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.student-hub-card:hover {
+  border-color: var(--link);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.student-hub-card strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.student-hub-card p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.student-hub-card .pill {
+  margin-top: 10px;
 }
 
 .lesson-link.done .icon {

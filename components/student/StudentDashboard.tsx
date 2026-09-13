@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import StudentCoachThread from "@/components/student/StudentCoachThread";
-import StudyPlanner from "@/components/student/StudyPlanner";
 import { ICONS } from "@/lib/constants";
+import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
 
 export default function StudentDashboard() {
   const { user, outline, completed } = useStudentSession();
+  const { inboxWaiting, notifications } = useStudentInbox();
   const lessons = outline.flatMap((chapter) => chapter.lessons);
   const done = lessons.filter((lesson) => completed[lesson.id]).length;
   const next = lessons.find((lesson) => !completed[lesson.id]) || lessons[0];
@@ -31,8 +31,22 @@ export default function StudentDashboard() {
           </Link>
         ) : null}
       </div>
-      <StudyPlanner />
-      <StudentCoachThread />
+      <nav className="student-hub" aria-label="Student shortcuts">
+        <Link href="/student/inbox" className="student-hub-card">
+          <strong>Inbox</strong>
+          <p>Questions and replies with your coach.</p>
+          {inboxWaiting ? <span className="pill">New reply</span> : null}
+        </Link>
+        <Link href="/student/notifications" className="student-hub-card">
+          <strong>Notifications</strong>
+          <p>Assignment feedback and coach notes.</p>
+          {notifications.length ? <span className="pill">{notifications.length}</span> : null}
+        </Link>
+        <Link href="/student/planner" className="student-hub-card">
+          <strong>Study planner</strong>
+          <p>Set your hours, slots, and target finish date.</p>
+        </Link>
+      </nav>
       {outline.map((chapter) => {
         const chapterDone = chapter.lessons.filter((lesson) => completed[lesson.id]).length;
         return (
