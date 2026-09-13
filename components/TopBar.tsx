@@ -1,13 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { unreadForCoach, unreadForStudent } from "@/lib/comms";
 import { waitingQuestions } from "@/lib/course";
 import { useStore } from "@/lib/store";
 
 export default function TopBar() {
   const { data, session, setSession, setNotice, setPlannerAdjust } = useStore();
   const router = useRouter();
+  const pathname = usePathname();
   const waiting = waitingQuestions(data).length;
+  const unread =
+    session && session.role === "coach"
+      ? unreadForCoach(data)
+      : session && session.role === "student"
+        ? unreadForStudent(data, session.id)
+        : 0;
+  const inboxHref = session && session.role === "coach" ? "/coach/notifications" : "/notifications";
 
   const switchRole = (value: string) => {
     setNotice("");
@@ -32,6 +41,15 @@ export default function TopBar() {
         </div>
       </div>
       <div className="topbar-right">
+        {session ? (
+          <button
+            className={`notify-btn ${pathname.startsWith(inboxHref) ? "on" : ""}`}
+            onClick={() => router.push(inboxHref)}
+          >
+            Notifications
+            {unread ? <span className="pill">{unread}</span> : null}
+          </button>
+        ) : null}
         {session && session.role === "coach" && waiting ? <span className="pill">{waiting} waiting</span> : null}
         <label className="role-chip">
           View as

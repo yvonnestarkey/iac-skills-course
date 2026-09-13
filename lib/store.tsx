@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import type { ReactNode } from "react";
 import { DEFAULT_ASSIGNMENT_ID } from "./constants";
 import { SEED } from "./seed";
-import type { CourseData, Student } from "./types";
+import type { CommunicationAudience, CourseData, Student } from "./types";
 
 const STORAGE_KEY = "accounting-study-advice-v1";
 const SESSION_KEY = "accounting-study-advice-session";
@@ -26,6 +26,7 @@ function loadData(): CourseData {
     const parsed = JSON.parse(raw);
     if (!parsed.chapters) return structuredClone(SEED);
     parsed.chats = parsed.chats || {};
+    if (!parsed.communications) parsed.communications = structuredClone(SEED.communications || []);
     return parsed;
   } catch {
     return structuredClone(SEED);
@@ -49,6 +50,13 @@ export interface CoachUi {
   assignmentId: string;
 }
 
+export interface NotifyDraft {
+  audience: CommunicationAudience;
+  audienceLabel: string;
+  recipientIds: string[];
+  subject?: string;
+}
+
 interface StoreValue {
   ready: boolean;
   data: CourseData;
@@ -60,6 +68,8 @@ interface StoreValue {
   plannerAdjust: boolean;
   coach: CoachUi;
   setCoach: (next: Partial<CoachUi>) => void;
+  notifyDraft: NotifyDraft | null;
+  setNotifyDraft: (draft: NotifyDraft | null) => void;
   /** Mutate a draft copy of the course data. Returns false when it would not fit in localStorage. */
   mutate: (fn: (draft: CourseData) => void) => boolean;
   setSession: (session: Session | null) => void;
@@ -86,6 +96,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     filter: "all",
     assignmentId: DEFAULT_ASSIGNMENT_ID,
   });
+  const [notifyDraft, setNotifyDraft] = useState<NotifyDraft | null>(null);
   const dataRef = useRef<CourseData>(SEED);
 
   const setCoach = useCallback((next: Partial<CoachUi>) => {
@@ -150,6 +161,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     plannerAdjust,
     coach,
     setCoach,
+    notifyDraft,
+    setNotifyDraft,
     mutate,
     setSession,
     setNotice,

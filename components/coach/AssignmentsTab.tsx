@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { labelForGroup } from "@/lib/comms";
 import {
   chapterCode,
   cohortName,
@@ -22,7 +24,8 @@ interface Props {
 }
 
 export default function AssignmentsTab({ students, onOpenProfile }: Props) {
-  const { data, coach, setCoach, mutate } = useStore();
+  const { data, coach, setCoach, mutate, setNotifyDraft } = useStore();
+  const [selected, setSelected] = useState<string[]>([]);
   const list = gradedLessons(data);
   const lesson = list.find((a) => a.id === coach.assignmentId) || list[0];
   const done = students.filter((s) => hasWork(s, lesson)).length;
@@ -33,6 +36,38 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
     if (coach.filter === "questions") return unansweredQuestion(data, s.id);
     return true;
   });
+
+  const toggle = (id: string) => {
+    setSelected((current) => (current.includes(id) ? current.filter((x) => x !== id) : [...current, id]));
+  };
+
+  const filterLabel =
+    coach.filter === "missing"
+      ? "Missing this assignment"
+      : coach.filter === "submitted"
+        ? "Submitted this assignment"
+        : coach.filter === "questions"
+          ? "Waiting on a reply"
+          : shortLessonTitle(lesson);
+
+  const notifyFiltered = () => {
+    if (!rows.length) return;
+    setNotifyDraft({
+      audience: "filtered",
+      audienceLabel: labelForGroup(data, rows, "filtered", filterLabel),
+      recipientIds: rows.map((s) => s.id),
+    });
+  };
+
+  const notifySelected = () => {
+    const picked = rows.filter((s) => selected.includes(s.id));
+    if (!picked.length) return;
+    setNotifyDraft({
+      audience: "selected",
+      audienceLabel: labelForGroup(data, picked, "selected"),
+      recipientIds: picked.map((s) => s.id),
+    });
+  };
 
   const nudge = () => {
     const missing = students.filter((s) => !hasWork(s, lesson) && s.status !== "paused");
@@ -94,6 +129,18 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
         <table className="data-table">
           <thead>
             <tr>
+              <th className="check-col">
+                <input
+                  type="checkbox"
+                  checked={Boolean(rows.length && rows.every((s) => selected.includes(s.id)))}
+                  onChange={() =>
+                    setSelected((current) =>
+                      rows.every((s) => current.includes(s.id)) ? current.filter((id) => !rows.some((s) => s.id === id)) : [...new Set([...current, ...rows.map((s) => s.id)])]
+                    )
+                  }
+                  aria-label="Select all visible students"
+                />
+              </th>
               <th>Student</th>
               <th>Status</th>
               <th>Submission</th>
@@ -114,6 +161,14 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
                 : "—";
               return (
                 <tr key={s.id} onClick={() => onOpenProfile(s.id)}>
+                  <td className="check-col" onClick={(event) => event.stopPropagation()}>
+                    <input
+                      type="checkbox"
+                      checked={selected.includes(s.id)}
+                      onChange={() => toggle(s.id)}
+                      aria-label={`Select ${s.name}`}
+                    />
+                  </td>
                   <td>
                     <strong>{s.name}</strong>
                     <span className="cell-sub">{cohortName(data, s.cohort)}</span>
@@ -138,7 +193,13 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
         <p className="empty">No students in this filter.</p>
       )}
       <div className="actions">
-        <button className="primary" id="nudge" onClick={nudge}>
+        <button className="primary" onClick={notifyFiltered} disabled={!rows.length}>
+          Notify this group ({rows.length})
+        </button>
+        <button className="ghost" onClick={notifySelected} disabled={!selected.filter((id) => rows.some((s) => s.id === id)).length}>
+          Notify selected ({selected.filter((id) => rows.some((s) => s.id === id)).length})
+        </button>
+        <button className="ghost" id="nudge" onClick={nudge}>
           Nudge everyone missing
         </button>
       </div>

@@ -486,4 +486,25 @@ export const SEED: CourseData = {
     ],
   },
   chats: {},
+  communications: [
+    {
+      id: "n-seed-welcome",
+      subject: "Welcome to the autumn cohort",
+      body: "A short note so you know announcements will land here. Reply if you cannot make Thursday's live session.",
+      at: "1 Sep 2026",
+      audience: "cohort",
+      audienceLabel: "Autumn 2026 · 6 students",
+      recipientIds: ["maya", "jordan", "alex", "sam", "priya", "tomas"],
+      readBy: ["maya"],
+      replies: [
+        {
+          id: "r-seed-jordan",
+          from: "student",
+          authorId: "jordan",
+          text: "I will be ten minutes late to Thursday — still coming.",
+          at: "2 Sep 2026",
+        },
+      ],
+    },
+  ],
 };

@@ -119,6 +119,22 @@ h1 {
   gap: 10px;
 }
 
+.notify-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: #fff;
+  font-size: 13.5px;
+}
+
+.notify-btn:hover,
+.notify-btn.on {
+  border-color: var(--link);
+}
+
 .pill {
   background: var(--sand);
   color: var(--link);
@@ -822,6 +838,14 @@ input[type="text"]:focus {
   color: transparent;
   white-space: nowrap;
   text-align: right;
+}
+
+.check-col {
+  width: 36px;
+}
+
+.check-col input {
+  accent-color: var(--medium);
 }
 
 .mini-bar {
@@ -1822,6 +1846,21 @@ input[type="text"]:focus {
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 16px;
+}
+
+.notify-modal {
+  max-width: 560px;
+}
+
+.notify-send-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.comm-thread.unread {
+  box-shadow: inset 3px 0 0 var(--link);
 }
 
 /* Course assistant widget */

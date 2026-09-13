@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import BehindModal from "@/components/BehindModal";
 import ChatWidget from "@/components/ChatWidget";
+import NotifyComposer from "@/components/NotifyComposer";
 import { StoreProvider } from "@/lib/store";
 import "./globals.css";
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div id="app">{children}</div>
           <ChatWidget />
           <BehindModal />
+          <NotifyComposer />
         </StoreProvider>
       </body>
     </html>

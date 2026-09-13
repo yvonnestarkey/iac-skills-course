@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import AuditThread from "@/components/comms/AuditThread";
+import { commsForStudent } from "@/lib/comms";
 import { SURVEY_QUESTIONS } from "@/lib/constants";
 import {
   chapterCode,
@@ -24,7 +26,7 @@ import { planCapacity, planStatus, slotLabel } from "@/lib/planner";
 import { fileHref, useStore } from "@/lib/store";
 
 export default function StudentProfile({ studentId }: { studentId: string }) {
-  const { data, mutate } = useStore();
+  const { data, mutate, setNotifyDraft, notice } = useStore();
   const router = useRouter();
   const [note, setNote] = useState("");
   const [message, setMessage] = useState("");
@@ -94,8 +96,21 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
             {student.status === "paused" ? "Paused" : "Active"}
           </span>
           <span className="muted small">Last active {lastActiveLabel(student)}</span>
+          <button
+            className="primary"
+            onClick={() =>
+              setNotifyDraft({
+                audience: "student",
+                audienceLabel: student.name,
+                recipientIds: [student.id],
+              })
+            }
+          >
+            Send notification
+          </button>
         </div>
       </div>
+      {notice ? <div className="notice">{notice}</div> : null}
 
       <section className="card">
         <div className="panel-head">
@@ -282,6 +297,36 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      <section className="card">
+        <div className="panel-head">
+          <div>
+            <h2>Notifications</h2>
+            <p className="muted small">Announcements sent to {student.name.split(" ")[0]}, and their replies.</p>
+          </div>
+          <button
+            className="ghost"
+            onClick={() =>
+              setNotifyDraft({
+                audience: "student",
+                audienceLabel: student.name,
+                recipientIds: [student.id],
+              })
+            }
+          >
+            Send notification
+          </button>
+        </div>
+        <div className="work-list">
+          {commsForStudent(data, student.id).length ? (
+            commsForStudent(data, student.id).map((comm) => (
+              <AuditThread key={comm.id} comm={comm} readerId="coach" readerRole="coach" />
+            ))
+          ) : (
+            <p className="empty">No notifications to this student yet.</p>
+          )}
         </div>
       </section>
 

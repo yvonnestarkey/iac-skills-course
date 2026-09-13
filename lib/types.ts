@@ -109,6 +109,29 @@ export interface Message {
   context?: string;
 }
 
+export type CommunicationAudience = "student" | "cohort" | "filtered" | "selected" | "all";
+
+export interface CommunicationReply {
+  id: string;
+  from: "coach" | "student";
+  authorId: string;
+  text: string;
+  at: string;
+}
+
+/** One announcement and every reply to it — the audit trail. */
+export interface Communication {
+  id: string;
+  subject: string;
+  body: string;
+  at: string;
+  audience: CommunicationAudience;
+  audienceLabel: string;
+  recipientIds: string[];
+  readBy: string[];
+  replies: CommunicationReply[];
+}
+
 export interface ChatEntry {
   from: "you" | "bot";
   text?: string;
@@ -130,6 +153,7 @@ export interface CourseData {
   students: Student[];
   messages: Record<string, Message[]>;
   chats: Record<string, ChatEntry[]>;
+  communications?: Communication[];
 }
 
 /** One dated study session with the work packed into it. */

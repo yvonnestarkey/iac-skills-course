@@ -18,7 +18,9 @@ app/
   coach/page.tsx                 coach home: student lists or course creator
   coach/lists/                   assignments, surveys, roster
   coach/content/                 course creator (Admin Content Manager)
+  coach/notifications/           announcements and the communications audit trail
   coach/students/[id]/           student profile
+  (student)/notifications/       student inbox for announcements and replies
   api/calendar/[token]/route.ts  hosts each student's subscribed .ics feed
 components/
   TopBar, Sidebar, ChatWidget, BehindModal
@@ -166,7 +168,15 @@ Bottom-right on every page. It answers from the course material and study-skills
 
 ## Coach / admin dashboard
 
-The top-right **View as** switcher has two options only: **Students** (back to the sign-in picker) and **Coach**. Coach home (`/coach`) then asks whether to open **Student lists** or **Course creator**.
+The top-right **View as** switcher has two options only: **Students** (back to the sign-in picker) and **Coach**. **Notifications** sits next to it: coaches open the communications audit trail, students open their inbox. Coach home (`/coach`) then asks whether to open **Student lists** or **Course creator**.
+
+**Course announcements.** A coach can send a notification to one student, a cohort, the students in the current list filter, or a ticked selection. Each send, and every reply, is stored as a communication so you can come back to the thread. Send from:
+
+- the **Notifications** page (one student, the current cohort, or everyone)
+- **Send notification** on a student profile
+- **Notify this cohort / this group / selected** on the student lists
+
+Jordan's seeded reply on the welcome announcement is waiting, so the coach badge starts at 1.
 
 **Top stats**, all scoped by a cohort dropdown (Autumn 2026, Summer 2026, or all): cohort completion % with a bar, active students with a paused count, pending submissions, and average survey score out of 5. Students waiting on a reply are called out beneath the stats as direct links to their profiles.
 

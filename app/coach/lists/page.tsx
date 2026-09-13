@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import AssignmentsTab from "@/components/coach/AssignmentsTab";
 import RosterTab from "@/components/coach/RosterTab";
 import SurveysTab from "@/components/coach/SurveysTab";
+import { labelForGroup } from "@/lib/comms";
 import { cohortName, unansweredQuestion } from "@/lib/course";
 import { averageSurveyScore, cohortCompletion, cohortStudents, pendingSubmissions } from "@/lib/metrics";
 import { useStore } from "@/lib/store";
@@ -15,7 +16,7 @@ const TABS = [
 ] as const;
 
 export default function StudentListsPage() {
-  const { data, coach, setCoach } = useStore();
+  const { data, coach, setCoach, setNotifyDraft, notice } = useStore();
   const router = useRouter();
 
   const students = cohortStudents(data, coach.cohort);
@@ -37,9 +38,23 @@ export default function StudentListsPage() {
             {data.className} · {coach.cohort === "all" ? "all cohorts" : cohortName(data, coach.cohort)}
           </p>
         </div>
-        <label className="role-chip">
-          Cohort
-          <select id="cohort" value={coach.cohort} onChange={(event) => setCoach({ cohort: event.target.value })}>
+        <div className="actions">
+          <button
+            className="primary"
+            onClick={() =>
+              setNotifyDraft({
+                audience: coach.cohort === "all" ? "all" : "cohort",
+                audienceLabel: labelForGroup(data, students, coach.cohort === "all" ? "all" : "cohort"),
+                recipientIds: students.map((s) => s.id),
+              })
+            }
+            disabled={!students.length}
+          >
+            Notify this cohort ({students.length})
+          </button>
+          <label className="role-chip">
+            Cohort
+            <select id="cohort" value={coach.cohort} onChange={(event) => setCoach({ cohort: event.target.value })}>
             <option value="all">All cohorts</option>
             {(data.cohorts || []).map((c) => (
               <option key={c.id} value={c.id}>
@@ -48,8 +63,10 @@ export default function StudentListsPage() {
               </option>
             ))}
           </select>
-        </label>
+          </label>
+        </div>
       </div>
+      {notice ? <div className="notice">{notice}</div> : null}
       <div className="stats">
         <div className="stat">
           <b>{completion}%</b>
