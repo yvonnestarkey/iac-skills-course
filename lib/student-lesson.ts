@@ -25,6 +25,25 @@ export interface LessonProgress {
   notes: string;
 }
 
+export interface OutlineLesson {
+  id: string;
+  title: string;
+  type: LessonType;
+  duration?: string;
+}
+
+export interface OutlineChapter {
+  id: string;
+  title: string;
+  summary?: string;
+  lessons: OutlineLesson[];
+}
+
+export interface StudentUser {
+  id: string;
+  email: string | null;
+}
+
 function asStringList(value: unknown): string[] | undefined {
   if (Array.isArray(value)) return value.map((item) => String(item)).filter(Boolean);
   if (typeof value === "string" && value.trim()) {
@@ -67,6 +86,78 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
   };
+}
+
+export function outlineFromSeed(): OutlineChapter[] {
+  return SEED.chapters.map((chapter) => ({
+    id: chapter.id,
+    title: chapter.title,
+    summary: chapter.summary,
+    lessons: chapter.lessons.map((lesson) => ({
+      id: lesson.id,
+      title: lesson.title,
+      type: lesson.type,
+      duration: lesson.duration,
+    })),
+  }));
+}
+
+export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
+  const client = getSupabase();
+  if (client) {
+    const { data, error } = await client
+      .from("lessons")
+      .select("id, title, type, duration, chapter_id, position")
+      .order("chapter_id", { ascending: true })
+      .order("position", { ascending: true });
+    if (!error && data && data.length) {
+      const grouped = new Map<string, OutlineLesson[]>();
+      data.forEach((row) => {
+        const list = grouped.get(row.chapter_id) || [];
+        list.push({
+          id: row.id,
+          title: row.title,
+          type: row.type as LessonType,
+          duration: row.duration || undefined,
+        });
+        grouped.set(row.chapter_id, list);
+      });
+      return [...grouped.entries()].map(([id, lessons]) => {
+        const seed = SEED.chapters.find((chapter) => chapter.id === id);
+        return {
+          id,
+          title: seed?.title || id,
+          summary: seed?.summary,
+          lessons,
+        };
+      });
+    }
+  }
+  return outlineFromSeed();
+}
+
+export async function getStudentUser(): Promise<StudentUser | null> {
+  const client = getSupabase();
+  if (!client) return null;
+  const { data } = await client.auth.getSession();
+  const user = data.session?.user;
+  if (!user) return null;
+  return { id: user.id, email: user.email || null };
+}
+
+export async function fetchCompletedLessonIds(userId: string): Promise<string[]> {
+  const client = getSupabase();
+  if (!client) return [];
+  const { data } = await client.from("lesson_progress").select("lesson_id").eq("user_id", userId).eq("completed", true);
+  return (data || []).map((row) => row.lesson_id);
+}
+
+/** Only allow in-app student paths through the login `next` query. */
+export function safeStudentPath(value: string | null | undefined): string {
+  if (!value || !value.startsWith("/student") || value.startsWith("//") || value.includes("://")) {
+    return "/student";
+  }
+  return value;
 }
 
 /** Prefer the lessons table; fall back to the seeded course so local still works. */
@@ -161,11 +252,15 @@ export async function signInStudent(email: string, password: string): Promise<{ 
   return { ok: true };
 }
 
-export async function signUpStudent(email: string, password: string): Promise<{ ok: boolean; error?: string }> {
+export async function signUpStudent(
+  email: string,
+  password: string
+): Promise<{ ok: boolean; error?: string; needsConfirm?: boolean }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
-  const { error } = await client.auth.signUp({ email, password });
+  const { data, error } = await client.auth.signUp({ email, password });
   if (error) return { ok: false, error: error.message };
+  if (!data.session) return { ok: true, needsConfirm: true };
   return { ok: true };
 }
 
