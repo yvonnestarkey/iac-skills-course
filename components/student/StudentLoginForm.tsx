@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { ensureStudentProfile } from "@/lib/profiles";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
 type Mode = "signin" | "signup";
@@ -46,15 +47,17 @@ export default function StudentLoginForm() {
 
     setBusy(true);
     if (mode === "signin") {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email: trimmedEmail,
         password,
       });
-      setBusy(false);
       if (signInError) {
+        setBusy(false);
         setError(signInError.message);
         return;
       }
+      if (data.user) await ensureStudentProfile({ id: data.user.id, email: data.user.email || trimmedEmail });
+      setBusy(false);
       goToDashboard();
       return;
     }
@@ -63,11 +66,13 @@ export default function StudentLoginForm() {
       email: trimmedEmail,
       password,
     });
-    setBusy(false);
     if (signUpError) {
+      setBusy(false);
       setError(signUpError.message);
       return;
     }
+    if (data.user) await ensureStudentProfile({ id: data.user.id, email: data.user.email || trimmedEmail });
+    setBusy(false);
     if (!data.session) {
       setError("Account created. Confirm the email we sent, then sign in.");
       setMode("signin");

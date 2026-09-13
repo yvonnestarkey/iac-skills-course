@@ -1,13 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import AssignmentsTab from "@/components/coach/AssignmentsTab";
 import RosterTab from "@/components/coach/RosterTab";
 import SurveysTab from "@/components/coach/SurveysTab";
 import { labelForGroup } from "@/lib/comms";
 import { cohortName, unansweredQuestion } from "@/lib/course";
 import { averageSurveyScore, cohortCompletion, cohortStudents, pendingSubmissions } from "@/lib/metrics";
+import { fetchRosterStudents, mergeRoster } from "@/lib/profiles";
 import { useStore } from "@/lib/store";
+import type { Student } from "@/lib/types";
 
 const TABS = [
   { id: "assignments", label: "Assignments", href: null },
@@ -19,8 +22,23 @@ const TABS = [
 export default function StudentListsPage() {
   const { data, coach, setCoach, setNotifyDraft, notice } = useStore();
   const router = useRouter();
+  const [liveStudents, setLiveStudents] = useState<Student[]>([]);
+  const [rosterNotice, setRosterNotice] = useState("");
 
-  const students = cohortStudents(data, coach.cohort);
+  useEffect(() => {
+    fetchRosterStudents().then((result) => {
+      if (!result.ok) {
+        setRosterNotice(result.error || "Could not load registered students.");
+        return;
+      }
+      setLiveStudents(result.students);
+    });
+  }, []);
+
+  const students = useMemo(
+    () => cohortStudents({ ...data, students: mergeRoster(data.students, liveStudents) }, coach.cohort),
+    [data, liveStudents, coach.cohort]
+  );
   const active = students.filter((s) => s.status !== "paused");
   const completion = cohortCompletion(data, students);
   const avgSurvey = averageSurveyScore(data, students);
@@ -68,6 +86,7 @@ export default function StudentListsPage() {
         </div>
       </div>
       {notice ? <div className="notice">{notice}</div> : null}
+      {rosterNotice ? <div className="notice">{rosterNotice} Run the profiles SQL in Supabase if this table is new.</div> : null}
       <div className="stats">
         <div className="stat">
           <b>{completion}%</b>

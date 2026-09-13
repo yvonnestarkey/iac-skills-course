@@ -1,7 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { postInboxMessage } from "@/lib/inbox";
+import { fetchRosterStudent } from "@/lib/profiles";
+import type { Student } from "@/lib/types";
 import AuditThread from "@/components/comms/AuditThread";
 import { commsForStudent } from "@/lib/comms";
 import { SURVEY_QUESTIONS } from "@/lib/constants";
@@ -30,8 +33,29 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const router = useRouter();
   const [note, setNote] = useState("");
   const [message, setMessage] = useState("");
+  const seeded = data.students.find((s) => s.id === studentId) || null;
+  const [live, setLive] = useState<Student | null>(null);
+  const [loadingLive, setLoadingLive] = useState(!seeded);
 
-  const student = data.students.find((s) => s.id === studentId);
+  useEffect(() => {
+    if (seeded) return;
+    fetchRosterStudent(studentId).then((found) => {
+      setLive(found);
+      setLoadingLive(false);
+    });
+  }, [studentId, seeded]);
+
+  const student = seeded || live;
+  if (loadingLive) {
+    return (
+      <div className="coach-page">
+        <button className="back-link" onClick={() => router.push("/coach/lists")}>
+          ← Back to dashboard
+        </button>
+        <p className="empty">Loading student…</p>
+      </div>
+    );
+  }
   if (!student) {
     return (
       <div className="coach-page">
@@ -52,9 +76,10 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
 
   const saveNote = () => {
     const text = note.trim();
-    if (!text) return;
+    if (!text || !seeded) return;
     mutate((draft) => {
       const target = draft.students.find((s) => s.id === student.id);
+      if (!target) return;
       target.notes = target.notes || [];
       target.notes.unshift({ text, at: longDate(today()) });
     });
@@ -62,15 +87,29 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   };
 
   const dropNote = (index: number) => {
+    if (!seeded) return;
     mutate((draft) => {
       const target = draft.students.find((s) => s.id === student.id);
+      if (!target) return;
       target.notes.splice(index, 1);
     });
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const text = message.trim();
     if (!text) return;
+    if (!seeded) {
+      await postInboxMessage({
+        studentId: student.id,
+        studentEmail: student.email,
+        from: "coach",
+        kind: "reply",
+        body: text,
+        context: "Coach reply",
+      });
+      setMessage("");
+      return;
+    }
     mutate((draft) => {
       draft.messages[student.id] = draft.messages[student.id] || [];
       draft.messages[student.id].push({ from: "coach", text, at: nowLabel() });

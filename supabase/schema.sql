@@ -60,6 +60,12 @@ create policy "progress is the student's own"
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
+drop policy if exists "progress readable by course users" on public.lesson_progress;
+create policy "progress readable by course users"
+  on public.lesson_progress for select
+  to anon, authenticated
+  using (true);
+
 -- Student questions, coach replies, and assignment feedback for /student and /coach.
 create table if not exists public.inbox_messages (
   id             uuid primary key default gen_random_uuid(),
@@ -113,3 +119,66 @@ create policy "study plans are the student's own"
   to authenticated
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- One row per registered account so /coach can list live students.
+create table if not exists public.profiles (
+  id           uuid primary key references auth.users (id) on delete cascade,
+  email        text not null,
+  full_name    text,
+  role         text not null default 'student' check (role in ('student', 'coach', 'admin')),
+  cohort       text not null default 'autumn26',
+  last_active  date,
+  created_at   timestamptz not null default now()
+);
+
+create index if not exists profiles_role_idx on public.profiles (role);
+
+alter table public.profiles enable row level security;
+
+drop policy if exists "profiles readable by course users" on public.profiles;
+create policy "profiles readable by course users"
+  on public.profiles for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "profiles writable by owner" on public.profiles;
+create policy "profiles writable by owner"
+  on public.profiles for all
+  to authenticated
+  using (auth.uid() = id)
+  with check (auth.uid() = id);
+
+-- New Auth users get a student profile automatically.
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.profiles (id, email, role, full_name)
+  values (
+    new.id,
+    coalesce(new.email, ''),
+    'student',
+    split_part(coalesce(new.email, 'student'), '@', 1)
+  )
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
+
+-- Backfill anyone who already registered before this table existed.
+insert into public.profiles (id, email, role, full_name)
+select
+  u.id,
+  coalesce(u.email, ''),
+  'student',
+  split_part(coalesce(u.email, 'student'), '@', 1)
+from auth.users u
+on conflict (id) do nothing;

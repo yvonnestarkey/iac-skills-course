@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { ensureStudentProfile } from "./profiles";
 import { getSupabase } from "./supabase";
 import {
   fetchCompletedLessonIds,
@@ -48,7 +49,10 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       if (cancelled) return;
       setUser(nextUser);
       setOutline(nextOutline);
-      if (nextUser) await loadProgress(nextUser.id);
+      if (nextUser) {
+        await ensureStudentProfile(nextUser);
+        await loadProgress(nextUser.id);
+      }
       if (!cancelled) setReady(true);
     };
 
