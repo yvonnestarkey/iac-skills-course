@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
 import { ICONS } from "@/lib/constants";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
@@ -12,17 +13,17 @@ export default function StudentDashboard() {
   const done = lessons.filter((lesson) => completed[lesson.id]).length;
   const next = lessons.find((lesson) => !completed[lesson.id]) || lessons[0];
   const name = user?.email ? user.email.split("@")[0] : "there";
+  const pct = lessons.length ? Math.round((done / lessons.length) * 100) : 0;
 
   return (
     <article className="lesson-body wide student-dash">
       <p className="kicker">Student dashboard</p>
       <h1>Welcome back, {name}</h1>
-      <p className="lead">
-        {done} of {lessons.length} lessons complete.
-        {next ? ` Continue with ${next.title}.` : " You have finished the course."}
-      </p>
-      <div className="student-progress" aria-hidden="true">
-        <span style={{ width: `${lessons.length ? Math.round((done / lessons.length) * 100) : 0}%` }} />
+      <div className="student-progress-row">
+        <strong className="student-progress-pct">{pct}% Complete</strong>
+        <div className="student-progress" aria-hidden="true">
+          <span style={{ width: `${pct}%` }} />
+        </div>
       </div>
       <div className="actions">
         {next ? (
@@ -47,6 +48,7 @@ export default function StudentDashboard() {
           <p>Set your hours, slots, and target finish date.</p>
         </Link>
       </nav>
+      <StudentPersonalNotes />
       {outline.map((chapter) => {
         const chapterDone = chapter.lessons.filter((lesson) => completed[lesson.id]).length;
         return (

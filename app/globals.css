@@ -2254,6 +2254,11 @@ input[type="password"]:focus {
     grid-template-columns: 1fr;
   }
 
+  .student-progress-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
   .inbox-layout {
     grid-template-columns: 1fr;
   }
@@ -2427,13 +2432,47 @@ input[type="password"]:focus {
   color: var(--ink);
 }
 
+.student-progress-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  margin: 10px 0 18px;
+}
+
+.student-progress-pct {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
 .student-progress {
   height: 8px;
   border-radius: 99px;
   background: var(--paper);
   border: 1px solid var(--line);
   overflow: hidden;
-  margin: 8px 0 18px;
+  margin: 0;
+}
+
+.student-personal-notes {
+  margin-top: 28px;
+}
+
+.student-personal-notes h2 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.student-personal-notes textarea {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.student-personal-notes .actions {
+  align-items: center;
 }
 
 .student-progress span {
