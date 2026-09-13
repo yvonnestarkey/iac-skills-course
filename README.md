@@ -15,7 +15,9 @@ app/
   (student)/learn/[lessonId]/    one route per lesson, dispatched by lesson type
   (student)/planner/             personalised study planner
   coach/layout.tsx               top bar, full-width shell
-  coach/page.tsx                 dashboard: stats, cohort filter, three tabs
+  coach/page.tsx                 coach home: student lists or course creator
+  coach/lists/                   assignments, surveys, roster
+  coach/content/                 course creator (Admin Content Manager)
   coach/students/[id]/           student profile
   api/calendar/[token]/route.ts  hosts each student's subscribed .ics feed
 components/
@@ -58,7 +60,7 @@ Worth knowing before launch: those policies let the publishable key both read *a
 
 ## Admin Content Manager
 
-A fourth tab on `/coach`, next to Assignments, Module Surveys, and Student Roster.
+The **Course creator** option on `/coach`, also at `/coach/content`.
 
 - **Add a lesson** — pick the chapter and lesson type, and the form asks only for what that type needs: duration and body for video and reading, due date and brief for assignments and uploads, a lead line for Ask the Coach and surveys. New lesson ids follow the chapter's own numbering (`c1l7`), and new teaching work is inserted before that chapter's Ask the Coach and survey lessons so the module structure holds.
 - **Import CSV** — choose a file or paste rows. Columns: `chapter, type, title, duration, seconds, blurb, body, takeaways, due, brief`, with a header row required. A pipe separates paragraphs or takeaways inside one cell. **Preview** lists the lessons it will create and names every row it had to skip, with the reason. `chapter` accepts `ch1`, `c1`, `1`, or part of the chapter title. **Download CSV template** gives you a working example.
@@ -125,7 +127,7 @@ How it fits together: the browser owns the `.ics` generator and `PUT`s the finis
 
 Two limits worth knowing for a real launch:
 
-- Google Calendar fetches feeds from its own servers, so it cannot reach `localhost`. Running locally, use the Apple Calendar or Outlook link; a deployed version needs a public HTTPS address.
+- Google Calendar fetches feeds from its own servers, so it cannot reach `localhost`. On https://iac.accountingstudyadvice.com the Google Calendar link works; locally, use Apple Calendar or Outlook.
 - Feed tokens are unguessable but unauthenticated, exactly like Google's own "secret address" iCal links. Anyone with the URL can read that student's schedule.
 - The route writes feed files to disk, so it needs a normal Node server (`next start`) rather than a read-only serverless target.
 
@@ -164,7 +166,7 @@ Bottom-right on every page. It answers from the course material and study-skills
 
 ## Coach / admin dashboard
 
-Reachable from the **View as** switcher in the top bar.
+The top-right **View as** switcher has two options only: **Students** (back to the sign-in picker) and **Coach**. Coach home (`/coach`) then asks whether to open **Student lists** or **Course creator**.
 
 **Top stats**, all scoped by a cohort dropdown (Autumn 2026, Summer 2026, or all): cohort completion % with a bar, active students with a paused count, pending submissions, and average survey score out of 5. Students waiting on a reply are called out beneath the stats as direct links to their profiles.
 
@@ -207,7 +209,16 @@ Files are held in the browser only. Up to about 3 MB is stored in `localStorage`
 
 Real accounts, real video hosting, payments, grades, server-side file storage, email/SMS delivery, multiple courses.
 
-## Run it
+## Live site
+
+- https://iac.accountingstudyadvice.com
+- Vercel deployment: https://iac-skills-course-au8jozvmi-asa-ef58.vercel.app
+
+Calendar subscribe and lesson links use the address you are on, so students on the custom domain get `https://iac.accountingstudyadvice.com/learn/...` and `/api/calendar/<token>.ics`. Google Calendar can reach that public HTTPS feed.
+
+The calendar route writes `.ics` files to disk. That works locally; on Vercel those writes do not persist, so **Download Planner** is the reliable export there until feeds are stored in Supabase.
+
+## Run it locally
 
 Needs Node 18.18 or newer.
 

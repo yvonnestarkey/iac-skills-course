@@ -44,7 +44,7 @@ function loadSession(): Session | null {
 /** Dashboard filters live in the store so they survive a trip into a profile. */
 export interface CoachUi {
   cohort: string;
-  tab: "assignments" | "surveys" | "roster" | "content";
+  tab: "assignments" | "surveys" | "roster";
   filter: "all" | "missing" | "questions" | "submitted";
   assignmentId: string;
 }

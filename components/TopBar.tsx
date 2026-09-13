@@ -1,13 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { DEFAULT_LESSON_ID } from "@/lib/constants";
 import { waitingQuestions } from "@/lib/course";
-import { planStatus } from "@/lib/planner";
 import { useStore } from "@/lib/store";
 
 export default function TopBar() {
-  const { data, session, setSession, setNotice, setBehindOpen, setPlannerAdjust } = useStore();
+  const { data, session, setSession, setNotice, setPlannerAdjust } = useStore();
   const router = useRouter();
   const waiting = waitingQuestions(data).length;
 
@@ -19,11 +17,9 @@ export default function TopBar() {
       router.push("/coach");
       return;
     }
-    setSession({ role: "student", id: value });
-    const student = data.students.find((s) => s.id === value);
-    const status = student ? planStatus(data, student) : null;
-    setBehindOpen(Boolean(status && status.overdue.length));
-    router.push(`/learn/${DEFAULT_LESSON_ID}`);
+    // Students pick themselves on the sign-in page — the list will not fit here.
+    setSession(null);
+    router.push("/");
   };
 
   return (
@@ -41,15 +37,11 @@ export default function TopBar() {
           View as
           <select
             id="role"
-            value={session && session.role === "coach" ? "coach" : session ? session.id : "coach"}
+            value={session && session.role === "coach" ? "coach" : "students"}
             onChange={(event) => switchRole(event.target.value)}
           >
-            {data.students.map((s) => (
-              <option key={s.id} value={s.id}>
-                Student · {s.name}
-              </option>
-            ))}
-            <option value="coach">Coach · Yvonne</option>
+            <option value="students">Students</option>
+            <option value="coach">Coach</option>
           </select>
         </label>
       </div>

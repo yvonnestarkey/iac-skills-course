@@ -33,7 +33,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   if (!student) {
     return (
       <div className="coach-page">
-        <button className="back-link" onClick={() => router.push("/coach")}>
+        <button className="back-link" onClick={() => router.push("/coach/lists")}>
           ← Back to dashboard
         </button>
         <p className="empty">No such student.</p>
@@ -78,7 +78,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
 
   return (
     <div className="coach-page">
-      <button className="back-link" id="back-dash" onClick={() => router.push("/coach")}>
+      <button className="back-link" id="back-dash" onClick={() => router.push("/coach/lists")}>
         ← Back to dashboard
       </button>
       <div className="profile-head">

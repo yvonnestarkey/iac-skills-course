@@ -1279,6 +1279,12 @@ input[type="text"]:focus {
   border-color: var(--link);
 }
 
+.hub-choices button {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
 /* Study planner — sidebar card */
 
 .plan-card {

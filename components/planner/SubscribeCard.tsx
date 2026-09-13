@@ -67,8 +67,8 @@ export default function SubscribeCard({ student, onStop }: { student: Student; o
       </div>
       <p className="muted small feed-note">
         Saving your plan republishes this feed automatically. Calendar apps re-check roughly hourly, so a change
-        may take a little while to appear. Google needs a publicly reachable address, so on this local prototype
-        use the Apple Calendar or Outlook link.
+        may take a little while to appear. On https://iac.accountingstudyadvice.com the Google Calendar link
+        works; on localhost use Apple Calendar or Outlook instead.
       </p>
     </section>
   );
