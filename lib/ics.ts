@@ -37,7 +37,7 @@ export function siteOrigin(): string {
 
 /** Calendar entries link straight at the lesson route. */
 export function lessonLink(lessonId: string, origin = siteOrigin()): string {
-  return `${origin}/learn/${lessonId}`;
+  return `${origin}/student/${lessonId}`;
 }
 
 export function buildIcs(
@@ -119,7 +119,7 @@ export function buildIcs(
       description: [
         `Live session with ${data.company}.`,
         `Zoom: ${live.zoom}`,
-        `Course portal: ${origin}/learn/${data.chapters[0].lessons[0].id}`,
+        `Course portal: ${origin}/student/${data.chapters[0].lessons[0].id}`,
       ].join("\n"),
       location: live.zoom,
       url: live.zoom,

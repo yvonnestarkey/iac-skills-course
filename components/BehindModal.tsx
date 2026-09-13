@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { chapterCode } from "@/lib/course";
 import { longDate } from "@/lib/dates";
 import { planStatus } from "@/lib/planner";
@@ -9,7 +9,9 @@ import { useStore } from "@/lib/store";
 export default function BehindModal() {
   const { ready, data, session, student, behindOpen, setBehindOpen, setNotice, setPlannerAdjust } = useStore();
   const router = useRouter();
+  const pathname = usePathname();
 
+  if (pathname.startsWith("/student")) return null;
   if (!ready || !behindOpen || !session || session.role !== "student" || !student) return null;
   const status = planStatus(data, student);
   if (!status || !status.overdue.length) return null;

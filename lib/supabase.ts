@@ -10,13 +10,19 @@ export const supabaseConfigured = Boolean(url && anonKey);
 /** The project ref, shown in the dashboard so you can tell which backend you are on. */
 export const supabaseProjectRef = url ? url.replace(/^https?:\/\//, "").split(".")[0] : "";
 
-let cached: SupabaseClient | null = null;
+let browserClient: SupabaseClient | null = null;
+let serverClient: SupabaseClient | null = null;
 
 export function getSupabase(): SupabaseClient | null {
-  if (!supabaseConfigured) return null;
-  if (!cached) {
-    // No auth yet: the portal still keeps its own session in localStorage.
-    cached = createClient(url, anonKey, { auth: { persistSession: false } });
+  if (!url || !anonKey) return null;
+  if (typeof window === "undefined") {
+    if (!serverClient) {
+      serverClient = createClient(url, anonKey, { auth: { persistSession: false, autoRefreshToken: false } });
+    }
+    return serverClient;
   }
-  return cached;
+  if (!browserClient) {
+    browserClient = createClient(url, anonKey, { auth: { persistSession: true, autoRefreshToken: true } });
+  }
+  return browserClient;
 }

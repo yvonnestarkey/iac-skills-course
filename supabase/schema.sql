@@ -22,18 +22,40 @@ create index if not exists lessons_chapter_position_idx
 
 alter table public.lessons enable row level security;
 
--- Prototype policies: the portal has no sign-in yet, so the publishable
--- (anon) key needs to read and write content directly.
+-- Prototype policies: guests and signed-in students can read lessons.
+-- The Content Manager still writes with the publishable key.
 -- Before launch, restrict writes to an authenticated coach role.
 drop policy if exists "lessons readable by anon" on public.lessons;
-create policy "lessons readable by anon"
+drop policy if exists "lessons readable by students and guests" on public.lessons;
+create policy "lessons readable by students and guests"
   on public.lessons for select
-  to anon
+  to anon, authenticated
   using (true);
 
 drop policy if exists "lessons writable by anon" on public.lessons;
 create policy "lessons writable by anon"
   on public.lessons for all
-  to anon
+  to anon, authenticated
   using (true)
   with check (true);
+
+-- Per-student completion and notes for the clean /student/[lessonId] player.
+-- lesson_id is not a foreign key so notes still save when the player falls
+-- back to the seeded course (the lessons table may be empty locally).
+create table if not exists public.lesson_progress (
+  user_id     uuid not null references auth.users (id) on delete cascade,
+  lesson_id   text not null,
+  completed   boolean not null default false,
+  notes       text not null default '',
+  updated_at  timestamptz not null default now(),
+  primary key (user_id, lesson_id)
+);
+
+alter table public.lesson_progress enable row level security;
+
+drop policy if exists "progress is the student's own" on public.lesson_progress;
+create policy "progress is the student's own"
+  on public.lesson_progress for all
+  to authenticated
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);

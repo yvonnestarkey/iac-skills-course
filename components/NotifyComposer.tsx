@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { audienceCopy, postAnnouncement } from "@/lib/comms";
 import { useStore } from "@/lib/store";
@@ -8,13 +9,14 @@ export default function NotifyComposer() {
   const { data, notifyDraft, setNotifyDraft, mutate, setNotice } = useStore();
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const pathname = usePathname();
 
   useEffect(() => {
     setSubject(notifyDraft?.subject || "");
     setBody("");
   }, [notifyDraft]);
 
-  if (!notifyDraft) return null;
+  if (pathname.startsWith("/student") || !notifyDraft) return null;
 
   const recipients = data.students.filter((s) => notifyDraft.recipientIds.includes(s.id));
   const count = recipients.length;

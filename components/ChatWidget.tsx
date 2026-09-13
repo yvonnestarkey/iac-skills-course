@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { STARTER_PROMPTS } from "@/lib/constants";
 import { botReply } from "@/lib/assistant";
@@ -13,6 +13,7 @@ export default function ChatWidget() {
   const [text, setText] = useState("");
   const body = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   const key = session ? session.id : "guest";
   const log = (data.chats && data.chats[key]) || [];
@@ -22,6 +23,7 @@ export default function ChatWidget() {
     if (body.current) body.current.scrollTop = body.current.scrollHeight;
   }, [log.length, chatOpen]);
 
+  if (pathname.startsWith("/student")) return null;
   if (!ready) return null;
 
   if (!chatOpen) {
