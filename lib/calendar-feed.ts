@@ -1,5 +1,5 @@
 import { studentFromPlan } from "./calendar-student";
-import { buildIcs } from "./ics";
+import { buildIcs } from "./calendarSync";
 import { fetchCompletedLessonIds, fetchCourseOutline, courseDataFromOutline } from "./student-lesson";
 import { getSupabase } from "./supabase";
 import type { MakeupSession, StudyPlan } from "./types";

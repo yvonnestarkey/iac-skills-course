@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { DAYS, DEFAULT_PLAN, PERIODS } from "@/lib/constants";
 import { isoDate, today } from "@/lib/dates";
-import { buildIcs, countEvents, feedStamp, feedToken, feedUrls } from "@/lib/ics";
+import { countEvents, feedStamp, feedToken, feedUrls } from "@/lib/ics";
+import { buildIcs } from "@/lib/calendarSync";
 import { sortSlots } from "@/lib/planner";
 import { useStore } from "@/lib/store";
 import type { StudyPlan } from "@/lib/types";
