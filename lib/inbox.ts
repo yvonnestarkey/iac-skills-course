@@ -1,5 +1,5 @@
 import { getSupabase } from "./supabase";
-import { notifyAssignmentFeedback } from "./notifications";
+import { insertCoachNotifications, isUserId, notifyAssignmentFeedback } from "./notifications";
 
 export type InboxRole = "student" | "coach";
 export type InboxKind = "question" | "reply" | "feedback";
@@ -125,7 +125,112 @@ export async function fetchInboxMessages(studentEmail?: string): Promise<{ ok: b
   return { ok: true, data: ((data || []) as InboxRow[]).map(fromRow) };
 }
 
-/** Student inbox: only rows owned by auth.uid(). */
+function notificationRowToMessage(row: Record<string, unknown>, fallbackEmail: string): InboxMessage | null {
+  const id = row.id != null ? String(row.id) : "";
+  if (!id) return null;
+  const kindRaw = String(row.kind || row.type || "");
+  const from: InboxRole = row.from_role === "student" || kindRaw === "question" ? "student" : "coach";
+  const kind: InboxKind = kindRaw === "question" || kindRaw === "feedback" ? kindRaw : "reply";
+  const body = String(row.body || row.message || row.title || "").trim();
+  if (!body) return null;
+  return {
+    id,
+    studentId: row.student_id ? String(row.student_id) : row.user_id ? String(row.user_id) : null,
+    studentEmail: String(row.student_email || fallbackEmail),
+    from,
+    kind,
+    body,
+    context: row.context || row.title ? String(row.context || row.title) : null,
+    lessonId: row.lesson_id ? String(row.lesson_id) : null,
+    createdAt: String(row.created_at || ""),
+  };
+}
+
+function matchesStudent(row: Record<string, unknown>, student: { id: string; email: string }): boolean {
+  const email = student.email.toLowerCase();
+  const rowEmail = String(row.student_email || "").toLowerCase();
+  if (email && rowEmail && rowEmail === email) return true;
+  if (isUserId(student.id) && (String(row.student_id || "") === student.id || String(row.user_id || "") === student.id)) {
+    return true;
+  }
+  return false;
+}
+
+function mergeThread(rows: InboxMessage[]): InboxMessage[] {
+  const unique = new Map<string, InboxMessage>();
+  rows.forEach((row) => {
+    if (row?.id) unique.set(row.id, row);
+  });
+  return [...unique.values()].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+}
+
+export function studentRowMatches(
+  row: Record<string, unknown> | null | undefined,
+  student: { id: string; email: string }
+): boolean {
+  if (!row) return false;
+  return matchesStudent(row, student);
+}
+
+/** Coach student-detail thread from notifications (and inbox_messages if present). */
+export async function fetchCoachStudentThread(student: {
+  id: string;
+  email: string;
+}): Promise<{ ok: boolean; error?: string; data: InboxMessage[] }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
+
+  const email = student.email.trim();
+  const merged: InboxMessage[] = [];
+
+  try {
+    if (email) {
+      const byEmail = await client
+        .from("notifications")
+        .select("*")
+        .eq("student_email", email)
+        .order("created_at", { ascending: true });
+      if (byEmail.error) console.error("notifications email query failed", byEmail.error);
+      else {
+        (byEmail.data || []).forEach((row) => {
+          const message = notificationRowToMessage(row as Record<string, unknown>, email);
+          if (message) merged.push(message);
+        });
+      }
+    }
+
+    if (isUserId(student.id)) {
+      const byId = await client
+        .from("notifications")
+        .select("*")
+        .or(`student_id.eq.${student.id},user_id.eq.${student.id}`)
+        .order("created_at", { ascending: true });
+      if (byId.error) console.error("notifications student_id query failed", byId.error);
+      else {
+        (byId.data || []).forEach((row) => {
+          const message = notificationRowToMessage(row as Record<string, unknown>, email);
+          if (message) merged.push(message);
+        });
+      }
+    }
+
+    let inboxQuery = client.from("inbox_messages").select("*").order("created_at", { ascending: true });
+    if (email) inboxQuery = inboxQuery.eq("student_email", email);
+    else if (isUserId(student.id)) inboxQuery = inboxQuery.eq("student_id", student.id);
+    const inbox = await inboxQuery;
+    if (inbox.error) console.error("inbox_messages query failed", inbox.error);
+    else (inbox.data || []).forEach((row) => merged.push(fromRow(row as InboxRow)));
+  } catch (error) {
+    console.error("fetchCoachStudentThread failed", error);
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Could not load this student's messages.",
+      data: mergeThread(merged),
+    };
+  }
+
+  return { ok: true, data: mergeThread(merged) };
+}
 export async function fetchOwnInboxMessages(): Promise<{ ok: boolean; error?: string; data: InboxMessage[] }> {
   const { client, user, error: authError } = await authClient();
   if (!client || !user) return { ok: false, error: authError || "Sign in required.", data: [] };
@@ -172,6 +277,20 @@ export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean
       title: draft.context || "Assignment feedback",
       message: body,
     });
+  } else if (draft.from === "coach" && draft.kind === "reply") {
+    let studentId = message.studentId || draft.studentId || "";
+    if (!isUserId(studentId) && message.studentEmail) {
+      const profile = await client.from("profiles").select("id").ilike("email", message.studentEmail).maybeSingle();
+      studentId = profile.data?.id || "";
+    }
+    if (isUserId(studentId)) {
+      await insertCoachNotifications({
+        students: [{ id: studentId, email: message.studentEmail }],
+        title: draft.context || "Coach reply",
+        message: body,
+        kind: "reply",
+      });
+    }
   }
   return { ok: true, message };
 }

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { postInboxMessage } from "@/lib/inbox";
+import AskCoachThread from "@/components/coach/AskCoachThread";
 import { fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
 import AuditThread from "@/components/comms/AuditThread";
@@ -21,9 +21,8 @@ import {
   surveyScore,
   textFor,
   thread,
-  unansweredQuestion,
 } from "@/lib/course";
-import { formatSize, longDate, nowLabel, parseISO, today } from "@/lib/dates";
+import { formatSize, longDate, parseISO, today } from "@/lib/dates";
 import { overallProgress, submittedCount } from "@/lib/metrics";
 import { planCapacity, planStatus, slotLabel } from "@/lib/planner";
 import { fileHref, useStore } from "@/lib/store";
@@ -32,7 +31,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const { data, mutate, setNotifyDraft, notice } = useStore();
   const router = useRouter();
   const [note, setNote] = useState("");
-  const [message, setMessage] = useState("");
   const seeded = data.students.find((s) => s.id === studentId) || null;
   const [live, setLive] = useState<Student | null>(null);
   const [loadingLive, setLoadingLive] = useState(!seeded);
@@ -69,7 +67,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
 
   const p = overallProgress(data, student);
   const status = student.plan ? planStatus(data, student) : null;
-  const pending = unansweredQuestion(data, student.id);
   const graded = gradedLessons(data);
   const surveys = surveyLessons(data);
   const messages = thread(data, student.id);
@@ -93,28 +90,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       if (!target) return;
       target.notes.splice(index, 1);
     });
-  };
-
-  const sendMessage = async () => {
-    const text = message.trim();
-    if (!text) return;
-    if (!seeded) {
-      await postInboxMessage({
-        studentId: student.id,
-        studentEmail: student.email,
-        from: "coach",
-        kind: "reply",
-        body: text,
-        context: "Coach reply",
-      });
-      setMessage("");
-      return;
-    }
-    mutate((draft) => {
-      draft.messages[student.id] = draft.messages[student.id] || [];
-      draft.messages[student.id].push({ from: "coach", text, at: nowLabel() });
-    });
-    setMessage("");
   };
 
   return (
@@ -369,39 +344,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         </div>
       </section>
 
-      <section className="card">
-        <h2>Ask the Coach</h2>
-        {pending ? <div className="waiting">Waiting on you: {pending.text}</div> : null}
-        <div className="thread">
-          {messages.length ? (
-            messages.map((m, i) => (
-              <div className={`bubble ${m.from} ${m.kind === "question" ? "question" : ""}`} key={i}>
-                {m.text}
-                <div className="muted small">
-                  {m.at} · {m.kind === "question" ? "Asked the coach" : m.from === "coach" ? "You" : student.name}
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="empty">No questions or messages yet.</p>
-          )}
-        </div>
-        <div className="compose">
-          <input
-            id="coach-msg"
-            type="text"
-            placeholder={pending ? "Answer this question…" : `Feedback for ${student.name.split(" ")[0]}…`}
-            value={message}
-            onChange={(event) => setMessage(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") sendMessage();
-            }}
-          />
-          <button className="primary" id="send-coach" onClick={sendMessage}>
-            {pending ? "Reply" : "Send"}
-          </button>
-        </div>
-      </section>
+      <AskCoachThread student={student} />
     </div>
   );
 }

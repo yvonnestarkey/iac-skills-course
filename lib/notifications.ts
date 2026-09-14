@@ -2,7 +2,7 @@ import { getSupabase } from "./supabase";
 import { fetchStudentProfiles } from "./profiles";
 import type { CommunicationAudience } from "./types";
 
-export type NotificationType = "announcement" | "assignment_feedback";
+export type NotificationType = "announcement" | "assignment_feedback" | "question" | "reply";
 
 export interface StudentNotification {
   id: string;
@@ -50,6 +50,7 @@ export function notificationFromRow(row: NotificationRow | Record<string, unknow
   const id = data.id != null ? String(data.id) : "";
   if (!id || id === "undefined" || id === "null") return null;
   const kind = String(data.type || data.kind || "announcement");
+  if (kind === "question" || kind === "reply") return null;
   return {
     id,
     userId: data.user_id != null ? String(data.user_id) : data.student_id != null ? String(data.student_id) : "",
