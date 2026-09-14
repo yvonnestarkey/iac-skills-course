@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Lock } from "lucide-react";
 import { ICONS } from "@/lib/constants";
+import { catalogFromOutline, checkLessonAccess } from "@/lib/accessControl";
+import type { StudentSubmission } from "@/lib/student-submissions";
 import {
   chapterProgress,
   findLessonLocation,
@@ -84,6 +86,7 @@ export default function CoursePhaseAccordions({
   basePath,
   onNavigate,
   variant = "nav",
+  submissions = {},
 }: {
   chapters: OutlineChapter[];
   completed: Record<string, boolean>;
@@ -91,9 +94,11 @@ export default function CoursePhaseAccordions({
   basePath: "/student" | "/learn";
   onNavigate?: () => void;
   variant?: "nav" | "hub";
+  submissions?: Record<string, StudentSubmission | undefined>;
 }) {
   const phases = useMemo(() => splitCoursePhases(chapters), [chapters]);
   const ordered = useMemo(() => phases.flatMap((phase) => phase.chapters), [phases]);
+  const catalog = useMemo(() => catalogFromOutline(chapters), [chapters]);
   const active = findLessonLocation(ordered, activeLessonId);
   const focusChapterId = active?.chapter.id || "";
   const focusPhaseId = useMemo(() => {
@@ -186,7 +191,10 @@ export default function CoursePhaseAccordions({
                                 <li key={lesson.id}>
                                   <LessonEntry
                                     lesson={lesson}
-                                    locked={chapterLocked}
+                                    locked={
+                                      chapterLocked ||
+                                      checkLessonAccess(lesson, catalog, submissions).isLocked
+                                    }
                                     active={lesson.id === activeLessonId}
                                     done={Boolean(completed[lesson.id])}
                                     href={`${basePath}/${lesson.id}`}
@@ -201,7 +209,9 @@ export default function CoursePhaseAccordions({
                               <LessonEntry
                                 key={lesson.id}
                                 lesson={lesson}
-                                locked={chapterLocked}
+                                locked={
+                                  chapterLocked || checkLessonAccess(lesson, catalog, submissions).isLocked
+                                }
                                 active={lesson.id === activeLessonId}
                                 done={Boolean(completed[lesson.id])}
                                 href={`${basePath}/${lesson.id}`}

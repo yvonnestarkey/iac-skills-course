@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import VideoPlayer, { embedSrcForVideo } from "@/components/lesson/VideoPlayer";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
+import LessonSubmissionForm from "@/components/student/LessonSubmissionForm";
 import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
+import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult } from "@/lib/accessControl";
 import { findResumeLesson, isChapterUnlocked, splitCoursePhases } from "@/lib/course-phases";
 import type { LessonType } from "@/lib/types";
 
@@ -18,8 +20,14 @@ const KICKERS: Record<LessonType, string> = {
   survey: "Check-in",
 };
 
-export default function StudentPlayer({ lesson }: { lesson: StudentLesson }) {
-  const { setLessonCompleted, outline, completed: completedMap } = useStudentSession();
+export default function StudentPlayer({
+  lesson,
+  initialAccess,
+}: {
+  lesson: StudentLesson;
+  initialAccess?: AccessResult;
+}) {
+  const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions } = useStudentSession();
   const [completed, setCompleted] = useState(false);
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
@@ -73,17 +81,40 @@ export default function StudentPlayer({ lesson }: { lesson: StudentLesson }) {
   };
 
   const ordered = splitCoursePhases(outline).flatMap((phase) => phase.chapters);
+  const catalog = useMemo(() => catalogFromOutline(outline), [outline]);
+  const liveAccess = checkLessonAccess(outlineToGate(lesson), catalog, submissions);
+  const access = catalog.length ? liveAccess : initialAccess || liveAccess;
   const chapterLocked = outline.length > 0 && !isChapterUnlocked(ordered, lesson.chapterId, completedMap);
   const resume = findResumeLesson(ordered, completedMap);
+  const showSubmission = Boolean(lesson.requires_submission || lesson.requires_coach_approval);
+
+  if (access.isLocked) {
+    return (
+      <article className="lesson-body">
+        <p className="kicker">Locked lesson</p>
+        <h1>This lesson is still closed</h1>
+        <p className="lead">{access.reason}</p>
+        <div className="actions">
+          {access.prereqLessonId ? (
+            <Link className="primary" href={`/student/${access.prereqLessonId}`}>
+              Open {access.prereqTitle}
+            </Link>
+          ) : resume ? (
+            <Link className="primary" href={`/student/${resume.lesson.id}`}>
+              Resume Course
+            </Link>
+          ) : null}
+        </div>
+      </article>
+    );
+  }
 
   if (chapterLocked && resume && resume.lesson.id !== lesson.id) {
     return (
       <article className="lesson-body">
         <p className="kicker">Locked lesson</p>
-        <h1>Finish the previous section first</h1>
-        <p className="lead">
-          This lesson stays closed until you complete the work before it. Resume at {resume.lesson.title}.
-        </p>
+        <h1>This lesson is still closed</h1>
+        <p className="lead">Finish the previous section first. Resume at {resume.lesson.title}.</p>
         <div className="actions">
           <Link className="primary" href={`/student/${resume.lesson.id}`}>
             Resume Course
@@ -149,6 +180,20 @@ export default function StudentPlayer({ lesson }: { lesson: StudentLesson }) {
             </Link>
           ) : null}
         </div>
+        {showSubmission && user ? (
+          <LessonSubmissionForm
+            lessonId={lesson.id}
+            studentId={user.id}
+            requiresCoachApproval={Boolean(lesson.requires_coach_approval)}
+            saved={submissions[lesson.id]}
+            onSaved={(submission) => {
+              setSubmission(lesson.id, submission);
+              setCompleted(true);
+              setLessonCompleted(lesson.id, true);
+              persist({ completed: true, notes }, true);
+            }}
+          />
+        ) : null}
         {lesson.type === "ask" || lesson.type === "assignment" || lesson.type === "upload" ? (
           <StudentCoachThread
             compact

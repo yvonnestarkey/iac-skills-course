@@ -13,13 +13,16 @@ import {
   type OutlineChapter,
   type StudentUser,
 } from "./student-lesson";
+import { fetchStudentSubmissions, type StudentSubmission } from "./student-submissions";
 
 interface StudentSessionValue {
   ready: boolean;
   user: StudentUser | null;
   outline: OutlineChapter[];
   completed: Record<string, boolean>;
+  submissions: Record<string, StudentSubmission>;
   setLessonCompleted: (lessonId: string, completed: boolean) => void;
+  setSubmission: (lessonId: string, submission: StudentSubmission) => void;
   reloadProgress: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -31,14 +34,16 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<StudentUser | null>(null);
   const [outline, setOutline] = useState<OutlineChapter[]>([]);
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
+  const [submissions, setSubmissions] = useState<Record<string, StudentSubmission>>({});
 
   const loadProgress = useCallback(async (userId: string) => {
-    const ids = await fetchCompletedLessonIds(userId);
+    const [ids, nextSubmissions] = await Promise.all([fetchCompletedLessonIds(userId), fetchStudentSubmissions(userId)]);
     const next: Record<string, boolean> = {};
     ids.forEach((id) => {
       next[id] = true;
     });
     setCompleted(next);
+    setSubmissions(nextSubmissions);
   }, []);
 
   useEffect(() => {
@@ -66,6 +71,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
         loadProgress(nextUser.id);
       } else {
         setCompleted({});
+        setSubmissions({});
       }
     });
 
@@ -79,6 +85,10 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     setCompleted((current) => ({ ...current, [lessonId]: done }));
   }, []);
 
+  const setSubmission = useCallback((lessonId: string, submission: StudentSubmission) => {
+    setSubmissions((current) => ({ ...current, [lessonId]: submission }));
+  }, []);
+
   const reloadProgress = useCallback(async () => {
     if (user) await loadProgress(user.id);
   }, [loadProgress, user]);
@@ -87,11 +97,22 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     await signOutStudent();
     setUser(null);
     setCompleted({});
+    setSubmissions({});
   }, []);
 
   const value = useMemo(
-    () => ({ ready, user, outline, completed, setLessonCompleted, reloadProgress, signOut }),
-    [ready, user, outline, completed, setLessonCompleted, reloadProgress, signOut]
+    () => ({
+      ready,
+      user,
+      outline,
+      completed,
+      submissions,
+      setLessonCompleted,
+      setSubmission,
+      reloadProgress,
+      signOut,
+    }),
+    [ready, user, outline, completed, submissions, setLessonCompleted, setSubmission, reloadProgress, signOut]
   );
 
   return <StudentSessionContext.Provider value={value}>{children}</StudentSessionContext.Provider>;

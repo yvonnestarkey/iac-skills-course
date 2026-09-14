@@ -15,6 +15,9 @@ export interface Lesson {
   takeaways?: string[];
   due?: string;
   brief?: string;
+  requires_submission?: boolean;
+  requires_coach_approval?: boolean;
+  prereq_lesson_id?: string | null;
 }
 
 export interface Chapter {

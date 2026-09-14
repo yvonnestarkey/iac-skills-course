@@ -2418,6 +2418,24 @@ input[type="password"]:focus {
   margin: 22px 0 8px;
 }
 
+.submission-form {
+  margin-top: 28px;
+  padding: 18px 18px 8px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.submission-form h2 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+
+.submission-form .select-line {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
 .dash-link {
   display: block;
   margin-top: 14px;

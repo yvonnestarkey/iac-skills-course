@@ -9,7 +9,7 @@ import { useStudentNav } from "@/lib/student-nav";
 const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login"]);
 
 export default function StudentCourseNav() {
-  const { outline, completed } = useStudentSession();
+  const { outline, completed, submissions } = useStudentSession();
   const nav = useStudentNav();
   const pathname = usePathname();
   const segment = pathname.startsWith("/student/") ? pathname.split("/")[2] : null;
@@ -49,6 +49,7 @@ export default function StudentCourseNav() {
         basePath="/student"
         onNavigate={close}
         variant="nav"
+        submissions={submissions}
       />
     </>
   );

@@ -28,6 +28,9 @@ export interface StudentLesson {
   takeaways?: string[];
   due?: string;
   brief?: string;
+  requires_submission?: boolean;
+  requires_coach_approval?: boolean;
+  prereq_lesson_id?: string | null;
   next: { id: string; title: string } | null;
   source: "supabase" | "seed";
 }
@@ -46,6 +49,9 @@ export interface OutlineLesson {
   video_duration_seconds?: number;
   estimated_read_minutes?: number;
   duration_minutes?: number;
+  requires_submission?: boolean;
+  requires_coach_approval?: boolean;
+  prereq_lesson_id?: string | null;
 }
 
 export interface OutlineChapter {
@@ -104,6 +110,12 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
   const ordered = SEED.chapters.flatMap((c) => c.lessons.map((l) => ({ ...l, chapter: c })));
   const index = ordered.findIndex((l) => l.id === lesson.id);
   const next = ordered[index + 1];
+  const prev = ordered[index - 1];
+  const requires_submission = Boolean(lesson.requires_submission) || lesson.type === "assignment" || lesson.type === "upload";
+  const prevGated =
+    Boolean(prev?.requires_submission || prev?.requires_coach_approval) ||
+    prev?.type === "assignment" ||
+    prev?.type === "upload";
   return {
     id: lesson.id,
     type: lesson.type,
@@ -117,6 +129,9 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     takeaways: lesson.takeaways,
     due: lesson.due,
     brief: lesson.brief,
+    requires_submission,
+    requires_coach_approval: Boolean(lesson.requires_coach_approval),
+    prereq_lesson_id: lesson.prereq_lesson_id || (prevGated && prev ? prev.id : null),
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
   };
@@ -128,6 +143,17 @@ function numberOrUndef(value: unknown): number | undefined {
   return n;
 }
 
+function asBool(value: unknown): boolean | undefined {
+  if (value === true || value === false) return value;
+  return undefined;
+}
+
+function asPrereq(value: unknown): string | null | undefined {
+  if (value === null) return null;
+  if (typeof value === "string" && value.trim()) return value.trim();
+  return undefined;
+}
+
 function outlineLessonFromRow(row: {
   id: string;
   title: string;
@@ -137,18 +163,44 @@ function outlineLessonFromRow(row: {
   video_duration_seconds?: number | null;
   estimated_read_minutes?: number | null;
   duration_minutes?: number | null;
+  requires_submission?: boolean | null;
+  requires_coach_approval?: boolean | null;
+  prereq_lesson_id?: string | null;
 }): OutlineLesson {
+  const type = row.type as LessonType;
+  const flagged = asBool(row.requires_submission);
   const lesson: OutlineLesson = {
     id: row.id,
     title: row.title,
-    type: row.type as LessonType,
+    type,
     duration: row.duration || undefined,
     seconds: numberOrUndef(row.seconds),
     video_duration_seconds: numberOrUndef(row.video_duration_seconds),
     estimated_read_minutes: numberOrUndef(row.estimated_read_minutes),
     duration_minutes: numberOrUndef(row.duration_minutes),
+    requires_submission: flagged ?? (type === "assignment" || type === "upload"),
+    requires_coach_approval: asBool(row.requires_coach_approval) ?? false,
+    prereq_lesson_id: asPrereq(row.prereq_lesson_id) || null,
   };
   return withComputedDuration(lesson);
+}
+
+function withSequentialPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
+  const lessons = chapters.flatMap((chapter) => chapter.lessons);
+  let previous: OutlineLesson | null = null;
+  const gated = new Map<string, OutlineLesson>();
+  lessons.forEach((lesson) => {
+    const prereq_lesson_id =
+      lesson.prereq_lesson_id ||
+      (previous && (previous.requires_submission || previous.requires_coach_approval) ? previous.id : null);
+    const next = { ...lesson, prereq_lesson_id: prereq_lesson_id || null };
+    gated.set(lesson.id, next);
+    previous = next;
+  });
+  return chapters.map((chapter) => ({
+    ...chapter,
+    lessons: chapter.lessons.map((lesson) => gated.get(lesson.id) || lesson),
+  }));
 }
 
 export function courseDataFromOutline(outline: OutlineChapter[]): CourseData {
@@ -183,27 +235,33 @@ export function courseDataFromOutline(outline: OutlineChapter[]): CourseData {
 }
 
 export function outlineFromSeed(): OutlineChapter[] {
-  return SEED.chapters.map((chapter) => ({
-    id: chapter.id,
-    title: chapter.title,
-    summary: chapter.summary,
-    lessons: chapter.lessons.map((lesson) =>
-      outlineLessonFromRow({
-        id: lesson.id,
-        title: lesson.title,
-        type: lesson.type,
-        duration: lesson.duration,
-        seconds: lesson.seconds,
-        video_duration_seconds: lesson.video_duration_seconds,
-        estimated_read_minutes: lesson.estimated_read_minutes,
-        duration_minutes: lesson.duration_minutes,
-      })
-    ),
-  }));
+  return withSequentialPrereqs(
+    SEED.chapters.map((chapter) => ({
+      id: chapter.id,
+      title: chapter.title,
+      summary: chapter.summary,
+      lessons: chapter.lessons.map((lesson) =>
+        outlineLessonFromRow({
+          id: lesson.id,
+          title: lesson.title,
+          type: lesson.type,
+          duration: lesson.duration,
+          seconds: lesson.seconds,
+          video_duration_seconds: lesson.video_duration_seconds,
+          estimated_read_minutes: lesson.estimated_read_minutes,
+          duration_minutes: lesson.duration_minutes,
+          requires_submission: lesson.requires_submission,
+          requires_coach_approval: lesson.requires_coach_approval,
+          prereq_lesson_id: lesson.prereq_lesson_id,
+        })
+      ),
+    }))
+  );
 }
 
 const OUTLINE_COLUMNS =
   "id, title, type, duration, seconds, chapter_id, position, video_duration_seconds, estimated_read_minutes, duration_minutes";
+const GATE_COLUMNS = `${OUTLINE_COLUMNS}, requires_submission, requires_coach_approval, prereq_lesson_id`;
 
 export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
   await bypassStaticCache();
@@ -220,13 +278,25 @@ export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
       video_duration_seconds?: number | null;
       estimated_read_minutes?: number | null;
       duration_minutes?: number | null;
+      requires_submission?: boolean | null;
+      requires_coach_approval?: boolean | null;
+      prereq_lesson_id?: string | null;
     }> | null = null;
     let { data, error } = await client
       .from("lessons")
-      .select(OUTLINE_COLUMNS)
+      .select(GATE_COLUMNS)
       .order("chapter_id", { ascending: true })
       .order("position", { ascending: true });
     rows = data;
+    if (error) {
+      const fallback = await client
+        .from("lessons")
+        .select(OUTLINE_COLUMNS)
+        .order("chapter_id", { ascending: true })
+        .order("position", { ascending: true });
+      rows = fallback.data;
+      error = fallback.error;
+    }
     if (error) {
       const fallback = await client
         .from("lessons")
@@ -250,17 +320,19 @@ export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
       const chapterMeta = new Map((chapterRows || []).map((row) => [row.id, row]));
       const ids = chapterRows?.length ? chapterRows.map((row) => row.id) : [...grouped.keys()];
       const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
-      return [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
-        const lessons = grouped.get(id) || [];
-        const live = chapterMeta.get(id);
-        const seed = SEED.chapters.find((chapter) => chapter.id === id);
-        return {
-          id,
-          title: live?.title || seed?.title || id,
-          summary: live?.summary || seed?.summary,
-          lessons,
-        };
-      });
+      return withSequentialPrereqs(
+        [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
+          const lessons = grouped.get(id) || [];
+          const live = chapterMeta.get(id);
+          const seed = SEED.chapters.find((chapter) => chapter.id === id);
+          return {
+            id,
+            title: live?.title || seed?.title || id,
+            summary: live?.summary || seed?.summary,
+            lessons,
+          };
+        })
+      );
     }
   }
   return outlineFromSeed();
@@ -331,6 +403,10 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
         takeaways: asStringList(data.takeaways),
         due: data.due || undefined,
         brief: data.brief || undefined,
+        requires_submission:
+          asBool(data.requires_submission) ?? (data.type === "assignment" || data.type === "upload"),
+        requires_coach_approval: asBool(data.requires_coach_approval) ?? false,
+        prereq_lesson_id: asPrereq(data.prereq_lesson_id) || null,
         next: next ? { id: next.id, title: next.title } : null,
         source: "supabase",
       };

@@ -6,7 +6,7 @@ import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useStudentSession } from "@/lib/student-session";
 
 export default function StudentOverview() {
-  const { outline, completed } = useStudentSession();
+  const { outline, completed, submissions } = useStudentSession();
   const lessons = outline.flatMap((chapter) => chapter.lessons);
   const done = lessons.filter((lesson) => completed[lesson.id]).length;
   const ordered = splitCoursePhases(outline).flatMap((phase) => phase.chapters);
@@ -32,7 +32,13 @@ export default function StudentOverview() {
         </section>
       ) : null}
 
-      <CoursePhaseAccordions chapters={outline} completed={completed} basePath="/student" variant="hub" />
+      <CoursePhaseAccordions
+        chapters={outline}
+        completed={completed}
+        basePath="/student"
+        variant="hub"
+        submissions={submissions}
+      />
     </article>
   );
 }
