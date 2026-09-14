@@ -1,21 +1,39 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
 import TopBar from "@/components/TopBar";
+import CoachPreviewShell from "@/components/coach/CoachPreviewShell";
+import { CoursePreviewProvider } from "@/lib/course-preview";
+import { StudentNavProvider } from "@/lib/student-nav";
+import { StudentSessionProvider } from "@/lib/student-session";
 import { useStore } from "@/lib/store";
 
 export default function CoachLayout({ children }: { children: ReactNode }) {
   const { ready, session } = useStore();
+  const pathname = usePathname();
   const router = useRouter();
   const isCoach = Boolean(session && session.role === "coach");
+  const isPreview = pathname.startsWith("/coach/preview");
 
   useEffect(() => {
     if (ready && !isCoach) router.replace("/");
   }, [ready, isCoach, router]);
 
   if (!ready || !isCoach) return null;
+
+  if (isPreview) {
+    return (
+      <StudentSessionProvider>
+        <CoursePreviewProvider>
+          <StudentNavProvider>
+            <CoachPreviewShell>{children}</CoachPreviewShell>
+          </StudentNavProvider>
+        </CoursePreviewProvider>
+      </StudentSessionProvider>
+    );
+  }
 
   return (
     <>

@@ -108,9 +108,7 @@ export default function CoursePhaseAccordions({
     const phase = phases.find((item) => item.chapters.some((chapter) => chapter.id === focusChapterId));
     return phase?.id || "";
   }, [phases, focusChapterId]);
-  const [openPhases, setOpenPhases] = useState<Record<string, boolean>>(() =>
-    unlocked ? Object.fromEntries(splitCoursePhases(chapters).map((phase) => [phase.id, true])) : {}
-  );
+  const [openPhases, setOpenPhases] = useState<Record<string, boolean>>({});
   const [openChapters, setOpenChapters] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
@@ -149,9 +147,7 @@ export default function CoursePhaseAccordions({
                   {phase.title}
                 </h2>
                 <span className="phase-badge">
-                  {unlocked
-                    ? `${progress.total} ${phase.unit}`
-                    : `${progress.done} of ${progress.total} ${phase.unit} Completed`}
+                  {progress.done} of {progress.total} {phase.unit} Completed
                 </span>
               </span>
               <span className="chapter-caret">{phaseOpen ? "▾" : "▸"}</span>
@@ -178,9 +174,9 @@ export default function CoursePhaseAccordions({
                             {chapter.title}
                           </h3>
                           <span className="muted small">
-                            {unlocked ? `${stats.total} lessons` : `${stats.done} of ${stats.total} complete`}
+                            {stats.done} of {stats.total} complete
                           </span>
-                          {variant === "hub" && !unlocked ? (
+                          {variant === "hub" ? (
                             <span className="micro-bar" aria-hidden="true">
                               <span style={{ width: `${stats.pct}%` }} />
                             </span>

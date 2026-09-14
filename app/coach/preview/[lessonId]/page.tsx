@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { connection } from "next/server";
-import CoachLessonPreview from "@/components/coach/CoachLessonPreview";
+import StudentPlayer from "@/components/student/StudentPlayer";
 import { fetchStudentLesson } from "@/lib/student-lesson";
 
 export const dynamic = "force-dynamic";
@@ -23,25 +22,13 @@ export default async function CoachPreviewLessonPage({ params }: { params: Promi
 
   if (!lesson) {
     return (
-      <div className="coach-page">
-        <Link className="back-link" href="/coach/preview">
-          ← Course preview
-        </Link>
-        <article className="lesson-body">
-          <p className="kicker">Course preview</p>
-          <h1>Lesson not found</h1>
-          <p>There is no lesson with id {lessonId}.</p>
-        </article>
-      </div>
+      <article className="lesson-body">
+        <p className="kicker">Course preview</p>
+        <h1>Lesson not found</h1>
+        <p>There is no lesson with id {lessonId}.</p>
+      </article>
     );
   }
 
-  return (
-    <div className="coach-page">
-      <Link className="back-link" href="/coach/preview">
-        ← Course preview
-      </Link>
-      <CoachLessonPreview lesson={lesson} />
-    </div>
-  );
+  return <StudentPlayer lesson={lesson} initialAccess={{ isLocked: false }} />;
 }

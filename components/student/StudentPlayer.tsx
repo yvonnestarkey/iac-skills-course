@@ -9,6 +9,7 @@ import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/l
 import { useStudentSession } from "@/lib/student-session";
 import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult } from "@/lib/accessControl";
 import { findResumeLesson, isChapterUnlocked, splitCoursePhases } from "@/lib/course-phases";
+import { useCoursePreview } from "@/lib/course-preview";
 import type { LessonType } from "@/lib/types";
 
 const KICKERS: Record<LessonType, string> = {
@@ -28,6 +29,7 @@ export default function StudentPlayer({
   initialAccess?: AccessResult;
 }) {
   const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions } = useStudentSession();
+  const { unlocked, basePath } = useCoursePreview();
   const [completed, setCompleted] = useState(false);
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
@@ -88,7 +90,7 @@ export default function StudentPlayer({
   const resume = findResumeLesson(ordered, completedMap);
   const showSubmission = Boolean(lesson.requires_submission || lesson.requires_coach_approval);
 
-  if (access.isLocked) {
+  if (!unlocked && access.isLocked) {
     return (
       <article className="lesson-body">
         <p className="kicker">Locked lesson</p>
@@ -96,11 +98,11 @@ export default function StudentPlayer({
         <p className="lead">{access.reason}</p>
         <div className="actions">
           {access.prereqLessonId ? (
-            <Link className="primary" href={`/student/${access.prereqLessonId}`}>
+            <Link className="primary" href={`${basePath}/${access.prereqLessonId}`}>
               Open {access.prereqTitle}
             </Link>
           ) : resume ? (
-            <Link className="primary" href={`/student/${resume.lesson.id}`}>
+            <Link className="primary" href={`${basePath}/${resume.lesson.id}`}>
               Resume Course
             </Link>
           ) : null}
@@ -109,14 +111,14 @@ export default function StudentPlayer({
     );
   }
 
-  if (chapterLocked && resume && resume.lesson.id !== lesson.id) {
+  if (!unlocked && chapterLocked && resume && resume.lesson.id !== lesson.id) {
     return (
       <article className="lesson-body">
         <p className="kicker">Locked lesson</p>
         <h1>This lesson is still closed</h1>
         <p className="lead">Finish the previous section first. Resume at {resume.lesson.title}.</p>
         <div className="actions">
-          <Link className="primary" href={`/student/${resume.lesson.id}`}>
+          <Link className="primary" href={`${basePath}/${resume.lesson.id}`}>
             Resume Course
           </Link>
         </div>
@@ -175,7 +177,7 @@ export default function StudentPlayer({
             {completed ? "Completed ✓" : "Mark as complete"}
           </button>
           {lesson.next ? (
-            <Link className="ghost" href={`/student/${lesson.next.id}`}>
+            <Link className="ghost" href={`${basePath}/${lesson.next.id}`}>
               Next: {lesson.next.title} →
             </Link>
           ) : null}

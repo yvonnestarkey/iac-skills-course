@@ -22,7 +22,7 @@ export default function CoachHomePage() {
           </button>
           <button onClick={() => router.push("/coach/preview")}>
             <strong>Course preview</strong>
-            <span className="muted">Open the full course with every lesson unlocked</span>
+            <span className="muted">See the student course with every lesson unlocked</span>
           </button>
           <button onClick={() => router.push("/coach/inbox")}>
             <strong>Inbox</strong>

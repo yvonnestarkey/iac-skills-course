@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CoursePhaseAccordions from "@/components/course/CoursePhaseAccordions";
+import { useCoursePreview } from "@/lib/course-preview";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentNav } from "@/lib/student-nav";
 
@@ -10,12 +11,14 @@ const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "logi
 
 export default function StudentCourseNav() {
   const { outline, completed, submissions } = useStudentSession();
+  const { unlocked, basePath } = useCoursePreview();
   const nav = useStudentNav();
   const pathname = usePathname();
-  const segment = pathname.startsWith("/student/") ? pathname.split("/")[2] : null;
+  const prefix = `${basePath}/`;
+  const segment = pathname.startsWith(prefix) ? pathname.slice(prefix.length).split("/")[0] : null;
   const activeLessonId = segment && !RESERVED.has(segment) ? segment : null;
-  const onDashboard = pathname === "/student";
-  const onOverview = pathname === "/student/overview";
+  const onDashboard = pathname === basePath;
+  const onOverview = pathname === `${basePath}/overview`;
   const lessons = outline.flatMap((chapter) => chapter.lessons);
   const done = lessons.filter((lesson) => completed[lesson.id]).length;
   const total = lessons.length;
@@ -26,10 +29,10 @@ export default function StudentCourseNav() {
     <>
       <div className="course-head">
         <nav className="student-nav-buttons" aria-label="Student pages">
-          <Link href="/student" className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
+          <Link href={basePath} className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
             Student Dashboard
           </Link>
-          <Link href="/student/overview" className={`dash-link ${onOverview ? "active" : ""}`} onClick={close}>
+          <Link href={`${basePath}/overview`} className={`dash-link ${onOverview ? "active" : ""}`} onClick={close}>
             Course Overview
           </Link>
         </nav>
@@ -46,10 +49,11 @@ export default function StudentCourseNav() {
         chapters={outline}
         completed={completed}
         activeLessonId={activeLessonId}
-        basePath="/student"
+        basePath={basePath}
         onNavigate={close}
         variant="nav"
         submissions={submissions}
+        unlocked={unlocked}
       />
     </>
   );
