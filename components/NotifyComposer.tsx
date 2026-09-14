@@ -3,7 +3,11 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { audienceCopy, postAnnouncement } from "@/lib/comms";
-import { deliverAnnouncement } from "@/lib/notifications";
+import {
+  notificationRowsForStudents,
+  resolveNotificationTargets,
+} from "@/lib/notifications";
+import { getSupabase } from "@/lib/supabase";
 import { useStore } from "@/lib/store";
 
 export default function NotifyComposer() {
@@ -26,6 +30,81 @@ export default function NotifyComposer() {
   const send = async () => {
     if (!subject.trim() || !body.trim() || !count || busy) return;
     setBusy(true);
+
+    const client = getSupabase();
+    if (!client) {
+      const error = "Supabase is not configured.";
+      console.error(error);
+      alert(error);
+      setBusy(false);
+      return;
+    }
+
+    const { data: sessionData, error: sessionError } = await client.auth.getUser();
+    if (sessionError || !sessionData.user) {
+      const error =
+        "Sign in at /student/login with your coach account before sending. The demo coach switcher is not a Supabase session.";
+      console.error(error, sessionError);
+      alert(error);
+      setBusy(false);
+      return;
+    }
+
+    const targets = await resolveNotificationTargets({
+      audience: notifyDraft.audience,
+      recipientIds: notifyDraft.recipientIds,
+      students: data.students.map((student) => ({ id: student.id, email: student.email })),
+    });
+    const rows = notificationRowsForStudents({
+      students: targets,
+      title: subject,
+      message: body,
+      kind: "announcement",
+    });
+
+    if (!rows.length) {
+      const error = "No registered students to notify. Demo roster IDs are not saved to Supabase.";
+      console.error(error, { recipientIds: notifyDraft.recipientIds, targets });
+      alert(error);
+      setBusy(false);
+      return;
+    }
+
+    const { data: inserted, error } = await client.from("notifications").insert(rows).select("id");
+    if (error) {
+      console.error("Supabase notifications insert failed", error, rows);
+      const fallback = await client.from("notifications").insert(
+        rows.map((row) => ({
+          user_id: row.user_id,
+          student_id: row.student_id,
+          student_email: row.student_email,
+          from_role: row.from_role,
+          kind: row.kind,
+          body: row.body,
+        }))
+      ).select("id");
+      if (fallback.error) {
+        console.error("Supabase notifications insert fallback failed", fallback.error, rows);
+        alert(`Could not save notifications: ${fallback.error.message}`);
+        setNotice(`Could not save notifications: ${fallback.error.message}`);
+        setBusy(false);
+        return;
+      }
+      mutate((draft) => {
+        postAnnouncement(draft, {
+          subject,
+          body,
+          audience: notifyDraft.audience,
+          audienceLabel: notifyDraft.audienceLabel,
+          recipientIds: notifyDraft.recipientIds,
+        });
+      });
+      setNotice(`Sent to ${audienceCopy(notifyDraft.audience, fallback.data?.length || rows.length)}.`);
+      setNotifyDraft(null);
+      setBusy(false);
+      return;
+    }
+
     mutate((draft) => {
       postAnnouncement(draft, {
         subject,
@@ -35,22 +114,9 @@ export default function NotifyComposer() {
         recipientIds: notifyDraft.recipientIds,
       });
     });
-    const delivered = await deliverAnnouncement({
-      title: subject,
-      message: body,
-      audience: notifyDraft.audience,
-      recipientIds: notifyDraft.recipientIds,
-    });
-    setBusy(false);
-    if (delivered.ok) {
-      setNotice(`Sent to ${audienceCopy(notifyDraft.audience, delivered.count || count)}.`);
-    } else {
-      setNotice(
-        delivered.error ||
-          "Saved locally. Run supabase/notifications.sql in Supabase so live students receive this."
-      );
-    }
+    setNotice(`Sent to ${audienceCopy(notifyDraft.audience, inserted?.length || rows.length)}.`);
     setNotifyDraft(null);
+    setBusy(false);
   };
 
   return (
@@ -93,7 +159,7 @@ export default function NotifyComposer() {
           />
         </div>
         <p className="muted small">
-          Each live student gets a notification in their bell. Demo roster names stay in the coach audit trail.
+          Saves to Supabase for registered students. Sign in at /student/login with your coach account first.
         </p>
         <div className="modal-actions">
           <button className="primary" onClick={send} disabled={!subject.trim() || !body.trim() || !count || busy}>

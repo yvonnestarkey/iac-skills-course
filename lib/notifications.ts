@@ -39,15 +39,23 @@ function describe(error: { message?: string; hint?: string; code?: string }): st
 
 export function notificationFromRow(row: NotificationRow | Record<string, unknown> | null | undefined): StudentNotification | null {
   if (!row || typeof row !== "object") return null;
-  const data = row as NotificationRow;
+  const data = row as NotificationRow & {
+    student_id?: string;
+    body?: string;
+    kind?: string;
+    title?: string;
+    message?: string;
+    type?: string;
+  };
   const id = data.id != null ? String(data.id) : "";
   if (!id || id === "undefined" || id === "null") return null;
+  const kind = String(data.type || data.kind || "announcement");
   return {
     id,
-    userId: data.user_id != null ? String(data.user_id) : "",
-    title: String(data.title || ""),
-    message: String(data.message || ""),
-    type: data.type === "assignment_feedback" ? "assignment_feedback" : "announcement",
+    userId: data.user_id != null ? String(data.user_id) : data.student_id != null ? String(data.student_id) : "",
+    title: String(data.title || (kind === "assignment_feedback" ? "Assignment feedback" : "Announcement")),
+    message: String(data.message || data.body || ""),
+    type: kind === "assignment_feedback" ? "assignment_feedback" : "announcement",
     read: Boolean(data.read),
     createdAt: String(data.created_at || ""),
   };
@@ -77,11 +85,21 @@ export async function fetchOwnNotifications(): Promise<{
     const { client, user, error: authError } = await authClient();
     if (!client || !user) return { ok: false, error: authError || "Sign in required.", data: [] };
 
-    const { data, error } = await client
+    let { data, error } = await client
       .from("notifications")
-      .select("id, user_id, title, message, type, read, created_at")
-      .eq("user_id", user.id)
+      .select("*")
+      .or(`user_id.eq.${user.id},student_id.eq.${user.id}`)
       .order("created_at", { ascending: false });
+
+    if (error) {
+      const fallback = await client
+        .from("notifications")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      data = fallback.data;
+      error = fallback.error;
+    }
 
     if (error) return { ok: false, error: describe(error), data: [] };
     return { ok: true, data: asNotificationList((data || []).map((row) => notificationFromRow(row as NotificationRow))) };
@@ -118,34 +136,111 @@ export async function markOwnNotificationsRead(): Promise<{ ok: boolean; error?:
   return { ok: true };
 }
 
-export async function insertNotifications(input: {
-  userIds: string[];
+export interface NotificationTarget {
+  id: string;
+  email: string;
+}
+
+export function notificationRowsForStudents(input: {
+  students: NotificationTarget[];
   title: string;
   message: string;
-  type: NotificationType;
+  kind: NotificationType;
+}) {
+  const title = input.title.trim();
+  const message = input.message.trim();
+  return input.students.filter((student) => isUserId(student.id)).map((student) => ({
+    user_id: student.id,
+    student_id: student.id,
+    student_email: student.email,
+    from_role: "coach" as const,
+    kind: input.kind,
+    type: input.kind,
+    title,
+    message,
+    body: message,
+    read: false,
+  }));
+}
+
+export async function resolveNotificationTargets(input: {
+  audience: CommunicationAudience;
+  recipientIds: string[];
+  students?: { id: string; email: string }[];
+}): Promise<NotificationTarget[]> {
+  const roster = await fetchStudentProfiles();
+  const live = roster.data || [];
+  const byId = new Map(live.map((row) => [row.id, { id: row.id, email: row.email }]));
+  const byEmail = new Map(live.map((row) => [row.email.toLowerCase(), { id: row.id, email: row.email }]));
+
+  if (input.audience === "all") return live.map((row) => ({ id: row.id, email: row.email }));
+
+  const matched = new Map<string, NotificationTarget>();
+  input.recipientIds.forEach((id) => {
+    const hit = byId.get(id);
+    if (hit) matched.set(hit.id, hit);
+  });
+  (input.students || []).forEach((student) => {
+    if (!input.recipientIds.includes(student.id)) return;
+    const hit = byId.get(student.id) || byEmail.get(student.email.toLowerCase());
+    if (hit) matched.set(hit.id, hit);
+  });
+
+  if (!matched.size && (input.audience === "cohort" || input.audience === "filtered")) {
+    return live.map((row) => ({ id: row.id, email: row.email }));
+  }
+  return [...matched.values()];
+}
+
+function logInsertError(error: { message?: string; details?: string; hint?: string; code?: string }, rows: unknown) {
+  console.error("Supabase notifications insert failed", error, rows);
+}
+
+export async function insertCoachNotifications(input: {
+  students: NotificationTarget[];
+  title: string;
+  message: string;
+  kind: NotificationType;
 }): Promise<{ ok: boolean; count: number; error?: string }> {
-  const { client, user, error: authError } = await authClient();
-  if (!client) return { ok: false, count: 0, error: authError || "Supabase is not configured." };
-  if (!user) return { ok: false, count: 0, error: authError || "Sign in required." };
+  const client = getSupabase();
+  if (!client) return { ok: false, count: 0, error: "Supabase is not configured." };
+
+  const { data: sessionData, error: sessionError } = await client.auth.getUser();
+  if (sessionError || !sessionData.user) {
+    const error = "Sign in at /student/login with your coach account. The demo coach switcher does not create a Supabase session.";
+    console.error(error, sessionError);
+    return { ok: false, count: 0, error };
+  }
 
   const title = input.title.trim();
   const message = input.message.trim();
-  const userIds = [...new Set(input.userIds.filter(isUserId))];
+  const rows = notificationRowsForStudents({ ...input, title, message });
   if (!title || !message) return { ok: false, count: 0, error: "Write a title and message first." };
-  if (!userIds.length) return { ok: false, count: 0, error: "No live students to notify." };
+  if (!rows.length) {
+    const error = "No registered students to notify. Demo roster IDs are not saved to Supabase.";
+    console.error(error, input.students);
+    return { ok: false, count: 0, error };
+  }
 
-  const { error } = await client.from("notifications").insert(
-    userIds.map((user_id) => ({
-      user_id,
-      title,
-      message,
-      type: input.type,
-      read: false,
+  const first = await client.from("notifications").insert(rows).select("id");
+  if (!first.error) return { ok: true, count: first.data?.length || rows.length };
+
+  logInsertError(first.error, rows);
+
+  const fallback = await client.from("notifications").insert(
+    rows.map((row) => ({
+      user_id: row.user_id,
+      student_id: row.student_id,
+      student_email: row.student_email,
+      from_role: row.from_role,
+      kind: row.kind,
+      body: row.body,
     }))
-  );
+  ).select("id");
+  if (!fallback.error) return { ok: true, count: fallback.data?.length || rows.length };
 
-  if (error) return { ok: false, count: 0, error: describe(error) };
-  return { ok: true, count: userIds.length };
+  logInsertError(fallback.error, rows);
+  return { ok: false, count: 0, error: describe(fallback.error) };
 }
 
 /** One-student assignment feedback from the coach inbox. */
@@ -164,11 +259,11 @@ export async function notifyAssignmentFeedback(input: {
     }
   }
   if (!isUserId(userId)) return { ok: false, count: 0, error: "No student account to notify." };
-  return insertNotifications({
-    userIds: [userId],
+  return insertCoachNotifications({
+    students: [{ id: userId, email: input.studentEmail || "" }],
     title: input.title,
     message: input.message,
-    type: "assignment_feedback",
+    kind: "assignment_feedback",
   });
 }
 
@@ -178,19 +273,13 @@ export async function deliverAnnouncement(input: {
   message: string;
   audience: CommunicationAudience;
   recipientIds: string[];
+  students?: { id: string; email: string }[];
 }): Promise<{ ok: boolean; count: number; error?: string }> {
-  let userIds = [...new Set(input.recipientIds.filter(isUserId))];
-
-  if (input.audience === "all" || (input.audience === "cohort" && !userIds.length)) {
-    const roster = await fetchStudentProfiles();
-    if (!roster.ok) return { ok: false, count: 0, error: roster.error || "Could not load students." };
-    userIds = roster.data.map((row) => row.id);
-  }
-
-  return insertNotifications({
-    userIds,
+  const targets = await resolveNotificationTargets(input);
+  return insertCoachNotifications({
+    students: targets,
     title: input.title,
     message: input.message,
-    type: "announcement",
+    kind: "announcement",
   });
 }

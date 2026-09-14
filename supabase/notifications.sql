@@ -1,17 +1,22 @@
 -- Real student notifications (announcements + assignment feedback).
 -- Replaces the old inbox_messages view of the same name.
--- Run this in the Supabase SQL editor (Dashboard → SQL Editor → New query).
+-- Also run supabase/notifications-coach-insert.sql so coaches can INSERT.
 
 drop view if exists public.notifications;
 
 create table if not exists public.notifications (
-  id          uuid primary key default gen_random_uuid(),
-  user_id     uuid not null references auth.users (id) on delete cascade,
-  title       text not null,
-  message     text not null,
-  type        text not null check (type in ('announcement', 'assignment_feedback')),
-  read        boolean not null default false,
-  created_at  timestamptz not null default now()
+  id             uuid primary key default gen_random_uuid(),
+  user_id        uuid references auth.users (id) on delete cascade,
+  student_id     uuid references auth.users (id) on delete cascade,
+  student_email  text,
+  from_role      text not null default 'coach',
+  kind           text,
+  title          text,
+  message        text,
+  body           text,
+  type           text,
+  read           boolean not null default false,
+  created_at     timestamptz not null default now()
 );
 
 create index if not exists notifications_user_unread_idx
