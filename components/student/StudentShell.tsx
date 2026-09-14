@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
+import { Bell, Mail } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
@@ -46,21 +47,23 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
     <div className="student-player">
       <header className="topbar">
         <BrandMark />
-        <div className="topbar-right">
+        <div className="topbar-right flex items-center gap-2 flex-wrap">
           <button
             className={`notify-btn ${pathname.startsWith("/student/inbox") ? "on" : ""}`}
             type="button"
+            aria-label="Inbox"
             onClick={() => router.push("/student/inbox")}
           >
-            Inbox
+            <Mail size={18} aria-hidden="true" />
             {inboxWaiting ? <span className="pill">{inboxWaiting}</span> : null}
           </button>
           <button
             className={`notify-btn ${pathname.startsWith("/student/notifications") ? "on" : ""}`}
             type="button"
+            aria-label="Notifications"
             onClick={() => router.push("/student/notifications")}
           >
-            Notifications
+            <Bell size={18} aria-hidden="true" />
             {notifyCount ? <span className="pill">{notifyCount}</span> : null}
           </button>
           {user?.email ? <span className="muted small student-email">{user.email}</span> : null}

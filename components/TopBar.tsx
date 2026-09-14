@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { Bell, Mail } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import { unreadForCoach, unreadForStudent } from "@/lib/comms";
@@ -30,16 +31,26 @@ export default function TopBar() {
   return (
     <header className="topbar">
       <BrandMark href={isCoach ? "/coach" : "/"} />
-      <div className="topbar-right">
+      <div className="topbar-right flex items-center gap-2 flex-wrap">
         {isCoach ? (
-          <button className={`notify-btn ${pathname.startsWith("/coach/inbox") ? "on" : ""}`} onClick={() => router.push(inboxHref)}>
-            Inbox
+          <button
+            className={`notify-btn ${pathname.startsWith("/coach/inbox") ? "on" : ""}`}
+            type="button"
+            aria-label="Inbox"
+            onClick={() => router.push(inboxHref)}
+          >
+            <Mail size={18} aria-hidden="true" />
             {inboxWaiting ? <span className="pill">{inboxWaiting}</span> : null}
           </button>
         ) : null}
         {session ? (
-          <button className={`notify-btn ${pathname.startsWith(notifyHref) ? "on" : ""}`} onClick={() => router.push(notifyHref)}>
-            Notifications
+          <button
+            className={`notify-btn ${pathname.startsWith(notifyHref) ? "on" : ""}`}
+            type="button"
+            aria-label="Notifications"
+            onClick={() => router.push(notifyHref)}
+          >
+            <Bell size={18} aria-hidden="true" />
             {unread ? <span className="pill">{unread}</span> : null}
           </button>
         ) : null}
