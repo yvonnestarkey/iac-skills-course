@@ -7,7 +7,6 @@ import { ICONS } from "@/lib/constants";
 import {
   chapterProgress,
   findLessonLocation,
-  findResumeLesson,
   isChapterUnlocked,
   isPhaseUnlocked,
   phaseUnitProgress,
@@ -95,24 +94,23 @@ export default function CoursePhaseAccordions({
 }) {
   const phases = useMemo(() => splitCoursePhases(chapters), [chapters]);
   const ordered = useMemo(() => phases.flatMap((phase) => phase.chapters), [phases]);
-  const resume = findResumeLesson(ordered, completed);
   const active = findLessonLocation(ordered, activeLessonId);
-  const focusChapterId = active?.chapter.id || resume?.chapter.id || "";
+  const focusChapterId = active?.chapter.id || "";
   const focusPhaseId = useMemo(() => {
+    if (!focusChapterId) return "";
     const phase = phases.find((item) => item.chapters.some((chapter) => chapter.id === focusChapterId));
-    return phase?.id || phases[0]?.id || "";
+    return phase?.id || "";
   }, [phases, focusChapterId]);
   const [openPhases, setOpenPhases] = useState<Record<string, boolean>>({});
   const [openChapters, setOpenChapters] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    if (focusPhaseId) {
-      setOpenPhases((current) => (current[focusPhaseId] ? current : { ...current, [focusPhaseId]: true }));
-    }
+    if (!activeLessonId || !focusPhaseId) return;
+    setOpenPhases((current) => (current[focusPhaseId] ? current : { ...current, [focusPhaseId]: true }));
     if (focusChapterId) {
       setOpenChapters((current) => (current[focusChapterId] ? current : { ...current, [focusChapterId]: true }));
     }
-  }, [focusPhaseId, focusChapterId]);
+  }, [activeLessonId, focusPhaseId, focusChapterId]);
 
   const togglePhase = (id: CoursePhaseId) => {
     setOpenPhases((current) => ({ ...current, [id]: !current[id] }));
