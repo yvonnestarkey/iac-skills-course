@@ -1,3 +1,4 @@
+import { createBrowserClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -13,25 +14,21 @@ export const supabaseProjectRef = url ? url.replace(/^https?:\/\//, "").split(".
 let browserClient: SupabaseClient | null = null;
 let serverClient: SupabaseClient | null = null;
 
-function createSupabase(persistSession: boolean): SupabaseClient {
-  return createClient(url!, anonKey!, {
-    auth: { persistSession, autoRefreshToken: persistSession },
-    global: {
-      fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
-    },
-  });
-}
-
 export function getSupabase(): SupabaseClient | null {
   if (!url || !anonKey) return null;
   if (typeof window === "undefined") {
     if (!serverClient) {
-      serverClient = createSupabase(false);
+      serverClient = createClient(url, anonKey, {
+        auth: { persistSession: false, autoRefreshToken: false },
+        global: {
+          fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+        },
+      });
     }
     return serverClient;
   }
   if (!browserClient) {
-    browserClient = createSupabase(true);
+    browserClient = createBrowserClient(url, anonKey);
   }
   return browserClient;
 }

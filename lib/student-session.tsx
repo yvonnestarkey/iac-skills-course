@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { fetchOnboardingState, isOnboardingRequired, clearOnboardingSessionSkip } from "./onboarding";
+import { fetchOnboardingState, isOnboardingRequired, clearOnboardingSkipCookie } from "./onboarding";
 import { ensureStudentProfile } from "./profiles";
 import { isCoachAccount } from "./roles";
 import { getSupabase } from "./supabase";
@@ -69,7 +69,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
         } else {
           const [, state] = await Promise.all([loadProgress(nextUser.id), fetchOnboardingState(nextUser.id)]);
           if (!cancelled) {
-            setOnboarding(isOnboardingRequired(state, nextUser.id) ? "needed" : "done");
+            setOnboarding(isOnboardingRequired(state) ? "needed" : "done");
           }
         }
       } else {
@@ -82,24 +82,23 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     start();
 
     const client = getSupabase();
-    const subscription = client?.auth.onAuthStateChange((event, session) => {
+    const subscription = client?.auth.onAuthStateChange((_event, session) => {
       const nextUser = session?.user ? studentUserFromAuth(session.user) : null;
       setUser(nextUser);
       if (nextUser) {
-        if (event === "SIGNED_IN") clearOnboardingSessionSkip(nextUser.id);
         void loadProgress(nextUser.id);
         if (isCoachAccount(nextUser)) {
           setOnboarding("done");
         } else {
           fetchOnboardingState(nextUser.id).then((state) => {
-            setOnboarding(isOnboardingRequired(state, nextUser.id) ? "needed" : "done");
+            setOnboarding(isOnboardingRequired(state) ? "needed" : "done");
           });
         }
       } else {
         setCompleted({});
         setSubmissions({});
         setOnboarding("done");
-        clearOnboardingSessionSkip();
+        void clearOnboardingSkipCookie();
       }
     });
 
@@ -123,7 +122,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(async () => {
     await signOutStudent();
-    clearOnboardingSessionSkip();
+    await clearOnboardingSkipCookie();
     setUser(null);
     setCompleted({});
     setSubmissions({});

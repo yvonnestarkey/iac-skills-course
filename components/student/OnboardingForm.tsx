@@ -10,7 +10,6 @@ import {
   ONBOARDING_INSTITUTIONS,
   fetchOnboardingState,
   saveOnboarding,
-  skipOnboarding,
   type OnboardingCountry,
 } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
@@ -18,7 +17,11 @@ import { useStudentSession } from "@/lib/student-session";
 
 const STEPS = ["Contact", "IAC exam", "Coaching", "CTA / PGDA"] as const;
 
-export default function OnboardingForm() {
+export default function OnboardingForm({
+  skipOnboarding,
+}: {
+  skipOnboarding: () => Promise<void>;
+}) {
   const router = useRouter();
   const { ready, user, signOut } = useStudentSession();
   const [step, setStep] = useState(0);
@@ -121,13 +124,7 @@ export default function OnboardingForm() {
   const skipForNow = async () => {
     setBusy(true);
     setError("");
-    const result = await skipOnboarding(user.id);
-    setBusy(false);
-    if (!result.ok) {
-      setError(result.error || "Could not skip onboarding.");
-      return;
-    }
-    router.replace("/student/overview");
+    await skipOnboarding();
   };
 
   return (

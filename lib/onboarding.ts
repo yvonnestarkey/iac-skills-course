@@ -38,60 +38,6 @@ export interface OnboardingInput {
   qualitative_notes: OnboardingNotes;
 }
 
-export const ONBOARDING_SKIP_COOKIE = "onboarding_skipped_session";
-
-function skipStorageKey(userId: string): string {
-  return `${ONBOARDING_SKIP_COOKIE}:${userId}`;
-}
-
-function readCookie(name: string): string | null {
-  if (typeof document === "undefined") return null;
-  const prefix = `${name}=`;
-  const match = document.cookie.split("; ").find((part) => part.startsWith(prefix));
-  if (!match) return null;
-  return decodeURIComponent(match.slice(prefix.length));
-}
-
-/** True when this browser session skipped onboarding for this student. Does not survive login or a new browser session. */
-export function hasOnboardingSessionSkip(userId: string): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    if (sessionStorage.getItem(skipStorageKey(userId)) === "true") return true;
-  } catch {
-    // Private mode can block sessionStorage; the session cookie is enough.
-  }
-  return readCookie(ONBOARDING_SKIP_COOKIE) === userId;
-}
-
-export function setOnboardingSessionSkip(userId: string): void {
-  if (typeof window === "undefined") return;
-  try {
-    sessionStorage.setItem(skipStorageKey(userId), "true");
-  } catch {
-    // Cookie still covers same-tab refresh and other tabs in this browser session.
-  }
-  document.cookie = `${ONBOARDING_SKIP_COOKIE}=${encodeURIComponent(userId)}; Path=/; SameSite=Lax`;
-}
-
-export function clearOnboardingSessionSkip(userId?: string): void {
-  if (typeof window === "undefined") return;
-  try {
-    if (userId) {
-      sessionStorage.removeItem(skipStorageKey(userId));
-    } else {
-      const keys: string[] = [];
-      for (let index = 0; index < sessionStorage.length; index += 1) {
-        const key = sessionStorage.key(index);
-        if (key?.startsWith(`${ONBOARDING_SKIP_COOKIE}:`)) keys.push(key);
-      }
-      keys.forEach((key) => sessionStorage.removeItem(key));
-    }
-  } catch {
-    // Ignore storage access errors.
-  }
-  document.cookie = `${ONBOARDING_SKIP_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`;
-}
-
 function tableMissing(message: string): boolean {
   return /student_profiles/i.test(message) && /does not exist|schema cache|could not find/i.test(message);
 }
@@ -110,33 +56,34 @@ export async function fetchOnboardingState(
 
   return {
     completed: Boolean(result.data?.onboarding_completed),
-    skipped: hasOnboardingSessionSkip(userId),
+    skipped: false,
     available: true,
   };
 }
 
-/** True when the student may enter `/student` routes for this browser session. */
+/** True when onboarding is finished. Session skip is enforced in middleware, not here. */
 export async function fetchOnboardingCompleted(userId: string): Promise<boolean> {
   const state = await fetchOnboardingState(userId);
-  if (!state.available || state.completed) return true;
-  return hasOnboardingSessionSkip(userId);
+  return !state.available || state.completed;
 }
 
-/** Incomplete profiles must complete onboarding unless they skipped in this browser session. */
-export function isOnboardingRequired(state: { completed: boolean; available: boolean }, userId: string): boolean {
-  if (!state.available || state.completed) return false;
-  return !hasOnboardingSessionSkip(userId);
+export function isOnboardingRequired(state: { completed: boolean; available: boolean }): boolean {
+  return state.available && !state.completed;
 }
 
-/** Skip only for this browser session. Never store a permanent DB bypass. */
-export async function skipOnboarding(userId: string): Promise<{ ok: boolean; error?: string }> {
-  setOnboardingSessionSkip(userId);
-  return { ok: true };
+/** Delete the HttpOnly session skip cookie so the next sign-in is gated again. */
+export async function clearOnboardingSkipCookie(): Promise<void> {
+  if (typeof window === "undefined") return;
+  try {
+    await fetch("/api/onboarding/skip", { method: "DELETE", credentials: "same-origin" });
+  } catch {
+    // Sign-out / sign-in should still continue.
+  }
 }
 
-/** Drop the session skip (and any leftover DB flag) so the next login asks again. */
+/** Drop leftover DB skip flags. The live skip is the HttpOnly session cookie. */
 export async function clearOnboardingSkip(userId: string): Promise<void> {
-  clearOnboardingSessionSkip(userId);
+  await clearOnboardingSkipCookie();
   const client = getSupabase();
   if (!client) return;
   await client
@@ -176,6 +123,6 @@ export async function saveOnboarding(
     }
     return { ok: false, error: rowError.message };
   }
-  clearOnboardingSessionSkip(userId);
+  await clearOnboardingSkipCookie();
   return { ok: true };
 }

@@ -4,9 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { ensureStudentProfile } from "@/lib/profiles";
-import { clearOnboardingSkip, fetchOnboardingState } from "@/lib/onboarding";
-import { isCoachAccount } from "@/lib/roles";
-import { studentUserFromAuth } from "@/lib/student-lesson";
+import { clearOnboardingSkip } from "@/lib/onboarding";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
 type Mode = "signin" | "signup";
@@ -19,10 +17,6 @@ export default function StudentLoginForm() {
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-
-  const goToDashboard = () => {
-    router.replace("/student");
-  };
 
   const goToOnboarding = () => {
     router.replace("/onboarding");
@@ -64,20 +58,10 @@ export default function StudentLoginForm() {
         return;
       }
       if (data.user) {
-        const studentUser = studentUserFromAuth(data.user);
         await ensureStudentProfile({ id: data.user.id, email: data.user.email || trimmedEmail });
         await clearOnboardingSkip(data.user.id);
-        if (!isCoachAccount(studentUser)) {
-          const state = await fetchOnboardingState(data.user.id);
-          setBusy(false);
-          if (state.available && !state.completed) {
-            goToOnboarding();
-            return;
-          }
-        }
       }
-      setBusy(false);
-      goToDashboard();
+      window.location.replace("/student");
       return;
     }
 

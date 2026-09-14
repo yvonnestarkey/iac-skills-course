@@ -599,6 +599,8 @@ export async function saveLessonProgress(lessonId: string, progress: LessonProgr
 }
 
 export async function signOutStudent(): Promise<void> {
+  const { clearOnboardingSkipCookie } = await import("./onboarding");
+  await clearOnboardingSkipCookie();
   const client = getSupabase();
   if (client) await client.auth.signOut();
 }

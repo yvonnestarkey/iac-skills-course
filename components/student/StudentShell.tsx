@@ -8,7 +8,6 @@ import BrandMark from "@/components/BrandMark";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import { isCoachAccount } from "@/lib/roles";
-import { getSupabase } from "@/lib/supabase";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { StudentNavProvider, useStudentNav } from "@/lib/student-nav";
@@ -25,7 +24,7 @@ function LoadingFrame({ label }: { label: string }) {
 }
 
 function AuthenticatedShell({ children }: { children: ReactNode }) {
-  const { user } = useStudentSession();
+  const { user, signOut } = useStudentSession();
   const { inboxWaiting, unreadCount } = useStudentInbox();
   const nav = useStudentNav();
   const pathname = usePathname();
@@ -37,8 +36,7 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
   }, [pathname, closeNav]);
 
   const leave = async () => {
-    const supabase = getSupabase();
-    if (supabase) await supabase.auth.signOut();
+    await signOut();
     router.replace("/student/login");
   };
 
@@ -106,19 +104,17 @@ function StudentGate({ children }: { children: ReactNode }) {
     if (!ready) return;
     if (isLogin) {
       if (!user) return;
-      if (isCoachAccount(user)) {
-        router.replace("/student");
+      if (isCoachAccount(user) || onboarding === "done") {
+        window.location.replace("/student");
         return;
       }
       if (onboarding === "needed") router.replace("/onboarding");
-      else if (onboarding === "done") router.replace("/student");
       return;
     }
     if (!user) {
       router.replace("/student/login");
       return;
     }
-    if (onboarding === "needed") router.replace("/onboarding");
   }, [ready, user, isLogin, onboarding, pathname, router]);
 
   if (!ready) return <LoadingFrame label="Loading your course…" />;
@@ -134,9 +130,6 @@ function StudentGate({ children }: { children: ReactNode }) {
     );
   }
   if (!user) return <LoadingFrame label="Taking you to sign in…" />;
-  if (onboarding === "unknown" || onboarding === "needed") {
-    return <LoadingFrame label={onboarding === "needed" ? "Taking you to setup…" : "Loading your course…"} />;
-  }
 
   return (
     <StudentNavProvider>
