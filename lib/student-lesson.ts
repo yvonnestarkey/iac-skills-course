@@ -1,4 +1,5 @@
 import { findLesson } from "./course";
+import { isDiyLesson, isMainTaskAssignment, isTaskSubmissionAssignment } from "./course-phases";
 import { withComputedDuration } from "./lesson-duration";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
@@ -110,12 +111,9 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
   const ordered = SEED.chapters.flatMap((c) => c.lessons.map((l) => ({ ...l, chapter: c })));
   const index = ordered.findIndex((l) => l.id === lesson.id);
   const next = ordered[index + 1];
-  const prev = ordered[index - 1];
-  const requires_submission = Boolean(lesson.requires_submission) || lesson.type === "assignment" || lesson.type === "upload";
-  const prevGated =
-    Boolean(prev?.requires_submission || prev?.requires_coach_approval) ||
-    prev?.type === "assignment" ||
-    prev?.type === "upload";
+  const gates = outlineFromSeed()
+    .flatMap((chapter) => chapter.lessons)
+    .find((item) => item.id === lesson.id);
   return {
     id: lesson.id,
     type: lesson.type,
@@ -129,9 +127,9 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     takeaways: lesson.takeaways,
     due: lesson.due,
     brief: lesson.brief,
-    requires_submission,
-    requires_coach_approval: Boolean(lesson.requires_coach_approval),
-    prereq_lesson_id: lesson.prereq_lesson_id || (prevGated && prev ? prev.id : null),
+    requires_submission: gates?.requires_submission ?? false,
+    requires_coach_approval: Boolean(lesson.requires_coach_approval || gates?.requires_coach_approval),
+    prereq_lesson_id: gates?.prereq_lesson_id || lesson.prereq_lesson_id || null,
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
   };
@@ -185,19 +183,42 @@ function outlineLessonFromRow(row: {
   return withComputedDuration(lesson);
 }
 
-function withSequentialPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
-  const lessons = chapters.flatMap((chapter) => chapter.lessons);
-  let previous: OutlineLesson | null = null;
+function withSubmissionPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
+  const flagged = chapters.map((chapter) => ({
+    ...chapter,
+    lessons: chapter.lessons.map((lesson) => {
+      if (isDiyLesson(lesson.title)) return { ...lesson, requires_submission: false };
+      if (isTaskSubmissionAssignment(chapter.title, lesson)) return { ...lesson, requires_submission: true };
+      return lesson;
+    }),
+  }));
+
+  let lastMainTaskId: string | null = null;
+  let pendingPhase1Gate: string | null = null;
   const gated = new Map<string, OutlineLesson>();
-  lessons.forEach((lesson) => {
-    const prereq_lesson_id =
-      lesson.prereq_lesson_id ||
-      (previous && (previous.requires_submission || previous.requires_coach_approval) ? previous.id : null);
-    const next = { ...lesson, prereq_lesson_id: prereq_lesson_id || null };
-    gated.set(lesson.id, next);
-    previous = next;
+
+  flagged.forEach((chapter) => {
+    chapter.lessons.forEach((lesson) => {
+      let prereq_lesson_id: string | null = null;
+      if (lastMainTaskId) prereq_lesson_id = lastMainTaskId;
+      else if (pendingPhase1Gate) prereq_lesson_id = pendingPhase1Gate;
+      else prereq_lesson_id = lesson.prereq_lesson_id || null;
+
+      const next = { ...lesson, prereq_lesson_id: prereq_lesson_id || null };
+      gated.set(lesson.id, next);
+
+      if (isMainTaskAssignment(chapter.title, next)) {
+        lastMainTaskId = next.id;
+        pendingPhase1Gate = null;
+      } else if (!lastMainTaskId && (next.requires_submission || next.requires_coach_approval)) {
+        pendingPhase1Gate = next.id;
+      } else {
+        pendingPhase1Gate = null;
+      }
+    });
   });
-  return chapters.map((chapter) => ({
+
+  return flagged.map((chapter) => ({
     ...chapter,
     lessons: chapter.lessons.map((lesson) => gated.get(lesson.id) || lesson),
   }));
@@ -235,7 +256,7 @@ export function courseDataFromOutline(outline: OutlineChapter[]): CourseData {
 }
 
 export function outlineFromSeed(): OutlineChapter[] {
-  return withSequentialPrereqs(
+  return withSubmissionPrereqs(
     SEED.chapters.map((chapter) => ({
       id: chapter.id,
       title: chapter.title,
@@ -320,7 +341,7 @@ export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
       const chapterMeta = new Map((chapterRows || []).map((row) => [row.id, row]));
       const ids = chapterRows?.length ? chapterRows.map((row) => row.id) : [...grouped.keys()];
       const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
-      return withSequentialPrereqs(
+      return withSubmissionPrereqs(
         [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
           const lessons = grouped.get(id) || [];
           const live = chapterMeta.get(id);
@@ -371,6 +392,18 @@ export function safeStudentPath(value: string | null | undefined): string {
   return value;
 }
 
+async function overlayLessonGates(lesson: StudentLesson): Promise<StudentLesson> {
+  const outline = await fetchCourseOutline();
+  const match = outline.flatMap((chapter) => chapter.lessons).find((item) => item.id === lesson.id);
+  if (!match) return lesson;
+  return {
+    ...lesson,
+    requires_submission: Boolean(match.requires_submission),
+    requires_coach_approval: Boolean(match.requires_coach_approval || lesson.requires_coach_approval),
+    prereq_lesson_id: match.prereq_lesson_id || null,
+  };
+}
+
 /** Prefer the lessons table; fall back to the seeded course so local still works. */
 export async function fetchStudentLesson(lessonId: string): Promise<StudentLesson | null> {
   await bypassStaticCache();
@@ -386,7 +419,7 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
       const list = neighbors || [];
       const index = list.findIndex((row) => row.id === lessonId);
       const next = index >= 0 ? list[index + 1] : null;
-      return {
+      return overlayLessonGates({
         id: data.id,
         type: data.type as LessonType,
         title: data.title,
@@ -409,10 +442,11 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
         prereq_lesson_id: asPrereq(data.prereq_lesson_id) || null,
         next: next ? { id: next.id, title: next.title } : null,
         source: "supabase",
-      };
+      });
     }
   }
-  return fromSeed(lessonId);
+  const seed = fromSeed(lessonId);
+  return seed ? overlayLessonGates(seed) : null;
 }
 
 export async function fetchLessonProgress(lessonId: string): Promise<{

@@ -9,7 +9,7 @@ import type { StudentSubmission } from "@/lib/student-submissions";
 import {
   chapterProgress,
   findLessonLocation,
-  isChapterUnlocked,
+  isChapterSequentiallyLocked,
   isPhaseUnlocked,
   phaseUnitProgress,
   splitCoursePhases,
@@ -155,7 +155,7 @@ export default function CoursePhaseAccordions({
             {phaseOpen
               ? phase.chapters.map((chapter) => {
                   const stats = chapterProgress(chapter, completed);
-                  const chapterLocked = !unlocked && !isChapterUnlocked(ordered, chapter.id, completed);
+                  const chapterLocked = !unlocked && isChapterSequentiallyLocked(chapters, chapter.id, completed);
                   const chapterOpen = Boolean(openChapters[chapter.id]);
                   return (
                     <article

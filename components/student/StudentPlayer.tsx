@@ -8,7 +8,7 @@ import LessonSubmissionForm from "@/components/student/LessonSubmissionForm";
 import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
 import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult } from "@/lib/accessControl";
-import { findResumeLesson, isChapterUnlocked, splitCoursePhases } from "@/lib/course-phases";
+import { findResumeLesson, isChapterSequentiallyLocked, splitCoursePhases } from "@/lib/course-phases";
 import { useCoursePreview } from "@/lib/course-preview";
 import type { LessonType } from "@/lib/types";
 
@@ -86,7 +86,7 @@ export default function StudentPlayer({
   const catalog = useMemo(() => catalogFromOutline(outline), [outline]);
   const liveAccess = checkLessonAccess(outlineToGate(lesson), catalog, submissions);
   const access = catalog.length ? liveAccess : initialAccess || liveAccess;
-  const chapterLocked = outline.length > 0 && !isChapterUnlocked(ordered, lesson.chapterId, completedMap);
+  const chapterLocked = outline.length > 0 && isChapterSequentiallyLocked(outline, lesson.chapterId, completedMap);
   const resume = findResumeLesson(ordered, completedMap);
   const showSubmission = Boolean(lesson.requires_submission || lesson.requires_coach_approval);
 

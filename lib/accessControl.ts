@@ -1,10 +1,5 @@
 import { fetchCourseOutline, type OutlineChapter, type OutlineLesson } from "./student-lesson";
-import {
-  fetchLessonSubmission,
-  fetchStudentSubmissions,
-  type StudentSubmission,
-} from "./student-submissions";
-import { getSupabase } from "./supabase";
+import { fetchStudentSubmissions, type StudentSubmission } from "./student-submissions";
 
 export interface LessonGate {
   id: string;
@@ -79,53 +74,12 @@ export function checkLessonAccess(
   return { isLocked: false };
 }
 
-async function fetchLessonGate(lessonId: string): Promise<LessonGate | null> {
-  const client = getSupabase();
-  if (!client) return null;
-  const { data, error } = await client
-    .from("lessons")
-    .select("id, title, requires_submission, requires_coach_approval, prereq_lesson_id")
-    .eq("id", lessonId)
-    .maybeSingle();
-  if (error || !data) return null;
-  return {
-    id: data.id,
-    title: data.title,
-    requires_submission: Boolean(data.requires_submission),
-    requires_coach_approval: Boolean(data.requires_coach_approval),
-    prereq_lesson_id: data.prereq_lesson_id || null,
-  };
-}
-
 /** Async gate used by the lesson page when a student opens a target lesson. */
 export async function getLessonAccess(studentId: string, targetLessonId: string): Promise<AccessResult> {
-  const client = getSupabase();
-  if (!client) {
-    const outline = await fetchCourseOutline();
-    const catalog = catalogFromOutline(outline);
-    const target = catalog.find((lesson) => lesson.id === targetLessonId);
-    if (!target) return { isLocked: false };
-    const submissions = await fetchStudentSubmissions(studentId);
-    return checkLessonAccess(target, catalog, submissions);
-  }
-
-  let target = await fetchLessonGate(targetLessonId);
-  if (!target) {
-    const outline = await fetchCourseOutline();
-    target = catalogFromOutline(outline).find((lesson) => lesson.id === targetLessonId) || null;
-  }
-  if (!target?.prereq_lesson_id) return { isLocked: false };
-
-  let prereq = await fetchLessonGate(target.prereq_lesson_id);
-  if (!prereq) {
-    const outline = await fetchCourseOutline();
-    prereq = catalogFromOutline(outline).find((lesson) => lesson.id === target!.prereq_lesson_id) || {
-      id: target.prereq_lesson_id,
-      title: "the previous lesson",
-      requires_submission: true,
-    };
-  }
-
-  const submission = await fetchLessonSubmission(studentId, prereq.id);
-  return checkLessonAccess(target, [target, prereq], { [prereq.id]: submission || undefined });
+  const outline = await fetchCourseOutline();
+  const catalog = catalogFromOutline(outline);
+  const target = catalog.find((lesson) => lesson.id === targetLessonId);
+  if (!target) return { isLocked: false };
+  const submissions = await fetchStudentSubmissions(studentId);
+  return checkLessonAccess(target, catalog, submissions);
 }

@@ -29,6 +29,31 @@ export function isTaskChapter(title: string): boolean {
   return /^Task\b/i.test(title.trim());
 }
 
+export function isDiyLesson(title: string): boolean {
+  return /\bDIY\b/i.test(title.trim());
+}
+
+/** Numbered Task 1–n chapters, not “Task 3 Extra” practice chapters. */
+export function isNumberedTaskChapter(title: string): boolean {
+  const trimmed = title.trim();
+  return /^Task\s+\d+\b/i.test(trimmed) && !/\bExtra\b/i.test(trimmed);
+}
+
+/** Assignments in Task chapters that should show the submission form. */
+export function isTaskSubmissionAssignment(
+  chapterTitle: string,
+  lesson: { title: string; type: string }
+): boolean {
+  if (isDiyLesson(lesson.title)) return false;
+  if (lesson.type !== "assignment" && lesson.type !== "upload") return false;
+  return isTaskChapter(chapterTitle);
+}
+
+/** The Task assignment that later Tasks wait on. */
+export function isMainTaskAssignment(chapterTitle: string, lesson: { title: string; type: string }): boolean {
+  return isNumberedTaskChapter(chapterTitle) && isTaskSubmissionAssignment(chapterTitle, lesson);
+}
+
 export function splitCoursePhases(chapters: OutlineChapter[]): CoursePhase[] {
   const firstTask = chapters.findIndex((chapter) => isTaskChapter(chapter.title));
   let phase1 = firstTask === -1 ? chapters : chapters.slice(0, firstTask);
@@ -111,6 +136,27 @@ export function isChapterUnlocked(
     if (!chapterProgress(chapter, completed).complete) return false;
   }
   return true;
+}
+
+/**
+ * Phase 1 still unlocks section by section.
+ * When the live course has Task chapters, Phase 2 unlocks as a block after
+ * Phase 1; later Tasks are gated by assignment submissions, not by completing
+ * every previous lesson.
+ */
+export function isChapterSequentiallyLocked(
+  chapters: OutlineChapter[],
+  chapterId: string,
+  completed: Record<string, boolean>
+): boolean {
+  const phases = splitCoursePhases(chapters);
+  const ordered = phases.flatMap((phase) => phase.chapters);
+  const hasTaskChapters = ordered.some((chapter) => isTaskChapter(chapter.title));
+  const phase2 = phases.find((phase) => phase.id === "phase2");
+  if (hasTaskChapters && phase2?.chapters.some((chapter) => chapter.id === chapterId)) {
+    return !isPhaseUnlocked(phases, "phase2", completed);
+  }
+  return !isChapterUnlocked(ordered, chapterId, completed);
 }
 
 export function isPhaseUnlocked(phases: CoursePhase[], phaseId: CoursePhaseId, completed: Record<string, boolean>): boolean {

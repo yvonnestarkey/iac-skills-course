@@ -29,6 +29,56 @@ where l.id = ordered.id
   and l.prereq_lesson_id is null
   and (coalesce(ordered.prev_sub, false) or coalesce(ordered.prev_appr, false));
 
+-- Task chapters: every assignment (except DIY) uses the requires-submission rule.
+-- Later Tasks stay locked until the previous numbered Task assignment is submitted.
+update public.lessons l
+set requires_submission = true
+from public.chapters c
+where l.chapter_id = c.id
+  and c.title ~* '^Task '
+  and l.type in ('assignment', 'upload')
+  and l.title !~* 'DIY';
+
+update public.lessons l
+set requires_submission = false
+from public.chapters c
+where l.chapter_id = c.id
+  and c.title ~* '^Task '
+  and l.title ~* 'DIY';
+
+with ordered as (
+  select
+    l.id,
+    row_number() over (order by coalesce(c.position, 0), l.position, l.id) as rn,
+    case
+      when c.title ~* '^Task[[:space:]]+[0-9]+'
+        and c.title !~* 'Extra'
+        and l.type in ('assignment', 'upload')
+        and l.title !~* 'DIY'
+      then l.id
+    end as main_task_id
+  from public.lessons l
+  left join public.chapters c on c.id = l.chapter_id
+),
+with_prev as (
+  select
+    o.id,
+    (
+      select o2.main_task_id
+      from ordered o2
+      where o2.rn < o.rn
+        and o2.main_task_id is not null
+      order by o2.rn desc
+      limit 1
+    ) as prev_task_id
+  from ordered o
+)
+update public.lessons l
+set prereq_lesson_id = with_prev.prev_task_id
+from with_prev
+where l.id = with_prev.id
+  and with_prev.prev_task_id is not null;
+
 create table if not exists public.student_submissions (
   id           uuid primary key default gen_random_uuid(),
   student_id   uuid not null references auth.users (id) on delete cascade,
