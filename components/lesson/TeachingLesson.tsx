@@ -30,7 +30,7 @@ export default function TeachingLesson({ lesson }: { lesson: FlatLesson }) {
         </div>
       )}
       <article className="lesson-body">
-        <LessonHeader lesson={lesson} kicker={lesson.type === "video" ? "Video lesson" : "Reading"} />
+        <LessonHeader lesson={lesson} />
         <p className="lead">{lesson.blurb}</p>
         {(lesson.body || []).map((paragraph, i) => (
           <p key={i}>{paragraph}</p>

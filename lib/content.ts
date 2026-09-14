@@ -2,7 +2,7 @@ import { allLessons } from "./course";
 import { getSupabase } from "./supabase";
 import type { Chapter, CourseData, Lesson, LessonType } from "./types";
 
-export const LESSON_TYPES: LessonType[] = ["video", "reading", "assignment", "upload", "ask", "survey"];
+export const LESSON_TYPES: LessonType[] = ["video", "reading", "assignment", "upload", "download", "ask", "survey"];
 
 export const CSV_COLUMNS = [
   "chapter",

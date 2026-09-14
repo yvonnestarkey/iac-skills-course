@@ -5,7 +5,7 @@ create table if not exists public.lessons (
   id          text primary key,
   chapter_id  text not null,
   position    integer not null default 0,
-  type        text not null check (type in ('video', 'reading', 'assignment', 'upload', 'ask', 'survey')),
+  type        text not null check (type in ('video', 'reading', 'assignment', 'upload', 'download', 'ask', 'survey')),
   title       text not null,
   duration    text,
   seconds     integer,

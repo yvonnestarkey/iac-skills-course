@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Lock } from "lucide-react";
-import { ICONS } from "@/lib/constants";
+import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
 import { catalogFromOutline, checkLessonAccess } from "@/lib/accessControl";
 import type { StudentSubmission } from "@/lib/student-submissions";
 import {
@@ -16,6 +16,7 @@ import {
   type CoursePhaseId,
 } from "@/lib/course-phases";
 import { durationBadge } from "@/lib/lesson-duration";
+import { displayLessonType } from "@/lib/lesson-type";
 import type { OutlineChapter, OutlineLesson } from "@/lib/student-lesson";
 
 function LessonEntry({
@@ -36,7 +37,10 @@ function LessonEntry({
   onNavigate?: () => void;
 }) {
   const badge = durationBadge(lesson);
-  const icon = done && !locked ? "✓" : ICONS[lesson.type] || "•";
+  const kind = displayLessonType(lesson);
+  const icon = (
+    <LessonTypeIcon type={kind} title={lesson.title} done={done && !locked} size={13} />
+  );
   const title = (
     <span className="lesson-title">
       {locked ? <Lock size={12} className="lesson-lock" aria-label="Locked" /> : null}
@@ -62,7 +66,7 @@ function LessonEntry({
 
   if (locked) {
     return (
-      <span className={`lesson-link lesson-preview locked ${lesson.type}`} aria-disabled="true">
+      <span className={`lesson-link lesson-preview locked ${kind}`} aria-disabled="true">
         {body}
       </span>
     );
@@ -71,7 +75,7 @@ function LessonEntry({
   return (
     <Link
       href={href}
-      className={`lesson-link ${active ? "active" : ""} ${lesson.type} ${done ? "done" : ""}`}
+      className={`lesson-link ${active ? "active" : ""} ${kind} ${done ? "done" : ""}`}
       onClick={onNavigate}
     >
       {body}

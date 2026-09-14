@@ -10,6 +10,7 @@ import { withComputedDuration } from "./lesson-duration";
 import { asPdfUrl } from "./lesson-resources";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
+import { asLessonType, displayLessonType } from "./lesson-type";
 import type { CourseData, Lesson, LessonType } from "./types";
 
 /** Opt server-side Supabase reads out of Next's fetch cache. Safe to call from the client. */
@@ -124,7 +125,7 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     .find((item) => item.id === lesson.id);
   return {
     id: lesson.id,
-    type: lesson.type,
+    type: displayLessonType({ ...lesson, pdf_url: asPdfUrl(lesson.pdf_url) }),
     title: lesson.title,
     chapterId: lesson.chapter.id,
     chapterTitle: lesson.chapter.title,
@@ -174,12 +175,15 @@ function outlineLessonFromRow(row: {
   requires_coach_approval?: boolean | null;
   prereq_lesson_id?: string | null;
 }): OutlineLesson {
-  const type = row.type as LessonType;
   const flagged = asBool(row.requires_submission);
   const lesson: OutlineLesson = {
     id: row.id,
     title: row.title,
-    type,
+    type: displayLessonType({
+      type: asLessonType(row.type),
+      title: row.title,
+      requires_submission: flagged,
+    }),
     duration: row.duration || undefined,
     seconds: numberOrUndef(row.seconds),
     video_duration_seconds: numberOrUndef(row.video_duration_seconds),
@@ -440,7 +444,12 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
       const next = index >= 0 ? list[index + 1] : null;
       return overlayLessonGates({
         id: data.id,
-        type: data.type as LessonType,
+        type: displayLessonType({
+          type: asLessonType(data.type),
+          title: data.title,
+          pdf_url: asPdfUrl(data.pdf_url),
+          requires_submission: asBool(data.requires_submission) ?? false,
+        }),
         title: data.title,
         chapterId: data.chapter_id,
         chapterTitle: chapterTitle(data.chapter_id),

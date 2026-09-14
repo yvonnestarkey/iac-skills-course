@@ -1,15 +1,19 @@
 "use client";
 
+import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
+import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
 import { useRouter } from "next/navigation";
 import { allLessons } from "@/lib/course";
 import { useStore } from "@/lib/store";
 import type { FlatLesson } from "@/lib/types";
 
-export function LessonHeader({ lesson, kicker }: { lesson: FlatLesson; kicker: string }) {
+export function LessonHeader({ lesson, kicker }: { lesson: FlatLesson; kicker?: string }) {
+  const kind = displayLessonType(lesson);
   return (
     <>
       <p className="kicker">
-        {lesson.chapter.title} · {kicker}
+        <LessonTypeIcon type={kind} title={lesson.title} size={13} />
+        {kicker || lessonTypeLabel(kind)}
       </p>
       <h1>{lesson.title}</h1>
     </>

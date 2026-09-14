@@ -14,6 +14,7 @@ const TYPE_DEFAULTS: Record<string, number> = {
   reading: 5,
   assignment: 60,
   upload: 40,
+  download: 5,
   survey: 5,
   ask: 10,
 };

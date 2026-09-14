@@ -1,6 +1,6 @@
 "use client";
 
-import { ICONS } from "@/lib/constants";
+import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
 import { chapterCode, isDone, taskAction } from "@/lib/course";
 import { addDays, isoDate, longDate, mondayOf, parseISO, shortDate, today } from "@/lib/dates";
 import { planCapacity, planStatus, upcomingLiveSessions } from "@/lib/planner";
@@ -145,7 +145,11 @@ export default function ScheduleView({
                     return (
                       <li className={`${done ? "done" : ""} ${late ? "late" : ""}`} key={j}>
                         <span className={`plan-icon ${item.lesson.type}`}>
-                          {done ? "✓" : ICONS[item.lesson.type]}
+                          {done ? (
+                            "✓"
+                          ) : (
+                            <LessonTypeIcon type={item.lesson.type} title={item.lesson.title} size={13} />
+                          )}
                         </span>
                         <span className="plan-item-text">
                           <strong>

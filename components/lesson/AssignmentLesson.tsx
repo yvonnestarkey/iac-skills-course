@@ -28,7 +28,7 @@ export default function AssignmentLesson({ lesson }: { lesson: FlatLesson }) {
 
   return (
     <article className="lesson-body wide">
-      <LessonHeader lesson={lesson} kicker="Written assignment" />
+      <LessonHeader lesson={lesson} />
       <p className="lead">Due {lesson.due}</p>
       {saved ? <div className="notice">Submitted. You can still update it before the deadline.</div> : null}
       <p>{lesson.brief}</p>

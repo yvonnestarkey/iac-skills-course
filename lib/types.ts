@@ -1,4 +1,4 @@
-export type LessonType = "video" | "reading" | "assignment" | "upload" | "ask" | "survey";
+export type LessonType = "video" | "reading" | "assignment" | "upload" | "ask" | "survey" | "download";
 
 export interface Lesson {
   id: string;

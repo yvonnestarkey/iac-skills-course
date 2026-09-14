@@ -4,6 +4,7 @@ export const ICONS: Record<string, string> = {
   reading: "▤",
   assignment: "✎",
   upload: "⬆",
+  download: "⬇",
   ask: "✳",
   survey: "★",
 };

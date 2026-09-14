@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import LessonPdfViewer from "@/components/LessonPdfViewer";
+import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
 import VideoPlayer, { embedSrcForVideo } from "@/components/lesson/VideoPlayer";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
 import LessonSubmissionForm from "@/components/student/LessonSubmissionForm";
@@ -11,16 +12,7 @@ import { useStudentSession } from "@/lib/student-session";
 import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult } from "@/lib/accessControl";
 import { findResumeLesson, isChapterSequentiallyLocked, splitCoursePhases } from "@/lib/course-phases";
 import { useCoursePreview } from "@/lib/course-preview";
-import type { LessonType } from "@/lib/types";
-
-const KICKERS: Record<LessonType, string> = {
-  video: "Video lesson",
-  reading: "Reading",
-  assignment: "Written assignment",
-  upload: "File upload",
-  ask: "Ask your coach",
-  survey: "Check-in",
-};
+import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
 
 export default function StudentPlayer({
   lesson,
@@ -90,6 +82,7 @@ export default function StudentPlayer({
   const chapterLocked = outline.length > 0 && isChapterSequentiallyLocked(outline, lesson.chapterId, completedMap);
   const resume = findResumeLesson(ordered, completedMap);
   const showSubmission = lesson.requires_submission === true || lesson.requires_coach_approval === true;
+  const kind = displayLessonType(lesson);
 
   if (!unlocked && access.isLocked) {
     return (
@@ -129,9 +122,9 @@ export default function StudentPlayer({
 
   return (
     <>
-      {embedSrcForVideo(lesson.video_url) || lesson.type === "video" ? (
+      {embedSrcForVideo(lesson.video_url) || kind === "video" ? (
         <VideoPlayer lesson={lesson} />
-      ) : lesson.type === "reading" ? (
+      ) : kind === "reading" ? (
         <div className="reading-hero">
           <span>{lesson.duration}</span>
           <p>{lesson.blurb}</p>
@@ -140,7 +133,8 @@ export default function StudentPlayer({
 
       <article className="lesson-body">
         <p className="kicker">
-          {lesson.chapterTitle} · {KICKERS[lesson.type]}
+          <LessonTypeIcon type={kind} title={lesson.title} size={13} />
+          {lessonTypeLabel(kind)}
         </p>
         <h1>{lesson.title}</h1>
         {status ? <p className="notice">{status}</p> : null}

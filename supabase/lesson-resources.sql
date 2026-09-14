@@ -7,8 +7,14 @@
 
 alter table public.lessons add column if not exists pdf_url text;
 
+alter table public.lessons drop constraint if exists lessons_type_check;
+alter table public.lessons add constraint lessons_type_check
+  check (type in ('video', 'reading', 'assignment', 'upload', 'download', 'ask', 'survey'));
+
 -- Thinkific PDF / download lessons were stored as type=upload. They are not student uploads.
 update public.lessons
-set requires_submission = false
+set requires_submission = false,
+    type = 'download'
 where type = 'upload'
-  and title !~* 'submission';
+  and title !~* 'submission'
+  and title !~* 'upload';

@@ -64,7 +64,7 @@ export default function UploadLesson({ lesson }: { lesson: FlatLesson }) {
 
   return (
     <article className="lesson-body wide">
-      <LessonHeader lesson={lesson} kicker="PDF upload" />
+      <LessonHeader lesson={lesson} />
       <p className="lead">Due {lesson.due}</p>
       {file ? <div className="notice">PDF received. Upload a new file to replace it.</div> : null}
       {notice ? <div className="waiting">{notice}</div> : null}

@@ -358,7 +358,8 @@ h1 {
 }
 
 .lesson-link.assignment .icon,
-.lesson-link.upload .icon {
+.lesson-link.upload .icon,
+.lesson-link.download .icon {
   background: var(--light);
   color: var(--ink);
 }
@@ -534,6 +535,9 @@ h1 {
 }
 
 .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   text-transform: uppercase;
   letter-spacing: 0.09em;
   font-size: 11.5px;

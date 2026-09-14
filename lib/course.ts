@@ -102,6 +102,7 @@ export function taskAction(lesson: Lesson): string {
   if (lesson.type === "reading") return "Read and annotate";
   if (lesson.type === "assignment") return "Write up and submit";
   if (lesson.type === "upload") return "Scan and upload PDF";
+  if (lesson.type === "download") return "Download the PDF";
   if (lesson.type === "survey") return "Complete the check-in";
   return "Work through this lesson";
 }
