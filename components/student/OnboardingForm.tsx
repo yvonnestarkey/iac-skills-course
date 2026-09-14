@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { FormEvent, ReactNode } from "react";
+import type { FormEvent, KeyboardEvent, ReactNode } from "react";
 import BrandMark from "@/components/BrandMark";
 import {
   ONBOARDING_COUNTRIES,
@@ -16,6 +16,7 @@ import { isCoachAccount } from "@/lib/roles";
 import { useStudentSession } from "@/lib/student-session";
 
 const STEPS = ["IAC exam", "CTA / PGDA", "Notes", "Contact"] as const;
+const LAST_STEP = STEPS.length - 1;
 
 function FieldLabel({
   htmlFor,
@@ -96,17 +97,32 @@ export default function OnboardingForm({
   };
 
   const goNext = () => {
+    if (step >= LAST_STEP) return;
     const message = step === 0 ? validateIac() : "";
     if (message) {
       setError(message);
       return;
     }
     setError("");
-    setStep((current) => Math.min(current + 1, STEPS.length - 1));
+    setStep((current) => Math.min(current + 1, LAST_STEP));
+  };
+
+  const goBack = () => {
+    setError("");
+    setStep((current) => Math.max(current - 1, 0));
+  };
+
+  const onFormKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
+    if (event.key !== "Enter") return;
+    const target = event.target as HTMLElement | null;
+    if (target?.tagName === "TEXTAREA") return;
+    if (step === LAST_STEP) return;
+    event.preventDefault();
   };
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    if (step !== LAST_STEP) return;
     const message = validateIac();
     if (message) {
       setError(message);
@@ -179,7 +195,7 @@ export default function OnboardingForm({
           ))}
         </ol>
 
-        <form onSubmit={submit} noValidate>
+        <form onSubmit={submit} onKeyDown={onFormKeyDown} noValidate>
           {step === 0 ? (
             <fieldset className="onboarding-step">
               <legend>IAC exam</legend>
@@ -382,11 +398,11 @@ export default function OnboardingForm({
 
           <div className="actions">
             {step > 0 ? (
-              <button className="ghost" type="button" onClick={() => setStep((current) => current - 1)}>
+              <button className="ghost" type="button" onClick={goBack}>
                 Back
               </button>
             ) : null}
-            {step < STEPS.length - 1 ? (
+            {step < LAST_STEP ? (
               <button className="primary" type="button" onClick={goNext}>
                 Continue
               </button>
