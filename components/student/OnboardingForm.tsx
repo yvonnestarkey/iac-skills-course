@@ -2,14 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { FormEvent, KeyboardEvent, ReactNode } from "react";
+import type { FormEvent, KeyboardEvent, MouseEvent, ReactNode } from "react";
 import BrandMark from "@/components/BrandMark";
 import HelpTooltip from "@/components/ui/HelpTooltip";
 import {
   ONBOARDING_COUNTRIES,
   ONBOARDING_CTA_YEARS,
   ONBOARDING_INSTITUTIONS,
-  fetchOnboardingState,
   saveOnboarding,
   type OnboardingCountry,
 } from "@/lib/onboarding";
@@ -73,11 +72,7 @@ export default function OnboardingForm({
     }
     if (isCoachAccount(user)) {
       router.replace("/student");
-      return;
     }
-    fetchOnboardingState(user.id).then((state) => {
-      if (state.available && state.completed) router.replace("/student/overview");
-    });
   }, [ready, user, router]);
 
   if (!ready || !user) {
@@ -97,7 +92,9 @@ export default function OnboardingForm({
     return "";
   };
 
-  const goNext = () => {
+  const goNext = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     if (step >= LAST_STEP) return;
     const message = step === 0 ? validateIac() : "";
     if (message) {
@@ -108,7 +105,9 @@ export default function OnboardingForm({
     setStep((current) => Math.min(current + 1, LAST_STEP));
   };
 
-  const goBack = () => {
+  const goBack = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     setError("");
     setStep((current) => Math.max(current - 1, 0));
   };
@@ -117,12 +116,16 @@ export default function OnboardingForm({
     if (event.key !== "Enter") return;
     const target = event.target as HTMLElement | null;
     if (target?.tagName === "TEXTAREA") return;
-    if (step === LAST_STEP) return;
     event.preventDefault();
   };
 
-  const submit = async (event: FormEvent) => {
+  const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+  };
+
+  const startCourse = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     if (step !== LAST_STEP) return;
     const message = validateIac();
     if (message) {
@@ -157,7 +160,9 @@ export default function OnboardingForm({
     router.replace("/student/overview");
   };
 
-  const skipForNow = async () => {
+  const skipForNow = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     setBusy(true);
     setError("");
     await skipOnboarding();
@@ -196,7 +201,7 @@ export default function OnboardingForm({
           ))}
         </ol>
 
-        <form onSubmit={submit} onKeyDown={onFormKeyDown} noValidate>
+        <form onSubmit={onFormSubmit} onKeyDown={onFormKeyDown} noValidate>
           {step === 0 ? (
             <fieldset className="onboarding-step">
               <legend>IAC exam</legend>
@@ -410,11 +415,11 @@ export default function OnboardingForm({
               </button>
             ) : null}
             {step < LAST_STEP ? (
-              <button className="primary" type="button" onClick={goNext}>
+              <button key="onboarding-next" className="primary" type="button" onClick={goNext}>
                 Continue
               </button>
             ) : (
-              <button className="primary" type="submit" disabled={busy}>
+              <button key="onboarding-start" className="primary" type="button" disabled={busy} onClick={startCourse}>
                 {busy ? "Saving…" : "Start the course"}
               </button>
             )}
