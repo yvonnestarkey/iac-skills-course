@@ -45,7 +45,7 @@ export default function TeachingLesson({ lesson }: { lesson: FlatLesson }) {
             </ul>
           </div>
         ) : null}
-        <LessonPdfViewer pdfUrl={lesson.pdf_url} />
+        <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
         <div className="actions">
           <button className={done ? "ghost" : "primary"} id="complete" onClick={markComplete}>
             {done ? "Completed ✓" : "Mark as complete"}

@@ -2,10 +2,17 @@
 
 import { useEffect, useId, useState } from "react";
 import { Download, Maximize2, X } from "lucide-react";
+import { getLessonPdfUrl, type LessonPdfSource } from "@/lib/getLessonPdf";
 import { asPdfUrl, pdfEmbedSrc } from "@/lib/lesson-resources";
 
-export default function LessonPdfViewer({ pdfUrl }: { pdfUrl?: string | null }) {
-  const url = asPdfUrl(pdfUrl);
+export default function LessonPdfViewer({
+  pdfUrl,
+  lesson,
+}: {
+  pdfUrl?: string | null;
+  lesson?: LessonPdfSource | null;
+}) {
+  const url = asPdfUrl(pdfUrl) || getLessonPdfUrl(lesson);
   const [fullScreen, setFullScreen] = useState(false);
   const titleId = useId();
   const modalTitleId = useId();

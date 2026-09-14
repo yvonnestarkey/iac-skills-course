@@ -19,6 +19,7 @@ export interface Lesson {
   requires_coach_approval?: boolean;
   prereq_lesson_id?: string | null;
   pdf_url?: string;
+  resource_downloads?: unknown;
 }
 
 export interface Chapter {

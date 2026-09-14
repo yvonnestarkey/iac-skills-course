@@ -7,6 +7,8 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
+/** Same fetchStudentLesson + StudentPlayer as /coach/preview/[lessonId], including PDF resolution. */
+
 export async function generateMetadata({ params }: { params: Promise<{ lessonId: string }> }) {
   await connection();
   const { lessonId } = await params;

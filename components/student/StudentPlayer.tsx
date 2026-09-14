@@ -155,7 +155,7 @@ export default function StudentPlayer({
           </div>
         ) : null}
 
-        <LessonPdfViewer pdfUrl={lesson.pdf_url} />
+        <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
 
         <label className="student-notes-label" htmlFor="student-notes">
           Your notes

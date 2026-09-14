@@ -7,7 +7,7 @@ import {
   isTaskSubmissionAssignment,
 } from "./course-phases";
 import { withComputedDuration } from "./lesson-duration";
-import { asPdfUrl } from "./lesson-resources";
+import { getLessonPdfUrl } from "./getLessonPdf";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
 import { asLessonType, displayLessonType } from "./lesson-type";
@@ -41,6 +41,7 @@ export interface StudentLesson {
   requires_coach_approval?: boolean;
   prereq_lesson_id?: string | null;
   pdf_url?: string;
+  resource_downloads?: unknown;
   next: { id: string; title: string } | null;
   source: "supabase" | "seed";
 }
@@ -123,9 +124,10 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
   const gates = outlineFromSeed()
     .flatMap((chapter) => chapter.lessons)
     .find((item) => item.id === lesson.id);
+  const pdf_url = getLessonPdfUrl(lesson);
   return {
     id: lesson.id,
-    type: displayLessonType({ ...lesson, pdf_url: asPdfUrl(lesson.pdf_url) }),
+    type: displayLessonType({ ...lesson, pdf_url }),
     title: lesson.title,
     chapterId: lesson.chapter.id,
     chapterTitle: lesson.chapter.title,
@@ -139,7 +141,8 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     requires_submission: gates?.requires_submission ?? false,
     requires_coach_approval: Boolean(lesson.requires_coach_approval || gates?.requires_coach_approval),
     prereq_lesson_id: gates?.prereq_lesson_id || lesson.prereq_lesson_id || null,
-    pdf_url: asPdfUrl(lesson.pdf_url),
+    pdf_url,
+    resource_downloads: lesson.resource_downloads,
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
   };
@@ -442,12 +445,13 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
       const list = neighbors || [];
       const index = list.findIndex((row) => row.id === lessonId);
       const next = index >= 0 ? list[index + 1] : null;
+      const pdf_url = getLessonPdfUrl(data);
       return overlayLessonGates({
         id: data.id,
         type: displayLessonType({
           type: asLessonType(data.type),
           title: data.title,
-          pdf_url: asPdfUrl(data.pdf_url),
+          pdf_url,
           requires_submission: asBool(data.requires_submission) ?? false,
         }),
         title: data.title,
@@ -467,7 +471,8 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
         requires_submission: asBool(data.requires_submission) ?? false,
         requires_coach_approval: asBool(data.requires_coach_approval) ?? false,
         prereq_lesson_id: asPrereq(data.prereq_lesson_id) || null,
-        pdf_url: asPdfUrl(data.pdf_url),
+        pdf_url,
+        resource_downloads: data.resource_downloads,
         next: next ? { id: next.id, title: next.title } : null,
         source: "supabase",
       });
