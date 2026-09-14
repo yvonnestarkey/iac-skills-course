@@ -5,7 +5,34 @@ import type { MouseEvent } from "react";
 import { formatTime } from "@/lib/dates";
 import type { Lesson } from "@/lib/types";
 
-/** Vimeo embed when the lesson has a player URL; otherwise a timed stand-in. */
+function youtubeVideoId(raw: string): string | null {
+  try {
+    const url = new URL(raw);
+    const host = url.hostname.replace(/^www\./, "").replace(/^m\./, "");
+    if (host === "youtu.be") {
+      return url.pathname.split("/").filter(Boolean)[0] || null;
+    }
+    if (host === "youtube.com" || host === "youtube-nocookie.com") {
+      if (url.pathname.startsWith("/embed/") || url.pathname.startsWith("/shorts/")) {
+        return url.pathname.split("/")[2] || null;
+      }
+      return url.searchParams.get("v");
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+/** Turn a Vimeo or YouTube URL into an iframe src, or null if it is not embeddable. */
+export function embedSrcForVideo(raw?: string): string | null {
+  if (!raw) return null;
+  if (raw.includes("player.vimeo.com")) return raw;
+  const id = youtubeVideoId(raw);
+  return id ? `https://www.youtube.com/embed/${id}` : null;
+}
+
+/** Vimeo or YouTube embed when the lesson has a player URL; otherwise a timed stand-in. */
 export default function VideoPlayer({ lesson }: { lesson: Lesson }) {
   const total = lesson.seconds || 0;
   const [elapsed, setElapsed] = useState(0);
@@ -43,14 +70,20 @@ export default function VideoPlayer({ lesson }: { lesson: Lesson }) {
     setElapsed(Math.round(ratio * total));
   };
 
-  if (lesson.video_url?.includes("player.vimeo.com")) {
+  const embedSrc = embedSrcForVideo(lesson.video_url);
+  if (embedSrc) {
+    const isYouTube = embedSrc.includes("youtube.com/embed/");
     return (
       <div className="player" id="player">
         <iframe
-          src={lesson.video_url}
+          src={embedSrc}
           width="100%"
           height="450"
-          allow="autoplay; fullscreen"
+          allow={
+            isYouTube
+              ? "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              : "autoplay; fullscreen"
+          }
           allowFullScreen
           title={lesson.title}
         />

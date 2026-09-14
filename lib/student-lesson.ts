@@ -60,7 +60,14 @@ function firstVideoUrl(...values: unknown[]): string | undefined {
     else if (Array.isArray(value)) value.forEach(collect);
   };
   values.forEach(collect);
-  return urls.find((url) => url.includes("player.vimeo.com")) || urls[0];
+  return (
+    urls.find(
+      (url) =>
+        url.includes("player.vimeo.com") ||
+        url.includes("youtube.com") ||
+        url.includes("youtu.be")
+    ) || urls[0]
+  );
 }
 
 function asStringList(value: unknown): string[] | undefined {

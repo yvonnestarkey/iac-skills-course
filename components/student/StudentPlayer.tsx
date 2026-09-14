@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import VideoPlayer from "@/components/lesson/VideoPlayer";
+import VideoPlayer, { embedSrcForVideo } from "@/components/lesson/VideoPlayer";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
 import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
@@ -73,7 +73,7 @@ export default function StudentPlayer({ lesson }: { lesson: StudentLesson }) {
 
   return (
     <>
-      {lesson.video_url?.includes("player.vimeo.com") || lesson.type === "video" ? (
+      {embedSrcForVideo(lesson.video_url) || lesson.type === "video" ? (
         <VideoPlayer lesson={lesson} />
       ) : lesson.type === "reading" ? (
         <div className="reading-hero">
