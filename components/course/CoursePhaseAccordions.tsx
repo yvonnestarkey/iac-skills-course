@@ -87,14 +87,16 @@ export default function CoursePhaseAccordions({
   onNavigate,
   variant = "nav",
   submissions = {},
+  unlocked = false,
 }: {
   chapters: OutlineChapter[];
   completed: Record<string, boolean>;
   activeLessonId?: string | null;
-  basePath: "/student" | "/learn";
+  basePath: "/student" | "/learn" | "/coach/preview";
   onNavigate?: () => void;
   variant?: "nav" | "hub";
   submissions?: Record<string, StudentSubmission | undefined>;
+  unlocked?: boolean;
 }) {
   const phases = useMemo(() => splitCoursePhases(chapters), [chapters]);
   const ordered = useMemo(() => phases.flatMap((phase) => phase.chapters), [phases]);
@@ -106,7 +108,9 @@ export default function CoursePhaseAccordions({
     const phase = phases.find((item) => item.chapters.some((chapter) => chapter.id === focusChapterId));
     return phase?.id || "";
   }, [phases, focusChapterId]);
-  const [openPhases, setOpenPhases] = useState<Record<string, boolean>>({});
+  const [openPhases, setOpenPhases] = useState<Record<string, boolean>>(() =>
+    unlocked ? Object.fromEntries(splitCoursePhases(chapters).map((phase) => [phase.id, true])) : {}
+  );
   const [openChapters, setOpenChapters] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
@@ -129,7 +133,7 @@ export default function CoursePhaseAccordions({
     <div className={`course-phases course-phases-${variant}`}>
       {phases.map((phase) => {
         const progress = phaseUnitProgress(phase, completed);
-        const phaseLocked = !isPhaseUnlocked(phases, phase.id, completed);
+        const phaseLocked = !unlocked && !isPhaseUnlocked(phases, phase.id, completed);
         const phaseOpen = Boolean(openPhases[phase.id]);
         return (
           <section
@@ -145,7 +149,9 @@ export default function CoursePhaseAccordions({
                   {phase.title}
                 </h2>
                 <span className="phase-badge">
-                  {progress.done} of {progress.total} {phase.unit} Completed
+                  {unlocked
+                    ? `${progress.total} ${phase.unit}`
+                    : `${progress.done} of ${progress.total} ${phase.unit} Completed`}
                 </span>
               </span>
               <span className="chapter-caret">{phaseOpen ? "▾" : "▸"}</span>
@@ -153,7 +159,7 @@ export default function CoursePhaseAccordions({
             {phaseOpen
               ? phase.chapters.map((chapter) => {
                   const stats = chapterProgress(chapter, completed);
-                  const chapterLocked = !isChapterUnlocked(ordered, chapter.id, completed);
+                  const chapterLocked = !unlocked && !isChapterUnlocked(ordered, chapter.id, completed);
                   const chapterOpen = Boolean(openChapters[chapter.id]);
                   return (
                     <article
@@ -172,9 +178,9 @@ export default function CoursePhaseAccordions({
                             {chapter.title}
                           </h3>
                           <span className="muted small">
-                            {stats.done} of {stats.total} complete
+                            {unlocked ? `${stats.total} lessons` : `${stats.done} of ${stats.total} complete`}
                           </span>
-                          {variant === "hub" ? (
+                          {variant === "hub" && !unlocked ? (
                             <span className="micro-bar" aria-hidden="true">
                               <span style={{ width: `${stats.pct}%` }} />
                             </span>
@@ -192,8 +198,8 @@ export default function CoursePhaseAccordions({
                                   <LessonEntry
                                     lesson={lesson}
                                     locked={
-                                      chapterLocked ||
-                                      checkLessonAccess(lesson, catalog, submissions).isLocked
+                                      !unlocked &&
+                                      (chapterLocked || checkLessonAccess(lesson, catalog, submissions).isLocked)
                                     }
                                     active={lesson.id === activeLessonId}
                                     done={Boolean(completed[lesson.id])}
@@ -210,7 +216,8 @@ export default function CoursePhaseAccordions({
                                 key={lesson.id}
                                 lesson={lesson}
                                 locked={
-                                  chapterLocked || checkLessonAccess(lesson, catalog, submissions).isLocked
+                                  !unlocked &&
+                                  (chapterLocked || checkLessonAccess(lesson, catalog, submissions).isLocked)
                                 }
                                 active={lesson.id === activeLessonId}
                                 done={Boolean(completed[lesson.id])}

@@ -20,6 +20,10 @@ export default function CoachHomePage() {
             <strong>Student lists</strong>
             <span className="muted">Assignments, surveys, and the roster</span>
           </button>
+          <button onClick={() => router.push("/coach/preview")}>
+            <strong>Course preview</strong>
+            <span className="muted">Open the full course with every lesson unlocked</span>
+          </button>
           <button onClick={() => router.push("/coach/inbox")}>
             <strong>Inbox</strong>
             <span className="muted">Student questions and assignment feedback</span>

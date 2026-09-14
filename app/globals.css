@@ -1079,6 +1079,7 @@ input[type="password"]:focus {
 /* Student profile */
 
 .back-link {
+  display: inline-block;
   border: 0;
   background: transparent;
   color: var(--link);
@@ -1086,6 +1087,7 @@ input[type="password"]:focus {
   font-weight: 600;
   padding: 0;
   margin-bottom: 14px;
+  text-decoration: none;
 }
 
 .back-link:hover {
