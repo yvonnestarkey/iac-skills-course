@@ -1,12 +1,13 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { Bell, Mail } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
+import { fetchOnboardingState } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
 import { getSupabase } from "@/lib/supabase";
 import { useStudentSession } from "@/lib/student-session";
@@ -101,15 +102,43 @@ function StudentGate({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const isLogin = pathname === "/student/login";
+  const [onboarding, setOnboarding] = useState<"unknown" | "needed" | "done">("unknown");
+
+  useEffect(() => {
+    if (!ready) return;
+    if (!user || isCoachAccount(user)) {
+      setOnboarding("done");
+      return;
+    }
+    setOnboarding("unknown");
+    let cancelled = false;
+    fetchOnboardingState(user.id).then((state) => {
+      if (cancelled) return;
+      setOnboarding(state.available && !state.completed ? "needed" : "done");
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [ready, user]);
 
   useEffect(() => {
     if (!ready) return;
     if (isLogin) {
-      if (user) router.replace("/student");
+      if (!user) return;
+      if (isCoachAccount(user)) {
+        router.replace("/student");
+        return;
+      }
+      if (onboarding === "needed") router.replace("/onboarding");
+      else if (onboarding === "done") router.replace("/student");
       return;
     }
-    if (!user) router.replace("/student/login");
-  }, [ready, user, isLogin, pathname, router]);
+    if (!user) {
+      router.replace("/student/login");
+      return;
+    }
+    if (onboarding === "needed") router.replace("/onboarding");
+  }, [ready, user, isLogin, onboarding, pathname, router]);
 
   if (!ready) return <LoadingFrame label="Loading your course…" />;
   if (isLogin) {
@@ -124,6 +153,9 @@ function StudentGate({ children }: { children: ReactNode }) {
     );
   }
   if (!user) return <LoadingFrame label="Taking you to sign in…" />;
+  if (onboarding === "unknown" || onboarding === "needed") {
+    return <LoadingFrame label={onboarding === "needed" ? "Taking you to setup…" : "Loading your course…"} />;
+  }
 
   return (
     <StudentNavProvider>

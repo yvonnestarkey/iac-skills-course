@@ -21,6 +21,10 @@ export default function StudentLoginForm() {
     router.replace("/student");
   };
 
+  const goToOnboarding = () => {
+    router.replace("/onboarding");
+  };
+
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     setError("");
@@ -80,9 +84,8 @@ export default function StudentLoginForm() {
       setConfirm("");
       return;
     }
-    goToDashboard();
+    goToOnboarding();
   };
-
   return (
     <section className="card login student-login">
       <h1 className="brand">{mode === "signin" ? "Student sign in" : "Create your account"}</h1>

@@ -46,6 +46,16 @@ export interface UserProfile {
   full_name?: string | null;
   role: string | null;
   cohort?: string;
+  phone?: string | null;
+  accountability_email?: string | null;
   last_active?: string | null;
   created_at?: string;
+}
+
+export interface StudentProfile {
+  id: string;
+  demographics: Record<string, unknown>;
+  qualitative_notes: Record<string, unknown>;
+  onboarding_completed: boolean;
+  updated_at?: string;
 }

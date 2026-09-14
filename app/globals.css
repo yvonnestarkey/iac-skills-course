@@ -745,7 +745,8 @@ h1 {
 textarea,
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="tel"] {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -758,7 +759,8 @@ input[type="password"] {
 textarea:focus,
 input[type="text"]:focus,
 input[type="email"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="tel"]:focus {
   outline: 2px solid rgba(153, 15, 73, 0.28);
   border-color: var(--link);
 }
@@ -3091,5 +3093,97 @@ input[type="password"]:focus {
 @media (max-width: 720px) {
   .resume-banner {
     padding: 16px;
+  }
+}
+
+.onboarding-card {
+  max-width: 640px;
+  margin: 6vh auto 48px;
+}
+
+.onboarding-progress {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 22px 0 8px;
+}
+
+.onboarding-progress li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.onboarding-progress li span {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+}
+
+.onboarding-progress li.on,
+.onboarding-progress li.done {
+  color: var(--ink);
+}
+
+.onboarding-progress li.on span {
+  background: var(--dark);
+  border-color: var(--dark);
+  color: #fff;
+}
+
+.onboarding-progress li.done span {
+  background: var(--medium);
+  border-color: var(--medium);
+  color: #fff;
+}
+
+.onboarding-step {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.onboarding-step legend {
+  font-family: var(--serif);
+  font-size: 20px;
+  margin: 12px 0 4px;
+}
+
+.onboarding-phone {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.9fr) 1.4fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.onboarding-phone .select-line {
+  margin-top: 0;
+}
+
+.onboarding-choice {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 8px 0 4px;
+}
+
+@media (max-width: 720px) {
+  .onboarding-progress {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .onboarding-phone {
+    grid-template-columns: 1fr;
   }
 }
