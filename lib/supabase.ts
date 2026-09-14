@@ -13,16 +13,25 @@ export const supabaseProjectRef = url ? url.replace(/^https?:\/\//, "").split(".
 let browserClient: SupabaseClient | null = null;
 let serverClient: SupabaseClient | null = null;
 
+function createSupabase(persistSession: boolean): SupabaseClient {
+  return createClient(url!, anonKey!, {
+    auth: { persistSession, autoRefreshToken: persistSession },
+    global: {
+      fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+    },
+  });
+}
+
 export function getSupabase(): SupabaseClient | null {
   if (!url || !anonKey) return null;
   if (typeof window === "undefined") {
     if (!serverClient) {
-      serverClient = createClient(url, anonKey, { auth: { persistSession: false, autoRefreshToken: false } });
+      serverClient = createSupabase(false);
     }
     return serverClient;
   }
   if (!browserClient) {
-    browserClient = createClient(url, anonKey, { auth: { persistSession: true, autoRefreshToken: true } });
+    browserClient = createSupabase(true);
   }
   return browserClient;
 }

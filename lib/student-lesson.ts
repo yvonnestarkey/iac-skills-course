@@ -3,6 +3,13 @@ import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
 import type { Lesson, LessonType } from "./types";
 
+/** Opt server-side Supabase reads out of Next's fetch cache. Safe to call from the client. */
+async function bypassStaticCache() {
+  if (typeof window !== "undefined") return;
+  const { connection } = await import("next/server");
+  await connection();
+}
+
 export interface StudentLesson {
   id: string;
   type: LessonType;
@@ -104,6 +111,7 @@ export function outlineFromSeed(): OutlineChapter[] {
 }
 
 export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
+  await bypassStaticCache();
   const client = getSupabase();
   if (client) {
     const { data, error } = await client
@@ -112,6 +120,10 @@ export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
       .order("chapter_id", { ascending: true })
       .order("position", { ascending: true });
     if (!error && data && data.length) {
+      const { data: chapterRows } = await client
+        .from("chapters")
+        .select("id, title, summary, position")
+        .order("position", { ascending: true });
       const grouped = new Map<string, OutlineLesson[]>();
       data.forEach((row) => {
         const list = grouped.get(row.chapter_id) || [];
@@ -123,12 +135,17 @@ export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
         });
         grouped.set(row.chapter_id, list);
       });
-      return [...grouped.entries()].map(([id, lessons]) => {
+      const chapterMeta = new Map((chapterRows || []).map((row) => [row.id, row]));
+      const ids = chapterRows?.length ? chapterRows.map((row) => row.id) : [...grouped.keys()];
+      const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
+      return [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
+        const lessons = grouped.get(id) || [];
+        const live = chapterMeta.get(id);
         const seed = SEED.chapters.find((chapter) => chapter.id === id);
         return {
           id,
-          title: seed?.title || id,
-          summary: seed?.summary,
+          title: live?.title || seed?.title || id,
+          summary: live?.summary || seed?.summary,
           lessons,
         };
       });
@@ -172,6 +189,7 @@ export function safeStudentPath(value: string | null | undefined): string {
 
 /** Prefer the lessons table; fall back to the seeded course so local still works. */
 export async function fetchStudentLesson(lessonId: string): Promise<StudentLesson | null> {
+  await bypassStaticCache();
   const client = getSupabase();
   if (client) {
     const { data, error } = await client.from("lessons").select("*").eq("id", lessonId).maybeSingle();

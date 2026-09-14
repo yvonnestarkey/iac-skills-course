@@ -1,9 +1,13 @@
+import { connection } from "next/server";
 import StudentPlayer from "@/components/student/StudentPlayer";
 import { fetchStudentLesson } from "@/lib/student-lesson";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 export async function generateMetadata({ params }: { params: Promise<{ lessonId: string }> }) {
+  await connection();
   const { lessonId } = await params;
   const lesson = await fetchStudentLesson(lessonId);
   return {
@@ -12,6 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lessonId:
 }
 
 export default async function StudentLessonPage({ params }: { params: Promise<{ lessonId: string }> }) {
+  await connection();
   const { lessonId } = await params;
   const lesson = await fetchStudentLesson(lessonId);
 
