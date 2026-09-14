@@ -3239,6 +3239,23 @@ input[type="tel"]:focus {
   margin: 8px 0 4px;
 }
 
+.onboarding-field {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.onboarding-field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.onboarding-field-label .student-notes-label {
+  margin: 0;
+}
+
 @media (max-width: 720px) {
   .onboarding-progress {
     grid-template-columns: 1fr 1fr;

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { FormEvent } from "react";
+import type { FormEvent, ReactNode } from "react";
 import BrandMark from "@/components/BrandMark";
 import {
   ONBOARDING_COUNTRIES,
@@ -15,7 +15,26 @@ import {
 import { isCoachAccount } from "@/lib/roles";
 import { useStudentSession } from "@/lib/student-session";
 
-const STEPS = ["Contact", "IAC exam", "Coaching", "CTA / PGDA"] as const;
+const STEPS = ["IAC exam", "CTA / PGDA", "Notes", "Contact"] as const;
+
+function FieldLabel({
+  htmlFor,
+  children,
+  hint,
+}: {
+  htmlFor: string;
+  children: ReactNode;
+  hint?: ReactNode;
+}) {
+  return (
+    <div className="onboarding-field-label">
+      <label className="student-notes-label" htmlFor={htmlFor}>
+        {children}
+      </label>
+      {hint}
+    </div>
+  );
+}
 
 export default function OnboardingForm({
   skipOnboarding,
@@ -77,7 +96,7 @@ export default function OnboardingForm({
   };
 
   const goNext = () => {
-    const message = step === 1 ? validateIac() : "";
+    const message = step === 0 ? validateIac() : "";
     if (message) {
       setError(message);
       return;
@@ -91,7 +110,7 @@ export default function OnboardingForm({
     const message = validateIac();
     if (message) {
       setError(message);
-      setStep(1);
+      setStep(0);
       return;
     }
     setBusy(true);
@@ -163,37 +182,7 @@ export default function OnboardingForm({
         <form onSubmit={submit} noValidate>
           {step === 0 ? (
             <fieldset className="onboarding-step">
-              <legend>Contact</legend>
-              <label className="student-notes-label" htmlFor="onboarding-phone">
-                Phone number <span className="muted">(optional)</span>
-              </label>
-              <input
-                id="onboarding-phone"
-                type="text"
-                inputMode="tel"
-                autoComplete="tel"
-                placeholder="+27 82 123 4567"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-              />
-              <label className="student-notes-label" htmlFor="onboarding-accountability">
-                Accountability email <span className="muted">(optional)</span>
-              </label>
-              <input
-                id="onboarding-accountability"
-                type="email"
-                autoComplete="email"
-                placeholder="someone-who-will-nudge-you@example.com"
-                value={accountabilityEmail}
-                onChange={(event) => setAccountabilityEmail(event.target.value)}
-              />
-              <p className="muted small">Include the country code in the phone number if you add one. You can leave these blank.</p>
-            </fieldset>
-          ) : null}
-
-          {step === 1 ? (
-            <fieldset className="onboarding-step">
-              <legend>IAC information</legend>
+              <legend>IAC exam</legend>
               <p className="student-notes-label" id="onboarding-written-label">
                 Have you written the IAC exam before? <span className="muted">(required)</span>
               </p>
@@ -233,6 +222,12 @@ export default function OnboardingForm({
                   </select>
                 </>
               ) : null}
+            </fieldset>
+          ) : null}
+
+          {step === 1 ? (
+            <fieldset className="onboarding-step">
+              <legend>Country &amp; CTA / PGDA</legend>
               <label className="student-notes-label" htmlFor="onboarding-country">
                 Country <span className="muted">(optional)</span>
               </label>
@@ -249,38 +244,6 @@ export default function OnboardingForm({
                   </option>
                 ))}
               </select>
-            </fieldset>
-          ) : null}
-
-          {step === 2 ? (
-            <fieldset className="onboarding-step">
-              <legend>Where you are</legend>
-              <label className="student-notes-label" htmlFor="onboarding-struggling">
-                What are you struggling with? <span className="muted">(optional)</span>
-              </label>
-              <textarea
-                id="onboarding-struggling"
-                rows={4}
-                placeholder="Theory, application, time, confidence…"
-                value={strugglingAreas}
-                onChange={(event) => setStrugglingAreas(event.target.value)}
-              />
-              <label className="student-notes-label" htmlFor="onboarding-hopes">
-                What do you hope coaching will do for you? <span className="muted">(optional)</span>
-              </label>
-              <textarea
-                id="onboarding-hopes"
-                rows={4}
-                placeholder="A clearer plan, someone to check my work, a push when I stall…"
-                value={coachingHopes}
-                onChange={(event) => setCoachingHopes(event.target.value)}
-              />
-            </fieldset>
-          ) : null}
-
-          {step === 3 ? (
-            <fieldset className="onboarding-step">
-              <legend>CTA / PGDA</legend>
               <label className="student-notes-label" htmlFor="onboarding-institution">
                 Institution <span className="muted">(optional)</span>
               </label>
@@ -338,6 +301,32 @@ export default function OnboardingForm({
                   </option>
                 ))}
               </select>
+            </fieldset>
+          ) : null}
+
+          {step === 2 ? (
+            <fieldset className="onboarding-step">
+              <legend>Notes</legend>
+              <label className="student-notes-label" htmlFor="onboarding-struggling">
+                What are you struggling with? <span className="muted">(optional)</span>
+              </label>
+              <textarea
+                id="onboarding-struggling"
+                rows={4}
+                placeholder="Theory, application, time, confidence…"
+                value={strugglingAreas}
+                onChange={(event) => setStrugglingAreas(event.target.value)}
+              />
+              <label className="student-notes-label" htmlFor="onboarding-hopes">
+                What do you hope coaching will do for you? <span className="muted">(optional)</span>
+              </label>
+              <textarea
+                id="onboarding-hopes"
+                rows={4}
+                placeholder="A clearer plan, someone to check my work, a push when I stall…"
+                value={coachingHopes}
+                onChange={(event) => setCoachingHopes(event.target.value)}
+              />
               <label className="student-notes-label" htmlFor="onboarding-notes">
                 Anything else we should know? <span className="muted">(optional)</span>
               </label>
@@ -348,6 +337,40 @@ export default function OnboardingForm({
                 value={additionalNotes}
                 onChange={(event) => setAdditionalNotes(event.target.value)}
               />
+            </fieldset>
+          ) : null}
+
+          {step === 3 ? (
+            <fieldset className="onboarding-step">
+              <legend>Contact</legend>
+              <div className="onboarding-field">
+                <FieldLabel htmlFor="onboarding-phone">
+                  Phone number (with country code) <span className="muted">(optional)</span>
+                </FieldLabel>
+                <input
+                  id="onboarding-phone"
+                  type="text"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  placeholder="+27 82 123 4567"
+                  value={phone}
+                  onChange={(event) => setPhone(event.target.value)}
+                />
+              </div>
+              <div className="onboarding-field">
+                <FieldLabel htmlFor="onboarding-accountability">
+                  Accountability email <span className="muted">(optional)</span>
+                </FieldLabel>
+                <input
+                  id="onboarding-accountability"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="someone-who-will-nudge-you@example.com"
+                  value={accountabilityEmail}
+                  onChange={(event) => setAccountabilityEmail(event.target.value)}
+                />
+              </div>
+              <p className="muted small">You can leave these blank.</p>
             </fieldset>
           ) : null}
 
