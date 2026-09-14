@@ -16,14 +16,16 @@ import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
 export default function StudentPlayer({
   lesson,
   initialAccess,
+  overrideLocks = false,
   children,
 }: {
   lesson: StudentLesson;
   initialAccess?: AccessResult;
+  overrideLocks?: boolean;
   children?: ReactNode;
 }) {
   const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions } = useStudentSession();
-  const { unlocked, basePath } = useCoursePreview();
+  const { basePath } = useCoursePreview();
   const [completed, setCompleted] = useState(false);
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
@@ -85,7 +87,7 @@ export default function StudentPlayer({
   const showSubmission = lesson.requires_submission === true || lesson.requires_coach_approval === true;
   const kind = displayLessonType(lesson);
 
-  if (!unlocked && access.isLocked) {
+  if (!overrideLocks && access.isLocked) {
     return (
       <article className="lesson-body">
         <p className="kicker">Locked lesson</p>
@@ -106,7 +108,7 @@ export default function StudentPlayer({
     );
   }
 
-  if (!unlocked && chapterLocked && resume && resume.lesson.id !== lesson.id) {
+  if (!overrideLocks && chapterLocked && resume && resume.lesson.id !== lesson.id) {
     return (
       <article className="lesson-body">
         <p className="kicker">Locked lesson</p>
