@@ -12,6 +12,7 @@ import {
   fetchOnboardingState,
   formatPhone,
   saveOnboarding,
+  skipOnboarding,
   type OnboardingCountry,
 } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
@@ -129,6 +130,18 @@ export default function OnboardingForm() {
     setBusy(false);
     if (!result.ok) {
       setError(result.error || "Could not save your answers.");
+      return;
+    }
+    router.replace("/student/overview");
+  };
+
+  const skipForNow = async () => {
+    setBusy(true);
+    setError("");
+    const result = await skipOnboarding(user.id);
+    setBusy(false);
+    if (!result.ok) {
+      setError(result.error || "Could not skip onboarding.");
       return;
     }
     router.replace("/student/overview");
@@ -396,6 +409,9 @@ export default function OnboardingForm() {
                 {busy ? "Saving…" : "Start the course"}
               </button>
             )}
+            <button className="ghost" type="button" disabled={busy} onClick={skipForNow}>
+              Skip for now (Complete on next login)
+            </button>
           </div>
         </form>
       </section>

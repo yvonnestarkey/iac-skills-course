@@ -9,8 +9,11 @@ create table if not exists public.student_profiles (
   demographics jsonb not null default '{}'::jsonb,
   qualitative_notes jsonb not null default '{}'::jsonb,
   onboarding_completed boolean not null default false,
+  onboarding_skipped boolean not null default false,
   updated_at timestamptz not null default now()
 );
+
+alter table public.student_profiles add column if not exists onboarding_skipped boolean not null default false;
 
 alter table public.student_profiles enable row level security;
 

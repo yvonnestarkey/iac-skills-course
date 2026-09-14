@@ -57,5 +57,6 @@ export interface StudentProfile {
   demographics: Record<string, unknown>;
   qualitative_notes: Record<string, unknown>;
   onboarding_completed: boolean;
+  onboarding_skipped?: boolean;
   updated_at?: string;
 }

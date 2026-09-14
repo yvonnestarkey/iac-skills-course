@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { ensureStudentProfile } from "@/lib/profiles";
+import { clearOnboardingSkip } from "@/lib/onboarding";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
 type Mode = "signin" | "signup";
@@ -60,7 +61,10 @@ export default function StudentLoginForm() {
         setError(signInError.message);
         return;
       }
-      if (data.user) await ensureStudentProfile({ id: data.user.id, email: data.user.email || trimmedEmail });
+      if (data.user) {
+        await ensureStudentProfile({ id: data.user.id, email: data.user.email || trimmedEmail });
+        await clearOnboardingSkip(data.user.id);
+      }
       setBusy(false);
       goToDashboard();
       return;

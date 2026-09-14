@@ -114,7 +114,7 @@ function StudentGate({ children }: { children: ReactNode }) {
     let cancelled = false;
     fetchOnboardingState(user.id).then((state) => {
       if (cancelled) return;
-      setOnboarding(state.available && !state.completed ? "needed" : "done");
+      setOnboarding(state.available && !state.completed && !state.skipped ? "needed" : "done");
     });
     return () => {
       cancelled = true;
