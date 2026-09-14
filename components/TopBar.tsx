@@ -3,7 +3,6 @@
 import { usePathname, useRouter } from "next/navigation";
 import { Bell, Mail } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
-import RoleSwitcher from "@/components/RoleSwitcher";
 import { unreadForCoach, unreadForStudent } from "@/lib/comms";
 import { waitingQuestions } from "@/lib/course";
 import { useStore } from "@/lib/store";
@@ -55,7 +54,7 @@ export default function TopBar() {
           </button>
         ) : null}
         {waiting ? <span className="pill">{waiting} waiting</span> : null}
-        <RoleSwitcher current={isCoach ? "coach" : "students"} />
+        {isCoach ? <span className="muted small student-email">Coach</span> : null}
         {courseNav ? (
           <button
             className={`course-menu-btn ${courseNav.open ? "on" : ""}`}
