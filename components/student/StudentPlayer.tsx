@@ -161,7 +161,7 @@ export default function StudentPlayer({
           </div>
         ) : null}
 
-        <LessonResources resources={lesson.resource_downloads} />
+        <LessonResources pdfUrl={lesson.pdf_url} />
 
         <label className="student-notes-label" htmlFor="student-notes">
           Your notes

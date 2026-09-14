@@ -7,7 +7,7 @@ import {
   isTaskSubmissionAssignment,
 } from "./course-phases";
 import { withComputedDuration } from "./lesson-duration";
-import { parseResourceDownloads, type LessonResourceDownload } from "./lesson-resources";
+import { asPdfUrl } from "./lesson-resources";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
 import type { CourseData, Lesson, LessonType } from "./types";
@@ -39,7 +39,7 @@ export interface StudentLesson {
   requires_submission?: boolean;
   requires_coach_approval?: boolean;
   prereq_lesson_id?: string | null;
-  resource_downloads?: LessonResourceDownload[];
+  pdf_url?: string;
   next: { id: string; title: string } | null;
   source: "supabase" | "seed";
 }
@@ -138,7 +138,7 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     requires_submission: gates?.requires_submission ?? false,
     requires_coach_approval: Boolean(lesson.requires_coach_approval || gates?.requires_coach_approval),
     prereq_lesson_id: gates?.prereq_lesson_id || lesson.prereq_lesson_id || null,
-    resource_downloads: parseResourceDownloads(lesson.resource_downloads),
+    pdf_url: asPdfUrl(lesson.pdf_url),
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
   };
@@ -458,10 +458,7 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
         requires_submission: asBool(data.requires_submission) ?? false,
         requires_coach_approval: asBool(data.requires_coach_approval) ?? false,
         prereq_lesson_id: asPrereq(data.prereq_lesson_id) || null,
-        resource_downloads: parseResourceDownloads(data.resource_downloads, {
-          title: data.title,
-          url: typeof data.thinkific_url === "string" ? data.thinkific_url : null,
-        }),
+        pdf_url: asPdfUrl(data.pdf_url),
         next: next ? { id: next.id, title: next.title } : null,
         source: "supabase",
       });

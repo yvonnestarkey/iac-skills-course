@@ -582,7 +582,7 @@ h1 {
   background: var(--sand);
   border: 1px solid var(--sand-line);
   border-radius: 14px;
-  padding: 16px 18px 8px;
+  padding: 16px 18px 14px;
   margin-top: 20px;
 }
 
@@ -596,44 +596,33 @@ h1 {
   font-size: 13.5px;
 }
 
-.lesson-resources ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.lesson-resource {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 10px 0;
-  border-top: 1px solid var(--sand-line);
-}
-
-.lesson-resource-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--dark);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-}
-
-.lesson-resource-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-right: auto;
-  min-width: 140px;
-}
-
 .lesson-resource-download {
   display: inline-flex;
   align-items: center;
+  gap: 8px;
+}
+
+.lesson-pdf-frame {
+  margin-top: 14px;
+  border: 1px solid var(--sand-line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  min-height: 420px;
+}
+
+.lesson-pdf-frame iframe {
+  display: block;
+  width: 100%;
+  height: 520px;
+  border: 0;
+}
+
+.lesson-pdf-fallback {
+  display: flex;
+  align-items: center;
   gap: 6px;
+  margin: 10px 0 0;
 }
 
 /* Controls */

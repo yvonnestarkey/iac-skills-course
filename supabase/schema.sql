@@ -28,7 +28,7 @@ alter table public.lessons add column if not exists duration_minutes integer;
 alter table public.lessons add column if not exists requires_submission boolean not null default false;
 alter table public.lessons add column if not exists requires_coach_approval boolean not null default false;
 alter table public.lessons add column if not exists prereq_lesson_id text;
-alter table public.lessons add column if not exists resource_downloads jsonb not null default '[]'::jsonb;
+alter table public.lessons add column if not exists pdf_url text;
 
 alter table public.lessons enable row level security;
 

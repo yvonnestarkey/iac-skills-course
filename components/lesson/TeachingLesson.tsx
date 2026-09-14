@@ -45,7 +45,7 @@ export default function TeachingLesson({ lesson }: { lesson: FlatLesson }) {
             </ul>
           </div>
         ) : null}
-        <LessonResources resources={lesson.resource_downloads} />
+        <LessonResources pdfUrl={lesson.pdf_url} />
         <div className="actions">
           <button className={done ? "ghost" : "primary"} id="complete" onClick={markComplete}>
             {done ? "Completed ✓" : "Mark as complete"}
