@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import LessonResources from "@/components/LessonResources";
+import LessonPdfViewer from "@/components/LessonPdfViewer";
 import VideoPlayer, { embedSrcForVideo } from "@/components/lesson/VideoPlayer";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
 import LessonSubmissionForm from "@/components/student/LessonSubmissionForm";
@@ -161,7 +161,7 @@ export default function StudentPlayer({
           </div>
         ) : null}
 
-        <LessonResources pdfUrl={lesson.pdf_url} />
+        <LessonPdfViewer pdfUrl={lesson.pdf_url} />
 
         <label className="student-notes-label" htmlFor="student-notes">
           Your notes

@@ -2,7 +2,7 @@
 
 import { useStore } from "@/lib/store";
 import type { FlatLesson } from "@/lib/types";
-import LessonResources from "@/components/LessonResources";
+import LessonPdfViewer from "@/components/LessonPdfViewer";
 import { LessonHeader, NextLessonButton } from "./LessonChrome";
 import VideoPlayer from "./VideoPlayer";
 
@@ -45,7 +45,7 @@ export default function TeachingLesson({ lesson }: { lesson: FlatLesson }) {
             </ul>
           </div>
         ) : null}
-        <LessonResources pdfUrl={lesson.pdf_url} />
+        <LessonPdfViewer pdfUrl={lesson.pdf_url} />
         <div className="actions">
           <button className={done ? "ghost" : "primary"} id="complete" onClick={markComplete}>
             {done ? "Completed ✓" : "Mark as complete"}
