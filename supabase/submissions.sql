@@ -29,6 +29,17 @@ where l.id = ordered.id
   and l.prereq_lesson_id is null
   and (coalesce(ordered.prev_sub, false) or coalesce(ordered.prev_appr, false));
 
+-- Phase 1 S chapters stay open after registration. Clear leftover next-lesson gates.
+update public.lessons l
+set prereq_lesson_id = null
+from public.chapters c
+where l.chapter_id = c.id
+  and coalesce(c.position, 0) < (
+    select coalesce(min(position), 2147483647)
+    from public.chapters
+    where title ~* '^Task '
+  );
+
 -- Task chapters: every assignment (except DIY) uses the requires-submission rule.
 -- Later Tasks stay locked until the previous numbered Task assignment is submitted.
 update public.lessons l

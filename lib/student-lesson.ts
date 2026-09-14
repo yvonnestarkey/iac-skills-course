@@ -1,5 +1,11 @@
 import { findLesson } from "./course";
-import { isDiyLesson, isMainTaskAssignment, isTaskSubmissionAssignment } from "./course-phases";
+import {
+  isDiyLesson,
+  isMainTaskAssignment,
+  isSectionChapter,
+  isTaskChapter,
+  isTaskSubmissionAssignment,
+} from "./course-phases";
 import { withComputedDuration } from "./lesson-duration";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
@@ -184,6 +190,11 @@ function outlineLessonFromRow(row: {
 }
 
 function withSubmissionPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
+  const firstTask = chapters.findIndex((chapter) => isTaskChapter(chapter.title));
+  const hasNamedPhases = chapters.some(
+    (chapter) => isSectionChapter(chapter.title) || isTaskChapter(chapter.title)
+  );
+
   const flagged = chapters.map((chapter) => ({
     ...chapter,
     lessons: chapter.lessons.map((lesson) => {
@@ -197,8 +208,14 @@ function withSubmissionPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
   let pendingPhase1Gate: string | null = null;
   const gated = new Map<string, OutlineLesson>();
 
-  flagged.forEach((chapter) => {
+  flagged.forEach((chapter, chapterIndex) => {
+    const phase1Open = hasNamedPhases && (firstTask === -1 || chapterIndex < firstTask);
     chapter.lessons.forEach((lesson) => {
+      if (phase1Open) {
+        gated.set(lesson.id, { ...lesson, prereq_lesson_id: null });
+        return;
+      }
+
       let prereq_lesson_id: string | null = null;
       if (lastMainTaskId) prereq_lesson_id = lastMainTaskId;
       else if (pendingPhase1Gate) prereq_lesson_id = pendingPhase1Gate;

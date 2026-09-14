@@ -139,10 +139,9 @@ export function isChapterUnlocked(
 }
 
 /**
- * Phase 1 still unlocks section by section.
- * When the live course has Task chapters, Phase 2 unlocks as a block after
- * Phase 1; later Tasks are gated by assignment submissions, not by completing
- * every previous lesson.
+ * Phase 1 S chapters are open after registration.
+ * Phase 2 still waits until Phase 1 is complete; later Tasks are gated by
+ * assignment submissions, not by completing every previous lesson.
  */
 export function isChapterSequentiallyLocked(
   chapters: OutlineChapter[],
@@ -152,7 +151,11 @@ export function isChapterSequentiallyLocked(
   const phases = splitCoursePhases(chapters);
   const ordered = phases.flatMap((phase) => phase.chapters);
   const hasTaskChapters = ordered.some((chapter) => isTaskChapter(chapter.title));
+  const phase1 = phases.find((phase) => phase.id === "phase1");
   const phase2 = phases.find((phase) => phase.id === "phase2");
+  if (hasTaskChapters && phase1?.chapters.some((chapter) => chapter.id === chapterId)) {
+    return false;
+  }
   if (hasTaskChapters && phase2?.chapters.some((chapter) => chapter.id === chapterId)) {
     return !isPhaseUnlocked(phases, "phase2", completed);
   }
