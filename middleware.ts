@@ -62,7 +62,7 @@ export async function middleware(request: NextRequest) {
   const { data: profile, error } = await supabase
     .from("student_profiles")
     .select("onboarding_completed")
-    .eq("id", user.id)
+    .eq("student_id", user.id)
     .maybeSingle();
 
   if (error && /does not exist|schema cache|could not find/i.test(error.message)) {

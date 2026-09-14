@@ -42,15 +42,25 @@ function tableMissing(message: string): boolean {
   return /student_profiles/i.test(message) && /does not exist|schema cache|could not find/i.test(message);
 }
 
+function logSupabaseError(scope: string, error: { message: string; details?: string | null; hint?: string | null; code?: string }) {
+  console.error(error.message);
+  console.error(`[onboarding] ${scope}`, error.message, error.code || "", error.details || "", error.hint || "");
+}
+
 export async function fetchOnboardingState(
   userId: string
 ): Promise<{ completed: boolean; skipped: boolean; available: boolean }> {
   const client = getSupabase();
   if (!client) return { completed: true, skipped: false, available: false };
 
-  const result = await client.from("student_profiles").select("onboarding_completed").eq("id", userId).maybeSingle();
+  const result = await client
+    .from("student_profiles")
+    .select("onboarding_completed")
+    .eq("student_id", userId)
+    .maybeSingle();
 
   if (result.error) {
+    logSupabaseError("fetchOnboardingState", result.error);
     return { completed: false, skipped: false, available: !tableMissing(result.error.message) };
   }
 
@@ -105,11 +115,12 @@ export async function clearOnboardingSkip(userId: string): Promise<void> {
   await clearOnboardingSkipCookie();
   const client = getSupabase();
   if (!client) return;
-  await client
+  const { error } = await client
     .from("student_profiles")
     .update({ onboarding_skipped: false, updated_at: new Date().toISOString() })
-    .eq("id", userId)
+    .eq("student_id", userId)
     .eq("onboarding_completed", false);
+  if (error) logSupabaseError("clearOnboardingSkip", error);
 }
 
 export async function saveOnboarding(
@@ -122,24 +133,37 @@ export async function saveOnboarding(
   const { error: profileError } = await client
     .from("profiles")
     .update({
-      phone: input.phone,
+      phone_number: input.phone,
       accountability_email: input.accountability_email,
     })
     .eq("id", userId);
-  if (profileError) return { ok: false, error: profileError.message };
+  if (profileError) {
+    logSupabaseError("saveOnboarding.profiles", profileError);
+    return { ok: false, error: profileError.message };
+  }
 
-  const { error: rowError } = await client.from("student_profiles").upsert({
-    id: userId,
-    demographics: input.demographics,
-    qualitative_notes: input.qualitative_notes,
+  const payload = {
+    student_id: userId,
+    demographics: {
+      written_before: input.demographics.iac_written_exam_before,
+      exam_attempts: input.demographics.iac_attempt_count,
+      country: input.demographics.country,
+      cta_institution: input.demographics.cta_institution,
+      cta_year: input.demographics.cta_year_passed,
+      cta_attempts: input.demographics.cta_attempts,
+    },
+    qualitative_notes: {
+      struggle_areas: input.qualitative_notes.struggling_areas,
+      coaching_goals: input.qualitative_notes.coaching_hopes,
+      additional_notes: input.qualitative_notes.additional_notes,
+    },
     onboarding_completed: true,
-    onboarding_skipped: false,
     updated_at: new Date().toISOString(),
-  });
+  };
+
+  const { error: rowError } = await client.from("student_profiles").upsert(payload, { onConflict: "student_id" });
   if (rowError) {
-    if (tableMissing(rowError.message)) {
-      return { ok: false, error: "Run supabase/onboarding.sql in the Supabase SQL editor first." };
-    }
+    logSupabaseError("saveOnboarding.student_profiles", rowError);
     return { ok: false, error: rowError.message };
   }
   await clearOnboardingSkipCookie();
