@@ -5,6 +5,8 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { ensureStudentProfile } from "@/lib/profiles";
 import { clearOnboardingSkip } from "@/lib/onboarding";
+import { isCoachAccount } from "@/lib/roles";
+import { studentUserFromAuth } from "@/lib/student-lesson";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
 type Mode = "signin" | "signup";
@@ -58,10 +60,15 @@ export default function StudentLoginForm() {
         return;
       }
       if (data.user) {
+        const studentUser = studentUserFromAuth(data.user);
         await ensureStudentProfile({ id: data.user.id, email: data.user.email || trimmedEmail });
         await clearOnboardingSkip(data.user.id);
+        if (!isCoachAccount(studentUser)) {
+          router.replace("/onboarding");
+          return;
+        }
       }
-      window.location.replace("/student");
+      router.replace("/student");
       return;
     }
 

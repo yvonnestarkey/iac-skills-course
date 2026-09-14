@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { fetchOnboardingState, isOnboardingRequired, clearOnboardingSkipCookie } from "./onboarding";
+import { fetchOnboardingGate, clearOnboardingSkipCookie } from "./onboarding";
 import { ensureStudentProfile } from "./profiles";
 import { isCoachAccount } from "./roles";
 import { getSupabase } from "./supabase";
@@ -67,13 +67,11 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
           setOnboarding("done");
           await loadProgress(nextUser.id);
         } else {
-          const [, state] = await Promise.all([loadProgress(nextUser.id), fetchOnboardingState(nextUser.id)]);
-          if (!cancelled) {
-            setOnboarding(isOnboardingRequired(state) ? "needed" : "done");
-          }
+          const [, gate] = await Promise.all([loadProgress(nextUser.id), fetchOnboardingGate(nextUser.id)]);
+          if (!cancelled) setOnboarding(gate);
         }
       } else {
-        setOnboarding("done");
+        setOnboarding("unknown");
       }
 
       if (!cancelled) setReady(true);
@@ -82,22 +80,21 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     start();
 
     const client = getSupabase();
-    const subscription = client?.auth.onAuthStateChange((_event, session) => {
+    const subscription = client?.auth.onAuthStateChange((event, session) => {
       const nextUser = session?.user ? studentUserFromAuth(session.user) : null;
       setUser(nextUser);
       if (nextUser) {
+        if (event === "SIGNED_IN" && !isCoachAccount(nextUser)) setOnboarding("unknown");
         void loadProgress(nextUser.id);
         if (isCoachAccount(nextUser)) {
           setOnboarding("done");
         } else {
-          fetchOnboardingState(nextUser.id).then((state) => {
-            setOnboarding(isOnboardingRequired(state) ? "needed" : "done");
-          });
+          fetchOnboardingGate(nextUser.id).then((gate) => setOnboarding(gate));
         }
-      } else {
+      } else if (event === "SIGNED_OUT") {
         setCompleted({});
         setSubmissions({});
-        setOnboarding("done");
+        setOnboarding("unknown");
         void clearOnboardingSkipCookie();
       }
     });

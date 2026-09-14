@@ -103,18 +103,19 @@ function StudentGate({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!ready) return;
     if (isLogin) {
-      if (!user) return;
+      if (!user || onboarding === "unknown") return;
       if (isCoachAccount(user) || onboarding === "done") {
-        window.location.replace("/student");
+        router.replace("/student");
         return;
       }
-      if (onboarding === "needed") router.replace("/onboarding");
+      router.replace("/onboarding");
       return;
     }
     if (!user) {
       router.replace("/student/login");
       return;
     }
+    if (onboarding === "needed") router.replace("/onboarding");
   }, [ready, user, isLogin, onboarding, pathname, router]);
 
   if (!ready) return <LoadingFrame label="Loading your course…" />;
@@ -130,6 +131,9 @@ function StudentGate({ children }: { children: ReactNode }) {
     );
   }
   if (!user) return <LoadingFrame label="Taking you to sign in…" />;
+  if (onboarding === "unknown" || onboarding === "needed") {
+    return <LoadingFrame label="Taking you to setup…" />;
+  }
 
   return (
     <StudentNavProvider>

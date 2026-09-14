@@ -61,7 +61,7 @@ export async function fetchOnboardingState(
   };
 }
 
-/** True when onboarding is finished. Session skip is enforced in middleware, not here. */
+/** True when onboarding is finished. Session skip is enforced separately. */
 export async function fetchOnboardingCompleted(userId: string): Promise<boolean> {
   const state = await fetchOnboardingState(userId);
   return !state.available || state.completed;
@@ -69,6 +69,25 @@ export async function fetchOnboardingCompleted(userId: string): Promise<boolean>
 
 export function isOnboardingRequired(state: { completed: boolean; available: boolean }): boolean {
   return state.available && !state.completed;
+}
+
+export async function fetchSessionSkip(): Promise<boolean> {
+  if (typeof window === "undefined") return false;
+  try {
+    const result = await fetch("/api/onboarding/skip", { credentials: "same-origin" });
+    if (!result.ok) return false;
+    const body = (await result.json()) as { skipped?: boolean };
+    return body.skipped === true;
+  } catch {
+    return false;
+  }
+}
+
+/** Profile completed, skipped this browser session, or onboarding table missing. */
+export async function fetchOnboardingGate(userId: string): Promise<"needed" | "done"> {
+  const [state, skipped] = await Promise.all([fetchOnboardingState(userId), fetchSessionSkip()]);
+  if (skipped || !isOnboardingRequired(state)) return "done";
+  return "needed";
 }
 
 /** Delete the HttpOnly session skip cookie so the next sign-in is gated again. */
