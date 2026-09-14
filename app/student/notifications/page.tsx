@@ -1,16 +1,34 @@
 "use client";
 
 import { useEffect } from "react";
+import { Bell } from "lucide-react";
 import { formatInboxTime } from "@/lib/inbox";
+import { asNotificationList } from "@/lib/notifications";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 
 export default function StudentNotificationsPage() {
-  const { notifications, markAllRead } = useStudentInbox();
+  const inbox = useStudentInbox();
+  const notifications = asNotificationList(inbox?.notifications);
+  const markAllRead = inbox?.markAllRead;
 
   useEffect(() => {
-    if (!notifications.some((item) => !item.read)) return;
-    markAllRead();
+    if (!notifications.some((item) => item && !item.read)) return;
+    void markAllRead?.();
   }, [notifications, markAllRead]);
+
+  if (!notifications.length) {
+    return (
+      <article className="lesson-body wide">
+        <p className="kicker">Course notifications</p>
+        <h1>Notifications</h1>
+        <p className="lead">Announcements and assignment feedback from your coach appear here.</p>
+        <p className="empty flex items-center gap-2 flex-wrap">
+          <Bell size={18} aria-hidden="true" />
+          No notifications yet.
+        </p>
+      </article>
+    );
+  }
 
   return (
     <article className="lesson-body wide">
@@ -18,22 +36,18 @@ export default function StudentNotificationsPage() {
       <h1>Notifications</h1>
       <p className="lead">Announcements and assignment feedback from your coach appear here.</p>
       <div className="work-list">
-        {notifications.length ? (
-          notifications.map((item) => (
-            <article className={`work-item ${item.read ? "" : "notice-unread"}`} key={item.id}>
-              <div className="work-head">
-                <strong>{item.title}</strong>
-                <span className="muted small">
-                  {item.type === "assignment_feedback" ? "Assignment feedback" : "Announcement"}
-                </span>
-              </div>
-              <p>{item.message}</p>
-              <p className="muted small">{formatInboxTime(item.createdAt)}</p>
-            </article>
-          ))
-        ) : (
-          <p className="empty">No notifications yet. When your coach sends an announcement or feedback, it will show here.</p>
-        )}
+        {notifications.map((item) => (
+          <article className={`work-item ${item.read ? "" : "notice-unread"}`} key={item.id}>
+            <div className="work-head">
+              <strong>{item.title || "Notification"}</strong>
+              <span className="muted small">
+                {item.type === "assignment_feedback" ? "Assignment feedback" : "Announcement"}
+              </span>
+            </div>
+            {item.message ? <p>{item.message}</p> : null}
+            <p className="muted small">{formatInboxTime(item.createdAt)}</p>
+          </article>
+        ))}
       </div>
     </article>
   );

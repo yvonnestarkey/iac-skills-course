@@ -67,7 +67,8 @@ function fromRow(row: InboxRow): InboxMessage {
   };
 }
 
-export function formatInboxTime(iso: string): string {
+export function formatInboxTime(iso: string | null | undefined): string {
+  if (!iso) return "";
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return iso;
   return date.toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });

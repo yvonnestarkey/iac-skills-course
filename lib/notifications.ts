@@ -37,17 +37,27 @@ function describe(error: { message?: string; hint?: string; code?: string }): st
   return parts.join(" ");
 }
 
-export function notificationFromRow(row: NotificationRow | Record<string, unknown>): StudentNotification {
+export function notificationFromRow(row: NotificationRow | Record<string, unknown> | null | undefined): StudentNotification | null {
+  if (!row || typeof row !== "object") return null;
   const data = row as NotificationRow;
+  const id = data.id != null ? String(data.id) : "";
+  if (!id || id === "undefined" || id === "null") return null;
   return {
-    id: String(data.id),
-    userId: String(data.user_id),
+    id,
+    userId: data.user_id != null ? String(data.user_id) : "",
     title: String(data.title || ""),
     message: String(data.message || ""),
     type: data.type === "assignment_feedback" ? "assignment_feedback" : "announcement",
     read: Boolean(data.read),
     createdAt: String(data.created_at || ""),
   };
+}
+
+export function asNotificationList(value: unknown): StudentNotification[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((row) => (row && typeof row === "object" && "id" in row && "title" in row ? (row as StudentNotification) : notificationFromRow(row as NotificationRow)))
+    .filter((item): item is StudentNotification => Boolean(item?.id));
 }
 
 async function authClient() {
@@ -63,17 +73,21 @@ export async function fetchOwnNotifications(): Promise<{
   error?: string;
   data: StudentNotification[];
 }> {
-  const { client, user, error: authError } = await authClient();
-  if (!client || !user) return { ok: false, error: authError || "Sign in required.", data: [] };
+  try {
+    const { client, user, error: authError } = await authClient();
+    if (!client || !user) return { ok: false, error: authError || "Sign in required.", data: [] };
 
-  const { data, error } = await client
-    .from("notifications")
-    .select("id, user_id, title, message, type, read, created_at")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+    const { data, error } = await client
+      .from("notifications")
+      .select("id, user_id, title, message, type, read, created_at")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
 
-  if (error) return { ok: false, error: describe(error), data: [] };
-  return { ok: true, data: ((data || []) as NotificationRow[]).map(notificationFromRow) };
+    if (error) return { ok: false, error: describe(error), data: [] };
+    return { ok: true, data: asNotificationList((data || []).map((row) => notificationFromRow(row as NotificationRow))) };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Could not load notifications.", data: [] };
+  }
 }
 
 export async function fetchUnreadNotifications(userId: string): Promise<{
@@ -92,7 +106,7 @@ export async function fetchUnreadNotifications(userId: string): Promise<{
     .order("created_at", { ascending: false });
 
   if (error) return { ok: false, error: describe(error), data: [] };
-  return { ok: true, data: ((data || []) as NotificationRow[]).map(notificationFromRow) };
+  return { ok: true, data: asNotificationList((data || []).map((row) => notificationFromRow(row as NotificationRow))) };
 }
 
 export async function markOwnNotificationsRead(): Promise<{ ok: boolean; error?: string }> {
