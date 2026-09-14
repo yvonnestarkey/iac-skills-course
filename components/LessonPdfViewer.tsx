@@ -12,7 +12,7 @@ export default function LessonPdfViewer({
   pdfUrl?: string | null;
   lesson?: LessonPdfSource | null;
 }) {
-  const url = asPdfUrl(pdfUrl) || getLessonPdfUrl(lesson);
+  const url = asPdfUrl(pdfUrl) || asPdfUrl(lesson?.pdf_url) || getLessonPdfUrl(lesson);
   const [fullScreen, setFullScreen] = useState(false);
   const titleId = useId();
   const modalTitleId = useId();

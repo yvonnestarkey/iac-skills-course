@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import LessonPdfViewer from "@/components/LessonPdfViewer";
 import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
 import VideoPlayer from "@/components/lesson/VideoPlayer";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
@@ -17,12 +18,10 @@ export default function StudentPlayer({
   lesson,
   initialAccess,
   overrideLocks = false,
-  children,
 }: {
   lesson: StudentLesson;
   initialAccess?: AccessResult;
   overrideLocks?: boolean;
-  children?: ReactNode;
 }) {
   const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions } = useStudentSession();
   const { basePath } = useCoursePreview();
@@ -126,13 +125,6 @@ export default function StudentPlayer({
   return (
     <>
       {kind === "video" ? <VideoPlayer lesson={lesson} /> : null}
-      {children}
-      {kind === "reading" ? (
-        <div className="reading-hero">
-          <span>{lesson.duration}</span>
-          <p>{lesson.blurb}</p>
-        </div>
-      ) : null}
 
       <article className="lesson-body">
         <p className="kicker">
@@ -141,7 +133,14 @@ export default function StudentPlayer({
         </p>
         <h1>{lesson.title}</h1>
         {status ? <p className="notice">{status}</p> : null}
-        {lesson.blurb && lesson.type !== "reading" ? <p className="lead">{lesson.blurb}</p> : null}
+        {kind === "reading" ? (
+          <div className="reading-hero">
+            <span>{lesson.duration}</span>
+            <p>{lesson.blurb}</p>
+          </div>
+        ) : lesson.blurb ? (
+          <p className="lead">{lesson.blurb}</p>
+        ) : null}
         {lesson.due ? <p className="lead">Due {lesson.due}</p> : null}
         {lesson.brief ? <p>{lesson.brief}</p> : null}
         {(lesson.body || []).map((paragraph, index) => (
@@ -157,6 +156,8 @@ export default function StudentPlayer({
             </ul>
           </div>
         ) : null}
+
+        <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
 
         <label className="student-notes-label" htmlFor="student-notes">
           Your notes

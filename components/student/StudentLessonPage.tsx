@@ -1,5 +1,4 @@
 import { connection } from "next/server";
-import LessonPdfViewer from "@/components/LessonPdfViewer";
 import StudentPlayer from "@/components/student/StudentPlayer";
 import { getLessonAccess } from "@/lib/accessControl";
 import { fetchStudentLesson, getStudentUser } from "@/lib/student-lesson";
@@ -36,9 +35,5 @@ export default async function StudentLessonPage({
 
   const initialAccess = user ? await getLessonAccess(user.id, lesson.id) : { isLocked: false };
 
-  return (
-    <StudentPlayer lesson={lesson} initialAccess={initialAccess} overrideLocks={overrideLocks}>
-      <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
-    </StudentPlayer>
-  );
+  return <StudentPlayer lesson={lesson} initialAccess={initialAccess} overrideLocks={overrideLocks} />;
 }

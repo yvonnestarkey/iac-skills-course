@@ -430,12 +430,21 @@ async function overlayLessonGates(lesson: StudentLesson): Promise<StudentLesson>
   };
 }
 
+const LESSON_ROW_COLUMNS =
+  "id, title, type, duration, seconds, chapter_id, position, video_url, video_urls, blurb, body, takeaways, due, brief, requires_submission, requires_coach_approval, prereq_lesson_id, pdf_url, resource_downloads, video_duration_seconds, estimated_read_minutes, duration_minutes";
+
+async function loadLessonRow(client: NonNullable<ReturnType<typeof getSupabase>>, lessonId: string) {
+  const withPdf = await client.from("lessons").select(LESSON_ROW_COLUMNS).eq("id", lessonId).maybeSingle();
+  if (!withPdf.error && withPdf.data) return withPdf;
+  return client.from("lessons").select("*").eq("id", lessonId).maybeSingle();
+}
+
 /** Prefer the lessons table; fall back to the seeded course so local still works. */
 export async function fetchStudentLesson(lessonId: string): Promise<StudentLesson | null> {
   await bypassStaticCache();
   const client = getSupabase();
   if (client) {
-    const { data, error } = await client.from("lessons").select("*").eq("id", lessonId).maybeSingle();
+    const { data, error } = await loadLessonRow(client, lessonId);
     if (!error && data) {
       const { data: neighbors } = await client
         .from("lessons")
@@ -445,7 +454,10 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
       const list = neighbors || [];
       const index = list.findIndex((row) => row.id === lessonId);
       const next = index >= 0 ? list[index + 1] : null;
-      const pdf_url = getLessonPdfUrl(data);
+      const pdf_url = getLessonPdfUrl({
+        pdf_url: data.pdf_url,
+        resource_downloads: data.resource_downloads,
+      });
       return overlayLessonGates({
         id: data.id,
         type: displayLessonType({
