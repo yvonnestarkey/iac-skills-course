@@ -29,16 +29,30 @@ where l.id = ordered.id
   and l.prereq_lesson_id is null
   and (coalesce(ordered.prev_sub, false) or coalesce(ordered.prev_appr, false));
 
--- Phase 1 S chapters stay open after registration. Clear leftover next-lesson gates.
+-- Phase 1 and Task 1 teaching stay open after registration.
+-- Only lessons after the first numbered Task assignment wait on that submission.
+with ordered as (
+  select
+    l.id,
+    row_number() over (order by coalesce(c.position, 0), l.position, l.id) as rn,
+    case
+      when c.title ~* '^Task[[:space:]]+[0-9]+'
+        and c.title !~* 'Extra'
+        and l.type in ('assignment', 'upload')
+        and l.title !~* 'DIY'
+      then l.id
+    end as main_task_id
+  from public.lessons l
+  left join public.chapters c on c.id = l.chapter_id
+),
+first_task as (
+  select min(rn) as rn from ordered where main_task_id is not null
+)
 update public.lessons l
 set prereq_lesson_id = null
-from public.chapters c
-where l.chapter_id = c.id
-  and coalesce(c.position, 0) < (
-    select coalesce(min(position), 2147483647)
-    from public.chapters
-    where title ~* '^Task '
-  );
+from ordered, first_task
+where l.id = ordered.id
+  and ordered.rn <= first_task.rn;
 
 -- Task chapters: every assignment (except DIY) uses the requires-submission rule.
 -- Later Tasks stay locked until the previous numbered Task assignment is submitted.

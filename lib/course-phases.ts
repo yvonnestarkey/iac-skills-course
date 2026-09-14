@@ -139,9 +139,8 @@ export function isChapterUnlocked(
 }
 
 /**
- * Phase 1 S chapters are open after registration.
- * Phase 2 still waits until Phase 1 is complete; later Tasks are gated by
- * assignment submissions, not by completing every previous lesson.
+ * Named S/Task courses: chapters stay open after registration.
+ * Later Task lessons lock via assignment submission, not sequential completion.
  */
 export function isChapterSequentiallyLocked(
   chapters: OutlineChapter[],
@@ -150,20 +149,17 @@ export function isChapterSequentiallyLocked(
 ): boolean {
   const phases = splitCoursePhases(chapters);
   const ordered = phases.flatMap((phase) => phase.chapters);
-  const hasTaskChapters = ordered.some((chapter) => isTaskChapter(chapter.title));
-  const phase1 = phases.find((phase) => phase.id === "phase1");
-  const phase2 = phases.find((phase) => phase.id === "phase2");
-  if (hasTaskChapters && phase1?.chapters.some((chapter) => chapter.id === chapterId)) {
+  if (ordered.some((chapter) => isTaskChapter(chapter.title))) {
     return false;
-  }
-  if (hasTaskChapters && phase2?.chapters.some((chapter) => chapter.id === chapterId)) {
-    return !isPhaseUnlocked(phases, "phase2", completed);
   }
   return !isChapterUnlocked(ordered, chapterId, completed);
 }
 
 export function isPhaseUnlocked(phases: CoursePhase[], phaseId: CoursePhaseId, completed: Record<string, boolean>): boolean {
   const ordered = phases.flatMap((phase) => phase.chapters);
+  if (ordered.some((chapter) => isSectionChapter(chapter.title) || isTaskChapter(chapter.title))) {
+    return true;
+  }
   const phase = phases.find((item) => item.id === phaseId);
   const first = phase?.chapters[0];
   if (!first) return true;

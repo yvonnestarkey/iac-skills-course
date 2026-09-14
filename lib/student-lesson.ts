@@ -219,7 +219,6 @@ function withSubmissionPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
       let prereq_lesson_id: string | null = null;
       if (lastMainTaskId) prereq_lesson_id = lastMainTaskId;
       else if (pendingPhase1Gate) prereq_lesson_id = pendingPhase1Gate;
-      else prereq_lesson_id = lesson.prereq_lesson_id || null;
 
       const next = { ...lesson, prereq_lesson_id: prereq_lesson_id || null };
       gated.set(lesson.id, next);

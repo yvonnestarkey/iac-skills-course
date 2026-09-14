@@ -22,6 +22,30 @@ where l.chapter_id = c.id
   and c.title ~* '^Task '
   and l.title ~* 'DIY';
 
+-- Task 1 teaching (and the assignment itself) stay open after registration.
+with ordered as (
+  select
+    l.id,
+    row_number() over (order by coalesce(c.position, 0), l.position, l.id) as rn,
+    case
+      when c.title ~* '^Task[[:space:]]+[0-9]+'
+        and c.title !~* 'Extra'
+        and l.type in ('assignment', 'upload')
+        and l.title !~* 'DIY'
+      then l.id
+    end as main_task_id
+  from public.lessons l
+  left join public.chapters c on c.id = l.chapter_id
+),
+first_task as (
+  select min(rn) as rn from ordered where main_task_id is not null
+)
+update public.lessons l
+set prereq_lesson_id = null
+from ordered, first_task
+where l.id = ordered.id
+  and ordered.rn <= first_task.rn;
+
 -- Later Tasks (and everything after a numbered Task assignment) wait on that submission.
 with ordered as (
   select
