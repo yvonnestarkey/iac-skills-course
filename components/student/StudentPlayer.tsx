@@ -1,10 +1,10 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import LessonPdfViewer from "@/components/LessonPdfViewer";
+import { LessonPdfPlaceholder } from "@/components/student/LessonLoadingSkeleton";
 import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
-import VideoPlayer from "@/components/lesson/VideoPlayer";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
 import LessonSubmissionForm from "@/components/student/LessonSubmissionForm";
 import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/lib/student-lesson";
@@ -13,6 +13,16 @@ import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult
 import { findResumeLesson, isChapterSequentiallyLocked, splitCoursePhases } from "@/lib/course-phases";
 import { useCoursePreview } from "@/lib/course-preview";
 import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
+
+const LessonPdfViewer = dynamic(() => import("@/components/LessonPdfViewer"), {
+  ssr: false,
+  loading: () => <LessonPdfPlaceholder />,
+});
+
+const VideoPlayer = dynamic(() => import("@/components/lesson/VideoPlayer"), {
+  ssr: false,
+  loading: () => <div className="player player-skeleton" aria-busy="true" aria-label="Loading video" />,
+});
 
 export default function StudentPlayer({
   lesson,
@@ -25,7 +35,7 @@ export default function StudentPlayer({
 }) {
   const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions } = useStudentSession();
   const { basePath } = useCoursePreview();
-  const [completed, setCompleted] = useState(false);
+  const [completed, setCompleted] = useState(() => Boolean(completedMap[lesson.id]));
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
   const notesTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -36,6 +46,7 @@ export default function StudentPlayer({
   }, [completed]);
 
   useEffect(() => {
+    setCompleted(Boolean(completedMap[lesson.id]));
     let cancelled = false;
 
     const load = async () => {
@@ -45,7 +56,7 @@ export default function StudentPlayer({
       setNotes(result.progress.notes);
     };
 
-    load();
+    void load();
     return () => {
       cancelled = true;
       if (notesTimer.current) clearTimeout(notesTimer.current);

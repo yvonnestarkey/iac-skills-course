@@ -14,13 +14,6 @@ import { asLessonType, displayLessonType } from "./lesson-type";
 import type { UserProfile } from "../types/database";
 import type { CourseData, Lesson, LessonType } from "./types";
 
-/** Opt server-side Supabase reads out of Next's fetch cache. Safe to call from the client. */
-async function bypassStaticCache() {
-  if (typeof window !== "undefined") return;
-  const { connection } = await import("next/server");
-  await connection();
-}
-
 export interface StudentLesson {
   id: string;
   type: LessonType;
@@ -76,6 +69,12 @@ export interface OutlineChapter {
 }
 
 export type StudentUser = Pick<UserProfile, "id" | "email" | "role">;
+
+const OUTLINE_TTL_MS = 120_000;
+const OUTLINE_STORAGE_KEY = "iac-course-outline-v1";
+
+type OutlineCacheEntry = { at: number; data: OutlineChapter[] };
+let memoryOutline: OutlineCacheEntry | null = null;
 
 function firstVideoUrl(...values: unknown[]): string | undefined {
   const urls: string[] = [];
@@ -313,8 +312,55 @@ const OUTLINE_COLUMNS =
 const GATE_COLUMNS = `${OUTLINE_COLUMNS}, requires_submission, requires_coach_approval, prereq_lesson_id`;
 const DRIP_COLUMNS = `${GATE_COLUMNS}, unlock_at`;
 
-export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
-  await bypassStaticCache();
+function readOutlineCache(): OutlineChapter[] | null {
+  if (memoryOutline && Date.now() - memoryOutline.at < OUTLINE_TTL_MS) {
+    return memoryOutline.data;
+  }
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(OUTLINE_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as OutlineCacheEntry;
+    if (!Array.isArray(parsed?.data) || Date.now() - parsed.at >= OUTLINE_TTL_MS) return null;
+    memoryOutline = parsed;
+    return parsed.data;
+  } catch {
+    return null;
+  }
+}
+
+function writeOutlineCache(data: OutlineChapter[]) {
+  memoryOutline = { at: Date.now(), data };
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(OUTLINE_STORAGE_KEY, JSON.stringify(memoryOutline));
+  } catch {
+    // Ignore quota errors; in-memory cache still covers this tab session.
+  }
+}
+
+function nextFromOutline(outline: OutlineChapter[], lessonId: string): { id: string; title: string } | null {
+  const list = outline.flatMap((chapter) => chapter.lessons);
+  const index = list.findIndex((item) => item.id === lessonId);
+  const next = index >= 0 ? list[index + 1] : undefined;
+  return next ? { id: next.id, title: next.title } : null;
+}
+
+function applyOutlineGates(lesson: StudentLesson, outline: OutlineChapter[]): StudentLesson {
+  const match = outline.flatMap((chapter) => chapter.lessons).find((item) => item.id === lesson.id);
+  const chapter = outline.find((item) => item.id === lesson.chapterId);
+  return {
+    ...lesson,
+    chapterTitle: chapter?.title || lesson.chapterTitle,
+    requires_submission: Boolean(match?.requires_submission),
+    requires_coach_approval: Boolean(match?.requires_coach_approval || lesson.requires_coach_approval),
+    prereq_lesson_id: match?.prereq_lesson_id || null,
+    unlock_at: match?.unlock_at || lesson.unlock_at || null,
+    next: nextFromOutline(outline, lesson.id) || lesson.next,
+  };
+}
+
+async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
   const client = getSupabase();
   if (client) {
     let rows: Array<{
@@ -398,6 +444,15 @@ export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
   return outlineFromSeed();
 }
 
+/** Shared course tree for the sidebar and lesson pages. Cached in-memory (and sessionStorage in the browser). */
+export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
+  const cached = readOutlineCache();
+  if (cached) return cached;
+  const data = await loadCourseOutlineUncached();
+  writeOutlineCache(data);
+  return data;
+}
+
 export function studentUserFromAuth(user: { id: string; email?: string | null; user_metadata?: Record<string, unknown>; app_metadata?: Record<string, unknown> }): StudentUser {
   const role = user.user_metadata?.role || user.app_metadata?.role || null;
   return {
@@ -431,19 +486,6 @@ export function safeStudentPath(value: string | null | undefined): string {
   return value;
 }
 
-async function overlayLessonGates(lesson: StudentLesson): Promise<StudentLesson> {
-  const outline = await fetchCourseOutline();
-  const match = outline.flatMap((chapter) => chapter.lessons).find((item) => item.id === lesson.id);
-  if (!match) return lesson;
-  return {
-    ...lesson,
-    requires_submission: Boolean(match.requires_submission),
-    requires_coach_approval: Boolean(match.requires_coach_approval || lesson.requires_coach_approval),
-    prereq_lesson_id: match.prereq_lesson_id || null,
-    unlock_at: match.unlock_at || lesson.unlock_at || null,
-  };
-}
-
 const LESSON_ROW_COLUMNS =
   "id, title, type, duration, seconds, chapter_id, position, video_url, video_urls, blurb, body, takeaways, due, brief, requires_submission, requires_coach_approval, prereq_lesson_id, pdf_url, resource_downloads, unlock_at, video_duration_seconds, estimated_read_minutes, duration_minutes";
 
@@ -454,59 +496,57 @@ async function loadLessonRow(client: NonNullable<ReturnType<typeof getSupabase>>
 }
 
 /** Prefer the lessons table; fall back to the seeded course so local still works. */
-export async function fetchStudentLesson(lessonId: string): Promise<StudentLesson | null> {
-  await bypassStaticCache();
+export async function fetchStudentLesson(
+  lessonId: string,
+  outline?: OutlineChapter[]
+): Promise<StudentLesson | null> {
+  const tree = outline ?? (await fetchCourseOutline());
   const client = getSupabase();
   if (client) {
     const { data, error } = await loadLessonRow(client, lessonId);
     if (!error && data) {
-      const { data: neighbors } = await client
-        .from("lessons")
-        .select("id, title, chapter_id, position")
-        .order("chapter_id", { ascending: true })
-        .order("position", { ascending: true });
-      const list = neighbors || [];
-      const index = list.findIndex((row) => row.id === lessonId);
-      const next = index >= 0 ? list[index + 1] : null;
       const pdf_url = getLessonPdfUrl({
         pdf_url: data.pdf_url,
         resource_downloads: data.resource_downloads,
       });
-      return overlayLessonGates({
-        id: data.id,
-        type: displayLessonType({
-          type: asLessonType(data.type),
+      return applyOutlineGates(
+        {
+          id: data.id,
+          type: displayLessonType({
+            type: asLessonType(data.type),
+            title: data.title,
+            pdf_url,
+            requires_submission: asBool(data.requires_submission) ?? false,
+          }),
           title: data.title,
-          pdf_url,
+          chapterId: data.chapter_id,
+          chapterTitle: chapterTitle(data.chapter_id),
+          duration: data.duration || undefined,
+          seconds: data.seconds || undefined,
+          video_duration_seconds: data.video_duration_seconds || undefined,
+          estimated_read_minutes: data.estimated_read_minutes || undefined,
+          duration_minutes: data.duration_minutes || undefined,
+          video_url: firstVideoUrl(data.video_url, data.video_urls),
+          blurb: data.blurb || undefined,
+          body: asStringList(data.body),
+          takeaways: asStringList(data.takeaways),
+          due: data.due || undefined,
+          brief: data.brief || undefined,
           requires_submission: asBool(data.requires_submission) ?? false,
-        }),
-        title: data.title,
-        chapterId: data.chapter_id,
-        chapterTitle: chapterTitle(data.chapter_id),
-        duration: data.duration || undefined,
-        seconds: data.seconds || undefined,
-        video_duration_seconds: data.video_duration_seconds || undefined,
-        estimated_read_minutes: data.estimated_read_minutes || undefined,
-        duration_minutes: data.duration_minutes || undefined,
-        video_url: firstVideoUrl(data.video_url, data.video_urls),
-        blurb: data.blurb || undefined,
-        body: asStringList(data.body),
-        takeaways: asStringList(data.takeaways),
-        due: data.due || undefined,
-        brief: data.brief || undefined,
-        requires_submission: asBool(data.requires_submission) ?? false,
-        requires_coach_approval: asBool(data.requires_coach_approval) ?? false,
-        prereq_lesson_id: asPrereq(data.prereq_lesson_id) || null,
-        pdf_url,
-        resource_downloads: data.resource_downloads,
-        unlock_at: asPrereq(data.unlock_at) || null,
-        next: next ? { id: next.id, title: next.title } : null,
-        source: "supabase",
-      });
+          requires_coach_approval: asBool(data.requires_coach_approval) ?? false,
+          prereq_lesson_id: asPrereq(data.prereq_lesson_id) || null,
+          pdf_url,
+          resource_downloads: data.resource_downloads,
+          unlock_at: asPrereq(data.unlock_at) || null,
+          next: nextFromOutline(tree, lessonId),
+          source: "supabase",
+        },
+        tree
+      );
     }
   }
   const seed = fromSeed(lessonId);
-  return seed ? overlayLessonGates(seed) : null;
+  return seed ? applyOutlineGates(seed, tree) : null;
 }
 
 export async function fetchLessonProgress(lessonId: string): Promise<{

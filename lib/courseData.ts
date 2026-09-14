@@ -1,13 +1,10 @@
-import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult } from "./accessControl";
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
+import type { AccessResult } from "./accessControl";
 import { displayLessonType } from "./lesson-type";
 import { getLessonPdfUrl } from "./getLessonPdf";
-import {
-  fetchCompletedLessonIds,
-  fetchCourseOutline,
-  fetchStudentLesson,
-  type StudentLesson,
-} from "./student-lesson";
-import { fetchStudentSubmissions, type SubmissionStatus } from "./student-submissions";
+import { fetchCourseOutline, fetchStudentLesson, type StudentLesson } from "./student-lesson";
+import type { SubmissionStatus } from "./student-submissions";
 import type { LessonType } from "../types/database";
 
 export interface LessonData {
@@ -19,15 +16,34 @@ export interface LessonData {
   access: AccessResult;
 }
 
+const loadCachedOutline = cache(
+  unstable_cache(fetchCourseOutline, ["course-outline-v1"], {
+    revalidate: 120,
+    tags: ["course-outline"],
+  })
+);
+
+const loadCachedLesson = cache(async (lessonId: string) => {
+  return unstable_cache(
+    async () => {
+      const outline = await loadCachedOutline();
+      return fetchStudentLesson(lessonId, outline);
+    },
+    ["student-lesson-v1", lessonId],
+    { revalidate: 60, tags: ["lessons", `lesson-${lessonId}`] }
+  )();
+});
+
 /**
  * Single lesson loader for `/student/[lessonId]` and `/coach/preview/[lessonId]`.
- * Coach preview passes `overrideLocks: true` so only the lock overlay is skipped.
+ * Access gates stay on the client session so this payload can be cached.
+ * Coach preview still passes `overrideLocks: true` for the lock overlay.
  */
-export async function getLessonData(
+export const getLessonData = cache(async (
   lessonId: string,
-  options?: { studentId?: string | null; overrideLocks?: boolean }
-): Promise<LessonData> {
-  const lesson = await fetchStudentLesson(lessonId);
+  _options?: { studentId?: string | null; overrideLocks?: boolean }
+): Promise<LessonData> => {
+  const lesson = await loadCachedLesson(lessonId);
   if (!lesson) {
     return {
       lesson: null,
@@ -43,35 +59,12 @@ export async function getLessonData(
   const lessonType = displayLessonType({ ...lesson, pdf_url: pdfUrl });
   const normalized: StudentLesson = { ...lesson, pdf_url: pdfUrl, type: lessonType };
 
-  let submissionStatus: SubmissionStatus | null = null;
-  let access: AccessResult = { isLocked: false };
-
-  if (options?.studentId) {
-    const [submissions, completedIds, outline] = await Promise.all([
-      fetchStudentSubmissions(options.studentId),
-      fetchCompletedLessonIds(options.studentId),
-      fetchCourseOutline(),
-    ]);
-    submissionStatus = submissions[normalized.id]?.status ?? null;
-    const catalog = catalogFromOutline(outline);
-    const target = catalog.find((item) => item.id === normalized.id) || outlineToGate(normalized);
-    const completed: Record<string, boolean> = {};
-    completedIds.forEach((id) => {
-      completed[id] = true;
-    });
-    access = checkLessonAccess(target, catalog, submissions, { completed });
-  }
-
-  if (options?.overrideLocks) {
-    access = { isLocked: false, reason: access.reason, prereqLessonId: access.prereqLessonId, prereqTitle: access.prereqTitle };
-  }
-
   return {
     lesson: normalized,
     pdfUrl,
     lessonType,
-    isLocked: access.isLocked,
-    submissionStatus,
-    access,
+    isLocked: false,
+    submissionStatus: null,
+    access: { isLocked: false },
   };
-}
+});

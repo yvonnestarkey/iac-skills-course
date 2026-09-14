@@ -1,10 +1,7 @@
-import { connection } from "next/server";
 import StudentPlayer from "@/components/student/StudentPlayer";
 import { getLessonData } from "@/lib/courseData";
-import { getStudentUser } from "@/lib/student-lesson";
 
 export async function generateStudentLessonMetadata(params: Promise<{ lessonId: string }>) {
-  await connection();
   const { lessonId } = await params;
   const { lesson } = await getLessonData(lessonId);
   return {
@@ -19,13 +16,8 @@ export default async function StudentLessonPage({
   params: Promise<{ lessonId: string }>;
   overrideLocks?: boolean;
 }) {
-  await connection();
   const { lessonId } = await params;
-  const user = await getStudentUser();
-  const { lesson, access } = await getLessonData(lessonId, {
-    studentId: user?.id,
-    overrideLocks,
-  });
+  const { lesson, access } = await getLessonData(lessonId, { overrideLocks });
 
   if (!lesson) {
     return (

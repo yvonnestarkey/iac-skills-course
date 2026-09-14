@@ -14,8 +14,22 @@ export default function LessonPdfViewer({
 }) {
   const url = asPdfUrl(pdfUrl) || asPdfUrl(lesson?.pdf_url) || getLessonPdfUrl(lesson);
   const [fullScreen, setFullScreen] = useState(false);
+  const [frameReady, setFrameReady] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const titleId = useId();
   const modalTitleId = useId();
+
+  useEffect(() => {
+    setFrameReady(false);
+    setLoaded(false);
+    if (!url) return;
+    const frame = window.requestAnimationFrame(() => setFrameReady(true));
+    const timeout = window.setTimeout(() => setLoaded(true), 1200);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
+    };
+  }, [url]);
 
   useEffect(() => {
     if (!fullScreen) return;
@@ -53,8 +67,15 @@ export default function LessonPdfViewer({
           </button>
         </div>
       </div>
-      <div className="lesson-pdf-frame w-full h-[80vh]">
-        <iframe title="PDF resource" src={embedSrc} />
+      <div
+        className={`lesson-pdf-frame w-full h-[80vh] ${loaded ? "" : "lesson-pdf-frame--loading"}`}
+        aria-busy={!loaded}
+        aria-label={loaded ? undefined : "Loading PDF"}
+      >
+        {!loaded ? <div className="lesson-pdf-skeleton" /> : null}
+        {frameReady ? (
+          <iframe title="PDF resource" src={embedSrc} onLoad={() => setLoaded(true)} />
+        ) : null}
       </div>
       {fullScreen ? (
         <div className="lesson-pdf-modal" role="dialog" aria-modal="true" aria-labelledby={modalTitleId}>
@@ -72,7 +93,7 @@ export default function LessonPdfViewer({
             </div>
           </div>
           <div className="lesson-pdf-modal-frame">
-            <iframe title="PDF resource full screen" src={embedSrc} />
+            {frameReady ? <iframe title="PDF resource full screen" src={embedSrc} /> : null}
           </div>
         </div>
       ) : null}

@@ -1,13 +1,12 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import type { ReactNode } from "react";
 import { Bell, Mail } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
-import { fetchOnboardingState } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
 import { getSupabase } from "@/lib/supabase";
 import { useStudentSession } from "@/lib/student-session";
@@ -98,28 +97,10 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
 }
 
 function StudentGate({ children }: { children: ReactNode }) {
-  const { ready, user } = useStudentSession();
+  const { ready, user, onboarding } = useStudentSession();
   const pathname = usePathname();
   const router = useRouter();
   const isLogin = pathname === "/student/login";
-  const [onboarding, setOnboarding] = useState<"unknown" | "needed" | "done">("unknown");
-
-  useEffect(() => {
-    if (!ready) return;
-    if (!user || isCoachAccount(user)) {
-      setOnboarding("done");
-      return;
-    }
-    setOnboarding("unknown");
-    let cancelled = false;
-    fetchOnboardingState(user.id).then((state) => {
-      if (cancelled) return;
-      setOnboarding(state.available && !state.completed && !state.skipped ? "needed" : "done");
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [ready, user]);
 
   useEffect(() => {
     if (!ready) return;

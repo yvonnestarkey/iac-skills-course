@@ -2,7 +2,9 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { fetchOnboardingState } from "./onboarding";
 import { ensureStudentProfile } from "./profiles";
+import { isCoachAccount } from "./roles";
 import { getSupabase } from "./supabase";
 import {
   fetchCompletedLessonIds,
@@ -15,12 +17,15 @@ import {
 } from "./student-lesson";
 import { fetchStudentSubmissions, type StudentSubmission } from "./student-submissions";
 
+export type OnboardingGate = "unknown" | "needed" | "done";
+
 interface StudentSessionValue {
   ready: boolean;
   user: StudentUser | null;
   outline: OutlineChapter[];
   completed: Record<string, boolean>;
   submissions: Record<string, StudentSubmission>;
+  onboarding: OnboardingGate;
   setLessonCompleted: (lessonId: string, completed: boolean) => void;
   setSubmission: (lessonId: string, submission: StudentSubmission) => void;
   reloadProgress: () => Promise<void>;
@@ -35,6 +40,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   const [outline, setOutline] = useState<OutlineChapter[]>([]);
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
   const [submissions, setSubmissions] = useState<Record<string, StudentSubmission>>({});
+  const [onboarding, setOnboarding] = useState<OnboardingGate>("unknown");
 
   const loadProgress = useCallback(async (userId: string) => {
     const [ids, nextSubmissions] = await Promise.all([fetchCompletedLessonIds(userId), fetchStudentSubmissions(userId)]);
@@ -54,10 +60,22 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       if (cancelled) return;
       setUser(nextUser);
       setOutline(nextOutline);
+
       if (nextUser) {
-        await ensureStudentProfile(nextUser);
-        await loadProgress(nextUser.id);
+        void ensureStudentProfile(nextUser);
+        if (isCoachAccount(nextUser)) {
+          setOnboarding("done");
+          await loadProgress(nextUser.id);
+        } else {
+          const [, state] = await Promise.all([loadProgress(nextUser.id), fetchOnboardingState(nextUser.id)]);
+          if (!cancelled) {
+            setOnboarding(state.available && !state.completed && !state.skipped ? "needed" : "done");
+          }
+        }
+      } else {
+        setOnboarding("done");
       }
+
       if (!cancelled) setReady(true);
     };
 
@@ -68,10 +86,18 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       const nextUser = session?.user ? studentUserFromAuth(session.user) : null;
       setUser(nextUser);
       if (nextUser) {
-        loadProgress(nextUser.id);
+        void loadProgress(nextUser.id);
+        if (isCoachAccount(nextUser)) {
+          setOnboarding("done");
+        } else {
+          fetchOnboardingState(nextUser.id).then((state) => {
+            setOnboarding(state.available && !state.completed && !state.skipped ? "needed" : "done");
+          });
+        }
       } else {
         setCompleted({});
         setSubmissions({});
+        setOnboarding("done");
       }
     });
 
@@ -98,6 +124,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setCompleted({});
     setSubmissions({});
+    setOnboarding("done");
   }, []);
 
   const value = useMemo(
@@ -107,12 +134,13 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       outline,
       completed,
       submissions,
+      onboarding,
       setLessonCompleted,
       setSubmission,
       reloadProgress,
       signOut,
     }),
-    [ready, user, outline, completed, submissions, setLessonCompleted, setSubmission, reloadProgress, signOut]
+    [ready, user, outline, completed, submissions, onboarding, setLessonCompleted, setSubmission, reloadProgress, signOut]
   );
 
   return <StudentSessionContext.Provider value={value}>{children}</StudentSessionContext.Provider>;

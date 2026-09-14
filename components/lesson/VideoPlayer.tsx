@@ -70,23 +70,36 @@ export default function VideoPlayer({ lesson }: { lesson: Lesson }) {
     setElapsed(Math.round(ratio * total));
   };
 
+  const [embedReady, setEmbedReady] = useState(false);
   const embedSrc = embedSrcForVideo(lesson.video_url);
+
+  useEffect(() => {
+    setEmbedReady(false);
+    if (!embedSrc) return;
+    const id = window.requestAnimationFrame(() => setEmbedReady(true));
+    return () => window.cancelAnimationFrame(id);
+  }, [embedSrc, lesson.id]);
+
   if (embedSrc) {
     const isYouTube = embedSrc.includes("youtube.com/embed/");
     return (
       <div className="player" id="player">
-        <iframe
-          src={embedSrc}
-          width="100%"
-          height="450"
-          allow={
-            isYouTube
-              ? "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-              : "autoplay; fullscreen"
-          }
-          allowFullScreen
-          title={lesson.title}
-        />
+        {embedReady ? (
+          <iframe
+            src={embedSrc}
+            width="100%"
+            height="450"
+            allow={
+              isYouTube
+                ? "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                : "autoplay; fullscreen"
+            }
+            allowFullScreen
+            title={lesson.title}
+          />
+        ) : (
+          <div className="player-skeleton" aria-busy="true" aria-label="Loading video" />
+        )}
       </div>
     );
   }
