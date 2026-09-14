@@ -1,23 +1,37 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AuditThread from "@/components/comms/AuditThread";
 import { commsOf, labelForGroup } from "@/lib/comms";
 import { cohortName } from "@/lib/course";
 import { cohortStudents } from "@/lib/metrics";
+import { fetchRosterStudents, mergeRoster } from "@/lib/profiles";
 import { useStore } from "@/lib/store";
-import type { CommunicationAudience } from "@/lib/types";
+import type { CommunicationAudience, Student } from "@/lib/types";
 
 export default function CoachNotificationsPage() {
   const { data, coach, setNotifyDraft } = useStore();
   const router = useRouter();
   const [audience, setAudience] = useState<CommunicationAudience>("cohort");
-  const [studentId, setStudentId] = useState(data.students[0]?.id || "");
+  const [liveStudents, setLiveStudents] = useState<Student[]>([]);
+  const students = useMemo(() => mergeRoster(data.students, liveStudents), [data.students, liveStudents]);
+  const [studentId, setStudentId] = useState("");
+  const active = students.filter((student) => student.status !== "paused");
+
+  useEffect(() => {
+    fetchRosterStudents().then((result) => {
+      if (result.ok) setLiveStudents(result.students);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!studentId && students[0]) setStudentId(students[0].id);
+  }, [studentId, students]);
 
   const comms = commsOf(data);
-  const cohort = cohortStudents(data, coach.cohort);
-  const picked = data.students.find((s) => s.id === studentId);
+  const cohort = cohortStudents({ ...data, students }, coach.cohort);
+  const picked = students.find((s) => s.id === studentId);
 
   const start = () => {
     if (audience === "student" && picked) {
@@ -31,8 +45,8 @@ export default function CoachNotificationsPage() {
     if (audience === "all") {
       setNotifyDraft({
         audience: "all",
-        audienceLabel: labelForGroup(data, data.students, "all"),
-        recipientIds: data.students.map((s) => s.id),
+        audienceLabel: labelForGroup(data, active, "all"),
+        recipientIds: active.map((s) => s.id),
       });
       return;
     }
@@ -77,7 +91,7 @@ export default function CoachNotificationsPage() {
             <label className="role-chip">
               Student
               <select value={studentId} onChange={(event) => setStudentId(event.target.value)}>
-                {data.students.map((s) => (
+                {students.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
                   </option>

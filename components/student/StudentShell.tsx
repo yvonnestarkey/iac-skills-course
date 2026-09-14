@@ -26,11 +26,10 @@ function LoadingFrame({ label }: { label: string }) {
 
 function AuthenticatedShell({ children }: { children: ReactNode }) {
   const { user } = useStudentSession();
-  const { inboxWaiting, notifications } = useStudentInbox();
+  const { inboxWaiting, unreadCount } = useStudentInbox();
   const nav = useStudentNav();
   const pathname = usePathname();
   const router = useRouter();
-  const notifyCount = notifications.length;
   const closeNav = nav?.setOpen;
 
   useEffect(() => {
@@ -64,7 +63,7 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
             onClick={() => router.push("/student/notifications")}
           >
             <Bell size={18} aria-hidden="true" />
-            {notifyCount ? <span className="pill">{notifyCount}</span> : null}
+            {unreadCount > 0 ? <span className="notify-badge">{unreadCount > 9 ? "9+" : unreadCount}</span> : null}
           </button>
           {user?.email ? <span className="muted small student-email">{user.email}</span> : null}
           {isCoachAccount(user) ? <RoleSwitcher current="students" /> : null}

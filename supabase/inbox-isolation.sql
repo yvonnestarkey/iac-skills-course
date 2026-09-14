@@ -71,20 +71,4 @@ create policy "staff insert inbox"
   to authenticated
   with check (public.is_course_staff());
 
-create or replace view public.notifications
-with (security_invoker = true) as
-select
-  id,
-  student_id,
-  student_id as user_id,
-  student_email,
-  from_role,
-  kind,
-  body,
-  context,
-  lesson_id,
-  created_at
-from public.inbox_messages
-where kind = 'feedback' or from_role = 'coach';
-
-grant select on public.notifications to authenticated;
+-- Notifications now live in public.notifications (see supabase/notifications.sql).

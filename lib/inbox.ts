@@ -1,4 +1,5 @@
 import { getSupabase } from "./supabase";
+import { notifyAssignmentFeedback } from "./notifications";
 
 export type InboxRole = "student" | "coach";
 export type InboxKind = "question" | "reply" | "feedback";
@@ -138,30 +139,6 @@ export async function fetchOwnInboxMessages(): Promise<{ ok: boolean; error?: st
   return { ok: true, data: ((data || []) as InboxRow[]).map(fromRow) };
 }
 
-/** Student notifications: own coach notes / feedback, scoped to auth.uid(). */
-export async function fetchOwnNotifications(): Promise<{ ok: boolean; error?: string; data: InboxMessage[] }> {
-  const { client, user, error: authError } = await authClient();
-  if (!client || !user) return { ok: false, error: authError || "Sign in required.", data: [] };
-
-  const { data, error } = await client
-    .from("notifications")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: true });
-
-  if (!error) return { ok: true, data: ((data || []) as InboxRow[]).map(fromRow) };
-
-  const fallback = await client
-    .from("inbox_messages")
-    .select("*")
-    .eq("student_id", user.id)
-    .or("kind.eq.feedback,from_role.eq.coach")
-    .order("created_at", { ascending: true });
-
-  if (fallback.error) return { ok: false, error: describe(error), data: [] };
-  return { ok: true, data: ((fallback.data || []) as InboxRow[]).map(fromRow) };
-}
-
 export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean; error?: string; message?: InboxMessage }> {
   const { client, user, error: authError } = await authClient();
   if (!client) return { ok: false, error: authError || "Supabase is not configured." };
@@ -186,7 +163,16 @@ export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean
     .single();
 
   if (error) return { ok: false, error: describe(error) };
-  return { ok: true, message: fromRow(data as InboxRow) };
+  const message = fromRow(data as InboxRow);
+  if (draft.kind === "feedback" && draft.from === "coach") {
+    await notifyAssignmentFeedback({
+      studentId: message.studentId,
+      studentEmail: message.studentEmail,
+      title: draft.context || "Assignment feedback",
+      message: body,
+    });
+  }
+  return { ok: true, message };
 }
 
 export function messageLabel(message: InboxMessage, viewer: InboxRole): string {

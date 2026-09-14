@@ -8,7 +8,7 @@ import { useStudentSession } from "@/lib/student-session";
 
 export default function StudentDashboard() {
   const { user, outline, completed } = useStudentSession();
-  const { inboxWaiting, notifications } = useStudentInbox();
+  const { inboxWaiting, unreadCount } = useStudentInbox();
   const lessons = outline.flatMap((chapter) => chapter.lessons);
   const done = lessons.filter((lesson) => completed[lesson.id]).length;
   const next = lessons.find((lesson) => !completed[lesson.id]) || lessons[0];
@@ -41,7 +41,7 @@ export default function StudentDashboard() {
         <Link href="/student/notifications" className="student-hub-card">
           <strong>Notifications</strong>
           <p>Assignment feedback and coach notes.</p>
-          {notifications.length ? <span className="pill">{notifications.length}</span> : null}
+          {unreadCount ? <span className="pill">{unreadCount} unread</span> : null}
         </Link>
         <Link href="/student/planner" className="student-hub-card">
           <strong>Study planner</strong>

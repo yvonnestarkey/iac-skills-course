@@ -20,6 +20,9 @@ create table if not exists public.lessons (
 create index if not exists lessons_chapter_position_idx
   on public.lessons (chapter_id, position);
 
+alter table public.lessons add column if not exists video_urls jsonb;
+alter table public.lessons add column if not exists thinkific_url text;
+
 alter table public.lessons enable row level security;
 
 -- Prototype policies: guests and signed-in students can read lessons.
@@ -35,6 +38,30 @@ create policy "lessons readable by students and guests"
 drop policy if exists "lessons writable by anon" on public.lessons;
 create policy "lessons writable by anon"
   on public.lessons for all
+  to anon, authenticated
+  using (true)
+  with check (true);
+
+-- Chapter titles for the sidebar and dashboard (lessons.chapter_id → chapters.id).
+create table if not exists public.chapters (
+  id          text primary key,
+  title       text not null,
+  summary     text not null default '',
+  position    integer not null default 0,
+  created_at  timestamptz not null default now()
+);
+
+alter table public.chapters enable row level security;
+
+drop policy if exists "chapters readable by students and guests" on public.chapters;
+create policy "chapters readable by students and guests"
+  on public.chapters for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "chapters writable by anon" on public.chapters;
+create policy "chapters writable by anon"
+  on public.chapters for all
   to anon, authenticated
   using (true)
   with check (true);
@@ -228,25 +255,59 @@ create policy "staff insert inbox"
   to authenticated
   with check (public.is_course_staff());
 
--- Notifications are the student's own coach notes / assignment feedback.
--- The view is security_invoker so inbox RLS (auth.uid() = student_id) still applies.
-create or replace view public.notifications
-with (security_invoker = true) as
-select
-  id,
-  student_id,
-  student_id as user_id,
-  student_email,
-  from_role,
-  kind,
-  body,
-  context,
-  lesson_id,
-  created_at
-from public.inbox_messages
-where kind = 'feedback' or from_role = 'coach';
+-- Per-student notifications for announcements and assignment feedback.
+drop view if exists public.notifications;
 
-grant select on public.notifications to authenticated;
+create table if not exists public.notifications (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null references auth.users (id) on delete cascade,
+  title       text not null,
+  message     text not null,
+  type        text not null check (type in ('announcement', 'assignment_feedback')),
+  read        boolean not null default false,
+  created_at  timestamptz not null default now()
+);
+
+create index if not exists notifications_user_unread_idx
+  on public.notifications (user_id, read, created_at desc);
+
+alter table public.notifications enable row level security;
+
+drop policy if exists "students read own notifications" on public.notifications;
+create policy "students read own notifications"
+  on public.notifications for select
+  to authenticated
+  using (auth.uid() = user_id);
+
+drop policy if exists "students update own notifications" on public.notifications;
+create policy "students update own notifications"
+  on public.notifications for update
+  to authenticated
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+drop policy if exists "staff read notifications" on public.notifications;
+create policy "staff read notifications"
+  on public.notifications for select
+  to authenticated
+  using (public.is_course_staff());
+
+drop policy if exists "staff insert notifications" on public.notifications;
+create policy "staff insert notifications"
+  on public.notifications for insert
+  to authenticated
+  with check (public.is_course_staff());
+
+grant select, insert, update on public.notifications to authenticated;
+
+alter table public.notifications replica identity full;
+
+do $$
+begin
+  alter publication supabase_realtime add table public.notifications;
+exception
+  when duplicate_object then null;
+end $$;
 
 -- Attach older email-only inbox rows to the matching Auth account.
 update public.inbox_messages m

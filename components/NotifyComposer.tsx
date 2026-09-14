@@ -3,12 +3,14 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { audienceCopy, postAnnouncement } from "@/lib/comms";
+import { deliverAnnouncement } from "@/lib/notifications";
 import { useStore } from "@/lib/store";
 
 export default function NotifyComposer() {
   const { data, notifyDraft, setNotifyDraft, mutate, setNotice } = useStore();
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const [busy, setBusy] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -19,10 +21,11 @@ export default function NotifyComposer() {
   if (pathname.startsWith("/student") || !notifyDraft) return null;
 
   const recipients = data.students.filter((s) => notifyDraft.recipientIds.includes(s.id));
-  const count = recipients.length;
+  const count = Math.max(recipients.length, notifyDraft.recipientIds.length);
 
-  const send = () => {
-    if (!subject.trim() || !body.trim() || !count) return;
+  const send = async () => {
+    if (!subject.trim() || !body.trim() || !count || busy) return;
+    setBusy(true);
     mutate((draft) => {
       postAnnouncement(draft, {
         subject,
@@ -32,7 +35,21 @@ export default function NotifyComposer() {
         recipientIds: notifyDraft.recipientIds,
       });
     });
-    setNotice(`Sent to ${audienceCopy(notifyDraft.audience, count)}.`);
+    const delivered = await deliverAnnouncement({
+      title: subject,
+      message: body,
+      audience: notifyDraft.audience,
+      recipientIds: notifyDraft.recipientIds,
+    });
+    setBusy(false);
+    if (delivered.ok) {
+      setNotice(`Sent to ${audienceCopy(notifyDraft.audience, delivered.count || count)}.`);
+    } else {
+      setNotice(
+        delivered.error ||
+          "Saved locally. Run supabase/notifications.sql in Supabase so live students receive this."
+      );
+    }
     setNotifyDraft(null);
   };
 
@@ -76,11 +93,11 @@ export default function NotifyComposer() {
           />
         </div>
         <p className="muted small">
-          This is stored as a communication. Students can reply, and the whole thread stays here as an audit trail.
+          Each live student gets a notification in their bell. Demo roster names stay in the coach audit trail.
         </p>
         <div className="modal-actions">
-          <button className="primary" onClick={send} disabled={!subject.trim() || !body.trim() || !count}>
-            Send notification
+          <button className="primary" onClick={send} disabled={!subject.trim() || !body.trim() || !count || busy}>
+            {busy ? "Sending…" : "Send notification"}
           </button>
           <button className="ghost" onClick={() => setNotifyDraft(null)}>
             Cancel
