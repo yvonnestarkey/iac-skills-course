@@ -369,6 +369,12 @@ h1 {
   background: var(--dark);
 }
 
+.player iframe {
+  display: block;
+  border: 0;
+  background: #000;
+}
+
 .player-art {
   position: relative;
   aspect-ratio: 16 / 7;

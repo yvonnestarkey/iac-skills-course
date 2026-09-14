@@ -6,6 +6,7 @@ export interface Lesson {
   title: string;
   duration?: string;
   seconds?: number;
+  video_url?: string;
   blurb?: string;
   body?: string[];
   takeaways?: string[];

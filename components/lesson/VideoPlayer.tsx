@@ -5,7 +5,7 @@ import type { MouseEvent } from "react";
 import { formatTime } from "@/lib/dates";
 import type { Lesson } from "@/lib/types";
 
-/** Stand-in for a real video: it counts through the lesson's runtime. */
+/** Vimeo embed when the lesson has a player URL; otherwise a timed stand-in. */
 export default function VideoPlayer({ lesson }: { lesson: Lesson }) {
   const total = lesson.seconds || 0;
   const [elapsed, setElapsed] = useState(0);
@@ -42,6 +42,21 @@ export default function VideoPlayer({ lesson }: { lesson: Lesson }) {
     const ratio = Math.min(1, Math.max(0, (event.clientX - box.left) / box.width));
     setElapsed(Math.round(ratio * total));
   };
+
+  if (lesson.video_url?.includes("player.vimeo.com")) {
+    return (
+      <div className="player" id="player">
+        <iframe
+          src={lesson.video_url}
+          width="100%"
+          height="450"
+          allow="autoplay; fullscreen"
+          allowFullScreen
+          title={lesson.title}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="player" id="player">

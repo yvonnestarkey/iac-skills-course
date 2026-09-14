@@ -18,6 +18,7 @@ export interface StudentLesson {
   chapterTitle: string;
   duration?: string;
   seconds?: number;
+  video_url?: string;
   blurb?: string;
   body?: string[];
   takeaways?: string[];
@@ -50,6 +51,16 @@ export interface StudentUser {
   id: string;
   email: string | null;
   role: string | null;
+}
+
+function firstVideoUrl(...values: unknown[]): string | undefined {
+  const urls: string[] = [];
+  const collect = (value: unknown) => {
+    if (typeof value === "string" && value.trim()) urls.push(value.trim());
+    else if (Array.isArray(value)) value.forEach(collect);
+  };
+  values.forEach(collect);
+  return urls.find((url) => url.includes("player.vimeo.com")) || urls[0];
 }
 
 function asStringList(value: unknown): string[] | undefined {
@@ -210,6 +221,7 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
         chapterTitle: chapterTitle(data.chapter_id),
         duration: data.duration || undefined,
         seconds: data.seconds || undefined,
+        video_url: firstVideoUrl(data.video_url, data.video_urls),
         blurb: data.blurb || undefined,
         body: asStringList(data.body),
         takeaways: asStringList(data.takeaways),

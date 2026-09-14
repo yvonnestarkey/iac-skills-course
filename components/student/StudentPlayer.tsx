@@ -73,7 +73,7 @@ export default function StudentPlayer({ lesson }: { lesson: StudentLesson }) {
 
   return (
     <>
-      {lesson.type === "video" ? (
+      {lesson.video_url?.includes("player.vimeo.com") || lesson.type === "video" ? (
         <VideoPlayer lesson={lesson} />
       ) : lesson.type === "reading" ? (
         <div className="reading-hero">
