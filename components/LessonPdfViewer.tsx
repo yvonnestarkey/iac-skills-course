@@ -36,7 +36,7 @@ export default function LessonPdfViewer({
   const embedSrc = pdfEmbedSrc(url);
 
   return (
-    <section className="lesson-pdf-viewer" aria-labelledby={titleId}>
+    <section className="lesson-pdf-viewer w-full" aria-labelledby={titleId}>
       <div className="lesson-pdf-header">
         <div>
           <h2 id={titleId}>PDF resource</h2>
@@ -53,7 +53,7 @@ export default function LessonPdfViewer({
           </button>
         </div>
       </div>
-      <div className="lesson-pdf-frame">
+      <div className="lesson-pdf-frame w-full h-[80vh]">
         <iframe title="PDF resource" src={embedSrc} />
       </div>
       {fullScreen ? (

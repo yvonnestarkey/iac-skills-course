@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
-import LessonPdfViewer from "@/components/LessonPdfViewer";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
-import VideoPlayer, { embedSrcForVideo } from "@/components/lesson/VideoPlayer";
+import VideoPlayer from "@/components/lesson/VideoPlayer";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
 import LessonSubmissionForm from "@/components/student/LessonSubmissionForm";
 import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/lib/student-lesson";
@@ -17,9 +16,11 @@ import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
 export default function StudentPlayer({
   lesson,
   initialAccess,
+  children,
 }: {
   lesson: StudentLesson;
   initialAccess?: AccessResult;
+  children?: ReactNode;
 }) {
   const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions } = useStudentSession();
   const { unlocked, basePath } = useCoursePreview();
@@ -122,9 +123,9 @@ export default function StudentPlayer({
 
   return (
     <>
-      {embedSrcForVideo(lesson.video_url) || kind === "video" ? (
-        <VideoPlayer lesson={lesson} />
-      ) : kind === "reading" ? (
+      {kind === "video" ? <VideoPlayer lesson={lesson} /> : null}
+      {children}
+      {kind === "reading" ? (
         <div className="reading-hero">
           <span>{lesson.duration}</span>
           <p>{lesson.blurb}</p>
@@ -154,8 +155,6 @@ export default function StudentPlayer({
             </ul>
           </div>
         ) : null}
-
-        <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
 
         <label className="student-notes-label" htmlFor="student-notes">
           Your notes

@@ -1,4 +1,5 @@
 import { connection } from "next/server";
+import LessonPdfViewer from "@/components/LessonPdfViewer";
 import StudentPlayer from "@/components/student/StudentPlayer";
 import { getLessonAccess } from "@/lib/accessControl";
 import { fetchStudentLesson, getStudentUser } from "@/lib/student-lesson";
@@ -7,7 +8,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
-/** Same fetchStudentLesson + StudentPlayer as /coach/preview/[lessonId], including PDF resolution. */
+/** Same LessonPdfViewer + StudentPlayer as /coach/preview/[lessonId]. */
 
 export async function generateMetadata({ params }: { params: Promise<{ lessonId: string }> }) {
   await connection();
@@ -35,5 +36,9 @@ export default async function StudentLessonPage({ params }: { params: Promise<{ 
 
   const initialAccess = user ? await getLessonAccess(user.id, lesson.id) : { isLocked: false };
 
-  return <StudentPlayer lesson={lesson} initialAccess={initialAccess} />;
+  return (
+    <StudentPlayer lesson={lesson} initialAccess={initialAccess}>
+      <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
+    </StudentPlayer>
+  );
 }

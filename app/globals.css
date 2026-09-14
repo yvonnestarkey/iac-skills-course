@@ -138,6 +138,15 @@ h1 {
   flex-wrap: wrap;
 }
 
+.w-full {
+  width: 100%;
+}
+
+.h-\[80vh\] {
+  height: 80vh;
+  min-height: 750px;
+}
+
 .topbar-right {
   display: flex;
   align-items: center;
@@ -584,6 +593,13 @@ h1 {
 
 .lesson-body:has(.lesson-pdf-viewer) {
   max-width: min(1120px, 100%);
+}
+
+.main > .lesson-pdf-viewer {
+  width: 100%;
+  max-width: min(1120px, 100%);
+  margin: 0;
+  padding: 24px 34px 0;
 }
 
 .lesson-pdf-viewer {
@@ -2377,9 +2393,14 @@ input[type="password"]:focus {
     padding: 24px 20px 28px;
   }
 
-  .lesson-pdf-frame {
+  .lesson-pdf-frame,
+  .h-\[80vh\] {
     height: 70vh;
     min-height: 70vh;
+  }
+
+  .main > .lesson-pdf-viewer {
+    padding: 20px 20px 0;
   }
 
   .widget-panel {

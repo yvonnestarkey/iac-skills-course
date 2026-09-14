@@ -1,4 +1,5 @@
 import { connection } from "next/server";
+import LessonPdfViewer from "@/components/LessonPdfViewer";
 import StudentPlayer from "@/components/student/StudentPlayer";
 import { fetchStudentLesson } from "@/lib/student-lesson";
 
@@ -6,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
-/** Coach preview uses the same lesson fetch and StudentPlayer as /student/[lessonId]. */
+/** Same LessonPdfViewer + StudentPlayer as /student/[lessonId]. */
 
 export async function generateMetadata({ params }: { params: Promise<{ lessonId: string }> }) {
   await connection();
@@ -32,5 +33,9 @@ export default async function CoachPreviewLessonPage({ params }: { params: Promi
     );
   }
 
-  return <StudentPlayer lesson={lesson} initialAccess={{ isLocked: false }} />;
+  return (
+    <StudentPlayer lesson={lesson} initialAccess={{ isLocked: false }}>
+      <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
+    </StudentPlayer>
+  );
 }
