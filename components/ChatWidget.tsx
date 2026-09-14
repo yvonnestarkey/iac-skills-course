@@ -6,7 +6,22 @@ import { STARTER_PROMPTS } from "@/lib/constants";
 import { botReply } from "@/lib/assistant";
 import { findLesson } from "@/lib/course";
 import { nowLabel } from "@/lib/dates";
+import { postInboxMessage } from "@/lib/inbox";
 import { useStore } from "@/lib/store";
+import type { CourseData } from "@/lib/types";
+
+function markEscalated(draft: CourseData, key: string, question: string, paragraphs: string[], escalated: boolean) {
+  draft.chats = draft.chats || {};
+  const entries = draft.chats[key] || [];
+  for (let i = entries.length - 1; i >= 0; i -= 1) {
+    if (entries[i].from === "bot" && entries[i].about === question) {
+      entries[i].escalated = escalated;
+      break;
+    }
+  }
+  entries.push({ from: "bot", paragraphs });
+  draft.chats[key] = entries;
+}
 
 export default function ChatWidget() {
   const { ready, data, session, mutate, chatOpen, setChatOpen, setNotice } = useStore();
@@ -15,15 +30,17 @@ export default function ChatWidget() {
   const router = useRouter();
   const pathname = usePathname();
 
+  const onStudentPortal = pathname.startsWith("/student") && pathname !== "/student/login";
+  const isPrototypeStudent = Boolean(session && session.role === "student");
+  const isStudent = isPrototypeStudent || onStudentPortal;
   const key = session ? session.id : "guest";
   const log = (data.chats && data.chats[key]) || [];
-  const isStudent = Boolean(session && session.role === "student");
 
   useEffect(() => {
     if (body.current) body.current.scrollTop = body.current.scrollHeight;
   }, [log.length, chatOpen]);
 
-  if (pathname.startsWith("/student")) return null;
+  if (pathname === "/student/login" || pathname.startsWith("/onboarding")) return null;
   if (!ready) return null;
 
   if (!chatOpen) {
@@ -47,10 +64,34 @@ export default function ChatWidget() {
     setText("");
   };
 
-  const escalate = (question: string) => {
+  const escalate = async (question: string) => {
     if (!isStudent) return;
-    const id = session.id;
     const asked = question || "A student asked the course assistant for help and wanted this passed on.";
+
+    if (onStudentPortal) {
+      const result = await postInboxMessage({
+        studentEmail: "",
+        from: "student",
+        kind: "question",
+        body: asked,
+        context: "Course assistant",
+      });
+      mutate((draft) => {
+        markEscalated(
+          draft,
+          key,
+          question,
+          result.ok
+            ? ["Sent. Yvonne sees this in Inbox, and her reply will appear in your Ask the Coach thread."]
+            : [result.error || "Could not send this to Yvonne. Try again from Inbox."],
+          Boolean(result.ok)
+        );
+      });
+      return;
+    }
+
+    if (!session) return;
+    const id = session.id;
     mutate((draft) => {
       draft.messages[id] = draft.messages[id] || [];
       draft.messages[id].push({
@@ -60,27 +101,23 @@ export default function ChatWidget() {
         at: nowLabel(),
         context: "Course assistant",
       });
-      draft.chats = draft.chats || {};
-      const entries = draft.chats[id] || [];
-      for (let i = entries.length - 1; i >= 0; i -= 1) {
-        if (entries[i].from === "bot" && entries[i].about === question) {
-          entries[i].escalated = true;
-          break;
-        }
-      }
-      entries.push({
-        from: "bot",
-        paragraphs: [
-          "Sent. Yvonne sees this under Questions waiting, and her reply will appear in your Ask the Coach thread.",
-        ],
-      });
-      draft.chats[id] = entries;
+      markEscalated(draft, key, question, [
+        "Sent. Yvonne sees this under Questions waiting, and her reply will appear in your Ask the Coach thread.",
+      ], true);
     });
   };
 
   const openLesson = (lessonId: string) => {
     setNotice("");
     setChatOpen(false);
+    if (onStudentPortal) {
+      router.push(`/student/${lessonId}`);
+      return;
+    }
+    if (pathname.startsWith("/coach/preview")) {
+      router.push(`/coach/preview/${lessonId}`);
+      return;
+    }
     router.push(`/learn/${lessonId}`);
   };
 
