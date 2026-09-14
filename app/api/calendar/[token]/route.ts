@@ -36,13 +36,13 @@ export async function GET(request: Request, { params }: Context) {
   const { token } = await params;
   const file = feedPath(token);
   if (!file) return NextResponse.json({ error: "Bad feed token" }, { status: 400, headers: CORS });
+  const origin = new URL(request.url).origin;
+  const generated = await buildCalendarIcs(token.replace(/\.ics$/i, ""), origin);
+  if (generated) return calendarResponse(generated);
   try {
     const ics = await fs.readFile(file, "utf8");
     return calendarResponse(ics);
   } catch {
-    const origin = new URL(request.url).origin;
-    const generated = await buildCalendarIcs(token.replace(/\.ics$/i, ""), origin);
-    if (generated) return calendarResponse(generated);
     return NextResponse.json({ error: "No such feed" }, { status: 404, headers: CORS });
   }
 }

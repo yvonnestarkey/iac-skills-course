@@ -1,10 +1,11 @@
-import { SLOT_TIMES } from "./constants";
-import { taskAction } from "./course";
+import { PERIODS, SLOT_TIMES } from "./constants";
 import { isoDate, longDate, today } from "./dates";
 import { planStatus, upcomingLiveSessions } from "./planner";
 import type { CourseData, ScheduledSession, Student, StudyPlan } from "./types";
 
 const SESSION_TITLE = "IAC Study Session";
+const COURSE_RESUME_URL = "https://iac.accountingstudyadvice.com/student/overview";
+const PERIOD_ORDER = PERIODS.map((period) => period.id);
 
 export interface CalendarEventPayload {
   uid: string;
@@ -47,52 +48,74 @@ export function siteOrigin(): string {
   return typeof window === "undefined" ? "" : window.location.origin;
 }
 
-export function courseResumeLink(origin = siteOrigin()): string {
-  return `${origin}/student/overview`;
+export function courseResumeLink(_origin = siteOrigin()): string {
+  return COURSE_RESUME_URL;
 }
 
 export function lessonLink(lessonId: string, origin = siteOrigin()): string {
   return `${origin}/student/${lessonId}`;
 }
 
-function slotClock(period: string): [number, number] {
+function slotMinutes(period: string): number {
   const [hours, minutes] = SLOT_TIMES[period] || SLOT_TIMES.evening;
-  return [hours, minutes];
+  return hours * 60 + minutes;
 }
 
-function topicLine(item: ScheduledSession["items"][number]): string {
-  const part = item.parts ? ` (part ${item.part} of ${item.parts})` : "";
-  return `• ${taskAction(item.lesson)}: ${item.lesson.title}${part} (${item.minutes} min)`;
+function cellsByDay(cells: ScheduledSession[]): ScheduledSession[][] {
+  const groups = new Map<string, ScheduledSession[]>();
+  const order: string[] = [];
+  cells.forEach((cell) => {
+    if (!cell.items.length) return;
+    const key = isoDate(cell.date);
+    if (!groups.has(key)) {
+      groups.set(key, []);
+      order.push(key);
+    }
+    groups.get(key)!.push(cell);
+  });
+  return order.map((key) =>
+    groups.get(key)!.sort((a, b) => PERIOD_ORDER.indexOf(a.period) - PERIOD_ORDER.indexOf(b.period))
+  );
 }
 
-function sessionDescription(cell: ScheduledSession, origin: string): string {
-  const resume = courseResumeLink(origin);
-  const topics = cell.items.map(topicLine);
-  return [
-    `Open the course: ${resume}`,
+function dailyTopicTitles(cells: ScheduledSession[]): string[] {
+  const titles: string[] = [];
+  cells.forEach((cell) => {
+    cell.items.forEach((item) => {
+      if (titles[titles.length - 1] !== item.lesson.title) titles.push(item.lesson.title);
+    });
+  });
+  return titles;
+}
+
+function dailyStudyEvent(cells: ScheduledSession[], feedId: string): CalendarEventPayload {
+  const date = cells[0].date;
+  const startMinutes = Math.min(...cells.map((cell) => slotMinutes(cell.period)));
+  const endMinutes = Math.max(
+    ...cells.map((cell) => slotMinutes(cell.period) + (cell.used || cell.capacity || 0))
+  );
+  const topics = dailyTopicTitles(cells);
+  const description = [
+    "IAC Skills Course Study Session",
     "",
-    "Queued for this session:",
-    ...(topics.length ? topics : ["• No lessons queued"]),
+    `Resume course: ${COURSE_RESUME_URL}`,
+    "",
+    "Scheduled Topics:",
+    ...topics.map((title) => `- ${title}`),
   ].join("\n");
-}
 
-function sessionEvent(cell: ScheduledSession, feedId: string, origin: string): CalendarEventPayload {
-  const [hours, minutes] = slotClock(cell.period);
-  const duration = cell.capacity || cell.used || 0;
-  const endMinutes = hours * 60 + minutes + duration;
-  const resume = courseResumeLink(origin);
   return {
-    uid: `${feedId}-${isoDate(cell.date)}-${cell.period}@accountingstudyadvice`,
-    start: icsStamp(cell.date, hours, minutes),
-    end: icsStamp(cell.date, Math.floor(endMinutes / 60), endMinutes % 60),
+    uid: `${feedId}-${isoDate(date)}@accountingstudyadvice`,
+    start: icsStamp(date, Math.floor(startMinutes / 60), startMinutes % 60),
+    end: icsStamp(date, Math.floor(endMinutes / 60), endMinutes % 60),
     summary: SESSION_TITLE,
-    description: sessionDescription(cell, origin),
-    location: resume,
-    url: resume,
+    description,
+    location: COURSE_RESUME_URL,
+    url: COURSE_RESUME_URL,
   };
 }
 
-/** Shared session payloads for ICS download and Google Calendar URLs. */
+/** One study VEVENT per calendar day, plus separate live Zoom events. */
 export function buildStudySessionEvents(
   data: CourseData,
   student: Student,
@@ -101,9 +124,7 @@ export function buildStudySessionEvents(
 ): CalendarEventPayload[] {
   const status = planStatus(data, student, planOverride);
   const feedId = (student.calendar && student.calendar.token) || student.id;
-  const events = (status ? status.cells : [])
-    .filter((cell) => cell.items.length)
-    .map((cell) => sessionEvent(cell, feedId, origin));
+  const events = cellsByDay(status ? status.cells : []).map((cells) => dailyStudyEvent(cells, feedId));
 
   upcomingLiveSessions(data).forEach((live) => {
     const [hours, minutes] = live.time.split(":").map(Number);
