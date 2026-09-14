@@ -1,11 +1,6 @@
 import { getSupabase } from "./supabase";
 
 export const ONBOARDING_COUNTRIES = ["South Africa", "Zimbabwe", "Namibia"] as const;
-export const ONBOARDING_PHONE_CODES = [
-  { code: "+27", label: "South Africa (+27)" },
-  { code: "+263", label: "Zimbabwe (+263)" },
-  { code: "+264", label: "Namibia (+264)" },
-] as const;
 export const ONBOARDING_INSTITUTIONS = [
   "UNISA",
   "Milpark",
@@ -23,11 +18,11 @@ export type OnboardingInstitution = (typeof ONBOARDING_INSTITUTIONS)[number];
 
 export interface OnboardingDemographics {
   iac_written_exam_before: boolean;
-  iac_attempt_count: number;
-  country: OnboardingCountry;
-  cta_institution: string;
-  cta_year_passed: number;
-  cta_attempts: number;
+  iac_attempt_count: number | null;
+  country: OnboardingCountry | null;
+  cta_institution: string | null;
+  cta_year_passed: number | null;
+  cta_attempts: number | null;
 }
 
 export interface OnboardingNotes {
@@ -37,8 +32,8 @@ export interface OnboardingNotes {
 }
 
 export interface OnboardingInput {
-  phone: string;
-  accountability_email: string;
+  phone: string | null;
+  accountability_email: string | null;
   demographics: OnboardingDemographics;
   qualitative_notes: OnboardingNotes;
 }
@@ -49,11 +44,6 @@ function tableMissing(message: string): boolean {
 
 function columnMissing(message: string, column: string): boolean {
   return new RegExp(column, "i").test(message) && /does not exist|schema cache|could not find/i.test(message);
-}
-
-export function formatPhone(code: string, national: string): string {
-  const digits = national.replace(/\D/g, "");
-  return `${code}${digits}`;
 }
 
 export async function fetchOnboardingState(

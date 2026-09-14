@@ -8,9 +8,7 @@ import {
   ONBOARDING_COUNTRIES,
   ONBOARDING_CTA_YEARS,
   ONBOARDING_INSTITUTIONS,
-  ONBOARDING_PHONE_CODES,
   fetchOnboardingState,
-  formatPhone,
   saveOnboarding,
   skipOnboarding,
   type OnboardingCountry,
@@ -27,21 +25,20 @@ export default function OnboardingForm() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
-  const [phoneCode, setPhoneCode] = useState<string>(ONBOARDING_PHONE_CODES[0].code);
-  const [phoneNational, setPhoneNational] = useState("");
+  const [phone, setPhone] = useState("");
   const [accountabilityEmail, setAccountabilityEmail] = useState("");
 
   const [writtenExam, setWrittenExam] = useState<"yes" | "no" | "">("");
-  const [iacAttempts, setIacAttempts] = useState("1");
-  const [country, setCountry] = useState<OnboardingCountry>("South Africa");
+  const [iacAttempts, setIacAttempts] = useState("");
+  const [country, setCountry] = useState<OnboardingCountry | "">("");
 
   const [strugglingAreas, setStrugglingAreas] = useState("");
   const [coachingHopes, setCoachingHopes] = useState("");
 
   const [institution, setInstitution] = useState("");
   const [institutionOther, setInstitutionOther] = useState("");
-  const [yearPassed, setYearPassed] = useState("2025");
-  const [ctaAttempts, setCtaAttempts] = useState("1");
+  const [yearPassed, setYearPassed] = useState("");
+  const [ctaAttempts, setCtaAttempts] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
 
   useEffect(() => {
@@ -70,29 +67,14 @@ export default function OnboardingForm() {
     );
   }
 
-  const validateStep = (): string => {
-    if (step === 0) {
-      if (phoneNational.replace(/\D/g, "").length < 6) return "Enter your phone number, including the local digits.";
-      if (!accountabilityEmail.trim() || !accountabilityEmail.includes("@")) {
-        return "Enter an accountability email — someone who will keep you honest.";
-      }
-    }
-    if (step === 1) {
-      if (!writtenExam) return "Say whether you have written the IAC exam before.";
-    }
-    if (step === 2) {
-      if (!strugglingAreas.trim()) return "Tell us where you are struggling.";
-      if (!coachingHopes.trim()) return "Tell us what you hope to get from coaching.";
-    }
-    if (step === 3) {
-      if (!institution) return "Select the institution where you passed CTA / PGDA.";
-      if (institution === "Other" && !institutionOther.trim()) return "Type the institution name.";
-    }
+  const validateIac = (): string => {
+    if (!writtenExam) return "Say whether you have written the IAC exam before.";
+    if (writtenExam === "yes" && !iacAttempts) return "Select how many IAC attempts you have made.";
     return "";
   };
 
   const goNext = () => {
-    const message = validateStep();
+    const message = step === 1 ? validateIac() : "";
     if (message) {
       setError(message);
       return;
@@ -103,23 +85,24 @@ export default function OnboardingForm() {
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    const message = validateStep();
+    const message = validateIac();
     if (message) {
       setError(message);
+      setStep(1);
       return;
     }
     setBusy(true);
     setError("");
     const result = await saveOnboarding(user.id, {
-      phone: formatPhone(phoneCode, phoneNational),
-      accountability_email: accountabilityEmail.trim(),
+      phone: phone.trim() || null,
+      accountability_email: accountabilityEmail.trim() || null,
       demographics: {
         iac_written_exam_before: writtenExam === "yes",
-        iac_attempt_count: writtenExam === "yes" ? Number(iacAttempts) : 0,
-        country,
-        cta_institution: institution === "Other" ? institutionOther.trim() : institution,
-        cta_year_passed: Number(yearPassed),
-        cta_attempts: Number(ctaAttempts),
+        iac_attempt_count: writtenExam === "yes" ? Number(iacAttempts) : null,
+        country: country || null,
+        cta_institution: (institution === "Other" ? institutionOther.trim() : institution) || null,
+        cta_year_passed: yearPassed ? Number(yearPassed) : null,
+        cta_attempts: ctaAttempts ? Number(ctaAttempts) : null,
       },
       qualitative_notes: {
         struggling_areas: strugglingAreas.trim(),
@@ -180,40 +163,24 @@ export default function OnboardingForm() {
           ))}
         </ol>
 
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           {step === 0 ? (
             <fieldset className="onboarding-step">
               <legend>Contact</legend>
               <label className="student-notes-label" htmlFor="onboarding-phone">
-                Phone number
+                Phone number <span className="muted">(optional)</span>
               </label>
-              <div className="onboarding-phone">
-                <select
-                  className="select-line"
-                  id="onboarding-phone-code"
-                  aria-label="Country code"
-                  value={phoneCode}
-                  onChange={(event) => setPhoneCode(event.target.value)}
-                >
-                  {ONBOARDING_PHONE_CODES.map((item) => (
-                    <option key={item.code} value={item.code}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  id="onboarding-phone"
-                  type="tel"
-                  inputMode="tel"
-                  autoComplete="tel-national"
-                  placeholder="82 123 4567"
-                  value={phoneNational}
-                  onChange={(event) => setPhoneNational(event.target.value)}
-                  required
-                />
-              </div>
+              <input
+                id="onboarding-phone"
+                type="text"
+                inputMode="tel"
+                autoComplete="tel"
+                placeholder="+27 82 123 4567"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+              />
               <label className="student-notes-label" htmlFor="onboarding-accountability">
-                Accountability email
+                Accountability email <span className="muted">(optional)</span>
               </label>
               <input
                 id="onboarding-accountability"
@@ -222,9 +189,8 @@ export default function OnboardingForm() {
                 placeholder="someone-who-will-nudge-you@example.com"
                 value={accountabilityEmail}
                 onChange={(event) => setAccountabilityEmail(event.target.value)}
-                required
               />
-              <p className="muted small">We save this on your profile so we can reach you and your accountability partner.</p>
+              <p className="muted small">Include the country code in the phone number if you add one. You can leave these blank.</p>
             </fieldset>
           ) : null}
 
@@ -232,7 +198,7 @@ export default function OnboardingForm() {
             <fieldset className="onboarding-step">
               <legend>IAC information</legend>
               <p className="student-notes-label" id="onboarding-written-label">
-                Have you written the IAC exam before?
+                Have you written the IAC exam before? <span className="muted">(required)</span>
               </p>
               <div className="onboarding-choice" role="group" aria-labelledby="onboarding-written-label">
                 <button
@@ -253,7 +219,7 @@ export default function OnboardingForm() {
               {writtenExam === "yes" ? (
                 <>
                   <label className="student-notes-label" htmlFor="onboarding-iac-attempts">
-                    How many attempts?
+                    How many attempts? <span className="muted">(required)</span>
                   </label>
                   <select
                     className="select-line"
@@ -261,6 +227,7 @@ export default function OnboardingForm() {
                     value={iacAttempts}
                     onChange={(event) => setIacAttempts(event.target.value)}
                   >
+                    <option value="">Select attempts</option>
                     {[1, 2, 3, 4, 5, 6].map((count) => (
                       <option key={count} value={count}>
                         {count}
@@ -270,14 +237,15 @@ export default function OnboardingForm() {
                 </>
               ) : null}
               <label className="student-notes-label" htmlFor="onboarding-country">
-                Country
+                Country <span className="muted">(optional)</span>
               </label>
               <select
                 className="select-line"
                 id="onboarding-country"
                 value={country}
-                onChange={(event) => setCountry(event.target.value as OnboardingCountry)}
+                onChange={(event) => setCountry(event.target.value as OnboardingCountry | "")}
               >
+                <option value="">Prefer not to say</option>
                 {ONBOARDING_COUNTRIES.map((item) => (
                   <option key={item} value={item}>
                     {item}
@@ -291,7 +259,7 @@ export default function OnboardingForm() {
             <fieldset className="onboarding-step">
               <legend>Where you are</legend>
               <label className="student-notes-label" htmlFor="onboarding-struggling">
-                What are you struggling with?
+                What are you struggling with? <span className="muted">(optional)</span>
               </label>
               <textarea
                 id="onboarding-struggling"
@@ -299,10 +267,9 @@ export default function OnboardingForm() {
                 placeholder="Theory, application, time, confidence…"
                 value={strugglingAreas}
                 onChange={(event) => setStrugglingAreas(event.target.value)}
-                required
               />
               <label className="student-notes-label" htmlFor="onboarding-hopes">
-                What do you hope coaching will do for you?
+                What do you hope coaching will do for you? <span className="muted">(optional)</span>
               </label>
               <textarea
                 id="onboarding-hopes"
@@ -310,7 +277,6 @@ export default function OnboardingForm() {
                 placeholder="A clearer plan, someone to check my work, a push when I stall…"
                 value={coachingHopes}
                 onChange={(event) => setCoachingHopes(event.target.value)}
-                required
               />
             </fieldset>
           ) : null}
@@ -319,16 +285,15 @@ export default function OnboardingForm() {
             <fieldset className="onboarding-step">
               <legend>CTA / PGDA</legend>
               <label className="student-notes-label" htmlFor="onboarding-institution">
-                Institution
+                Institution <span className="muted">(optional)</span>
               </label>
               <select
                 className="select-line"
                 id="onboarding-institution"
                 value={institution}
                 onChange={(event) => setInstitution(event.target.value)}
-                required
               >
-                <option value="">Select institution</option>
+                <option value="">Prefer not to say</option>
                 {ONBOARDING_INSTITUTIONS.map((item) => (
                   <option key={item} value={item}>
                     {item}
@@ -342,11 +307,10 @@ export default function OnboardingForm() {
                   placeholder="Institution name"
                   value={institutionOther}
                   onChange={(event) => setInstitutionOther(event.target.value)}
-                  required
                 />
               ) : null}
               <label className="student-notes-label" htmlFor="onboarding-year">
-                Year passed
+                Year passed <span className="muted">(optional)</span>
               </label>
               <select
                 className="select-line"
@@ -354,6 +318,7 @@ export default function OnboardingForm() {
                 value={yearPassed}
                 onChange={(event) => setYearPassed(event.target.value)}
               >
+                <option value="">Prefer not to say</option>
                 {ONBOARDING_CTA_YEARS.map((year) => (
                   <option key={year} value={year}>
                     {year}
@@ -361,7 +326,7 @@ export default function OnboardingForm() {
                 ))}
               </select>
               <label className="student-notes-label" htmlFor="onboarding-cta-attempts">
-                Attempts
+                Attempts <span className="muted">(optional)</span>
               </label>
               <select
                 className="select-line"
@@ -369,6 +334,7 @@ export default function OnboardingForm() {
                 value={ctaAttempts}
                 onChange={(event) => setCtaAttempts(event.target.value)}
               >
+                <option value="">Prefer not to say</option>
                 {[1, 2, 3, 4, 5].map((count) => (
                   <option key={count} value={count}>
                     {count}
