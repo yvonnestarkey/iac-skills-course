@@ -12,6 +12,7 @@ export {
   lessonLink,
   collectTimedLessons,
   groupLessonsByDate,
+  groupPackedLessonsByDate,
   buildStudySessionEvents,
   googleCalendarEventUrl,
   buildIcs,

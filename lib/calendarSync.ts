@@ -73,54 +73,57 @@ function stampFromMinutes(date: Date, totalMinutes: number): string {
   return icsStamp(date, hours, minutes);
 }
 
-/** Flatten packed planner cells into timed lessons, then group by calendar day. */
-export function collectTimedLessons(cells: ScheduledSession[]): TimedLesson[] {
-  const lessons: TimedLesson[] = [];
-  cells.forEach((cell) => {
+/**
+ * Bucket every packed lesson into eventsByDate[dateKey] first.
+ * VEVENT creation must iterate Object.keys(eventsByDate), never the lesson list.
+ */
+export function groupPackedLessonsByDate(cells: ScheduledSession[]): Record<string, TimedLesson[]> {
+  const eventsByDate: Record<string, TimedLesson[]> = {};
+
+  for (const cell of cells) {
+    const dateKey = isoDate(cell.date);
+    if (!eventsByDate[dateKey]) eventsByDate[dateKey] = [];
     let cursor = slotMinutes(cell.period);
-    cell.items.forEach((item) => {
+    for (const item of cell.items) {
       const duration = Math.max(0, Number(item.minutes) || 0);
-      if (!duration) return;
-      lessons.push({
-        dateKey: isoDate(cell.date),
+      if (!duration) continue;
+      eventsByDate[dateKey].push({
+        dateKey,
         date: cell.date,
         startMinutes: cursor,
         endMinutes: cursor + duration,
         title: item.lesson.title,
       });
       cursor += duration;
-    });
-  });
-  return lessons;
+    }
+  }
+
+  return eventsByDate;
+}
+
+export function collectTimedLessons(cells: ScheduledSession[]): TimedLesson[] {
+  return Object.values(groupPackedLessonsByDate(cells)).flat();
 }
 
 export function groupLessonsByDate(lessons: TimedLesson[]): TimedLesson[][] {
-  const groups = new Map<string, TimedLesson[]>();
-  lessons.forEach((lesson) => {
-    const current = groups.get(lesson.dateKey);
-    if (current) current.push(lesson);
-    else groups.set(lesson.dateKey, [lesson]);
-  });
-  return [...groups.values()];
+  const eventsByDate: Record<string, TimedLesson[]> = {};
+  for (const lesson of lessons) {
+    if (!eventsByDate[lesson.dateKey]) eventsByDate[lesson.dateKey] = [];
+    eventsByDate[lesson.dateKey].push(lesson);
+  }
+  return Object.keys(eventsByDate).map((dateKey) => eventsByDate[dateKey]);
 }
 
-function dailyStudyEvent(lessons: TimedLesson[], feedId: string): CalendarEventPayload {
+function studyEventForDate(dateKey: string, lessons: TimedLesson[], feedId: string): CalendarEventPayload {
   const date = lessons[0].date;
-  const dateKey = lessons[0].dateKey;
   const startMinutes = Math.min(...lessons.map((lesson) => lesson.startMinutes));
   const endMinutes = Math.max(...lessons.map((lesson) => lesson.endMinutes));
-  const titles: string[] = [];
-  lessons.forEach((lesson) => {
-    if (titles[titles.length - 1] !== lesson.title) titles.push(lesson.title);
-  });
-  const description = [
-    "IAC Skills Course Study Session",
-    "",
-    `Resume your course: ${COURSE_RESUME_URL}`,
-    "",
-    "Tasks scheduled for today:",
-    ...titles.map((title) => `• ${title}`),
-  ].join("\n");
+  const titles = lessons.map((lesson) => lesson.title);
+  const description =
+    "IAC Skills Course Study Session\n\nResume course: " +
+    COURSE_RESUME_URL +
+    "\n\nScheduled for today:\n• " +
+    titles.join("\n• ");
 
   return {
     uid: `${feedId}-${dateKey}@accountingstudyadvice`,
@@ -133,40 +136,7 @@ function dailyStudyEvent(lessons: TimedLesson[], feedId: string): CalendarEventP
   };
 }
 
-function oneStudyEventPerDay(events: CalendarEventPayload[]): CalendarEventPayload[] {
-  const byDay = new Map<string, CalendarEventPayload>();
-  events.forEach((event) => {
-    const day = event.start.slice(0, 8);
-    const existing = byDay.get(day);
-    if (!existing) {
-      byDay.set(day, event);
-      return;
-    }
-    const start = existing.start < event.start ? existing.start : event.start;
-    const end = existing.end > event.end ? existing.end : event.end;
-    const titles = new Set(
-      `${existing.description}\n${event.description}`
-        .split("\n")
-        .filter((line) => line.startsWith("• "))
-    );
-    byDay.set(day, {
-      ...existing,
-      start,
-      end,
-      description: [
-        "IAC Skills Course Study Session",
-        "",
-        `Resume your course: ${COURSE_RESUME_URL}`,
-        "",
-        "Tasks scheduled for today:",
-        ...titles,
-      ].join("\n"),
-    });
-  });
-  return [...byDay.values()];
-}
-
-/** Exactly one study VEVENT per calendar day. Live Zoom sessions stay separate. */
+/** Exactly one study VEVENT per grouped date. Never one VEVENT per lesson. */
 export function buildStudySessionEvents(
   data: CourseData,
   student: Student,
@@ -175,15 +145,20 @@ export function buildStudySessionEvents(
 ): CalendarEventPayload[] {
   const status = planStatus(data, student, planOverride);
   const feedId = (student.calendar && student.calendar.token) || student.id;
-  const timed = collectTimedLessons(status ? status.cells : []);
-  const studyEvents = oneStudyEventPerDay(
-    groupLessonsByDate(timed).map((lessons) => dailyStudyEvent(lessons, feedId))
-  );
+  const eventsByDate = groupPackedLessonsByDate(status ? status.cells : []);
 
-  const liveEvents: CalendarEventPayload[] = upcomingLiveSessions(data).map((live) => {
+  const studyEvents: CalendarEventPayload[] = [];
+  for (const dateKey of Object.keys(eventsByDate)) {
+    const lessons = eventsByDate[dateKey];
+    if (!lessons.length) continue;
+    studyEvents.push(studyEventForDate(dateKey, lessons, feedId));
+  }
+
+  const liveEvents: CalendarEventPayload[] = [];
+  for (const live of upcomingLiveSessions(data)) {
     const [hours, minutes] = live.time.split(":").map(Number);
     const endMinutes = hours * 60 + minutes + live.minutes;
-    return {
+    liveEvents.push({
       uid: `${feedId}-${live.id}@accountingstudyadvice`,
       start: icsStamp(live.when, hours, minutes),
       end: icsStamp(live.when, Math.floor(endMinutes / 60), endMinutes % 60),
@@ -193,8 +168,8 @@ export function buildStudySessionEvents(
       ),
       location: live.zoom,
       url: live.zoom,
-    };
-  });
+    });
+  }
 
   return [...studyEvents, ...liveEvents];
 }
