@@ -30,6 +30,12 @@ values
     'Accountability email',
     'This is someone who will nudge you when you stall — a partner, parent, colleague, or friend. We can copy them on reminders. You can leave this blank.',
     null
+  ),
+  (
+    'study_planner_header_info',
+    'Study planner',
+    'Set your start date, weekly hours, and study slots. We date the rest of the course so you can see when you finish, then export those sessions to your calendar.',
+    null
   )
 on conflict (key) do update
 set

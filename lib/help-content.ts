@@ -22,6 +22,13 @@ const FALLBACKS: Record<string, HelpContent> = {
       "This is someone who will nudge you when you stall — a partner, parent, colleague, or friend. We can copy them on reminders. You can leave this blank.",
     video_url: null,
   },
+  study_planner_header_info: {
+    key: "study_planner_header_info",
+    title: "Study planner",
+    description:
+      "Set your start date, weekly hours, and study slots. We date the rest of the course so you can see when you finish, then export those sessions to your calendar.",
+    video_url: null,
+  },
 };
 
 let cache: Map<string, HelpContent> | null = null;

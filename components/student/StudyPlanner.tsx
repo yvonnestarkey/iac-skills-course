@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import AdjustPanel from "@/components/planner/AdjustPanel";
 import ScheduleView from "@/components/planner/ScheduleView";
 import SubscribeCard from "@/components/planner/SubscribeCard";
+import HelpTooltip from "@/components/ui/HelpTooltip";
 import { DAYS, DEFAULT_PLAN, PERIODS } from "@/lib/constants";
 import { studentFromPlan } from "@/lib/calendar-student";
 import { isoDate, longDate, today } from "@/lib/dates";
@@ -231,7 +232,10 @@ export default function StudyPlanner() {
       {saved ? (
         <>
           <p className="kicker">Study planner</p>
-          <h1>Your study schedule</h1>
+          <h1 className="flex items-center gap-2">
+            Your study schedule
+            <HelpTooltip contentKey="study_planner_header_info" />
+          </h1>
           <p className="lead">Your dated sessions are ready. Export them to a calendar, or adjust the plan any time.</p>
           <div className="actions student-planner-export">
             <button className="primary" type="button" onClick={download}>
@@ -252,7 +256,10 @@ export default function StudyPlanner() {
       ) : (
         <>
           <p className="kicker">Study planner</p>
-          <h1>Create your study plan</h1>
+          <h1 className="flex items-center gap-2">
+            Create your study plan
+            <HelpTooltip contentKey="study_planner_header_info" />
+          </h1>
           <p className="lead">
             This course has {tasks.length} scheduled lessons totalling {formatStudyTime(courseMinutes)}. Set your start
             date, weekly hours, and study slots to date the rest of the course.
