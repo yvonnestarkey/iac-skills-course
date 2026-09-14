@@ -38,12 +38,62 @@ export interface OnboardingInput {
   qualitative_notes: OnboardingNotes;
 }
 
-function tableMissing(message: string): boolean {
-  return /student_profiles/i.test(message) && /does not exist|schema cache|could not find/i.test(message);
+export const ONBOARDING_SKIP_COOKIE = "onboarding_skipped_session";
+
+function skipStorageKey(userId: string): string {
+  return `${ONBOARDING_SKIP_COOKIE}:${userId}`;
 }
 
-function columnMissing(message: string, column: string): boolean {
-  return new RegExp(column, "i").test(message) && /does not exist|schema cache|could not find/i.test(message);
+function readCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const prefix = `${name}=`;
+  const match = document.cookie.split("; ").find((part) => part.startsWith(prefix));
+  if (!match) return null;
+  return decodeURIComponent(match.slice(prefix.length));
+}
+
+/** True when this browser session skipped onboarding for this student. Does not survive login or a new browser session. */
+export function hasOnboardingSessionSkip(userId: string): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    if (sessionStorage.getItem(skipStorageKey(userId)) === "true") return true;
+  } catch {
+    // Private mode can block sessionStorage; the session cookie is enough.
+  }
+  return readCookie(ONBOARDING_SKIP_COOKIE) === userId;
+}
+
+export function setOnboardingSessionSkip(userId: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(skipStorageKey(userId), "true");
+  } catch {
+    // Cookie still covers same-tab refresh and other tabs in this browser session.
+  }
+  document.cookie = `${ONBOARDING_SKIP_COOKIE}=${encodeURIComponent(userId)}; Path=/; SameSite=Lax`;
+}
+
+export function clearOnboardingSessionSkip(userId?: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (userId) {
+      sessionStorage.removeItem(skipStorageKey(userId));
+    } else {
+      const keys: string[] = [];
+      for (let index = 0; index < sessionStorage.length; index += 1) {
+        const key = sessionStorage.key(index);
+        if (key?.startsWith(`${ONBOARDING_SKIP_COOKIE}:`)) keys.push(key);
+      }
+      keys.forEach((key) => sessionStorage.removeItem(key));
+    }
+  } catch {
+    // Ignore storage access errors.
+  }
+  document.cookie = `${ONBOARDING_SKIP_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`;
+}
+
+function tableMissing(message: string): boolean {
+  return /student_profiles/i.test(message) && /does not exist|schema cache|could not find/i.test(message);
 }
 
 export async function fetchOnboardingState(
@@ -52,71 +102,41 @@ export async function fetchOnboardingState(
   const client = getSupabase();
   if (!client) return { completed: true, skipped: false, available: false };
 
-  const withSkip = await client
-    .from("student_profiles")
-    .select("onboarding_completed, onboarding_skipped")
-    .eq("id", userId)
-    .maybeSingle();
+  const result = await client.from("student_profiles").select("onboarding_completed").eq("id", userId).maybeSingle();
 
-  if (withSkip.error && (tableMissing(withSkip.error.message) || columnMissing(withSkip.error.message, "onboarding_skipped"))) {
-    if (tableMissing(withSkip.error.message)) return { completed: false, skipped: false, available: false };
-    const fallback = await client
-      .from("student_profiles")
-      .select("onboarding_completed")
-      .eq("id", userId)
-      .maybeSingle();
-    if (fallback.error) return { completed: false, skipped: false, available: !tableMissing(fallback.error.message) };
-    return { completed: Boolean(fallback.data?.onboarding_completed), skipped: false, available: true };
+  if (result.error) {
+    return { completed: false, skipped: false, available: !tableMissing(result.error.message) };
   }
 
-  if (withSkip.error) return { completed: false, skipped: false, available: !tableMissing(withSkip.error.message) };
   return {
-    completed: Boolean(withSkip.data?.onboarding_completed),
-    skipped: Boolean(withSkip.data?.onboarding_skipped),
+    completed: Boolean(result.data?.onboarding_completed),
+    skipped: hasOnboardingSessionSkip(userId),
     available: true,
   };
 }
 
-/** True when the student may enter `/student` routes. */
+/** True when the student may enter `/student` routes for this browser session. */
 export async function fetchOnboardingCompleted(userId: string): Promise<boolean> {
   const state = await fetchOnboardingState(userId);
-  if (!state.available) return true;
-  return state.completed || state.skipped;
+  if (!state.available || state.completed) return true;
+  return hasOnboardingSessionSkip(userId);
 }
 
+/** Incomplete profiles must complete onboarding unless they skipped in this browser session. */
+export function isOnboardingRequired(state: { completed: boolean; available: boolean }, userId: string): boolean {
+  if (!state.available || state.completed) return false;
+  return !hasOnboardingSessionSkip(userId);
+}
+
+/** Skip only for this browser session. Never store a permanent DB bypass. */
 export async function skipOnboarding(userId: string): Promise<{ ok: boolean; error?: string }> {
-  const client = getSupabase();
-  if (!client) return { ok: false, error: "Supabase is not configured." };
-
-  const now = new Date().toISOString();
-  const { data: existing } = await client.from("student_profiles").select("id").eq("id", userId).maybeSingle();
-  const error = existing
-    ? (
-        await client
-          .from("student_profiles")
-          .update({ onboarding_skipped: true, onboarding_completed: false, updated_at: now })
-          .eq("id", userId)
-      ).error
-    : (
-        await client.from("student_profiles").insert({
-          id: userId,
-          onboarding_skipped: true,
-          onboarding_completed: false,
-          updated_at: now,
-        })
-      ).error;
-
-  if (error) {
-    if (tableMissing(error.message) || columnMissing(error.message, "onboarding_skipped")) {
-      return { ok: false, error: "Run supabase/onboarding.sql in the Supabase SQL editor first." };
-    }
-    return { ok: false, error: error.message };
-  }
+  setOnboardingSessionSkip(userId);
   return { ok: true };
 }
 
-/** Clear a one-session skip so the next login asks again. */
+/** Drop the session skip (and any leftover DB flag) so the next login asks again. */
 export async function clearOnboardingSkip(userId: string): Promise<void> {
+  clearOnboardingSessionSkip(userId);
   const client = getSupabase();
   if (!client) return;
   await client
@@ -156,5 +176,6 @@ export async function saveOnboarding(
     }
     return { ok: false, error: rowError.message };
   }
+  clearOnboardingSessionSkip(userId);
   return { ok: true };
 }
