@@ -6,6 +6,7 @@ import VideoPlayer, { embedSrcForVideo } from "@/components/lesson/VideoPlayer";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
 import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
+import { findResumeLesson, isChapterUnlocked, splitCoursePhases } from "@/lib/course-phases";
 import type { LessonType } from "@/lib/types";
 
 const KICKERS: Record<LessonType, string> = {
@@ -18,7 +19,7 @@ const KICKERS: Record<LessonType, string> = {
 };
 
 export default function StudentPlayer({ lesson }: { lesson: StudentLesson }) {
-  const { setLessonCompleted } = useStudentSession();
+  const { setLessonCompleted, outline, completed: completedMap } = useStudentSession();
   const [completed, setCompleted] = useState(false);
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
@@ -70,6 +71,27 @@ export default function StudentPlayer({ lesson }: { lesson: StudentLesson }) {
       persist({ completed: completedRef.current, notes: value }, true);
     }, 700);
   };
+
+  const ordered = splitCoursePhases(outline).flatMap((phase) => phase.chapters);
+  const chapterLocked = outline.length > 0 && !isChapterUnlocked(ordered, lesson.chapterId, completedMap);
+  const resume = findResumeLesson(ordered, completedMap);
+
+  if (chapterLocked && resume && resume.lesson.id !== lesson.id) {
+    return (
+      <article className="lesson-body">
+        <p className="kicker">Locked lesson</p>
+        <h1>Finish the previous section first</h1>
+        <p className="lead">
+          This lesson stays closed until you complete the work before it. Resume at {resume.lesson.title}.
+        </p>
+        <div className="actions">
+          <Link className="primary" href={`/student/${resume.lesson.id}`}>
+            Resume Course
+          </Link>
+        </div>
+      </article>
+    );
+  }
 
   return (
     <>

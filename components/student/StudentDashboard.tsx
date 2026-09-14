@@ -2,22 +2,25 @@
 
 import Link from "next/link";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
-import { ICONS } from "@/lib/constants";
+import CoursePhaseAccordions from "@/components/course/CoursePhaseAccordions";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
+import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 
 export default function StudentDashboard() {
   const { user, outline, completed } = useStudentSession();
   const { inboxWaiting, unreadCount } = useStudentInbox();
   const lessons = outline.flatMap((chapter) => chapter.lessons);
   const done = lessons.filter((lesson) => completed[lesson.id]).length;
-  const next = lessons.find((lesson) => !completed[lesson.id]) || lessons[0];
-  const name = user?.email ? user.email.split("@")[0] : "there";
   const pct = lessons.length ? Math.round((done / lessons.length) * 100) : 0;
+  const name = user?.email ? user.email.split("@")[0] : "there";
+  const ordered = splitCoursePhases(outline).flatMap((phase) => phase.chapters);
+  const resume = findResumeLesson(ordered, completed);
+  const allDone = lessons.length > 0 && done === lessons.length;
 
   return (
     <article className="lesson-body wide student-dash">
-      <p className="kicker">Student dashboard</p>
+      <p className="kicker">Course overview</p>
       <h1>Welcome back, {name}</h1>
       <div className="student-progress-row">
         <strong className="student-progress-pct">{pct}% Complete</strong>
@@ -25,13 +28,20 @@ export default function StudentDashboard() {
           <span style={{ width: `${pct}%` }} />
         </div>
       </div>
-      <div className="actions">
-        {next ? (
-          <Link className="primary" href={`/student/${next.id}`}>
-            {done ? "Continue learning" : "Start the course"}
+
+      {resume ? (
+        <section className="resume-banner">
+          <div>
+            <p className="kicker">{allDone ? "Course complete" : "Resume course"}</p>
+            <strong>{resume.lesson.title}</strong>
+            <p className="muted small">{resume.chapter.title}</p>
+          </div>
+          <Link className="primary" href={`/student/${resume.lesson.id}`}>
+            {allDone ? "Review last lesson" : done ? "Resume Course" : "Start Course"}
           </Link>
-        ) : null}
-      </div>
+        </section>
+      ) : null}
+
       <nav className="student-hub" aria-label="Student shortcuts">
         <Link href="/student/inbox" className="student-hub-card">
           <strong>Inbox</strong>
@@ -49,28 +59,7 @@ export default function StudentDashboard() {
         </Link>
       </nav>
       <StudentPersonalNotes />
-      {outline.map((chapter) => {
-        const chapterDone = chapter.lessons.filter((lesson) => completed[lesson.id]).length;
-        return (
-          <section className="student-dash-chapter" key={chapter.id}>
-            <h2>{chapter.title}</h2>
-            <p className="muted small">
-              {chapterDone} of {chapter.lessons.length} complete
-              {chapter.summary ? ` · ${chapter.summary}` : ""}
-            </p>
-            <ul className="student-dash-lessons">
-              {chapter.lessons.map((lesson) => (
-                <li key={lesson.id}>
-                  <Link href={`/student/${lesson.id}`}>
-                    <span className="icon">{completed[lesson.id] ? "✓" : ICONS[lesson.type]}</span>
-                    <span>{lesson.title}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        );
-      })}
+      <CoursePhaseAccordions chapters={outline} completed={completed} basePath="/student" variant="hub" />
     </article>
   );
 }
