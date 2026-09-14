@@ -1,5 +1,6 @@
 import { SURVEY_QUESTIONS } from "./constants";
 import { daysAgo, longDate, parseISO } from "./dates";
+import { lessonMinutes } from "./lesson-duration";
 import type {
   Chapter,
   CourseData,
@@ -47,8 +48,9 @@ export function hasWork(student: Student, lesson: Lesson): boolean {
 }
 
 export function isDone(student: Student, lesson: Lesson): boolean {
-  if (lesson.type === "video" || lesson.type === "reading") {
-    return (student.completed || []).includes(lesson.id);
+  if ((student.completed || []).includes(lesson.id)) return true;
+  if (lesson.type === "video" || lesson.type === "reading" || lesson.type === "survey" || lesson.type === "ask") {
+    return false;
   }
   return hasWork(student, lesson);
 }
@@ -92,11 +94,7 @@ export function surveyScore(answer: SurveyAnswer): number | null {
 }
 
 export function estimateMinutes(lesson: Lesson): number {
-  if (lesson.type === "video") return Math.ceil(lesson.seconds / 60) + 12;
-  if (lesson.type === "reading") return (parseInt(lesson.duration, 10) || 6) * 2 + 6;
-  if (lesson.type === "assignment") return 60;
-  if (lesson.type === "upload") return 40;
-  return 0;
+  return lessonMinutes(lesson);
 }
 
 export function taskAction(lesson: Lesson): string {
@@ -104,14 +102,15 @@ export function taskAction(lesson: Lesson): string {
   if (lesson.type === "reading") return "Read and annotate";
   if (lesson.type === "assignment") return "Write up and submit";
   if (lesson.type === "upload") return "Scan and upload PDF";
-  return "";
+  if (lesson.type === "survey") return "Complete the check-in";
+  return "Work through this lesson";
 }
 
 // The whole course, in order, so a plan can show a finish date. Ask the Coach
-// and surveys are not scheduled work.
+// stays open on demand and is not packed into dated sessions.
 export function courseTasks(data: CourseData) {
   return allLessons(data)
-    .filter((l) => ["video", "reading", "assignment", "upload"].includes(l.type))
+    .filter((l) => l.type !== "ask")
     .map((l) => ({ lesson: l, minutes: estimateMinutes(l) }));
 }
 

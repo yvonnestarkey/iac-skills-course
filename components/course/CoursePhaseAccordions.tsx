@@ -14,7 +14,69 @@ import {
   splitCoursePhases,
   type CoursePhaseId,
 } from "@/lib/course-phases";
-import type { OutlineChapter } from "@/lib/student-lesson";
+import { durationBadge } from "@/lib/lesson-duration";
+import type { OutlineChapter, OutlineLesson } from "@/lib/student-lesson";
+
+function LessonEntry({
+  lesson,
+  locked,
+  active,
+  done,
+  href,
+  variant,
+  onNavigate,
+}: {
+  lesson: OutlineLesson;
+  locked: boolean;
+  active: boolean;
+  done: boolean;
+  href: string;
+  variant: "nav" | "hub";
+  onNavigate?: () => void;
+}) {
+  const badge = durationBadge(lesson);
+  const icon = done && !locked ? "✓" : ICONS[lesson.type] || "•";
+  const title = (
+    <span className="lesson-title">
+      {locked ? <Lock size={12} className="lesson-lock" aria-label="Locked" /> : null}
+      {lesson.title}
+      <span className="duration-badge">{badge}</span>
+    </span>
+  );
+  const body =
+    variant === "hub" ? (
+      <>
+        <span className="icon">{icon}</span>
+        {title}
+      </>
+    ) : (
+      <>
+        <span className="icon">{icon}</span>
+        <span className="label">
+          {title}
+          {done && !locked ? <span className="lesson-meta">Completed</span> : null}
+        </span>
+      </>
+    );
+
+  if (locked) {
+    return (
+      <span className={`lesson-link lesson-preview locked ${lesson.type}`} aria-disabled="true">
+        {body}
+      </span>
+    );
+  }
+
+  return (
+    <Link
+      href={href}
+      className={`lesson-link ${active ? "active" : ""} ${lesson.type} ${done ? "done" : ""}`}
+      onClick={onNavigate}
+    >
+      {body}
+    </Link>
+  );
+}
 
 export default function CoursePhaseAccordions({
   chapters,
@@ -44,21 +106,19 @@ export default function CoursePhaseAccordions({
   const [openChapters, setOpenChapters] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    if (focusPhaseId && isPhaseUnlocked(phases, focusPhaseId as CoursePhaseId, completed)) {
+    if (focusPhaseId) {
       setOpenPhases((current) => (current[focusPhaseId] ? current : { ...current, [focusPhaseId]: true }));
     }
-    if (focusChapterId && isChapterUnlocked(ordered, focusChapterId, completed)) {
+    if (focusChapterId) {
       setOpenChapters((current) => (current[focusChapterId] ? current : { ...current, [focusChapterId]: true }));
     }
-  }, [focusPhaseId, focusChapterId, phases, ordered, completed]);
+  }, [focusPhaseId, focusChapterId]);
 
-  const togglePhase = (id: CoursePhaseId, locked: boolean) => {
-    if (locked) return;
+  const togglePhase = (id: CoursePhaseId) => {
     setOpenPhases((current) => ({ ...current, [id]: !current[id] }));
   };
 
-  const toggleChapter = (id: string, locked: boolean) => {
-    if (locked) return;
+  const toggleChapter = (id: string) => {
     setOpenChapters((current) => ({ ...current, [id]: !current[id] }));
   };
 
@@ -67,7 +127,7 @@ export default function CoursePhaseAccordions({
       {phases.map((phase) => {
         const progress = phaseUnitProgress(phase, completed);
         const phaseLocked = !isPhaseUnlocked(phases, phase.id, completed);
-        const phaseOpen = !phaseLocked && Boolean(openPhases[phase.id]);
+        const phaseOpen = Boolean(openPhases[phase.id]);
         return (
           <section
             key={phase.id}
@@ -75,26 +135,23 @@ export default function CoursePhaseAccordions({
               phaseLocked ? "locked" : ""
             }`}
           >
-            <button
-              className="phase-toggle"
-              type="button"
-              aria-expanded={phaseOpen}
-              aria-disabled={phaseLocked}
-              onClick={() => togglePhase(phase.id, phaseLocked)}
-            >
+            <button className="phase-toggle" type="button" aria-expanded={phaseOpen} onClick={() => togglePhase(phase.id)}>
               <span>
-                <h2>{phase.title}</h2>
+                <h2>
+                  {phaseLocked ? <Lock size={14} className="phase-lock" aria-label="Locked" /> : null}
+                  {phase.title}
+                </h2>
                 <span className="phase-badge">
                   {progress.done} of {progress.total} {phase.unit} Completed
                 </span>
               </span>
-              {phaseLocked ? <Lock size={16} aria-label="Locked" /> : <span className="chapter-caret">{phaseOpen ? "▾" : "▸"}</span>}
+              <span className="chapter-caret">{phaseOpen ? "▾" : "▸"}</span>
             </button>
             {phaseOpen
               ? phase.chapters.map((chapter) => {
                   const stats = chapterProgress(chapter, completed);
                   const chapterLocked = !isChapterUnlocked(ordered, chapter.id, completed);
-                  const chapterOpen = !chapterLocked && Boolean(openChapters[chapter.id]);
+                  const chapterOpen = Boolean(openChapters[chapter.id]);
                   return (
                     <article
                       key={chapter.id}
@@ -104,11 +161,13 @@ export default function CoursePhaseAccordions({
                         className="chapter-toggle"
                         type="button"
                         aria-expanded={chapterOpen}
-                        aria-disabled={chapterLocked}
-                        onClick={() => toggleChapter(chapter.id, chapterLocked)}
+                        onClick={() => toggleChapter(chapter.id)}
                       >
                         <span>
-                          <h3>{chapter.title}</h3>
+                          <h3>
+                            {chapterLocked ? <Lock size={13} className="phase-lock" aria-label="Locked" /> : null}
+                            {chapter.title}
+                          </h3>
                           <span className="muted small">
                             {stats.done} of {stats.total} complete
                           </span>
@@ -118,48 +177,40 @@ export default function CoursePhaseAccordions({
                             </span>
                           ) : null}
                         </span>
-                        {chapterLocked ? (
-                          <Lock size={15} aria-label="Locked" />
-                        ) : (
-                          <span className="chapter-caret">{chapterOpen ? "▾" : "▸"}</span>
-                        )}
+                        <span className="chapter-caret">{chapterOpen ? "▾" : "▸"}</span>
                       </button>
                       {chapterOpen ? (
                         <>
                           {chapter.summary ? <p className="chapter-summary">{chapter.summary}</p> : null}
                           {variant === "hub" ? (
                             <ul className="student-dash-lessons">
-                              {chapter.lessons.map((lesson) => {
-                                const isDone = Boolean(completed[lesson.id]);
-                                return (
-                                  <li key={lesson.id}>
-                                    <Link href={`${basePath}/${lesson.id}`} onClick={onNavigate}>
-                                      <span className="icon">{isDone ? "✓" : ICONS[lesson.type] || "•"}</span>
-                                      <span>{lesson.title}</span>
-                                    </Link>
-                                  </li>
-                                );
-                              })}
+                              {chapter.lessons.map((lesson) => (
+                                <li key={lesson.id}>
+                                  <LessonEntry
+                                    lesson={lesson}
+                                    locked={chapterLocked}
+                                    active={lesson.id === activeLessonId}
+                                    done={Boolean(completed[lesson.id])}
+                                    href={`${basePath}/${lesson.id}`}
+                                    variant="hub"
+                                    onNavigate={onNavigate}
+                                  />
+                                </li>
+                              ))}
                             </ul>
                           ) : (
-                            chapter.lessons.map((lesson) => {
-                              const active = lesson.id === activeLessonId;
-                              const isDone = Boolean(completed[lesson.id]);
-                              return (
-                                <Link
-                                  key={lesson.id}
-                                  href={`${basePath}/${lesson.id}`}
-                                  className={`lesson-link ${active ? "active" : ""} ${lesson.type} ${isDone ? "done" : ""}`}
-                                  onClick={onNavigate}
-                                >
-                                  <span className="icon">{isDone ? "✓" : ICONS[lesson.type] || "•"}</span>
-                                  <span className="label">
-                                    <span className="lesson-title">{lesson.title}</span>
-                                    <span className="lesson-meta">{isDone ? "Completed" : lesson.duration || lesson.type}</span>
-                                  </span>
-                                </Link>
-                              );
-                            })
+                            chapter.lessons.map((lesson) => (
+                              <LessonEntry
+                                key={lesson.id}
+                                lesson={lesson}
+                                locked={chapterLocked}
+                                active={lesson.id === activeLessonId}
+                                done={Boolean(completed[lesson.id])}
+                                href={`${basePath}/${lesson.id}`}
+                                variant="nav"
+                                onNavigate={onNavigate}
+                              />
+                            ))
                           )}
                         </>
                       ) : null}

@@ -2430,9 +2430,16 @@ input[type="password"]:focus {
   font-weight: 700;
 }
 
-.course-head .dash-link:first-child {
-  margin-top: 0;
-  margin-bottom: 16px;
+.student-nav-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.student-nav-buttons .dash-link {
+  margin: 0;
+  text-align: center;
 }
 
 .dash-link:hover,
@@ -2444,7 +2451,7 @@ input[type="password"]:focus {
 
 .student-hub {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin: 8px 0 8px;
 }
@@ -2555,9 +2562,10 @@ input[type="password"]:focus {
   gap: 8px;
 }
 
-.student-dash-lessons a {
+.student-dash-lessons a,
+.student-dash-lessons .lesson-link {
   display: grid;
-  grid-template-columns: 24px 1fr;
+  grid-template-columns: 24px minmax(0, 1fr);
   gap: 10px;
   align-items: center;
   padding: 10px 12px;
@@ -2801,6 +2809,9 @@ input[type="password"]:focus {
 .phase-toggle h2 {
   font-size: 16px;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .phase-toggle svg,
@@ -2831,8 +2842,7 @@ input[type="password"]:focus {
 
 .course-phase.locked .phase-toggle,
 .phase-chapter.locked .chapter-toggle {
-  cursor: not-allowed;
-  opacity: 0.78;
+  cursor: pointer;
 }
 
 .phase-chapter {
@@ -2847,6 +2857,41 @@ input[type="password"]:focus {
   font-size: 14.5px;
   letter-spacing: 0.02em;
   margin: 0 0 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.phase-lock,
+.lesson-lock {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.lesson-title {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.duration-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--paper);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.lesson-link.locked,
+.student-dash-lessons .lesson-link.locked {
+  pointer-events: none;
+  opacity: 0.62;
+  color: var(--muted);
+  cursor: default;
 }
 
 .course-phase-phase1 .phase-chapter {

@@ -1,7 +1,8 @@
 import { findLesson } from "./course";
+import { withComputedDuration } from "./lesson-duration";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
-import type { Lesson, LessonType } from "./types";
+import type { CourseData, Lesson, LessonType } from "./types";
 
 /** Opt server-side Supabase reads out of Next's fetch cache. Safe to call from the client. */
 async function bypassStaticCache() {
@@ -18,6 +19,9 @@ export interface StudentLesson {
   chapterTitle: string;
   duration?: string;
   seconds?: number;
+  video_duration_seconds?: number;
+  estimated_read_minutes?: number;
+  duration_minutes?: number;
   video_url?: string;
   blurb?: string;
   body?: string[];
@@ -38,6 +42,10 @@ export interface OutlineLesson {
   title: string;
   type: LessonType;
   duration?: string;
+  seconds?: number;
+  video_duration_seconds?: number;
+  estimated_read_minutes?: number;
+  duration_minutes?: number;
 }
 
 export interface OutlineChapter {
@@ -114,43 +122,129 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
   };
 }
 
+function numberOrUndef(value: unknown): number | undefined {
+  const n = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(n) || n <= 0) return undefined;
+  return n;
+}
+
+function outlineLessonFromRow(row: {
+  id: string;
+  title: string;
+  type: string;
+  duration?: string | null;
+  seconds?: number | null;
+  video_duration_seconds?: number | null;
+  estimated_read_minutes?: number | null;
+  duration_minutes?: number | null;
+}): OutlineLesson {
+  const lesson: OutlineLesson = {
+    id: row.id,
+    title: row.title,
+    type: row.type as LessonType,
+    duration: row.duration || undefined,
+    seconds: numberOrUndef(row.seconds),
+    video_duration_seconds: numberOrUndef(row.video_duration_seconds),
+    estimated_read_minutes: numberOrUndef(row.estimated_read_minutes),
+    duration_minutes: numberOrUndef(row.duration_minutes),
+  };
+  return withComputedDuration(lesson);
+}
+
+export function courseDataFromOutline(outline: OutlineChapter[]): CourseData {
+  return {
+    company: "Accounting Study Advice",
+    className: "IAC Skills Course",
+    term: "",
+    cohorts: [],
+    liveSessions: SEED.liveSessions || [],
+    chapters: outline.map((chapter) => ({
+      id: chapter.id,
+      title: chapter.title,
+      summary: chapter.summary || "",
+      lessons: chapter.lessons.map((lesson) => {
+        const timed = withComputedDuration(lesson);
+        return {
+          id: timed.id,
+          type: timed.type,
+          title: timed.title,
+          duration: timed.duration,
+          seconds: timed.seconds,
+          video_duration_seconds: timed.video_duration_seconds,
+          estimated_read_minutes: timed.estimated_read_minutes,
+          duration_minutes: timed.duration_minutes,
+        };
+      }),
+    })),
+    students: [],
+    messages: {},
+    chats: {},
+  };
+}
+
 export function outlineFromSeed(): OutlineChapter[] {
   return SEED.chapters.map((chapter) => ({
     id: chapter.id,
     title: chapter.title,
     summary: chapter.summary,
-    lessons: chapter.lessons.map((lesson) => ({
-      id: lesson.id,
-      title: lesson.title,
-      type: lesson.type,
-      duration: lesson.duration,
-    })),
+    lessons: chapter.lessons.map((lesson) =>
+      outlineLessonFromRow({
+        id: lesson.id,
+        title: lesson.title,
+        type: lesson.type,
+        duration: lesson.duration,
+        seconds: lesson.seconds,
+        video_duration_seconds: lesson.video_duration_seconds,
+        estimated_read_minutes: lesson.estimated_read_minutes,
+        duration_minutes: lesson.duration_minutes,
+      })
+    ),
   }));
 }
+
+const OUTLINE_COLUMNS =
+  "id, title, type, duration, seconds, chapter_id, position, video_duration_seconds, estimated_read_minutes, duration_minutes";
 
 export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
   await bypassStaticCache();
   const client = getSupabase();
   if (client) {
-    const { data, error } = await client
+    let rows: Array<{
+      id: string;
+      title: string;
+      type: string;
+      duration?: string | null;
+      seconds?: number | null;
+      chapter_id: string;
+      position?: number;
+      video_duration_seconds?: number | null;
+      estimated_read_minutes?: number | null;
+      duration_minutes?: number | null;
+    }> | null = null;
+    let { data, error } = await client
       .from("lessons")
-      .select("id, title, type, duration, chapter_id, position")
+      .select(OUTLINE_COLUMNS)
       .order("chapter_id", { ascending: true })
       .order("position", { ascending: true });
-    if (!error && data && data.length) {
+    rows = data;
+    if (error) {
+      const fallback = await client
+        .from("lessons")
+        .select("id, title, type, duration, seconds, chapter_id, position")
+        .order("chapter_id", { ascending: true })
+        .order("position", { ascending: true });
+      rows = fallback.data;
+      error = fallback.error;
+    }
+    if (!error && rows && rows.length) {
       const { data: chapterRows } = await client
         .from("chapters")
         .select("id, title, summary, position")
         .order("position", { ascending: true });
       const grouped = new Map<string, OutlineLesson[]>();
-      data.forEach((row) => {
+      rows.forEach((row) => {
         const list = grouped.get(row.chapter_id) || [];
-        list.push({
-          id: row.id,
-          title: row.title,
-          type: row.type as LessonType,
-          duration: row.duration || undefined,
-        });
+        list.push(outlineLessonFromRow(row));
         grouped.set(row.chapter_id, list);
       });
       const chapterMeta = new Map((chapterRows || []).map((row) => [row.id, row]));
@@ -228,6 +322,9 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
         chapterTitle: chapterTitle(data.chapter_id),
         duration: data.duration || undefined,
         seconds: data.seconds || undefined,
+        video_duration_seconds: data.video_duration_seconds || undefined,
+        estimated_read_minutes: data.estimated_read_minutes || undefined,
+        duration_minutes: data.duration_minutes || undefined,
         video_url: firstVideoUrl(data.video_url, data.video_urls),
         blurb: data.blurb || undefined,
         body: asStringList(data.body),

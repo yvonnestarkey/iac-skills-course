@@ -8,10 +8,12 @@ import { DAYS, DEFAULT_PLAN, PERIODS } from "@/lib/constants";
 import { studentFromPlan } from "@/lib/calendar-student";
 import { isoDate, longDate, today } from "@/lib/dates";
 import { buildIcs, countEvents, feedStamp, feedUrls } from "@/lib/ics";
+import { formatStudyTime } from "@/lib/lesson-duration";
 import { planCapacity, planStatus, sortSlots } from "@/lib/planner";
+import { courseTasks } from "@/lib/course";
 import { clearStudyPlan, fetchStudyPlan, saveStudyPlan } from "@/lib/student-plan";
+import { courseDataFromOutline } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
-import { useStore } from "@/lib/store";
 import type { CalendarFeed, StudyPlan } from "@/lib/types";
 
 function emptyPlan(): StudyPlan {
@@ -24,8 +26,8 @@ function emptyPlan(): StudyPlan {
 }
 
 export default function StudyPlanner() {
-  const { data } = useStore();
-  const { user, completed } = useStudentSession();
+  const { outline, user, completed } = useStudentSession();
+  const course = useMemo(() => courseDataFromOutline(outline), [outline]);
   const [draft, setDraft] = useState<StudyPlan>(emptyPlan);
   const [savedPlan, setSavedPlan] = useState<StudyPlan | null>(null);
   const [ready, setReady] = useState(false);
@@ -82,7 +84,9 @@ export default function StudyPlanner() {
   const hoursReady = Number.isFinite(hoursEntered) && hoursEntered > 0;
   const hours = hoursReady ? hoursEntered : 0;
   const sessionMinutes = planCapacity({ ...draft, hours: hours || 1 });
-  const preview = student ? planStatus(data, student, { ...draft, hours: hours || 1 }) : null;
+  const tasks = useMemo(() => courseTasks(course), [course]);
+  const courseMinutes = useMemo(() => tasks.reduce((sum, task) => sum + task.minutes, 0), [tasks]);
+  const preview = student ? planStatus(course, student, { ...draft, hours: hours || 1 }) : null;
   const previewReady = Boolean(hoursReady && draft.slots.length && preview?.finish);
 
   const change = (next: Partial<StudyPlan>) => setDraft((current) => ({ ...current, ...next }));
@@ -112,7 +116,7 @@ export default function StudyPlanner() {
   const publish = async (plan: StudyPlan, owner = student) => {
     if (!user || !owner) return false;
     const token = user.id;
-    const ics = buildIcs(data, { ...owner, calendar: { ...(owner.calendar || {}), token }, plan }, plan);
+    const ics = buildIcs(course, { ...owner, calendar: { ...(owner.calendar || {}), token }, plan }, plan);
     try {
       const res = await fetch(feedUrls(token).http, {
         method: "PUT",
@@ -183,7 +187,7 @@ export default function StudyPlanner() {
 
   const download = () => {
     if (!student) return;
-    const ics = buildIcs(data, student, draft);
+    const ics = buildIcs(course, student, draft);
     const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -248,7 +252,10 @@ export default function StudyPlanner() {
         <>
           <p className="kicker">Study planner</p>
           <h1>Create your study plan</h1>
-          <p className="lead">Set your start date, weekly hours, and study slots. We date the rest of the course from there.</p>
+          <p className="lead">
+            This course has {tasks.length} scheduled lessons totalling {formatStudyTime(courseMinutes)}. Set your start
+            date, weekly hours, and study slots to date the rest of the course.
+          </p>
         </>
       )}
 
@@ -261,8 +268,9 @@ export default function StudyPlanner() {
           >
             {previewReady ? (
               <>
-                At {hours} hours a week you finish on <strong>{longDate(preview!.finish!)}</strong>. Sessions are
-                capped at {sessionMinutes} minutes.
+                At {hours} hours a week you finish on <strong>{longDate(preview!.finish!)}</strong>. This plan covers{" "}
+                {tasks.length} lessons ({formatStudyTime(courseMinutes)}). Sessions are capped at {sessionMinutes}{" "}
+                minutes.
               </>
             ) : (
               <>
@@ -346,7 +354,7 @@ export default function StudyPlanner() {
 
       {status ? <p className="notice">{status}</p> : null}
 
-      {saved ? <ScheduleView student={student} draft={draft} /> : null}
+      {saved ? <ScheduleView data={course} student={student} draft={draft} /> : null}
     </section>
   );
 }

@@ -39,6 +39,10 @@ export default function Sidebar() {
       title: lesson.title,
       type: lesson.type,
       duration: lesson.duration,
+      seconds: lesson.seconds,
+      video_duration_seconds: lesson.video_duration_seconds,
+      estimated_read_minutes: lesson.estimated_read_minutes,
+      duration_minutes: lesson.duration_minutes,
     })),
   }));
 

@@ -1,6 +1,6 @@
 import { studentFromPlan } from "./calendar-student";
 import { buildIcs } from "./ics";
-import { SEED } from "./seed";
+import { fetchCompletedLessonIds, fetchCourseOutline, courseDataFromOutline } from "./student-lesson";
 import { getSupabase } from "./supabase";
 import type { MakeupSession, StudyPlan } from "./types";
 
@@ -36,6 +36,11 @@ export async function buildCalendarIcs(token: string, origin: string): Promise<s
   if (!row) return null;
   const plan = planFromRow(row);
   if (!plan.slots.length) return null;
-  const student = studentFromPlan(row.user_id, plan, { name: "Student" });
-  return buildIcs(SEED, { ...student, calendar: { token, subscribed: true } }, plan, origin);
+  const [outline, completed] = await Promise.all([
+    fetchCourseOutline(),
+    fetchCompletedLessonIds(row.user_id),
+  ]);
+  const data = courseDataFromOutline(outline);
+  const student = studentFromPlan(row.user_id, plan, { name: "Student", completed });
+  return buildIcs(data, { ...student, calendar: { token, subscribed: true } }, plan, origin);
 }

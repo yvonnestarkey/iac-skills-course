@@ -38,8 +38,17 @@ function weekGroups(data: CourseData, cells: ScheduledSession[]) {
   return groups;
 }
 
-export default function ScheduleView({ student, draft }: { student: Student; draft: StudyPlan }) {
-  const { data } = useStore();
+export default function ScheduleView({
+  student,
+  draft,
+  data: courseOverride,
+}: {
+  student: Student;
+  draft: StudyPlan;
+  data?: CourseData;
+}) {
+  const store = useStore();
+  const data = courseOverride || store.data;
 
   if (!draft.slots.length) {
     return (
@@ -159,7 +168,7 @@ export default function ScheduleView({ student, draft }: { student: Student; dra
       ))}
       <p className="muted small plan-note">
         Ask the Coach is not scheduled — it stays open whenever you get stuck. Live Zoom sessions are shown in
-        place.
+        place. Lesson lengths come from the course catalogue.
       </p>
     </>
   );

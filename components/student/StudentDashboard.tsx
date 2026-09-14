@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
-import CoursePhaseAccordions from "@/components/course/CoursePhaseAccordions";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
@@ -20,7 +19,7 @@ export default function StudentDashboard() {
 
   return (
     <article className="lesson-body wide student-dash">
-      <p className="kicker">Course overview</p>
+      <p className="kicker">Student dashboard</p>
       <h1>Welcome back, {name}</h1>
       <div className="student-progress-row">
         <strong className="student-progress-pct">{pct}% Complete</strong>
@@ -43,6 +42,10 @@ export default function StudentDashboard() {
       ) : null}
 
       <nav className="student-hub" aria-label="Student shortcuts">
+        <Link href="/student/overview" className="student-hub-card">
+          <strong>Course Overview</strong>
+          <p>Browse every section and task, including locked upcoming titles.</p>
+        </Link>
         <Link href="/student/inbox" className="student-hub-card">
           <strong>Inbox</strong>
           <p>Questions and replies with your coach.</p>
@@ -59,7 +62,6 @@ export default function StudentDashboard() {
         </Link>
       </nav>
       <StudentPersonalNotes />
-      <CoursePhaseAccordions chapters={outline} completed={completed} basePath="/student" variant="hub" />
     </article>
   );
 }

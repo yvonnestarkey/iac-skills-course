@@ -1,7 +1,7 @@
 import { DAYS, PERIODS } from "./constants";
 import { courseTasks, isDone } from "./course";
 import { WEEKDAYS, addDays, parseISO, today } from "./dates";
-import type { CourseData, LiveSession, PlanStatus, ScheduledSession, Student, StudyPlan } from "./types";
+import type { CourseData, FlatLesson, LiveSession, PlanStatus, ScheduledSession, Student, StudyPlan } from "./types";
 
 export function slotLabel(slotId: string): string {
   const [dayId, periodId] = slotId.split("-");
@@ -101,10 +101,27 @@ export function packPlan(tasks, sessions): { sessions: ScheduledSession[]; unpla
   return { sessions: filled, unplaced: queue.length };
 }
 
+export function weeksForPlan(plan: StudyPlan, totalMinutes: number): number {
+  const weekly = Math.max(0.5, Number(plan.hours) || 1) * 60;
+  return Math.max(2, Math.ceil(Math.max(totalMinutes, 1) / weekly) + 3);
+}
+
+export function packCourse(tasks: { lesson: FlatLesson; minutes: number }[], plan: StudyPlan) {
+  const totalMinutes = tasks.reduce((sum, task) => sum + task.minutes, 0);
+  let weeks = weeksForPlan(plan, totalMinutes);
+  let packed = packPlan(tasks, planSessions(plan, weeks));
+  while (packed.unplaced && weeks < 104) {
+    weeks += 4;
+    packed = packPlan(tasks, planSessions(plan, weeks));
+  }
+  return packed;
+}
+
 export function planStatus(data: CourseData, student: Student, planOverride?: StudyPlan): PlanStatus | null {
   const plan = planOverride || student.plan;
   if (!plan || !plan.slots.length) return null;
-  const packed = packPlan(courseTasks(data), planSessions(plan, 16));
+  const tasks = courseTasks(data);
+  const packed = packCourse(tasks, plan);
   const cells = packed.sessions;
   const now = today();
   const overdue = [];
@@ -117,7 +134,7 @@ export function planStatus(data: CourseData, student: Student, planOverride?: St
       overdue.push({ lesson: item.lesson, date: cell.date });
     });
   });
-  const remaining = courseTasks(data).filter((t) => !isDone(student, t.lesson)).length;
+  const remaining = tasks.filter((t) => !isDone(student, t.lesson)).length;
   return {
     plan,
     cells,
