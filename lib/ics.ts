@@ -1,8 +1,20 @@
 import { SLOT_TIMES } from "./constants";
-import { chapterCode, taskAction } from "./course";
-import { longDate, today } from "./dates";
+import { taskAction } from "./course";
+import { isoDate, longDate, today } from "./dates";
 import { planStatus, upcomingLiveSessions } from "./planner";
-import type { CourseData, Student, StudyPlan } from "./types";
+import type { CourseData, ScheduledSession, Student, StudyPlan } from "./types";
+
+const SESSION_TITLE = "IAC Study Session";
+
+export interface CalendarEventPayload {
+  uid: string;
+  start: string;
+  end: string;
+  summary: string;
+  description: string;
+  location?: string;
+  url?: string;
+}
 
 export function icsEscape(value: string): string {
   return String(value)
@@ -35,9 +47,93 @@ export function siteOrigin(): string {
   return typeof window === "undefined" ? "" : window.location.origin;
 }
 
-/** Calendar entries link straight at the lesson route. */
+export function courseResumeLink(origin = siteOrigin()): string {
+  return `${origin}/student/overview`;
+}
+
 export function lessonLink(lessonId: string, origin = siteOrigin()): string {
   return `${origin}/student/${lessonId}`;
+}
+
+function slotClock(period: string): [number, number] {
+  const [hours, minutes] = SLOT_TIMES[period] || SLOT_TIMES.evening;
+  return [hours, minutes];
+}
+
+function topicLine(item: ScheduledSession["items"][number]): string {
+  const part = item.parts ? ` (part ${item.part} of ${item.parts})` : "";
+  return `• ${taskAction(item.lesson)}: ${item.lesson.title}${part} (${item.minutes} min)`;
+}
+
+function sessionDescription(cell: ScheduledSession, origin: string): string {
+  const resume = courseResumeLink(origin);
+  const topics = cell.items.map(topicLine);
+  return [
+    `Open the course: ${resume}`,
+    "",
+    "Queued for this session:",
+    ...(topics.length ? topics : ["• No lessons queued"]),
+  ].join("\n");
+}
+
+function sessionEvent(cell: ScheduledSession, feedId: string, origin: string): CalendarEventPayload {
+  const [hours, minutes] = slotClock(cell.period);
+  const duration = cell.capacity || cell.used || 0;
+  const endMinutes = hours * 60 + minutes + duration;
+  const resume = courseResumeLink(origin);
+  return {
+    uid: `${feedId}-${isoDate(cell.date)}-${cell.period}@accountingstudyadvice`,
+    start: icsStamp(cell.date, hours, minutes),
+    end: icsStamp(cell.date, Math.floor(endMinutes / 60), endMinutes % 60),
+    summary: SESSION_TITLE,
+    description: sessionDescription(cell, origin),
+    location: resume,
+    url: resume,
+  };
+}
+
+/** Shared session payloads for ICS download and Google Calendar URLs. */
+export function buildStudySessionEvents(
+  data: CourseData,
+  student: Student,
+  planOverride?: StudyPlan,
+  origin = siteOrigin()
+): CalendarEventPayload[] {
+  const status = planStatus(data, student, planOverride);
+  const feedId = (student.calendar && student.calendar.token) || student.id;
+  const events = (status ? status.cells : [])
+    .filter((cell) => cell.items.length)
+    .map((cell) => sessionEvent(cell, feedId, origin));
+
+  upcomingLiveSessions(data).forEach((live) => {
+    const [hours, minutes] = live.time.split(":").map(Number);
+    const endMinutes = hours * 60 + minutes + live.minutes;
+    events.push({
+      uid: `${feedId}-${live.id}@accountingstudyadvice`,
+      start: icsStamp(live.when, hours, minutes),
+      end: icsStamp(live.when, Math.floor(endMinutes / 60), endMinutes % 60),
+      summary: `${data.className} live: ${live.title}`,
+      description: [`Live session with ${data.company}.`, `Zoom: ${live.zoom}`, `Course portal: ${courseResumeLink(origin)}`].join(
+        "\n"
+      ),
+      location: live.zoom,
+      url: live.zoom,
+    });
+  });
+
+  return events;
+}
+
+/** Add-one-event URL used by Google Calendar (same payload as the .ics VEVENT). */
+export function googleCalendarEventUrl(event: CalendarEventPayload): string {
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: event.summary,
+    dates: `${event.start}/${event.end}`,
+    details: event.description,
+  });
+  if (event.url) params.set("location", event.url);
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
 export function buildIcs(
@@ -46,8 +142,7 @@ export function buildIcs(
   planOverride?: StudyPlan,
   origin = siteOrigin()
 ): string {
-  const status = planStatus(data, student, planOverride);
-  const feedId = (student.calendar && student.calendar.token) || student.id;
+  const events = buildStudySessionEvents(data, student, planOverride, origin);
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -56,13 +151,12 @@ export function buildIcs(
     "METHOD:PUBLISH",
     `X-WR-CALNAME:${icsEscape(`${data.className} study plan`)}`,
     `X-WR-CALDESC:${icsEscape(`${student.name}'s study plan. Updates when the plan changes.`)}`,
-    // Ask subscribed clients to re-check hourly.
     "REFRESH-INTERVAL;VALUE=DURATION:PT1H",
     "X-PUBLISHED-TTL:PT1H",
   ];
   const stampNow = icsStamp(new Date(), new Date().getHours(), new Date().getMinutes());
 
-  const push = (event) => {
+  events.forEach((event) => {
     lines.push("BEGIN:VEVENT");
     lines.push(`UID:${event.uid}`);
     lines.push(`DTSTAMP:${stampNow}`);
@@ -73,57 +167,6 @@ export function buildIcs(
     if (event.location) lines.push(icsFold(`LOCATION:${icsEscape(event.location)}`));
     if (event.url) lines.push(icsFold(`URL:${icsEscape(event.url)}`));
     lines.push("END:VEVENT");
-  };
-
-  (status ? status.cells : []).forEach((cell) => {
-    const [h, m] = SLOT_TIMES[cell.period] || SLOT_TIMES.evening;
-    let offset = 0;
-    cell.items.forEach((item) => {
-      const startMinutes = h * 60 + m + offset;
-      const endMinutes = startMinutes + item.minutes;
-      offset += item.minutes;
-      const part = item.parts ? ` (part ${item.part} of ${item.parts})` : "";
-      const askId =
-        item.lesson.chapter.lessons.filter((l) => l.type === "ask").map((l) => l.id)[0] || item.lesson.id;
-      const description = [
-        `${taskAction(item.lesson)} · ${item.minutes} minutes`,
-        `${chapterCode(item.lesson.chapter)} — ${item.lesson.chapter.title}`,
-        `Course content: ${lessonLink(item.lesson.id, origin)}`,
-        item.lesson.type === "upload" || item.lesson.type === "assignment" ? `Due ${item.lesson.due}` : "",
-        `Ask the Coach if you get stuck: ${lessonLink(askId, origin)}`,
-      ]
-        .filter(Boolean)
-        .join("\n");
-      push({
-        // Stable per lesson and part, so a rescheduled session moves in a
-        // subscribed calendar instead of duplicating.
-        uid: `${feedId}-${item.lesson.id}-p${item.part || 1}@accountingstudyadvice`,
-        start: icsStamp(cell.date, Math.floor(startMinutes / 60), startMinutes % 60),
-        end: icsStamp(cell.date, Math.floor(endMinutes / 60), endMinutes % 60),
-        summary: `${data.className}: ${item.lesson.title}${part}`,
-        description,
-        location: lessonLink(item.lesson.id, origin),
-        url: lessonLink(item.lesson.id, origin),
-      });
-    });
-  });
-
-  upcomingLiveSessions(data).forEach((live) => {
-    const [h, m] = live.time.split(":").map(Number);
-    const endMinutes = h * 60 + m + live.minutes;
-    push({
-      uid: `${feedId}-${live.id}@accountingstudyadvice`,
-      start: icsStamp(live.when, h, m),
-      end: icsStamp(live.when, Math.floor(endMinutes / 60), endMinutes % 60),
-      summary: `${data.className} live: ${live.title}`,
-      description: [
-        `Live session with ${data.company}.`,
-        `Zoom: ${live.zoom}`,
-        `Course portal: ${origin}/student/${data.chapters[0].lessons[0].id}`,
-      ].join("\n"),
-      location: live.zoom,
-      url: live.zoom,
-    });
   });
 
   lines.push("END:VCALENDAR");
