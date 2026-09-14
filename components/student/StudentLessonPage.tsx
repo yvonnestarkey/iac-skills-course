@@ -1,12 +1,12 @@
 import { connection } from "next/server";
 import StudentPlayer from "@/components/student/StudentPlayer";
-import { getLessonAccess } from "@/lib/accessControl";
-import { fetchStudentLesson, getStudentUser } from "@/lib/student-lesson";
+import { getLessonData } from "@/lib/courseData";
+import { getStudentUser } from "@/lib/student-lesson";
 
 export async function generateStudentLessonMetadata(params: Promise<{ lessonId: string }>) {
   await connection();
   const { lessonId } = await params;
-  const lesson = await fetchStudentLesson(lessonId);
+  const { lesson } = await getLessonData(lessonId);
   return {
     title: lesson ? `${lesson.title} · IAC Skills Course` : "Lesson not found",
   };
@@ -21,7 +21,11 @@ export default async function StudentLessonPage({
 }) {
   await connection();
   const { lessonId } = await params;
-  const [lesson, user] = await Promise.all([fetchStudentLesson(lessonId), getStudentUser()]);
+  const user = await getStudentUser();
+  const { lesson, access } = await getLessonData(lessonId, {
+    studentId: user?.id,
+    overrideLocks,
+  });
 
   if (!lesson) {
     return (
@@ -33,7 +37,5 @@ export default async function StudentLessonPage({
     );
   }
 
-  const initialAccess = user ? await getLessonAccess(user.id, lesson.id) : { isLocked: false };
-
-  return <StudentPlayer lesson={lesson} initialAccess={initialAccess} overrideLocks={overrideLocks} />;
+  return <StudentPlayer lesson={lesson} initialAccess={access} overrideLocks={overrideLocks} />;
 }

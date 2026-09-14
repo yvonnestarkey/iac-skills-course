@@ -79,7 +79,7 @@ export default function StudentPlayer({
 
   const ordered = splitCoursePhases(outline).flatMap((phase) => phase.chapters);
   const catalog = useMemo(() => catalogFromOutline(outline), [outline]);
-  const liveAccess = checkLessonAccess(outlineToGate(lesson), catalog, submissions);
+  const liveAccess = checkLessonAccess(outlineToGate(lesson), catalog, submissions, { completed: completedMap });
   const access = catalog.length ? liveAccess : initialAccess || liveAccess;
   const chapterLocked = outline.length > 0 && isChapterSequentiallyLocked(outline, lesson.chapterId, completedMap);
   const resume = findResumeLesson(ordered, completedMap);

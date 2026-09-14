@@ -1,16 +1,8 @@
 import { getSupabase } from "./supabase";
+import type { Submission, SubmissionStatus } from "../types/database";
 
-export type SubmissionStatus = "submitted" | "approved" | "rejected";
-
-export interface StudentSubmission {
-  id?: string;
-  student_id: string;
-  lesson_id: string;
-  body: string;
-  link_url: string;
-  status: SubmissionStatus;
-  updated_at?: string;
-}
+export type { Submission, SubmissionStatus };
+export type StudentSubmission = Submission;
 
 function asStatus(value: unknown): SubmissionStatus {
   if (value === "approved" || value === "rejected" || value === "submitted") return value;

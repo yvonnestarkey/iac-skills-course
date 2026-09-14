@@ -2,16 +2,15 @@ import { isoDate, today } from "./dates";
 import { isCoachAccount } from "./roles";
 import { getSupabase } from "./supabase";
 import type { Student } from "./types";
+import type { UserProfile } from "../types/database";
 
-export interface ProfileRow {
-  id: string;
+export type { UserProfile };
+export type ProfileRow = UserProfile & {
   email: string;
-  full_name: string | null;
   role: string;
   cohort: string;
-  last_active: string | null;
   created_at: string;
-}
+};
 
 function displayName(email: string, fullName?: string | null): string {
   if (fullName && fullName.trim()) return fullName.trim();

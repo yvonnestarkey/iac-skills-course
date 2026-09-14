@@ -1,26 +1,12 @@
-export type LessonType = "video" | "reading" | "assignment" | "upload" | "ask" | "survey" | "download";
-
-export interface Lesson {
-  id: string;
-  type: LessonType;
-  title: string;
-  duration?: string;
-  seconds?: number;
-  video_duration_seconds?: number;
-  estimated_read_minutes?: number;
-  duration_minutes?: number;
-  video_url?: string;
-  blurb?: string;
-  body?: string[];
-  takeaways?: string[];
-  due?: string;
-  brief?: string;
-  requires_submission?: boolean;
-  requires_coach_approval?: boolean;
-  prereq_lesson_id?: string | null;
-  pdf_url?: string;
-  resource_downloads?: unknown;
-}
+export type {
+  Lesson,
+  LessonType,
+  Submission,
+  SubmissionStatus,
+  UserProfile,
+  UserRole,
+} from "../types/database";
+import type { Lesson } from "../types/database";
 
 export interface Chapter {
   id: string;

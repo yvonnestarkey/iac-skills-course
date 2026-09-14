@@ -11,6 +11,7 @@ import { getLessonPdfUrl } from "./getLessonPdf";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
 import { asLessonType, displayLessonType } from "./lesson-type";
+import type { UserProfile } from "../types/database";
 import type { CourseData, Lesson, LessonType } from "./types";
 
 /** Opt server-side Supabase reads out of Next's fetch cache. Safe to call from the client. */
@@ -42,6 +43,7 @@ export interface StudentLesson {
   prereq_lesson_id?: string | null;
   pdf_url?: string;
   resource_downloads?: unknown;
+  unlock_at?: string | null;
   next: { id: string; title: string } | null;
   source: "supabase" | "seed";
 }
@@ -63,6 +65,7 @@ export interface OutlineLesson {
   requires_submission?: boolean;
   requires_coach_approval?: boolean;
   prereq_lesson_id?: string | null;
+  unlock_at?: string | null;
 }
 
 export interface OutlineChapter {
@@ -72,11 +75,7 @@ export interface OutlineChapter {
   lessons: OutlineLesson[];
 }
 
-export interface StudentUser {
-  id: string;
-  email: string | null;
-  role: string | null;
-}
+export type StudentUser = Pick<UserProfile, "id" | "email" | "role">;
 
 function firstVideoUrl(...values: unknown[]): string | undefined {
   const urls: string[] = [];
@@ -143,6 +142,7 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     prereq_lesson_id: gates?.prereq_lesson_id || lesson.prereq_lesson_id || null,
     pdf_url,
     resource_downloads: lesson.resource_downloads,
+    unlock_at: lesson.unlock_at || null,
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
   };
@@ -177,6 +177,7 @@ function outlineLessonFromRow(row: {
   requires_submission?: boolean | null;
   requires_coach_approval?: boolean | null;
   prereq_lesson_id?: string | null;
+  unlock_at?: string | null;
 }): OutlineLesson {
   const flagged = asBool(row.requires_submission);
   const lesson: OutlineLesson = {
@@ -195,6 +196,7 @@ function outlineLessonFromRow(row: {
     requires_submission: Boolean(flagged),
     requires_coach_approval: asBool(row.requires_coach_approval) ?? false,
     prereq_lesson_id: asPrereq(row.prereq_lesson_id) || null,
+    unlock_at: asPrereq(row.unlock_at) || null,
   };
   return withComputedDuration(lesson);
 }
@@ -309,6 +311,7 @@ export function outlineFromSeed(): OutlineChapter[] {
 const OUTLINE_COLUMNS =
   "id, title, type, duration, seconds, chapter_id, position, video_duration_seconds, estimated_read_minutes, duration_minutes";
 const GATE_COLUMNS = `${OUTLINE_COLUMNS}, requires_submission, requires_coach_approval, prereq_lesson_id`;
+const DRIP_COLUMNS = `${GATE_COLUMNS}, unlock_at`;
 
 export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
   await bypassStaticCache();
@@ -328,13 +331,23 @@ export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
       requires_submission?: boolean | null;
       requires_coach_approval?: boolean | null;
       prereq_lesson_id?: string | null;
+      unlock_at?: string | null;
     }> | null = null;
     let { data, error } = await client
       .from("lessons")
-      .select(GATE_COLUMNS)
+      .select(DRIP_COLUMNS)
       .order("chapter_id", { ascending: true })
       .order("position", { ascending: true });
     rows = data;
+    if (error) {
+      const gated = await client
+        .from("lessons")
+        .select(GATE_COLUMNS)
+        .order("chapter_id", { ascending: true })
+        .order("position", { ascending: true });
+      rows = gated.data;
+      error = gated.error;
+    }
     if (error) {
       const fallback = await client
         .from("lessons")
@@ -427,11 +440,12 @@ async function overlayLessonGates(lesson: StudentLesson): Promise<StudentLesson>
     requires_submission: Boolean(match.requires_submission),
     requires_coach_approval: Boolean(match.requires_coach_approval || lesson.requires_coach_approval),
     prereq_lesson_id: match.prereq_lesson_id || null,
+    unlock_at: match.unlock_at || lesson.unlock_at || null,
   };
 }
 
 const LESSON_ROW_COLUMNS =
-  "id, title, type, duration, seconds, chapter_id, position, video_url, video_urls, blurb, body, takeaways, due, brief, requires_submission, requires_coach_approval, prereq_lesson_id, pdf_url, resource_downloads, video_duration_seconds, estimated_read_minutes, duration_minutes";
+  "id, title, type, duration, seconds, chapter_id, position, video_url, video_urls, blurb, body, takeaways, due, brief, requires_submission, requires_coach_approval, prereq_lesson_id, pdf_url, resource_downloads, unlock_at, video_duration_seconds, estimated_read_minutes, duration_minutes";
 
 async function loadLessonRow(client: NonNullable<ReturnType<typeof getSupabase>>, lessonId: string) {
   const withPdf = await client.from("lessons").select(LESSON_ROW_COLUMNS).eq("id", lessonId).maybeSingle();
@@ -485,6 +499,7 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
         prereq_lesson_id: asPrereq(data.prereq_lesson_id) || null,
         pdf_url,
         resource_downloads: data.resource_downloads,
+        unlock_at: asPrereq(data.unlock_at) || null,
         next: next ? { id: next.id, title: next.title } : null,
         source: "supabase",
       });
@@ -540,26 +555,6 @@ export async function saveLessonProgress(lessonId: string, progress: LessonProgr
     updated_at: new Date().toISOString(),
   });
   if (error) return { ok: false, error: error.message };
-  return { ok: true };
-}
-
-export async function signInStudent(email: string, password: string): Promise<{ ok: boolean; error?: string }> {
-  const client = getSupabase();
-  if (!client) return { ok: false, error: "Supabase is not configured." };
-  const { error } = await client.auth.signInWithPassword({ email, password });
-  if (error) return { ok: false, error: error.message };
-  return { ok: true };
-}
-
-export async function signUpStudent(
-  email: string,
-  password: string
-): Promise<{ ok: boolean; error?: string; needsConfirm?: boolean }> {
-  const client = getSupabase();
-  if (!client) return { ok: false, error: "Supabase is not configured." };
-  const { data, error } = await client.auth.signUp({ email, password });
-  if (error) return { ok: false, error: error.message };
-  if (!data.session) return { ok: true, needsConfirm: true };
   return { ok: true };
 }
 
