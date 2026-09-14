@@ -7,7 +7,7 @@ alter table public.lessons add column if not exists prereq_lesson_id text;
 
 update public.lessons
 set requires_submission = true
-where type in ('assignment', 'upload')
+where type = 'assignment'
   and requires_submission = false;
 
 -- Point the next lesson at any submission-gated lesson so students cannot skip it.

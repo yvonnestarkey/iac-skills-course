@@ -1,3 +1,5 @@
+import type { LessonResourceDownload } from "./lesson-resources";
+
 export type LessonType = "video" | "reading" | "assignment" | "upload" | "ask" | "survey";
 
 export interface Lesson {
@@ -18,6 +20,7 @@ export interface Lesson {
   requires_submission?: boolean;
   requires_coach_approval?: boolean;
   prereq_lesson_id?: string | null;
+  resource_downloads?: LessonResourceDownload[];
 }
 
 export interface Chapter {

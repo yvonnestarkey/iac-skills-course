@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import LessonResources from "@/components/LessonResources";
 import VideoPlayer, { embedSrcForVideo } from "@/components/lesson/VideoPlayer";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
 import LessonSubmissionForm from "@/components/student/LessonSubmissionForm";
@@ -88,7 +89,7 @@ export default function StudentPlayer({
   const access = catalog.length ? liveAccess : initialAccess || liveAccess;
   const chapterLocked = outline.length > 0 && isChapterSequentiallyLocked(outline, lesson.chapterId, completedMap);
   const resume = findResumeLesson(ordered, completedMap);
-  const showSubmission = Boolean(lesson.requires_submission || lesson.requires_coach_approval);
+  const showSubmission = lesson.requires_submission === true || lesson.requires_coach_approval === true;
 
   if (!unlocked && access.isLocked) {
     return (
@@ -160,6 +161,8 @@ export default function StudentPlayer({
           </div>
         ) : null}
 
+        <LessonResources resources={lesson.resource_downloads} />
+
         <label className="student-notes-label" htmlFor="student-notes">
           Your notes
         </label>
@@ -196,7 +199,7 @@ export default function StudentPlayer({
             }}
           />
         ) : null}
-        {lesson.type === "ask" || lesson.type === "assignment" || lesson.type === "upload" ? (
+        {lesson.type === "ask" || showSubmission ? (
           <StudentCoachThread
             compact
             title={lesson.type === "ask" ? "Ask the Coach" : "Message your coach about this work"}

@@ -7,6 +7,7 @@ import {
   isTaskSubmissionAssignment,
 } from "./course-phases";
 import { withComputedDuration } from "./lesson-duration";
+import { parseResourceDownloads, type LessonResourceDownload } from "./lesson-resources";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
 import type { CourseData, Lesson, LessonType } from "./types";
@@ -38,6 +39,7 @@ export interface StudentLesson {
   requires_submission?: boolean;
   requires_coach_approval?: boolean;
   prereq_lesson_id?: string | null;
+  resource_downloads?: LessonResourceDownload[];
   next: { id: string; title: string } | null;
   source: "supabase" | "seed";
 }
@@ -136,6 +138,7 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     requires_submission: gates?.requires_submission ?? false,
     requires_coach_approval: Boolean(lesson.requires_coach_approval || gates?.requires_coach_approval),
     prereq_lesson_id: gates?.prereq_lesson_id || lesson.prereq_lesson_id || null,
+    resource_downloads: parseResourceDownloads(lesson.resource_downloads),
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
   };
@@ -182,7 +185,7 @@ function outlineLessonFromRow(row: {
     video_duration_seconds: numberOrUndef(row.video_duration_seconds),
     estimated_read_minutes: numberOrUndef(row.estimated_read_minutes),
     duration_minutes: numberOrUndef(row.duration_minutes),
-    requires_submission: flagged ?? (type === "assignment" || type === "upload"),
+    requires_submission: Boolean(flagged),
     requires_coach_approval: asBool(row.requires_coach_approval) ?? false,
     prereq_lesson_id: asPrereq(row.prereq_lesson_id) || null,
   };
@@ -452,10 +455,13 @@ export async function fetchStudentLesson(lessonId: string): Promise<StudentLesso
         takeaways: asStringList(data.takeaways),
         due: data.due || undefined,
         brief: data.brief || undefined,
-        requires_submission:
-          asBool(data.requires_submission) ?? (data.type === "assignment" || data.type === "upload"),
+        requires_submission: asBool(data.requires_submission) ?? false,
         requires_coach_approval: asBool(data.requires_coach_approval) ?? false,
         prereq_lesson_id: asPrereq(data.prereq_lesson_id) || null,
+        resource_downloads: parseResourceDownloads(data.resource_downloads, {
+          title: data.title,
+          url: typeof data.thinkific_url === "string" ? data.thinkific_url : null,
+        }),
         next: next ? { id: next.id, title: next.title } : null,
         source: "supabase",
       });

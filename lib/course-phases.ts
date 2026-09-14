@@ -45,8 +45,9 @@ export function isTaskSubmissionAssignment(
   lesson: { title: string; type: string }
 ): boolean {
   if (isDiyLesson(lesson.title)) return false;
-  if (lesson.type !== "assignment" && lesson.type !== "upload") return false;
-  return isTaskChapter(chapterTitle);
+  if (!isTaskChapter(chapterTitle)) return false;
+  if (lesson.type === "assignment") return true;
+  return lesson.type === "upload" && /submission/i.test(lesson.title);
 }
 
 /** The Task assignment that later Tasks wait on. */
