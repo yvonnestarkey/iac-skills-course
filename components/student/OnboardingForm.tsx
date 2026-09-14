@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { FormEvent, KeyboardEvent, ReactNode } from "react";
 import BrandMark from "@/components/BrandMark";
+import HelpTooltip from "@/components/ui/HelpTooltip";
 import {
   ONBOARDING_COUNTRIES,
   ONBOARDING_CTA_YEARS,
@@ -360,7 +361,10 @@ export default function OnboardingForm({
             <fieldset className="onboarding-step">
               <legend>Contact</legend>
               <div className="onboarding-field">
-                <FieldLabel htmlFor="onboarding-phone">
+                <FieldLabel
+                  htmlFor="onboarding-phone"
+                  hint={<HelpTooltip contentKey="phone_number_info" />}
+                >
                   Phone number (with country code) <span className="muted">(optional)</span>
                 </FieldLabel>
                 <input
@@ -374,7 +378,10 @@ export default function OnboardingForm({
                 />
               </div>
               <div className="onboarding-field">
-                <FieldLabel htmlFor="onboarding-accountability">
+                <FieldLabel
+                  htmlFor="onboarding-accountability"
+                  hint={<HelpTooltip contentKey="accountability_email_info" />}
+                >
                   Accountability email <span className="muted">(optional)</span>
                 </FieldLabel>
                 <input
