@@ -101,7 +101,7 @@ export default function StudentLiveSessionsPage() {
             >
               Add All Sessions to Calendar (.ics)
             </a>
-            <InfoTooltip text={config.live_calendar_tooltip_text} />
+            <InfoTooltip contentKey="live_calendar_subscription" />
           </div>
         ) : null}
       </section>

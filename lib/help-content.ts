@@ -29,6 +29,13 @@ const FALLBACKS: Record<string, HelpContent> = {
       "Set your start date, weekly hours, and study slots. We date the rest of the course so you can see when you finish, then export those sessions to your calendar.",
     video_url: null,
   },
+  live_calendar_subscription: {
+    key: "live_calendar_subscription",
+    title: "Calendar subscription",
+    description:
+      "Subscribing adds all live calls directly to your Apple, Google, or Outlook calendar. Any schedule updates or room changes will sync automatically.",
+    video_url: null,
+  },
 };
 
 let cache: Map<string, HelpContent> | null = null;

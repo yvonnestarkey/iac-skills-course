@@ -36,6 +36,12 @@ values
     'Study planner',
     'Set your start date, weekly hours, and study slots. We date the rest of the course so you can see when you finish, then export those sessions to your calendar.',
     null
+  ),
+  (
+    'live_calendar_subscription',
+    'Calendar subscription',
+    'Subscribing adds all live calls directly to your Apple, Google, or Outlook calendar. Any schedule updates or room changes will sync automatically.',
+    null
   )
 on conflict (key) do update
 set
