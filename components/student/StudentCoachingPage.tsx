@@ -10,6 +10,7 @@ import {
   type CoachingPageConfig,
   type StudentCoachingSession,
 } from "@/lib/coaching";
+import { formatSastDateTime } from "@/lib/dates";
 import { useStudentSession } from "@/lib/student-session";
 
 function DescriptionBlock({ text }: { text: string }) {
@@ -60,6 +61,7 @@ export default function StudentCoachingPage() {
   if (!ready) return <p className="student-loading">Loading coaching…</p>;
 
   const showDeliverables = sessionIsReady(session);
+  const sessionWhen = formatSastDateTime(session?.sessionAt);
 
   return (
     <article className="lesson-body wide coaching-page">
@@ -85,6 +87,7 @@ export default function StudentCoachingPage() {
 
       <section className="coaching-recordings">
         <h2>{config.recording_section_title}</h2>
+        {sessionWhen ? <p className="live-session-when coaching-session-when">{sessionWhen}</p> : null}
         <DescriptionBlock text={config.recording_section_description} />
 
         {showDeliverables ? (

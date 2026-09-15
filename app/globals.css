@@ -2878,6 +2878,11 @@ input[type="tel"]:focus {
   line-height: 1.35;
 }
 
+.coaching-session-when {
+  display: inline-block;
+  margin: 8px 0 12px;
+}
+
 .live-session-copy strong {
   display: block;
   font-family: var(--serif);

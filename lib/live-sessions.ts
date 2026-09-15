@@ -1,3 +1,4 @@
+import { formatSastDateTime } from "./dates";
 import { getSupabase } from "./supabase";
 
 export type LiveSessionStatus = "upcoming" | "completed" | "cancelled";
@@ -52,21 +53,8 @@ function sessionFromRow(row: Record<string, unknown>): LiveSession {
   };
 }
 
-export function formatLiveSessionAt(iso: string | null): string {
-  if (!iso) return "";
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return "";
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Africa/Johannesburg",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(date);
-  const get = (type: Intl.DateTimeFormatPartTypes) => parts.find((part) => part.type === type)?.value || "";
-  return `${get("month")} ${get("day")}, ${get("year")} @ ${get("hour")}:${get("minute")} SAST`;
+export function formatLiveSessionAt(iso: string | Date | null | undefined): string {
+  return formatSastDateTime(iso);
 }
 
 export function liveSessionIsRecorded(session: LiveSession): boolean {
