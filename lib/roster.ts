@@ -141,20 +141,85 @@ export function operatorsForField(field: RosterFilterField): { id: RosterFilterO
   return ROSTER_TEXT_OPERATORS;
 }
 
+export const ROSTER_COUNTRY_OPTIONS = [
+  "South Africa",
+  "Zimbabwe",
+  "Namibia",
+  "Botswana",
+  "Eswatini",
+  "Other",
+] as const;
+
+export const ROSTER_CTA_UNIVERSITY_OPTIONS = [
+  "UCT",
+  "Wits",
+  "Stellenbosch",
+  "UP",
+  "UJ",
+  "UKZN",
+  "NWU",
+  "UFS",
+  "Unisa",
+  "Other",
+] as const;
+
+export const ROSTER_IAC_ATTEMPTS_OPTIONS = ["0", "1", "2", "3+"] as const;
+
+export const ROSTER_CTA_YEAR_OPTIONS = ["2026", "2025", "2024", "2023", "2022"] as const;
+
+export const ROSTER_FILTER_DEFAULTS: Partial<Record<RosterFilterField, readonly string[]>> = {
+  country: ROSTER_COUNTRY_OPTIONS,
+  ctaUniversity: ROSTER_CTA_UNIVERSITY_OPTIONS,
+  iacAttempts: ROSTER_IAC_ATTEMPTS_OPTIONS,
+  ctaYear: ROSTER_CTA_YEAR_OPTIONS,
+};
+
+export function cleanRosterOptionValue(value: unknown): string | null {
+  if (value == null) return null;
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  if (typeof value === "boolean") return value ? "true" : "false";
+  if (typeof value !== "string") return null;
+  const text = value.trim();
+  if (!text) return null;
+  const lower = text.toLowerCase();
+  if (lower === "null" || lower === "undefined") return null;
+  return text;
+}
+
+function optionKey(value: string): string {
+  return value.toLowerCase();
+}
+
 export function uniqueRosterOptions(
   students: Array<Parameters<typeof rosterRuleValue>[0]>,
   field: RosterFilterField,
-  labelFor?: (value: string) => string
+  labelFor?: (value: string) => string,
+  defaults?: RosterFilterOption[]
 ): RosterFilterOption[] {
-  const seen = new Map<string, string>();
-  students.forEach((student) => {
-    const value = rosterRuleValue(student, field).trim();
+  const seen = new Map<string, RosterFilterOption>();
+  const extras: RosterFilterOption[] = [];
+
+  const add = (raw: unknown, label?: string, intoExtras = false) => {
+    const value = cleanRosterOptionValue(raw);
     if (!value) return;
-    if (!seen.has(value.toLowerCase())) seen.set(value.toLowerCase(), value);
-  });
-  return Array.from(seen.values())
-    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }))
-    .map((value) => ({ value, label: labelFor ? labelFor(value) : value }));
+    const key = optionKey(value);
+    if (seen.has(key)) return;
+    const option = { value, label: cleanRosterOptionValue(label) || labelFor?.(value) || value };
+    seen.set(key, option);
+    if (intoExtras) extras.push(option);
+  };
+
+  (defaults || []).forEach((item) => add(item.value, item.label));
+  (ROSTER_FILTER_DEFAULTS[field] || []).forEach((item) => add(item));
+  students.forEach((student) => add(rosterRuleValue(student, field), undefined, true));
+
+  extras.sort((a, b) => a.label.localeCompare(b.label, undefined, { numeric: true, sensitivity: "base" }));
+  const base = Array.from(seen.values()).filter((option) => extras.every((extra) => optionKey(extra.value) !== optionKey(option.value)));
+  const otherIndex = base.findIndex((option) => optionKey(option.value) === "other");
+  if (otherIndex >= 0) {
+    return [...base.slice(0, otherIndex), ...extras, base[otherIndex]];
+  }
+  return [...base, ...extras];
 }
 
 function asObject(value: unknown): Record<string, unknown> {

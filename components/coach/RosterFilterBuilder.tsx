@@ -113,11 +113,13 @@ export default function RosterFilterBuilder({
                   aria-label="Filter value"
                 >
                   <option value="">Select…</option>
-                  {options.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
+                  {options
+                    .filter((option) => option.value.trim())
+                    .map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                 </select>
               ) : (
                 <input

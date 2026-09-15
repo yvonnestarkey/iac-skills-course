@@ -25,6 +25,7 @@ import {
   onboardingStatusLabel,
   rosterColumnLabel,
   sanitizeRosterColumns,
+  cleanRosterOptionValue,
   uniqueRosterOptions,
   type RosterColumnId,
   type RosterFilterField,
@@ -212,12 +213,18 @@ export default function RosterTab({ students, optionStudents, onOpenProfile }: P
 
   const optionsByField = useMemo(() => {
     const source = optionStudents || students;
+    const cohortDefaults = (data.cohorts || [])
+      .map((cohort) => ({ value: cohort.id, label: cohort.name }))
+      .filter((option) => Boolean(cleanRosterOptionValue(option.value) && cleanRosterOptionValue(option.label)));
     const map: Partial<Record<RosterFilterField, RosterFilterOption[]>> = {};
     ROSTER_FILTER_FIELDS.forEach((field) => {
       if (field.kind !== "categorical") return;
-      map[field.id] = uniqueRosterOptions(source, field.id, (value) =>
-        field.id === "cohort" ? cohortName(data, value) : value
-      );
+      map[field.id] = uniqueRosterOptions(
+        source,
+        field.id,
+        field.id === "cohort" ? (value) => cohortName(data, value) : undefined,
+        field.id === "cohort" ? cohortDefaults : undefined
+      ).filter((option) => Boolean(cleanRosterOptionValue(option.value)));
     });
     return map;
   }, [data, optionStudents, students]);
