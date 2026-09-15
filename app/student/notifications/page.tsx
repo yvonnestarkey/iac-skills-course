@@ -5,6 +5,7 @@ import { Bell } from "lucide-react";
 import { formatInboxTime } from "@/lib/inbox";
 import { asNotificationList } from "@/lib/notifications";
 import { useStudentInbox } from "@/lib/use-student-inbox";
+import LinkedText from "@/components/ui/LinkedText";
 
 export default function StudentNotificationsPage() {
   const inbox = useStudentInbox();
@@ -39,12 +40,18 @@ export default function StudentNotificationsPage() {
         {notifications.map((item) => (
           <article className={`work-item ${item.read ? "" : "notice-unread"}`} key={item.id}>
             <div className="work-head">
-              <strong>{item.title || "Notification"}</strong>
+              <strong>
+                <LinkedText text={item.title || "Notification"} />
+              </strong>
               <span className="muted small">
                 {item.type === "assignment_feedback" ? "Assignment feedback" : "Announcement"}
               </span>
             </div>
-            {item.message ? <p className="notice-body">{item.message}</p> : null}
+            {item.message ? (
+              <p className="notice-body">
+                <LinkedText text={item.message} />
+              </p>
+            ) : null}
             <p className="muted small">{formatInboxTime(item.createdAt)}</p>
           </article>
         ))}

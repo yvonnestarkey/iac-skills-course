@@ -7,6 +7,7 @@ import { useStore } from "@/lib/store";
 import type { FlatLesson } from "@/lib/types";
 import { LessonHeader } from "./LessonChrome";
 import ComposerBox from "@/components/ui/ComposerBox";
+import LinkedText from "@/components/ui/LinkedText";
 
 export default function AskLesson({ lesson }: { lesson: FlatLesson }) {
   const { data, student, mutate, notice, setNotice } = useStore();
@@ -59,7 +60,7 @@ export default function AskLesson({ lesson }: { lesson: FlatLesson }) {
         {messages.length ? (
           messages.map((m, i) => (
             <div key={i} className={`bubble ${m.from} ${m.kind === "question" ? "question" : ""}`}>
-              {m.text}
+              <LinkedText text={m.text} />
               <div className="muted small">
                 {m.at} · {m.kind === "question" ? "You asked" : "Coach"}
                 {m.context ? ` · ${m.context}` : ""}

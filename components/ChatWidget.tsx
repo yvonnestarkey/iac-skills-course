@@ -10,6 +10,8 @@ import { postInboxMessage } from "@/lib/inbox";
 import { useStore } from "@/lib/store";
 import type { CourseData } from "@/lib/types";
 import EmojiPickerButton, { insertTextAtCursor } from "@/components/ui/EmojiPicker";
+import LinkInsertButton from "@/components/ui/LinkInsertButton";
+import LinkedText from "@/components/ui/LinkedText";
 
 function markEscalated(draft: CourseData, key: string, question: string, paragraphs: string[], escalated: boolean) {
   draft.chats = draft.chats || {};
@@ -140,7 +142,7 @@ export default function ChatWidget() {
             if (m.from === "you") {
               return (
                 <div className="chat-bubble you" key={i}>
-                  {m.text}
+                  <LinkedText text={m.text} />
                 </div>
               );
             }
@@ -170,7 +172,9 @@ export default function ChatWidget() {
             return (
               <div className="chat-bubble bot" key={i}>
                 {(m.paragraphs || []).map((p, j) => (
-                  <p key={j}>{p}</p>
+                  <p key={j}>
+                    <LinkedText text={p} />
+                  </p>
                 ))}
                 {actions.length ? <div className="chat-actions">{actions}</div> : null}
               </div>
@@ -209,18 +213,32 @@ export default function ChatWidget() {
               if (event.key === "Enter") ask(text);
             }}
           />
-          <EmojiPickerButton
-            onPick={(emoji) => {
-              const { next, caret } = insertTextAtCursor(text, emoji, chatInput.current);
-              setText(next);
-              requestAnimationFrame(() => {
-                const field = chatInput.current;
-                if (!field) return;
-                field.focus();
-                field.setSelectionRange(caret, caret);
-              });
-            }}
-          />
+          <div className="composer-tools">
+            <LinkInsertButton
+              onInsert={(markdown) => {
+                const { next, caret } = insertTextAtCursor(text, markdown, chatInput.current);
+                setText(next);
+                requestAnimationFrame(() => {
+                  const field = chatInput.current;
+                  if (!field) return;
+                  field.focus();
+                  field.setSelectionRange(caret, caret);
+                });
+              }}
+            />
+            <EmojiPickerButton
+              onPick={(emoji) => {
+                const { next, caret } = insertTextAtCursor(text, emoji, chatInput.current);
+                setText(next);
+                requestAnimationFrame(() => {
+                  const field = chatInput.current;
+                  if (!field) return;
+                  field.focus();
+                  field.setSelectionRange(caret, caret);
+                });
+              }}
+            />
+          </div>
         </div>
         <button className="primary" id="chat-send" onClick={() => ask(text)}>
           Send

@@ -1,20 +1,32 @@
 import type { ReactNode } from "react";
-import { safeHref } from "@/lib/custom-surveys";
+import { isInternalCourseHref, linkDisplayLabel, resolveCourseHref } from "@/lib/rich-text";
 
 const MARKDOWN_LINK = /\[([^\]]+)\]\(([^)\s]+)\)/g;
-const BARE_URL = /(https?:\/\/[^\s<]+|www\.[^\s<]+)/gi;
+const BARE_URL = /(https?:\/\/[^\s<]+|www\.[^\s<]+|\/(?:lessons|learn|student|coach|surveys|events|planner|coaching)[^\s<]*)/gi;
 
-function SurveyLink({ href, children }: { href: string; children: string }) {
-  const safe = safeHref(href);
-  if (!safe) return <>{children}</>;
+function RichLink({
+  href,
+  children,
+  interactive,
+}: {
+  href: string;
+  children: string;
+  interactive: boolean;
+}) {
+  const resolved = resolveCourseHref(href);
+  if (!resolved) return <>{children}</>;
+  const internal = isInternalCourseHref(href) || isInternalCourseHref(resolved);
+  const label = linkDisplayLabel(href, children);
+  const className = `rich-link${internal ? " internal" : ""}`;
+  if (!interactive) return <span className={className}>{label}</span>;
   return (
-    <a href={safe} target="_blank" rel="noopener noreferrer">
-      {children}
+    <a className={className} href={resolved} target="_blank" rel="noopener noreferrer">
+      {label}
     </a>
   );
 }
 
-function linkBareUrls(text: string, keyPrefix: string): ReactNode[] {
+function linkBareUrls(text: string, keyPrefix: string, interactive: boolean): ReactNode[] {
   const parts: ReactNode[] = [];
   const re = new RegExp(BARE_URL.source, "gi");
   let last = 0;
@@ -26,9 +38,9 @@ function linkBareUrls(text: string, keyPrefix: string): ReactNode[] {
     const trimmed = raw.replace(/[),.;!?]+$/, "");
     const trailing = raw.slice(trimmed.length);
     parts.push(
-      <SurveyLink href={trimmed} key={`${keyPrefix}-u-${index++}`}>
+      <RichLink href={trimmed} interactive={interactive} key={`${keyPrefix}-u-${index++}`}>
         {trimmed}
-      </SurveyLink>
+      </RichLink>
     );
     if (trailing) parts.push(trailing);
     last = match.index + raw.length;
@@ -37,7 +49,15 @@ function linkBareUrls(text: string, keyPrefix: string): ReactNode[] {
   return parts.length ? parts : [text];
 }
 
-export default function LinkedText({ text, className }: { text: string; className?: string }) {
+export default function LinkedText({
+  text,
+  className,
+  interactive = true,
+}: {
+  text: string;
+  className?: string;
+  interactive?: boolean;
+}) {
   if (!text) return null;
   const nodes: ReactNode[] = [];
   const re = new RegExp(MARKDOWN_LINK.source, "g");
@@ -45,14 +65,14 @@ export default function LinkedText({ text, className }: { text: string; classNam
   let match: RegExpExecArray | null;
   let index = 0;
   while ((match = re.exec(text))) {
-    if (match.index > last) nodes.push(...linkBareUrls(text.slice(last, match.index), `m${index}`));
+    if (match.index > last) nodes.push(...linkBareUrls(text.slice(last, match.index), `m${index}`, interactive));
     nodes.push(
-      <SurveyLink href={match[2]} key={`md-${index++}`}>
+      <RichLink href={match[2]} interactive={interactive} key={`md-${index++}`}>
         {match[1]}
-      </SurveyLink>
+      </RichLink>
     );
     last = match.index + match[0].length;
   }
-  if (last < text.length) nodes.push(...linkBareUrls(text.slice(last), "tail"));
+  if (last < text.length) nodes.push(...linkBareUrls(text.slice(last), "tail", interactive));
   return <span className={className}>{nodes}</span>;
 }

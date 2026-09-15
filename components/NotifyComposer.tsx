@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ComposerBox from "@/components/ui/ComposerBox";
+import LinkedText from "@/components/ui/LinkedText";
 import { audienceCopy, postAnnouncement } from "@/lib/comms";
 import {
   notificationRowsForStudents,
@@ -155,10 +156,18 @@ export default function NotifyComposer() {
             id="notify-body"
             value={body}
             onChange={setBody}
-            placeholder="What should they know?"
+            placeholder="What should they know? Paste a lesson URL or insert a link."
             rows={5}
             disabled={busy}
           />
+          {body.trim() ? (
+            <div className="notify-preview">
+              <p className="muted small">Preview</p>
+              <p className="notice-body">
+                <LinkedText text={body} />
+              </p>
+            </div>
+          ) : null}
         </div>
         <div className="modal-actions">
           <button className="primary" onClick={send} disabled={!subject.trim() || !body.trim() || !count || busy}>

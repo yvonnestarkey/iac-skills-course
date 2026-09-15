@@ -1,4 +1,5 @@
 import { formatInboxTime, messageLabel, type InboxMessage, type InboxRole } from "@/lib/inbox";
+import LinkedText from "@/components/ui/LinkedText";
 
 export default function InboxThreadView({
   messages,
@@ -20,7 +21,7 @@ export default function InboxThreadView({
             message.kind === "feedback" ? "feedback" : ""
           }`}
         >
-          {message.body}
+          <LinkedText text={message.body} />
           <div className="muted small">
             {formatInboxTime(message.createdAt)} · {messageLabel(message, viewer)}
             {message.context ? ` · ${message.context}` : ""}

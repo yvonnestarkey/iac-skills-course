@@ -2,6 +2,7 @@
 
 import { useRef, type KeyboardEvent } from "react";
 import EmojiPickerButton, { insertTextAtCursor } from "@/components/ui/EmojiPicker";
+import LinkInsertButton from "@/components/ui/LinkInsertButton";
 
 export default function ComposerBox({
   id,
@@ -22,8 +23,8 @@ export default function ComposerBox({
 }) {
   const fieldRef = useRef<HTMLTextAreaElement>(null);
 
-  const pickEmoji = (emoji: string) => {
-    const { next, caret } = insertTextAtCursor(value, emoji, fieldRef.current);
+  const insertAtCursor = (insert: string) => {
+    const { next, caret } = insertTextAtCursor(value, insert, fieldRef.current);
     onChange(next);
     requestAnimationFrame(() => {
       const field = fieldRef.current;
@@ -45,7 +46,10 @@ export default function ComposerBox({
         onChange={(event) => onChange(event.target.value)}
         onKeyDown={onKeyDown}
       />
-      <EmojiPickerButton onPick={pickEmoji} disabled={disabled} />
+      <div className="composer-tools">
+        <LinkInsertButton onInsert={insertAtCursor} disabled={disabled} />
+        <EmojiPickerButton onPick={insertAtCursor} disabled={disabled} />
+      </div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { authorName, markRead, postReply, recipientSummary } from "@/lib/comms";
 import { useStore } from "@/lib/store";
 import type { Communication } from "@/lib/types";
+import LinkedText from "@/components/ui/LinkedText";
 
 interface Props {
   comm: Communication;
@@ -39,18 +40,20 @@ export default function AuditThread({ comm, readerId, readerRole }: Props) {
   return (
     <article className={`work-item comm-thread ${unread ? "unread" : ""}`} onClick={open}>
       <div className="work-head">
-        <strong>{comm.subject}</strong>
+        <strong>
+          <LinkedText text={comm.subject} />
+        </strong>
         <span className="muted small">
           {recipientSummary(data, comm)} · {comm.at}
         </span>
       </div>
       <div className={`bubble coach`}>
-        {comm.body}
+        <LinkedText text={comm.body} />
         <div className="muted small">{comm.at} · Yvonne · announcement</div>
       </div>
       {comm.replies.map((item) => (
         <div className={`bubble ${item.from}`} key={item.id}>
-          {item.text}
+          <LinkedText text={item.text} />
           <div className="muted small">
             {item.at} · {authorName(data, item)}
           </div>

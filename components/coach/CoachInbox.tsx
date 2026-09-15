@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
 import ComposerBox from "@/components/ui/ComposerBox";
+import LinkedText from "@/components/ui/LinkedText";
 import { SEED } from "@/lib/seed";
 import {
   fetchInboxMessages,
@@ -123,7 +124,9 @@ export default function CoachInbox() {
                   {thread.waiting ? "Waiting · " : "Unread · "}
                   {formatInboxTime(thread.lastAt)}
                 </span>
-                <span className="inbox-preview">{thread.messages[thread.messages.length - 1]?.body}</span>
+                <span className="inbox-preview">
+                  <LinkedText text={thread.messages[thread.messages.length - 1]?.body || ""} interactive={false} />
+                </span>
               </button>
             ))
           ) : (

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
 import ComposerBox from "@/components/ui/ComposerBox";
+import LinkedText from "@/components/ui/LinkedText";
 import {
   fetchCoachStudentThread,
   isWaiting,
@@ -80,7 +81,11 @@ export default function AskCoachThread({ student }: { student: Student }) {
     <section className="card">
       <h2>Message thread</h2>
       <p className="muted small">Complete history with {student.name}. Replies here also reach their student inbox.</p>
-      {pending ? <div className="waiting">Waiting on you: {messages[messages.length - 1]?.body}</div> : null}
+      {pending ? (
+        <div className="waiting">
+          Waiting on you: <LinkedText text={messages[messages.length - 1]?.body || ""} />
+        </div>
+      ) : null}
       {status ? <p className="notice">{status}</p> : null}
       <InboxThreadView
         messages={messages}

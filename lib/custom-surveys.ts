@@ -1,5 +1,8 @@
 import { downloadRosterCsv } from "./roster";
+import { safeHref } from "./rich-text";
 import { getSupabase } from "./supabase";
+
+export { safeHref } from "./rich-text";
 
 export type SurveyQuestionType = "dropdown" | "radio" | "short_text" | "long_text" | "rating" | "info_link";
 
@@ -72,16 +75,6 @@ export function isInfoBlock(type: SurveyQuestionType): boolean {
 
 export function questionCollectsAnswer(type: SurveyQuestionType): boolean {
   return !isInfoBlock(type);
-}
-
-export function safeHref(raw: string | null | undefined): string | null {
-  const href = String(raw || "").trim();
-  if (!href) return null;
-  if (/^(javascript|data|vbscript):/i.test(href)) return null;
-  if (/^https?:\/\//i.test(href)) return href;
-  if (/^www\./i.test(href)) return `https://${href}`;
-  if (href.startsWith("/")) return href;
-  return null;
 }
 
 export function slugifySurveyTitle(title: string): string {

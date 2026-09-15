@@ -3,10 +3,11 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
-import { Bell, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
+import StudentNotifyMenu from "@/components/student/StudentNotifyMenu";
 import { isCoachAccount } from "@/lib/roles";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentInbox, StudentInboxProvider } from "@/lib/use-student-inbox";
@@ -74,15 +75,7 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
             <Mail size={18} aria-hidden="true" />
             {inboxWaiting ? <span className="pill">{inboxWaiting}</span> : null}
           </button>
-          <button
-            className={`notify-btn ${pathname.startsWith("/student/notifications") ? "on" : ""}`}
-            type="button"
-            aria-label="Notifications"
-            onClick={() => router.push("/student/notifications")}
-          >
-            <Bell size={18} aria-hidden="true" />
-            {unreadCount > 0 ? <span className="notify-badge">{unreadCount > 9 ? "9+" : unreadCount}</span> : null}
-          </button>
+          <StudentNotifyMenu />
           {user?.email ? <span className="muted small student-email">{user.email}</span> : null}
           {isCoachAccount(user) ? <RoleSwitcher current="students" /> : null}
           <button className="ghost student-signout" type="button" onClick={leave}>
