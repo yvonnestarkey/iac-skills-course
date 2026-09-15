@@ -7,6 +7,7 @@ import {
   fetchCustomSurvey,
   fetchSurveyResponses,
   formatSurveyAnswer,
+  questionCollectsAnswer,
   type CustomSurvey,
   type CustomSurveyResponse,
 } from "@/lib/custom-surveys";
@@ -89,9 +90,11 @@ export default function SurveyResultsView({ surveyId }: { surveyId: string }) {
                 <th>Student</th>
                 <th>Email</th>
                 <th>Submitted</th>
-                {survey.questions.map((question) => (
-                  <th key={question.id}>{question.label || question.id}</th>
-                ))}
+                {survey.questions
+                  .filter((question) => questionCollectsAnswer(question.type))
+                  .map((question) => (
+                    <th key={question.id}>{question.label || question.id}</th>
+                  ))}
               </tr>
             </thead>
             <tbody>
@@ -100,9 +103,11 @@ export default function SurveyResultsView({ surveyId }: { surveyId: string }) {
                   <td>{response.studentName}</td>
                   <td>{response.studentEmail}</td>
                   <td>{formatSastDateTime(response.createdAt) || response.createdAt}</td>
-                  {survey.questions.map((question) => (
-                    <td key={question.id}>{formatSurveyAnswer(response.answers[question.id]) || "—"}</td>
-                  ))}
+                  {survey.questions
+                    .filter((question) => questionCollectsAnswer(question.type))
+                    .map((question) => (
+                      <td key={question.id}>{formatSurveyAnswer(response.answers[question.id]) || "—"}</td>
+                    ))}
                 </tr>
               ))}
             </tbody>

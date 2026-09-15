@@ -3939,3 +3939,38 @@ input[type="tel"]:focus {
 .survey-manager .work-item .actions {
   margin-top: 10px;
 }
+
+.survey-question-card.survey-info-block {
+  background: #f4f8f7;
+}
+
+.survey-rich-text a,
+.survey-form a:not(.primary) {
+  color: #1f7b70;
+  text-decoration: underline;
+  word-break: break-word;
+}
+
+.survey-info-card {
+  border: 1px solid var(--line);
+  border-left: 4px solid #1f7b70;
+  border-radius: 14px;
+  padding: 16px 18px;
+  background: #f4f8f7;
+  margin-bottom: 18px;
+}
+
+.survey-info-card strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.survey-info-card p {
+  margin: 0 0 12px;
+}
+
+.survey-info-card .primary {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 4px;
+}

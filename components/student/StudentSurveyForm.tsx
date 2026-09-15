@@ -6,11 +6,15 @@ import {
   fetchCustomSurveyBySlug,
   fetchOwnSurveyResponse,
   formatSurveyAnswer,
+  isInfoBlock,
+  questionCollectsAnswer,
+  safeHref,
   submitCustomSurveyResponse,
   type CustomSurvey,
   type CustomSurveyResponse,
   type SurveyQuestion,
 } from "@/lib/custom-surveys";
+import LinkedText from "@/components/ui/LinkedText";
 
 export default function StudentSurveyForm({ slug }: { slug: string }) {
   const [survey, setSurvey] = useState<CustomSurvey | null>(null);
@@ -52,14 +56,23 @@ export default function StudentSurveyForm({ slug }: { slug: string }) {
 
   const submit = async () => {
     if (!survey) return;
-    const missing = survey.questions.find((question) => question.required && !formatSurveyAnswer(answers[question.id]));
+    const missing = survey.questions.find(
+      (question) =>
+        questionCollectsAnswer(question.type) &&
+        question.required &&
+        !formatSurveyAnswer(answers[question.id])
+    );
     if (missing) {
       setError(`Please answer “${missing.label}”.`);
       return;
     }
     setBusy(true);
     setError("");
-    const result = await submitCustomSurveyResponse(survey.id, answers);
+    const payload: Record<string, string> = {};
+    survey.questions.forEach((question) => {
+      if (questionCollectsAnswer(question.type)) payload[question.id] = formatSurveyAnswer(answers[question.id]);
+    });
+    const result = await submitCustomSurveyResponse(survey.id, payload);
     setBusy(false);
     if (!result.ok) {
       setError(result.error || "Could not submit.");
@@ -91,18 +104,24 @@ export default function StudentSurveyForm({ slug }: { slug: string }) {
 
   if (existing || done) {
     return (
-      <article className="lesson-body wide">
+      <article className="lesson-body wide survey-rich-text">
         <p className="kicker">Survey</p>
         <h1>{survey.title}</h1>
         <p className="lead">Thank you. Your response has been saved.</p>
         {existing ? (
           <div className="work-list">
-            {survey.questions.map((question) => (
-              <article className="work-item" key={question.id}>
-                <strong>{question.label}</strong>
-                <p>{formatSurveyAnswer(existing.answers[question.id]) || "—"}</p>
-              </article>
-            ))}
+            {survey.questions.map((question) =>
+              isInfoBlock(question.type) ? (
+                <SurveyInfoCard key={question.id} question={question} />
+              ) : (
+                <article className="work-item" key={question.id}>
+                  <strong>
+                    <LinkedText text={question.label} />
+                  </strong>
+                  <p>{formatSurveyAnswer(existing.answers[question.id]) || "—"}</p>
+                </article>
+              )
+            )}
           </div>
         ) : null}
         <div className="actions">
@@ -115,10 +134,14 @@ export default function StudentSurveyForm({ slug }: { slug: string }) {
   }
 
   return (
-    <article className="lesson-body wide">
+    <article className="lesson-body wide survey-rich-text">
       <p className="kicker">Survey</p>
       <h1>{survey.title}</h1>
-      {survey.description ? <p className="lead">{survey.description}</p> : null}
+      {survey.description ? (
+        <p className="lead">
+          <LinkedText text={survey.description} />
+        </p>
+      ) : null}
       {error ? <div className="notice">{error}</div> : null}
       <form
         className="survey-form"
@@ -127,14 +150,18 @@ export default function StudentSurveyForm({ slug }: { slug: string }) {
           void submit();
         }}
       >
-        {survey.questions.map((question) => (
-          <SurveyField
-            key={question.id}
-            question={question}
-            value={answers[question.id] || ""}
-            onChange={(value) => setAnswer(question.id, value)}
-          />
-        ))}
+        {survey.questions.map((question) =>
+          isInfoBlock(question.type) ? (
+            <SurveyInfoCard key={question.id} question={question} />
+          ) : (
+            <SurveyField
+              key={question.id}
+              question={question}
+              value={answers[question.id] || ""}
+              onChange={(value) => setAnswer(question.id, value)}
+            />
+          )
+        )}
         <div className="actions">
           <button className="primary" type="submit" disabled={busy}>
             {busy ? "Submitting…" : "Submit"}
@@ -145,6 +172,27 @@ export default function StudentSurveyForm({ slug }: { slug: string }) {
         </div>
       </form>
     </article>
+  );
+}
+
+function SurveyInfoCard({ question }: { question: SurveyQuestion }) {
+  const href = safeHref(question.resourceUrl);
+  return (
+    <aside className="survey-info-card">
+      <strong>
+        <LinkedText text={question.label} />
+      </strong>
+      {question.helperText ? (
+        <p>
+          <LinkedText text={question.helperText} />
+        </p>
+      ) : null}
+      {href ? (
+        <a className="primary" href={href} target="_blank" rel="noopener noreferrer">
+          Open Lesson in New Tab ↗
+        </a>
+      ) : null}
+    </aside>
   );
 }
 
@@ -162,11 +210,15 @@ function SurveyField({
     <div className="plan-field">
       <label htmlFor={question.type === "radio" || question.type === "rating" ? undefined : fieldId}>
         <strong>
-          {question.label}
+          <LinkedText text={question.label} />
           {question.required ? " *" : ""}
         </strong>
       </label>
-      {question.helperText ? <p className="muted small">{question.helperText}</p> : null}
+      {question.helperText ? (
+        <p className="muted small">
+          <LinkedText text={question.helperText} />
+        </p>
+      ) : null}
       {question.type === "dropdown" ? (
         <select id={fieldId} className="select-line" value={value} onChange={(event) => onChange(event.target.value)} required={question.required}>
           <option value="">Select…</option>

@@ -7,6 +7,7 @@ import {
   emptySurveyDraft,
   fetchCustomSurveys,
   newSurveyQuestion,
+  isInfoBlock,
   questionNeedsOptions,
   saveCustomSurvey,
   setCustomSurveyActive,
@@ -268,7 +269,7 @@ function SurveyEditor({
         rows={3}
         value={draft.description}
         onChange={(event) => onChange({ ...draft, description: event.target.value })}
-        placeholder="Optional intro shown to students"
+        placeholder="Optional intro shown to students. URLs and [text](https://…) links become clickable."
       />
       <label className="roster-check">
         <input
@@ -279,11 +280,13 @@ function SurveyEditor({
         Active — students can open and submit this survey
       </label>
 
-      <h3>Questions</h3>
-      {draft.questions.map((question, index) => (
-        <article className="survey-question-card" key={question.id}>
+      <h3>Questions and info blocks</h3>
+      {draft.questions.map((question, index) => {
+        const info = isInfoBlock(question.type);
+        return (
+        <article className={`survey-question-card${info ? " survey-info-block" : ""}`} key={question.id}>
           <div className="survey-question-head">
-            <strong>Question {index + 1}</strong>
+            <strong>{info ? `Info block ${index + 1}` : `Question ${index + 1}`}</strong>
             <div className="actions">
               <button className="ghost" type="button" onClick={() => onMoveQuestion(index, -1)} disabled={index === 0}>
                 Up
@@ -316,6 +319,7 @@ function SurveyEditor({
               const type = event.target.value as SurveyQuestionType;
               onChangeQuestion(question.id, {
                 type,
+                required: isInfoBlock(type) ? false : question.required,
                 options: questionNeedsOptions(type)
                   ? question.options.length
                     ? question.options
@@ -330,28 +334,47 @@ function SurveyEditor({
               </option>
             ))}
           </select>
-          <label className="student-notes-label">Question label</label>
+          <label className="student-notes-label">{info ? "Header text" : "Question label"}</label>
           <input
             className="select-line"
             value={question.label}
             onChange={(event) => onChangeQuestion(question.id, { label: event.target.value })}
-            placeholder="How are you finding the course?"
+            placeholder={info ? "Refer back to this lesson" : "How are you finding the course?"}
           />
-          <label className="student-notes-label">Helper text</label>
-          <input
+          <label className="student-notes-label">{info ? "Body text" : "Helper text"}</label>
+          <textarea
             className="select-line"
+            rows={info ? 3 : 2}
             value={question.helperText}
             onChange={(event) => onChangeQuestion(question.id, { helperText: event.target.value })}
-            placeholder="Optional hint under the question"
+            placeholder={
+              info
+                ? "Optional note. URLs and [text](https://…) links become clickable."
+                : "Optional hint under the question. URLs become clickable."
+            }
           />
-          <label className="roster-check">
-            <input
-              type="checkbox"
-              checked={question.required}
-              onChange={(event) => onChangeQuestion(question.id, { required: event.target.checked })}
-            />
-            Required
-          </label>
+          {info ? (
+            <>
+              <label className="student-notes-label">Resource URL</label>
+              <input
+                className="select-line"
+                type="text"
+                value={question.resourceUrl || ""}
+                onChange={(event) => onChangeQuestion(question.id, { resourceUrl: event.target.value })}
+                placeholder="https://… or /student/lessons/…"
+              />
+              <p className="muted small">Opens in a new tab on the student survey as “Open Lesson in New Tab ↗”.</p>
+            </>
+          ) : (
+            <label className="roster-check">
+              <input
+                type="checkbox"
+                checked={question.required}
+                onChange={(event) => onChangeQuestion(question.id, { required: event.target.checked })}
+              />
+              Required
+            </label>
+          )}
           {questionNeedsOptions(question.type) ? (
             <div className="survey-options">
               <p className="muted small">Options</p>
@@ -390,10 +413,18 @@ function SurveyEditor({
             </div>
           ) : null}
         </article>
-      ))}
+        );
+      })}
       <div className="actions">
         <button className="ghost" type="button" onClick={() => onChange({ ...draft, questions: [...draft.questions, newSurveyQuestion()] })}>
           + Add question
+        </button>
+        <button
+          className="ghost"
+          type="button"
+          onClick={() => onChange({ ...draft, questions: [...draft.questions, newSurveyQuestion("info_link")] })}
+        >
+          + Add info / course link
         </button>
         <button className="primary" type="button" disabled={busy} onClick={onSave}>
           {busy ? "Saving…" : "Save survey"}

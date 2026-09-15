@@ -1,7 +1,7 @@
 import { downloadRosterCsv } from "./roster";
 import { getSupabase } from "./supabase";
 
-export type SurveyQuestionType = "dropdown" | "radio" | "short_text" | "long_text" | "rating";
+export type SurveyQuestionType = "dropdown" | "radio" | "short_text" | "long_text" | "rating" | "info_link";
 
 export const SURVEY_QUESTION_TYPES: { id: SurveyQuestionType; label: string }[] = [
   { id: "dropdown", label: "Single Select Dropdown" },
@@ -9,6 +9,7 @@ export const SURVEY_QUESTION_TYPES: { id: SurveyQuestionType; label: string }[] 
   { id: "short_text", label: "Short Text" },
   { id: "long_text", label: "Long Text / Paragraph" },
   { id: "rating", label: "Rating Scale (1-5)" },
+  { id: "info_link", label: "Info / Course Link" },
 ];
 
 export interface SurveyQuestion {
@@ -18,6 +19,7 @@ export interface SurveyQuestion {
   helperText: string;
   required: boolean;
   options: string[];
+  resourceUrl: string;
 }
 
 export interface CustomSurvey {
@@ -64,6 +66,24 @@ export function questionNeedsOptions(type: SurveyQuestionType): boolean {
   return type === "dropdown" || type === "radio";
 }
 
+export function isInfoBlock(type: SurveyQuestionType): boolean {
+  return type === "info_link";
+}
+
+export function questionCollectsAnswer(type: SurveyQuestionType): boolean {
+  return !isInfoBlock(type);
+}
+
+export function safeHref(raw: string | null | undefined): string | null {
+  const href = String(raw || "").trim();
+  if (!href) return null;
+  if (/^(javascript|data|vbscript):/i.test(href)) return null;
+  if (/^https?:\/\//i.test(href)) return href;
+  if (/^www\./i.test(href)) return `https://${href}`;
+  if (href.startsWith("/")) return href;
+  return null;
+}
+
 export function slugifySurveyTitle(title: string): string {
   const slug = title
     .toLowerCase()
@@ -81,6 +101,7 @@ export function newSurveyQuestion(type: SurveyQuestionType = "short_text"): Surv
     helperText: "",
     required: false,
     options: questionNeedsOptions(type) ? ["Option 1", "Option 2"] : [],
+    resourceUrl: "",
   };
 }
 
@@ -113,8 +134,9 @@ export function asSurveyQuestions(value: unknown): SurveyQuestion[] {
         type,
         label: String(row.label || "").trim(),
         helperText: String(row.helperText || row.helper_text || "").trim(),
-        required: Boolean(row.required),
+        required: isInfoBlock(type) ? false : Boolean(row.required),
         options,
+        resourceUrl: String(row.resourceUrl || row.resource_url || "").trim(),
       } satisfies SurveyQuestion;
     })
     .filter((item): item is SurveyQuestion => Boolean(item));
@@ -209,12 +231,18 @@ export async function saveCustomSurvey(
       ...question,
       label: question.label.trim(),
       helperText: question.helperText.trim(),
+      resourceUrl: String(question.resourceUrl || "").trim(),
+      required: isInfoBlock(question.type) ? false : question.required,
       options: question.options.map((option) => option.trim()).filter(Boolean),
     }))
     .filter((question) => question.label);
-  if (!questions.length) return { ok: false, error: "Add at least one question with a label." };
-  const invalid = questions.find((question) => questionNeedsOptions(question.type) && question.options.length < 2);
-  if (invalid) return { ok: false, error: `"${invalid.label}" needs at least two options.` };
+  if (!questions.length) return { ok: false, error: "Add at least one question or info block with a header." };
+  const invalidOptions = questions.find((question) => questionNeedsOptions(question.type) && question.options.length < 2);
+  if (invalidOptions) return { ok: false, error: `"${invalidOptions.label}" needs at least two options.` };
+  const invalidLink = questions.find(
+    (question) => isInfoBlock(question.type) && question.resourceUrl && !safeHref(question.resourceUrl)
+  );
+  if (invalidLink) return { ok: false, error: `"${invalidLink.label}" has an invalid Resource URL.` };
 
   const row = {
     title,
@@ -347,12 +375,13 @@ export async function fetchSurveyResponses(
 }
 
 export function downloadSurveyCsv(survey: CustomSurvey, responses: CustomSurveyResponse[]): void {
-  const headers = ["Student", "Email", "Submitted", ...survey.questions.map((question) => question.label || question.id)];
+  const columns = survey.questions.filter((question) => questionCollectsAnswer(question.type));
+  const headers = ["Student", "Email", "Submitted", ...columns.map((question) => question.label || question.id)];
   const lines = responses.map((response) => [
     response.studentName,
     response.studentEmail,
     response.createdAt,
-    ...survey.questions.map((question) => formatSurveyAnswer(response.answers[question.id])),
+    ...columns.map((question) => formatSurveyAnswer(response.answers[question.id])),
   ]);
   downloadRosterCsv(`${survey.slug || "survey"}-responses.csv`, headers, lines);
 }
