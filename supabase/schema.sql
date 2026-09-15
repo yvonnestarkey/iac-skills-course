@@ -110,7 +110,9 @@ create table if not exists public.inbox_messages (
   body           text not null,
   context        text,
   lesson_id      text,
-  created_at     timestamptz not null default now()
+  created_at     timestamptz not null default now(),
+  read           boolean not null default false,
+  read_at        timestamptz
 );
 
 create index if not exists inbox_messages_student_idx
@@ -121,6 +123,9 @@ create index if not exists inbox_messages_student_id_idx
 
 create index if not exists inbox_messages_created_idx
   on public.inbox_messages (created_at desc);
+
+create index if not exists inbox_messages_student_unread_idx
+  on public.inbox_messages (student_id, read, created_at desc);
 
 alter table public.inbox_messages enable row level security;
 
@@ -261,6 +266,15 @@ create policy "staff insert inbox"
   on public.inbox_messages for insert
   to authenticated
   with check (public.is_course_staff());
+
+drop policy if exists "students update own inbox read state" on public.inbox_messages;
+create policy "students update own inbox read state"
+  on public.inbox_messages for update
+  to authenticated
+  using (auth.uid() = student_id)
+  with check (auth.uid() = student_id);
+
+grant select, insert, update on public.inbox_messages to authenticated;
 
 -- Per-student notifications for announcements and assignment feedback.
 drop view if exists public.notifications;

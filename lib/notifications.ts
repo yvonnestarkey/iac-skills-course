@@ -132,9 +132,20 @@ export async function markOwnNotificationsRead(): Promise<{ ok: boolean; error?:
   const { client, user, error: authError } = await authClient();
   if (!client || !user) return { ok: false, error: authError || "Sign in required." };
 
-  const { error } = await client.from("notifications").update({ read: true }).eq("user_id", user.id).eq("read", false);
-  if (error) return { ok: false, error: describe(error) };
-  return { ok: true };
+  const now = new Date().toISOString();
+  const filters = [`user_id.eq.${user.id}`, `student_id.eq.${user.id}`];
+  let lastError = "";
+
+  for (const patch of [{ read: true, read_at: now }, { read: true }] as const) {
+    const { error } = await client.from("notifications").update(patch).or(filters.join(",")).eq("read", false);
+    if (!error) return { ok: true };
+    lastError = describe(error);
+    const byUser = await client.from("notifications").update(patch).eq("user_id", user.id).eq("read", false);
+    if (!byUser.error) return { ok: true };
+    lastError = describe(byUser.error);
+  }
+
+  return { ok: false, error: lastError || "Could not mark notifications as read." };
 }
 
 export interface NotificationTarget {

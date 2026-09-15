@@ -9,7 +9,7 @@ import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import { isCoachAccount } from "@/lib/roles";
 import { useStudentSession } from "@/lib/student-session";
-import { useStudentInbox } from "@/lib/use-student-inbox";
+import { useStudentInbox, StudentInboxProvider } from "@/lib/use-student-inbox";
 import { StudentNavProvider, useStudentNav } from "@/lib/student-nav";
 
 function LoadingFrame({ label }: { label: string }) {
@@ -24,8 +24,16 @@ function LoadingFrame({ label }: { label: string }) {
 }
 
 function AuthenticatedShell({ children }: { children: ReactNode }) {
+  return (
+    <StudentInboxProvider>
+      <AuthenticatedChrome>{children}</AuthenticatedChrome>
+    </StudentInboxProvider>
+  );
+}
+
+function AuthenticatedChrome({ children }: { children: ReactNode }) {
   const { user, signOut } = useStudentSession();
-  const { inboxWaiting, unreadCount } = useStudentInbox();
+  const { inboxWaiting, unreadCount, markAllRead } = useStudentInbox();
   const nav = useStudentNav();
   const pathname = usePathname();
   const router = useRouter();
@@ -34,6 +42,18 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     closeNav?.(false);
   }, [pathname, closeNav]);
+
+  useEffect(() => {
+    if (!pathname.startsWith("/student/inbox")) return;
+    if (!inboxWaiting && !unreadCount) return;
+    let cancelled = false;
+    void markAllRead().then(() => {
+      if (!cancelled) router.refresh();
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname, markAllRead, router, inboxWaiting, unreadCount]);
 
   const leave = async () => {
     await signOut();

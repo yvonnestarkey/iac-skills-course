@@ -14,6 +14,8 @@ export interface InboxMessage {
   context: string | null;
   lessonId: string | null;
   createdAt: string;
+  read: boolean;
+  readAt: string | null;
 }
 
 export interface InboxThread {
@@ -44,6 +46,8 @@ interface InboxRow {
   context: string | null;
   lesson_id: string | null;
   created_at: string;
+  read?: boolean | null;
+  read_at?: string | null;
 }
 
 function describe(error: { message?: string; hint?: string; code?: string }): string {
@@ -54,6 +58,7 @@ function describe(error: { message?: string; hint?: string; code?: string }): st
 }
 
 function fromRow(row: InboxRow): InboxMessage {
+  const readAt = row.read_at || null;
   return {
     id: row.id,
     studentId: row.student_id,
@@ -64,6 +69,8 @@ function fromRow(row: InboxRow): InboxMessage {
     context: row.context,
     lessonId: row.lesson_id,
     createdAt: row.created_at,
+    read: row.from_role === "student" || row.read === true || Boolean(readAt),
+    readAt,
   };
 }
 
@@ -143,6 +150,8 @@ function notificationRowToMessage(row: Record<string, unknown>, fallbackEmail: s
     context: row.context || row.title ? String(row.context || row.title) : null,
     lessonId: row.lesson_id ? String(row.lesson_id) : null,
     createdAt: String(row.created_at || ""),
+    read: from === "student" || Boolean(row.read) || Boolean(row.read_at),
+    readAt: row.read_at ? String(row.read_at) : null,
   };
 }
 
@@ -243,6 +252,36 @@ export async function fetchOwnInboxMessages(): Promise<{ ok: boolean; error?: st
 
   if (error) return { ok: false, error: describe(error), data: [] };
   return { ok: true, data: ((data || []) as InboxRow[]).map(fromRow) };
+}
+
+export async function markOwnInboxRead(): Promise<{ ok: boolean; error?: string }> {
+  const { client, user, error: authError } = await authClient();
+  if (!client || !user) return { ok: false, error: authError || "Sign in required." };
+
+  const now = new Date().toISOString();
+  const attempts: Record<string, unknown>[] = [{ read: true, read_at: now }, { read: true }, { read_at: now }];
+  let lastError = "";
+
+  for (const patch of attempts) {
+    let query = client.from("inbox_messages").update(patch).eq("student_id", user.id);
+    if ("read" in patch) query = query.eq("read", false);
+    else query = query.is("read_at", null);
+    const { error } = await query;
+    if (!error) return { ok: true };
+    lastError = describe(error);
+  }
+
+  if (user.email) {
+    const byEmail = await client
+      .from("inbox_messages")
+      .update({ read: true, read_at: now })
+      .eq("student_email", user.email)
+      .eq("read", false);
+    if (!byEmail.error) return { ok: true };
+    lastError = describe(byEmail.error);
+  }
+
+  return { ok: false, error: lastError || "Could not mark inbox messages as read." };
 }
 
 export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean; error?: string; message?: InboxMessage }> {

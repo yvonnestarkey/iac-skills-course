@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { fetchOwnInboxMessages, type InboxMessage } from "./inbox";
+import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { fetchOwnInboxMessages, markOwnInboxRead, type InboxMessage } from "./inbox";
 import {
   asNotificationList,
   fetchOwnNotifications,
@@ -12,13 +12,17 @@ import {
 import { getSupabase } from "./supabase";
 import { useStudentSession } from "./student-session";
 
-export function useStudentInbox(): {
+export interface StudentInboxValue {
   messages: InboxMessage[];
   inboxWaiting: number;
   notifications: StudentNotification[];
   unreadCount: number;
   markAllRead: () => Promise<void>;
-} {
+}
+
+const StudentInboxContext = createContext<StudentInboxValue | null>(null);
+
+function useStudentInboxState(): StudentInboxValue {
   const { user } = useStudentSession();
   const [messages, setMessages] = useState<InboxMessage[]>([]);
   const [notifications, setNotifications] = useState<StudentNotification[]>([]);
@@ -33,8 +37,10 @@ export function useStudentInbox(): {
       try {
         const [inbox, notes] = await Promise.all([fetchOwnInboxMessages(), fetchOwnNotifications()]);
         if (cancelled) return;
-        setMessages(Array.isArray(inbox.data) ? inbox.data.filter(Boolean) : []);
-        setNotifications(asNotificationList(notes.data));
+        const nextMessages = Array.isArray(inbox.data) ? inbox.data.filter(Boolean) : [];
+        const nextNotes = asNotificationList(notes.data);
+        setMessages(nextMessages);
+        setNotifications(nextNotes);
       } catch {
         if (!cancelled) {
           setMessages([]);
@@ -88,18 +94,32 @@ export function useStudentInbox(): {
     }
   }, [user?.id]);
 
-  const lastMessage = Array.isArray(messages) ? messages[messages.length - 1] : undefined;
-  const inboxWaiting = lastMessage && lastMessage.from === "coach" ? 1 : 0;
+  const inboxWaiting = (Array.isArray(messages) ? messages : []).filter((item) => item.from === "coach" && !item.read).length;
   const unreadCount = items.filter((item) => !item.read).length;
 
   const markAllRead = useCallback(async () => {
+    const now = new Date().toISOString();
+    setMessages((current) => current.map((item) => (item.read ? item : { ...item, read: true, readAt: now })));
     setNotifications((current) => asNotificationList(current).map((item) => (item.read ? item : { ...item, read: true })));
     try {
-      await markOwnNotificationsRead();
+      await Promise.all([markOwnInboxRead(), markOwnNotificationsRead()]);
     } catch {
-      /* Keep the local empty/read state even if the table is missing. */
+      /* Keep the local read state even if a table or column is missing. */
     }
   }, []);
 
   return { messages: Array.isArray(messages) ? messages : [], inboxWaiting, notifications: items, unreadCount, markAllRead };
+}
+
+export function StudentInboxProvider({ children }: { children: ReactNode }) {
+  const value = useStudentInboxState();
+  return createElement(StudentInboxContext.Provider, { value }, children);
+}
+
+export function useStudentInbox(): StudentInboxValue {
+  const context = useContext(StudentInboxContext);
+  if (!context) {
+    throw new Error("useStudentInbox must be used within StudentInboxProvider");
+  }
+  return context;
 }
