@@ -274,6 +274,13 @@ create policy "students update own inbox read state"
   using (auth.uid() = student_id)
   with check (auth.uid() = student_id);
 
+drop policy if exists "staff update inbox" on public.inbox_messages;
+create policy "staff update inbox"
+  on public.inbox_messages for update
+  to authenticated
+  using (public.is_course_staff())
+  with check (public.is_course_staff());
+
 grant select, insert, update on public.inbox_messages to authenticated;
 
 -- Per-student notifications for announcements and assignment feedback.

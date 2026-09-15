@@ -926,6 +926,8 @@ input[type="tel"]:focus {
   line-height: 1.5;
   background: #eef3f1;
   border: 1px solid var(--line);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .bubble.coach {
@@ -2317,6 +2319,7 @@ input[type="tel"]:focus {
 
 .notify-modal {
   max-width: 560px;
+  overflow: visible;
 }
 
 .notify-modal .modal-actions {
@@ -3366,8 +3369,70 @@ input[type="tel"]:focus {
   text-overflow: ellipsis;
 }
 
-.inbox-thread {
-  min-height: 360px;
+.inbox-thread .thread,
+.card .thread {
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.composer-box {
+  position: relative;
+  margin: 8px 0 12px;
+}
+
+.composer-box textarea {
+  width: 100%;
+  min-height: 96px;
+  padding: 12px 44px 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  font: inherit;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.emoji-picker {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+}
+
+.emoji-picker-btn {
+  min-width: 36px;
+  padding: 6px 8px;
+}
+
+.emoji-picker-panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 6px);
+  z-index: 40;
+  display: grid;
+  grid-template-columns: repeat(8, 1.7rem);
+  gap: 2px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(31, 45, 42, 0.12);
+}
+
+.emoji-picker-item {
+  width: 1.7rem;
+  height: 1.7rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.emoji-picker-item:hover {
+  background: var(--light);
 }
 
 .inbox-thread select {

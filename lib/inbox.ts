@@ -23,6 +23,7 @@ export interface InboxThread {
   studentId: string | null;
   messages: InboxMessage[];
   waiting: boolean;
+  queued: boolean;
   lastAt: string;
 }
 
@@ -69,7 +70,7 @@ function fromRow(row: InboxRow): InboxMessage {
     context: row.context,
     lessonId: row.lesson_id,
     createdAt: row.created_at,
-    read: row.from_role === "student" || row.read === true || Boolean(readAt),
+    read: row.read === true || Boolean(readAt),
     readAt,
   };
 }
@@ -84,6 +85,12 @@ export function formatInboxTime(iso: string | null | undefined): string {
 export function isWaiting(messages: InboxMessage[]): boolean {
   const last = messages[messages.length - 1];
   return Boolean(last && last.from === "student");
+}
+
+export function threadNeedsCoachAction(messages: InboxMessage[]): boolean {
+  if (!messages.length) return false;
+  if (isWaiting(messages)) return true;
+  return messages.some((item) => item.from === "student" && !item.read);
 }
 
 export function groupInboxByStudent(messages: InboxMessage[]): InboxThread[] {
@@ -101,10 +108,12 @@ export function groupInboxByStudent(messages: InboxMessage[]): InboxThread[] {
         studentId: sorted.find((item) => item.studentId)?.studentId || null,
         messages: sorted,
         waiting: isWaiting(sorted),
+        queued: threadNeedsCoachAction(sorted),
         lastAt: sorted[sorted.length - 1]?.createdAt || "",
       };
     })
     .sort((a, b) => {
+      if (a.queued !== b.queued) return a.queued ? -1 : 1;
       if (a.waiting !== b.waiting) return a.waiting ? -1 : 1;
       return b.lastAt.localeCompare(a.lastAt);
     });
@@ -150,7 +159,7 @@ function notificationRowToMessage(row: Record<string, unknown>, fallbackEmail: s
     context: row.context || row.title ? String(row.context || row.title) : null,
     lessonId: row.lesson_id ? String(row.lesson_id) : null,
     createdAt: String(row.created_at || ""),
-    read: from === "student" || Boolean(row.read) || Boolean(row.read_at),
+    read: Boolean(row.read) || Boolean(row.read_at),
     readAt: row.read_at ? String(row.read_at) : null,
   };
 }
@@ -263,7 +272,7 @@ export async function markOwnInboxRead(): Promise<{ ok: boolean; error?: string 
   let lastError = "";
 
   for (const patch of attempts) {
-    let query = client.from("inbox_messages").update(patch).eq("student_id", user.id);
+    let query = client.from("inbox_messages").update(patch).eq("student_id", user.id).eq("from_role", "coach");
     if ("read" in patch) query = query.eq("read", false);
     else query = query.is("read_at", null);
     const { error } = await query;
@@ -276,12 +285,37 @@ export async function markOwnInboxRead(): Promise<{ ok: boolean; error?: string 
       .from("inbox_messages")
       .update({ read: true, read_at: now })
       .eq("student_email", user.email)
+      .eq("from_role", "coach")
       .eq("read", false);
     if (!byEmail.error) return { ok: true };
     lastError = describe(byEmail.error);
   }
 
   return { ok: false, error: lastError || "Could not mark inbox messages as read." };
+}
+
+export async function markCoachThreadResolved(student: {
+  studentId?: string | null;
+  studentEmail: string;
+}): Promise<{ ok: boolean; error?: string }> {
+  const { client, user, error: authError } = await authClient();
+  if (!client || !user) return { ok: false, error: authError || "Sign in required." };
+
+  const now = new Date().toISOString();
+  const attempts: Record<string, unknown>[] = [{ read: true, read_at: now }, { read: true }];
+  let lastError = "";
+
+  for (const patch of attempts) {
+    let query = client.from("inbox_messages").update(patch).eq("from_role", "student");
+    if ("read" in patch) query = query.eq("read", false);
+    if (student.studentId) query = query.eq("student_id", student.studentId);
+    else query = query.eq("student_email", student.studentEmail);
+    const { error } = await query;
+    if (!error) return { ok: true };
+    lastError = describe(error);
+  }
+
+  return { ok: false, error: lastError || "Could not resolve this thread." };
 }
 
 export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean; error?: string; message?: InboxMessage }> {
@@ -309,6 +343,12 @@ export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean
 
   if (error) return { ok: false, error: describe(error) };
   const message = fromRow(data as InboxRow);
+  if (draft.from === "coach") {
+    await markCoachThreadResolved({
+      studentId: message.studentId || draft.studentId,
+      studentEmail: message.studentEmail,
+    });
+  }
   if (draft.kind === "feedback" && draft.from === "coach") {
     await notifyAssignmentFeedback({
       studentId: message.studentId,

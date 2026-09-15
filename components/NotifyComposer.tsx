@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import ComposerBox from "@/components/ui/ComposerBox";
 import { audienceCopy, postAnnouncement } from "@/lib/comms";
 import {
   notificationRowsForStudents,
@@ -150,12 +151,13 @@ export default function NotifyComposer() {
           <label htmlFor="notify-body">
             <strong>Message</strong>
           </label>
-          <textarea
+          <ComposerBox
             id="notify-body"
-            rows={5}
-            placeholder="What should they know?"
             value={body}
-            onChange={(event) => setBody(event.target.value)}
+            onChange={setBody}
+            placeholder="What should they know?"
+            rows={5}
+            disabled={busy}
           />
         </div>
         <div className="modal-actions">

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
+import ComposerBox from "@/components/ui/ComposerBox";
 import { SEED } from "@/lib/seed";
 import {
   fetchInboxMessages,
@@ -11,6 +12,7 @@ import {
   type InboxKind,
   type InboxThread,
 } from "@/lib/inbox";
+import { useStore } from "@/lib/store";
 
 const assignmentLessons = SEED.chapters.flatMap((chapter) =>
   chapter.lessons
@@ -19,6 +21,7 @@ const assignmentLessons = SEED.chapters.flatMap((chapter) =>
 );
 
 export default function CoachInbox() {
+  const { data } = useStore();
   const [threads, setThreads] = useState<InboxThread[]>([]);
   const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
   const [text, setText] = useState("");
@@ -36,18 +39,31 @@ export default function CoachInbox() {
     setError("");
     const next = groupInboxByStudent(result.data);
     setThreads(next);
-    setSelectedEmail((current) => current || next[0]?.studentEmail || null);
+    setSelectedEmail((current) => {
+      if (current && next.some((thread) => thread.studentEmail === current)) return current;
+      return next.find((thread) => thread.queued)?.studentEmail || null;
+    });
   }, []);
 
   useEffect(() => {
     load();
   }, [load]);
 
+  const queue = useMemo(() => threads.filter((thread) => thread.queued), [threads]);
   const selected = useMemo(
     () => threads.find((thread) => thread.studentEmail === selectedEmail) || null,
     [threads, selectedEmail]
   );
-  const waiting = threads.filter((thread) => thread.waiting).length;
+  const waiting = queue.length;
+
+  const labelFor = (thread: InboxThread) => {
+    const match = data.students.find(
+      (student) =>
+        student.email.toLowerCase() === thread.studentEmail.toLowerCase() ||
+        (thread.studentId && student.id === thread.studentId)
+    );
+    return match?.name || thread.studentEmail;
+  };
 
   const send = async (kind: InboxKind) => {
     if (!selected || !text.trim()) return;
@@ -88,9 +104,9 @@ export default function CoachInbox() {
         </div>
       ) : null}
       <div className="inbox-layout">
-        <aside className="inbox-list" aria-label="Student threads">
-          {threads.length ? (
-            threads.map((thread) => (
+        <aside className="inbox-list" aria-label="Students waiting on a reply">
+          {queue.length ? (
+            queue.map((thread) => (
               <button
                 key={thread.studentEmail}
                 className={`inbox-item ${thread.studentEmail === selectedEmail ? "active" : ""} ${
@@ -102,16 +118,16 @@ export default function CoachInbox() {
                   setStatus("");
                 }}
               >
-                <strong>{thread.studentEmail}</strong>
+                <strong>{labelFor(thread)}</strong>
                 <span className="muted small">
-                  {thread.waiting ? "Waiting · " : ""}
+                  {thread.waiting ? "Waiting · " : "Unread · "}
                   {formatInboxTime(thread.lastAt)}
                 </span>
                 <span className="inbox-preview">{thread.messages[thread.messages.length - 1]?.body}</span>
               </button>
             ))
           ) : (
-            <p className="empty">No student messages yet.</p>
+            <p className="empty">The queue is clear. Open a student profile to read older threads.</p>
           )}
         </aside>
         <section className="inbox-thread card">
@@ -119,10 +135,10 @@ export default function CoachInbox() {
             <>
               <div className="panel-head">
                 <div>
-                  <h2>{selected.studentEmail}</h2>
+                  <h2>{labelFor(selected)}</h2>
                   <p className="muted small">
-                    {selected.waiting ? "Waiting for your reply" : "Thread up to date"} · {selected.messages.length}{" "}
-                    message{selected.messages.length === 1 ? "" : "s"}
+                    {selected.queued ? "Waiting for your reply" : "Replied · removed from the queue"} ·{" "}
+                    {selected.messages.length} message{selected.messages.length === 1 ? "" : "s"}
                   </p>
                 </div>
               </div>
@@ -139,11 +155,12 @@ export default function CoachInbox() {
                   </option>
                 ))}
               </select>
-              <textarea
-                rows={4}
-                placeholder="Reply to this student, or leave assignment feedback…"
+              <ComposerBox
                 value={text}
-                onChange={(event) => setText(event.target.value)}
+                onChange={setText}
+                placeholder="Reply to this student, or leave assignment feedback…"
+                rows={4}
+                disabled={busy}
               />
               <div className="actions">
                 <button className="primary" type="button" disabled={busy || !text.trim()} onClick={() => send("reply")}>
@@ -155,7 +172,7 @@ export default function CoachInbox() {
               </div>
             </>
           ) : (
-            <p className="empty">Select a student thread, or wait for a message from /student.</p>
+            <p className="empty">Select a waiting student, or open a profile to message them.</p>
           )}
         </section>
       </div>

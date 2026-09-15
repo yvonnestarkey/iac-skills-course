@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
+import ComposerBox from "@/components/ui/ComposerBox";
 import {
   fetchCoachStudentThread,
   isWaiting,
@@ -63,7 +64,7 @@ export default function AskCoachThread({ student }: { student: Student }) {
       from: "coach",
       kind: "reply",
       body,
-      context: "Ask the Coach",
+      context: "Coach reply",
     });
     setBusy(false);
     if (!result.ok) {
@@ -77,7 +78,8 @@ export default function AskCoachThread({ student }: { student: Student }) {
 
   return (
     <section className="card">
-      <h2>Ask the Coach</h2>
+      <h2>Message thread</h2>
+      <p className="muted small">Complete history with {student.name}. Replies here also reach their student inbox.</p>
       {pending ? <div className="waiting">Waiting on you: {messages[messages.length - 1]?.body}</div> : null}
       {status ? <p className="notice">{status}</p> : null}
       <InboxThreadView
@@ -85,19 +87,17 @@ export default function AskCoachThread({ student }: { student: Student }) {
         viewer="coach"
         empty="No questions or messages yet."
       />
-      <div className="compose">
-        <input
-          id="coach-msg"
-          type="text"
-          placeholder={pending ? "Answer this question…" : `Reply to ${student.name.split(" ")[0]}…`}
-          value={text}
-          onChange={(event) => setText(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") send();
-          }}
-        />
+      <ComposerBox
+        id="coach-msg"
+        value={text}
+        onChange={setText}
+        placeholder={pending ? "Answer this question…" : `Message ${student.name.split(" ")[0]}…`}
+        rows={4}
+        disabled={busy}
+      />
+      <div className="actions">
         <button className="primary" id="send-coach" type="button" disabled={busy || !text.trim()} onClick={send}>
-          {pending ? "Reply" : "Send"}
+          {pending ? "Reply" : "Send message"}
         </button>
       </div>
     </section>

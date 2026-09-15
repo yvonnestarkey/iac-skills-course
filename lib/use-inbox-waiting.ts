@@ -10,7 +10,7 @@ export function useInboxWaiting(): number {
     let cancelled = false;
     fetchInboxMessages().then((result) => {
       if (cancelled || !result.ok) return;
-      setCount(groupInboxByStudent(result.data).filter((thread) => thread.waiting).length);
+      setCount(groupInboxByStudent(result.data).filter((thread) => thread.queued).length);
     });
     return () => {
       cancelled = true;
