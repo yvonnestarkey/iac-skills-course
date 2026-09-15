@@ -3884,3 +3884,58 @@ input[type="tel"]:focus {
     grid-template-columns: 1fr;
   }
 }
+
+.survey-builder h3 {
+  margin: 22px 0 12px;
+}
+
+.survey-question-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+
+.survey-question-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.survey-option-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.survey-option-row .select-line {
+  flex: 1;
+}
+
+.survey-form .plan-field {
+  margin-bottom: 18px;
+}
+
+.survey-choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.survey-rating {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.survey-results {
+  overflow-x: auto;
+}
+
+.survey-manager .work-item .actions {
+  margin-top: 10px;
+}

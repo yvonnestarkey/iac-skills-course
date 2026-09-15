@@ -106,3 +106,22 @@ export interface StudentCoachingSession {
   coach_notes?: string | null;
   deliverables_seen_at?: string | null;
 }
+
+export interface CustomSurveyRow {
+  id: string;
+  title: string;
+  description: string;
+  slug: string;
+  is_active: boolean;
+  questions: unknown;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CustomSurveyResponseRow {
+  id: string;
+  survey_id: string;
+  student_id: string;
+  answers: Record<string, unknown>;
+  created_at: string;
+}
