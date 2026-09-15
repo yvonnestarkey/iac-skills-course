@@ -31,29 +31,60 @@ export function profileToStudent(row: ProfileRow, completed: string[] = []): Stu
   };
 }
 
-export async function ensureStudentProfile(user: { id: string; email: string | null; role?: string | null }): Promise<void> {
+export async function ensureStudentProfile(user: {
+  id: string;
+  email: string | null;
+  role?: string | null;
+  full_name?: string | null;
+  user_metadata?: Record<string, unknown> | null;
+}): Promise<void> {
   const client = getSupabase();
-  if (!client || !user.email) return;
+  if (!client) return;
 
-  const role = isCoachAccount({ id: user.id, email: user.email, role: user.role || null }) ? "coach" : "student";
+  let email = user.email;
+  let metadata = user.user_metadata;
+  if (!email || !metadata) {
+    const { data } = await client.auth.getUser();
+    email = email || data.user?.email || null;
+    metadata = metadata || data.user?.user_metadata || null;
+  }
+  if (!email) return;
+
+  const metaName = metadata?.full_name;
+  const fullName =
+    (typeof metaName === "string" && metaName.trim()) ||
+    (user.full_name && user.full_name.trim()) ||
+    displayName(email);
+  const role = isCoachAccount({ id: user.id, email, role: user.role || null }) ? "coach" : "student";
+  const now = new Date().toISOString();
+  const identity = {
+    id: user.id,
+    email,
+    full_name: fullName,
+    updated_at: now,
+    last_active: isoDate(today()),
+  };
+
   const { data: existing } = await client.from("profiles").select("id, role").eq("id", user.id).maybeSingle();
-
   if (existing) {
-    await client
-      .from("profiles")
-      .update({ email: user.email, last_active: isoDate(today()) })
-      .eq("id", user.id);
+    const { error } = await client.from("profiles").update(identity).eq("id", user.id);
+    if (error && /updated_at|could not find|schema cache/i.test(error.message)) {
+      const { updated_at: _updated, ...withoutStamp } = identity;
+      await client.from("profiles").update(withoutStamp).eq("id", user.id);
+    } else if (error) {
+      console.error(error.message);
+    }
     return;
   }
 
-  await client.from("profiles").insert({
-    id: user.id,
-    email: user.email,
-    full_name: displayName(user.email),
-    role,
-    cohort: "autumn26",
-    last_active: isoDate(today()),
-  });
+  const insert = { ...identity, role, cohort: "autumn26" };
+  const { error } = await client.from("profiles").insert(insert);
+  if (error && /updated_at|could not find|schema cache/i.test(error.message)) {
+    const { updated_at: _updated, ...withoutStamp } = insert;
+    await client.from("profiles").insert(withoutStamp);
+  } else if (error) {
+    console.error(error.message);
+  }
 }
 
 export async function fetchStudentProfiles(): Promise<{ ok: boolean; error?: string; data: ProfileRow[] }> {

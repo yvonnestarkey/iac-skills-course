@@ -68,7 +68,7 @@ export interface OutlineChapter {
   lessons: OutlineLesson[];
 }
 
-export type StudentUser = Pick<UserProfile, "id" | "email" | "role">;
+export type StudentUser = Pick<UserProfile, "id" | "email" | "role" | "full_name">;
 
 const OUTLINE_TTL_MS = 120_000;
 const OUTLINE_STORAGE_KEY = "iac-course-outline-v1";
@@ -455,10 +455,12 @@ export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
 
 export function studentUserFromAuth(user: { id: string; email?: string | null; user_metadata?: Record<string, unknown>; app_metadata?: Record<string, unknown> }): StudentUser {
   const role = user.user_metadata?.role || user.app_metadata?.role || null;
+  const fullName = user.user_metadata?.full_name;
   return {
     id: user.id,
     email: user.email || null,
     role: role ? String(role) : null,
+    full_name: typeof fullName === "string" && fullName.trim() ? fullName.trim() : null,
   };
 }
 

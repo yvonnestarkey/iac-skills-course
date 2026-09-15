@@ -3,6 +3,7 @@
 
 alter table public.profiles add column if not exists phone_number text;
 alter table public.profiles add column if not exists accountability_email text;
+alter table public.profiles add column if not exists updated_at timestamptz not null default now();
 
 create table if not exists public.student_profiles (
   student_id uuid primary key references auth.users (id) on delete cascade,

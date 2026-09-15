@@ -1,3 +1,4 @@
+import { ensureStudentProfile } from "./profiles";
 import { getSupabase } from "./supabase";
 
 export const ONBOARDING_COUNTRIES = ["South Africa", "Zimbabwe", "Namibia"] as const;
@@ -55,7 +56,7 @@ export async function fetchOnboardingState(
 
   const result = await client
     .from("student_profiles")
-    .select("onboarding_completed")
+    .select("onboarding_completed, onboarding_skipped")
     .eq("student_id", userId)
     .maybeSingle();
 
@@ -65,8 +66,8 @@ export async function fetchOnboardingState(
   }
 
   return {
-    completed: Boolean(result.data?.onboarding_completed),
-    skipped: false,
+    completed: result.data?.onboarding_completed === true,
+    skipped: result.data?.onboarding_skipped === true,
     available: true,
   };
 }
@@ -74,11 +75,11 @@ export async function fetchOnboardingState(
 /** True when onboarding is finished. Session skip is enforced separately. */
 export async function fetchOnboardingCompleted(userId: string): Promise<boolean> {
   const state = await fetchOnboardingState(userId);
-  return !state.available || state.completed;
+  return !state.available || state.completed || state.skipped;
 }
 
-export function isOnboardingRequired(state: { completed: boolean; available: boolean }): boolean {
-  return state.available && !state.completed;
+export function isOnboardingRequired(state: { completed: boolean; skipped: boolean; available: boolean }): boolean {
+  return state.available && !state.completed && !state.skipped;
 }
 
 export async function fetchSessionSkip(): Promise<boolean> {
@@ -123,6 +124,25 @@ export async function clearOnboardingSkip(userId: string): Promise<void> {
   if (error) logSupabaseError("clearOnboardingSkip", error);
 }
 
+/** Persist skip so repeat logins are not sent back through the form. */
+export async function markOnboardingSkipped(userId: string): Promise<{ ok: boolean; error?: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const { error } = await client.from("student_profiles").upsert(
+    {
+      student_id: userId,
+      onboarding_skipped: true,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "student_id" }
+  );
+  if (error) {
+    logSupabaseError("markOnboardingSkipped", error);
+    return { ok: false, error: error.message };
+  }
+  return { ok: true };
+}
+
 export async function saveOnboarding(
   userId: string,
   input: OnboardingInput
@@ -130,17 +150,36 @@ export async function saveOnboarding(
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
 
-  const { error: profileError } = await client
-    .from("profiles")
-    .update({
-      phone_number: input.phone,
-      accountability_email: input.accountability_email,
-    })
-    .eq("id", userId);
-  if (profileError) {
-    logSupabaseError("saveOnboarding.profiles", profileError);
-    return { ok: false, error: profileError.message };
+  const { data: auth, error: authError } = await client.auth.getUser();
+  if (authError || !auth.user) {
+    return { ok: false, error: authError?.message || "Sign in required." };
   }
+
+  await ensureStudentProfile({
+    id: auth.user.id,
+    email: auth.user.email || null,
+    user_metadata: auth.user.user_metadata,
+  });
+
+  const now = new Date().toISOString();
+  const profilePayload = {
+    id: auth.user.id,
+    email: auth.user.email || "",
+    full_name:
+      (typeof auth.user.user_metadata?.full_name === "string" && auth.user.user_metadata.full_name.trim()) ||
+      auth.user.email ||
+      "",
+    phone_number: input.phone,
+    accountability_email: input.accountability_email,
+    updated_at: now,
+  };
+
+  let profileWrite = await client.from("profiles").upsert(profilePayload, { onConflict: "id" });
+  if (profileWrite.error && /updated_at|could not find|schema cache/i.test(profileWrite.error.message)) {
+    const { updated_at: _updated, ...withoutStamp } = profilePayload;
+    profileWrite = await client.from("profiles").upsert(withoutStamp, { onConflict: "id" });
+  }
+  if (profileWrite.error) logSupabaseError("saveOnboarding.profiles", profileWrite.error);
 
   const payload = {
     student_id: userId,
@@ -158,7 +197,8 @@ export async function saveOnboarding(
       additional_notes: input.qualitative_notes.additional_notes,
     },
     onboarding_completed: true,
-    updated_at: new Date().toISOString(),
+    onboarding_skipped: false,
+    updated_at: now,
   };
 
   const { error: rowError } = await client.from("student_profiles").upsert(payload, { onConflict: "student_id" });
@@ -166,6 +206,20 @@ export async function saveOnboarding(
     logSupabaseError("saveOnboarding.student_profiles", rowError);
     return { ok: false, error: rowError.message };
   }
+
+  const { data: saved, error: checkError } = await client
+    .from("student_profiles")
+    .select("onboarding_completed")
+    .eq("student_id", userId)
+    .maybeSingle();
+  if (checkError) {
+    logSupabaseError("saveOnboarding.verify", checkError);
+    return { ok: false, error: checkError.message };
+  }
+  if (saved?.onboarding_completed !== true) {
+    return { ok: false, error: "Onboarding was not marked complete. Try Start the course again." };
+  }
+
   await clearOnboardingSkipCookie();
   return { ok: true };
 }

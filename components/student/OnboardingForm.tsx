@@ -10,6 +10,7 @@ import {
   ONBOARDING_CTA_YEARS,
   ONBOARDING_INSTITUTIONS,
   saveOnboarding,
+  markOnboardingSkipped,
   type OnboardingCountry,
 } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
@@ -157,6 +158,7 @@ export default function OnboardingForm({
       setError(result.error || "Could not save your answers.");
       return;
     }
+    router.refresh();
     router.replace("/student/overview");
   };
 
@@ -165,6 +167,12 @@ export default function OnboardingForm({
     event.stopPropagation();
     setBusy(true);
     setError("");
+    const skipped = await markOnboardingSkipped(user.id);
+    if (!skipped.ok) {
+      setBusy(false);
+      setError(skipped.error || "Could not skip onboarding.");
+      return;
+    }
     await skipOnboarding();
   };
 

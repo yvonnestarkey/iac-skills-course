@@ -61,7 +61,7 @@ export async function middleware(request: NextRequest) {
 
   const { data: profile, error } = await supabase
     .from("student_profiles")
-    .select("onboarding_completed")
+    .select("onboarding_completed, onboarding_skipped")
     .eq("student_id", user.id)
     .maybeSingle();
 
@@ -69,7 +69,7 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
-  if (profile?.onboarding_completed === true) return response;
+  if (profile?.onboarding_completed === true || profile?.onboarding_skipped === true) return response;
 
   const redirect = NextResponse.redirect(new URL("/onboarding", request.url));
   return copyCookies(response, redirect);

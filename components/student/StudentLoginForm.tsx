@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { ensureStudentProfile } from "@/lib/profiles";
-import { clearOnboardingSkip } from "@/lib/onboarding";
+import { fetchOnboardingGate } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
 import { studentUserFromAuth } from "@/lib/student-lesson";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
@@ -61,12 +61,20 @@ export default function StudentLoginForm() {
       }
       if (data.user) {
         const studentUser = studentUserFromAuth(data.user);
-        await ensureStudentProfile({ id: data.user.id, email: data.user.email || trimmedEmail });
-        await clearOnboardingSkip(data.user.id);
-        if (!isCoachAccount(studentUser)) {
-          router.replace("/onboarding");
+        await ensureStudentProfile({
+          id: data.user.id,
+          email: data.user.email || trimmedEmail,
+          role: studentUser.role,
+          full_name: studentUser.full_name,
+          user_metadata: data.user.user_metadata,
+        });
+        if (isCoachAccount(studentUser)) {
+          router.replace("/student");
           return;
         }
+        const gate = await fetchOnboardingGate(data.user.id);
+        router.replace(gate === "done" ? "/student" : "/onboarding");
+        return;
       }
       router.replace("/student");
       return;
@@ -81,7 +89,13 @@ export default function StudentLoginForm() {
       setError(signUpError.message);
       return;
     }
-    if (data.user) await ensureStudentProfile({ id: data.user.id, email: data.user.email || trimmedEmail });
+    if (data.user) {
+      await ensureStudentProfile({
+        id: data.user.id,
+        email: data.user.email || trimmedEmail,
+        user_metadata: data.user.user_metadata,
+      });
+    }
     setBusy(false);
     if (!data.session) {
       setError("Account created. Confirm the email we sent, then sign in.");
