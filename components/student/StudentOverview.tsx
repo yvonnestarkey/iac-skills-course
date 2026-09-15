@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import CoursePhaseAccordions from "@/components/course/CoursePhaseAccordions";
+import StudentDashboardBanner from "@/components/student/StudentDashboardBanner";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useCoursePreview } from "@/lib/course-preview";
 import { useStudentSession } from "@/lib/student-session";
@@ -17,6 +18,7 @@ export default function StudentOverview() {
 
   return (
     <article className="lesson-body wide student-dash">
+      <StudentDashboardBanner />
       <p className="kicker">Course overview</p>
       <h1>Your course</h1>
       <p className="lead">

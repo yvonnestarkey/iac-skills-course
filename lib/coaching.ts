@@ -88,37 +88,34 @@ export function sessionHasUnseenDeliverables(session: StudentCoachingSession): b
   return session.status === "completed" && sessionHasDeliverables(session) && !session.deliverablesSeenAt;
 }
 
-export async function fetchCoachingPageConfig(): Promise<CoachingPageConfig> {
-  const client = getSupabase();
-  if (!client) return DEFAULT_COACHING_CONFIG;
-  const CONFIG_COLUMNS =
-    "title, description, calendly_url, banner_image_url, dashboard_banner_url, recording_section_title, recording_section_description, recording_button_label, pdf_button_label";
-  let result = await client.from("coaching_page_config").select(CONFIG_COLUMNS).eq("id", COACHING_CONFIG_ID).maybeSingle();
-  if (result.error && /could not find|schema cache|column/i.test(result.error.message)) {
-    result = await client
-      .from("coaching_page_config")
-      .select("title, description, calendly_url, banner_image_url")
-      .eq("id", COACHING_CONFIG_ID)
-      .maybeSingle();
-  }
-  const { data, error } = result;
-  if (error) {
-    if (!tableMissing(error.message)) console.error(error.message);
-    return DEFAULT_COACHING_CONFIG;
-  }
-  if (!data) return DEFAULT_COACHING_CONFIG;
-  const row = data as Record<string, unknown>;
+function configFromRow(row: Record<string, unknown>): CoachingPageConfig {
   return {
     title: String(row.title || DEFAULT_COACHING_CONFIG.title),
     description: String(row.description || ""),
     calendly_url: asText(row.calendly_url) || "",
     banner_image_url: asText(row.banner_image_url),
-    dashboard_banner_url: asText(row.dashboard_banner_url),
+    dashboard_banner_url: asText(row.dashboard_banner_url) || asText(row.dashboard_banner),
     recording_section_title: asText(row.recording_section_title) || DEFAULT_COACHING_CONFIG.recording_section_title,
     recording_section_description: asText(row.recording_section_description) || "",
     recording_button_label: asText(row.recording_button_label) || DEFAULT_COACHING_CONFIG.recording_button_label,
     pdf_button_label: asText(row.pdf_button_label) || DEFAULT_COACHING_CONFIG.pdf_button_label,
   };
+}
+
+export async function fetchCoachingPageConfig(): Promise<CoachingPageConfig> {
+  const client = getSupabase();
+  if (!client) return DEFAULT_COACHING_CONFIG;
+  const { data, error } = await client
+    .from("coaching_page_config")
+    .select("*")
+    .eq("id", COACHING_CONFIG_ID)
+    .maybeSingle();
+  if (error) {
+    if (!tableMissing(error.message)) console.error("coaching_page_config", error.message);
+    return DEFAULT_COACHING_CONFIG;
+  }
+  if (!data) return DEFAULT_COACHING_CONFIG;
+  return configFromRow(data as Record<string, unknown>);
 }
 
 export async function fetchStudentCoachingSessions(studentId: string): Promise<StudentCoachingSession[]> {
