@@ -8,9 +8,15 @@ import { asPdfUrl, pdfEmbedSrc } from "@/lib/lesson-resources";
 export default function LessonPdfViewer({
   pdfUrl,
   lesson,
+  heading = "PDF resource",
+  blurb = "This file is for this lesson. It is not a submission.",
+  downloadLabel = "Download PDF Resource",
 }: {
   pdfUrl?: string | null;
   lesson?: LessonPdfSource | null;
+  heading?: string;
+  blurb?: string;
+  downloadLabel?: string;
 }) {
   const url = asPdfUrl(pdfUrl) || asPdfUrl(lesson?.pdf_url) || getLessonPdfUrl(lesson);
   const [fullScreen, setFullScreen] = useState(false);
@@ -53,13 +59,13 @@ export default function LessonPdfViewer({
     <section className="lesson-pdf-viewer w-full" aria-labelledby={titleId}>
       <div className="lesson-pdf-header">
         <div>
-          <h2 id={titleId}>PDF resource</h2>
-          <p className="muted">This file is for this lesson. It is not a submission.</p>
+          <h2 id={titleId}>{heading}</h2>
+          {blurb ? <p className="muted">{blurb}</p> : null}
         </div>
         <div className="lesson-pdf-actions">
           <a className="primary lesson-pdf-download" href={url} target="_blank" rel="noopener noreferrer">
             <Download size={16} />
-            Download PDF Resource
+            {downloadLabel}
           </a>
           <button className="ghost" type="button" onClick={() => setFullScreen(true)}>
             <Maximize2 size={16} />
@@ -80,11 +86,11 @@ export default function LessonPdfViewer({
       {fullScreen ? (
         <div className="lesson-pdf-modal" role="dialog" aria-modal="true" aria-labelledby={modalTitleId}>
           <div className="lesson-pdf-modal-bar">
-            <h2 id={modalTitleId}>PDF resource</h2>
+            <h2 id={modalTitleId}>{heading}</h2>
             <div className="lesson-pdf-actions">
               <a className="primary lesson-pdf-download" href={url} target="_blank" rel="noopener noreferrer">
                 <Download size={16} />
-                Download PDF Resource
+                {downloadLabel}
               </a>
               <button className="ghost" type="button" onClick={() => setFullScreen(false)}>
                 <X size={16} />

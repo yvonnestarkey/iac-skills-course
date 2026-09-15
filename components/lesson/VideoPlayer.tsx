@@ -24,10 +24,28 @@ function youtubeVideoId(raw: string): string | null {
   return null;
 }
 
+function vimeoEmbedSrc(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  if (trimmed.includes("player.vimeo.com")) return trimmed;
+  try {
+    const url = new URL(trimmed);
+    const host = url.hostname.replace(/^www\./, "");
+    if (host !== "vimeo.com" && host !== "player.vimeo.com") return null;
+    const parts = url.pathname.split("/").filter(Boolean);
+    const id = parts[0] === "video" ? parts[1] : parts[0];
+    if (id && /^\d+$/.test(id)) return `https://player.vimeo.com/video/${id}`;
+  } catch {
+    return null;
+  }
+  return null;
+}
+
 /** Turn a Vimeo or YouTube URL into an iframe src, or null if it is not embeddable. */
 export function embedSrcForVideo(raw?: string): string | null {
   if (!raw) return null;
-  if (raw.includes("player.vimeo.com")) return raw;
+  const vimeo = vimeoEmbedSrc(raw);
+  if (vimeo) return vimeo;
   const id = youtubeVideoId(raw);
   return id ? `https://www.youtube.com/embed/${id}` : null;
 }

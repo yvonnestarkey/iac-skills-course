@@ -2649,7 +2649,7 @@ input[type="tel"]:focus {
 
 .student-nav-buttons {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 8px;
   margin: 0 0 16px;
 }
@@ -2705,6 +2705,81 @@ input[type="tel"]:focus {
 
 .student-hub-card .pill {
   margin-top: 10px;
+}
+
+.student-hub-card-featured {
+  grid-column: 1 / -1;
+  background: var(--dark);
+  border-color: var(--dark);
+  color: #fff;
+}
+
+.student-hub-card-featured:hover {
+  border-color: var(--medium);
+  color: #fff;
+}
+
+.student-hub-card-featured strong,
+.student-hub-card-featured p {
+  color: #fff;
+}
+
+.student-hub-card-featured p {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.student-hub-card-featured .pill {
+  background: var(--sand);
+  color: var(--dark);
+}
+
+.coaching-overview-card {
+  margin: 4px 0 18px;
+}
+
+.coaching-hero {
+  margin-bottom: 18px;
+}
+
+.coaching-banner {
+  display: block;
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+}
+
+.coaching-description p {
+  margin: 0 0 10px;
+  max-width: 62ch;
+}
+
+.coaching-cta {
+  margin: 8px 0 28px;
+}
+
+.coaching-deliverables {
+  margin: 28px 0 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.coaching-video-block,
+.coaching-notes {
+  margin-top: 20px;
+}
+
+.coaching-notes {
+  padding: 16px 16px 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.coaching-recording {
+  margin-top: 8px;
 }
 
 .lesson-link.done .icon {

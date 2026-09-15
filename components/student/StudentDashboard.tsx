@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
+import { fetchCoachingDashboardHint } from "@/lib/coaching";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useCoursePreview } from "@/lib/course-preview";
 import { useStudentInbox } from "@/lib/use-student-inbox";
@@ -11,6 +13,7 @@ export default function StudentDashboard() {
   const { user, outline, completed } = useStudentSession();
   const { unlocked, basePath } = useCoursePreview();
   const { inboxWaiting, unreadCount } = useStudentInbox();
+  const [coachingUnseen, setCoachingUnseen] = useState(false);
   const lessons = outline.flatMap((chapter) => chapter.lessons);
   const done = lessons.filter((lesson) => completed[lesson.id]).length;
   const pct = lessons.length ? Math.round((done / lessons.length) * 100) : 0;
@@ -20,6 +23,11 @@ export default function StudentDashboard() {
   const allDone = lessons.length > 0 && done === lessons.length;
   const inboxHref = unlocked ? "/coach/inbox" : "/student/inbox";
   const notifyHref = unlocked ? "/coach/notifications" : "/student/notifications";
+
+  useEffect(() => {
+    if (!user?.id || unlocked) return;
+    fetchCoachingDashboardHint(user.id).then((hint) => setCoachingUnseen(hint.unseenDeliverables));
+  }, [user?.id, unlocked]);
 
   return (
     <article className="lesson-body wide student-dash">
@@ -46,6 +54,11 @@ export default function StudentDashboard() {
       ) : null}
 
       <nav className="student-hub" aria-label="Student shortcuts">
+        <Link href="/student/coaching" className="student-hub-card student-hub-card-featured">
+          <strong>1-on-1 Coaching Session</strong>
+          <p>Book a private session with Yvonne, then come back here for your summary and recording.</p>
+          {coachingUnseen ? <span className="pill">Meeting Summary & Recording Available</span> : null}
+        </Link>
         <Link href={`${basePath}/overview`} className="student-hub-card">
           <strong>Course Overview</strong>
           <p>

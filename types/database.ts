@@ -60,3 +60,22 @@ export interface StudentProfile {
   onboarding_skipped?: boolean;
   updated_at?: string;
 }
+
+export interface CoachingPageConfig {
+  id: string;
+  title: string;
+  description: string;
+  calendly_url: string | null;
+  banner_image_url: string | null;
+}
+
+export interface StudentCoachingSession {
+  id: string;
+  student_id: string;
+  status: "scheduled" | "completed" | "cancelled";
+  session_at?: string | null;
+  fireflies_pdf_url?: string | null;
+  vimeo_recording_url?: string | null;
+  coach_notes?: string | null;
+  deliverables_seen_at?: string | null;
+}

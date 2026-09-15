@@ -7,7 +7,7 @@ import { useCoursePreview } from "@/lib/course-preview";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentNav } from "@/lib/student-nav";
 
-const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login"]);
+const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching"]);
 
 export default function StudentCourseNav() {
   const { outline, completed, submissions } = useStudentSession();
@@ -34,6 +34,13 @@ export default function StudentCourseNav() {
           </Link>
           <Link href={`${basePath}/overview`} className={`dash-link ${onOverview ? "active" : ""}`} onClick={close}>
             Course Overview
+          </Link>
+          <Link
+            href="/student/coaching"
+            className={`dash-link ${pathname === "/student/coaching" ? "active" : ""}`}
+            onClick={close}
+          >
+            1-on-1 Coaching
           </Link>
         </nav>
         <h2>Course modules</h2>
