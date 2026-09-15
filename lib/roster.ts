@@ -1,9 +1,9 @@
 export const ROSTER_COLUMNS = [
   { id: "name", label: "Full Name" },
   { id: "email", label: "Email" },
-  { id: "phone", label: "Phone" },
+  { id: "phone", label: "Phone Number" },
   { id: "accountabilityEmail", label: "Accountability Email" },
-  { id: "cohort", label: "Cohort ID" },
+  { id: "cohort", label: "Cohort" },
   { id: "onboarding", label: "Onboarding Completed" },
   { id: "country", label: "Country" },
   { id: "ctaUniversity", label: "CTA University" },
@@ -38,12 +38,13 @@ export const DEFAULT_ROSTER_COLUMNS: RosterColumnId[] = [
 export const ROSTER_FILTER_FIELDS = [
   { id: "name", label: "Full Name", kind: "text" },
   { id: "email", label: "Email", kind: "text" },
-  { id: "phone", label: "Phone", kind: "text" },
-  { id: "cohort", label: "Cohort ID", kind: "text" },
+  { id: "phone", label: "Phone Number", kind: "text" },
+  { id: "accountabilityEmail", label: "Accountability Email", kind: "text" },
+  { id: "cohort", label: "Cohort", kind: "text" },
   { id: "onboardingCompleted", label: "Onboarding Completed", kind: "boolean" },
   { id: "country", label: "Country", kind: "text" },
-  { id: "ctaYear", label: "CTA Year", kind: "text" },
   { id: "ctaUniversity", label: "CTA University", kind: "text" },
+  { id: "ctaYear", label: "CTA Year", kind: "text" },
   { id: "iacAttempts", label: "IAC Attempts", kind: "text" },
   { id: "repeatStudent", label: "Repeat Student", kind: "boolean" },
   { id: "coachingGoals", label: "Coaching Goals", kind: "text" },
@@ -178,6 +179,7 @@ export function rosterRuleValue(student: {
   name: string;
   email: string;
   phone?: string | null;
+  accountabilityEmail?: string | null;
   cohort: string;
   onboardingCompleted?: boolean;
   country?: string | null;
@@ -195,6 +197,8 @@ export function rosterRuleValue(student: {
       return student.email || "";
     case "phone":
       return student.phone || "";
+    case "accountabilityEmail":
+      return student.accountabilityEmail || "";
     case "cohort":
       return student.cohort || "";
     case "onboardingCompleted":
