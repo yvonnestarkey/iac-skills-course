@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import {
   ROSTER_FILTER_FIELDS,
   defaultOperatorForField,
@@ -20,65 +19,6 @@ interface Props {
   onChangeRules: (rules: RosterFilterRule[]) => void;
   onChangeLogic: (logic: RosterFilterLogic) => void;
   onAddRule: () => void;
-}
-
-function MultiSelect({
-  options,
-  selected,
-  onChange,
-}: {
-  options: RosterFilterOption[];
-  selected: string[];
-  onChange: (values: string[]) => void;
-}) {
-  const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const close = (event: PointerEvent) => {
-      if (rootRef.current && !rootRef.current.contains(event.target as Node)) setOpen(false);
-    };
-    document.addEventListener("pointerdown", close);
-    return () => document.removeEventListener("pointerdown", close);
-  }, [open]);
-
-  const label = selected.length
-    ? selected.length === 1
-      ? options.find((option) => option.value === selected[0])?.label || selected[0]
-      : `${selected.length} selected`
-    : "Select…";
-
-  return (
-    <div className="roster-multiselect" ref={rootRef}>
-      <button className="select-line roster-multiselect-btn" type="button" onClick={() => setOpen((current) => !current)}>
-        {label}
-      </button>
-      {open ? (
-        <div className="roster-multiselect-panel">
-          {options.length ? (
-            options.map((option) => {
-              const checked = selected.includes(option.value);
-              return (
-                <label className="roster-check" key={option.value}>
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() =>
-                      onChange(checked ? selected.filter((value) => value !== option.value) : [...selected, option.value])
-                    }
-                  />
-                  {option.label}
-                </label>
-              );
-            })
-          ) : (
-            <p className="muted small">No values in the current roster.</p>
-          )}
-        </div>
-      ) : null}
-    </div>
-  );
 }
 
 export default function RosterFilterBuilder({
@@ -118,7 +58,7 @@ export default function RosterFilterBuilder({
         const kind = rosterFilterFieldKind(rule.field);
         const operators = operatorsForField(rule.field);
         const options = optionsByField[rule.field] || [];
-        const needsValue = rule.operator !== "is_empty";
+        const needsValue = rule.operator !== "is_empty" && rule.operator !== "is_not_empty";
         return (
           <div className="roster-rule" key={rule.id}>
             <span className="roster-rule-join">{index === 0 ? "" : logic.toUpperCase()}</span>
@@ -165,12 +105,6 @@ export default function RosterFilterBuilder({
                   <option value="true">Yes</option>
                   <option value="false">No</option>
                 </select>
-              ) : kind === "categorical" && rule.operator === "is_any_of" ? (
-                <MultiSelect
-                  options={options}
-                  selected={rule.values}
-                  onChange={(values) => updateRule(rule.id, { values })}
-                />
               ) : kind === "categorical" ? (
                 <select
                   className="select-line"

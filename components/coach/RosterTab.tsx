@@ -19,7 +19,7 @@ import {
   ROSTER_COLUMNS,
   ROSTER_FILTER_FIELDS,
   downloadRosterCsv,
-  matchRosterRules,
+  matchRosterRule,
   newRosterFilterRule,
   onboardingStatus,
   onboardingStatusLabel,
@@ -39,6 +39,7 @@ import type { Student } from "@/lib/types";
 
 interface Props {
   students: Student[];
+  optionStudents?: Student[];
   onOpenProfile: (id: string) => void;
 }
 
@@ -180,7 +181,7 @@ function RosterMenu({
   );
 }
 
-export default function RosterTab({ students, onOpenProfile }: Props) {
+export default function RosterTab({ students, optionStudents, onOpenProfile }: Props) {
   const { data, setNotifyDraft } = useStore();
   const [selected, setSelected] = useState<string[]>([]);
   const [search, setSearch] = useState("");
@@ -210,15 +211,16 @@ export default function RosterTab({ students, onOpenProfile }: Props) {
   }, [openMenu]);
 
   const optionsByField = useMemo(() => {
+    const source = optionStudents || students;
     const map: Partial<Record<RosterFilterField, RosterFilterOption[]>> = {};
     ROSTER_FILTER_FIELDS.forEach((field) => {
       if (field.kind !== "categorical") return;
-      map[field.id] = uniqueRosterOptions(students, field.id, (value) =>
+      map[field.id] = uniqueRosterOptions(source, field.id, (value) =>
         field.id === "cohort" ? cohortName(data, value) : value
       );
     });
     return map;
-  }, [data, students]);
+  }, [data, optionStudents, students]);
 
   const rows = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -239,13 +241,20 @@ export default function RosterTab({ students, onOpenProfile }: Props) {
       };
     });
 
+    const activeRules = rules.filter((rule) => {
+      if (rule.operator === "is_empty" || rule.operator === "is_not_empty") return true;
+      return (rule.values || []).some((value) => value.trim());
+    });
+
     const filtered = enriched.filter((row) => {
       const { student } = row;
       if (query) {
         const haystack = [student.name, student.email, student.phone || ""].join(" ").toLowerCase();
         if (!haystack.includes(query)) return false;
       }
-      return matchRosterRules(student, rules, logic);
+      if (!activeRules.length) return true;
+      const matches = activeRules.map((rule) => matchRosterRule(student, rule));
+      return logic === "or" ? matches.some(Boolean) : matches.every(Boolean);
     });
 
     const direction = sortDir === "asc" ? 1 : -1;

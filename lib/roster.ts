@@ -58,8 +58,8 @@ export type RosterFilterOperator =
   | "equals"
   | "starts_with"
   | "is_empty"
-  | "is"
-  | "is_any_of";
+  | "is_not_empty"
+  | "is";
 export type RosterFilterLogic = "and" | "or";
 
 export interface RosterFilterOption {
@@ -72,12 +72,13 @@ export const ROSTER_TEXT_OPERATORS: { id: RosterFilterOperator; label: string }[
   { id: "equals", label: "equals" },
   { id: "starts_with", label: "starts with" },
   { id: "is_empty", label: "is empty" },
+  { id: "is_not_empty", label: "is not empty" },
 ];
 
 export const ROSTER_CATEGORY_OPERATORS: { id: RosterFilterOperator; label: string }[] = [
   { id: "is", label: "is" },
-  { id: "is_any_of", label: "is any of" },
   { id: "is_empty", label: "is empty" },
+  { id: "is_not_empty", label: "is not empty" },
 ];
 
 export const ROSTER_BOOLEAN_OPERATORS: { id: RosterFilterOperator; label: string }[] = [{ id: "is", label: "is" }];
@@ -129,7 +130,7 @@ export function rosterFilterFieldKind(field: RosterFilterField): RosterFilterKin
 export function defaultOperatorForField(field: RosterFilterField): RosterFilterOperator {
   const kind = rosterFilterFieldKind(field);
   if (kind === "boolean") return "is";
-  if (kind === "categorical") return "is_any_of";
+  if (kind === "categorical") return "is";
   return "contains";
 }
 
@@ -278,13 +279,13 @@ export function matchRosterRule(
   const raw = rosterRuleValue(student, rule.field).trim();
   const empty = !raw;
   if (rule.operator === "is_empty") return empty;
+  if (rule.operator === "is_not_empty") return !empty;
   const selected = (rule.values || []).map((value) => value.trim()).filter(Boolean);
   if (!selected.length) return true;
   const hay = raw.toLowerCase();
   if (rule.operator === "contains") return hay.includes(selected[0].toLowerCase());
   if (rule.operator === "starts_with") return hay.startsWith(selected[0].toLowerCase());
   if (rule.operator === "equals" || rule.operator === "is") return hay === selected[0].toLowerCase();
-  if (rule.operator === "is_any_of") return selected.some((value) => hay === value.toLowerCase());
   return true;
 }
 
@@ -294,12 +295,12 @@ export function matchRosterRules(
   logic: RosterFilterLogic
 ): boolean {
   const active = rules.filter((rule) => {
-    if (rule.operator === "is_empty") return true;
+    if (rule.operator === "is_empty" || rule.operator === "is_not_empty") return true;
     return (rule.values || []).some((value) => value.trim());
   });
   if (!active.length) return true;
-  if (logic === "or") return active.some((rule) => matchRosterRule(student, rule));
-  return active.every((rule) => matchRosterRule(student, rule));
+  const matches = active.map((rule) => matchRosterRule(student, rule));
+  return logic === "or" ? matches.some(Boolean) : matches.every(Boolean);
 }
 
 export function csvEscape(value: string): string {

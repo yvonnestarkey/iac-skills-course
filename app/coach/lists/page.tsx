@@ -7,8 +7,9 @@ import RosterTab from "@/components/coach/RosterTab";
 import SurveysTab from "@/components/coach/SurveysTab";
 import { labelForGroup } from "@/lib/comms";
 import { cohortName, unansweredQuestion } from "@/lib/course";
-import { averageSurveyScore, cohortCompletion, cohortStudents, pendingSubmissions } from "@/lib/metrics";
+import { assignmentSubmissionsAwaitingFeedback, cohortStudents } from "@/lib/metrics";
 import { fetchRosterStudents, mergeRoster } from "@/lib/profiles";
+import { fetchSubmissionsAwaitingFeedback } from "@/lib/student-submissions";
 import { useStore } from "@/lib/store";
 import type { Student } from "@/lib/types";
 
@@ -24,6 +25,10 @@ export default function StudentListsPage() {
   const router = useRouter();
   const [liveStudents, setLiveStudents] = useState<Student[]>([]);
   const [rosterNotice, setRosterNotice] = useState("");
+  const [awaitingLive, setAwaitingLive] = useState<{ ready: boolean; rows: { studentId: string; lessonId: string }[] | null }>({
+    ready: false,
+    rows: null,
+  });
 
   useEffect(() => {
     fetchRosterStudents().then((result) => {
@@ -33,17 +38,28 @@ export default function StudentListsPage() {
       }
       setLiveStudents(result.students);
     });
+    fetchSubmissionsAwaitingFeedback().then((result) => {
+      setAwaitingLive({ ready: true, rows: result.ok ? result.rows : null });
+    });
   }, []);
 
-  const students = useMemo(
-    () => cohortStudents({ ...data, students: mergeRoster(data.students, liveStudents) }, coach.cohort),
-    [data, liveStudents, coach.cohort]
-  );
-  const active = students.filter((s) => s.status !== "paused");
-  const completion = cohortCompletion(data, students);
-  const avgSurvey = averageSurveyScore(data, students);
+  const roster = useMemo(() => mergeRoster(data.students, liveStudents), [data.students, liveStudents]);
+  const students = useMemo(() => cohortStudents({ ...data, students: roster }, coach.cohort), [data, roster, coach.cohort]);
   const waiting = students.filter((s) => unansweredQuestion(data, s.id));
+  const awaitingFeedback = awaitingLive.ready
+    ? assignmentSubmissionsAwaitingFeedback(data, students, awaitingLive.rows)
+    : { count: 0, students: [] };
   const openProfile = (id: string) => router.push(`/coach/students/${id}`);
+
+  const nameLinks = (list: Student[]) =>
+    list.map((s, i) => (
+      <span key={s.id}>
+        {i ? ", " : ""}
+        <button className="link-btn" onClick={() => openProfile(s.id)}>
+          {s.name}
+        </button>
+      </span>
+    ));
 
   return (
     <div className="coach-page">
@@ -87,41 +103,19 @@ export default function StudentListsPage() {
       </div>
       {notice ? <div className="notice">{notice}</div> : null}
       {rosterNotice ? <div className="notice">{rosterNotice} Run the profiles SQL in Supabase if this table is new.</div> : null}
-      <div className="stats">
-        <div className="stat">
-          <b>{completion}%</b>
-          <span>Cohort completion</span>
-          <div className="stat-bar">
-            <span style={{ width: `${completion}%` }} />
-          </div>
-        </div>
-        <div className="stat">
-          <b>{active.length}</b>
-          <span>
-            Active students
-            {students.length - active.length ? ` · ${students.length - active.length} paused` : ""}
-          </span>
-        </div>
-        <div className="stat">
-          <b>{pendingSubmissions(data, students)}</b>
-          <span>Pending submissions</span>
-        </div>
-        <div className="stat">
-          <b>{avgSurvey === null ? "—" : `${avgSurvey.toFixed(1)} / 5`}</b>
-          <span>Average survey score</span>
-        </div>
-      </div>
-      {waiting.length ? (
-        <div className="dash-alert">
-          {waiting.length} student{waiting.length === 1 ? "" : "s"} waiting on a reply:{" "}
-          {waiting.map((s, i) => (
-            <span key={s.id}>
-              {i ? ", " : ""}
-              <button className="link-btn" onClick={() => openProfile(s.id)}>
-                {s.name}
-              </button>
-            </span>
-          ))}
+      {waiting.length || awaitingFeedback.count ? (
+        <div className="dash-alerts">
+          {waiting.length ? (
+            <div className="dash-alert">
+              {waiting.length} student{waiting.length === 1 ? "" : "s"} waiting on a reply: {nameLinks(waiting)}
+            </div>
+          ) : null}
+          {awaitingFeedback.count ? (
+            <div className="dash-alert">
+              {awaitingFeedback.count} assignment submission{awaitingFeedback.count === 1 ? "" : "s"} awaiting
+              feedback: {nameLinks(awaitingFeedback.students)}
+            </div>
+          ) : null}
         </div>
       ) : null}
       <div className="tabs">
@@ -144,7 +138,7 @@ export default function StudentListsPage() {
       {coach.tab === "surveys" ? (
         <SurveysTab students={students} onOpenProfile={openProfile} />
       ) : coach.tab === "roster" ? (
-        <RosterTab students={students} onOpenProfile={openProfile} />
+        <RosterTab students={students} optionStudents={roster} onOpenProfile={openProfile} />
       ) : (
         <AssignmentsTab students={students} onOpenProfile={openProfile} />
       )}

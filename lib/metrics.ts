@@ -36,6 +36,34 @@ export function pendingSubmissions(data: CourseData, students: Student[]): numbe
   return count;
 }
 
+export function assignmentSubmissionsAwaitingFeedback(
+  data: CourseData,
+  students: Student[],
+  liveRows?: { studentId: string; lessonId: string }[] | null
+): { count: number; students: Student[] } {
+  if (liveRows != null) {
+    const allowed = new Set(students.map((student) => student.id));
+    const matching = liveRows.filter((row) => allowed.has(row.studentId));
+    const unique = new Map<string, Student>();
+    matching.forEach((row) => {
+      const student = students.find((item) => item.id === row.studentId);
+      if (student) unique.set(student.id, student);
+    });
+    return { count: matching.length, students: Array.from(unique.values()) };
+  }
+  const graded = gradedLessons(data);
+  const unique: Student[] = [];
+  let count = 0;
+  students.forEach((student) => {
+    const submitted = graded.filter((lesson) => hasWork(student, lesson)).length;
+    if (submitted) {
+      count += submitted;
+      unique.push(student);
+    }
+  });
+  return { count, students: unique };
+}
+
 export function submittedCount(data: CourseData, student: Student): number {
   return gradedLessons(data).filter((l) => hasWork(student, l)).length;
 }

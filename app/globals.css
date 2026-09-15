@@ -1003,6 +1003,12 @@ input[type="tel"]:focus {
   background: var(--medium);
 }
 
+.dash-alerts {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
 .dash-alert {
   background: var(--sand);
   border: 1px solid var(--sand-line);
@@ -1011,6 +1017,10 @@ input[type="tel"]:focus {
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 16px;
+}
+
+.dash-alerts .dash-alert {
+  margin-bottom: 0;
 }
 
 /* Tabs */

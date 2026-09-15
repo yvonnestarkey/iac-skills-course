@@ -29,6 +29,23 @@ export function submissionFromRow(row: {
   };
 }
 
+export async function fetchSubmissionsAwaitingFeedback(): Promise<{
+  ok: boolean;
+  rows: { studentId: string; lessonId: string }[];
+}> {
+  const client = getSupabase();
+  if (!client) return { ok: false, rows: [] };
+  const { data, error } = await client
+    .from("student_submissions")
+    .select("student_id, lesson_id, status")
+    .eq("status", "submitted");
+  if (error || !data) return { ok: false, rows: [] };
+  return {
+    ok: true,
+    rows: data.map((row) => ({ studentId: String(row.student_id), lessonId: String(row.lesson_id) })),
+  };
+}
+
 export async function fetchStudentSubmissions(studentId: string): Promise<Record<string, StudentSubmission>> {
   const client = getSupabase();
   if (!client) return {};
