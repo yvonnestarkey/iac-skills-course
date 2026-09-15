@@ -72,6 +72,19 @@ export interface CoachingPageConfig {
   recording_section_description?: string | null;
   recording_button_label?: string | null;
   pdf_button_label?: string | null;
+  live_calendar_ics_url?: string | null;
+}
+
+export interface LiveSession {
+  id: string;
+  title: string;
+  description?: string | null;
+  session_at: string;
+  status: "upcoming" | "completed" | "cancelled";
+  zoom_url?: string | null;
+  recording_url?: string | null;
+  summary_pdf_url?: string | null;
+  notes_pdf_url?: string | null;
 }
 
 export interface StudentCoachingSession {

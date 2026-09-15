@@ -2846,6 +2846,73 @@ input[type="tel"]:focus {
   background: #fff;
 }
 
+.live-sessions-header .lead {
+  max-width: 62ch;
+}
+
+.live-session-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.live-session-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 190px) minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: start;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.live-session-when {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(228, 211, 189, 0.45);
+  color: var(--dark);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.live-session-copy strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.live-session-copy p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.live-session-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  max-width: 280px;
+}
+
+.live-session-watch {
+  background: var(--dark);
+  border-color: var(--dark);
+  color: #fff;
+}
+
+.live-session-watch:hover {
+  background: #2f4c47;
+  border-color: #2f4c47;
+  color: #fff;
+  text-decoration: none;
+}
+
 .coaching-recording {
   margin-top: 8px;
 }
@@ -3297,6 +3364,15 @@ input[type="tel"]:focus {
 @media (max-width: 720px) {
   .resume-banner {
     padding: 16px;
+  }
+
+  .live-session-row {
+    grid-template-columns: 1fr;
+  }
+
+  .live-session-actions {
+    max-width: none;
+    justify-content: flex-start;
   }
 }
 

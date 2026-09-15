@@ -87,3 +87,41 @@ grant select on public.coaching_page_config to authenticated;
 grant select, update on public.student_coaching_sessions to authenticated;
 grant select, insert, update, delete on public.coaching_page_config to authenticated;
 grant select, insert, update, delete on public.student_coaching_sessions to authenticated;
+
+-- Live group sessions (Zoom + recordings + PDFs).
+alter table public.coaching_page_config add column if not exists live_calendar_ics_url text;
+
+create table if not exists public.live_sessions (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  description text not null default '',
+  session_at timestamptz not null,
+  status text not null default 'upcoming' check (status in ('upcoming', 'completed', 'cancelled')),
+  zoom_url text,
+  recording_url text,
+  summary_pdf_url text,
+  notes_pdf_url text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists live_sessions_session_at_idx
+  on public.live_sessions (session_at asc);
+
+alter table public.live_sessions enable row level security;
+
+drop policy if exists "students read live sessions" on public.live_sessions;
+create policy "students read live sessions"
+  on public.live_sessions for select
+  to authenticated
+  using (true);
+
+drop policy if exists "staff manage live sessions" on public.live_sessions;
+create policy "staff manage live sessions"
+  on public.live_sessions for all
+  to authenticated
+  using (public.is_course_staff())
+  with check (public.is_course_staff());
+
+grant select on public.live_sessions to authenticated;
+grant select, insert, update, delete on public.live_sessions to authenticated;

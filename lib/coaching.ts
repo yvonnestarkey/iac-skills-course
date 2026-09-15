@@ -10,6 +10,7 @@ export interface CoachingPageConfig {
   recording_section_description: string;
   recording_button_label: string;
   pdf_button_label: string;
+  live_calendar_ics_url: string | null;
 }
 
 export type CoachingSessionStatus = "scheduled" | "completed" | "cancelled";
@@ -40,6 +41,7 @@ export const DEFAULT_COACHING_CONFIG: CoachingPageConfig = {
   recording_section_description: "",
   recording_button_label: "Watch Meeting Recording",
   pdf_button_label: "Download Meeting Summary (PDF)",
+  live_calendar_ics_url: null,
 };
 
 function asStatus(value: unknown): CoachingSessionStatus {
@@ -99,6 +101,7 @@ function configFromRow(row: Record<string, unknown>): CoachingPageConfig {
     recording_section_description: asText(row.recording_section_description) || "",
     recording_button_label: asText(row.recording_button_label) || DEFAULT_COACHING_CONFIG.recording_button_label,
     pdf_button_label: asText(row.pdf_button_label) || DEFAULT_COACHING_CONFIG.pdf_button_label,
+    live_calendar_ics_url: asText(row.live_calendar_ics_url),
   };
 }
 
