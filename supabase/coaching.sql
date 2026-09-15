@@ -90,6 +90,7 @@ grant select, insert, update, delete on public.student_coaching_sessions to auth
 
 -- Live group sessions (Zoom + recordings + PDFs).
 alter table public.coaching_page_config add column if not exists live_calendar_ics_url text;
+alter table public.coaching_page_config add column if not exists live_calendar_tooltip_text text;
 
 create table if not exists public.live_sessions (
   id uuid primary key default gen_random_uuid(),

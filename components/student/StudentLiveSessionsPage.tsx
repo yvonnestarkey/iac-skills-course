@@ -101,7 +101,7 @@ export default function StudentLiveSessionsPage() {
             >
               Add All Sessions to Calendar (.ics)
             </a>
-            <InfoTooltip text="Subscribing adds all live calls directly to your Apple, Google, or Outlook calendar. Any schedule updates or room changes will sync automatically." />
+            <InfoTooltip text={config.live_calendar_tooltip_text} />
           </div>
         ) : null}
       </section>

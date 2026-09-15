@@ -73,6 +73,7 @@ export interface CoachingPageConfig {
   recording_button_label?: string | null;
   pdf_button_label?: string | null;
   live_calendar_ics_url?: string | null;
+  live_calendar_tooltip_text?: string | null;
 }
 
 export interface LiveSession {

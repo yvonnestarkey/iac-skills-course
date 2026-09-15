@@ -11,6 +11,7 @@ export interface CoachingPageConfig {
   recording_button_label: string;
   pdf_button_label: string;
   live_calendar_ics_url: string | null;
+  live_calendar_tooltip_text: string;
 }
 
 export type CoachingSessionStatus = "scheduled" | "completed" | "cancelled";
@@ -30,6 +31,9 @@ export interface StudentCoachingSession {
 
 export const COACHING_CONFIG_ID = 1;
 
+export const DEFAULT_LIVE_CALENDAR_TOOLTIP =
+  "Subscribing adds all live calls directly to your Apple, Google, or Outlook calendar. Any schedule updates or room changes will sync automatically.";
+
 export const DEFAULT_COACHING_CONFIG: CoachingPageConfig = {
   title: "1-on-1 Coaching Session",
   description:
@@ -42,6 +46,7 @@ export const DEFAULT_COACHING_CONFIG: CoachingPageConfig = {
   recording_button_label: "Watch Meeting Recording",
   pdf_button_label: "Download Meeting Summary (PDF)",
   live_calendar_ics_url: null,
+  live_calendar_tooltip_text: DEFAULT_LIVE_CALENDAR_TOOLTIP,
 };
 
 function asStatus(value: unknown): CoachingSessionStatus {
@@ -102,6 +107,7 @@ function configFromRow(row: Record<string, unknown>): CoachingPageConfig {
     recording_button_label: asText(row.recording_button_label) || DEFAULT_COACHING_CONFIG.recording_button_label,
     pdf_button_label: asText(row.pdf_button_label) || DEFAULT_COACHING_CONFIG.pdf_button_label,
     live_calendar_ics_url: asText(row.live_calendar_ics_url),
+    live_calendar_tooltip_text: asText(row.live_calendar_tooltip_text) || DEFAULT_LIVE_CALENDAR_TOOLTIP,
   };
 }
 
