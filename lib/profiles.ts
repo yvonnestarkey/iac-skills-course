@@ -1,4 +1,5 @@
 import { isoDate, today } from "./dates";
+import { parseRosterOnboarding } from "./roster";
 import { isCoachAccount } from "./roles";
 import { getSupabase } from "./supabase";
 import type { Student } from "./types";
@@ -21,20 +22,31 @@ function displayName(email: string, fullName?: string | null): string {
 export function profileToStudent(
   row: ProfileRow,
   completed: string[] = [],
-  onboarding?: { completed: boolean; skipped: boolean }
+  extras: Record<string, unknown> = {}
 ): Student {
+  const onboarding = parseRosterOnboarding({ ...row, ...extras });
   return {
     id: row.id,
-    name: displayName(row.email, row.full_name),
+    name: displayName(row.email, row.full_name || (typeof extras.full_name === "string" ? extras.full_name : null)),
     email: row.email,
-    cohort: row.cohort || "autumn26",
+    cohort: row.cohort || (typeof extras.cohort === "string" && extras.cohort) || "autumn26",
     status: "active",
     joined: row.created_at ? row.created_at.slice(0, 10) : isoDate(today()),
-    lastActive: row.last_active || (row.created_at ? row.created_at.slice(0, 10) : isoDate(today())),
-    phone: asOptionalText(row.phone_number),
-    accountabilityEmail: asOptionalText(row.accountability_email),
-    onboardingCompleted: onboarding?.completed ?? false,
-    onboardingSkipped: onboarding?.skipped ?? false,
+    lastActive:
+      row.last_active ||
+      (typeof extras.last_active === "string" ? extras.last_active : null) ||
+      (row.created_at ? row.created_at.slice(0, 10) : isoDate(today())),
+    phone: asOptionalText(row.phone_number) || asOptionalText(extras.phone_number) || asOptionalText(extras.phone),
+    accountabilityEmail: asOptionalText(row.accountability_email) || asOptionalText(extras.accountability_email),
+    onboardingCompleted: onboarding.onboardingCompleted,
+    onboardingSkipped: onboarding.onboardingSkipped,
+    country: onboarding.country,
+    ctaUniversity: onboarding.ctaUniversity,
+    ctaYear: onboarding.ctaYear,
+    iacAttempts: onboarding.iacAttempts,
+    repeatStudent: onboarding.repeatStudent,
+    coachingGoals: onboarding.coachingGoals,
+    struggleAreas: onboarding.struggleAreas,
     completed,
   };
 }
@@ -125,43 +137,80 @@ export async function fetchCompletedByUser(): Promise<Record<string, string[]>> 
   return map;
 }
 
-export async function fetchOnboardingByUser(): Promise<Record<string, { completed: boolean; skipped: boolean }>> {
+export async function fetchOnboardingByUser(): Promise<Record<string, Record<string, unknown>>> {
   const client = getSupabase();
   if (!client) return {};
   const { data, error } = await client
     .from("student_profiles")
-    .select("student_id, onboarding_completed, onboarding_skipped");
+    .select("student_id, onboarding_completed, onboarding_skipped, demographics, qualitative_notes");
   if (error) {
     if (!/does not exist|schema cache|could not find/i.test(error.message)) console.error(error.message);
     return {};
   }
-  const map: Record<string, { completed: boolean; skipped: boolean }> = {};
+  const map: Record<string, Record<string, unknown>> = {};
   (data || []).forEach((row) => {
-    map[String(row.student_id)] = {
-      completed: row.onboarding_completed === true,
-      skipped: row.onboarding_skipped === true,
-    };
+    map[String(row.student_id)] = row as Record<string, unknown>;
   });
   return map;
 }
 
+function viewRowToProfile(row: Record<string, unknown>): ProfileRow {
+  const email = typeof row.email === "string" ? row.email : "";
+  return {
+    id: String(row.id || row.student_id || ""),
+    email,
+    full_name: typeof row.full_name === "string" ? row.full_name : null,
+    role: typeof row.role === "string" ? row.role : "student",
+    cohort: typeof row.cohort === "string" ? row.cohort : "autumn26",
+    phone_number: typeof row.phone_number === "string" ? row.phone_number : null,
+    accountability_email: typeof row.accountability_email === "string" ? row.accountability_email : null,
+    last_active: typeof row.last_active === "string" ? row.last_active : null,
+    created_at: typeof row.created_at === "string" ? row.created_at : "",
+  };
+}
+
 export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: string; students: Student[] }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured.", students: [] };
+  const completed = await fetchCompletedByUser();
+  const view = await client.from("coach_student_roster_view").select("*");
+  if (!view.error) {
+    return {
+      ok: true,
+      students: ((view.data || []) as Record<string, unknown>[])
+        .map((row) => {
+          const profile = viewRowToProfile(row);
+          if (!profile.id) return null;
+          return profileToStudent(profile, completed[profile.id] || [], row);
+        })
+        .filter((student): student is Student => Boolean(student)),
+    };
+  }
+  if (!/does not exist|schema cache|could not find/i.test(view.error.message)) {
+    console.error("coach_student_roster_view", view.error.message);
+  }
   const result = await fetchStudentProfiles();
   if (!result.ok) return { ok: false, error: result.error, students: [] };
-  const [completed, onboarding] = await Promise.all([fetchCompletedByUser(), fetchOnboardingByUser()]);
+  const onboarding = await fetchOnboardingByUser();
   return {
     ok: true,
-    students: result.data.map((row) => profileToStudent(row, completed[row.id] || [], onboarding[row.id])),
+    students: result.data.map((row) => profileToStudent(row, completed[row.id] || [], onboarding[row.id] || {})),
   };
 }
 
 export async function fetchRosterStudent(id: string): Promise<Student | null> {
   const client = getSupabase();
   if (!client) return null;
+  const view = await client.from("coach_student_roster_view").select("*").eq("id", id).maybeSingle();
+  const completed = await fetchCompletedByUser();
+  if (!view.error && view.data) {
+    const row = view.data as Record<string, unknown>;
+    return profileToStudent(viewRowToProfile(row), completed[id] || [], row);
+  }
   const { data } = await client.from("profiles").select("*").eq("id", id).maybeSingle();
   if (!data) return null;
-  const [completed, onboarding] = await Promise.all([fetchCompletedByUser(), fetchOnboardingByUser()]);
-  return profileToStudent(data as ProfileRow, completed[id] || [], onboarding[id]);
+  const onboarding = await fetchOnboardingByUser();
+  return profileToStudent(data as ProfileRow, completed[id] || [], onboarding[id] || {});
 }
 
 /** Registered students first, then demo seed students that are not the same email. */

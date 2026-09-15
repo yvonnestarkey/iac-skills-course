@@ -1209,6 +1209,35 @@ input[type="tel"]:focus {
   overflow-x: auto;
 }
 
+.roster-rules {
+  margin: 0 0 14px;
+}
+
+.roster-rules-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.roster-logic {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.roster-rule {
+  display: grid;
+  grid-template-columns: minmax(140px, 1.2fr) minmax(120px, 1fr) minmax(140px, 1.4fr) auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.roster-rule-skip {
+  padding: 0 4px;
+}
+
 .data-table.roster th .roster-sort {
   display: inline-flex;
   align-items: center;
@@ -3521,6 +3550,10 @@ input[type="tel"]:focus {
     left: auto;
     right: 0;
     transform: none;
+  }
+
+  .roster-rule {
+    grid-template-columns: 1fr;
   }
 }
 

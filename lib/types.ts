@@ -90,6 +90,13 @@ export interface Student {
   accountabilityEmail?: string | null;
   onboardingCompleted?: boolean;
   onboardingSkipped?: boolean;
+  country?: string | null;
+  ctaUniversity?: string | null;
+  ctaYear?: string | null;
+  iacAttempts?: string | null;
+  repeatStudent?: boolean;
+  coachingGoals?: string | null;
+  struggleAreas?: string | null;
   // All optional: the UI reads them defensively and seeds may omit them.
   completed?: string[];
   submissions?: Record<string, string>;
