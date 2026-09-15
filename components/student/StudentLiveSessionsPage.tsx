@@ -8,6 +8,7 @@ import {
   liveSessionIsRecorded,
   type LiveSession,
 } from "@/lib/live-sessions";
+import InfoTooltip from "@/components/ui/InfoTooltip";
 
 function DescriptionBlock({ text }: { text: string }) {
   const paragraphs = text
@@ -91,7 +92,7 @@ export default function StudentLiveSessionsPage() {
           Access upcoming Zoom links, past meeting recordings, summaries, and scribbles from the session.
         </p>
         {config.live_calendar_ics_url ? (
-          <p className="coaching-cta">
+          <div className="live-sessions-ics">
             <a
               className="primary coaching-book-btn"
               href={config.live_calendar_ics_url}
@@ -100,7 +101,8 @@ export default function StudentLiveSessionsPage() {
             >
               Add All Sessions to Calendar (.ics)
             </a>
-          </p>
+            <InfoTooltip text="Subscribing adds all live calls directly to your Apple, Google, or Outlook calendar. Any schedule updates or room changes will sync automatically." />
+          </div>
         ) : null}
       </section>
 
