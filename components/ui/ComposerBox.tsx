@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type KeyboardEvent } from "react";
 import EmojiPickerButton, { insertTextAtCursor } from "@/components/ui/EmojiPicker";
 
 export default function ComposerBox({
@@ -10,6 +10,7 @@ export default function ComposerBox({
   placeholder,
   rows = 4,
   disabled = false,
+  onKeyDown,
 }: {
   id?: string;
   value: string;
@@ -17,6 +18,7 @@ export default function ComposerBox({
   placeholder?: string;
   rows?: number;
   disabled?: boolean;
+  onKeyDown?: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
 }) {
   const fieldRef = useRef<HTMLTextAreaElement>(null);
 
@@ -41,6 +43,7 @@ export default function ComposerBox({
         value={value}
         disabled={disabled}
         onChange={(event) => onChange(event.target.value)}
+        onKeyDown={onKeyDown}
       />
       <EmojiPickerButton onPick={pickEmoji} disabled={disabled} />
     </div>

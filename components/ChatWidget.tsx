@@ -9,6 +9,7 @@ import { nowLabel } from "@/lib/dates";
 import { postInboxMessage } from "@/lib/inbox";
 import { useStore } from "@/lib/store";
 import type { CourseData } from "@/lib/types";
+import EmojiPickerButton, { insertTextAtCursor } from "@/components/ui/EmojiPicker";
 
 function markEscalated(draft: CourseData, key: string, question: string, paragraphs: string[], escalated: boolean) {
   draft.chats = draft.chats || {};
@@ -27,6 +28,7 @@ export default function ChatWidget() {
   const { ready, data, session, mutate, chatOpen, setChatOpen, setNotice } = useStore();
   const [text, setText] = useState("");
   const body = useRef<HTMLDivElement>(null);
+  const chatInput = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -193,18 +195,33 @@ export default function ChatWidget() {
         )}
       </div>
       <div className="widget-foot">
-        <input
-          id="chat-input"
-          type="text"
-          placeholder="Type your question…"
-          autoComplete="off"
-          autoFocus
-          value={text}
-          onChange={(event) => setText(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") ask(text);
-          }}
-        />
+        <div className="widget-compose">
+          <input
+            id="chat-input"
+            ref={chatInput}
+            type="text"
+            placeholder="Type your question…"
+            autoComplete="off"
+            autoFocus
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") ask(text);
+            }}
+          />
+          <EmojiPickerButton
+            onPick={(emoji) => {
+              const { next, caret } = insertTextAtCursor(text, emoji, chatInput.current);
+              setText(next);
+              requestAnimationFrame(() => {
+                const field = chatInput.current;
+                if (!field) return;
+                field.focus();
+                field.setSelectionRange(caret, caret);
+              });
+            }}
+          />
+        </div>
         <button className="primary" id="chat-send" onClick={() => ask(text)}>
           Send
         </button>

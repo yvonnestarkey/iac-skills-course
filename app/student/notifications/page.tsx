@@ -44,7 +44,7 @@ export default function StudentNotificationsPage() {
                 {item.type === "assignment_feedback" ? "Assignment feedback" : "Announcement"}
               </span>
             </div>
-            {item.message ? <p>{item.message}</p> : null}
+            {item.message ? <p className="notice-body">{item.message}</p> : null}
             <p className="muted small">{formatInboxTime(item.createdAt)}</p>
           </article>
         ))}

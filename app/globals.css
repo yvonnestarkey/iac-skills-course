@@ -1605,6 +1605,11 @@ input[type="tel"]:focus {
   margin-left: -12px;
 }
 
+.notice-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .work-head {
   display: flex;
   justify-content: space-between;
@@ -2436,6 +2441,9 @@ input[type="tel"]:focus {
   max-width: 92%;
   border: 1px solid var(--line);
   background: #fff;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 }
 
 .chat-bubble p {
@@ -2521,15 +2529,27 @@ input[type="tel"]:focus {
   background: #fff;
 }
 
-.widget-foot input {
+.widget-compose {
+  position: relative;
   flex: 1;
+}
+
+.widget-foot input,
+.widget-compose input {
+  width: 100%;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 10px 14px;
+  padding: 10px 42px 10px 14px;
   font-size: 14px;
 }
 
-.widget-foot input:focus {
+.widget-compose .emoji-picker {
+  right: 6px;
+  bottom: 4px;
+}
+
+.widget-foot input:focus,
+.widget-compose input:focus {
   outline: 2px solid rgba(153, 15, 73, 0.28);
   border-color: var(--link);
 }

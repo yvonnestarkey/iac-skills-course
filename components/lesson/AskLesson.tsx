@@ -6,6 +6,7 @@ import { nowLabel } from "@/lib/dates";
 import { useStore } from "@/lib/store";
 import type { FlatLesson } from "@/lib/types";
 import { LessonHeader } from "./LessonChrome";
+import ComposerBox from "@/components/ui/ComposerBox";
 
 export default function AskLesson({ lesson }: { lesson: FlatLesson }) {
   const { data, student, mutate, notice, setNotice } = useStore();
@@ -38,12 +39,12 @@ export default function AskLesson({ lesson }: { lesson: FlatLesson }) {
       <p className="lead">{lesson.blurb}</p>
       {pending ? <div className="waiting">Your question is waiting for the coach.</div> : null}
       {notice ? <div className="notice">{notice}</div> : null}
-      <textarea
+      <ComposerBox
         id="ask-text"
-        rows={4}
-        placeholder="What do you need help with?"
         value={text}
-        onChange={(event) => setText(event.target.value)}
+        onChange={setText}
+        placeholder="What do you need help with?"
+        rows={4}
         onKeyDown={(event) => {
           if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) send();
         }}

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
+import ComposerBox from "@/components/ui/ComposerBox";
 import { fetchOwnInboxMessages, isWaiting, postInboxMessage, type InboxMessage } from "@/lib/inbox";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -62,11 +63,12 @@ export default function StudentCoachThread({
       {isWaiting(messages) ? <div className="waiting">Your latest message is waiting for the coach.</div> : null}
       {status ? <p className="notice">{status}</p> : null}
       <InboxThreadView messages={messages} viewer="student" empty="No messages yet. Ask a question below." />
-      <textarea
-        rows={compact ? 3 : 4}
-        placeholder="What do you need help with?"
+      <ComposerBox
         value={text}
-        onChange={(event) => setText(event.target.value)}
+        onChange={setText}
+        placeholder="What do you need help with?"
+        rows={compact ? 3 : 4}
+        disabled={busy}
         onKeyDown={(event) => {
           if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) send();
         }}
