@@ -1,16 +1,26 @@
 -- Custom code-free surveys (coach-built, student-rendered).
 -- Paste into the Supabase SQL editor (Dashboard → SQL Editor → New query).
+-- Safe to re-run: adds missing columns before creating indexes.
 
 create table if not exists public.custom_surveys (
   id uuid primary key default gen_random_uuid(),
-  title text not null,
+  title text not null default '',
   description text not null default '',
-  slug text not null unique,
+  slug text not null default '',
   is_active boolean not null default false,
-  questions jsonb not null default '[]'::jsonb,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  questions jsonb not null default '[]'::jsonb
 );
+
+alter table public.custom_surveys add column if not exists title text not null default '';
+alter table public.custom_surveys add column if not exists description text not null default '';
+alter table public.custom_surveys add column if not exists slug text not null default '';
+alter table public.custom_surveys add column if not exists is_active boolean not null default false;
+alter table public.custom_surveys add column if not exists questions jsonb not null default '[]'::jsonb;
+alter table public.custom_surveys add column if not exists created_at timestamptz not null default now();
+alter table public.custom_surveys add column if not exists updated_at timestamptz not null default now();
+
+create unique index if not exists custom_surveys_slug_uidx
+  on public.custom_surveys (slug);
 
 create index if not exists custom_surveys_active_idx
   on public.custom_surveys (is_active, created_at desc);
@@ -19,10 +29,16 @@ create table if not exists public.custom_survey_responses (
   id uuid primary key default gen_random_uuid(),
   survey_id uuid not null references public.custom_surveys (id) on delete cascade,
   student_id uuid not null references auth.users (id) on delete cascade,
-  answers jsonb not null default '{}'::jsonb,
-  created_at timestamptz not null default now(),
-  unique (survey_id, student_id)
+  answers jsonb not null default '{}'::jsonb
 );
+
+alter table public.custom_survey_responses add column if not exists survey_id uuid;
+alter table public.custom_survey_responses add column if not exists student_id uuid;
+alter table public.custom_survey_responses add column if not exists answers jsonb not null default '{}'::jsonb;
+alter table public.custom_survey_responses add column if not exists created_at timestamptz not null default now();
+
+create unique index if not exists custom_survey_responses_survey_student_uidx
+  on public.custom_survey_responses (survey_id, student_id);
 
 create index if not exists custom_survey_responses_survey_idx
   on public.custom_survey_responses (survey_id, created_at desc);
