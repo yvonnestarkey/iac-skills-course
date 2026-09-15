@@ -2147,6 +2147,10 @@ input[type="tel"]:focus {
   max-width: 560px;
 }
 
+.notify-modal .modal-actions {
+  margin-top: 20px;
+}
+
 .notify-send-row {
   display: flex;
   flex-wrap: wrap;

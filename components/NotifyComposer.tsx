@@ -158,9 +158,6 @@ export default function NotifyComposer() {
             onChange={(event) => setBody(event.target.value)}
           />
         </div>
-        <p className="muted small">
-          Saves to Supabase for registered students. Sign in at /student/login with your coach account first.
-        </p>
         <div className="modal-actions">
           <button className="primary" onClick={send} disabled={!subject.trim() || !body.trim() || !count || busy}>
             {busy ? "Sending…" : "Send notification"}
