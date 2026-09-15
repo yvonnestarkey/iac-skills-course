@@ -18,7 +18,11 @@ function displayName(email: string, fullName?: string | null): string {
   return local.replace(/[._-]+/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
 }
 
-export function profileToStudent(row: ProfileRow, completed: string[] = []): Student {
+export function profileToStudent(
+  row: ProfileRow,
+  completed: string[] = [],
+  onboarding?: { completed: boolean; skipped: boolean }
+): Student {
   return {
     id: row.id,
     name: displayName(row.email, row.full_name),
@@ -27,8 +31,18 @@ export function profileToStudent(row: ProfileRow, completed: string[] = []): Stu
     status: "active",
     joined: row.created_at ? row.created_at.slice(0, 10) : isoDate(today()),
     lastActive: row.last_active || (row.created_at ? row.created_at.slice(0, 10) : isoDate(today())),
+    phone: asOptionalText(row.phone_number),
+    accountabilityEmail: asOptionalText(row.accountability_email),
+    onboardingCompleted: onboarding?.completed ?? false,
+    onboardingSkipped: onboarding?.skipped ?? false,
     completed,
   };
+}
+
+function asOptionalText(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const text = value.trim();
+  return text || null;
 }
 
 export async function ensureStudentProfile(user: {
@@ -111,13 +125,33 @@ export async function fetchCompletedByUser(): Promise<Record<string, string[]>> 
   return map;
 }
 
+export async function fetchOnboardingByUser(): Promise<Record<string, { completed: boolean; skipped: boolean }>> {
+  const client = getSupabase();
+  if (!client) return {};
+  const { data, error } = await client
+    .from("student_profiles")
+    .select("student_id, onboarding_completed, onboarding_skipped");
+  if (error) {
+    if (!/does not exist|schema cache|could not find/i.test(error.message)) console.error(error.message);
+    return {};
+  }
+  const map: Record<string, { completed: boolean; skipped: boolean }> = {};
+  (data || []).forEach((row) => {
+    map[String(row.student_id)] = {
+      completed: row.onboarding_completed === true,
+      skipped: row.onboarding_skipped === true,
+    };
+  });
+  return map;
+}
+
 export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: string; students: Student[] }> {
   const result = await fetchStudentProfiles();
   if (!result.ok) return { ok: false, error: result.error, students: [] };
-  const completed = await fetchCompletedByUser();
+  const [completed, onboarding] = await Promise.all([fetchCompletedByUser(), fetchOnboardingByUser()]);
   return {
     ok: true,
-    students: result.data.map((row) => profileToStudent(row, completed[row.id] || [])),
+    students: result.data.map((row) => profileToStudent(row, completed[row.id] || [], onboarding[row.id])),
   };
 }
 
@@ -126,8 +160,8 @@ export async function fetchRosterStudent(id: string): Promise<Student | null> {
   if (!client) return null;
   const { data } = await client.from("profiles").select("*").eq("id", id).maybeSingle();
   if (!data) return null;
-  const completed = await fetchCompletedByUser();
-  return profileToStudent(data as ProfileRow, completed[id] || []);
+  const [completed, onboarding] = await Promise.all([fetchCompletedByUser(), fetchOnboardingByUser()]);
+  return profileToStudent(data as ProfileRow, completed[id] || [], onboarding[id]);
 }
 
 /** Registered students first, then demo seed students that are not the same email. */

@@ -86,6 +86,10 @@ export interface Student {
   status: "active" | "paused";
   joined?: string;
   lastActive?: string;
+  phone?: string | null;
+  accountabilityEmail?: string | null;
+  onboardingCompleted?: boolean;
+  onboardingSkipped?: boolean;
   // All optional: the UI reads them defensively and seeds may omit them.
   completed?: string[];
   submissions?: Record<string, string>;

@@ -61,6 +61,12 @@ export interface StudentProfile {
   updated_at?: string;
 }
 
+export interface CoachRosterPreferences {
+  coach_id: string;
+  visible_columns: string[];
+  updated_at?: string;
+}
+
 export interface CoachingPageConfig {
   id: number;
   title: string;
