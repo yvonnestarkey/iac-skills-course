@@ -114,11 +114,11 @@ h1 {
 }
 
 .brand-logo {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
-  object-fit: cover;
-  background: #000;
+  object-fit: contain;
+  background: #f3eee8;
   flex-shrink: 0;
 }
 
