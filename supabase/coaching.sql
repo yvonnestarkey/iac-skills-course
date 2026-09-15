@@ -20,6 +20,14 @@ values (
 )
 on conflict (id) do nothing;
 
+alter table public.coaching_page_config add column if not exists recording_section_title text;
+alter table public.coaching_page_config add column if not exists recording_section_description text;
+alter table public.coaching_page_config add column if not exists recording_button_label text;
+alter table public.coaching_page_config add column if not exists pdf_button_label text;
+
+alter table public.student_coaching_sessions add column if not exists recording_url text;
+alter table public.student_coaching_sessions add column if not exists pdf_summary_url text;
+
 create table if not exists public.student_coaching_sessions (
   id uuid primary key default gen_random_uuid(),
   student_id uuid not null references auth.users (id) on delete cascade,
@@ -27,6 +35,8 @@ create table if not exists public.student_coaching_sessions (
   session_at timestamptz,
   fireflies_pdf_url text,
   vimeo_recording_url text,
+  recording_url text,
+  pdf_summary_url text,
   coach_notes text,
   deliverables_seen_at timestamptz,
   created_at timestamptz not null default now(),

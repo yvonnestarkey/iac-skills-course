@@ -2751,6 +2751,57 @@ input[type="tel"]:focus {
   border: 1px solid var(--line);
 }
 
+.coaching-banner-wrap:empty {
+  display: none;
+}
+
+.coaching-description p {
+  margin: 0 0 10px;
+  max-width: 62ch;
+}
+
+.coaching-cta {
+  margin: 8px 0 8px;
+}
+
+.coaching-book-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 22px;
+  font-size: 16px;
+}
+
+.coaching-divider,
+.coaching-page hr.my-8 {
+  display: block;
+  width: 100%;
+  margin: 32px 0;
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.coaching-recordings h2 {
+  margin-bottom: 8px;
+}
+
+.coaching-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 8px;
+}
+
+.coaching-placeholder {
+  margin-top: 16px;
+  padding: 18px 16px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  background: rgba(228, 211, 189, 0.28);
+  color: var(--muted);
+}
+
 .coaching-description p {
   margin: 0 0 10px;
   max-width: 62ch;

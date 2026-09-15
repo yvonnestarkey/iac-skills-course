@@ -67,6 +67,10 @@ export interface CoachingPageConfig {
   description: string;
   calendly_url: string;
   banner_image_url: string | null;
+  recording_section_title?: string | null;
+  recording_section_description?: string | null;
+  recording_button_label?: string | null;
+  pdf_button_label?: string | null;
 }
 
 export interface StudentCoachingSession {
@@ -76,6 +80,8 @@ export interface StudentCoachingSession {
   session_at?: string | null;
   fireflies_pdf_url?: string | null;
   vimeo_recording_url?: string | null;
+  recording_url?: string | null;
+  pdf_summary_url?: string | null;
   coach_notes?: string | null;
   deliverables_seen_at?: string | null;
 }
