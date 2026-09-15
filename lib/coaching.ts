@@ -3,7 +3,7 @@ import { getSupabase } from "./supabase";
 export interface CoachingPageConfig {
   title: string;
   description: string;
-  calendly_url: string | null;
+  calendly_url: string;
   banner_image_url: string | null;
 }
 
@@ -20,11 +20,13 @@ export interface StudentCoachingSession {
   deliverablesSeenAt: string | null;
 }
 
+export const COACHING_CONFIG_ID = 1;
+
 export const DEFAULT_COACHING_CONFIG: CoachingPageConfig = {
   title: "1-on-1 Coaching Session",
   description:
     "Book a private session with Yvonne. After you meet, your Fireflies summary, recording, and coach notes will appear here.",
-  calendly_url: null,
+  calendly_url: "",
   banner_image_url: null,
 };
 
@@ -34,9 +36,17 @@ function asStatus(value: unknown): CoachingSessionStatus {
 }
 
 function asText(value: unknown): string | null {
-  if (typeof value !== "string") return null;
-  const text = value.trim();
-  return text || null;
+  if (typeof value === "string") {
+    const text = value.trim();
+    return text || null;
+  }
+  return null;
+}
+
+function asTimestamp(value: unknown): string | null {
+  if (typeof value === "string") return asText(value);
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString();
+  return null;
 }
 
 function sessionFromRow(row: Record<string, unknown>): StudentCoachingSession {
@@ -44,7 +54,7 @@ function sessionFromRow(row: Record<string, unknown>): StudentCoachingSession {
     id: String(row.id),
     studentId: String(row.student_id),
     status: asStatus(row.status),
-    sessionAt: asText(row.session_at),
+    sessionAt: asTimestamp(row.session_at),
     firefliesPdfUrl: asText(row.fireflies_pdf_url),
     vimeoRecordingUrl: asText(row.vimeo_recording_url),
     coachNotes: asText(row.coach_notes),
@@ -70,7 +80,7 @@ export async function fetchCoachingPageConfig(): Promise<CoachingPageConfig> {
   const { data, error } = await client
     .from("coaching_page_config")
     .select("title, description, calendly_url, banner_image_url")
-    .eq("id", "default")
+    .eq("id", COACHING_CONFIG_ID)
     .maybeSingle();
   if (error) {
     if (!tableMissing(error.message)) console.error(error.message);
@@ -80,7 +90,7 @@ export async function fetchCoachingPageConfig(): Promise<CoachingPageConfig> {
   return {
     title: String(data.title || DEFAULT_COACHING_CONFIG.title),
     description: String(data.description || ""),
-    calendly_url: asText(data.calendly_url),
+    calendly_url: asText(data.calendly_url) || "",
     banner_image_url: asText(data.banner_image_url),
   };
 }
@@ -92,7 +102,7 @@ export async function fetchStudentCoachingSessions(studentId: string): Promise<S
     .from("student_coaching_sessions")
     .select("*")
     .eq("student_id", studentId)
-    .order("created_at", { ascending: false });
+    .order("session_at", { ascending: false });
   if (error) {
     if (!tableMissing(error.message)) console.error(error.message);
     return [];

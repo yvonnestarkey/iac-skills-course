@@ -62,10 +62,10 @@ export interface StudentProfile {
 }
 
 export interface CoachingPageConfig {
-  id: string;
+  id: number;
   title: string;
   description: string;
-  calendly_url: string | null;
+  calendly_url: string;
   banner_image_url: string | null;
 }
 

@@ -2,20 +2,20 @@
 -- Paste into the Supabase SQL editor (Dashboard → SQL Editor → New query).
 
 create table if not exists public.coaching_page_config (
-  id text primary key default 'default',
+  id integer primary key default 1,
   title text not null default '1-on-1 Coaching Session',
   description text not null default '',
-  calendly_url text,
+  calendly_url text not null,
   banner_image_url text,
   updated_at timestamptz not null default now()
 );
 
 insert into public.coaching_page_config (id, title, description, calendly_url, banner_image_url)
 values (
-  'default',
+  1,
   '1-on-1 Coaching Session',
   'Book a private session with Yvonne. After you meet, your Fireflies summary, recording, and coach notes will appear here.',
-  null,
+  'https://calendly.com',
   null
 )
 on conflict (id) do nothing;
