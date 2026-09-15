@@ -40,34 +40,53 @@ export const ROSTER_FILTER_FIELDS = [
   { id: "email", label: "Email", kind: "text" },
   { id: "phone", label: "Phone Number", kind: "text" },
   { id: "accountabilityEmail", label: "Accountability Email", kind: "text" },
-  { id: "cohort", label: "Cohort", kind: "text" },
+  { id: "cohort", label: "Cohort", kind: "categorical" },
   { id: "onboardingCompleted", label: "Onboarding Completed", kind: "boolean" },
-  { id: "country", label: "Country", kind: "text" },
-  { id: "ctaUniversity", label: "CTA University", kind: "text" },
-  { id: "ctaYear", label: "CTA Year", kind: "text" },
-  { id: "iacAttempts", label: "IAC Attempts", kind: "text" },
+  { id: "country", label: "Country", kind: "categorical" },
+  { id: "ctaUniversity", label: "CTA University", kind: "categorical" },
+  { id: "ctaYear", label: "CTA Year", kind: "categorical" },
+  { id: "iacAttempts", label: "IAC Attempts", kind: "categorical" },
   { id: "repeatStudent", label: "Repeat Student", kind: "boolean" },
   { id: "coachingGoals", label: "Coaching Goals", kind: "text" },
   { id: "struggleAreas", label: "Struggle Areas", kind: "text" },
 ] as const;
 
 export type RosterFilterField = (typeof ROSTER_FILTER_FIELDS)[number]["id"];
-export type RosterFilterOperator = "equals" | "contains" | "starts_with" | "is_empty" | "is_not_empty";
+export type RosterFilterKind = (typeof ROSTER_FILTER_FIELDS)[number]["kind"];
+export type RosterFilterOperator =
+  | "contains"
+  | "equals"
+  | "starts_with"
+  | "is_empty"
+  | "is"
+  | "is_any_of";
 export type RosterFilterLogic = "and" | "or";
 
-export const ROSTER_FILTER_OPERATORS: { id: RosterFilterOperator; label: string }[] = [
-  { id: "equals", label: "equals" },
+export interface RosterFilterOption {
+  value: string;
+  label: string;
+}
+
+export const ROSTER_TEXT_OPERATORS: { id: RosterFilterOperator; label: string }[] = [
   { id: "contains", label: "contains" },
+  { id: "equals", label: "equals" },
   { id: "starts_with", label: "starts with" },
   { id: "is_empty", label: "is empty" },
-  { id: "is_not_empty", label: "is not empty" },
 ];
+
+export const ROSTER_CATEGORY_OPERATORS: { id: RosterFilterOperator; label: string }[] = [
+  { id: "is", label: "is" },
+  { id: "is_any_of", label: "is any of" },
+  { id: "is_empty", label: "is empty" },
+];
+
+export const ROSTER_BOOLEAN_OPERATORS: { id: RosterFilterOperator; label: string }[] = [{ id: "is", label: "is" }];
 
 export interface RosterFilterRule {
   id: string;
   field: RosterFilterField;
   operator: RosterFilterOperator;
-  value: string;
+  values: string[];
 }
 
 const COLUMN_IDS = new Set<string>(ROSTER_COLUMNS.map((column) => column.id));
@@ -99,12 +118,42 @@ export function newRosterFilterRule(): RosterFilterRule {
     id: `rule-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
     field: "name",
     operator: "contains",
-    value: "",
+    values: [],
   };
 }
 
-export function rosterFilterFieldKind(field: RosterFilterField): "text" | "boolean" {
+export function rosterFilterFieldKind(field: RosterFilterField): RosterFilterKind {
   return ROSTER_FILTER_FIELDS.find((item) => item.id === field)?.kind || "text";
+}
+
+export function defaultOperatorForField(field: RosterFilterField): RosterFilterOperator {
+  const kind = rosterFilterFieldKind(field);
+  if (kind === "boolean") return "is";
+  if (kind === "categorical") return "is_any_of";
+  return "contains";
+}
+
+export function operatorsForField(field: RosterFilterField): { id: RosterFilterOperator; label: string }[] {
+  const kind = rosterFilterFieldKind(field);
+  if (kind === "boolean") return ROSTER_BOOLEAN_OPERATORS;
+  if (kind === "categorical") return ROSTER_CATEGORY_OPERATORS;
+  return ROSTER_TEXT_OPERATORS;
+}
+
+export function uniqueRosterOptions(
+  students: Array<Parameters<typeof rosterRuleValue>[0]>,
+  field: RosterFilterField,
+  labelFor?: (value: string) => string
+): RosterFilterOption[] {
+  const seen = new Map<string, string>();
+  students.forEach((student) => {
+    const value = rosterRuleValue(student, field).trim();
+    if (!value) return;
+    if (!seen.has(value.toLowerCase())) seen.set(value.toLowerCase(), value);
+  });
+  return Array.from(seen.values())
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }))
+    .map((value) => ({ value, label: labelFor ? labelFor(value) : value }));
 }
 
 function asObject(value: unknown): Record<string, unknown> {
@@ -229,14 +278,13 @@ export function matchRosterRule(
   const raw = rosterRuleValue(student, rule.field).trim();
   const empty = !raw;
   if (rule.operator === "is_empty") return empty;
-  if (rule.operator === "is_not_empty") return !empty;
-  const needle = rule.value.trim();
-  if (!needle) return true;
+  const selected = (rule.values || []).map((value) => value.trim()).filter(Boolean);
+  if (!selected.length) return true;
   const hay = raw.toLowerCase();
-  const query = needle.toLowerCase();
-  if (rule.operator === "equals") return hay === query;
-  if (rule.operator === "contains") return hay.includes(query);
-  if (rule.operator === "starts_with") return hay.startsWith(query);
+  if (rule.operator === "contains") return hay.includes(selected[0].toLowerCase());
+  if (rule.operator === "starts_with") return hay.startsWith(selected[0].toLowerCase());
+  if (rule.operator === "equals" || rule.operator === "is") return hay === selected[0].toLowerCase();
+  if (rule.operator === "is_any_of") return selected.some((value) => hay === value.toLowerCase());
   return true;
 }
 
@@ -245,7 +293,10 @@ export function matchRosterRules(
   rules: RosterFilterRule[],
   logic: RosterFilterLogic
 ): boolean {
-  const active = rules.filter((rule) => rule.operator === "is_empty" || rule.operator === "is_not_empty" || rule.value.trim());
+  const active = rules.filter((rule) => {
+    if (rule.operator === "is_empty") return true;
+    return (rule.values || []).some((value) => value.trim());
+  });
   if (!active.length) return true;
   if (logic === "or") return active.some((rule) => matchRosterRule(student, rule));
   return active.every((rule) => matchRosterRule(student, rule));

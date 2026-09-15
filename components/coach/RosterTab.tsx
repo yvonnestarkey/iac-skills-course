@@ -17,14 +17,19 @@ import { overallProgress, submittedCount } from "@/lib/metrics";
 import {
   DEFAULT_ROSTER_COLUMNS,
   ROSTER_COLUMNS,
+  ROSTER_FILTER_FIELDS,
   downloadRosterCsv,
   matchRosterRules,
+  newRosterFilterRule,
   onboardingStatus,
   onboardingStatusLabel,
   rosterColumnLabel,
   sanitizeRosterColumns,
+  uniqueRosterOptions,
   type RosterColumnId,
+  type RosterFilterField,
   type RosterFilterLogic,
+  type RosterFilterOption,
   type RosterFilterRule,
   type RosterSortDir,
 } from "@/lib/roster";
@@ -204,6 +209,17 @@ export default function RosterTab({ students, onOpenProfile }: Props) {
     return () => document.removeEventListener("pointerdown", close);
   }, [openMenu]);
 
+  const optionsByField = useMemo(() => {
+    const map: Partial<Record<RosterFilterField, RosterFilterOption[]>> = {};
+    ROSTER_FILTER_FIELDS.forEach((field) => {
+      if (field.kind !== "categorical") return;
+      map[field.id] = uniqueRosterOptions(students, field.id, (value) =>
+        field.id === "cohort" ? cohortName(data, value) : value
+      );
+    });
+    return map;
+  }, [data, students]);
+
   const rows = useMemo(() => {
     const query = search.trim().toLowerCase();
     const enriched: RosterRow[] = students.map((student) => {
@@ -350,7 +366,14 @@ export default function RosterTab({ students, onOpenProfile }: Props) {
         </RosterMenu>
       </div>
 
-      <RosterFilterBuilder rules={rules} logic={logic} onChangeRules={setRules} onChangeLogic={setLogic} />
+      <RosterFilterBuilder
+        rules={rules}
+        logic={logic}
+        optionsByField={optionsByField}
+        onChangeRules={setRules}
+        onChangeLogic={setLogic}
+        onAddRule={() => setRules((current) => [...current, newRosterFilterRule()])}
+      />
 
       <div className="roster-table-wrap">
         <table className="data-table roster">
