@@ -20,6 +20,7 @@ values (
 )
 on conflict (id) do nothing;
 
+alter table public.coaching_page_config add column if not exists dashboard_banner_url text;
 alter table public.coaching_page_config add column if not exists recording_section_title text;
 alter table public.coaching_page_config add column if not exists recording_section_description text;
 alter table public.coaching_page_config add column if not exists recording_button_label text;

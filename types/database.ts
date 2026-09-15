@@ -67,6 +67,7 @@ export interface CoachingPageConfig {
   description: string;
   calendly_url: string;
   banner_image_url: string | null;
+  dashboard_banner_url?: string | null;
   recording_section_title?: string | null;
   recording_section_description?: string | null;
   recording_button_label?: string | null;

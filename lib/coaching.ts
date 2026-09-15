@@ -5,6 +5,7 @@ export interface CoachingPageConfig {
   description: string;
   calendly_url: string;
   banner_image_url: string | null;
+  dashboard_banner_url: string | null;
   recording_section_title: string;
   recording_section_description: string;
   recording_button_label: string;
@@ -34,6 +35,7 @@ export const DEFAULT_COACHING_CONFIG: CoachingPageConfig = {
     "Book a private session with Yvonne. After you meet, your Fireflies summary, recording, and coach notes will appear here.",
   calendly_url: "",
   banner_image_url: null,
+  dashboard_banner_url: null,
   recording_section_title: "Session Recording and Notes",
   recording_section_description: "",
   recording_button_label: "Watch Meeting Recording",
@@ -90,7 +92,7 @@ export async function fetchCoachingPageConfig(): Promise<CoachingPageConfig> {
   const client = getSupabase();
   if (!client) return DEFAULT_COACHING_CONFIG;
   const CONFIG_COLUMNS =
-    "title, description, calendly_url, banner_image_url, recording_section_title, recording_section_description, recording_button_label, pdf_button_label";
+    "title, description, calendly_url, banner_image_url, dashboard_banner_url, recording_section_title, recording_section_description, recording_button_label, pdf_button_label";
   let result = await client.from("coaching_page_config").select(CONFIG_COLUMNS).eq("id", COACHING_CONFIG_ID).maybeSingle();
   if (result.error && /could not find|schema cache|column/i.test(result.error.message)) {
     result = await client
@@ -111,6 +113,7 @@ export async function fetchCoachingPageConfig(): Promise<CoachingPageConfig> {
     description: String(row.description || ""),
     calendly_url: asText(row.calendly_url) || "",
     banner_image_url: asText(row.banner_image_url),
+    dashboard_banner_url: asText(row.dashboard_banner_url),
     recording_section_title: asText(row.recording_section_title) || DEFAULT_COACHING_CONFIG.recording_section_title,
     recording_section_description: asText(row.recording_section_description) || "",
     recording_button_label: asText(row.recording_button_label) || DEFAULT_COACHING_CONFIG.recording_button_label,

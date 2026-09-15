@@ -35,13 +35,6 @@ export default function StudentCourseNav() {
           <Link href={`${basePath}/overview`} className={`dash-link ${onOverview ? "active" : ""}`} onClick={close}>
             Course Overview
           </Link>
-          <Link
-            href="/student/coaching"
-            className={`dash-link ${pathname === "/student/coaching" ? "active" : ""}`}
-            onClick={close}
-          >
-            1-on-1 Coaching
-          </Link>
         </nav>
         <h2>Course modules</h2>
         <p className="muted">IAC Skills Course</p>
