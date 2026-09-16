@@ -4,47 +4,77 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AskCoachThread from "@/components/coach/AskCoachThread";
 import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
-import { fetchRosterStudent } from "@/lib/profiles";
+import { fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
 import AuditThread from "@/components/comms/AuditThread";
 import { commsForStudent } from "@/lib/comms";
-import { SURVEY_QUESTIONS } from "@/lib/constants";
+import { cohortName, initials, lastActiveLabel } from "@/lib/course";
 import {
-  chapterCode,
-  cohortName,
-  fileFor,
-  gradedLessons,
-  initials,
-  lastActiveLabel,
-  shortLessonTitle,
-  surveyFor,
-  surveyLessons,
-  surveyScore,
-  textFor,
-  thread,
-} from "@/lib/course";
-import { formatSize, longDate, parseISO, today } from "@/lib/dates";
-import { overallProgress, submittedCount } from "@/lib/metrics";
+  fetchStudentSurveyPacks,
+  formatSurveyAnswer,
+  isBmcrBlock,
+  isInfoBlock,
+  questionCollectsAnswer,
+} from "@/lib/custom-surveys";
+import { formatSastDateTime, longDate, parseISO, today } from "@/lib/dates";
+import { completionProgress } from "@/lib/metrics";
 import { planCapacity, planStatus, slotLabel } from "@/lib/planner";
-import { fileHref, useStore } from "@/lib/store";
+import { fetchCourseOutline } from "@/lib/student-lesson";
+import { fetchStudentSubmissions, type StudentSubmission } from "@/lib/student-submissions";
+import { useStore } from "@/lib/store";
 
 export default function StudentProfile({ studentId }: { studentId: string }) {
-  const { data, mutate, setNotifyDraft, notice } = useStore();
+  const { data, setNotifyDraft, notice } = useStore();
   const router = useRouter();
   const [note, setNote] = useState("");
-  const seeded = data.students.find((s) => s.id === studentId) || null;
   const [live, setLive] = useState<Student | null>(null);
-  const [loadingLive, setLoadingLive] = useState(!seeded);
+  const [loadingLive, setLoadingLive] = useState(true);
+  const [lessonIds, setLessonIds] = useState<string[]>([]);
+  const [submissions, setSubmissions] = useState<StudentSubmission[]>([]);
+  const [lessonTitles, setLessonTitles] = useState<Record<string, string>>({});
+  const [surveyPacks, setSurveyPacks] = useState<{ title: string; answers: { label: string; value: string }[] }[]>([]);
 
   useEffect(() => {
-    if (seeded) return;
-    fetchRosterStudent(studentId).then((found) => {
+    let cancelled = false;
+    setLoadingLive(true);
+    Promise.all([
+      fetchRosterStudent(studentId),
+      fetchLiveLessonIds(),
+      fetchStudentSubmissions(studentId),
+      fetchCourseOutline(),
+      fetchStudentSurveyPacks(studentId),
+    ]).then(([found, ids, submitted, outline, packs]) => {
+      if (cancelled) return;
       setLive(found);
+      setLessonIds(ids);
+      setSubmissions(Object.values(submitted));
+      const titles: Record<string, string> = {};
+      outline.forEach((chapter) => {
+        chapter.lessons.forEach((lesson) => {
+          titles[lesson.id] = lesson.title;
+        });
+      });
+      setLessonTitles(titles);
+      setSurveyPacks(
+        packs.map((pack) => ({
+          title: pack.survey.title,
+          answers: pack.survey.questions
+            .filter((question) => questionCollectsAnswer(question.type) && !isInfoBlock(question.type) && !isBmcrBlock(question.type))
+            .map((question) => ({
+              label: question.label,
+              value: formatSurveyAnswer(pack.response.answers[question.id], question.type),
+            }))
+            .filter((item) => item.value),
+        }))
+      );
       setLoadingLive(false);
     });
-  }, [studentId, seeded]);
+    return () => {
+      cancelled = true;
+    };
+  }, [studentId]);
 
-  const student = seeded || live;
+  const student = live;
   if (loadingLive) {
     return (
       <div className="coach-page">
@@ -66,30 +96,24 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
     );
   }
 
-  const p = overallProgress(data, student);
+  const p = completionProgress(student.completed, lessonIds);
   const status = student.plan ? planStatus(data, student) : null;
-  const graded = gradedLessons(data);
-  const surveys = surveyLessons(data);
-  const messages = thread(data, student.id);
 
   const saveNote = () => {
     const text = note.trim();
-    if (!text || !seeded) return;
-    mutate((draft) => {
-      const target = draft.students.find((s) => s.id === student.id);
-      if (!target) return;
-      target.notes = target.notes || [];
-      target.notes.unshift({ text, at: longDate(today()) });
+    if (!text || !live) return;
+    setLive({
+      ...live,
+      notes: [{ text, at: longDate(today()) }, ...(live.notes || [])],
     });
     setNote("");
   };
 
   const dropNote = (index: number) => {
-    if (!seeded) return;
-    mutate((draft) => {
-      const target = draft.students.find((s) => s.id === student.id);
-      if (!target) return;
-      target.notes.splice(index, 1);
+    if (!live) return;
+    setLive({
+      ...live,
+      notes: (live.notes || []).filter((_, current) => current !== index),
     });
   };
 
@@ -142,12 +166,14 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         </div>
         <div className="progress-legend">
           <span>
-            {submittedCount(data, student)} of {graded.length} submissions in
+            {p.done} of {p.total} lessons complete
           </span>
           <span>
-            {surveys.filter((l) => surveyFor(student, l.id)).length} of {surveys.length} surveys
+            {submissions.length} assignment submission{submissions.length === 1 ? "" : "s"}
           </span>
-          <span>{messages.filter((m) => m.kind === "question").length} questions asked</span>
+          <span>
+            {surveyPacks.length} survey response{surveyPacks.length === 1 ? "" : "s"}
+          </span>
         </div>
       </section>
 
@@ -236,85 +262,55 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
 
       <section className="card">
         <h2>Assignment submissions</h2>
-        <div className="work-list">
-          {graded.map((lesson) => {
-            const text = textFor(student, lesson.id);
-            const file = fileFor(student, lesson.id);
-            const href = file ? fileHref(student.id, lesson.id, file) : "";
-            return (
-              <div className="work-item" key={lesson.id}>
+        {submissions.length ? (
+          <div className="work-list">
+            {submissions.map((item) => (
+              <div className="work-item" key={item.id || `${item.student_id}-${item.lesson_id}`}>
                 <div className="work-head">
-                  <strong>{shortLessonTitle(lesson)}</strong>
-                  <span className="muted small">
-                    {chapterCode(lesson.chapter)} · due {lesson.due}
-                  </span>
+                  <strong>{lessonTitles[item.lesson_id] || item.lesson_id}</strong>
+                  <span className="muted small">{item.status}{item.updated_at ? ` · ${formatSastDateTime(item.updated_at)}` : ""}</span>
                 </div>
-                {lesson.type === "upload" ? (
-                  file ? (
-                    <div className="file-card compact">
-                      <span className="file-icon">PDF</span>
-                      <div className="file-meta">
-                        <strong>{file.name}</strong>
-                        <span className="muted small">
-                          {formatSize(file.size)} · uploaded {file.at}
-                        </span>
-                      </div>
-                      {href ? (
-                        <a className="primary" href={href} target="_blank" rel="noopener">
-                          Open PDF
-                        </a>
-                      ) : (
-                        <span className="muted small">Uploaded in an earlier session</span>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="submission empty">No PDF uploaded.</div>
-                  )
-                ) : (
-                  <div className={`submission ${text.trim() ? "" : "empty"}`}>
-                    {text.trim() ? text : "Nothing submitted."}
-                  </div>
-                )}
+                {item.link_url ? (
+                  <p>
+                    <a href={item.link_url} target="_blank" rel="noopener noreferrer">
+                      {item.link_url}
+                    </a>
+                  </p>
+                ) : null}
+                <div className={`submission ${item.body.trim() ? "" : "empty"}`}>
+                  {item.body.trim() || (item.link_url ? "" : "No written response.")}
+                </div>
               </div>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="empty">No assignment submissions yet.</p>
+        )}
       </section>
 
       <BmcrEvaluationsPanel studentId={student.id} />
 
       <section className="card">
-        <h2>Module survey responses</h2>
-        <div className="work-list">
-          {surveys.map((lesson) => {
-            const answer = surveyFor(student, lesson.id);
-            if (!answer) {
-              return (
-                <div className="work-item" key={lesson.id}>
-                  <div className="work-head">
-                    <strong>{lesson.title}</strong>
-                    <span className="muted small">no response</span>
-                  </div>
-                </div>
-              );
-            }
-            return (
-              <div className="work-item" key={lesson.id}>
+        <h2>Survey responses</h2>
+        {surveyPacks.length ? (
+          <div className="work-list">
+            {surveyPacks.map((pack) => (
+              <div className="work-item" key={pack.title}>
                 <div className="work-head">
-                  <strong>{lesson.title}</strong>
-                  <span className="score-chip small">{surveyScore(answer).toFixed(1)} / 5</span>
+                  <strong>{pack.title}</strong>
                 </div>
-                {SURVEY_QUESTIONS.map((q) => (
-                  <div className="score-row" key={q.id}>
-                    <span>{q.label}</span>
-                    <b>{answer[q.id] || "—"} / 5</b>
+                {pack.answers.map((item) => (
+                  <div className="score-row" key={item.label}>
+                    <span>{item.label}</span>
+                    <b>{item.value}</b>
                   </div>
                 ))}
-                {answer.comment ? <p className="survey-comment">“{answer.comment}”</p> : null}
               </div>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="empty">No survey responses submitted yet.</p>
+        )}
       </section>
 
       <section className="card">

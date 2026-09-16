@@ -9,6 +9,14 @@ export function overallProgress(data: CourseData, student: Student) {
   return { done, total: tasks.length, pct: Math.round((done / tasks.length) * 100) };
 }
 
+/** Progress from real `lesson_progress` rows against live lesson ids (not seed course ids). */
+export function completionProgress(completed: string[] | undefined, lessonIds: string[]) {
+  const doneIds = new Set(completed || []);
+  const total = lessonIds.length;
+  const done = total ? lessonIds.filter((id) => doneIds.has(id)).length : 0;
+  return { done, total, pct: total ? Math.round((done / total) * 100) : 0 };
+}
+
 export function averageSurveyScore(data: CourseData, students: Student[]): number | null {
   const scores: number[] = [];
   const lessons = surveyLessons(data);

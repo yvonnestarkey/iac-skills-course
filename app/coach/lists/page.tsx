@@ -8,14 +8,15 @@ import SurveysTab from "@/components/coach/SurveysTab";
 import { labelForGroup } from "@/lib/comms";
 import { cohortName, unansweredQuestion } from "@/lib/course";
 import { assignmentSubmissionsAwaitingFeedback, cohortStudents } from "@/lib/metrics";
-import { fetchRosterStudents, mergeRoster } from "@/lib/profiles";
-import { fetchSubmissionsAwaitingFeedback } from "@/lib/student-submissions";
+import { fetchCustomSurveys, fetchSurveyResponseCountsByStudent } from "@/lib/custom-surveys";
+import { fetchLiveLessonIds, fetchRosterStudents } from "@/lib/profiles";
+import { fetchAllSubmissionBodies, fetchSubmissionCountsByStudent, fetchSubmissionsAwaitingFeedback } from "@/lib/student-submissions";
 import { useStore } from "@/lib/store";
 import type { Student } from "@/lib/types";
 
 const TABS = [
   { id: "assignments", label: "Assignments", href: null },
-  { id: "surveys", label: "Module Surveys", href: null },
+  { id: "surveys", label: "Surveys", href: null },
   { id: "roster", label: "Student Roster", href: null },
   { id: "inbox", label: "Inbox", href: "/coach/inbox" },
 ] as const;
@@ -24,27 +25,53 @@ export default function StudentListsPage() {
   const { data, coach, setCoach, setNotifyDraft, notice } = useStore();
   const router = useRouter();
   const [liveStudents, setLiveStudents] = useState<Student[]>([]);
+  const [lessonIds, setLessonIds] = useState<string[]>([]);
+  const [submissionCounts, setSubmissionCounts] = useState<Record<string, number>>({});
+  const [surveyCounts, setSurveyCounts] = useState<Record<string, number>>({});
+  const [surveyTotal, setSurveyTotal] = useState(0);
   const [rosterNotice, setRosterNotice] = useState("");
+  const [rosterReady, setRosterReady] = useState(false);
   const [awaitingLive, setAwaitingLive] = useState<{ ready: boolean; rows: { studentId: string; lessonId: string }[] | null }>({
     ready: false,
     rows: null,
   });
 
   useEffect(() => {
-    fetchRosterStudents().then((result) => {
-      if (!result.ok) {
-        setRosterNotice(result.error || "Could not load registered students.");
-        return;
+    let cancelled = false;
+    Promise.all([
+      fetchRosterStudents(),
+      fetchLiveLessonIds(),
+      fetchSubmissionCountsByStudent(),
+      fetchSurveyResponseCountsByStudent(),
+      fetchCustomSurveys(),
+      fetchAllSubmissionBodies(),
+      fetchSubmissionsAwaitingFeedback(),
+    ]).then(([roster, ids, submissions, surveys, customSurveys, bodies, awaiting]) => {
+      if (cancelled) return;
+      if (!roster.ok) {
+        setRosterNotice(roster.error || "Could not load registered students.");
+        setLiveStudents([]);
+      } else {
+        setLiveStudents(
+          roster.students.map((student) => ({
+            ...student,
+            submissions: bodies[student.id] || {},
+          }))
+        );
       }
-      setLiveStudents(result.students);
+      setLessonIds(ids);
+      setSubmissionCounts(submissions);
+      setSurveyCounts(surveys);
+      setSurveyTotal(customSurveys.ok ? customSurveys.data.length : 0);
+      setAwaitingLive({ ready: true, rows: awaiting.ok ? awaiting.rows : [] });
+      setRosterReady(true);
     });
-    fetchSubmissionsAwaitingFeedback().then((result) => {
-      setAwaitingLive({ ready: true, rows: result.ok ? result.rows : null });
-    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const roster = useMemo(() => mergeRoster(data.students, liveStudents), [data.students, liveStudents]);
-  const students = useMemo(() => cohortStudents({ ...data, students: roster }, coach.cohort), [data, roster, coach.cohort]);
+  const students = useMemo(() => cohortStudents({ ...data, students: liveStudents }, coach.cohort), [data, liveStudents, coach.cohort]);
   const waiting = students.filter((s) => unansweredQuestion(data, s.id));
   const awaitingFeedback = awaitingLive.ready
     ? assignmentSubmissionsAwaitingFeedback(data, students, awaitingLive.rows)
@@ -103,6 +130,7 @@ export default function StudentListsPage() {
       </div>
       {notice ? <div className="notice">{notice}</div> : null}
       {rosterNotice ? <div className="notice">{rosterNotice} Run the profiles SQL in Supabase if this table is new.</div> : null}
+      {!rosterReady ? <p className="empty">Loading registered students…</p> : null}
       {waiting.length || awaitingFeedback.count ? (
         <div className="dash-alerts">
           {waiting.length ? (
@@ -136,9 +164,17 @@ export default function StudentListsPage() {
         ))}
       </div>
       {coach.tab === "surveys" ? (
-        <SurveysTab students={students} onOpenProfile={openProfile} />
+        <SurveysTab onOpenProfile={openProfile} />
       ) : coach.tab === "roster" ? (
-        <RosterTab students={students} optionStudents={roster} onOpenProfile={openProfile} />
+        <RosterTab
+          students={students}
+          optionStudents={liveStudents}
+          lessonIds={lessonIds}
+          submissionCounts={submissionCounts}
+          surveyCounts={surveyCounts}
+          surveyTotal={surveyTotal}
+          onOpenProfile={openProfile}
+        />
       ) : (
         <AssignmentsTab students={students} onOpenProfile={openProfile} />
       )}

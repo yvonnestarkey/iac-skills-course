@@ -1,70 +1,80 @@
 "use client";
 
-import { surveyFor, surveyLessons, surveyScore } from "@/lib/course";
-import { surveyBreakdown } from "@/lib/metrics";
-import { useStore } from "@/lib/store";
-import type { Student } from "@/lib/types";
+import { useEffect, useState } from "react";
+import {
+  fetchCustomSurveys,
+  fetchSurveyResponses,
+  type CustomSurvey,
+  type CustomSurveyResponse,
+} from "@/lib/custom-surveys";
 
 interface Props {
-  students: Student[];
   onOpenProfile: (id: string) => void;
 }
 
-export default function SurveysTab({ students, onOpenProfile }: Props) {
-  const { data } = useStore();
+export default function SurveysTab({ onOpenProfile }: Props) {
+  const [surveys, setSurveys] = useState<CustomSurvey[]>([]);
+  const [responses, setResponses] = useState<Record<string, CustomSurveyResponse[]>>({});
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchCustomSurveys().then(async (result) => {
+      if (cancelled) return;
+      if (!result.ok) {
+        setError(result.error || "Could not load surveys.");
+        setLoading(false);
+        return;
+      }
+      setSurveys(result.data);
+      const entries = await Promise.all(
+        result.data.map(async (survey) => {
+          const loaded = await fetchSurveyResponses(survey.id);
+          return [survey.id, loaded.ok ? loaded.data : []] as const;
+        })
+      );
+      if (cancelled) return;
+      setResponses(Object.fromEntries(entries));
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (loading) return <p className="empty">Loading surveys…</p>;
+  if (error) return <p className="empty">{error}</p>;
+  if (!surveys.length) return <p className="empty">No surveys yet.</p>;
 
   return (
     <div className="survey-grid">
-      {surveyLessons(data).map((lesson) => {
-        const responses = students
-          .map((s) => ({ student: s, answer: surveyFor(s, lesson.id) }))
-          .filter((r) => r.answer);
-        const perQuestion = surveyBreakdown(responses.map((r) => r.answer));
-        const average = responses.length
-          ? (responses.reduce((sum, r) => sum + surveyScore(r.answer), 0) / responses.length).toFixed(1) + " / 5"
-          : "no data";
-        const comments = responses.filter((r) => r.answer.comment);
-
+      {surveys.map((survey) => {
+        const rows = responses[survey.id] || [];
         return (
-          <section className="card survey-card" key={lesson.id}>
+          <section className="card survey-card" key={survey.id}>
             <div className="panel-head">
               <div>
-                <h2>{lesson.title}</h2>
+                <h2>{survey.title}</h2>
                 <p className="muted small">
-                  {responses.length} of {students.length} responded
+                  {rows.length} response{rows.length === 1 ? "" : "s"}
                 </p>
               </div>
-              <span className="score-chip">{average}</span>
             </div>
-            {responses.length ? (
-              perQuestion.map((p) => (
-                <div className="survey-bar" key={p.q.id}>
-                  <span className="survey-bar-label">{p.q.label}</span>
-                  <div className="survey-track">
-                    <span style={{ width: `${p.avg ? (p.avg / 5) * 100 : 0}%` }} />
-                  </div>
-                  <span className="survey-val">{p.avg ? p.avg.toFixed(1) : "—"}</span>
-                </div>
-              ))
+            {rows.length ? (
+              <ul className="comment-list">
+                {rows.map((row) => (
+                  <li key={row.id}>
+                    <button className="link-btn" type="button" onClick={() => onOpenProfile(row.studentId)}>
+                      {row.studentName || row.studentEmail || "Student"}
+                    </button>
+                    <span className="muted small">{row.createdAt.slice(0, 10)}</span>
+                  </li>
+                ))}
+              </ul>
             ) : (
-              <p className="empty">No responses yet for this module.</p>
+              <p className="empty">No survey responses submitted yet.</p>
             )}
-            {comments.length ? (
-              <>
-                <h3 className="comments-head">Comments</h3>
-                <ul className="comment-list">
-                  {comments.map((r) => (
-                    <li key={r.student.id}>
-                      <button className="link-btn" onClick={() => onOpenProfile(r.student.id)}>
-                        {r.student.name}
-                      </button>
-                      <span className="muted small">scored {surveyScore(r.answer).toFixed(1)} / 5</span>
-                      <p>{r.answer.comment}</p>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : null}
           </section>
         );
       })}

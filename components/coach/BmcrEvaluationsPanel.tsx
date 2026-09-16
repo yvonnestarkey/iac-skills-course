@@ -50,8 +50,7 @@ function matchSurveyPack(evaluation: BmcrEvaluation, packs: SurveyPack[]): Surve
     (pack) => pack.survey.questions.some((question) => isBmcrBlock(question.type)) && sameDay(pack.response.createdAt, evaluation.submitted_at)
   );
   if (sameDayPack) return sameDayPack;
-  const bmcrPacks = packs.filter((pack) => pack.survey.questions.some((question) => isBmcrBlock(question.type)));
-  return bmcrPacks.length === 1 ? bmcrPacks[0] : null;
+  return null;
 }
 
 function taskTitle(evaluation: BmcrEvaluation, lessonTitles: Record<string, string>, pack: SurveyPack | null): string {
@@ -179,7 +178,7 @@ export default function BmcrEvaluationsPanel({ studentId }: { studentId: string 
           </table>
         </div>
       ) : (
-        <p className="empty">No BMCR evaluations yet.</p>
+        <p className="empty">No BMCR evaluations submitted yet.</p>
       )}
 
       {selected ? (

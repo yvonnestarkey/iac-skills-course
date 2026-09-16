@@ -1,12 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import AuditThread from "@/components/comms/AuditThread";
 import { commsOf, labelForGroup } from "@/lib/comms";
 import { cohortName } from "@/lib/course";
 import { cohortStudents } from "@/lib/metrics";
-import { fetchRosterStudents, mergeRoster } from "@/lib/profiles";
+import { fetchRosterStudents } from "@/lib/profiles";
 import { useStore } from "@/lib/store";
 import type { CommunicationAudience, Student } from "@/lib/types";
 
@@ -15,7 +15,7 @@ export default function CoachNotificationsPage() {
   const router = useRouter();
   const [audience, setAudience] = useState<CommunicationAudience>("cohort");
   const [liveStudents, setLiveStudents] = useState<Student[]>([]);
-  const students = useMemo(() => mergeRoster(data.students, liveStudents), [data.students, liveStudents]);
+  const students = liveStudents;
   const [studentId, setStudentId] = useState("");
   const active = students.filter((student) => student.status !== "paused");
 

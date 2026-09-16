@@ -607,6 +607,20 @@ export async function fetchStudentSurveyPacks(
   });
 }
 
+export async function fetchSurveyResponseCountsByStudent(): Promise<Record<string, number>> {
+  const client = getSupabase();
+  if (!client) return {};
+  const { data, error } = await client.from("custom_survey_responses").select("student_id");
+  if (error || !data) return {};
+  const map: Record<string, number> = {};
+  data.forEach((row) => {
+    const id = String(row.student_id || "");
+    if (!id) return;
+    map[id] = (map[id] || 0) + 1;
+  });
+  return map;
+}
+
 export function downloadSurveyCsv(survey: CustomSurvey, responses: CustomSurveyResponse[]): void {
   const columns = survey.questions.filter((question) => questionCollectsAnswer(question.type));
   const headers = ["Student", "Email", "Submitted", ...columns.map((question) => question.label || question.id)];

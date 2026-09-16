@@ -43,8 +43,7 @@ export function fileFor(student: Student, lessonId: string): UploadRecord | null
 }
 
 export function hasWork(student: Student, lesson: Lesson): boolean {
-  if (lesson.type === "upload") return Boolean(fileFor(student, lesson.id));
-  return Boolean(textFor(student, lesson.id).trim());
+  return Boolean(textFor(student, lesson.id).trim()) || Boolean(fileFor(student, lesson.id));
 }
 
 export function isDone(student: Student, lesson: Lesson): boolean {

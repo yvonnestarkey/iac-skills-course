@@ -137,6 +137,14 @@ export async function fetchCompletedByUser(): Promise<Record<string, string[]>> 
   return map;
 }
 
+export async function fetchLiveLessonIds(): Promise<string[]> {
+  const client = getSupabase();
+  if (!client) return [];
+  const { data, error } = await client.from("lessons").select("id");
+  if (error || !data) return [];
+  return data.map((row) => String(row.id)).filter(Boolean);
+}
+
 export async function fetchOnboardingByUser(): Promise<Record<string, Record<string, unknown>>> {
   const client = getSupabase();
   if (!client) return {};
@@ -154,67 +162,69 @@ export async function fetchOnboardingByUser(): Promise<Record<string, Record<str
   return map;
 }
 
-function viewRowToProfile(row: Record<string, unknown>): ProfileRow {
-  const email = typeof row.email === "string" ? row.email : "";
-  return {
-    id: String(row.id || row.student_id || ""),
-    email,
-    full_name: typeof row.full_name === "string" ? row.full_name : null,
-    role: typeof row.role === "string" ? row.role : "student",
-    cohort: typeof row.cohort === "string" ? row.cohort : "autumn26",
-    phone_number: typeof row.phone_number === "string" ? row.phone_number : null,
-    accountability_email: typeof row.accountability_email === "string" ? row.accountability_email : null,
-    last_active: typeof row.last_active === "string" ? row.last_active : null,
-    created_at: typeof row.created_at === "string" ? row.created_at : "",
-  };
-}
-
 export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: string; students: Student[] }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured.", students: [] };
-  const completed = await fetchCompletedByUser();
-  const view = await client.from("coach_student_roster_view").select("*");
-  if (!view.error) {
-    return {
-      ok: true,
-      students: ((view.data || []) as Record<string, unknown>[])
-        .map((row) => {
-          const profile = viewRowToProfile(row);
-          if (!profile.id) return null;
-          return profileToStudent(profile, completed[profile.id] || [], row);
-        })
-        .filter((student): student is Student => Boolean(student)),
-    };
+
+  const [onboarding, completed, profileResult] = await Promise.all([
+    fetchOnboardingByUser(),
+    fetchCompletedByUser(),
+    fetchStudentProfiles(),
+  ]);
+
+  const byId = new Map<string, ProfileRow>();
+  if (profileResult.ok) {
+    profileResult.data.forEach((row) => {
+      if (row.id) byId.set(row.id, row);
+    });
   }
-  if (!/does not exist|schema cache|could not find/i.test(view.error.message)) {
-    console.error("coach_student_roster_view", view.error.message);
+
+  const missingIds = Object.keys(onboarding).filter((id) => !byId.has(id));
+  if (missingIds.length) {
+    const extra = await client.from("profiles").select("*").in("id", missingIds);
+    (extra.data || []).forEach((row) => {
+      const profile = row as ProfileRow;
+      if (profile.id) byId.set(profile.id, profile);
+    });
   }
-  const result = await fetchStudentProfiles();
-  if (!result.ok) return { ok: false, error: result.error, students: [] };
-  const onboarding = await fetchOnboardingByUser();
-  return {
-    ok: true,
-    students: result.data.map((row) => profileToStudent(row, completed[row.id] || [], onboarding[row.id] || {})),
-  };
+
+  if (!byId.size && !profileResult.ok) {
+    return { ok: false, error: profileResult.error || "Could not load students.", students: [] };
+  }
+
+  const students = [...byId.values()]
+    .filter((row) => !isCoachAccount({ id: row.id, email: row.email, role: row.role || null }))
+    .map((row) => profileToStudent(row, completed[row.id] || [], onboarding[row.id] || {}));
+
+  return { ok: true, students };
 }
 
 export async function fetchRosterStudent(id: string): Promise<Student | null> {
   const client = getSupabase();
   if (!client) return null;
-  const view = await client.from("coach_student_roster_view").select("*").eq("id", id).maybeSingle();
   const completed = await fetchCompletedByUser();
-  if (!view.error && view.data) {
-    const row = view.data as Record<string, unknown>;
-    return profileToStudent(viewRowToProfile(row), completed[id] || [], row);
-  }
-  const { data } = await client.from("profiles").select("*").eq("id", id).maybeSingle();
-  if (!data) return null;
   const onboarding = await fetchOnboardingByUser();
-  return profileToStudent(data as ProfileRow, completed[id] || [], onboarding[id] || {});
-}
-
-/** Registered students first, then demo seed students that are not the same email. */
-export function mergeRoster(seed: Student[], live: Student[]): Student[] {
-  const emails = new Set(live.map((student) => student.email.toLowerCase()));
-  return [...live, ...seed.filter((student) => !emails.has(student.email.toLowerCase()))];
+  const extras = onboarding[id] || {};
+  const { data } = await client.from("profiles").select("*").eq("id", id).maybeSingle();
+  if (data) {
+    const row = data as ProfileRow;
+    if (isCoachAccount({ id: row.id, email: row.email, role: row.role || null })) return null;
+    return profileToStudent(row, completed[id] || [], extras);
+  }
+  if (!extras.student_id && !Object.keys(extras).length) return null;
+  return profileToStudent(
+    {
+      id,
+      email: "",
+      full_name: null,
+      role: "student",
+      cohort: "autumn26",
+      phone_number: null,
+      accountability_email: null,
+      last_active: null,
+      created_at: "",
+    },
+    completed[id] || [],
+    extras
+  );
 }

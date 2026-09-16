@@ -6,14 +6,11 @@ import RosterFilterBuilder from "@/components/coach/RosterFilterBuilder";
 import { labelForGroup } from "@/lib/comms";
 import {
   cohortName,
-  gradedLessons,
   lastActiveLabel,
-  surveyFor,
-  surveyLessons,
   unansweredQuestion,
 } from "@/lib/course";
 import { daysAgo, isoDate, today } from "@/lib/dates";
-import { overallProgress, submittedCount } from "@/lib/metrics";
+import { completionProgress } from "@/lib/metrics";
 import {
   DEFAULT_ROSTER_COLUMNS,
   ROSTER_COLUMNS,
@@ -41,6 +38,10 @@ import type { Student } from "@/lib/types";
 interface Props {
   students: Student[];
   optionStudents?: Student[];
+  lessonIds?: string[];
+  submissionCounts?: Record<string, number>;
+  surveyCounts?: Record<string, number>;
+  surveyTotal?: number;
   onOpenProfile: (id: string) => void;
 }
 
@@ -148,7 +149,7 @@ function plainCell(id: RosterColumnId, row: RosterRow, gradedTotal: number): str
     case "status":
       return student.status === "paused" ? "Paused" : "Active";
     case "submitted":
-      return `${row.submitted} of ${gradedTotal}`;
+      return String(row.submitted);
     case "surveys":
       return `${row.surveysAnswered} of ${row.surveysTotal}`;
     case "waiting":
@@ -182,7 +183,15 @@ function RosterMenu({
   );
 }
 
-export default function RosterTab({ students, optionStudents, onOpenProfile }: Props) {
+export default function RosterTab({
+  students,
+  optionStudents,
+  lessonIds = [],
+  submissionCounts = {},
+  surveyCounts = {},
+  surveyTotal = 0,
+  onOpenProfile,
+}: Props) {
   const { data, setNotifyDraft } = useStore();
   const [selected, setSelected] = useState<string[]>([]);
   const [search, setSearch] = useState("");
@@ -193,8 +202,6 @@ export default function RosterTab({ students, optionStudents, onOpenProfile }: P
   const [sortDir, setSortDir] = useState<RosterSortDir>("asc");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
-  const graded = gradedLessons(data);
-  const surveys = surveyLessons(data);
 
   useEffect(() => {
     fetchCoachRosterColumns().then((saved) => {
@@ -232,7 +239,7 @@ export default function RosterTab({ students, optionStudents, onOpenProfile }: P
   const rows = useMemo(() => {
     const query = search.trim().toLowerCase();
     const enriched: RosterRow[] = students.map((student) => {
-      const progress = overallProgress(data, student);
+      const progress = completionProgress(student.completed, lessonIds);
       return {
         student,
         cohortLabel: cohortName(data, student.cohort),
@@ -240,9 +247,9 @@ export default function RosterTab({ students, optionStudents, onOpenProfile }: P
         progressPct: progress.pct,
         progressDone: progress.done,
         progressTotal: progress.total,
-        submitted: submittedCount(data, student),
-        surveysAnswered: surveys.filter((lesson) => surveyFor(student, lesson.id)).length,
-        surveysTotal: surveys.length,
+        submitted: submissionCounts[student.id] || 0,
+        surveysAnswered: surveyCounts[student.id] || 0,
+        surveysTotal: surveyTotal,
         waiting: Boolean(unansweredQuestion(data, student.id)),
         stale: (daysAgo(student.lastActive) || 0) >= 7 && student.status !== "paused",
       };
@@ -271,7 +278,7 @@ export default function RosterTab({ students, optionStudents, onOpenProfile }: P
       if (typeof left === "number" && typeof right === "number") return (left - right) * direction;
       return compareText(String(left), String(right)) * direction;
     });
-  }, [data, logic, rules, search, sortDir, sortKey, students, surveys]);
+  }, [data, lessonIds, logic, rules, search, sortDir, sortKey, students, submissionCounts, surveyCounts, surveyTotal]);
 
   const visible = columns.filter((id) => ROSTER_COLUMNS.some((column) => column.id === id));
   const visibleIds = rows.map((row) => row.student.id);
@@ -336,7 +343,7 @@ export default function RosterTab({ students, optionStudents, onOpenProfile }: P
     downloadRosterCsv(
       `student-roster-${isoDate(today())}.csv`,
       visible.map(rosterColumnLabel),
-      rows.map((row) => visible.map((id) => plainCell(id, row, graded.length)))
+      rows.map((row) => visible.map((id) => plainCell(id, row, row.submitted)))
     );
   };
 
@@ -433,7 +440,7 @@ export default function RosterTab({ students, optionStudents, onOpenProfile }: P
                     />
                   </td>
                   {visible.map((id) => (
-                    <td key={id}>{cellFor(id, row, graded.length)}</td>
+                    <td key={id}>{cellFor(id, row, row.submitted)}</td>
                   ))}
                   <td className="row-go">Open profile →</td>
                 </tr>
@@ -510,7 +517,7 @@ function cellFor(id: RosterColumnId, row: RosterRow, gradedTotal: number) {
     case "submitted":
       return (
         <span className="muted small">
-          {row.submitted} of {gradedTotal}
+          {row.submitted}
         </span>
       );
     case "surveys":

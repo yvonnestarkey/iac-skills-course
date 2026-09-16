@@ -46,6 +46,38 @@ export async function fetchSubmissionsAwaitingFeedback(): Promise<{
   };
 }
 
+export async function fetchSubmissionCountsByStudent(): Promise<Record<string, number>> {
+  const client = getSupabase();
+  if (!client) return {};
+  const { data, error } = await client.from("student_submissions").select("student_id");
+  if (error || !data) return {};
+  const map: Record<string, number> = {};
+  data.forEach((row) => {
+    const id = String(row.student_id || "");
+    if (!id) return;
+    map[id] = (map[id] || 0) + 1;
+  });
+  return map;
+}
+
+export async function fetchAllSubmissionBodies(): Promise<Record<string, Record<string, string>>> {
+  const client = getSupabase();
+  if (!client) return {};
+  const { data, error } = await client.from("student_submissions").select("student_id, lesson_id, body, link_url");
+  if (error || !data) return {};
+  const map: Record<string, Record<string, string>> = {};
+  data.forEach((row) => {
+    const studentId = String(row.student_id || "");
+    const lessonId = String(row.lesson_id || "");
+    if (!studentId || !lessonId) return;
+    const text = String(row.body || "").trim() || String(row.link_url || "").trim();
+    if (!text) return;
+    map[studentId] = map[studentId] || {};
+    map[studentId][lessonId] = text;
+  });
+  return map;
+}
+
 export async function fetchStudentSubmissions(studentId: string): Promise<Record<string, StudentSubmission>> {
   const client = getSupabase();
   if (!client) return {};
