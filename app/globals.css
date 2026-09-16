@@ -4285,11 +4285,11 @@ input[type="tel"]:focus {
 
 .bmcr-stat span {
   display: block;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #5b6b68;
+  color: #3f625c;
 }
 
 .bmcr-stat b {

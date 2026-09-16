@@ -63,9 +63,8 @@ export function computeBmcrPct(marks: Pick<BmcrMarks, "basic_my_marks" | "basic_
 }
 
 export function formatPct(value: number): string {
-  if (!Number.isFinite(value)) return "0%";
-  const rounded = Math.round(value * 10) / 10;
-  return `${Number.isInteger(rounded) ? rounded.toFixed(0) : rounded.toFixed(1)}%`;
+  if (!Number.isFinite(value)) return "0.0%";
+  return `${(Math.round(value * 10) / 10).toFixed(1)}%`;
 }
 
 export function hasBmcrData(marks: BmcrMarks): boolean {
@@ -82,39 +81,18 @@ export function hasBmcrData(marks: BmcrMarks): boolean {
 
 export function bmcrCoachingFeedback(marks: BmcrMarks): { title: string; body: string } | null {
   const ready = withQuestionTotal(marks);
-  if (!hasBmcrData(ready)) return null;
-  const bmcr = computeBmcrPct(ready);
-  const basicPct = computeBasicMarkPct(ready);
-  if (ready.basic_markplan <= 0) {
+  if (ready.question_total_markplan <= 0) return null;
+  const available = computeBasicMarkPct(ready);
+  const converted = computeBmcrPct(ready);
+  if (available >= 50) {
     return {
-      title: "Add the basic markplan",
-      body: "BMCR needs the Basic Markplan figure. That is the basic marks available on the solution, not the total for the question.",
-    };
-  }
-  if (bmcr >= 80) {
-    return {
-      title: "Strong BMCR — you knew enough theory",
-      body:
-        basicPct >= 50
-          ? `You converted ${formatPct(bmcr)} of the basic marks, and basic work is ${formatPct(basicPct)} of this question. Lost marks are the “Something Else”: application, technique, communication, or RTFQ — not another round of notes.`
-          : `You converted ${formatPct(bmcr)} of the basic marks. The leftover gap is application and technique, not whether you “know enough theory”.`,
-    };
-  }
-  if (bmcr >= 55) {
-    return {
-      title: "Decent conversion — tighten how you land the easy marks",
-      body: `BMCR is ${formatPct(bmcr)}. You are getting a fair share of the basic marks, but some still leak. Slow down, RTFQ, and write the basic points cleanly before you chase average or higher-grade marks.`,
-    };
-  }
-  if (bmcr >= 30) {
-    return {
-      title: "Low BMCR — this is not a theory gap",
-      body: `You only converted ${formatPct(bmcr)} of the basic marks available. Those marks were on the markplan because you should already know them. The leak is application, structuring, communication, or RTFQ — extra revision will not fix that on its own.`,
+      title: "You have enough existing knowledge to pass this question!",
+      body: `You could have passed this question with your existing knowledge (${formatPct(available)} available basic marks), but you were only able to use ${formatPct(converted)} of what you already know. There is 'something else' (like application, exam technique, or RTFQ) getting in the way of your ability to convert marks — extra theory revision will not fix this on its own.`,
     };
   }
   return {
-    title: "Very low conversion — start with the basic marks you already know",
-    body: `BMCR is ${formatPct(bmcr)}. You are not getting marks for work you likely know. Index the required, write the basic points first, and treat this as a technique problem rather than a “I need more theory” problem.`,
+    title: "Theory gap detected",
+    body: `Only ${formatPct(available)} of basic marks were available on this markplan, meaning you'll need to brush up on core theory alongside practicing your conversion technique.`,
   };
 }
 

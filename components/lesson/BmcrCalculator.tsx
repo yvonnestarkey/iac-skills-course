@@ -139,14 +139,14 @@ export default function BmcrCalculator({
       {showStats ? (
         <div className="bmcr-stats">
           <div className="bmcr-stat">
-            <span>Basic Marks %</span>
+            <span>YOU KNOW...</span>
             <b>{formatPct(basicPct)}</b>
-            <small>Basic Markplan ÷ Question Total Markplan</small>
+            <small>Basic marks available as % of total question marks</small>
           </div>
           <div className="bmcr-stat">
-            <span>BMCR</span>
+            <span>YOU CAN USE...</span>
             <b>{formatPct(bmcrPct)}</b>
-            <small>Basic My Marks ÷ Basic Markplan</small>
+            <small>Your Basic Mark Conversion Ratio (BMCR)</small>
           </div>
         </div>
       ) : null}
