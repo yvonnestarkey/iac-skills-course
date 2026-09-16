@@ -81,18 +81,23 @@ export function hasBmcrData(marks: BmcrMarks): boolean {
 
 export function bmcrCoachingFeedback(marks: BmcrMarks): { title: string; body: string } | null {
   const ready = withQuestionTotal(marks);
-  if (ready.question_total_markplan <= 0) return null;
-  const available = computeBasicMarkPct(ready);
+  if (ready.basic_markplan <= 0) return null;
   const converted = computeBmcrPct(ready);
-  if (available >= 50) {
+  if (converted >= 80) {
     return {
-      title: "Low BMCR — this is not a theory gap",
-      body: `You only converted ${formatPct(converted)} of YOUR basic knowledge. This means you're not able to get marks for stuff you already know. There is 'something else' getting in the way of your ability to earn marks.`,
+      title: "Excellent Conversion — Keep It Up!",
+      body: `You converted ${formatPct(converted)} of YOUR basic knowledge. This means you're able to get marks for most of what you know, this is great. Keep practicing and make sure that this applies across all your subjects.`,
+    };
+  }
+  if (converted >= 60) {
+    return {
+      title: "Good Progress — Solid Conversion",
+      body: `You converted ${formatPct(converted)} of YOUR basic knowledge. This means that you're getting better at obtaining marks for what you know. Keep practicing so that you're consistently able to use your knowledge.`,
     };
   }
   return {
-    title: "Theory gap detected",
-    body: `Only ${formatPct(available)} of basic marks were available on this markplan, meaning you'll need to brush up on core theory alongside practicing your conversion technique.`,
+    title: "Low BMCR — This is not a theory gap",
+    body: `You only converted ${formatPct(converted)} of YOUR basic knowledge. This means you're not able to get marks for stuff you already know. There is 'something else' getting in the way of your ability to earn marks.`,
   };
 }
 
