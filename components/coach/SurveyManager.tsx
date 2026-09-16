@@ -12,6 +12,7 @@ import {
   newSurveyQuestion,
   isBmcrBlock,
   isInfoBlock,
+  isPdfUploadBlock,
   questionNeedsOptions,
   saveCustomSurvey,
   setCustomSurveyActive,
@@ -598,10 +599,19 @@ function SurveyEditor({
       {draft.questions.map((question, index) => {
         const info = isInfoBlock(question.type);
         const bmcr = isBmcrBlock(question.type);
+        const pdfUpload = isPdfUploadBlock(question.type);
         return (
-        <article className={`survey-question-card${info ? " survey-info-block" : ""}${bmcr ? " survey-bmcr-block" : ""}`} key={question.id}>
+        <article className={`survey-question-card${info ? " survey-info-block" : ""}${bmcr ? " survey-bmcr-block" : ""}${pdfUpload ? " survey-pdf-block" : ""}`} key={question.id}>
           <div className="survey-question-head">
-            <strong>{info ? `Info block ${index + 1}` : bmcr ? `BMCR block ${index + 1}` : `Question ${index + 1}`}</strong>
+            <strong>
+              {info
+                ? `Info block ${index + 1}`
+                : bmcr
+                  ? `BMCR block ${index + 1}`
+                  : pdfUpload
+                    ? `PDF upload ${index + 1}`
+                    : `Question ${index + 1}`}
+            </strong>
             <div className="actions">
               <button className="ghost" type="button" onClick={() => onMoveQuestion(index, -1)} disabled={index === 0}>
                 Up
@@ -635,11 +645,20 @@ function SurveyEditor({
               onChangeQuestion(question.id, {
                 type,
                 required: isInfoBlock(type) ? false : question.required,
-                label: isBmcrBlock(type) && !question.label.trim() ? "BMCR Calculator" : question.label,
-                helperText:
-                  isBmcrBlock(type) && !question.helperText.trim()
+                label: !question.label.trim()
+                  ? type === "bmcr_calculator"
+                    ? "BMCR Calculator"
+                    : type === "pdf_upload"
+                      ? "Upload your PDF"
+                      : question.label
+                  : question.label,
+                helperText: !question.helperText.trim()
+                  ? type === "bmcr_calculator"
                     ? "Enter marks from your marked attempt. Basic Marks % and BMCR update as you type."
-                    : question.helperText,
+                    : type === "pdf_upload"
+                      ? "PDF only. Scan or export your completed work as a single file."
+                      : question.helperText
+                  : question.helperText,
                 options: questionNeedsOptions(type)
                   ? question.options.length
                     ? question.options
@@ -662,7 +681,13 @@ function SurveyEditor({
             value={question.label}
             onChange={(event) => onChangeQuestion(question.id, { label: event.target.value })}
             placeholder={
-              info ? "Refer back to this lesson" : bmcr ? "BMCR Calculator" : "How are you finding the course?"
+              info
+                ? "Refer back to this lesson"
+                : bmcr
+                  ? "BMCR Calculator"
+                  : pdfUpload
+                    ? "Upload your completed attempt"
+                    : "How are you finding the course?"
             }
           />
           <label className="student-notes-label">{info ? "Body text" : "Helper text"}</label>
@@ -674,13 +699,21 @@ function SurveyEditor({
             placeholder={
               info
                 ? "Optional note. URLs and [text](https://…) links become clickable."
-                : "Optional hint under the question. URLs become clickable."
+                : pdfUpload
+                  ? "Optional note under the upload, e.g. Scan the whole attempt as a single PDF."
+                  : "Optional hint under the question. URLs become clickable."
             }
           />
           {bmcr ? (
             <p className="muted small">
               Students get an interactive marks table (Basic, Average, Higher Grade, Question Total) with live Basic
               Marks % and BMCR, plus coaching feedback. Results save to assignment BMCR evaluations.
+            </p>
+          ) : null}
+          {pdfUpload ? (
+            <p className="muted small">
+              Students get a PDF file picker on this question. Tick Required if they must upload a file before they can
+              submit.
             </p>
           ) : null}
           {info ? (
@@ -769,6 +802,13 @@ function SurveyEditor({
           onClick={() => onChange({ ...draft, questions: [...draft.questions, newSurveyQuestion("multi_select")] })}
         >
           + Add multi-select
+        </button>
+        <button
+          className="ghost"
+          type="button"
+          onClick={() => onChange({ ...draft, questions: [...draft.questions, newSurveyQuestion("pdf_upload")] })}
+        >
+          + Add PDF upload
         </button>
         <button className="primary" type="button" disabled={busy || uploadingPdf} onClick={onSave}>
           {busy ? "Saving…" : uploadingPdf ? "Uploading…" : "Save survey"}

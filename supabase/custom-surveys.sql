@@ -81,3 +81,33 @@ create policy "staff manage custom survey responses"
 
 grant select, insert, update, delete on public.custom_surveys to authenticated;
 grant select, insert, update, delete on public.custom_survey_responses to authenticated;
+
+-- Student PDF answers upload into course-pdfs/survey-responses/{surveyId}/{studentId}/...
+insert into storage.buckets (id, name, public)
+values ('course-pdfs', 'course-pdfs', true)
+on conflict (id) do nothing;
+
+drop policy if exists "students upload survey response pdfs" on storage.objects;
+create policy "students upload survey response pdfs"
+  on storage.objects for insert
+  to authenticated
+  with check (
+    bucket_id = 'course-pdfs'
+    and split_part(name, '/', 1) = 'survey-responses'
+    and split_part(name, '/', 3) = auth.uid()::text
+  );
+
+drop policy if exists "students update own survey response pdfs" on storage.objects;
+create policy "students update own survey response pdfs"
+  on storage.objects for update
+  to authenticated
+  using (
+    bucket_id = 'course-pdfs'
+    and split_part(name, '/', 1) = 'survey-responses'
+    and split_part(name, '/', 3) = auth.uid()::text
+  )
+  with check (
+    bucket_id = 'course-pdfs'
+    and split_part(name, '/', 1) = 'survey-responses'
+    and split_part(name, '/', 3) = auth.uid()::text
+  );

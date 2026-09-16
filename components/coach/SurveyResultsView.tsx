@@ -6,12 +6,12 @@ import {
   downloadSurveyCsv,
   fetchCustomSurvey,
   fetchSurveyResponses,
-  formatSurveyAnswer,
   questionCollectsAnswer,
   type CustomSurvey,
   type CustomSurveyResponse,
 } from "@/lib/custom-surveys";
 import { formatSastDateTime } from "@/lib/dates";
+import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
 
 export default function SurveyResultsView({ surveyId }: { surveyId: string }) {
   const router = useRouter();
@@ -106,7 +106,9 @@ export default function SurveyResultsView({ surveyId }: { surveyId: string }) {
                   {survey.questions
                     .filter((question) => questionCollectsAnswer(question.type))
                     .map((question) => (
-                      <td key={question.id}>{formatSurveyAnswer(response.answers[question.id], question.type) || "—"}</td>
+                      <td key={question.id}>
+                        <SurveyAnswerValue value={response.answers[question.id]} type={question.type} />
+                      </td>
                     ))}
                 </tr>
               ))}

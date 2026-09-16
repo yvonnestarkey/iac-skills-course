@@ -22,7 +22,8 @@ export type SurveyQuestionType =
   | "rating"
   | "info_link"
   | "multi_select"
-  | "bmcr_calculator";
+  | "bmcr_calculator"
+  | "pdf_upload";
 
 export const SURVEY_QUESTION_TYPES: { id: SurveyQuestionType; label: string }[] = [
   { id: "dropdown", label: "Single Select Dropdown" },
@@ -33,6 +34,7 @@ export const SURVEY_QUESTION_TYPES: { id: SurveyQuestionType; label: string }[] 
   { id: "rating", label: "Rating Scale (1-5)" },
   { id: "info_link", label: "Info / Course Link" },
   { id: "bmcr_calculator", label: "BMCR Calculator" },
+  { id: "pdf_upload", label: "PDF Upload" },
 ];
 
 export interface SurveyQuestion {
@@ -99,6 +101,40 @@ export function isBmcrBlock(type: SurveyQuestionType): boolean {
   return type === "bmcr_calculator";
 }
 
+export function isPdfUploadBlock(type: SurveyQuestionType): boolean {
+  return type === "pdf_upload";
+}
+
+export type SurveyPdfUploadAnswer = { url: string; name: string };
+
+function filenameFromPdfUrl(url: string): string {
+  try {
+    const last = decodeURIComponent(new URL(url).pathname.split("/").pop() || "");
+    if (last) return last;
+  } catch {
+    /* ignore */
+  }
+  return "Uploaded PDF";
+}
+
+export function parsePdfUploadAnswer(value: string | undefined): SurveyPdfUploadAnswer | null {
+  const raw = (value || "").trim();
+  if (!raw) return null;
+  if (/^https?:\/\//i.test(raw)) return { url: raw, name: filenameFromPdfUrl(raw) };
+  try {
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    const url = String(parsed.url || "").trim();
+    if (!url) return null;
+    return { url, name: String(parsed.name || "").trim() || filenameFromPdfUrl(url) };
+  } catch {
+    return null;
+  }
+}
+
+export function stringifyPdfUploadAnswer(file: SurveyPdfUploadAnswer): string {
+  return JSON.stringify({ url: file.url, name: file.name });
+}
+
 export function questionCollectsAnswer(type: SurveyQuestionType): boolean {
   return !isInfoBlock(type);
 }
@@ -116,11 +152,13 @@ export function newSurveyQuestion(type: SurveyQuestionType = "short_text"): Surv
   return {
     id: `q-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
     type,
-    label: type === "bmcr_calculator" ? "BMCR Calculator" : "",
+    label: type === "bmcr_calculator" ? "BMCR Calculator" : type === "pdf_upload" ? "Upload your PDF" : "",
     helperText:
       type === "bmcr_calculator"
         ? "Enter marks from your marked attempt. Basic Marks % and BMCR update as you type."
-        : "",
+        : type === "pdf_upload"
+          ? "PDF only. Scan or export your completed work as a single file."
+          : "",
     required: false,
     options: questionNeedsOptions(type)
       ? type === "multi_select"
@@ -265,6 +303,7 @@ function asAnswers(value: unknown): Record<string, string> {
 }
 
 export function formatSurveyAnswer(value: string | undefined, type?: SurveyQuestionType): string {
+  if (type === "pdf_upload") return parsePdfUploadAnswer(value)?.url || "";
   if (type === "bmcr_calculator" || isBmcrAnswer(value)) return formatBmcrAnswer(value);
   return (value || "").trim();
 }
@@ -514,6 +553,37 @@ export async function uploadSurveyPdf(file: File): Promise<{ ok: boolean; error?
   const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
   if (!data?.publicUrl) return { ok: false, error: "Could not get a public URL for that PDF." };
   return { ok: true, url: data.publicUrl };
+}
+
+export async function uploadSurveyResponsePdf(
+  file: File,
+  surveyId: string,
+  questionId: string
+): Promise<{ ok: boolean; error?: string; url?: string; name?: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const { data: session } = await client.auth.getUser();
+  if (!session.user) return { ok: false, error: "Sign in required." };
+  const name = file.name.toLowerCase();
+  if (!file.type.includes("pdf") && !name.endsWith(".pdf")) {
+    return { ok: false, error: "Please upload a PDF file." };
+  }
+  const originalName = file.name.trim() || "upload.pdf";
+  const path = `survey-responses/${surveyId}/${session.user.id}/${questionId}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.pdf`;
+  const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
+    upsert: true,
+    contentType: file.type || "application/pdf",
+  });
+  if (uploaded.error) {
+    return {
+      ok: false,
+      error:
+        "Could not upload that PDF. Paste the survey storage SQL in Supabase if this is the first student upload.",
+    };
+  }
+  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
+  if (!data?.publicUrl) return { ok: false, error: "Could not get a public URL for that PDF." };
+  return { ok: true, url: data.publicUrl, name: originalName };
 }
 
 export async function setCustomSurveyActive(id: string, isActive: boolean): Promise<{ ok: boolean; error?: string }> {

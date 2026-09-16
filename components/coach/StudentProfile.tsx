@@ -15,6 +15,7 @@ import {
   isBmcrBlock,
   isInfoBlock,
   questionCollectsAnswer,
+  type SurveyQuestionType,
 } from "@/lib/custom-surveys";
 import { formatSastDateTime, longDate, parseISO, today } from "@/lib/dates";
 import { completionProgress } from "@/lib/metrics";
@@ -22,6 +23,7 @@ import { planCapacity, planStatus, slotLabel } from "@/lib/planner";
 import { fetchCourseOutline } from "@/lib/student-lesson";
 import { fetchStudentSubmissions, type StudentSubmission } from "@/lib/student-submissions";
 import { useStore } from "@/lib/store";
+import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
 
 export default function StudentProfile({ studentId }: { studentId: string }) {
   const { data, setNotifyDraft, notice } = useStore();
@@ -32,7 +34,9 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const [lessonIds, setLessonIds] = useState<string[]>([]);
   const [submissions, setSubmissions] = useState<StudentSubmission[]>([]);
   const [lessonTitles, setLessonTitles] = useState<Record<string, string>>({});
-  const [surveyPacks, setSurveyPacks] = useState<{ title: string; answers: { label: string; value: string }[] }[]>([]);
+  const [surveyPacks, setSurveyPacks] = useState<
+    { title: string; answers: { label: string; value: string; type: SurveyQuestionType }[] }[]
+  >([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -62,9 +66,10 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
             .filter((question) => questionCollectsAnswer(question.type) && !isInfoBlock(question.type) && !isBmcrBlock(question.type))
             .map((question) => ({
               label: question.label,
-              value: formatSurveyAnswer(pack.response.answers[question.id], question.type),
+              value: pack.response.answers[question.id] || "",
+              type: question.type,
             }))
-            .filter((item) => item.value),
+            .filter((item) => formatSurveyAnswer(item.value, item.type)),
         }))
       );
       setLoadingLive(false);
@@ -302,7 +307,9 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
                 {pack.answers.map((item) => (
                   <div className="score-row" key={item.label}>
                     <span>{item.label}</span>
-                    <b>{item.value}</b>
+                    <b>
+                      <SurveyAnswerValue value={item.value} type={item.type} />
+                    </b>
                   </div>
                 ))}
               </div>

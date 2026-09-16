@@ -10,9 +10,13 @@ import {
   formatSurveyAnswer,
   isBmcrBlock,
   isInfoBlock,
+  isPdfUploadBlock,
+  parsePdfUploadAnswer,
   questionCollectsAnswer,
   safeHref,
+  stringifyPdfUploadAnswer,
   submitCustomSurveyResponse,
+  uploadSurveyResponsePdf,
   type CustomSurvey,
   type CustomSurveyResponse,
   type SurveyQuestion,
@@ -20,6 +24,7 @@ import {
 import { parseBmcrAnswer, stringifyBmcrAnswer } from "@/lib/bmcr";
 import LessonPdfViewer from "@/components/LessonPdfViewer";
 import LinkedText from "@/components/ui/LinkedText";
+import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
 
 export default function StudentSurveyForm({
   slug,
@@ -97,7 +102,11 @@ export default function StudentSurveyForm({
         !formatSurveyAnswer(answers[question.id], question.type)
     );
     if (missing) {
-      setError(`Please answer “${missing.label}”.`);
+      setError(
+        isPdfUploadBlock(missing.type)
+          ? `Please upload a PDF for “${missing.label}”.`
+          : `Please answer “${missing.label}”.`
+      );
       return;
     }
     setBusy(true);
@@ -174,7 +183,9 @@ export default function StudentSurveyForm({
                   {isBmcrBlock(question.type) ? (
                     <BmcrCalculator value={parseBmcrAnswer(existing.answers[question.id])} readOnly idPrefix={`saved-${question.id}`} />
                   ) : (
-                    <p>{formatSurveyAnswer(existing.answers[question.id], question.type) || "—"}</p>
+                    <p>
+                      <SurveyAnswerValue value={existing.answers[question.id]} type={question.type} />
+                    </p>
                   )}
                 </article>
               )
@@ -224,6 +235,7 @@ export default function StudentSurveyForm({
               question={question}
               value={answers[question.id] || ""}
               onChange={(value) => setAnswer(question.id, value)}
+              surveyId={survey.id}
             />
           )
         )}
@@ -296,15 +308,17 @@ function SurveyField({
   question,
   value,
   onChange,
+  surveyId,
 }: {
   question: SurveyQuestion;
   value: string;
   onChange: (value: string) => void;
+  surveyId: string;
 }) {
   const fieldId = `survey-${question.id}`;
   return (
     <div className="plan-field">
-      <label htmlFor={question.type === "radio" || question.type === "rating" || question.type === "multi_select" || isBmcrBlock(question.type) ? undefined : fieldId}>
+      <label htmlFor={question.type === "radio" || question.type === "rating" || question.type === "multi_select" || isBmcrBlock(question.type) || isPdfUploadBlock(question.type) ? undefined : fieldId}>
         <strong>
           <LinkedText text={question.label} />
           {question.required ? " *" : ""}
@@ -391,6 +405,9 @@ function SurveyField({
           onChange={(marks) => onChange(stringifyBmcrAnswer(marks))}
         />
       ) : null}
+      {isPdfUploadBlock(question.type) ? (
+        <SurveyPdfUploadField question={question} value={value} onChange={onChange} surveyId={surveyId} />
+      ) : null}
       {question.type === "rating" ? (
         <div className="survey-choice-list survey-rating" role="radiogroup" aria-label={question.label}>
           {[1, 2, 3, 4, 5].map((score) => (
@@ -408,5 +425,70 @@ function SurveyField({
         </div>
       ) : null}
     </div>
+  );
+}
+
+function SurveyPdfUploadField({
+  question,
+  value,
+  onChange,
+  surveyId,
+}: {
+  question: SurveyQuestion;
+  value: string;
+  onChange: (value: string) => void;
+  surveyId: string;
+}) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const uploaded = parsePdfUploadAnswer(value);
+  const fieldId = `survey-pdf-${question.id}`;
+
+  const pick = async (file: File | null) => {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    const result = await uploadSurveyResponsePdf(file, surveyId, question.id);
+    setBusy(false);
+    if (!result.ok || !result.url) {
+      setError(result.error || "Could not upload that PDF.");
+      return;
+    }
+    onChange(stringifyPdfUploadAnswer({ url: result.url, name: result.name || file.name }));
+  };
+
+  return (
+    <>
+      {uploaded ? (
+        <div className="file-card">
+          <span className="file-icon">PDF</span>
+          <div className="file-meta">
+            <strong>{uploaded.name}</strong>
+            <span className="muted small">Ready to submit</span>
+          </div>
+          <a className="ghost" href={uploaded.url} target="_blank" rel="noopener noreferrer">
+            Open PDF
+          </a>
+          <button className="ghost" type="button" onClick={() => onChange("")}>
+            Remove
+          </button>
+        </div>
+      ) : null}
+      <label className="dropzone" htmlFor={fieldId}>
+        <strong>{uploaded ? "Replace your PDF" : "Choose a PDF to upload"}</strong>
+        <span className="muted small">{busy ? "Uploading…" : "PDF only · scans are fine"}</span>
+        <input
+          id={fieldId}
+          type="file"
+          accept="application/pdf,.pdf"
+          disabled={busy}
+          onChange={(event) => {
+            void pick(event.target.files && event.target.files[0]);
+            event.target.value = "";
+          }}
+        />
+      </label>
+      {error ? <p className="notice">{error}</p> : null}
+    </>
   );
 }

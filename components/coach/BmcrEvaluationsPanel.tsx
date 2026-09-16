@@ -22,9 +22,11 @@ import {
   questionCollectsAnswer,
   type CustomSurvey,
   type CustomSurveyResponse,
+  type SurveyQuestionType,
 } from "@/lib/custom-surveys";
 import { formatSastDateTime } from "@/lib/dates";
 import { fetchCourseOutline } from "@/lib/student-lesson";
+import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
 
 type SurveyPack = { survey: CustomSurvey; response: CustomSurveyResponse };
 
@@ -76,7 +78,9 @@ function taskTitle(evaluation: BmcrEvaluation, lessonTitles: Record<string, stri
   return lessonTitles[evaluation.assignment_id] || evaluation.assignment_id;
 }
 
-function checklistItems(pack: SurveyPack | null): { label: string; value: string }[] {
+function checklistItems(
+  pack: SurveyPack | null
+): { id: string; label: string; value: string; type: SurveyQuestionType }[] {
   if (!pack) return [];
   return pack.survey.questions
     .filter((question) => {
@@ -86,10 +90,12 @@ function checklistItems(pack: SurveyPack | null): { label: string; value: string
       return true;
     })
     .map((question) => ({
+      id: question.id,
       label: question.label,
-      value: formatSurveyAnswer(pack.response.answers[question.id], question.type),
+      value: pack.response.answers[question.id] || "",
+      type: question.type,
     }))
-    .filter((item) => item.value);
+    .filter((item) => formatSurveyAnswer(item.value, item.type));
 }
 
 export default function BmcrEvaluationsPanel({ studentId }: { studentId: string }) {
@@ -261,9 +267,11 @@ export default function BmcrEvaluationsPanel({ studentId }: { studentId: string 
                 <h3>Task checklist</h3>
                 <dl className="bmcr-checklist">
                   {selectedChecklist.map((item) => (
-                    <div key={item.label}>
+                    <div key={item.id}>
                       <dt>{item.label}</dt>
-                      <dd>{item.value}</dd>
+                      <dd>
+                        <SurveyAnswerValue value={item.value} type={item.type} />
+                      </dd>
                     </div>
                   ))}
                 </dl>
