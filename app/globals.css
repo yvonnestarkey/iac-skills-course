@@ -4407,3 +4407,54 @@ input[type="tel"]:focus {
   margin: 0;
   font-size: 14.5px;
 }
+
+.bmcr-analytics-stats {
+  margin-top: 4px;
+}
+
+.bmcr-tier-bar {
+  display: flex;
+  height: 14px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: #dfe8e5;
+  margin: 10px 0 14px;
+}
+
+.bmcr-tier-seg {
+  display: block;
+  height: 100%;
+  min-width: 0;
+}
+
+.bmcr-tier-seg.low {
+  background: #990f49;
+}
+
+.bmcr-tier-seg.mid {
+  background: #e4d3bd;
+}
+
+.bmcr-tier-seg.high {
+  background: #1f7b70;
+}
+
+.bmcr-tier-legend {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.bmcr-tier-legend strong {
+  display: block;
+  font-size: 22px;
+  font-family: var(--serif);
+  line-height: 1.15;
+}
+
+@media (max-width: 720px) {
+  .bmcr-tier-legend {
+    grid-template-columns: 1fr;
+  }
+}

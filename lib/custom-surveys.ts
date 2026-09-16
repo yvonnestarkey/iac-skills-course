@@ -607,6 +607,22 @@ export async function fetchStudentSurveyPacks(
   });
 }
 
+export async function fetchSurveyResponsePairs(): Promise<Record<string, string[]>> {
+  const client = getSupabase();
+  if (!client) return {};
+  const { data, error } = await client.from("custom_survey_responses").select("student_id, survey_id");
+  if (error || !data) return {};
+  const map: Record<string, string[]> = {};
+  data.forEach((row) => {
+    const studentId = String(row.student_id || "");
+    const surveyId = String(row.survey_id || "");
+    if (!studentId || !surveyId) return;
+    map[studentId] = map[studentId] || [];
+    if (!map[studentId].includes(surveyId)) map[studentId].push(surveyId);
+  });
+  return map;
+}
+
 export async function fetchSurveyResponseCountsByStudent(): Promise<Record<string, number>> {
   const client = getSupabase();
   if (!client) return {};

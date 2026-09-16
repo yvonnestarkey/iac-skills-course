@@ -1,3 +1,4 @@
+import { COURSE_COHORTS, CURRENT_COHORT_TERM } from "./cohorts";
 import { findLesson } from "./course";
 import {
   isDiyLesson,
@@ -261,8 +262,8 @@ export function courseDataFromOutline(outline: OutlineChapter[]): CourseData {
   return {
     company: "Accounting Study Advice",
     className: "IAC Skills Course",
-    term: "",
-    cohorts: [],
+    term: CURRENT_COHORT_TERM,
+    cohorts: COURSE_COHORTS.map((cohort) => ({ ...cohort })),
     liveSessions: SEED.liveSessions || [],
     chapters: outline.map((chapter) => ({
       id: chapter.id,

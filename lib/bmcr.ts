@@ -211,6 +211,30 @@ export async function fetchLessonBmcrEvaluation(
   return evaluationFromRow(data as Record<string, unknown>);
 }
 
+export async function fetchAllBmcrEvaluations(): Promise<BmcrEvaluation[]> {
+  const client = getSupabase();
+  if (!client) return [];
+  const { data, error } = await client
+    .from("assignment_bmcr_evaluations")
+    .select("*")
+    .order("submitted_at", { ascending: false });
+  if (error || !data) return [];
+  return data.map((row) => evaluationFromRow(row as Record<string, unknown>));
+}
+
+export type BmcrTier = "low" | "mid" | "high";
+
+export function bmcrTier(pct: number): BmcrTier {
+  if (pct >= 80) return "high";
+  if (pct >= 60) return "mid";
+  return "low";
+}
+
+export function averageNumbers(values: number[]): number | null {
+  if (!values.length) return null;
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
 export async function fetchStudentBmcrEvaluations(studentId: string): Promise<BmcrEvaluation[]> {
   const client = getSupabase();
   if (!client) return [];

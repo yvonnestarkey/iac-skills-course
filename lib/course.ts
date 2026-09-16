@@ -1,4 +1,5 @@
 import { SURVEY_QUESTIONS } from "./constants";
+import { COURSE_COHORTS, displayCohortName, normalizeCohortId } from "./cohorts";
 import { daysAgo, longDate, parseISO } from "./dates";
 import { lessonMinutes } from "./lesson-duration";
 import type {
@@ -115,8 +116,11 @@ export function courseTasks(data: CourseData) {
 }
 
 export function cohortName(data: CourseData, id: string): string {
-  const c = (data.cohorts || []).find((x) => x.id === id);
-  return c ? c.name : "Unassigned";
+  const normalized = normalizeCohortId(id);
+  const fromCanon = COURSE_COHORTS.find((x) => x.id === normalized);
+  if (fromCanon) return fromCanon.name;
+  const c = (data.cohorts || []).find((x) => x.id === id || x.id === normalized);
+  return c ? c.name : displayCohortName(id);
 }
 
 export function lastActiveLabel(student: Student): string {

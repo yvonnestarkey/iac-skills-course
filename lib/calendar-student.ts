@@ -14,7 +14,7 @@ export function studentFromPlan(
     id: userId,
     name: extras?.name || extras?.email || "Student",
     email: extras?.email || "",
-    cohort: "autumn26",
+    cohort: "jan27",
     status: "active",
     completed,
     submissions,

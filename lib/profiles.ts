@@ -1,3 +1,4 @@
+import { DEFAULT_COHORT_ID, normalizeCohortId } from "./cohorts";
 import { isoDate, today } from "./dates";
 import { parseRosterOnboarding } from "./roster";
 import { isCoachAccount } from "./roles";
@@ -29,7 +30,7 @@ export function profileToStudent(
     id: row.id,
     name: displayName(row.email, row.full_name || (typeof extras.full_name === "string" ? extras.full_name : null)),
     email: row.email,
-    cohort: row.cohort || (typeof extras.cohort === "string" && extras.cohort) || "autumn26",
+    cohort: normalizeCohortId(row.cohort || (typeof extras.cohort === "string" ? extras.cohort : "")),
     status: "active",
     joined: row.created_at ? row.created_at.slice(0, 10) : isoDate(today()),
     lastActive:
@@ -103,7 +104,7 @@ export async function ensureStudentProfile(user: {
     return;
   }
 
-  const insert = { ...identity, role, cohort: "autumn26" };
+  const insert = { ...identity, role, cohort: DEFAULT_COHORT_ID };
   const { error } = await client.from("profiles").insert(insert);
   if (error && /updated_at|could not find|schema cache/i.test(error.message)) {
     const { updated_at: _updated, ...withoutStamp } = insert;
@@ -218,7 +219,7 @@ export async function fetchRosterStudent(id: string): Promise<Student | null> {
       email: "",
       full_name: null,
       role: "student",
-      cohort: "autumn26",
+      cohort: DEFAULT_COHORT_ID,
       phone_number: null,
       accountability_email: null,
       last_active: null,

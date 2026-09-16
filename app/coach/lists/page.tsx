@@ -3,21 +3,26 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import AssignmentsTab from "@/components/coach/AssignmentsTab";
+import BmcrAnalyticsTab from "@/components/coach/BmcrAnalyticsTab";
 import RosterTab from "@/components/coach/RosterTab";
 import SurveysTab from "@/components/coach/SurveysTab";
+import { fetchAllBmcrEvaluations, type BmcrEvaluation } from "@/lib/bmcr";
+import { COURSE_COHORTS } from "@/lib/cohorts";
 import { labelForGroup } from "@/lib/comms";
+import { fetchLiveAssignmentLessons } from "@/lib/content";
 import { cohortName, unansweredQuestion } from "@/lib/course";
+import { fetchCustomSurveys, fetchSurveyResponseCountsByStudent, fetchSurveyResponsePairs } from "@/lib/custom-surveys";
 import { assignmentSubmissionsAwaitingFeedback, cohortStudents } from "@/lib/metrics";
-import { fetchCustomSurveys, fetchSurveyResponseCountsByStudent } from "@/lib/custom-surveys";
 import { fetchLiveLessonIds, fetchRosterStudents } from "@/lib/profiles";
 import { fetchAllSubmissionBodies, fetchSubmissionCountsByStudent, fetchSubmissionsAwaitingFeedback } from "@/lib/student-submissions";
 import { useStore } from "@/lib/store";
-import type { Student } from "@/lib/types";
+import type { FlatLesson, Student } from "@/lib/types";
 
 const TABS = [
   { id: "assignments", label: "Assignments", href: null },
   { id: "surveys", label: "Surveys", href: null },
   { id: "roster", label: "Student Roster", href: null },
+  { id: "bmcr", label: "BMCR Analytics", href: null },
   { id: "inbox", label: "Inbox", href: "/coach/inbox" },
 ] as const;
 
@@ -26,6 +31,11 @@ export default function StudentListsPage() {
   const router = useRouter();
   const [liveStudents, setLiveStudents] = useState<Student[]>([]);
   const [lessonIds, setLessonIds] = useState<string[]>([]);
+  const [assignmentLessons, setAssignmentLessons] = useState<FlatLesson[]>([]);
+  const [surveyPairs, setSurveyPairs] = useState<Record<string, string[]>>({});
+  const [surveyTitles, setSurveyTitles] = useState<Record<string, string>>({});
+  const [evaluations, setEvaluations] = useState<BmcrEvaluation[]>([]);
+  const [analyticsReady, setAnalyticsReady] = useState(false);
   const [submissionCounts, setSubmissionCounts] = useState<Record<string, number>>({});
   const [surveyCounts, setSurveyCounts] = useState<Record<string, number>>({});
   const [surveyTotal, setSurveyTotal] = useState(0);
@@ -41,35 +51,64 @@ export default function StudentListsPage() {
     Promise.all([
       fetchRosterStudents(),
       fetchLiveLessonIds(),
+      fetchLiveAssignmentLessons(),
       fetchSubmissionCountsByStudent(),
       fetchSurveyResponseCountsByStudent(),
+      fetchSurveyResponsePairs(),
       fetchCustomSurveys(),
       fetchAllSubmissionBodies(),
       fetchSubmissionsAwaitingFeedback(),
-    ]).then(([roster, ids, submissions, surveys, customSurveys, bodies, awaiting]) => {
-      if (cancelled) return;
-      if (!roster.ok) {
-        setRosterNotice(roster.error || "Could not load registered students.");
-        setLiveStudents([]);
-      } else {
-        setLiveStudents(
-          roster.students.map((student) => ({
-            ...student,
-            submissions: bodies[student.id] || {},
-          }))
+      fetchAllBmcrEvaluations(),
+    ]).then(
+      ([
+        roster,
+        ids,
+        assignments,
+        submissions,
+        surveys,
+        pairs,
+        customSurveys,
+        bodies,
+        awaiting,
+        bmcrRows,
+      ]) => {
+        if (cancelled) return;
+        if (!roster.ok) {
+          setRosterNotice(roster.error || "Could not load registered students.");
+          setLiveStudents([]);
+        } else {
+          setLiveStudents(
+            roster.students.map((student) => ({
+              ...student,
+              submissions: bodies[student.id] || {},
+            }))
+          );
+        }
+        setLessonIds(ids);
+        setAssignmentLessons(assignments);
+        setSubmissionCounts(submissions);
+        setSurveyCounts(surveys);
+        setSurveyPairs(pairs);
+        setSurveyTotal(customSurveys.ok ? customSurveys.data.length : 0);
+        setSurveyTitles(
+          Object.fromEntries((customSurveys.ok ? customSurveys.data : []).map((survey) => [survey.id, survey.title]))
         );
+        setAwaitingLive({ ready: true, rows: awaiting.ok ? awaiting.rows : [] });
+        setEvaluations(bmcrRows);
+        setAnalyticsReady(true);
+        setRosterReady(true);
       }
-      setLessonIds(ids);
-      setSubmissionCounts(submissions);
-      setSurveyCounts(surveys);
-      setSurveyTotal(customSurveys.ok ? customSurveys.data.length : 0);
-      setAwaitingLive({ ready: true, rows: awaiting.ok ? awaiting.rows : [] });
-      setRosterReady(true);
-    });
+    );
     return () => {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (assignmentLessons.length && !assignmentLessons.some((lesson) => lesson.id === coach.assignmentId)) {
+      setCoach({ assignmentId: assignmentLessons[0].id });
+    }
+  }, [assignmentLessons, coach.assignmentId, setCoach]);
 
   const students = useMemo(() => cohortStudents({ ...data, students: liveStudents }, coach.cohort), [data, liveStudents, coach.cohort]);
   const waiting = students.filter((s) => unansweredQuestion(data, s.id));
@@ -118,7 +157,7 @@ export default function StudentListsPage() {
             Cohort
             <select id="cohort" value={coach.cohort} onChange={(event) => setCoach({ cohort: event.target.value })}>
             <option value="all">All cohorts</option>
-            {(data.cohorts || []).map((c) => (
+            {COURSE_COHORTS.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
                 {c.current ? " (current)" : ""}
@@ -156,7 +195,7 @@ export default function StudentListsPage() {
                 router.push(t.href);
                 return;
               }
-              setCoach({ tab: t.id as "assignments" | "surveys" | "roster" });
+              setCoach({ tab: t.id as "assignments" | "surveys" | "roster" | "bmcr" });
             }}
           >
             {t.label}
@@ -175,8 +214,23 @@ export default function StudentListsPage() {
           surveyTotal={surveyTotal}
           onOpenProfile={openProfile}
         />
+      ) : coach.tab === "bmcr" ? (
+        <BmcrAnalyticsTab
+          students={students}
+          allStudents={liveStudents}
+          evaluations={evaluations}
+          lessons={assignmentLessons}
+          surveyTitles={surveyTitles}
+          loading={!analyticsReady}
+        />
       ) : (
-        <AssignmentsTab students={students} onOpenProfile={openProfile} />
+        <AssignmentsTab
+          students={students}
+          lessons={assignmentLessons}
+          lessonIds={lessonIds}
+          surveyPairs={surveyPairs}
+          onOpenProfile={openProfile}
+        />
       )}
     </div>
   );

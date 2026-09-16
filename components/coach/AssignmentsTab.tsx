@@ -6,7 +6,6 @@ import {
   chapterCode,
   cohortName,
   fileFor,
-  gradedLessons,
   hasWork,
   shortLessonTitle,
   textFor,
@@ -14,26 +13,57 @@ import {
   wordCount,
 } from "@/lib/course";
 import { formatSize, nowLabel } from "@/lib/dates";
-import { overallProgress } from "@/lib/metrics";
+import { completionProgress } from "@/lib/metrics";
 import { useStore } from "@/lib/store";
-import type { Student } from "@/lib/types";
+import type { FlatLesson, Student } from "@/lib/types";
 
 interface Props {
   students: Student[];
+  lessons: FlatLesson[];
+  lessonIds: string[];
+  surveyPairs: Record<string, string[]>;
   onOpenProfile: (id: string) => void;
 }
 
-export default function AssignmentsTab({ students, onOpenProfile }: Props) {
+function studentHasLiveWork(
+  student: Student,
+  lesson: FlatLesson,
+  surveyPairs: Record<string, string[]>
+): boolean {
+  if (lesson.type === "survey") {
+    const surveyId = lesson.survey_id || "";
+    if (surveyId && (surveyPairs[student.id] || []).includes(surveyId)) return true;
+    return Boolean((student.completed || []).includes(lesson.id) || textFor(student, lesson.id).trim());
+  }
+  return hasWork(student, lesson);
+}
+
+export default function AssignmentsTab({ students, lessons, lessonIds, surveyPairs, onOpenProfile }: Props) {
   const { data, coach, setCoach, mutate, setNotifyDraft } = useStore();
   const [selected, setSelected] = useState<string[]>([]);
-  const list = gradedLessons(data);
-  const lesson = list.find((a) => a.id === coach.assignmentId) || list[0];
-  const done = students.filter((s) => hasWork(s, lesson)).length;
+  const list = lessons;
+  const lesson = list.find((item) => item.id === coach.assignmentId) || list[0];
 
-  const rows = students.filter((s) => {
-    if (coach.filter === "submitted") return hasWork(s, lesson);
-    if (coach.filter === "missing") return !hasWork(s, lesson);
-    if (coach.filter === "questions") return unansweredQuestion(data, s.id);
+  if (!lesson) {
+    return (
+      <section className="card">
+        <div className="panel-head">
+          <div>
+            <h2>Assignments</h2>
+            <p className="muted small">Live assignment and survey lessons from the course.</p>
+          </div>
+        </div>
+        <p className="empty">No assignment or survey lessons in the live course yet.</p>
+      </section>
+    );
+  }
+
+  const done = students.filter((student) => studentHasLiveWork(student, lesson, surveyPairs)).length;
+
+  const rows = students.filter((student) => {
+    if (coach.filter === "submitted") return studentHasLiveWork(student, lesson, surveyPairs);
+    if (coach.filter === "missing") return !studentHasLiveWork(student, lesson, surveyPairs);
+    if (coach.filter === "questions") return unansweredQuestion(data, student.id);
     return true;
   });
 
@@ -70,7 +100,7 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
   };
 
   const nudge = () => {
-    const missing = students.filter((s) => !hasWork(s, lesson) && s.status !== "paused");
+    const missing = students.filter((s) => !studentHasLiveWork(s, lesson, surveyPairs) && s.status !== "paused");
     if (!missing.length) return;
     const what = shortLessonTitle(lesson);
     mutate((draft) => {
@@ -79,11 +109,11 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
         draft.messages[s.id].push({
           from: "coach",
           text:
-            lesson.type === "upload"
-              ? `Reminder: ${what} is due ${lesson.due}. A scan of your working is fine — I would rather see it rough than late.`
-              : `Reminder: ${what} is due ${lesson.due}. Send it even if it does not balance, and I will work through it with you.`,
+            lesson.type === "survey"
+              ? `Reminder: ${what} is still open. A short check-in is enough — I would rather see it honest than late.`
+              : `Reminder: ${what} is due ${lesson.due || "soon"}. Send it even if it does not balance, and I will work through it with you.`,
           at: nowLabel(),
-          context: `${chapterCode(lesson.chapter)} · ${lesson.type === "upload" ? "Upload" : "Assignment"}`,
+          context: `${chapterCode(lesson.chapter)} · ${lesson.type === "survey" ? "Survey" : "Assignment"}`,
         });
       });
     });
@@ -95,7 +125,8 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
         <div>
           <h2>{shortLessonTitle(lesson)}</h2>
           <p className="muted small">
-            {chapterCode(lesson.chapter)} · due {lesson.due} · {done} of {students.length} received
+            {chapterCode(lesson.chapter)}
+            {lesson.due ? ` · due ${lesson.due}` : ""} · {done} of {students.length} received
           </p>
         </div>
         <label className="role-chip">
@@ -105,10 +136,10 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
             value={lesson.id}
             onChange={(event) => setCoach({ assignmentId: event.target.value })}
           >
-            {list.map((a) => (
-              <option key={a.id} value={a.id}>
-                {chapterCode(a.chapter)} · {shortLessonTitle(a)}
-                {a.type === "upload" ? " (PDF)" : ""}
+            {list.map((item) => (
+              <option key={item.id} value={item.id}>
+                {chapterCode(item.chapter)} · {shortLessonTitle(item)}
+                {item.type === "survey" ? " (survey)" : ""}
               </option>
             ))}
           </select>
@@ -135,7 +166,9 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
                   checked={Boolean(rows.length && rows.every((s) => selected.includes(s.id)))}
                   onChange={() =>
                     setSelected((current) =>
-                      rows.every((s) => current.includes(s.id)) ? current.filter((id) => !rows.some((s) => s.id === id)) : [...new Set([...current, ...rows.map((s) => s.id)])]
+                      rows.every((s) => current.includes(s.id))
+                        ? current.filter((id) => !rows.some((s) => s.id === id))
+                        : [...new Set([...current, ...rows.map((s) => s.id)])]
                     )
                   }
                   aria-label="Select all visible students"
@@ -151,13 +184,15 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
           </thead>
           <tbody>
             {rows.map((s) => {
-              const ok = hasWork(s, lesson);
+              const ok = studentHasLiveWork(s, lesson, surveyPairs);
               const ask = unansweredQuestion(data, s.id);
               const file = lesson.type === "upload" ? fileFor(s, lesson.id) : null;
               const detail = ok
-                ? lesson.type === "upload"
-                  ? `${file.name} · ${formatSize(file.size)}`
-                  : `${wordCount(textFor(s, lesson.id))} words`
+                ? lesson.type === "survey"
+                  ? "Survey in"
+                  : lesson.type === "upload" && file
+                    ? `${file.name} · ${formatSize(file.size)}`
+                    : `${wordCount(textFor(s, lesson.id))} words`
                 : "—";
               return (
                 <tr key={s.id} onClick={() => onOpenProfile(s.id)}>
@@ -175,14 +210,14 @@ export default function AssignmentsTab({ students, onOpenProfile }: Props) {
                   </td>
                   <td>
                     <span className={`badge ${ok ? "ok" : "warn"}`}>
-                      {ok ? (lesson.type === "upload" ? "PDF in" : "Submitted") : "Missing"}
+                      {ok ? (lesson.type === "survey" ? "Survey in" : "Submitted") : "Missing"}
                     </span>
                   </td>
                   <td className="muted small">{detail}</td>
                   <td>
                     {ask ? <span className="badge ask">Question</span> : <span className="muted small">—</span>}
                   </td>
-                  <td className="muted small">{overallProgress(data, s).pct}%</td>
+                  <td className="muted small">{completionProgress(s.completed, lessonIds).pct}%</td>
                   <td className="row-go">Open profile →</td>
                 </tr>
               );

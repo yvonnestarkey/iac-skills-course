@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { DEFAULT_ASSIGNMENT_ID } from "./constants";
+import { COURSE_COHORTS, CURRENT_COHORT_TERM, DEFAULT_COHORT_ID, normalizeCohortId } from "./cohorts";
 import { SEED } from "./seed";
 import type { CommunicationAudience, CourseData, Student } from "./types";
 
@@ -19,6 +20,18 @@ export interface Session {
   id: string;
 }
 
+function withCurrentCohorts(data: CourseData): CourseData {
+  return {
+    ...data,
+    term: CURRENT_COHORT_TERM,
+    cohorts: COURSE_COHORTS.map((cohort) => ({ ...cohort })),
+    students: (data.students || []).map((student) => ({
+      ...student,
+      cohort: normalizeCohortId(student.cohort),
+    })),
+  };
+}
+
 function loadData(): CourseData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -27,7 +40,7 @@ function loadData(): CourseData {
     if (!parsed.chapters) return structuredClone(SEED);
     parsed.chats = parsed.chats || {};
     if (!parsed.communications) parsed.communications = structuredClone(SEED.communications || []);
-    return parsed;
+    return withCurrentCohorts(parsed);
   } catch {
     return structuredClone(SEED);
   }
@@ -45,7 +58,7 @@ function loadSession(): Session | null {
 /** Dashboard filters live in the store so they survive a trip into a profile. */
 export interface CoachUi {
   cohort: string;
-  tab: "assignments" | "surveys" | "roster";
+  tab: "assignments" | "surveys" | "roster" | "bmcr";
   filter: "all" | "missing" | "questions" | "submitted";
   assignmentId: string;
 }
@@ -91,7 +104,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [chatOpen, setChatOpen] = useState(false);
   const [plannerAdjust, setPlannerAdjust] = useState(false);
   const [coach, setCoachState] = useState<CoachUi>({
-    cohort: "autumn26",
+    cohort: DEFAULT_COHORT_ID,
     tab: "assignments",
     filter: "all",
     assignmentId: DEFAULT_ASSIGNMENT_ID,

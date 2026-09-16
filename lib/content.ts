@@ -1,6 +1,6 @@
 import { allLessons } from "./course";
 import { getSupabase } from "./supabase";
-import type { Chapter, CourseData, Lesson, LessonType } from "./types";
+import type { Chapter, CourseData, FlatLesson, Lesson, LessonType } from "./types";
 
 export const LESSON_TYPES: LessonType[] = ["video", "reading", "assignment", "upload", "download", "ask", "survey"];
 
@@ -430,6 +430,57 @@ export async function fetchManagedCourse(): Promise<DbResult<ManagedChapter[]>> 
         lessons: grouped.get(id) || [],
       })),
   };
+}
+
+/** Assignment and survey lessons from live `public.lessons`, ordered by chapter then position. */
+export async function fetchLiveAssignmentLessons(): Promise<FlatLesson[]> {
+  const client = getSupabase();
+  if (!client) return [];
+  const [chapters, first] = await Promise.all([
+    client.from("chapters").select("id, title, position").order("position", { ascending: true }),
+    client
+      .from("lessons")
+      .select("id, title, type, due, survey_id, chapter_id, position")
+      .in("type", ["assignment", "survey"])
+      .order("chapter_id", { ascending: true })
+      .order("position", { ascending: true }),
+  ]);
+  const lessons =
+    first.error && /survey_id/i.test(first.error.message)
+      ? await client
+          .from("lessons")
+          .select("id, title, type, due, chapter_id, position")
+          .in("type", ["assignment", "survey"])
+          .order("chapter_id", { ascending: true })
+          .order("position", { ascending: true })
+      : first;
+  if (lessons.error || !lessons.data?.length) return [];
+  const titles = new Map((chapters.data || []).map((row) => [String(row.id), String(row.title || row.id)]));
+  const order = new Map((chapters.data || []).map((row, index) => [String(row.id), index]));
+  const chapterOf = (chapterId: string): Chapter => ({
+    id: chapterId,
+    title: titles.get(chapterId) || chapterId,
+    summary: "",
+    lessons: [],
+  });
+  return [...lessons.data]
+    .sort((left, right) => {
+      const leftChapter = order.get(String(left.chapter_id)) ?? 999;
+      const rightChapter = order.get(String(right.chapter_id)) ?? 999;
+      if (leftChapter !== rightChapter) return leftChapter - rightChapter;
+      return Number(left.position || 0) - Number(right.position || 0);
+    })
+    .map((row) => {
+      const record = row as Record<string, unknown>;
+      return {
+        id: String(record.id),
+        type: (record.type as LessonType) || "assignment",
+        title: String(record.title || "Untitled lesson"),
+        due: record.due != null ? String(record.due) : undefined,
+        survey_id: record.survey_id != null ? String(record.survey_id) : null,
+        chapter: chapterOf(String(record.chapter_id || "")),
+      };
+    });
 }
 
 async function rewriteChapterOrder(chapterId: string, lessonIds: string[]): Promise<DbResult> {

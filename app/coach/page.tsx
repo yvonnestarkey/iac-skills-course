@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useStore } from "@/lib/store";
 
 export default function CoachHomePage() {
-  const { data } = useStore();
+  const { data, setCoach } = useStore();
   const router = useRouter();
 
   return (
@@ -22,7 +22,16 @@ export default function CoachHomePage() {
           </button>
           <button onClick={() => router.push("/coach/lists")}>
             <strong>Student lists</strong>
-            <span className="muted">Assignments, surveys, and the roster</span>
+            <span className="muted">Assignments, surveys, roster, and BMCR analytics</span>
+          </button>
+          <button
+            onClick={() => {
+              setCoach({ tab: "bmcr" });
+              router.push("/coach/lists");
+            }}
+          >
+            <strong>BMCR Analytics</strong>
+            <span className="muted">Cohort conversion, diagnostic tiers, and task comparison</span>
           </button>
           <button onClick={() => router.push("/coach/preview")}>
             <strong>Course preview</strong>

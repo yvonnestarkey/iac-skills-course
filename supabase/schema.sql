@@ -158,7 +158,7 @@ create table if not exists public.profiles (
   email        text not null,
   full_name    text,
   role         text not null default 'student' check (role in ('student', 'coach', 'admin')),
-  cohort       text not null default 'autumn26',
+  cohort       text not null default 'jan27',
   last_active  date,
   created_at   timestamptz not null default now()
 );

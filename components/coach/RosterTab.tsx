@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import RosterFilterBuilder from "@/components/coach/RosterFilterBuilder";
+import { COURSE_COHORTS } from "@/lib/cohorts";
 import { labelForGroup } from "@/lib/comms";
 import {
   cohortName,
@@ -220,9 +221,9 @@ export default function RosterTab({
 
   const optionsByField = useMemo(() => {
     const source = optionStudents || students;
-    const cohortDefaults = (data.cohorts || [])
-      .map((cohort) => ({ value: cohort.id, label: cohort.name }))
-      .filter((option) => Boolean(cleanRosterOptionValue(option.value) && cleanRosterOptionValue(option.label)));
+    const cohortDefaults = COURSE_COHORTS.map((cohort) => ({ value: cohort.id, label: cohort.name })).filter(
+      (option) => Boolean(cleanRosterOptionValue(option.value) && cleanRosterOptionValue(option.label))
+    );
     const map: Partial<Record<RosterFilterField, RosterFilterOption[]>> = {};
     ROSTER_FILTER_FIELDS.forEach((field) => {
       if (field.kind !== "categorical") return;

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
 import ComposerBox from "@/components/ui/ComposerBox";
 import LinkedText from "@/components/ui/LinkedText";
-import { SEED } from "@/lib/seed";
+import { fetchLiveAssignmentLessons } from "@/lib/content";
 import {
   fetchInboxMessages,
   formatInboxTime,
@@ -15,12 +15,6 @@ import {
 } from "@/lib/inbox";
 import { useStore } from "@/lib/store";
 
-const assignmentLessons = SEED.chapters.flatMap((chapter) =>
-  chapter.lessons
-    .filter((lesson) => lesson.type === "assignment" || lesson.type === "upload")
-    .map((lesson) => ({ id: lesson.id, title: lesson.title, chapter: chapter.title }))
-);
-
 export default function CoachInbox() {
   const { data } = useStore();
   const [threads, setThreads] = useState<InboxThread[]>([]);
@@ -30,6 +24,7 @@ export default function CoachInbox() {
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [assignmentLessons, setAssignmentLessons] = useState<{ id: string; title: string; chapter: string }[]>([]);
 
   const load = useCallback(async () => {
     const result = await fetchInboxMessages();
@@ -49,6 +44,18 @@ export default function CoachInbox() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    fetchLiveAssignmentLessons().then((lessons) => {
+      setAssignmentLessons(
+        lessons.map((lesson) => ({
+          id: lesson.id,
+          title: lesson.title,
+          chapter: lesson.chapter.title,
+        }))
+      );
+    });
+  }, []);
 
   const queue = useMemo(() => threads.filter((thread) => thread.queued), [threads]);
   const selected = useMemo(

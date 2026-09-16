@@ -1,4 +1,5 @@
 import { SURVEY_QUESTIONS } from "./constants";
+import { normalizeCohortId } from "./cohorts";
 import { courseTasks, gradedLessons, hasWork, isDone, surveyFor, surveyLessons, surveyScore } from "./course";
 import type { CourseData, Student, SurveyAnswer } from "./types";
 
@@ -78,7 +79,8 @@ export function submittedCount(data: CourseData, student: Student): number {
 
 export function cohortStudents(data: CourseData, cohort: string): Student[] {
   if (cohort === "all") return data.students;
-  return data.students.filter((s) => s.cohort === cohort);
+  const wanted = normalizeCohortId(cohort);
+  return data.students.filter((s) => normalizeCohortId(s.cohort) === wanted);
 }
 
 export function cohortCompletion(data: CourseData, students: Student[]): number {
