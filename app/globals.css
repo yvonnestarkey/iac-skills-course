@@ -4339,11 +4339,33 @@ a.live-session-watch:hover {
   background: #f4f8f7;
 }
 
-.survey-rich-text a,
+.survey-rich-text a:not(.primary),
 .survey-form a:not(.primary) {
   color: #1f7b70;
   text-decoration: underline;
   word-break: break-word;
+}
+
+.survey-form .primary,
+.survey-form button.primary,
+.survey-form a.primary,
+.survey-rich-text .primary,
+.survey-rich-text a.primary,
+.survey-rich-text a.primary:link,
+.survey-rich-text a.primary:visited,
+.survey-info-card a.primary {
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+}
+
+.survey-form .primary:hover,
+.survey-form button.primary:hover,
+.survey-form a.primary:hover,
+.survey-rich-text .primary:hover,
+.survey-rich-text a.primary:hover,
+.survey-info-card a.primary:hover {
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
 }
 
 .survey-info-card {
