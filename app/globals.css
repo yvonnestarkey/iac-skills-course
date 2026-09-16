@@ -4452,13 +4452,11 @@ a.live-session-watch:hover {
   margin-bottom: 12px;
 }
 
-.student-feedback-lessons,
-.student-feedback-open {
+.student-feedback-lessons {
   margin-top: 28px;
 }
 
-.student-feedback-lessons h2,
-.student-feedback-open h2 {
+.student-feedback-lessons h2 {
   font-size: 22px;
   margin-bottom: 12px;
 }

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import StudentSurveyList from "@/components/student/StudentSurveyList";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Surveys · IAC Skills Course",
+  title: "Survey & assignment feedback · IAC Skills Course",
 };
 
 export default function StudentSurveysPage() {
-  return <StudentSurveyList />;
+  redirect("/student/feedback");
 }

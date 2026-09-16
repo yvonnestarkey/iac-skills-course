@@ -5,7 +5,6 @@ import Link from "next/link";
 import LinkedText from "@/components/ui/LinkedText";
 import { useCoursePreview } from "@/lib/course-preview";
 import {
-  fetchActiveCustomSurveys,
   fetchStudentSurveyPacks,
   hasCoachReview,
   studentSurveyPath,
@@ -28,8 +27,8 @@ const FILTERS: { id: FilterId; label: string }[] = [
 ];
 
 function hrefForSurvey(survey: CustomSurvey, lessonId?: string | null, basePath = "/student"): string {
-  if (survey.slug) return studentSurveyPath(survey.slug);
   if (lessonId) return `${basePath}/${lessonId}`;
+  if (survey.slug) return studentSurveyPath(survey.slug);
   return "/student/feedback";
 }
 
@@ -37,7 +36,6 @@ export default function StudentFeedbackHub() {
   const { user, outline, submissions } = useStudentSession();
   const { basePath } = useCoursePreview();
   const [packs, setPacks] = useState<{ survey: CustomSurvey; response: CustomSurveyResponse }[]>([]);
-  const [openSurveys, setOpenSurveys] = useState<CustomSurvey[]>([]);
   const [filter, setFilter] = useState<FilterId>("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -65,23 +63,22 @@ export default function StudentFeedbackHub() {
   useEffect(() => {
     if (!user?.id) return;
     let cancelled = false;
-    Promise.all([fetchStudentSurveyPacks(user.id), fetchActiveCustomSurveys()]).then(([own, active]) => {
-      if (cancelled) return;
-      setLoading(false);
-      setPacks(own);
-      if (!active.ok) {
-        setError(active.error || "Could not load open surveys.");
-        return;
-      }
-      setOpenSurveys(active.data);
-    });
+    fetchStudentSurveyPacks(user.id)
+      .then((own) => {
+        if (cancelled) return;
+        setLoading(false);
+        setPacks(own);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setLoading(false);
+        setError("Could not load your submissions.");
+      });
     return () => {
       cancelled = true;
     };
   }, [user?.id]);
 
-  const submittedIds = useMemo(() => new Set(packs.map((pack) => pack.survey.id)), [packs]);
-  const waiting = openSurveys.filter((survey) => !submittedIds.has(survey.id));
   const filteredPacks = packs.filter((pack) => {
     if (filter === "assignments") return pack.survey.isAssignment;
     if (filter === "surveys") return !pack.survey.isAssignment;
@@ -105,7 +102,7 @@ export default function StudentFeedbackHub() {
       <p className="kicker">Your work</p>
       <h1>Survey & assignment feedback</h1>
       <p className="lead">
-        Every form you have submitted, with your coach’s grade, comments, and files in one place.
+        Work you have already submitted, with your coach’s grade, comments, and files. New surveys stay in the course until you reach them.
       </p>
       {error ? <div className="notice">{error}</div> : null}
 
@@ -128,7 +125,7 @@ export default function StudentFeedbackHub() {
         <p className="empty">
           {packs.length
             ? "Nothing matches this filter yet."
-            : "No submissions yet. When you complete a survey or assignment, your coach’s feedback will appear here."}
+            : "No submissions yet. When you complete a survey or assignment in the course, your coach’s feedback will appear here."}
         </p>
       ) : null}
 
@@ -208,20 +205,6 @@ export default function StudentFeedbackHub() {
               </article>
             ))}
           </div>
-        </section>
-      ) : null}
-
-      {waiting.length ? (
-        <section className="student-feedback-open">
-          <h2>Still to complete</h2>
-          <nav className="student-hub" aria-label="Open surveys">
-            {waiting.map((survey) => (
-              <Link href={hrefForSurvey(survey, lessonBySurveyId.get(survey.id)?.id, basePath)} className="student-hub-card" key={survey.id}>
-                <strong>{survey.title}</strong>
-                <p>{survey.isAssignment ? "Assignment" : "Survey"} · not submitted yet</p>
-              </Link>
-            ))}
-          </nav>
         </section>
       ) : null}
     </article>
