@@ -17,6 +17,7 @@ import {
   setCustomSurveyActive,
   slugifySurveyTitle,
   studentSurveyPath,
+  uploadSurveyPdf,
   SURVEY_PLACE_END,
   SURVEY_PLACE_START,
   SURVEY_QUESTION_TYPES,
@@ -107,6 +108,7 @@ function draftFromSurvey(survey: CustomSurvey): SurveyDraft {
     description: survey.description,
     slug: survey.slug,
     isActive: survey.isActive,
+    pdfUrl: survey.pdfUrl || "",
     questions: survey.questions.length ? survey.questions : [newSurveyQuestion()],
   };
 }
@@ -376,6 +378,7 @@ export default function SurveyManager() {
                 </div>
                 <p className="muted small">
                   {survey.questions.length} question{survey.questions.length === 1 ? "" : "s"}
+                  {survey.pdfUrl ? " · Includes PDF" : ""}
                   {survey.isActive ? " · Active for students" : " · Draft"}
                 </p>
                 {chapters.length ? (
@@ -468,6 +471,22 @@ function SurveyEditor({
     () => studentSurveyPath(draft.slug.trim() || slugifySurveyTitle(draft.title)),
     [draft.slug, draft.title]
   );
+  const [uploadingPdf, setUploadingPdf] = useState(false);
+  const [pdfNotice, setPdfNotice] = useState("");
+
+  const pickPdf = async (file: File | null) => {
+    if (!file) return;
+    setUploadingPdf(true);
+    setPdfNotice("");
+    const result = await uploadSurveyPdf(file);
+    setUploadingPdf(false);
+    if (!result.ok || !result.url) {
+      setPdfNotice(result.error || "Could not upload that PDF. Paste a public URL instead.");
+      return;
+    }
+    onChange({ ...draft, pdfUrl: result.url });
+    setPdfNotice("PDF uploaded.");
+  };
 
   return (
     <section className="card survey-builder">
@@ -513,6 +532,43 @@ function SurveyEditor({
         onChange={(event) => onChange({ ...draft, description: event.target.value })}
         placeholder="Optional intro shown to students. URLs and [text](https://…) links become clickable."
       />
+      <label className="student-notes-label" htmlFor="survey-pdf">
+        Downloadable PDF
+      </label>
+      <input
+        id="survey-pdf"
+        className="select-line"
+        type="url"
+        value={draft.pdfUrl}
+        onChange={(event) => onChange({ ...draft, pdfUrl: event.target.value })}
+        placeholder="https://… (optional)"
+      />
+      <input
+        className="select-line"
+        type="file"
+        accept="application/pdf,.pdf"
+        disabled={busy || uploadingPdf}
+        onChange={(event) => {
+          void pickPdf(event.target.files && event.target.files[0]);
+          event.target.value = "";
+        }}
+      />
+      <p className="muted small">
+        Optional. Shown under the description so students can download a question paper, complete the work, then submit
+        results here. Paste a public URL or upload a PDF.
+        {uploadingPdf ? " Uploading…" : ""}
+      </p>
+      {pdfNotice ? <p className="muted small">{pdfNotice}</p> : null}
+      {draft.pdfUrl.trim() ? (
+        <div className="actions">
+          <a className="ghost" href={draft.pdfUrl.trim()} target="_blank" rel="noopener noreferrer">
+            Preview current PDF
+          </a>
+          <button className="ghost" type="button" onClick={() => onChange({ ...draft, pdfUrl: "" })}>
+            Remove PDF
+          </button>
+        </div>
+      ) : null}
       <label className="roster-check">
         <input
           type="checkbox"
@@ -714,8 +770,8 @@ function SurveyEditor({
         >
           + Add multi-select
         </button>
-        <button className="primary" type="button" disabled={busy} onClick={onSave}>
-          {busy ? "Saving…" : "Save survey"}
+        <button className="primary" type="button" disabled={busy || uploadingPdf} onClick={onSave}>
+          {busy ? "Saving…" : uploadingPdf ? "Uploading…" : "Save survey"}
         </button>
         <button className="ghost" type="button" onClick={onCancel}>
           Cancel

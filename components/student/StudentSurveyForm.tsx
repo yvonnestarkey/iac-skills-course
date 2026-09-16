@@ -18,6 +18,7 @@ import {
   type SurveyQuestion,
 } from "@/lib/custom-surveys";
 import { parseBmcrAnswer, stringifyBmcrAnswer } from "@/lib/bmcr";
+import LessonPdfViewer from "@/components/LessonPdfViewer";
 import LinkedText from "@/components/ui/LinkedText";
 
 export default function StudentSurveyForm({
@@ -159,6 +160,7 @@ export default function StudentSurveyForm({
           </>
         ) : null}
         <p className="lead">Thank you. Your response has been saved.</p>
+        <SurveyQuestionPdf survey={survey} submitted />
         {existing ? (
           <div className="work-list">
             {survey.questions.map((question) =>
@@ -204,6 +206,7 @@ export default function StudentSurveyForm({
           <LinkedText text={survey.description} />
         </p>
       ) : null}
+      <SurveyQuestionPdf survey={survey} />
       {error ? <div className="notice">{error}</div> : null}
       <form
         className="survey-form"
@@ -250,6 +253,22 @@ function Frame({
 }) {
   if (embedded) return <div className={className}>{children}</div>;
   return <article className={`lesson-body wide ${className || ""}`.trim()}>{children}</article>;
+}
+
+function SurveyQuestionPdf({ survey, submitted = false }: { survey: CustomSurvey; submitted?: boolean }) {
+  if (!survey.pdfUrl) return null;
+  return (
+    <LessonPdfViewer
+      pdfUrl={survey.pdfUrl}
+      heading="Question paper"
+      blurb={
+        submitted
+          ? "You can still download the PDF for this survey."
+          : "Download this PDF, complete the work, then enter your results in the survey below."
+      }
+      downloadLabel="Download PDF"
+    />
+  );
 }
 
 function SurveyInfoCard({ question }: { question: SurveyQuestion }) {

@@ -51,6 +51,7 @@ export interface CustomSurvey {
   description: string;
   slug: string;
   isActive: boolean;
+  pdfUrl: string;
   questions: SurveyQuestion[];
   createdAt: string;
   updatedAt: string;
@@ -71,6 +72,7 @@ export interface SurveyDraft {
   description: string;
   slug: string;
   isActive: boolean;
+  pdfUrl: string;
   questions: SurveyQuestion[];
 }
 
@@ -153,6 +155,7 @@ export function task2SelfEvaluationDraft(): SurveyDraft {
       "Self-evaluation for Task 2. Work through the checklist, name what got in the way, capture one takeaway, then complete the BMCR from your marked attempt.",
     slug: "task-2-case-study-planning-rtfq",
     isActive: false,
+    pdfUrl: "",
     questions: [
       templateQuestion("info-section-a", "info_link", "Section A — Task execution checklist", {
         helperText: "Be honest about how you actually worked this question, not how you meant to work it.",
@@ -203,6 +206,7 @@ export function emptySurveyDraft(): SurveyDraft {
     description: "",
     slug: "",
     isActive: false,
+    pdfUrl: "",
     questions: [newSurveyQuestion("short_text")],
   };
 }
@@ -241,6 +245,7 @@ function surveyFromRow(row: Record<string, unknown>): CustomSurvey {
     description: String(row.description || ""),
     slug: String(row.slug || ""),
     isActive: row.is_active === true,
+    pdfUrl: String(row.pdf_url || ""),
     questions: asSurveyQuestions(row.questions),
     createdAt: String(row.created_at || ""),
     updatedAt: String(row.updated_at || ""),
@@ -457,24 +462,58 @@ export async function saveCustomSurvey(
   );
   if (invalidLink) return { ok: false, error: `"${invalidLink.label}" has an invalid Resource URL.` };
 
-  const row = {
+  const pdfUrl = draft.pdfUrl.trim();
+  const row: Record<string, unknown> = {
     title,
     description: draft.description.trim(),
     slug,
     is_active: draft.isActive,
+    pdf_url: pdfUrl,
     questions,
     updated_at: new Date().toISOString(),
   };
 
-  const query = id
-    ? client.from("custom_surveys").update(row).eq("id", id).select("*").maybeSingle()
-    : client.from("custom_surveys").insert(row).select("*").maybeSingle();
-  const { data, error } = await query;
+  const write = (payload: Record<string, unknown>) =>
+    id
+      ? client.from("custom_surveys").update(payload).eq("id", id).select("*").maybeSingle()
+      : client.from("custom_surveys").insert(payload).select("*").maybeSingle();
+
+  let { data, error } = await write(row);
+  if (error && /pdf_url/i.test(error.message || "")) {
+    if (pdfUrl) {
+      return {
+        ok: false,
+        error:
+          "Paste this SQL in Supabase so survey PDFs can be stored:\n\nalter table public.custom_surveys add column if not exists pdf_url text;",
+      };
+    }
+    const withoutPdf = { ...row };
+    delete withoutPdf.pdf_url;
+    ({ data, error } = await write(withoutPdf));
+  }
   if (error) {
     if (error.code === "23505") return { ok: false, error: "That slug is already in use. Choose another." };
     return { ok: false, error: describe(error) };
   }
   return { ok: true, survey: data ? surveyFromRow(data as Record<string, unknown>) : undefined };
+}
+
+export async function uploadSurveyPdf(file: File): Promise<{ ok: boolean; error?: string; url?: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const name = file.name.toLowerCase();
+  if (!file.type.includes("pdf") && !name.endsWith(".pdf")) {
+    return { ok: false, error: "Please upload a PDF file." };
+  }
+  const path = `surveys/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.pdf`;
+  const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
+    upsert: true,
+    contentType: file.type || "application/pdf",
+  });
+  if (uploaded.error) return { ok: false, error: "Could not upload that PDF. Paste a public PDF URL instead." };
+  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
+  if (!data?.publicUrl) return { ok: false, error: "Could not get a public URL for that PDF." };
+  return { ok: true, url: data.publicUrl };
 }
 
 export async function setCustomSurveyActive(id: string, isActive: boolean): Promise<{ ok: boolean; error?: string }> {

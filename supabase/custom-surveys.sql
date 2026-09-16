@@ -18,6 +18,7 @@ alter table public.custom_surveys add column if not exists is_active boolean not
 alter table public.custom_surveys add column if not exists questions jsonb not null default '[]'::jsonb;
 alter table public.custom_surveys add column if not exists created_at timestamptz not null default now();
 alter table public.custom_surveys add column if not exists updated_at timestamptz not null default now();
+alter table public.custom_surveys add column if not exists pdf_url text;
 
 create unique index if not exists custom_surveys_slug_uidx
   on public.custom_surveys (slug);
