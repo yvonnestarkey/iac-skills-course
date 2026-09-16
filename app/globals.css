@@ -36,6 +36,12 @@ select,
 textarea,
 input {
   font: inherit;
+}
+
+button:not(.primary),
+select,
+textarea,
+input:not(.primary) {
   color: var(--ink);
 }
 
@@ -252,7 +258,9 @@ h1 {
   font-size: 14.5px;
 }
 
-.coach-preview-banner .primary {
+.coach-preview-banner .primary,
+.coach-preview-banner .primary:hover,
+.coach-preview-banner a.primary:hover {
   background: #e4d3bd;
   color: #1b2430;
   border: 0;
@@ -970,17 +978,49 @@ h1 {
   display: inline-block;
 }
 
-.primary {
+.primary,
+button.primary,
+a.primary,
+a.primary:link,
+a.primary:visited {
   background: var(--medium);
   border-color: var(--medium);
-  color: #fff;
+  color: #ffffff;
 }
 
-.primary:hover {
+.primary:hover,
+.primary:focus,
+.primary:focus-visible,
+.primary:active,
+.primary:disabled,
+button.primary:hover,
+button.primary:focus,
+button.primary:focus-visible,
+button.primary:active,
+button.primary:disabled,
+a.primary:hover,
+a.primary:focus,
+a.primary:focus-visible,
+a.primary:active,
+a.primary:visited:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.primary:hover,
+button.primary:hover,
+a.primary:hover,
+a.primary:visited:hover {
   background: var(--link);
   border-color: var(--link);
-  color: #fff;
-  text-decoration: none;
+}
+
+.primary:disabled,
+button.primary:disabled {
+  background: var(--medium);
+  border-color: var(--medium);
+  color: #ffffff;
+  opacity: 0.72;
 }
 
 .ghost:hover {
@@ -2061,7 +2101,7 @@ input[type="tel"]:focus {
   border-radius: 999px;
   padding: 12px 22px;
   background: var(--link);
-  color: #fff;
+  color: #ffffff;
   font-size: 14.5px;
   font-weight: 600;
   box-shadow: 0 10px 24px rgba(153, 15, 73, 0.32);
@@ -2069,6 +2109,7 @@ input[type="tel"]:focus {
 
 .download-btn:hover {
   background: #7d0c3c;
+  color: #ffffff;
 }
 
 .hero-ghost {
@@ -2549,6 +2590,7 @@ input[type="tel"]:focus {
 
 .widget-fab:hover {
   background: var(--link);
+  color: #ffffff;
 }
 
 .widget-fab span {
@@ -2767,7 +2809,7 @@ input[type="tel"]:focus {
     border-radius: 999px;
     padding: 6px 12px;
     background: var(--dark);
-    color: #fff;
+    color: #ffffff;
     font-size: 13.5px;
   }
 
@@ -2775,7 +2817,7 @@ input[type="tel"]:focus {
   .course-menu-btn:hover {
     background: var(--link);
     border-color: var(--link);
-    color: #fff;
+    color: #ffffff;
   }
 
   .nav-backdrop {
@@ -3053,7 +3095,7 @@ input[type="tel"]:focus {
 .dash-link:hover,
 .dash-link.active {
   background: var(--medium);
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -3327,16 +3369,20 @@ input[type="tel"]:focus {
   max-width: 280px;
 }
 
-.live-session-watch {
+.live-session-watch,
+a.live-session-watch,
+a.live-session-watch:link,
+a.live-session-watch:visited {
   background: var(--dark);
   border-color: var(--dark);
-  color: #fff;
+  color: #ffffff;
 }
 
-.live-session-watch:hover {
+.live-session-watch:hover,
+a.live-session-watch:hover {
   background: #2f4c47;
   border-color: #2f4c47;
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -3734,7 +3780,9 @@ input[type="tel"]:focus {
   color: rgba(255, 255, 255, 0.72);
 }
 
-.resume-banner .primary {
+.resume-banner .primary,
+.resume-banner .primary:hover,
+.resume-banner a.primary:hover {
   background: #fff;
   color: var(--dark);
 }
