@@ -39,8 +39,38 @@ export interface OnboardingInput {
   qualitative_notes: OnboardingNotes;
 }
 
-function tableMissing(message: string): boolean {
-  return /student_profiles/i.test(message) && /does not exist|schema cache|could not find/i.test(message);
+const GATE_CACHE_PREFIX = "iac-onboarding-done:";
+
+function readDoneCache(userId: string): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return sessionStorage.getItem(GATE_CACHE_PREFIX + userId) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeDoneCache(userId: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(GATE_CACHE_PREFIX + userId, "1");
+  } catch {
+    // Private mode may block sessionStorage.
+  }
+}
+
+export function clearOnboardingGateCache(): void {
+  if (typeof window === "undefined") return;
+  try {
+    const keys: string[] = [];
+    for (let i = 0; i < sessionStorage.length; i += 1) {
+      const key = sessionStorage.key(i);
+      if (key?.startsWith(GATE_CACHE_PREFIX)) keys.push(key);
+    }
+    keys.forEach((key) => sessionStorage.removeItem(key));
+  } catch {
+    // Ignore storage access errors.
+  }
 }
 
 function logSupabaseError(scope: string, error: { message: string; details?: string | null; hint?: string | null; code?: string }) {
@@ -62,7 +92,8 @@ export async function fetchOnboardingState(
 
   if (result.error) {
     logSupabaseError("fetchOnboardingState", result.error);
-    return { completed: false, skipped: false, available: !tableMissing(result.error.message) };
+    // Missing table or a transient idle/auth error: do not force the form again.
+    return { completed: false, skipped: false, available: false };
   }
 
   return {
@@ -97,7 +128,11 @@ export async function fetchSessionSkip(): Promise<boolean> {
 /** Profile completed, skipped this browser session, or onboarding table missing. */
 export async function fetchOnboardingGate(userId: string): Promise<"needed" | "done"> {
   const [state, skipped] = await Promise.all([fetchOnboardingState(userId), fetchSessionSkip()]);
-  if (skipped || !isOnboardingRequired(state)) return "done";
+  if (skipped || !isOnboardingRequired(state)) {
+    writeDoneCache(userId);
+    return "done";
+  }
+  if (readDoneCache(userId)) return "done";
   return "needed";
 }
 

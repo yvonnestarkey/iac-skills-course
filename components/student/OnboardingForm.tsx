@@ -44,7 +44,7 @@ export default function OnboardingForm({
   skipOnboarding: () => Promise<void>;
 }) {
   const router = useRouter();
-  const { ready, user, signOut } = useStudentSession();
+  const { ready, user, signOut, onboarding } = useStudentSession();
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -71,12 +71,12 @@ export default function OnboardingForm({
       router.replace("/student/login");
       return;
     }
-    if (isCoachAccount(user)) {
-      router.replace("/student");
+    if (isCoachAccount(user) || onboarding === "done") {
+      router.replace("/student/overview");
     }
-  }, [ready, user, router]);
+  }, [ready, user, onboarding, router]);
 
-  if (!ready || !user) {
+  if (!ready || !user || onboarding === "unknown" || onboarding === "done") {
     return (
       <div className="student-player">
         <header className="student-player-bar">

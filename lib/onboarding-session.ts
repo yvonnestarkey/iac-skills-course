@@ -7,12 +7,13 @@ const cookieBase = {
   secure: process.env.NODE_ENV === "production",
 };
 
-/** Session cookie: no maxAge/expires, so it dies when the browser session ends. */
+/** Skip survives tab sleep/discard; login still clears it for the next sign-in. */
 export function onboardingSkipCookieSet() {
   return {
     ...cookieBase,
     name: ONBOARDING_SKIP_COOKIE,
     value: "true",
+    maxAge: 60 * 60 * 12,
   };
 }
 

@@ -15,6 +15,7 @@ export async function skipOnboardingForSession() {
     path: skip.path,
     sameSite: skip.sameSite,
     secure: skip.secure,
+    maxAge: skip.maxAge,
   });
   redirect("/student/overview");
 }

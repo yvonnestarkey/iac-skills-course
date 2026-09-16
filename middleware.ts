@@ -65,9 +65,9 @@ export async function middleware(request: NextRequest) {
     .eq("student_id", user.id)
     .maybeSingle();
 
-  if (error && /does not exist|schema cache|could not find/i.test(error.message)) {
-    return response;
-  }
+  // After idle, JWT refresh can make this query fail. Do not bounce students
+  // who already passed the gate just because the profile row could not be read.
+  if (error) return response;
 
   if (profile?.onboarding_completed === true || profile?.onboarding_skipped === true) return response;
 

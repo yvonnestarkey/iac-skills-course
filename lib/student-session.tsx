@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { fetchOnboardingGate, clearOnboardingSkipCookie } from "./onboarding";
+import { fetchOnboardingGate, clearOnboardingSkipCookie, clearOnboardingGateCache } from "./onboarding";
 import { ensureStudentProfile } from "./profiles";
 import { isCoachAccount } from "./roles";
 import { getSupabase } from "./supabase";
@@ -81,22 +81,34 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
 
     const client = getSupabase();
     const subscription = client?.auth.onAuthStateChange((event, session) => {
-      const nextUser = session?.user ? studentUserFromAuth(session.user) : null;
-      setUser(nextUser);
-      if (nextUser) {
-        if (event === "SIGNED_IN" && !isCoachAccount(nextUser)) setOnboarding("unknown");
-        void loadProgress(nextUser.id);
-        if (isCoachAccount(nextUser)) {
-          setOnboarding("done");
-        } else {
-          fetchOnboardingGate(nextUser.id).then((gate) => setOnboarding(gate));
-        }
-      } else if (event === "SIGNED_OUT") {
+      // Idle JWT refresh must not re-run the onboarding gate or flash "unknown".
+      if (event === "TOKEN_REFRESHED" || event === "USER_UPDATED" || event === "INITIAL_SESSION") {
+        if (session?.user) setUser(studentUserFromAuth(session.user));
+        return;
+      }
+
+      if (event === "SIGNED_OUT") {
+        setUser(null);
         setCompleted({});
         setSubmissions({});
         setOnboarding("unknown");
+        clearOnboardingGateCache();
         void clearOnboardingSkipCookie();
+        return;
       }
+
+      if (event !== "SIGNED_IN" || !session?.user) return;
+
+      const nextUser = studentUserFromAuth(session.user);
+      setUser(nextUser);
+      void loadProgress(nextUser.id);
+      if (isCoachAccount(nextUser)) {
+        setOnboarding("done");
+        return;
+      }
+      fetchOnboardingGate(nextUser.id).then((gate) => {
+        setOnboarding((current) => (current === "done" ? "done" : gate));
+      });
     });
 
     return () => {
@@ -120,6 +132,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   const signOut = useCallback(async () => {
     await signOutStudent();
     await clearOnboardingSkipCookie();
+    clearOnboardingGateCache();
     setUser(null);
     setCompleted({});
     setSubmissions({});
