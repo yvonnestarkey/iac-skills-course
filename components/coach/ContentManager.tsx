@@ -9,16 +9,26 @@ import {
   checkLessonsTable,
   csvToDrafts,
   deleteLesson,
+  duplicateLesson,
+  fetchManagedCourse,
+  moveLessonToChapter,
   nextLessonId,
   pullLessons,
   pushLessons,
+  saveChapterOrder,
+  updateLessonFields,
+  uploadLessonBanner,
+  type ManagedChapter,
+  type ManagedLesson,
+  type LessonDraft,
+  type ParseResult,
 } from "@/lib/content";
-import type { LessonDraft, ParseResult } from "@/lib/content";
 import { supabaseConfigured, supabaseProjectRef } from "@/lib/supabase";
 import { useStore } from "@/lib/store";
-import type { Chapter, CourseData, Lesson } from "@/lib/types";
+import type { Chapter, Lesson } from "@/lib/types";
 import { fetchCustomSurveys, type CustomSurvey } from "@/lib/custom-surveys";
 import { invalidateCourseOutline } from "@/lib/student-lesson";
+import CourseOutlineBoard from "@/components/coach/CourseOutlineBoard";
 
 const BLANK = {
   chapter: "",
@@ -32,6 +42,8 @@ const BLANK = {
   due: "",
   brief: "",
   surveyId: "",
+  videoUrl: "",
+  bannerUrl: "",
 };
 
 /** New teaching work goes before the chapter's Ask the Coach and survey lessons. */
@@ -46,16 +58,6 @@ function insertLesson(chapter: Chapter, lesson: Lesson) {
   else chapter.lessons.splice(tail, 0, lesson);
 }
 
-function lessonInUse(data: CourseData, lessonId: string): boolean {
-  return data.students.some(
-    (s) =>
-      (s.completed || []).includes(lessonId) ||
-      Boolean((s.submissions || {})[lessonId]) ||
-      Boolean((s.uploads || {})[lessonId]) ||
-      Boolean((s.surveys || {})[lessonId])
-  );
-}
-
 export default function ContentManager() {
   const { data, mutate } = useStore();
   const [form, setForm] = useState({ ...BLANK, chapter: data.chapters[0].id });
@@ -65,11 +67,19 @@ export default function ContentManager() {
   const [status, setStatus] = useState<{ kind: "ok" | "warn"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [surveys, setSurveys] = useState<CustomSurvey[]>([]);
+  const [board, setBoard] = useState<ManagedChapter[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  const loadBoard = async () => {
+    const result = await fetchManagedCourse();
+    if (result.ok && result.data) setBoard(result.data);
+  };
 
   useEffect(() => {
     fetchCustomSurveys().then((result) => {
       if (result.ok) setSurveys(result.data);
     });
+    void loadBoard();
   }, []);
 
   const set = (next: Partial<typeof BLANK>) => setForm((current) => ({ ...current, ...next }));
@@ -104,8 +114,10 @@ export default function ContentManager() {
     addDrafts([{ chapterId: chapter.id, lesson }]);
     const problem = await saveToDb([{ chapterId: chapter.id, lesson }], chapter.lessons.length);
     invalidateCourseOutline();
+    await loadBoard();
     setBusy(false);
     setForm({ ...BLANK, chapter: chapter.id, type: form.type });
+    setEditingId(null);
     setStatus({
       kind: problem ? "warn" : "ok",
       text: `“${lesson.title}” added to ${chapter.title} and it is live in the student sidebar.${problem}`,
@@ -135,6 +147,7 @@ export default function ContentManager() {
     addDrafts(parsed.drafts);
     const problem = await saveToDb(parsed.drafts, 100);
     invalidateCourseOutline();
+    await loadBoard();
     setBusy(false);
     setCsv("");
     setPreview(null);
@@ -167,6 +180,7 @@ export default function ContentManager() {
     }
     const drafts = result.data.filter((d) => data.chapters.some((c) => c.id === d.chapterId));
     addDrafts(drafts);
+    await loadBoard();
     setStatus({ kind: "ok", text: `Loaded ${drafts.length} lesson(s) from Supabase into the course.` });
   };
 
@@ -176,7 +190,123 @@ export default function ContentManager() {
       if (chapter) chapter.lessons = chapter.lessons.filter((l) => l.id !== lessonId);
     });
     if (supabaseConfigured) await deleteLesson(lessonId);
+    invalidateCourseOutline();
+    await loadBoard();
     setStatus({ kind: "ok", text: `Removed ${lessonId}.` });
+  };
+
+  const duplicate = async (lessonId: string) => {
+    setBusy(true);
+    const result = await duplicateLesson(lessonId);
+    setBusy(false);
+    if (!result.ok) {
+      setStatus({ kind: "warn", text: result.error || "Could not duplicate that lesson." });
+      return;
+    }
+    invalidateCourseOutline();
+    await loadBoard();
+    setStatus({ kind: "ok", text: `Duplicated “${result.data?.title}”. It sits just after the original.` });
+  };
+
+  const reorder = async (chapterId: string, lessonIds: string[]) => {
+    setBoard((current) =>
+      current.map((chapter) => {
+        if (chapter.id !== chapterId) return chapter;
+        const map = new Map(chapter.lessons.map((lesson) => [lesson.id, lesson]));
+        return { ...chapter, lessons: lessonIds.map((id) => map.get(id)).filter(Boolean) as ManagedLesson[] };
+      })
+    );
+    const result = await saveChapterOrder(chapterId, lessonIds);
+    if (!result.ok) {
+      setStatus({ kind: "warn", text: result.error || "Could not save the new order." });
+      await loadBoard();
+      return;
+    }
+    invalidateCourseOutline();
+  };
+
+  const moveLesson = async (lessonId: string, fromChapterId: string, toChapterId: string, toIndex?: number) => {
+    const result = await moveLessonToChapter(lessonId, fromChapterId, toChapterId, toIndex);
+    if (!result.ok) {
+      setStatus({ kind: "warn", text: result.error || "Could not move that lesson." });
+      return;
+    }
+    invalidateCourseOutline();
+    await loadBoard();
+    setStatus({ kind: "ok", text: "Lesson moved." });
+  };
+
+  const startEdit = (lesson: ManagedLesson) => {
+    setEditingId(lesson.id);
+    setForm({
+      chapter: lesson.chapter_id,
+      type: lesson.type,
+      title: lesson.title,
+      duration: lesson.duration || "",
+      seconds: lesson.seconds ? String(lesson.seconds) : "",
+      blurb: lesson.blurb || "",
+      body: Array.isArray(lesson.body) ? lesson.body.join("\n") : String(lesson.body || ""),
+      takeaways: Array.isArray(lesson.takeaways) ? lesson.takeaways.join("\n") : String(lesson.takeaways || ""),
+      due: lesson.due || "",
+      brief: lesson.brief || "",
+      surveyId: lesson.survey_id || "",
+      videoUrl: lesson.video_url || "",
+      bannerUrl: lesson.banner_image_url || "",
+    });
+    setStatus({ kind: "ok", text: `Editing “${lesson.title}”.` });
+  };
+
+  const saveEdit = async () => {
+    if (!editingId) return;
+    if (!form.title.trim()) {
+      setStatus({ kind: "warn", text: "Give the lesson a title first." });
+      return;
+    }
+    setBusy(true);
+    const result = await updateLessonFields(editingId, {
+      chapter_id: form.chapter,
+      type: form.type,
+      title: form.title.trim(),
+      duration: form.duration.trim() || null,
+      seconds: form.seconds ? Number(form.seconds) : null,
+      blurb: form.blurb.trim() || null,
+      body: form.body
+        .split(/\n/)
+        .map((line) => line.trim())
+        .filter(Boolean),
+      takeaways: form.takeaways
+        .split(/\n/)
+        .map((line) => line.trim())
+        .filter(Boolean),
+      due: form.due.trim() || null,
+      brief: form.brief.trim() || null,
+      survey_id: form.surveyId || null,
+      video_url: form.videoUrl.trim() || null,
+      banner_image_url: form.bannerUrl.trim() || null,
+    });
+    setBusy(false);
+    if (!result.ok) {
+      setStatus({ kind: "warn", text: result.error || "Could not save that lesson." });
+      return;
+    }
+    invalidateCourseOutline();
+    await loadBoard();
+    setEditingId(null);
+    setForm({ ...BLANK, chapter: form.chapter, type: form.type });
+    setStatus({ kind: "ok", text: "Lesson saved." });
+  };
+
+  const pickBanner = async (file: File | null) => {
+    if (!file) return;
+    setBusy(true);
+    const result = await uploadLessonBanner(file);
+    setBusy(false);
+    if (!result.ok || !result.data) {
+      setStatus({ kind: "warn", text: result.error || "Could not upload that image. Paste a public URL instead." });
+      return;
+    }
+    set({ bannerUrl: result.data });
+    setStatus({ kind: "ok", text: "Banner image uploaded." });
   };
 
   const downloadTemplate = () => {
@@ -234,7 +364,7 @@ export default function ContentManager() {
 
       <div className="profile-grid">
         <section className="card">
-          <h2>Add a lesson</h2>
+          <h2>{editingId ? "Edit lesson" : "Add a lesson"}</h2>
           <div className="plan-field">
             <label htmlFor="cm-chapter">
               <strong>Chapter</strong>
@@ -311,6 +441,21 @@ export default function ContentManager() {
                   </span>
                 </div>
               </div>
+              {form.type === "video" ? (
+                <div className="plan-field">
+                  <label htmlFor="cm-video">
+                    <strong>Video URL</strong>
+                  </label>
+                  <input
+                    id="cm-video"
+                    type="url"
+                    className="select-line"
+                    placeholder="https://player.vimeo.com/video/…"
+                    value={form.videoUrl}
+                    onChange={(event) => set({ videoUrl: event.target.value })}
+                  />
+                </div>
+              ) : null}
               <div className="plan-field">
                 <label htmlFor="cm-blurb">
                   <strong>Lead line</strong>
@@ -418,10 +563,55 @@ export default function ContentManager() {
               />
             </div>
           ) : null}
+          <div className="plan-field">
+            <label htmlFor="cm-banner">
+              <strong>Header banner image</strong>
+            </label>
+            <input
+              id="cm-banner"
+              type="url"
+              className="select-line"
+              placeholder="https://… (optional)"
+              value={form.bannerUrl}
+              onChange={(event) => set({ bannerUrl: event.target.value })}
+            />
+            <input
+              className="select-line"
+              type="file"
+              accept="image/*"
+              onChange={(event) => {
+                void pickBanner(event.target.files && event.target.files[0]);
+                event.target.value = "";
+              }}
+            />
+            <p className="muted small">Paste a public URL or upload an image. Leave empty for no banner.</p>
+            {form.bannerUrl.trim() ? (
+              <img className="lesson-banner-preview" src={form.bannerUrl.trim()} alt="" />
+            ) : null}
+          </div>
           <div className="actions">
-            <button className="primary" onClick={addLesson} disabled={busy}>
-              Add lesson
+            <button
+              className="primary"
+              onClick={() => {
+                if (editingId) void saveEdit();
+                else void addLesson();
+              }}
+              disabled={busy}
+            >
+              {busy ? "Saving…" : editingId ? "Save lesson" : "Add lesson"}
             </button>
+            {editingId ? (
+              <button
+                className="ghost"
+                type="button"
+                onClick={() => {
+                  setEditingId(null);
+                  setForm({ ...BLANK, chapter: form.chapter, type: form.type });
+                }}
+              >
+                Cancel edit
+              </button>
+            ) : null}
           </div>
         </section>
 
@@ -503,50 +693,26 @@ export default function ContentManager() {
           <div>
             <h2>Course content</h2>
             <p className="muted small">
-              {data.chapters.reduce((sum, c) => sum + c.lessons.length, 0)} lessons across {data.chapters.length}{" "}
-              chapters. Lessons with student work cannot be removed.
+              Duplicate a lesson to clone its video, reading, survey, and banner. Drag to reorder, or move it to another
+              chapter.
             </p>
           </div>
         </div>
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Chapter</th>
-              <th>Type</th>
-              <th>Title</th>
-              <th>Detail</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {data.chapters.flatMap((chapter) =>
-              chapter.lessons.map((lesson) => {
-                const used = lessonInUse(data, lesson.id);
-                return (
-                  <tr key={lesson.id}>
-                    <td className="muted small">{lesson.id}</td>
-                    <td className="muted small">{chapter.title.split(" · ")[0]}</td>
-                    <td className="muted small">{lesson.type}</td>
-                    <td>
-                      <strong>{lesson.title}</strong>
-                    </td>
-                    <td className="muted small">{lesson.duration || lesson.due || "—"}</td>
-                    <td>
-                      {used ? (
-                        <span className="muted small">in use</span>
-                      ) : (
-                        <button className="link-btn" onClick={() => removeLesson(chapter.id, lesson.id)}>
-                          Remove
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+        {board.length ? (
+          <CourseOutlineBoard
+            chapters={board}
+            busy={busy}
+            onDuplicate={(id) => void duplicate(id)}
+            onRemove={removeLesson}
+            onEdit={startEdit}
+            onMove={(lessonId, fromChapterId, toChapterId, toIndex) =>
+              void moveLesson(lessonId, fromChapterId, toChapterId, toIndex)
+            }
+            onReorder={(chapterId, lessonIds) => void reorder(chapterId, lessonIds)}
+          />
+        ) : (
+          <p className="empty">Load lessons from Supabase to duplicate, drag, and edit the live course outline.</p>
+        )}
       </section>
     </>
   );

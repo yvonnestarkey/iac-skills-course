@@ -601,6 +601,22 @@ h1 {
   border-bottom: 1px solid var(--line);
 }
 
+.lesson-header-banner {
+  width: 100%;
+  margin: 0 0 18px;
+  border-radius: 14px;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.lesson-header-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: cover;
+}
+
 .lesson-body.wide {
   width: 100%;
   max-width: none;
@@ -4072,6 +4088,96 @@ input[type="tel"]:focus {
 .survey-attach-row .select-line {
   flex: 1;
   min-width: 180px;
+}
+
+.course-outline-chapter {
+  margin-top: 18px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.course-outline-chapter:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.course-outline-chapter h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.course-outline-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.course-outline-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.course-outline-item.dragging {
+  opacity: 0.55;
+}
+
+.course-outline-handle {
+  color: var(--muted);
+  cursor: grab;
+  display: grid;
+  place-items: center;
+}
+
+.course-outline-copy {
+  min-width: 0;
+}
+
+.course-outline-copy strong {
+  display: block;
+  font-size: 14.5px;
+}
+
+.course-outline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.course-outline-actions .select-line {
+  width: min(220px, 100%);
+}
+
+@media (max-width: 900px) {
+  .course-outline-item {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+
+  .course-outline-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+
+.lesson-banner-preview {
+  display: block;
+  width: 100%;
+  max-height: 140px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 8px;
+  border: 1px solid var(--line);
 }
 
 .survey-question-card.survey-info-block {

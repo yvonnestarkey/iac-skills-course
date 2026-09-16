@@ -139,6 +139,7 @@ export function buildLesson(id: string, fields: Record<string, string>): Lesson 
     lesson.body = splitList(fields.body).length ? splitList(fields.body) : [lesson.blurb];
     if (splitList(fields.takeaways).length) lesson.takeaways = splitList(fields.takeaways);
     if (type === "video") lesson.seconds = secondsFrom(fields.duration, fields.seconds);
+    if (type === "video" && fields.videoUrl?.trim()) lesson.video_url = fields.videoUrl.trim();
   } else if (type === "assignment" || type === "upload") {
     lesson.due = fields.due.trim() || "TBC";
     lesson.brief = fields.brief.trim() || fields.blurb.trim() || lesson.title;
@@ -153,6 +154,7 @@ export function buildLesson(id: string, fields: Record<string, string>): Lesson 
       if (fields.brief.trim()) lesson.brief = fields.brief.trim();
     }
   }
+  if (fields.bannerUrl?.trim()) lesson.banner_image_url = fields.bannerUrl.trim();
   return lesson;
 }
 
@@ -214,6 +216,8 @@ export interface LessonRow {
   due: string | null;
   brief: string | null;
   survey_id?: string | null;
+  video_url?: string | null;
+  banner_image_url?: string | null;
 }
 
 export function draftToRow(draft: LessonDraft, position: number): LessonRow {
@@ -232,6 +236,8 @@ export function draftToRow(draft: LessonDraft, position: number): LessonRow {
     due: l.due || null,
     brief: l.brief || null,
     survey_id: l.survey_id || null,
+    video_url: l.video_url || null,
+    banner_image_url: l.banner_image_url || null,
   };
 }
 
@@ -245,6 +251,8 @@ export function rowToDraft(row: LessonRow): LessonDraft {
   if (row.due) lesson.due = row.due;
   if (row.brief) lesson.brief = row.brief;
   if (row.survey_id) lesson.survey_id = row.survey_id;
+  if (row.video_url) lesson.video_url = row.video_url;
+  if (row.banner_image_url) lesson.banner_image_url = row.banner_image_url;
   return { chapterId: row.chapter_id, lesson };
 }
 
@@ -273,13 +281,7 @@ export async function pushLessons(drafts: LessonDraft[], startPosition: number):
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
   const rows = drafts.map((draft, i) => draftToRow(draft, startPosition + i));
-  const first = await client.from("lessons").upsert(rows, { onConflict: "id" });
-  if (!first.error) return { ok: true };
-  if (!/survey_id/i.test(first.error.message)) return { ok: false, error: describe(first.error) };
-  const stripped = rows.map(({ survey_id: _surveyId, ...row }) => row);
-  const { error } = await client.from("lessons").upsert(stripped, { onConflict: "id" });
-  if (error) return { ok: false, error: describe(error) };
-  return { ok: true };
+  return upsertLessonRows(rows as unknown as Record<string, unknown>[]);
 }
 
 export async function pullLessons(): Promise<DbResult<LessonDraft[]>> {
@@ -300,4 +302,237 @@ export async function deleteLesson(id: string): Promise<DbResult> {
   const { error } = await client.from("lessons").delete().eq("id", id);
   if (error) return { ok: false, error: describe(error) };
   return { ok: true };
+}
+
+const OPTIONAL_LESSON_COLUMNS = ["survey_id", "banner_image_url", "video_url", "video_urls", "pdf_url"];
+
+async function upsertLessonRows(rows: Record<string, unknown>[]): Promise<DbResult> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  let payload: Record<string, unknown>[] = rows.map((row) => ({ ...row }));
+  for (let attempt = 0; attempt < OPTIONAL_LESSON_COLUMNS.length + 1; attempt += 1) {
+    const { error } = await client.from("lessons").upsert(payload, { onConflict: "id" });
+    if (!error) return { ok: true };
+    const missing = OPTIONAL_LESSON_COLUMNS.find((column) => payload.some((row) => column in row) && error.message.includes(column));
+    if (!missing) return { ok: false, error: describe(error) };
+    payload = payload.map((row) => {
+      const next = { ...row };
+      delete next[missing];
+      return next;
+    });
+  }
+  return { ok: false, error: "Could not save lessons." };
+}
+
+export interface ManagedLesson {
+  id: string;
+  chapter_id: string;
+  position: number;
+  type: LessonType;
+  title: string;
+  duration: string | null;
+  seconds: number | null;
+  blurb: string | null;
+  body: unknown;
+  takeaways: unknown;
+  due: string | null;
+  brief: string | null;
+  video_url: string | null;
+  video_urls: unknown;
+  pdf_url: string | null;
+  survey_id: string | null;
+  banner_image_url: string | null;
+  requires_submission: boolean | null;
+  requires_coach_approval: boolean | null;
+  prereq_lesson_id: string | null;
+  resource_downloads: unknown;
+  unlock_at: string | null;
+}
+
+export interface ManagedChapter {
+  id: string;
+  title: string;
+  lessons: ManagedLesson[];
+}
+
+function asManagedLesson(row: Record<string, unknown>): ManagedLesson {
+  return {
+    id: String(row.id),
+    chapter_id: String(row.chapter_id || ""),
+    position: Number(row.position || 0),
+    type: (row.type as LessonType) || "reading",
+    title: String(row.title || "Untitled lesson"),
+    duration: row.duration != null ? String(row.duration) : null,
+    seconds: typeof row.seconds === "number" ? row.seconds : null,
+    blurb: row.blurb != null ? String(row.blurb) : null,
+    body: row.body ?? null,
+    takeaways: row.takeaways ?? null,
+    due: row.due != null ? String(row.due) : null,
+    brief: row.brief != null ? String(row.brief) : null,
+    video_url: row.video_url != null ? String(row.video_url) : null,
+    video_urls: row.video_urls ?? null,
+    pdf_url: row.pdf_url != null ? String(row.pdf_url) : null,
+    survey_id: row.survey_id != null ? String(row.survey_id) : null,
+    banner_image_url: row.banner_image_url != null ? String(row.banner_image_url) : null,
+    requires_submission: typeof row.requires_submission === "boolean" ? row.requires_submission : null,
+    requires_coach_approval: typeof row.requires_coach_approval === "boolean" ? row.requires_coach_approval : null,
+    prereq_lesson_id: row.prereq_lesson_id != null ? String(row.prereq_lesson_id) : null,
+    resource_downloads: row.resource_downloads ?? null,
+    unlock_at: row.unlock_at != null ? String(row.unlock_at) : null,
+  };
+}
+
+export function copyLessonTitle(title: string, existingTitles: string[] = []): string {
+  const base = title.replace(/\s*\(Copy(?:\s+\d+)?\)\s*$/i, "").trim() || title.trim();
+  const names = new Set(existingTitles.map((item) => item.trim().toLowerCase()));
+  let next = `${base} (Copy)`;
+  let n = 2;
+  while (names.has(next.toLowerCase())) {
+    next = `${base} (Copy ${n})`;
+    n += 1;
+  }
+  return next;
+}
+
+function duplicateId(originalId: string, taken: Set<string>): string {
+  const root = originalId.slice(0, 64);
+  const base = `${root}-copy`;
+  if (!taken.has(base)) return base;
+  let n = 2;
+  while (taken.has(`${root}-copy${n}`)) n += 1;
+  return `${root}-copy${n}`.slice(0, 80);
+}
+
+export async function fetchManagedCourse(): Promise<DbResult<ManagedChapter[]>> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
+  const chapters = await client.from("chapters").select("id, title, position").order("position", { ascending: true });
+  const lessons = await client.from("lessons").select("*").order("chapter_id", { ascending: true }).order("position", { ascending: true });
+  if (lessons.error) return { ok: false, error: describe(lessons.error), data: [] };
+  const grouped = new Map<string, ManagedLesson[]>();
+  (lessons.data || []).forEach((row) => {
+    const lesson = asManagedLesson(row as Record<string, unknown>);
+    const list = grouped.get(lesson.chapter_id) || [];
+    list.push(lesson);
+    grouped.set(lesson.chapter_id, list);
+  });
+  const chapterRows = chapters.data || [];
+  const ids = chapterRows.length ? chapterRows.map((row) => String(row.id)) : [...grouped.keys()];
+  const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
+  const meta = new Map(chapterRows.map((row) => [String(row.id), String(row.title || row.id)]));
+  return {
+    ok: true,
+    data: [...ids, ...extra]
+      .filter((id) => grouped.has(id) || meta.has(id))
+      .map((id) => ({
+        id,
+        title: meta.get(id) || id,
+        lessons: grouped.get(id) || [],
+      })),
+  };
+}
+
+async function rewriteChapterOrder(chapterId: string, lessonIds: string[]): Promise<DbResult> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const updates = lessonIds.map((id, index) =>
+    client.from("lessons").update({ chapter_id: chapterId, position: index + 1 }).eq("id", id)
+  );
+  const results = await Promise.all(updates);
+  const failed = results.find((result) => result.error);
+  if (failed?.error) return { ok: false, error: describe(failed.error) };
+  return { ok: true };
+}
+
+export async function duplicateLesson(lessonId: string): Promise<DbResult<ManagedLesson>> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const { data, error } = await client.from("lessons").select("*").eq("id", lessonId).maybeSingle();
+  if (error) return { ok: false, error: describe(error) };
+  if (!data) return { ok: false, error: "Lesson not found in Supabase. Load lessons from the database first." };
+  const source = data as Record<string, unknown>;
+  const chapterId = String(source.chapter_id || "");
+  const siblings = await client
+    .from("lessons")
+    .select("id, title, position")
+    .eq("chapter_id", chapterId)
+    .order("position", { ascending: true });
+  if (siblings.error) return { ok: false, error: describe(siblings.error) };
+  const rows = siblings.data || [];
+  const index = rows.findIndex((row) => String(row.id) === lessonId);
+  const taken = new Set(rows.map((row) => String(row.id)));
+  const newId = duplicateId(lessonId, taken);
+  const clone: Record<string, unknown> = { ...source };
+  delete clone.created_at;
+  delete clone.updated_at;
+  clone.id = newId;
+  clone.title = copyLessonTitle(String(source.title || "Untitled lesson"), rows.map((row) => String(row.title || "")));
+  clone.chapter_id = chapterId;
+  clone.position = Number(source.position || index + 1) + 1;
+  const inserted = await upsertLessonRows([clone]);
+  if (!inserted.ok) return inserted;
+  const ordered = rows.map((row) => String(row.id));
+  ordered.splice(Math.max(index, 0) + 1, 0, newId);
+  const rewritten = await rewriteChapterOrder(chapterId, ordered);
+  if (!rewritten.ok) return rewritten;
+  return { ok: true, data: asManagedLesson(clone) };
+}
+
+export async function saveChapterOrder(chapterId: string, lessonIds: string[]): Promise<DbResult> {
+  return rewriteChapterOrder(chapterId, lessonIds);
+}
+
+export async function moveLessonToChapter(
+  lessonId: string,
+  fromChapterId: string,
+  toChapterId: string,
+  toIndex?: number
+): Promise<DbResult> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const fromRows = await client.from("lessons").select("id").eq("chapter_id", fromChapterId).order("position", { ascending: true });
+  const toRows =
+    fromChapterId === toChapterId
+      ? fromRows
+      : await client.from("lessons").select("id").eq("chapter_id", toChapterId).order("position", { ascending: true });
+  if (fromRows.error) return { ok: false, error: describe(fromRows.error) };
+  if (toRows.error) return { ok: false, error: describe(toRows.error) };
+  const fromIds = (fromRows.data || []).map((row) => String(row.id)).filter((id) => id !== lessonId);
+  const toIds = (toRows.data || []).map((row) => String(row.id)).filter((id) => id !== lessonId);
+  const insertAt = toIndex == null ? toIds.length : Math.max(0, Math.min(toIndex, toIds.length));
+  toIds.splice(insertAt, 0, lessonId);
+  if (fromChapterId !== toChapterId) {
+    const fromResult = await rewriteChapterOrder(fromChapterId, fromIds);
+    if (!fromResult.ok) return fromResult;
+  }
+  return rewriteChapterOrder(toChapterId, toIds);
+}
+
+export async function updateLessonFields(id: string, patch: Record<string, unknown>): Promise<DbResult> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  let payload: Record<string, unknown> = { ...patch };
+  for (let attempt = 0; attempt < OPTIONAL_LESSON_COLUMNS.length + 1; attempt += 1) {
+    const { error } = await client.from("lessons").update(payload).eq("id", id);
+    if (!error) return { ok: true };
+    const missing = OPTIONAL_LESSON_COLUMNS.find((column) => column in payload && error.message.includes(column));
+    if (!missing) return { ok: false, error: describe(error) };
+    delete payload[missing];
+  }
+  return { ok: false, error: "Could not update the lesson." };
+}
+
+export async function uploadLessonBanner(file: File): Promise<DbResult<string>> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+  const path = `banners/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const buckets = ["course-pdfs", "lesson-banners"];
+  for (const bucket of buckets) {
+    const uploaded = await client.storage.from(bucket).upload(path, file, { upsert: true, contentType: file.type || "image/jpeg" });
+    if (uploaded.error) continue;
+    const { data } = client.storage.from(bucket).getPublicUrl(path);
+    if (data?.publicUrl) return { ok: true, data: data.publicUrl };
+  }
+  return { ok: false, error: "Could not upload that image. Paste a public image URL instead." };
 }

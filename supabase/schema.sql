@@ -30,6 +30,7 @@ alter table public.lessons add column if not exists requires_coach_approval bool
 alter table public.lessons add column if not exists prereq_lesson_id text;
 alter table public.lessons add column if not exists pdf_url text;
 alter table public.lessons add column if not exists survey_id uuid;
+alter table public.lessons add column if not exists banner_image_url text;
 
 alter table public.lessons enable row level security;
 

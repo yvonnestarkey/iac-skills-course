@@ -147,6 +147,11 @@ export default function StudentPlayer({
       {kind === "video" ? <VideoPlayer lesson={lesson} /> : null}
 
       <article className="lesson-body">
+        {lesson.banner_image_url ? (
+          <div className="lesson-header-banner">
+            <img src={lesson.banner_image_url} alt="" />
+          </div>
+        ) : null}
         <p className="kicker">
           <LessonTypeIcon type={kind} title={lesson.title} size={13} />
           {lessonTypeLabel(kind)}
