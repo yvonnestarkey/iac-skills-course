@@ -274,7 +274,11 @@ export const SURVEY_PLACE_END = "__end__";
 export type CourseChapterOption = {
   id: string;
   title: string;
-  lessons: { id: string; title: string }[];
+};
+
+export type ChapterLessonOption = {
+  id: string;
+  title: string;
 };
 
 export function insertIndexAfterLesson(lessonIds: string[], afterLessonId?: string | null): number {
@@ -284,6 +288,15 @@ export function insertIndexAfterLesson(lessonIds: string[], afterLessonId?: stri
   return index >= 0 ? index + 1 : lessonIds.length;
 }
 
+export function sortSurveysNewestFirst(surveys: CustomSurvey[]): CustomSurvey[] {
+  return [...surveys].sort((left, right) => {
+    const leftTime = Date.parse(left.updatedAt || left.createdAt || "") || 0;
+    const rightTime = Date.parse(right.updatedAt || right.createdAt || "") || 0;
+    if (rightTime !== leftTime) return rightTime - leftTime;
+    return (right.createdAt || right.id).localeCompare(left.createdAt || left.id);
+  });
+}
+
 export async function fetchCourseChapters(): Promise<{
   ok: boolean;
   error?: string;
@@ -291,26 +304,33 @@ export async function fetchCourseChapters(): Promise<{
 }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
-  const [chapters, lessons] = await Promise.all([
-    client.from("chapters").select("id, title, position").order("position", { ascending: true }),
-    client.from("lessons").select("id, title, chapter_id, position").order("chapter_id", { ascending: true }).order("position", { ascending: true }),
-  ]);
-  if (chapters.error) return { ok: false, error: chapters.error.message, data: [] };
-  if (lessons.error) return { ok: false, error: lessons.error.message, data: [] };
-  const grouped = new Map<string, { id: string; title: string }[]>();
-  (lessons.data || []).forEach((row) => {
-    const chapterId = String(row.chapter_id || "");
-    const list = grouped.get(chapterId) || [];
-    list.push({ id: String(row.id), title: String(row.title || row.id) });
-    grouped.set(chapterId, list);
-  });
+  const { data, error } = await client.from("chapters").select("id, title, position").order("position", { ascending: true });
+  if (error) return { ok: false, error: error.message, data: [] };
   return {
     ok: true,
-    data: (chapters.data || []).map((row) => ({
-      id: String(row.id),
-      title: String(row.title || row.id),
-      lessons: grouped.get(String(row.id)) || [],
-    })),
+    data: (data || []).map((row) => ({ id: String(row.id), title: String(row.title || row.id) })),
+  };
+}
+
+export async function fetchChapterLessons(chapterId: string): Promise<{
+  ok: boolean;
+  error?: string;
+  data: ChapterLessonOption[];
+}> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
+  const chapter = chapterId.trim();
+  if (!chapter) return { ok: true, data: [] };
+  const { data, error } = await client
+    .from("lessons")
+    .select("id, title, position")
+    .eq("chapter_id", chapter)
+    .order("position", { ascending: true })
+    .limit(1000);
+  if (error) return { ok: false, error: describe(error), data: [] };
+  return {
+    ok: true,
+    data: (data || []).map((row) => ({ id: String(row.id), title: String(row.title || row.id) })),
   };
 }
 
@@ -365,14 +385,19 @@ export async function attachSurveyToChapter(
 export async function fetchCustomSurveys(): Promise<{ ok: boolean; error?: string; data: CustomSurvey[] }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
-  const { data, error } = await client.from("custom_surveys").select("*").order("created_at", { ascending: false });
+  let { data, error } = await client.from("custom_surveys").select("*").order("updated_at", { ascending: false });
+  if (error && /updated_at/i.test(error.message)) {
+    const retry = await client.from("custom_surveys").select("*").order("created_at", { ascending: false });
+    data = retry.data;
+    error = retry.error;
+  }
   if (error) {
     if (tableMissing(error.message)) {
       return { ok: false, error: "Run the custom surveys SQL in Supabase first.", data: [] };
     }
     return { ok: false, error: describe(error), data: [] };
   }
-  return { ok: true, data: ((data || []) as Record<string, unknown>[]).map(surveyFromRow) };
+  return { ok: true, data: sortSurveysNewestFirst(((data || []) as Record<string, unknown>[]).map(surveyFromRow)) };
 }
 
 export async function fetchActiveCustomSurveys(): Promise<{ ok: boolean; error?: string; data: CustomSurvey[] }> {

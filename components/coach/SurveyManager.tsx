@@ -6,6 +6,7 @@ import {
   attachSurveyToChapter,
   deleteCustomSurvey,
   emptySurveyDraft,
+  fetchChapterLessons,
   fetchCourseChapters,
   fetchCustomSurveys,
   newSurveyQuestion,
@@ -20,6 +21,7 @@ import {
   SURVEY_PLACE_START,
   SURVEY_QUESTION_TYPES,
   task2SelfEvaluationDraft,
+  type ChapterLessonOption,
   type CourseChapterOption,
   type CustomSurvey,
   type SurveyDraft,
@@ -41,6 +43,8 @@ export default function SurveyManager() {
   const router = useRouter();
   const [surveys, setSurveys] = useState<CustomSurvey[]>([]);
   const [chapters, setChapters] = useState<CourseChapterOption[]>([]);
+  const [chapterLessons, setChapterLessons] = useState<Record<string, ChapterLessonOption[]>>({});
+  const [lessonsLoading, setLessonsLoading] = useState<Record<string, boolean>>({});
   const [attachChapter, setAttachChapter] = useState<Record<string, string>>({});
   const [attachAfter, setAttachAfter] = useState<Record<string, string>>({});
   const [error, setError] = useState("");
@@ -59,10 +63,21 @@ export default function SurveyManager() {
     setSurveys(result.data);
   };
 
+  const loadChapterLessons = async (chapterId: string) => {
+    if (!chapterId) return;
+    setLessonsLoading((current) => ({ ...current, [chapterId]: true }));
+    const result = await fetchChapterLessons(chapterId);
+    setChapterLessons((current) => ({ ...current, [chapterId]: result.ok ? result.data : [] }));
+    setLessonsLoading((current) => ({ ...current, [chapterId]: false }));
+  };
+
   useEffect(() => {
     void load();
     fetchCourseChapters().then((result) => {
-      if (result.ok) setChapters(result.data);
+      if (!result.ok) return;
+      setChapters(result.data);
+      const first = result.data[0]?.id;
+      if (first) void loadChapterLessons(first);
     });
   }, []);
 
@@ -155,7 +170,7 @@ export default function SurveyManager() {
       return;
     }
     const chapter = chapters.find((item) => item.id === chapterId);
-    const afterLesson = chapter?.lessons.find((lesson) => lesson.id === afterLessonId);
+    const afterLesson = (chapterLessons[chapterId] || []).find((lesson) => lesson.id === afterLessonId);
     const place =
       afterLessonId === SURVEY_PLACE_START
         ? "at the start"
@@ -164,8 +179,7 @@ export default function SurveyManager() {
           : "at the end";
     setNotice(`Added “${survey.title}” to ${chapter?.title || "the chapter"} ${place}.`);
     await load();
-    const refreshed = await fetchCourseChapters();
-    if (refreshed.ok) setChapters(refreshed.data);
+    await loadChapterLessons(chapterId);
   };
 
   return (
@@ -199,7 +213,11 @@ export default function SurveyManager() {
         <h2>Surveys</h2>
         {surveys.length ? (
           <div className="work-list">
-            {surveys.map((survey) => (
+            {surveys.map((survey) => {
+              const selectedChapterId = attachChapter[survey.id] || chapters[0]?.id || "";
+              const lessons = chapterLessons[selectedChapterId] || [];
+              const loadingLessons = Boolean(lessonsLoading[selectedChapterId]);
+              return (
               <article className="work-item" key={survey.id}>
                 <div className="work-head">
                   <strong>{survey.title}</strong>
@@ -220,6 +238,7 @@ export default function SurveyManager() {
                           const chapterId = event.target.value;
                           setAttachChapter((current) => ({ ...current, [survey.id]: chapterId }));
                           setAttachAfter((current) => ({ ...current, [survey.id]: SURVEY_PLACE_END }));
+                          void loadChapterLessons(chapterId);
                         }}
                         aria-label={`Chapter for ${survey.title}`}
                       >
@@ -241,13 +260,16 @@ export default function SurveyManager() {
                         aria-label={`Place ${survey.title} after which lesson`}
                       >
                         <option value={SURVEY_PLACE_START}>At the start of the chapter</option>
-                        {(chapters.find((chapter) => chapter.id === (attachChapter[survey.id] || chapters[0].id))?.lessons || []).map(
-                          (lesson) => (
-                            <option key={lesson.id} value={lesson.id}>
-                              After: {lesson.title}
-                            </option>
-                          )
-                        )}
+                        {loadingLessons ? (
+                          <option value="" disabled>
+                            Loading lessons in this chapter…
+                          </option>
+                        ) : null}
+                        {lessons.map((lesson) => (
+                          <option key={lesson.id} value={lesson.id}>
+                            After: {lesson.title}
+                          </option>
+                        ))}
                         <option value={SURVEY_PLACE_END}>At the end of the chapter</option>
                       </select>
                     </label>
@@ -274,7 +296,8 @@ export default function SurveyManager() {
                   </button>
                 </div>
               </article>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <p className="empty">No custom surveys yet. Create one to start collecting answers.</p>

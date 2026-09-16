@@ -420,10 +420,21 @@ export async function fetchManagedCourse(): Promise<DbResult<ManagedChapter[]>> 
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
   const chapters = await client.from("chapters").select("id, title, position").order("position", { ascending: true });
-  const lessons = await client.from("lessons").select("*").order("chapter_id", { ascending: true }).order("position", { ascending: true });
-  if (lessons.error) return { ok: false, error: describe(lessons.error), data: [] };
+  const pageSize = 1000;
+  const lessonRows: Record<string, unknown>[] = [];
+  for (let from = 0; from < 20000; from += pageSize) {
+    const page = await client
+      .from("lessons")
+      .select("*")
+      .order("chapter_id", { ascending: true })
+      .order("position", { ascending: true })
+      .range(from, from + pageSize - 1);
+    if (page.error) return { ok: false, error: describe(page.error), data: [] };
+    lessonRows.push(...((page.data || []) as Record<string, unknown>[]));
+    if (!page.data || page.data.length < pageSize) break;
+  }
   const grouped = new Map<string, ManagedLesson[]>();
-  (lessons.data || []).forEach((row) => {
+  lessonRows.forEach((row) => {
     const lesson = asManagedLesson(row as Record<string, unknown>);
     const list = grouped.get(lesson.chapter_id) || [];
     list.push(lesson);
