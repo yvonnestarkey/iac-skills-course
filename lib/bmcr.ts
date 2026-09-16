@@ -86,8 +86,8 @@ export function bmcrCoachingFeedback(marks: BmcrMarks): { title: string; body: s
   const converted = computeBmcrPct(ready);
   if (available >= 50) {
     return {
-      title: "You have enough existing knowledge to pass this question!",
-      body: `You could have passed this question with your existing knowledge (${formatPct(available)} available basic marks), but you were only able to use ${formatPct(converted)} of what you already know. There is 'something else' (like application, exam technique, or RTFQ) getting in the way of your ability to convert marks — extra theory revision will not fix this on its own.`,
+      title: "Low BMCR — this is not a theory gap",
+      body: `You only converted ${formatPct(converted)} of YOUR basic knowledge. This means you're not able to get marks for stuff you already know. There is 'something else' getting in the way of your ability to earn marks.`,
     };
   }
   return {

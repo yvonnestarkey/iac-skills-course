@@ -4300,8 +4300,18 @@ input[type="tel"]:focus {
 }
 
 .bmcr-stat small {
+  display: block;
   color: #5b6b68;
   font-size: 12px;
+}
+
+.bmcr-stat-caption {
+  display: block;
+  margin: 10px 0 0;
+  font-size: 13.5px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: #1f2933;
 }
 
 .bmcr-feedback {
