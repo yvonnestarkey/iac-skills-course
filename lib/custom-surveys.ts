@@ -53,6 +53,7 @@ export interface CustomSurvey {
   description: string;
   slug: string;
   isActive: boolean;
+  isAssignment: boolean;
   pdfUrl: string;
   questions: SurveyQuestion[];
   createdAt: string;
@@ -74,6 +75,7 @@ export interface SurveyDraft {
   description: string;
   slug: string;
   isActive: boolean;
+  isAssignment: boolean;
   pdfUrl: string;
   questions: SurveyQuestion[];
 }
@@ -193,6 +195,7 @@ export function task2SelfEvaluationDraft(): SurveyDraft {
       "Self-evaluation for Task 2. Work through the checklist, name what got in the way, capture one takeaway, then complete the BMCR from your marked attempt.",
     slug: "task-2-case-study-planning-rtfq",
     isActive: false,
+    isAssignment: false,
     pdfUrl: "",
     questions: [
       templateQuestion("info-section-a", "info_link", "Section A — Task execution checklist", {
@@ -244,6 +247,7 @@ export function emptySurveyDraft(): SurveyDraft {
     description: "",
     slug: "",
     isActive: false,
+    isAssignment: false,
     pdfUrl: "",
     questions: [newSurveyQuestion("short_text")],
   };
@@ -283,6 +287,7 @@ function surveyFromRow(row: Record<string, unknown>): CustomSurvey {
     description: String(row.description || ""),
     slug: String(row.slug || ""),
     isActive: row.is_active === true,
+    isAssignment: row.is_assignment === true,
     pdfUrl: String(row.pdf_url || ""),
     questions: asSurveyQuestions(row.questions),
     createdAt: String(row.created_at || ""),
@@ -507,6 +512,7 @@ export async function saveCustomSurvey(
     description: draft.description.trim(),
     slug,
     is_active: draft.isActive,
+    is_assignment: draft.isAssignment,
     pdf_url: pdfUrl,
     questions,
     updated_at: new Date().toISOString(),
@@ -517,24 +523,50 @@ export async function saveCustomSurvey(
       ? client.from("custom_surveys").update(payload).eq("id", id).select("*").maybeSingle()
       : client.from("custom_surveys").insert(payload).select("*").maybeSingle();
 
-  let { data, error } = await write(row);
-  if (error && /pdf_url/i.test(error.message || "")) {
-    if (pdfUrl) {
-      return {
-        ok: false,
-        error:
-          "Paste this SQL in Supabase so survey PDFs can be stored:\n\nalter table public.custom_surveys add column if not exists pdf_url text;",
-      };
+  const optionalColumns = [
+    {
+      column: "is_assignment",
+      required: draft.isAssignment,
+      sql: "alter table public.custom_surveys add column if not exists is_assignment boolean not null default false;",
+    },
+    {
+      column: "pdf_url",
+      required: Boolean(pdfUrl),
+      sql: "alter table public.custom_surveys add column if not exists pdf_url text;",
+    },
+  ];
+
+  let payload = { ...row };
+  let { data, error } = await write(payload);
+  for (let attempt = 0; attempt < optionalColumns.length && error; attempt += 1) {
+    const missing = optionalColumns.find((item) => item.column in payload && (error?.message || "").includes(item.column));
+    if (!missing) break;
+    if (missing.required) {
+      return { ok: false, error: `Paste this SQL in Supabase first:\n\n${missing.sql}` };
     }
-    const withoutPdf = { ...row };
-    delete withoutPdf.pdf_url;
-    ({ data, error } = await write(withoutPdf));
+    delete payload[missing.column];
+    ({ data, error } = await write(payload));
   }
   if (error) {
     if (error.code === "23505") return { ok: false, error: "That slug is already in use. Choose another." };
     return { ok: false, error: describe(error) };
   }
   return { ok: true, survey: data ? surveyFromRow(data as Record<string, unknown>) : undefined };
+}
+
+export async function fetchSurveyAssignmentFlags(): Promise<Record<string, boolean>> {
+  const client = getSupabase();
+  if (!client) return {};
+  const withFlag = await client.from("custom_surveys").select("id, is_assignment");
+  if (withFlag.error && /is_assignment/i.test(withFlag.error.message || "")) {
+    const retry = await client.from("custom_surveys").select("id");
+    if (retry.error || !retry.data) return {};
+    return Object.fromEntries(retry.data.map((row) => [String(row.id), false]));
+  }
+  if (withFlag.error || !withFlag.data) return {};
+  return Object.fromEntries(
+    withFlag.data.map((row) => [String(row.id), (row as { is_assignment?: boolean }).is_assignment === true])
+  );
 }
 
 export async function uploadSurveyPdf(file: File): Promise<{ ok: boolean; error?: string; url?: string }> {

@@ -11,7 +11,8 @@ import { withComputedDuration } from "./lesson-duration";
 import { getLessonPdfUrl } from "./getLessonPdf";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
-import { asLessonType, displayLessonType } from "./lesson-type";
+import { asLessonType, displayLessonType, lessonIsAssignment } from "./lesson-type";
+import { fetchSurveyAssignmentFlags } from "./custom-surveys";
 import type { UserProfile } from "../types/database";
 import type { CourseData, Lesson, LessonType } from "./types";
 
@@ -40,6 +41,7 @@ export interface StudentLesson {
   unlock_at?: string | null;
   survey_id?: string | null;
   survey_slug?: string | null;
+  is_assignment?: boolean;
   banner_image_url?: string | null;
   next: { id: string; title: string } | null;
   source: "supabase" | "seed";
@@ -63,6 +65,8 @@ export interface OutlineLesson {
   requires_coach_approval?: boolean;
   prereq_lesson_id?: string | null;
   unlock_at?: string | null;
+  survey_id?: string | null;
+  is_assignment?: boolean;
 }
 
 export interface OutlineChapter {
@@ -75,7 +79,7 @@ export interface OutlineChapter {
 export type StudentUser = Pick<UserProfile, "id" | "email" | "role" | "full_name">;
 
 const OUTLINE_TTL_MS = 120_000;
-const OUTLINE_STORAGE_KEY = "iac-course-outline-v1";
+const OUTLINE_STORAGE_KEY = "iac-course-outline-v2";
 
 type OutlineCacheEntry = { at: number; data: OutlineChapter[] };
 let memoryOutline: OutlineCacheEntry | null = null;
@@ -148,6 +152,7 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     unlock_at: lesson.unlock_at || null,
     survey_id: lesson.survey_id || null,
     survey_slug: lesson.type === "survey" ? lesson.brief || null : null,
+    is_assignment: lessonIsAssignment(lesson),
     banner_image_url: lesson.banner_image_url || null,
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
@@ -184,16 +189,19 @@ function outlineLessonFromRow(row: {
   requires_coach_approval?: boolean | null;
   prereq_lesson_id?: string | null;
   unlock_at?: string | null;
+  survey_id?: string | null;
+  is_assignment?: boolean | null;
 }): OutlineLesson {
   const flagged = asBool(row.requires_submission);
+  const type = displayLessonType({
+    type: asLessonType(row.type),
+    title: row.title,
+    requires_submission: flagged,
+  });
   const lesson: OutlineLesson = {
     id: row.id,
     title: row.title,
-    type: displayLessonType({
-      type: asLessonType(row.type),
-      title: row.title,
-      requires_submission: flagged,
-    }),
+    type,
     duration: row.duration || undefined,
     seconds: numberOrUndef(row.seconds),
     video_duration_seconds: numberOrUndef(row.video_duration_seconds),
@@ -203,6 +211,8 @@ function outlineLessonFromRow(row: {
     requires_coach_approval: asBool(row.requires_coach_approval) ?? false,
     prereq_lesson_id: asPrereq(row.prereq_lesson_id) || null,
     unlock_at: asPrereq(row.unlock_at) || null,
+    survey_id: asPrereq(row.survey_id) || null,
+    is_assignment: lessonIsAssignment({ type, is_assignment: asBool(row.is_assignment) }),
   };
   return withComputedDuration(lesson);
 }
@@ -373,8 +383,38 @@ function applyOutlineGates(lesson: StudentLesson, outline: OutlineChapter[]): St
     requires_coach_approval: Boolean(match?.requires_coach_approval || lesson.requires_coach_approval),
     prereq_lesson_id: match?.prereq_lesson_id || null,
     unlock_at: match?.unlock_at || lesson.unlock_at || null,
+    is_assignment: Boolean(match?.is_assignment || lesson.is_assignment),
     next: nextFromOutline(outline, lesson.id) || lesson.next,
   };
+}
+
+async function withAssignmentFlags(chapters: OutlineChapter[]): Promise<OutlineChapter[]> {
+  const flags = await fetchSurveyAssignmentFlags();
+  const client = getSupabase();
+  const links: Record<string, string> = {};
+  if (client) {
+    const { data, error } = await client.from("lessons").select("id, survey_id, type");
+    if (!error && data) {
+      data.forEach((row) => {
+        const surveyId = String(row.survey_id || "");
+        if (surveyId) links[String(row.id)] = surveyId;
+      });
+    }
+  }
+  return chapters.map((chapter) => ({
+    ...chapter,
+    lessons: chapter.lessons.map((lesson) => {
+      const surveyId = links[lesson.id] || lesson.survey_id || null;
+      return {
+        ...lesson,
+        survey_id: surveyId,
+        is_assignment: lessonIsAssignment({
+          type: lesson.type,
+          is_assignment: Boolean(surveyId && flags[surveyId]),
+        }),
+      };
+    }),
+  }));
 }
 
 async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
@@ -443,18 +483,20 @@ async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
       const chapterMeta = new Map((chapterRows || []).map((row) => [row.id, row]));
       const ids = chapterRows?.length ? chapterRows.map((row) => row.id) : [...grouped.keys()];
       const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
-      return withSubmissionPrereqs(
-        [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
-          const lessons = grouped.get(id) || [];
-          const live = chapterMeta.get(id);
-          const seed = SEED.chapters.find((chapter) => chapter.id === id);
-          return {
-            id,
-            title: live?.title || seed?.title || id,
-            summary: live?.summary || seed?.summary,
-            lessons,
-          };
-        })
+      return withAssignmentFlags(
+        withSubmissionPrereqs(
+          [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
+            const lessons = grouped.get(id) || [];
+            const live = chapterMeta.get(id);
+            const seed = SEED.chapters.find((chapter) => chapter.id === id);
+            return {
+              id,
+              title: live?.title || seed?.title || id,
+              summary: live?.summary || seed?.summary,
+              lessons,
+            };
+          })
+        )
       );
     }
   }
@@ -559,6 +601,12 @@ export async function fetchStudentLesson(
           unlock_at: asPrereq(data.unlock_at) || null,
           survey_id: asPrereq((data as { survey_id?: unknown }).survey_id) || null,
           survey_slug: asLessonType(data.type) === "survey" ? String(data.brief || "").trim() || null : null,
+          is_assignment: lessonIsAssignment({
+            type: asLessonType(data.type),
+            is_assignment: Boolean(
+              tree.flatMap((chapter) => chapter.lessons).find((item) => item.id === lessonId)?.is_assignment
+            ),
+          }),
           banner_image_url: asPrereq((data as { banner_image_url?: unknown }).banner_image_url) || null,
           next: nextFromOutline(tree, lessonId),
           source: "supabase",

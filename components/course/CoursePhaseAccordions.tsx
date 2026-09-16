@@ -45,6 +45,7 @@ function LessonEntry({
     <span className="lesson-title">
       {locked ? <Lock size={12} className="lesson-lock" aria-label="Locked" /> : null}
       {lesson.title}
+      {lesson.is_assignment ? <span className="duration-badge assignment-flag">Assignment</span> : null}
       <span className="duration-badge">{badge}</span>
     </span>
   );

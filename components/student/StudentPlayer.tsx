@@ -158,6 +158,7 @@ export default function StudentPlayer({
         <p className="kicker">
           <LessonTypeIcon type={kind} title={lesson.title} size={13} />
           {lessonTypeLabel(kind)}
+          {lesson.is_assignment ? <span className="badge assignment-flag">Assignment</span> : null}
         </p>
         <h1>{lesson.title}</h1>
         {status ? <p className="notice">{status}</p> : null}

@@ -19,7 +19,7 @@ import { useStore } from "@/lib/store";
 import type { FlatLesson, Student } from "@/lib/types";
 
 const TABS = [
-  { id: "assignments", label: "Assignments", href: null },
+  { id: "assignments", label: "Submissions", href: null },
   { id: "surveys", label: "Surveys", href: null },
   { id: "roster", label: "Student Roster", href: null },
   { id: "bmcr", label: "BMCR Analytics", href: null },

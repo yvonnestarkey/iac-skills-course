@@ -19,6 +19,7 @@ alter table public.custom_surveys add column if not exists questions jsonb not n
 alter table public.custom_surveys add column if not exists created_at timestamptz not null default now();
 alter table public.custom_surveys add column if not exists updated_at timestamptz not null default now();
 alter table public.custom_surveys add column if not exists pdf_url text;
+alter table public.custom_surveys add column if not exists is_assignment boolean not null default false;
 
 create unique index if not exists custom_surveys_slug_uidx
   on public.custom_surveys (slug);

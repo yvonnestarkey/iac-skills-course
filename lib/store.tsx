@@ -65,6 +65,7 @@ export interface CoachUi {
   cohort: string;
   tab: "assignments" | "surveys" | "roster" | "bmcr";
   filter: "all" | "missing" | "questions" | "submitted";
+  formKind: "all" | "assignments" | "surveys";
   assignmentId: string;
 }
 
@@ -112,6 +113,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     cohort: DEFAULT_COHORT_ID,
     tab: "assignments",
     filter: "all",
+    formKind: "all",
     assignmentId: DEFAULT_ASSIGNMENT_ID,
   });
   const [notifyDraft, setNotifyDraft] = useState<NotifyDraft | null>(null);

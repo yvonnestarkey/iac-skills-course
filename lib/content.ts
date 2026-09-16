@@ -1,4 +1,6 @@
 import { allLessons } from "./course";
+import { fetchSurveyAssignmentFlags } from "./custom-surveys";
+import { lessonIsAssignment } from "./lesson-type";
 import { getSupabase } from "./supabase";
 import type { Chapter, CourseData, FlatLesson, Lesson, LessonType } from "./types";
 
@@ -481,6 +483,7 @@ export async function fetchLiveAssignmentLessons(): Promise<FlatLesson[]> {
   if (lessons.error || !lessons.data?.length) return [];
   const titles = new Map((chapters.data || []).map((row) => [String(row.id), String(row.title || row.id)]));
   const order = new Map((chapters.data || []).map((row, index) => [String(row.id), index]));
+  const flags = await fetchSurveyAssignmentFlags();
   const chapterOf = (chapterId: string): Chapter => ({
     id: chapterId,
     title: titles.get(chapterId) || chapterId,
@@ -496,12 +499,15 @@ export async function fetchLiveAssignmentLessons(): Promise<FlatLesson[]> {
     })
     .map((row) => {
       const record = row as Record<string, unknown>;
+      const surveyId = record.survey_id != null ? String(record.survey_id) : null;
+      const type = (record.type as LessonType) || "assignment";
       return {
         id: String(record.id),
-        type: (record.type as LessonType) || "assignment",
+        type,
         title: String(record.title || "Untitled lesson"),
         due: record.due != null ? String(record.due) : undefined,
-        survey_id: record.survey_id != null ? String(record.survey_id) : null,
+        survey_id: surveyId,
+        is_assignment: lessonIsAssignment({ type, is_assignment: Boolean(surveyId && flags[surveyId]) }),
         chapter: chapterOf(String(record.chapter_id || "")),
       };
     });

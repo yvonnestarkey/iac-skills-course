@@ -1912,6 +1912,23 @@ input[type="tel"]:focus {
   color: #fff;
 }
 
+.form-kind-filters {
+  margin-bottom: 16px;
+}
+
+.kicker .assignment-flag,
+.duration-badge.assignment-flag {
+  background: var(--dark);
+  color: #fff;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+
+.kicker .assignment-flag {
+  vertical-align: middle;
+}
+
 .row {
   width: 100%;
   display: grid;

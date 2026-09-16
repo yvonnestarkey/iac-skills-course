@@ -43,3 +43,12 @@ export function lessonTypeLabel(type: string): string {
       return type.replace(/[_-]+/g, " ");
   }
 }
+
+export function lessonIsAssignment(lesson: {
+  type?: string | null;
+  is_assignment?: boolean | null;
+}): boolean {
+  if (lesson.is_assignment === true) return true;
+  const type = displayLessonType({ type: lesson.type });
+  return type === "assignment" || type === "upload";
+}

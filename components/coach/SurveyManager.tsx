@@ -109,6 +109,7 @@ function draftFromSurvey(survey: CustomSurvey): SurveyDraft {
     description: survey.description,
     slug: survey.slug,
     isActive: survey.isActive,
+    isAssignment: survey.isAssignment,
     pdfUrl: survey.pdfUrl || "",
     questions: survey.questions.length ? survey.questions : [newSurveyQuestion()],
   };
@@ -376,9 +377,11 @@ export default function SurveyManager() {
                 <div className="work-head">
                   <strong>{survey.title}</strong>
                   <span className={`badge ${survey.isActive ? "ok" : ""}`}>{survey.isActive ? "Active" : "Draft"}</span>
+                  {survey.isAssignment ? <span className="badge">Assignment</span> : null}
                 </div>
                 <p className="muted small">
                   {survey.questions.length} question{survey.questions.length === 1 ? "" : "s"}
+                  {survey.isAssignment ? " · Assignment" : ""}
                   {survey.pdfUrl ? " · Includes PDF" : ""}
                   {survey.isActive ? " · Active for students" : " · Draft"}
                 </p>
@@ -577,6 +580,14 @@ function SurveyEditor({
           onChange={(event) => onChange({ ...draft, isActive: event.target.checked })}
         />
         Active — students can open and submit this survey
+      </label>
+      <label className="roster-check">
+        <input
+          type="checkbox"
+          checked={draft.isAssignment}
+          onChange={(event) => onChange({ ...draft, isAssignment: event.target.checked })}
+        />
+        Mark this form as an Assignment (Track submissions, missing status, and due dates)
       </label>
 
       <h3>Insert into course</h3>

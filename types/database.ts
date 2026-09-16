@@ -27,6 +27,7 @@ export interface Lesson {
   resource_downloads?: unknown;
   unlock_at?: string | null;
   survey_id?: string | null;
+  is_assignment?: boolean;
   banner_image_url?: string | null;
 }
 

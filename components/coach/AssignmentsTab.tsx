@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { labelForGroup } from "@/lib/comms";
 import {
   chapterCode,
@@ -13,6 +13,7 @@ import {
   wordCount,
 } from "@/lib/course";
 import { formatSize, nowLabel } from "@/lib/dates";
+import { lessonIsAssignment } from "@/lib/lesson-type";
 import { completionProgress } from "@/lib/metrics";
 import { useStore } from "@/lib/store";
 import type { FlatLesson, Student } from "@/lib/types";
@@ -38,22 +39,60 @@ function studentHasLiveWork(
   return hasWork(student, lesson);
 }
 
+const FORM_KINDS = [
+  { id: "all", label: "Show All" },
+  { id: "assignments", label: "Assignments Only" },
+  { id: "surveys", label: "General Surveys Only" },
+] as const;
+
+function matchesFormKind(lesson: FlatLesson, formKind: "all" | "assignments" | "surveys"): boolean {
+  const assignment = lessonIsAssignment(lesson);
+  if (formKind === "assignments") return assignment;
+  if (formKind === "surveys") return lesson.type === "survey" && !assignment;
+  return true;
+}
+
 export default function AssignmentsTab({ students, lessons, lessonIds, surveyPairs, onOpenProfile }: Props) {
   const { data, coach, setCoach, mutate, setNotifyDraft } = useStore();
   const [selected, setSelected] = useState<string[]>([]);
-  const list = lessons;
-  const lesson = list.find((item) => item.id === coach.assignmentId) || list[0];
+  const formKind = coach.formKind || "all";
+  const list = lessons.filter((item) => matchesFormKind(item, formKind));
+  const selectedId = list.some((item) => item.id === coach.assignmentId) ? coach.assignmentId : list[0]?.id;
+  const lesson = list.find((item) => item.id === selectedId);
+  const tracksAssignment = lesson ? lessonIsAssignment(lesson) : false;
+
+  useEffect(() => {
+    if (selectedId && selectedId !== coach.assignmentId) {
+      setCoach({ assignmentId: selectedId });
+    }
+  }, [selectedId, coach.assignmentId, setCoach]);
 
   if (!lesson) {
     return (
       <section className="card">
         <div className="panel-head">
           <div>
-            <h2>Assignments</h2>
-            <p className="muted small">Live assignment and survey lessons from the course.</p>
+            <h2>Submissions</h2>
+            <p className="muted small">Live assignment and survey forms from the course.</p>
           </div>
         </div>
-        <p className="empty">No assignment or survey lessons in the live course yet.</p>
+        <div className="filters form-kind-filters" role="tablist" aria-label="Form type">
+          {FORM_KINDS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={formKind === item.id ? "active" : ""}
+              onClick={() => setCoach({ formKind: item.id })}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+        <p className="empty">
+          {lessons.length
+            ? "No forms in this filter. Switch to Show All, or mark a survey as an Assignment in Custom surveys."
+            : "No assignment or survey lessons in the live course yet."}
+        </p>
       </section>
     );
   }
@@ -108,12 +147,11 @@ export default function AssignmentsTab({ students, lessons, lessonIds, surveyPai
         draft.messages[s.id] = draft.messages[s.id] || [];
         draft.messages[s.id].push({
           from: "coach",
-          text:
-            lesson.type === "survey"
-              ? `Reminder: ${what} is still open. A short check-in is enough — I would rather see it honest than late.`
-              : `Reminder: ${what} is due ${lesson.due || "soon"}. Send it even if it does not balance, and I will work through it with you.`,
+          text: tracksAssignment
+            ? `Reminder: ${what} is due ${lesson.due || "soon"}. Send it even if it does not balance, and I will work through it with you.`
+            : `Reminder: ${what} is still open. A short check-in is enough — I would rather see it honest than late.`,
           at: nowLabel(),
-          context: `${chapterCode(lesson.chapter)} · ${lesson.type === "survey" ? "Survey" : "Assignment"}`,
+          context: `${chapterCode(lesson.chapter)} · ${tracksAssignment ? "Assignment" : "Survey"}`,
         });
       });
     });
@@ -121,16 +159,29 @@ export default function AssignmentsTab({ students, lessons, lessonIds, surveyPai
 
   return (
     <section className="card">
+      <div className="filters form-kind-filters" role="tablist" aria-label="Form type">
+        {FORM_KINDS.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className={formKind === item.id ? "active" : ""}
+            onClick={() => setCoach({ formKind: item.id })}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
       <div className="panel-head">
         <div>
           <h2>{shortLessonTitle(lesson)}</h2>
           <p className="muted small">
             {chapterCode(lesson.chapter)}
+            {tracksAssignment ? " · Assignment" : " · Survey"}
             {lesson.due ? ` · due ${lesson.due}` : ""} · {done} of {students.length} received
           </p>
         </div>
         <label className="role-chip">
-          Assignment
+          {formKind === "surveys" ? "Survey" : formKind === "assignments" ? "Assignment" : "Form"}
           <select
             id="assignment"
             value={lesson.id}
@@ -139,7 +190,7 @@ export default function AssignmentsTab({ students, lessons, lessonIds, surveyPai
             {list.map((item) => (
               <option key={item.id} value={item.id}>
                 {chapterCode(item.chapter)} · {shortLessonTitle(item)}
-                {item.type === "survey" ? " (survey)" : ""}
+                {lessonIsAssignment(item) ? (item.type === "survey" ? " (assignment)" : "") : " (survey)"}
               </option>
             ))}
           </select>
@@ -189,7 +240,9 @@ export default function AssignmentsTab({ students, lessons, lessonIds, surveyPai
               const file = lesson.type === "upload" ? fileFor(s, lesson.id) : null;
               const detail = ok
                 ? lesson.type === "survey"
-                  ? "Survey in"
+                  ? tracksAssignment
+                    ? "Submitted"
+                    : "Survey in"
                   : lesson.type === "upload" && file
                     ? `${file.name} · ${formatSize(file.size)}`
                     : `${wordCount(textFor(s, lesson.id))} words`
@@ -210,7 +263,7 @@ export default function AssignmentsTab({ students, lessons, lessonIds, surveyPai
                   </td>
                   <td>
                     <span className={`badge ${ok ? "ok" : "warn"}`}>
-                      {ok ? (lesson.type === "survey" ? "Survey in" : "Submitted") : "Missing"}
+                      {ok ? (lesson.type === "survey" && !tracksAssignment ? "Survey in" : "Submitted") : "Missing"}
                     </span>
                   </td>
                   <td className="muted small">{detail}</td>
