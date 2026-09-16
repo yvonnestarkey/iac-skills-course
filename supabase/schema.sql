@@ -393,6 +393,11 @@ create table if not exists public.assignment_bmcr_evaluations (
   submitted_at timestamptz default now()
 );
 
+alter table public.assignment_bmcr_evaluations
+  add column if not exists feels_needs_theory boolean;
+alter table public.assignment_bmcr_evaluations
+  add column if not exists feelings_reliable boolean;
+
 create unique index if not exists assignment_bmcr_student_assignment_uidx
   on public.assignment_bmcr_evaluations (student_id, assignment_id);
 

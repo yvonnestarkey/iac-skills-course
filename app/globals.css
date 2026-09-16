@@ -4439,6 +4439,71 @@ input[type="tel"]:focus {
   margin: 0;
 }
 
+.bmcr-diagnostics {
+  display: grid;
+  gap: 14px;
+  margin: 16px 0 4px;
+}
+
+.bmcr-yesno {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.bmcr-yesno legend {
+  padding: 0;
+  margin: 0 0 8px;
+  font-weight: 800;
+  color: #1f2933;
+}
+
+.bmcr-yesno-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bmcr-yesno-btn {
+  min-width: 88px;
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font-weight: 700;
+  color: #3f625c;
+  cursor: pointer;
+}
+
+.bmcr-yesno-btn:hover:not(:disabled) {
+  border-color: #86b2a8;
+  background: #f4f8f7;
+}
+
+.bmcr-yesno-btn.selected {
+  border-color: #1f7b70;
+  background: #1f7b70;
+  color: #fff;
+}
+
+.bmcr-yesno-btn:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.bmcr-mismatch {
+  border: 1px solid #e4d3bd;
+  border-left: 4px solid #990f49;
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: #fdf8f2;
+  margin: 12px 0 4px;
+}
+
+.bmcr-mismatch p {
+  margin: 0;
+}
+
 .bmcr-challenges {
   display: flex;
   flex-wrap: wrap;
@@ -4457,6 +4522,10 @@ input[type="tel"]:focus {
 
 @media (max-width: 640px) {
   .bmcr-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .bmcr-analytics-stats {
     grid-template-columns: 1fr;
   }
 }
@@ -4517,6 +4586,7 @@ input[type="tel"]:focus {
 
 .bmcr-analytics-stats {
   margin-top: 4px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
 .bmcr-tier-bar {

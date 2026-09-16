@@ -6,9 +6,10 @@ import {
   computeBmcrPct,
   formatPct,
   hasBmcrData,
+  withDiagnostics,
   withQuestionTotal,
-  type BmcrMarks,
-  EMPTY_BMCR_MARKS,
+  type BmcrValue,
+  EMPTY_BMCR_VALUE,
 } from "@/lib/bmcr";
 
 const ROWS: { key: "basic" | "average" | "higher"; label: string }[] = [
@@ -27,31 +28,79 @@ function displayNumber(value: number): string {
   return value === 0 ? "" : String(value);
 }
 
+function YesNoToggle({
+  id,
+  label,
+  value,
+  onChange,
+  readOnly,
+}: {
+  id: string;
+  label: string;
+  value: boolean | null;
+  onChange?: (next: boolean) => void;
+  readOnly?: boolean;
+}) {
+  return (
+    <fieldset className="bmcr-yesno">
+      <legend>{label}</legend>
+      <div className="bmcr-yesno-options" role="radiogroup" aria-label={label}>
+        {[
+          { option: true, text: "Yes" },
+          { option: false, text: "No" },
+        ].map((item) => {
+          const selected = value === item.option;
+          return (
+            <button
+              key={item.text}
+              type="button"
+              id={`${id}-${item.text.toLowerCase()}`}
+              className={`bmcr-yesno-btn${selected ? " selected" : ""}`}
+              aria-pressed={selected}
+              disabled={readOnly}
+              onClick={() => onChange?.(item.option)}
+            >
+              {item.text}
+            </button>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}
+
 export default function BmcrCalculator({
   value,
   onChange,
   readOnly = false,
   idPrefix = "bmcr",
 }: {
-  value?: BmcrMarks | null;
-  onChange?: (next: BmcrMarks) => void;
+  value?: BmcrValue | null;
+  onChange?: (next: BmcrValue) => void;
   readOnly?: boolean;
   idPrefix?: string;
 }) {
-  const marks = withQuestionTotal(value || EMPTY_BMCR_MARKS);
+  const ready = withDiagnostics(value || EMPTY_BMCR_VALUE);
+  const marks = withQuestionTotal(ready);
   const basicPct = computeBasicMarkPct(marks);
   const bmcrPct = computeBmcrPct(marks);
   const feedback = bmcrCoachingFeedback(marks);
   const showStats = hasBmcrData(marks);
 
-  const setField = (field: keyof BmcrMarks, raw: string) => {
+  const emit = (next: BmcrValue) => {
     if (!onChange || readOnly) return;
+    onChange(withDiagnostics(next));
+  };
+
+  const setField = (field: keyof BmcrValue, raw: string) => {
     const parsed = raw.trim() === "" ? 0 : Number(raw);
-    const next = withQuestionTotal({
-      ...marks,
-      [field]: Number.isFinite(parsed) && parsed >= 0 ? parsed : 0,
+    emit({
+      ...ready,
+      ...withQuestionTotal({
+        ...marks,
+        [field]: Number.isFinite(parsed) && parsed >= 0 ? parsed : 0,
+      }),
     });
-    onChange(next);
   };
 
   return (
@@ -158,6 +207,22 @@ export default function BmcrCalculator({
           <p>{feedback.body}</p>
         </aside>
       ) : null}
+      <div className="bmcr-diagnostics">
+        <YesNoToggle
+          id={`${idPrefix}-feels-needs-theory`}
+          label="Do you still FEEL that you need theory?"
+          value={ready.feels_needs_theory}
+          readOnly={readOnly}
+          onChange={(next) => emit({ ...ready, feels_needs_theory: next })}
+        />
+        <YesNoToggle
+          id={`${idPrefix}-feelings-reliable`}
+          label="Are your feelings reliable?"
+          value={ready.feelings_reliable}
+          readOnly={readOnly}
+          onChange={(next) => emit({ ...ready, feelings_reliable: next })}
+        />
+      </div>
     </div>
   );
 }

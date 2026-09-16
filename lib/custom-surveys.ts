@@ -3,6 +3,7 @@ import {
   bmcrAssignmentId,
   formatBmcrAnswer,
   hasBmcrData,
+  hasBmcrDiagnostics,
   isBmcrAnswer,
   parseBmcrAnswer,
   saveBmcrEvaluation,
@@ -488,7 +489,7 @@ export async function persistSurveyBmcrEvaluation(input: {
     .map((item) => item.trim())
     .filter(Boolean);
   const key_takeaways = (input.answers[takeawayQuestion?.id || ""] || "").trim();
-  if (!hasBmcrData(marks) && !challenges.length && !key_takeaways) return;
+  if (!hasBmcrData(marks) && !hasBmcrDiagnostics(marks) && !challenges.length && !key_takeaways) return;
   const assignmentId = bmcrAssignmentId(input.lessonId, input.survey.id);
   if (!assignmentId) return;
   await saveBmcrEvaluation({

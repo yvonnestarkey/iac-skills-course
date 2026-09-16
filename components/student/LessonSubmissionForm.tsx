@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import BmcrCalculator from "@/components/lesson/BmcrCalculator";
 import {
-  EMPTY_BMCR_MARKS,
+  EMPTY_BMCR_VALUE,
   fetchLessonBmcrEvaluation,
   hasBmcrData,
+  hasBmcrDiagnostics,
   saveBmcrEvaluation,
-  type BmcrMarks,
+  withDiagnostics,
+  type BmcrValue,
 } from "@/lib/bmcr";
 import { saveStudentSubmission, type StudentSubmission } from "@/lib/student-submissions";
 
@@ -26,7 +28,7 @@ export default function LessonSubmissionForm({
 }) {
   const [body, setBody] = useState(saved?.body || "");
   const [linkUrl, setLinkUrl] = useState(saved?.link_url || "");
-  const [bmcr, setBmcr] = useState<BmcrMarks>(EMPTY_BMCR_MARKS);
+  const [bmcr, setBmcr] = useState<BmcrValue>(EMPTY_BMCR_VALUE);
   const [bmcrId, setBmcrId] = useState<string | undefined>();
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
@@ -41,16 +43,7 @@ export default function LessonSubmissionForm({
     fetchLessonBmcrEvaluation(studentId, lessonId).then((existing) => {
       if (cancelled || !existing) return;
       setBmcrId(existing.id);
-      setBmcr({
-        basic_my_marks: existing.basic_my_marks,
-        basic_markplan: existing.basic_markplan,
-        average_my_marks: existing.average_my_marks,
-        average_markplan: existing.average_markplan,
-        higher_my_marks: existing.higher_my_marks,
-        higher_markplan: existing.higher_markplan,
-        question_total_my_marks: existing.question_total_my_marks,
-        question_total_markplan: existing.question_total_markplan,
-      });
+      setBmcr(withDiagnostics(existing));
     });
     return () => {
       cancelled = true;
@@ -70,7 +63,7 @@ export default function LessonSubmissionForm({
       setStatus(result.error || "Could not save your submission. Run supabase/submissions.sql in the SQL editor if this table is new.");
       return;
     }
-    if (hasBmcrData(bmcr)) {
+    if (hasBmcrData(bmcr) || hasBmcrDiagnostics(bmcr)) {
       const bmcrResult = await saveBmcrEvaluation({
         studentId,
         assignmentId: lessonId,

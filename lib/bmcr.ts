@@ -15,6 +15,13 @@ export type BmcrMarks = Pick<
   | "question_total_markplan"
 >;
 
+export interface BmcrDiagnostics {
+  feels_needs_theory?: boolean | null;
+  feelings_reliable?: boolean | null;
+}
+
+export type BmcrValue = BmcrMarks & BmcrDiagnostics;
+
 export const BMCR_CHALLENGES = [
   "Procrastination",
   "Self-doubt",
@@ -33,6 +40,62 @@ export const EMPTY_BMCR_MARKS: BmcrMarks = {
   question_total_my_marks: 0,
   question_total_markplan: 0,
 };
+
+export const EMPTY_BMCR_VALUE: BmcrValue = {
+  ...EMPTY_BMCR_MARKS,
+  feels_needs_theory: null,
+  feelings_reliable: null,
+};
+
+function asBool(value: unknown): boolean | null {
+  if (value === true || value === false) return value;
+  if (typeof value === "number") {
+    if (value === 1) return true;
+    if (value === 0) return false;
+  }
+  if (typeof value === "string") {
+    const text = value.trim().toLowerCase();
+    if (["yes", "true", "1"].includes(text)) return true;
+    if (["no", "false", "0"].includes(text)) return false;
+  }
+  return null;
+}
+
+export function formatYesNo(value: boolean | null | undefined): string {
+  if (value === true) return "Yes";
+  if (value === false) return "No";
+  return "—";
+}
+
+export function withDiagnostics(value?: Partial<BmcrValue> | null): BmcrValue {
+  const marks = withQuestionTotal({
+    ...EMPTY_BMCR_MARKS,
+    ...(value || {}),
+  });
+  return {
+    ...marks,
+    feels_needs_theory: asBool(value?.feels_needs_theory),
+    feelings_reliable: asBool(value?.feelings_reliable),
+  };
+}
+
+export function isPerceptionMismatch(evaluation: Partial<BmcrValue> | null | undefined): boolean {
+  const ready = withDiagnostics(evaluation);
+  if (ready.feels_needs_theory !== true) return false;
+  return computeBmcrPct(ready) < 60 && ready.basic_markplan > 0;
+}
+
+export function perceptionMismatchNote(evaluation: Partial<BmcrValue> | null | undefined): string | null {
+  const ready = withDiagnostics(evaluation);
+  if (ready.feels_needs_theory !== true) return null;
+  if (isPerceptionMismatch(ready)) {
+    return "Perception vs reality: they still feel they need theory, but BMCR is under 60% — this is a conversion leak, not a theory gap.";
+  }
+  if (ready.feelings_reliable === false) {
+    return "They feel they need theory, and they marked those feelings as not reliable.";
+  }
+  return null;
+}
 
 function asNumber(value: unknown): number {
   const n = typeof value === "number" ? value : Number(value);
@@ -82,6 +145,10 @@ export function formatMarksWithPct(earned: number, total: number): string {
   return `${formatMarkNumber(earned)} / ${formatMarkNumber(total)} (${formatPct((asNumber(earned) / asNumber(total)) * 100)})`;
 }
 
+export function hasBmcrDiagnostics(value?: Partial<BmcrDiagnostics> | null): boolean {
+  return value?.feels_needs_theory != null || value?.feelings_reliable != null;
+}
+
 export function hasBmcrData(marks: BmcrMarks): boolean {
   return (
     asNumber(marks.basic_my_marks) > 0 ||
@@ -116,8 +183,8 @@ export function bmcrCoachingFeedback(marks: BmcrMarks): { title: string; body: s
   };
 }
 
-export function stringifyBmcrAnswer(marks: BmcrMarks): string {
-  const ready = withQuestionTotal(marks);
+export function stringifyBmcrAnswer(value: BmcrMarks | BmcrValue): string {
+  const ready = withDiagnostics(value);
   return JSON.stringify({
     ...ready,
     basic_mark_pct: Math.round(computeBasicMarkPct(ready) * 10) / 10,
@@ -125,13 +192,13 @@ export function stringifyBmcrAnswer(marks: BmcrMarks): string {
   });
 }
 
-export function parseBmcrAnswer(value: string | undefined | null): BmcrMarks {
+export function parseBmcrAnswer(value: string | undefined | null): BmcrValue {
   const raw = (value || "").trim();
-  if (!raw) return { ...EMPTY_BMCR_MARKS };
+  if (!raw) return { ...EMPTY_BMCR_VALUE };
   try {
     const parsed = JSON.parse(raw) as Record<string, unknown>;
-    if (!parsed || typeof parsed !== "object") return { ...EMPTY_BMCR_MARKS };
-    return withQuestionTotal({
+    if (!parsed || typeof parsed !== "object") return { ...EMPTY_BMCR_VALUE };
+    return withDiagnostics({
       basic_my_marks: asNumber(parsed.basic_my_marks),
       basic_markplan: asNumber(parsed.basic_markplan),
       average_my_marks: asNumber(parsed.average_my_marks),
@@ -140,9 +207,11 @@ export function parseBmcrAnswer(value: string | undefined | null): BmcrMarks {
       higher_markplan: asNumber(parsed.higher_markplan),
       question_total_my_marks: asNumber(parsed.question_total_my_marks),
       question_total_markplan: asNumber(parsed.question_total_markplan),
+      feels_needs_theory: asBool(parsed.feels_needs_theory),
+      feelings_reliable: asBool(parsed.feelings_reliable),
     });
   } catch {
-    return { ...EMPTY_BMCR_MARKS };
+    return { ...EMPTY_BMCR_VALUE };
   }
 }
 
@@ -159,8 +228,16 @@ export function isBmcrAnswer(value: string | undefined | null): boolean {
 
 export function formatBmcrAnswer(value: string | undefined | null): string {
   const marks = parseBmcrAnswer(value);
-  if (!hasBmcrData(marks)) return "";
-  return `BMCR ${formatPct(computeBmcrPct(marks))} · Basic marks ${formatPct(computeBasicMarkPct(marks))} · My ${marks.question_total_my_marks} / Markplan ${marks.question_total_markplan}`;
+  if (!hasBmcrData(marks) && !hasBmcrDiagnostics(marks)) return "";
+  const parts: string[] = [];
+  if (hasBmcrData(marks)) {
+    parts.push(
+      `BMCR ${formatPct(computeBmcrPct(marks))} · Basic marks ${formatPct(computeBasicMarkPct(marks))} · My ${marks.question_total_my_marks} / Markplan ${marks.question_total_markplan}`
+    );
+  }
+  if (marks.feels_needs_theory != null) parts.push(`Need theory: ${formatYesNo(marks.feels_needs_theory)}`);
+  if (marks.feelings_reliable != null) parts.push(`Feelings reliable: ${formatYesNo(marks.feelings_reliable)}`);
+  return parts.join(" · ");
 }
 
 export function evaluationFromRow(row: Record<string, unknown>): BmcrEvaluation {
@@ -183,6 +260,8 @@ export function evaluationFromRow(row: Record<string, unknown>): BmcrEvaluation 
     bmcr_conversion_pct: row.bmcr_conversion_pct != null ? asNumber(row.bmcr_conversion_pct) : computeBmcrPct(marks),
     challenges: asTextList(row.challenges),
     key_takeaways: String(row.key_takeaways || ""),
+    feels_needs_theory: asBool(row.feels_needs_theory),
+    feelings_reliable: asBool(row.feelings_reliable),
     submitted_at: row.submitted_at ? String(row.submitted_at) : undefined,
   };
 }
@@ -251,39 +330,62 @@ function tableMissing(message: string): boolean {
   return /assignment_bmcr_evaluations/i.test(message) && /does not exist|schema cache|could not find/i.test(message);
 }
 
+function columnMissing(message: string, column: string): boolean {
+  return new RegExp(column, "i").test(message) && /schema cache|could not find|column/i.test(message);
+}
+
 export async function saveBmcrEvaluation(input: {
   studentId: string;
   assignmentId: string;
-  marks: BmcrMarks;
+  marks: BmcrMarks | BmcrValue;
   challenges?: string[];
   key_takeaways?: string;
+  feels_needs_theory?: boolean | null;
+  feelings_reliable?: boolean | null;
   existingId?: string;
 }): Promise<{ ok: boolean; error?: string; evaluation?: BmcrEvaluation }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
   if (!input.assignmentId) return { ok: false, error: "Missing assignment id." };
+  const supabase = client;
 
   const existingRow = await fetchLessonBmcrEvaluation(input.studentId, input.assignmentId);
-  const marks = withQuestionTotal(input.marks);
-  const row = {
+  const value = withDiagnostics({
+    ...input.marks,
+    feels_needs_theory: input.feels_needs_theory ?? (input.marks as Partial<BmcrValue>).feels_needs_theory,
+    feelings_reliable: input.feelings_reliable ?? (input.marks as Partial<BmcrValue>).feelings_reliable,
+  });
+  const { feels_needs_theory, feelings_reliable, ...marks } = value;
+  const row: Record<string, unknown> = {
     student_id: input.studentId,
     assignment_id: input.assignmentId,
     ...marks,
     challenges: input.challenges ?? existingRow?.challenges ?? [],
     key_takeaways: (input.key_takeaways ?? existingRow?.key_takeaways ?? "").trim(),
+    feels_needs_theory,
+    feelings_reliable,
     submitted_at: new Date().toISOString(),
   };
 
   const targetId = input.existingId || existingRow?.id;
-  const query = targetId
-    ? client.from("assignment_bmcr_evaluations").update(row).eq("id", targetId).eq("student_id", input.studentId)
-    : client.from("assignment_bmcr_evaluations").upsert(row, { onConflict: "student_id,assignment_id" });
 
-  let { data, error } = await query.select("*").maybeSingle();
-  if (error && !targetId) {
-    const retry = await client.from("assignment_bmcr_evaluations").insert(row).select("*").maybeSingle();
-    data = retry.data;
-    error = retry.error;
+  async function persist(payload: Record<string, unknown>) {
+    const query = targetId
+      ? supabase.from("assignment_bmcr_evaluations").update(payload).eq("id", targetId).eq("student_id", input.studentId)
+      : supabase.from("assignment_bmcr_evaluations").upsert(payload, { onConflict: "student_id,assignment_id" });
+    let { data, error } = await query.select("*").maybeSingle();
+    if (error && !targetId) {
+      const retry = await supabase.from("assignment_bmcr_evaluations").insert(payload).select("*").maybeSingle();
+      data = retry.data;
+      error = retry.error;
+    }
+    return { data, error };
+  }
+
+  let { data, error } = await persist(row);
+  if (error && (columnMissing(error.message, "feels_needs_theory") || columnMissing(error.message, "feelings_reliable"))) {
+    const { feels_needs_theory: _needs, feelings_reliable: _reliable, ...withoutDiagnostics } = row;
+    ({ data, error } = await persist(withoutDiagnostics));
   }
   if (error) {
     return {
@@ -295,6 +397,8 @@ export async function saveBmcrEvaluation(input: {
   }
   return {
     ok: true,
-    evaluation: data ? evaluationFromRow(data as Record<string, unknown>) : evaluationFromRow({ ...row, id: targetId }),
+    evaluation: data
+      ? evaluationFromRow({ ...(data as Record<string, unknown>), feels_needs_theory, feelings_reliable })
+      : evaluationFromRow({ ...row, id: targetId }),
   };
 }

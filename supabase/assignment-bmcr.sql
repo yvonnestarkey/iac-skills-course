@@ -26,6 +26,11 @@ create table if not exists public.assignment_bmcr_evaluations (
   submitted_at timestamptz default now()
 );
 
+alter table public.assignment_bmcr_evaluations
+  add column if not exists feels_needs_theory boolean;
+alter table public.assignment_bmcr_evaluations
+  add column if not exists feelings_reliable boolean;
+
 -- If this table was created earlier with uuid assignment_id, store lesson ids as text.
 alter table public.assignment_bmcr_evaluations
   alter column assignment_id type text using assignment_id::text;

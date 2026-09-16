@@ -47,6 +47,8 @@ export interface BmcrEvaluation {
   bmcr_conversion_pct?: number;
   challenges: string[];
   key_takeaways: string;
+  feels_needs_theory?: boolean | null;
+  feelings_reliable?: boolean | null;
   submitted_at?: string;
 }
 

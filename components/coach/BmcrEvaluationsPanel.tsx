@@ -7,6 +7,10 @@ import {
   fetchStudentBmcrEvaluations,
   formatMarksWithPct,
   formatPct,
+  formatYesNo,
+  hasBmcrDiagnostics,
+  parseBmcrAnswer,
+  perceptionMismatchNote,
   withQuestionTotal,
   type BmcrEvaluation,
 } from "@/lib/bmcr";
@@ -23,6 +27,19 @@ import { formatSastDateTime } from "@/lib/dates";
 import { fetchCourseOutline } from "@/lib/student-lesson";
 
 type SurveyPack = { survey: CustomSurvey; response: CustomSurveyResponse };
+
+function mergeDiagnostics(evaluation: BmcrEvaluation, pack: SurveyPack | null): BmcrEvaluation {
+  if (hasBmcrDiagnostics(evaluation) || !pack) return evaluation;
+  const question = pack.survey.questions.find((item) => isBmcrBlock(item.type));
+  if (!question) return evaluation;
+  const parsed = parseBmcrAnswer(pack.response.answers[question.id]);
+  if (!hasBmcrDiagnostics(parsed)) return evaluation;
+  return {
+    ...evaluation,
+    feels_needs_theory: parsed.feels_needs_theory,
+    feelings_reliable: parsed.feelings_reliable,
+  };
+}
 
 function sameDay(left?: string, right?: string): boolean {
   if (!left || !right) return false;
@@ -110,7 +127,9 @@ export default function BmcrEvaluationsPanel({ studentId }: { studentId: string 
     [evaluations, selectedId]
   );
   const selectedPack = selected ? matchSurveyPack(selected, packs) : null;
+  const selectedRow = selected ? mergeDiagnostics(selected, selectedPack) : null;
   const selectedChecklist = checklistItems(selectedPack);
+  const selectedMismatch = selectedRow ? perceptionMismatchNote(selectedRow) : null;
 
   useEffect(() => {
     if (!selected) return;
@@ -134,14 +153,17 @@ export default function BmcrEvaluationsPanel({ studentId }: { studentId: string 
                 <th>Actual mark earned</th>
                 <th>What they know</th>
                 <th>What they can use</th>
+                <th>Self-eval</th>
                 <th />
               </tr>
             </thead>
             <tbody>
               {evaluations.map((evaluation) => {
                 const pack = matchSurveyPack(evaluation, packs);
-                const marks = withQuestionTotal(evaluation);
-                const rowId = evaluation.id || evaluation.assignment_id;
+                const row = mergeDiagnostics(evaluation, pack);
+                const marks = withQuestionTotal(row);
+                const rowId = row.id || row.assignment_id;
+                const mismatch = perceptionMismatchNote(row);
                 return (
                   <tr
                     key={rowId}
@@ -153,13 +175,13 @@ export default function BmcrEvaluationsPanel({ studentId }: { studentId: string 
                       }
                     }}
                     tabIndex={0}
-                    aria-label={`View BMCR breakdown for ${taskTitle(evaluation, lessonTitles, pack)}`}
+                    aria-label={`View BMCR breakdown for ${taskTitle(row, lessonTitles, pack)}`}
                   >
                     <td>
-                      <strong>{taskTitle(evaluation, lessonTitles, pack)}</strong>
+                      <strong>{taskTitle(row, lessonTitles, pack)}</strong>
                     </td>
                     <td className="muted small">
-                      {evaluation.submitted_at ? formatSastDateTime(evaluation.submitted_at) || evaluation.submitted_at.slice(0, 10) : "—"}
+                      {row.submitted_at ? formatSastDateTime(row.submitted_at) || row.submitted_at.slice(0, 10) : "—"}
                     </td>
                     <td>
                       {formatMarksWithPct(marks.question_total_my_marks, marks.question_total_markplan)}
@@ -168,7 +190,18 @@ export default function BmcrEvaluationsPanel({ studentId }: { studentId: string 
                       {formatMarksWithPct(marks.basic_markplan, marks.question_total_markplan)}
                     </td>
                     <td>
-                      <strong>{formatPct(evaluation.bmcr_conversion_pct ?? computeBmcrPct(marks))}</strong>
+                      <strong>{formatPct(row.bmcr_conversion_pct ?? computeBmcrPct(marks))}</strong>
+                    </td>
+                    <td>
+                      {hasBmcrDiagnostics(row) ? (
+                        <>
+                          <div className="muted small">Need theory: {formatYesNo(row.feels_needs_theory)}</div>
+                          <div className="muted small">Feelings reliable: {formatYesNo(row.feelings_reliable)}</div>
+                          {mismatch ? <span className="badge">Mismatch</span> : null}
+                        </>
+                      ) : (
+                        <span className="muted small">—</span>
+                      )}
                     </td>
                     <td className="row-go">View full breakdown →</td>
                   </tr>
@@ -181,7 +214,7 @@ export default function BmcrEvaluationsPanel({ studentId }: { studentId: string 
         <p className="empty">No BMCR evaluations submitted yet.</p>
       )}
 
-      {selected ? (
+      {selected && selectedRow ? (
         <div className="modal-backdrop" onClick={() => setSelectedId(null)}>
           <section
             className="modal bmcr-detail-modal"
@@ -192,16 +225,37 @@ export default function BmcrEvaluationsPanel({ studentId }: { studentId: string 
           >
             <div className="bmcr-detail-head">
               <div>
-                <h2 id={titleId}>{taskTitle(selected, lessonTitles, selectedPack)}</h2>
+                <h2 id={titleId}>{taskTitle(selectedRow, lessonTitles, selectedPack)}</h2>
                 <p className="muted small">
-                  {selected.submitted_at ? formatSastDateTime(selected.submitted_at) || selected.submitted_at.slice(0, 10) : "Submitted"}
+                  {selectedRow.submitted_at ? formatSastDateTime(selectedRow.submitted_at) || selectedRow.submitted_at.slice(0, 10) : "Submitted"}
                 </p>
               </div>
               <button className="ghost" type="button" onClick={() => setSelectedId(null)}>
                 Close
               </button>
             </div>
-            <BmcrCalculator readOnly idPrefix={`coach-detail-${selected.id || selected.assignment_id}`} value={selected} />
+            <BmcrCalculator readOnly idPrefix={`coach-detail-${selectedRow.id || selectedRow.assignment_id}`} value={selectedRow} />
+            {selectedMismatch ? (
+              <aside className="bmcr-mismatch">
+                <strong>Perception vs reality</strong>
+                <p>{selectedMismatch}</p>
+              </aside>
+            ) : null}
+            {hasBmcrDiagnostics(selectedRow) ? (
+              <>
+                <h3>Self-evaluation diagnostics</h3>
+                <dl className="bmcr-checklist">
+                  <div>
+                    <dt>Do you still FEEL that you need theory?</dt>
+                    <dd>{formatYesNo(selectedRow.feels_needs_theory)}</dd>
+                  </div>
+                  <div>
+                    <dt>Are your feelings reliable?</dt>
+                    <dd>{formatYesNo(selectedRow.feelings_reliable)}</dd>
+                  </div>
+                </dl>
+              </>
+            ) : null}
             {selectedChecklist.length ? (
               <>
                 <h3>Task checklist</h3>

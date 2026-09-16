@@ -7,6 +7,8 @@ import {
   computeBasicMarkPct,
   computeBmcrPct,
   formatPct,
+  hasBmcrDiagnostics,
+  isPerceptionMismatch,
   withQuestionTotal,
   type BmcrEvaluation,
 } from "@/lib/bmcr";
@@ -106,11 +108,22 @@ export default function BmcrAnalyticsTab({
           count: rows.length,
           avgTheory: averageNumbers(theory),
           avgBmcr: averageNumbers(conversions),
+          stillNeedTheory: rows.filter((row) => row.feels_needs_theory === true).length,
+          mismatch: rows.filter((row) => isPerceptionMismatch(row)).length,
         };
       })
       .sort((left, right) => (left.avgBmcr ?? 101) - (right.avgBmcr ?? 101));
   }, [lessons, scopedEvals, surveyTitles]);
 
+  const diagnosticStats = useMemo(() => {
+    const answered = scopedEvals.filter((evaluation) => hasBmcrDiagnostics(evaluation));
+    return {
+      answered: answered.length,
+      stillNeedTheory: answered.filter((evaluation) => evaluation.feels_needs_theory === true).length,
+      feelingsUnreliable: answered.filter((evaluation) => evaluation.feelings_reliable === false).length,
+      mismatch: scopedEvals.filter((evaluation) => isPerceptionMismatch(evaluation)).length,
+    };
+  }, [scopedEvals]);
   const scored = tiers.scored;
   const share = (count: number) => (scored ? (count / scored) * 100 : 0);
   const cohortLabel = coach.cohort === "all" ? "All cohorts" : cohortName(data, coach.cohort);
@@ -173,6 +186,28 @@ export default function BmcrAnalyticsTab({
             </div>
           </div>
 
+          <h3 className="bmcr-submission-heading">Perception vs reality</h3>
+          <p className="muted small">
+            Self-eval answers from the BMCR Calculator. Mismatch = still feels they need theory while BMCR is under 60%.
+          </p>
+          <div className="bmcr-stats bmcr-analytics-stats">
+            <div className="bmcr-stat">
+              <span>Still feel they need theory</span>
+              <b>{diagnosticStats.stillNeedTheory}</b>
+              <small>of {diagnosticStats.answered} answered evaluations</small>
+            </div>
+            <div className="bmcr-stat">
+              <span>Feelings not reliable</span>
+              <b>{diagnosticStats.feelingsUnreliable}</b>
+              <small>answered “No” to “Are your feelings reliable?”</small>
+            </div>
+            <div className="bmcr-stat">
+              <span>Perception mismatch</span>
+              <b>{diagnosticStats.mismatch}</b>
+              <small>Need theory = Yes, and BMCR &lt; 60%</small>
+            </div>
+          </div>
+
           <h3 className="bmcr-submission-heading">Diagnostic tier breakdown</h3>
           <p className="muted small">
             Students bucketed by their average BMCR conversion. {tiers.none} with no evaluation yet.
@@ -209,6 +244,8 @@ export default function BmcrAnalyticsTab({
                   <th>Evaluations</th>
                   <th>Avg theory available</th>
                   <th>Avg BMCR conversion</th>
+                  <th>Need theory</th>
+                  <th>Mismatch</th>
                 </tr>
               </thead>
               <tbody>
@@ -221,6 +258,10 @@ export default function BmcrAnalyticsTab({
                     <td>{row.avgTheory == null ? "—" : formatPct(row.avgTheory)}</td>
                     <td>
                       <strong>{row.avgBmcr == null ? "—" : formatPct(row.avgBmcr)}</strong>
+                    </td>
+                    <td className="muted small">{row.stillNeedTheory}</td>
+                    <td>
+                      <strong>{row.mismatch}</strong>
                     </td>
                   </tr>
                 ))}
