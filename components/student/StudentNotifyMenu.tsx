@@ -8,7 +8,7 @@ import { formatInboxTime } from "@/lib/inbox";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 
 export default function StudentNotifyMenu() {
-  const { notifications, unreadCount } = useStudentInbox();
+  const { notifications, unreadCount, markNotificationsRead } = useStudentInbox();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -18,6 +18,11 @@ export default function StudentNotifyMenu() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!open || unreadCount === 0) return;
+    void markNotificationsRead();
+  }, [open, unreadCount, markNotificationsRead]);
 
   useEffect(() => {
     if (!open) return;

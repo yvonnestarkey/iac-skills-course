@@ -46,18 +46,20 @@ export function notificationFromRow(row: NotificationRow | Record<string, unknow
     title?: string;
     message?: string;
     type?: string;
+    read?: unknown;
   };
   const id = data.id != null ? String(data.id) : "";
   if (!id || id === "undefined" || id === "null") return null;
   const kind = String(data.type || data.kind || "announcement");
   if (kind === "question" || kind === "reply") return null;
+  const rawRead = (data as { read?: unknown }).read;
   return {
     id,
     userId: data.user_id != null ? String(data.user_id) : data.student_id != null ? String(data.student_id) : "",
     title: String(data.title || (kind === "assignment_feedback" ? "Assignment feedback" : "Announcement")),
     message: String(data.message || data.body || ""),
     type: kind === "assignment_feedback" ? "assignment_feedback" : "announcement",
-    read: Boolean(data.read),
+    read: rawRead === true || rawRead === "true" || rawRead === "t",
     createdAt: String(data.created_at || ""),
   };
 }
@@ -65,8 +67,28 @@ export function notificationFromRow(row: NotificationRow | Record<string, unknow
 export function asNotificationList(value: unknown): StudentNotification[] {
   if (!Array.isArray(value)) return [];
   return value
-    .map((row) => (row && typeof row === "object" && "id" in row && "title" in row ? (row as StudentNotification) : notificationFromRow(row as NotificationRow)))
+    .map((row) => {
+      if (row && typeof row === "object" && "id" in row && "title" in row && "read" in row && "message" in row) {
+        return {
+          ...(row as StudentNotification),
+          read: (row as StudentNotification).read === true,
+        };
+      }
+      return notificationFromRow(row as NotificationRow);
+    })
     .filter((item): item is StudentNotification => Boolean(item?.id));
+}
+
+export function notificationMentionsSurvey(
+  item: StudentNotification,
+  survey: { title?: string; slug?: string }
+): boolean {
+  const blob = `${item.title || ""} ${item.message || ""}`.toLowerCase();
+  const title = (survey.title || "").trim().toLowerCase();
+  const slug = (survey.slug || "").trim().toLowerCase();
+  if (title && blob.includes(title)) return true;
+  if (slug && blob.includes(`/student/surveys/${slug}`)) return true;
+  return false;
 }
 
 async function authClient() {
@@ -128,21 +150,37 @@ export async function fetchUnreadNotifications(userId: string): Promise<{
   return { ok: true, data: asNotificationList((data || []).map((row) => notificationFromRow(row as NotificationRow))) };
 }
 
-export async function markOwnNotificationsRead(): Promise<{ ok: boolean; error?: string }> {
+export async function markOwnNotificationsRead(ids?: string[]): Promise<{ ok: boolean; error?: string }> {
   const { client, user, error: authError } = await authClient();
   if (!client || !user) return { ok: false, error: authError || "Sign in required." };
+  if (ids && ids.length === 0) return { ok: true };
 
   const now = new Date().toISOString();
-  const filters = [`user_id.eq.${user.id}`, `student_id.eq.${user.id}`];
   let lastError = "";
 
   for (const patch of [{ read: true, read_at: now }, { read: true }] as const) {
-    const { error } = await client.from("notifications").update(patch).or(filters.join(",")).eq("read", false);
-    if (!error) return { ok: true };
-    lastError = describe(error);
+    if (ids?.length) {
+      const byId = await client.from("notifications").update(patch).in("id", ids);
+      if (!byId.error) return { ok: true };
+      lastError = describe(byId.error);
+      continue;
+    }
+
+    const byOwner = await client
+      .from("notifications")
+      .update(patch)
+      .or(`user_id.eq.${user.id},student_id.eq.${user.id}`)
+      .eq("read", false);
+    if (!byOwner.error) return { ok: true };
+    lastError = describe(byOwner.error);
+
     const byUser = await client.from("notifications").update(patch).eq("user_id", user.id).eq("read", false);
     if (!byUser.error) return { ok: true };
     lastError = describe(byUser.error);
+
+    const byStudent = await client.from("notifications").update(patch).eq("student_id", user.id).eq("read", false);
+    if (!byStudent.error) return { ok: true };
+    lastError = describe(byStudent.error);
   }
 
   return { ok: false, error: lastError || "Could not mark notifications as read." };

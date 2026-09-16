@@ -34,7 +34,7 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
 
 function AuthenticatedChrome({ children }: { children: ReactNode }) {
   const { user, signOut } = useStudentSession();
-  const { inboxWaiting, unreadCount, markAllRead } = useStudentInbox();
+  const { inboxWaiting, unreadCount, markAllRead, markNotificationsRead } = useStudentInbox();
   const nav = useStudentNav();
   const pathname = usePathname();
   const router = useRouter();
@@ -55,6 +55,12 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
       cancelled = true;
     };
   }, [pathname, markAllRead, router, inboxWaiting, unreadCount]);
+
+  useEffect(() => {
+    if (!pathname.startsWith("/student/notifications")) return;
+    if (!unreadCount) return;
+    void markNotificationsRead();
+  }, [pathname, unreadCount, markNotificationsRead]);
 
   const leave = async () => {
     await signOut();

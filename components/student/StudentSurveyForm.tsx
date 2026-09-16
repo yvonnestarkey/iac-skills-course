@@ -28,6 +28,8 @@ import { parseBmcrAnswer, stringifyBmcrAnswer } from "@/lib/bmcr";
 import LessonPdfViewer from "@/components/LessonPdfViewer";
 import LinkedText from "@/components/ui/LinkedText";
 import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
+import { notificationMentionsSurvey } from "@/lib/notifications";
+import { useStudentInbox } from "@/lib/use-student-inbox";
 
 export default function StudentSurveyForm({
   slug,
@@ -59,6 +61,16 @@ export default function StudentSurveyForm({
   const [done, setDone] = useState(false);
   const onSubmittedRef = useRef(onSubmitted);
   onSubmittedRef.current = onSubmitted;
+  const inbox = useStudentInbox();
+
+  useEffect(() => {
+    if (!survey || !existing || !hasCoachReview(existing)) return;
+    const ids = inbox.notifications
+      .filter((item) => !item.read && notificationMentionsSurvey(item, survey))
+      .map((item) => item.id);
+    if (!ids.length) return;
+    void inbox.markNotificationsRead(ids);
+  }, [survey, existing, inbox.notifications, inbox.markNotificationsRead]);
 
   useEffect(() => {
     let cancelled = false;

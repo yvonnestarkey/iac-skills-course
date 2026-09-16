@@ -18,6 +18,7 @@ export interface StudentInboxValue {
   notifications: StudentNotification[];
   unreadCount: number;
   markAllRead: () => Promise<void>;
+  markNotificationsRead: (ids?: string[]) => Promise<void>;
 }
 
 const StudentInboxContext = createContext<StudentInboxValue | null>(null);
@@ -97,18 +98,39 @@ function useStudentInboxState(): StudentInboxValue {
   const inboxWaiting = (Array.isArray(messages) ? messages : []).filter((item) => item.from === "coach" && !item.read).length;
   const unreadCount = items.filter((item) => !item.read).length;
 
-  const markAllRead = useCallback(async () => {
-    const now = new Date().toISOString();
-    setMessages((current) => current.map((item) => (item.read ? item : { ...item, read: true, readAt: now })));
-    setNotifications((current) => asNotificationList(current).map((item) => (item.read ? item : { ...item, read: true })));
+  const markNotificationsRead = useCallback(async (ids?: string[]) => {
+    setNotifications((current) =>
+      asNotificationList(current).map((item) => {
+        if (item.read) return item;
+        if (ids && !ids.includes(item.id)) return item;
+        return { ...item, read: true };
+      })
+    );
     try {
-      await Promise.all([markOwnInboxRead(), markOwnNotificationsRead()]);
+      await markOwnNotificationsRead(ids);
     } catch {
       /* Keep the local read state even if a table or column is missing. */
     }
   }, []);
 
-  return { messages: Array.isArray(messages) ? messages : [], inboxWaiting, notifications: items, unreadCount, markAllRead };
+  const markAllRead = useCallback(async () => {
+    const now = new Date().toISOString();
+    setMessages((current) => current.map((item) => (item.read ? item : { ...item, read: true, readAt: now })));
+    try {
+      await Promise.all([markOwnInboxRead(), markNotificationsRead()]);
+    } catch {
+      /* Keep the local read state even if a table or column is missing. */
+    }
+  }, [markNotificationsRead]);
+
+  return {
+    messages: Array.isArray(messages) ? messages : [],
+    inboxWaiting,
+    notifications: items,
+    unreadCount,
+    markAllRead,
+    markNotificationsRead,
+  };
 }
 
 export function StudentInboxProvider({ children }: { children: ReactNode }) {

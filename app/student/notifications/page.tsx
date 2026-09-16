@@ -10,12 +10,12 @@ import LinkedText from "@/components/ui/LinkedText";
 export default function StudentNotificationsPage() {
   const inbox = useStudentInbox();
   const notifications = asNotificationList(inbox?.notifications);
-  const markAllRead = inbox?.markAllRead;
+  const markNotificationsRead = inbox?.markNotificationsRead;
 
   useEffect(() => {
     if (!notifications.some((item) => item && !item.read)) return;
-    void markAllRead?.();
-  }, [notifications, markAllRead]);
+    void markNotificationsRead?.();
+  }, [notifications, markNotificationsRead]);
 
   if (!notifications.length) {
     return (
