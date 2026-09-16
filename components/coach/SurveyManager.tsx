@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import {
   attachSurveyToChapter,
@@ -29,6 +29,78 @@ import {
   type SurveyQuestionType,
 } from "@/lib/custom-surveys";
 
+function SurveyPlacementFields({
+  chapters,
+  chapterId,
+  afterLessonId,
+  lessons,
+  loading,
+  onChapterChange,
+  onAfterChange,
+  allowSkip = false,
+  surveyTitle,
+  children,
+}: {
+  chapters: CourseChapterOption[];
+  chapterId: string;
+  afterLessonId: string;
+  lessons: ChapterLessonOption[];
+  loading: boolean;
+  onChapterChange: (chapterId: string) => void;
+  onAfterChange: (afterLessonId: string) => void;
+  allowSkip?: boolean;
+  surveyTitle: string;
+  children?: ReactNode;
+}) {
+  if (!chapters.length) {
+    return <p className="muted small">No live chapters yet, so this survey cannot be inserted into the course yet.</p>;
+  }
+  return (
+    <div className="survey-attach-row">
+      <label className="survey-attach-field">
+        Chapter
+        <select
+          className="select-line"
+          value={chapterId}
+          onChange={(event) => onChapterChange(event.target.value)}
+          aria-label={`Chapter for ${surveyTitle}`}
+        >
+          {allowSkip ? <option value="">Don&apos;t add to a chapter yet</option> : null}
+          {chapters.map((chapter) => (
+            <option key={chapter.id} value={chapter.id}>
+              {chapter.title}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="survey-attach-field">
+        After which lesson
+        <select
+          className="select-line"
+          value={afterLessonId}
+          onChange={(event) => onAfterChange(event.target.value)}
+          aria-label={`Place ${surveyTitle} after which lesson`}
+          disabled={!chapterId}
+        >
+          <option value={SURVEY_PLACE_START}>At the start of the chapter</option>
+          {loading ? (
+            <option value="" disabled>
+              Loading lessons in this chapter…
+            </option>
+          ) : null}
+          {lessons.map((lesson) => (
+            <option key={lesson.id} value={lesson.id}>
+              After: {lesson.title}
+            </option>
+          ))}
+          <option value={SURVEY_PLACE_END}>At the end of the chapter</option>
+        </select>
+      </label>
+      {children}
+    </div>
+  );
+}
+
 function draftFromSurvey(survey: CustomSurvey): SurveyDraft {
   return {
     title: survey.title,
@@ -52,6 +124,8 @@ export default function SurveyManager() {
   const [busy, setBusy] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState<SurveyDraft | null>(null);
+  const [draftChapterId, setDraftChapterId] = useState("");
+  const [draftAfterId, setDraftAfterId] = useState(SURVEY_PLACE_END);
 
   const load = async () => {
     const result = await fetchCustomSurveys();
@@ -74,23 +148,40 @@ export default function SurveyManager() {
   useEffect(() => {
     void load();
     fetchCourseChapters().then((result) => {
-      if (!result.ok) return;
+      if (!result.ok) {
+        setError(result.error || "Could not load course chapters.");
+        return;
+      }
       setChapters(result.data);
       const first = result.data[0]?.id;
       if (first) void loadChapterLessons(first);
     });
   }, []);
 
+  useEffect(() => {
+    if (!draft || editingId || draftChapterId || !chapters[0]?.id) return;
+    setDraftChapterId(chapters[0].id);
+    void loadChapterLessons(chapters[0].id);
+  }, [draft, editingId, draftChapterId, chapters]);
+
   const startNew = () => {
+    const chapterId = chapters[0]?.id || "";
     setEditingId(null);
     setDraft(emptySurveyDraft());
+    setDraftChapterId(chapterId);
+    setDraftAfterId(SURVEY_PLACE_END);
     setNotice("");
+    if (chapterId) void loadChapterLessons(chapterId);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const startEdit = (survey: CustomSurvey) => {
     setEditingId(survey.id);
     setDraft(draftFromSurvey(survey));
+    setDraftChapterId("");
+    setDraftAfterId(SURVEY_PLACE_END);
     setNotice("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const updateQuestion = (id: string, patch: Partial<SurveyQuestion>) => {
@@ -115,15 +206,41 @@ export default function SurveyManager() {
     setBusy(true);
     setNotice("");
     const result = await saveCustomSurvey(draft, editingId || undefined);
-    setBusy(false);
-    if (!result.ok) {
+    if (!result.ok || !result.survey) {
+      setBusy(false);
       setNotice(result.error || "Could not save.");
       return;
     }
-    setNotice("Survey saved.");
+    let placeNote = "Survey saved.";
+    if (draftChapterId) {
+      const attached = await attachSurveyToChapter(result.survey, draftChapterId, draftAfterId);
+      if (!attached.ok) {
+        setBusy(false);
+        setNotice(attached.error || "Survey saved, but it could not be inserted into the chapter.");
+        setDraft(null);
+        setEditingId(null);
+        await load();
+        return;
+      }
+      const chapter = chapters.find((item) => item.id === draftChapterId);
+      const afterLesson = (chapterLessons[draftChapterId] || []).find((lesson) => lesson.id === draftAfterId);
+      const place =
+        draftAfterId === SURVEY_PLACE_START
+          ? "at the start"
+          : afterLesson
+            ? `after “${afterLesson.title}”`
+            : "at the end";
+      placeNote = `Survey saved and added to ${chapter?.title || "the chapter"} ${place}.`;
+      await loadChapterLessons(draftChapterId);
+    }
+    setBusy(false);
+    setNotice(placeNote);
     setDraft(null);
     setEditingId(null);
+    setDraftChapterId("");
+    setDraftAfterId(SURVEY_PLACE_END);
     await load();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const toggleActive = async (survey: CustomSurvey) => {
@@ -197,9 +314,14 @@ export default function SurveyManager() {
             className="ghost"
             type="button"
             onClick={() => {
+              const chapterId = chapters[0]?.id || "";
               setEditingId(null);
               setDraft(task2SelfEvaluationDraft());
+              setDraftChapterId(chapterId);
+              setDraftAfterId(SURVEY_PLACE_END);
               setNotice("");
+              if (chapterId) void loadChapterLessons(chapterId);
+              window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
             Task 2 self-evaluation template
@@ -208,6 +330,35 @@ export default function SurveyManager() {
       </div>
       {error ? <div className="notice">{error}</div> : null}
       {notice ? <div className="notice">{notice}</div> : null}
+
+      {draft ? (
+        <SurveyEditor
+          draft={draft}
+          editingId={editingId}
+          busy={busy}
+          chapters={chapters}
+          chapterId={draftChapterId}
+          afterLessonId={draftAfterId}
+          lessons={chapterLessons[draftChapterId] || []}
+          lessonsLoading={Boolean(lessonsLoading[draftChapterId])}
+          onChapterChange={(chapterId) => {
+            setDraftChapterId(chapterId);
+            setDraftAfterId(SURVEY_PLACE_END);
+            if (chapterId) void loadChapterLessons(chapterId);
+          }}
+          onAfterChange={setDraftAfterId}
+          onChange={setDraft}
+          onChangeQuestion={updateQuestion}
+          onMoveQuestion={moveQuestion}
+          onSave={save}
+          onCancel={() => {
+            setDraft(null);
+            setEditingId(null);
+            setDraftChapterId("");
+            setDraftAfterId(SURVEY_PLACE_END);
+          }}
+        />
+      ) : null}
 
       <section className="card">
         <h2>Surveys</h2>
@@ -228,56 +379,29 @@ export default function SurveyManager() {
                   {survey.isActive ? " · Active for students" : " · Draft"}
                 </p>
                 {chapters.length ? (
-                  <div className="survey-attach-row">
-                    <label className="survey-attach-field">
-                      Chapter
-                      <select
-                        className="select-line"
-                        value={attachChapter[survey.id] || chapters[0].id}
-                        onChange={(event) => {
-                          const chapterId = event.target.value;
-                          setAttachChapter((current) => ({ ...current, [survey.id]: chapterId }));
-                          setAttachAfter((current) => ({ ...current, [survey.id]: SURVEY_PLACE_END }));
-                          void loadChapterLessons(chapterId);
-                        }}
-                        aria-label={`Chapter for ${survey.title}`}
-                      >
-                        {chapters.map((chapter) => (
-                          <option key={chapter.id} value={chapter.id}>
-                            {chapter.title}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <label className="survey-attach-field">
-                      After which lesson
-                      <select
-                        className="select-line"
-                        value={attachAfter[survey.id] || SURVEY_PLACE_END}
-                        onChange={(event) =>
-                          setAttachAfter((current) => ({ ...current, [survey.id]: event.target.value }))
-                        }
-                        aria-label={`Place ${survey.title} after which lesson`}
-                      >
-                        <option value={SURVEY_PLACE_START}>At the start of the chapter</option>
-                        {loadingLessons ? (
-                          <option value="" disabled>
-                            Loading lessons in this chapter…
-                          </option>
-                        ) : null}
-                        {lessons.map((lesson) => (
-                          <option key={lesson.id} value={lesson.id}>
-                            After: {lesson.title}
-                          </option>
-                        ))}
-                        <option value={SURVEY_PLACE_END}>At the end of the chapter</option>
-                      </select>
-                    </label>
+                  <SurveyPlacementFields
+                    chapters={chapters}
+                    chapterId={selectedChapterId || chapters[0].id}
+                    afterLessonId={attachAfter[survey.id] || SURVEY_PLACE_END}
+                    lessons={lessons}
+                    loading={loadingLessons}
+                    surveyTitle={survey.title}
+                    onChapterChange={(chapterId) => {
+                      setAttachChapter((current) => ({ ...current, [survey.id]: chapterId }));
+                      setAttachAfter((current) => ({ ...current, [survey.id]: SURVEY_PLACE_END }));
+                      void loadChapterLessons(chapterId);
+                    }}
+                    onAfterChange={(afterLessonId) =>
+                      setAttachAfter((current) => ({ ...current, [survey.id]: afterLessonId }))
+                    }
+                  >
                     <button className="ghost" type="button" disabled={busy} onClick={() => void attach(survey)}>
                       Add to chapter
                     </button>
-                  </div>
-                ) : null}
+                  </SurveyPlacementFields>
+                ) : (
+                  <p className="muted small">Load live chapters to insert this survey into the course.</p>
+                )}
                 <div className="actions">
                   <button className="ghost" type="button" onClick={() => startEdit(survey)}>
                     Edit
@@ -303,22 +427,6 @@ export default function SurveyManager() {
           <p className="empty">No custom surveys yet. Create one to start collecting answers.</p>
         )}
       </section>
-
-      {draft ? (
-        <SurveyEditor
-          draft={draft}
-          editingId={editingId}
-          busy={busy}
-          onChange={setDraft}
-          onChangeQuestion={updateQuestion}
-          onMoveQuestion={moveQuestion}
-          onSave={save}
-          onCancel={() => {
-            setDraft(null);
-            setEditingId(null);
-          }}
-        />
-      ) : null}
     </div>
   );
 }
@@ -327,6 +435,13 @@ function SurveyEditor({
   draft,
   editingId,
   busy,
+  chapters,
+  chapterId,
+  afterLessonId,
+  lessons,
+  lessonsLoading,
+  onChapterChange,
+  onAfterChange,
   onChange,
   onChangeQuestion,
   onMoveQuestion,
@@ -336,6 +451,13 @@ function SurveyEditor({
   draft: SurveyDraft;
   editingId: string | null;
   busy: boolean;
+  chapters: CourseChapterOption[];
+  chapterId: string;
+  afterLessonId: string;
+  lessons: ChapterLessonOption[];
+  lessonsLoading: boolean;
+  onChapterChange: (chapterId: string) => void;
+  onAfterChange: (afterLessonId: string) => void;
   onChange: (draft: SurveyDraft) => void;
   onChangeQuestion: (id: string, patch: Partial<SurveyQuestion>) => void;
   onMoveQuestion: (index: number, direction: -1 | 1) => void;
@@ -399,6 +521,22 @@ function SurveyEditor({
         />
         Active — students can open and submit this survey
       </label>
+
+      <h3>Insert into course</h3>
+      <p className="muted small">
+        Choose the chapter and the lesson this survey should follow. Leave the chapter blank if you only want to save the form for now.
+      </p>
+      <SurveyPlacementFields
+        chapters={chapters}
+        chapterId={chapterId}
+        afterLessonId={afterLessonId}
+        lessons={lessons}
+        loading={lessonsLoading}
+        surveyTitle={draft.title || "this survey"}
+        allowSkip
+        onChapterChange={onChapterChange}
+        onAfterChange={onAfterChange}
+      />
 
       <h3>Questions and info blocks</h3>
       {draft.questions.map((question, index) => {
