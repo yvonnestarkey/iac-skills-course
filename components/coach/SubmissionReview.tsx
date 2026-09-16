@@ -261,8 +261,14 @@ export default function SubmissionReview({ id }: { id: string }) {
             accept="application/pdf,.pdf,.doc,.docx,.png,.jpg,.jpeg"
             disabled={busy || uploading}
             onChange={(event) => {
-              void pickFile(event.target.files && event.target.files[0]);
+              const chosen = event.target.files?.[0];
               event.target.value = "";
+              if (!chosen) return;
+              const copy = new File([chosen], chosen.name, {
+                type: chosen.type || "application/pdf",
+                lastModified: chosen.lastModified,
+              });
+              void pickFile(copy);
             }}
           />
           <p className="muted small">{uploading ? "Uploading…" : "Optional. Upload a marked PDF or notes to return to the student."}</p>

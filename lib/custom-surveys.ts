@@ -965,6 +965,45 @@ export async function saveSurveyReview(input: {
   return { ok: true, response: data ? responseFromRow(data as Record<string, unknown>) : undefined };
 }
 
+const COACH_FEEDBACK_STORAGE_SQL = `insert into storage.buckets (id, name, public)
+values ('course-pdfs', 'course-pdfs', true)
+on conflict (id) do nothing;
+
+drop policy if exists "students upload survey response pdfs" on storage.objects;
+create policy "students upload survey response pdfs"
+  on storage.objects for insert
+  to authenticated
+  with check (
+    bucket_id = 'course-pdfs'
+    and split_part(name, '/', 1) = 'survey-responses'
+    and split_part(name, '/', 3) = auth.uid()::text
+  );
+
+drop policy if exists "staff upload course pdfs" on storage.objects;
+create policy "staff upload course pdfs"
+  on storage.objects for insert
+  to authenticated
+  with check (
+    bucket_id in ('course-pdfs', 'lesson-banners')
+    and public.is_course_staff()
+  );`;
+
+async function uploadCoursePdfBlob(
+  path: string,
+  body: Blob
+): Promise<{ url?: string; error?: string }> {
+  const client = getSupabase();
+  if (!client) return { error: "Supabase is not configured." };
+  const uploaded = await client.storage.from("course-pdfs").upload(path, body, {
+    upsert: false,
+    contentType: "application/pdf",
+  });
+  if (uploaded.error) return { error: uploaded.error.message };
+  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
+  if (!data?.publicUrl) return { error: "Could not get a public URL for that PDF." };
+  return { url: data.publicUrl };
+}
+
 export async function uploadCoachFeedbackFile(
   file: File,
   surveyId: string,
@@ -974,24 +1013,42 @@ export async function uploadCoachFeedbackFile(
   if (!client) return { ok: false, error: "Supabase is not configured." };
   const { data: session } = await client.auth.getUser();
   if (!session.user) return { ok: false, error: "Sign in required." };
-  const ext = (file.name.split(".").pop() || "pdf").toLowerCase().replace(/[^a-z0-9]/g, "") || "pdf";
-  const stamp = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-  const attempts = [
-    { bucket: "course-pdfs", path: `surveys/feedback/${surveyId}/${responseId}-${stamp}` },
-    { bucket: "course-pdfs", path: `surveys/${responseId}-${stamp}` },
-    { bucket: "course-pdfs", path: `survey-feedback/${surveyId}/${responseId}-${stamp}` },
-    { bucket: "lesson-banners", path: `surveys/feedback/${responseId}-${stamp}` },
-  ];
-  for (const attempt of attempts) {
-    const uploaded = await client.storage.from(attempt.bucket).upload(attempt.path, file, {
-      upsert: true,
-      contentType: file.type || (ext === "pdf" ? "application/pdf" : "application/octet-stream"),
-    });
-    if (uploaded.error) continue;
-    const { data } = client.storage.from(attempt.bucket).getPublicUrl(attempt.path);
-    if (data?.publicUrl) return { ok: true, url: data.publicUrl, name: file.name.trim() || "feedback" };
+  const name = file.name.toLowerCase();
+  const looksLikePdf = file.type.includes("pdf") || name.endsWith(".pdf");
+  if (!looksLikePdf) {
+    return { ok: false, error: "Please upload a PDF file." };
   }
-  return { ok: false, error: "Could not upload that file. Try a PDF, or paste a public file URL into the feedback notes." };
+  let body: Blob;
+  try {
+    body = new Blob([await file.arrayBuffer()], { type: "application/pdf" });
+  } catch {
+    return { ok: false, error: "Could not read that PDF. Try exporting it again, then upload." };
+  }
+  if (!body.size) return { ok: false, error: "That PDF was empty. Try another file." };
+  const stamp = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.pdf`;
+  const paths = [
+    `survey-responses/${surveyId}/${session.user.id}/feedback-${responseId}-${stamp}`,
+    `surveys/${stamp}`,
+  ];
+  let lastError = "";
+  for (const path of paths) {
+    const uploaded = await uploadCoursePdfBlob(path, body);
+    if (uploaded.url) return { ok: true, url: uploaded.url, name: file.name.trim() || "feedback.pdf" };
+    lastError = uploaded.error || lastError;
+  }
+  const denied = /row-level security|policy|not allowed|unauthorized|403/i.test(lastError);
+  if (denied) {
+    return {
+      ok: false,
+      error: `Could not store that PDF. Paste this SQL in Supabase, then upload again:\n\n${COACH_FEEDBACK_STORAGE_SQL}`,
+    };
+  }
+  return {
+    ok: false,
+    error: lastError
+      ? `Could not upload that PDF (${lastError}). Try another PDF, or paste a public file URL into the feedback notes.`
+      : "Could not upload that PDF. Try another file, or paste a public file URL into the feedback notes.",
+  };
 }
 
 export async function fetchStudentSurveyPacks(
