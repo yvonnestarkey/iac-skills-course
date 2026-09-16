@@ -268,28 +268,56 @@ export function studentSurveyPath(slug: string): string {
   return `/student/surveys/${encodeURIComponent(slug)}`;
 }
 
+export const SURVEY_PLACE_START = "__start__";
+export const SURVEY_PLACE_END = "__end__";
+
+export type CourseChapterOption = {
+  id: string;
+  title: string;
+  lessons: { id: string; title: string }[];
+};
+
+export function insertIndexAfterLesson(lessonIds: string[], afterLessonId?: string | null): number {
+  if (!afterLessonId || afterLessonId === SURVEY_PLACE_END) return lessonIds.length;
+  if (afterLessonId === SURVEY_PLACE_START) return 0;
+  const index = lessonIds.indexOf(afterLessonId);
+  return index >= 0 ? index + 1 : lessonIds.length;
+}
+
 export async function fetchCourseChapters(): Promise<{
   ok: boolean;
   error?: string;
-  data: { id: string; title: string }[];
+  data: CourseChapterOption[];
 }> {
   const client = getSupabase();
-  if (client) {
-    const { data, error } = await client.from("chapters").select("id, title, position").order("position", { ascending: true });
-    if (!error) {
-      return {
-        ok: true,
-        data: (data || []).map((row) => ({ id: String(row.id), title: String(row.title || row.id) })),
-      };
-    }
-    return { ok: false, error: error.message, data: [] };
-  }
-  return { ok: false, error: "Supabase is not configured.", data: [] };
+  if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
+  const [chapters, lessons] = await Promise.all([
+    client.from("chapters").select("id, title, position").order("position", { ascending: true }),
+    client.from("lessons").select("id, title, chapter_id, position").order("chapter_id", { ascending: true }).order("position", { ascending: true }),
+  ]);
+  if (chapters.error) return { ok: false, error: chapters.error.message, data: [] };
+  if (lessons.error) return { ok: false, error: lessons.error.message, data: [] };
+  const grouped = new Map<string, { id: string; title: string }[]>();
+  (lessons.data || []).forEach((row) => {
+    const chapterId = String(row.chapter_id || "");
+    const list = grouped.get(chapterId) || [];
+    list.push({ id: String(row.id), title: String(row.title || row.id) });
+    grouped.set(chapterId, list);
+  });
+  return {
+    ok: true,
+    data: (chapters.data || []).map((row) => ({
+      id: String(row.id),
+      title: String(row.title || row.id),
+      lessons: grouped.get(String(row.id)) || [],
+    })),
+  };
 }
 
 export async function attachSurveyToChapter(
   survey: CustomSurvey,
-  chapterId: string
+  chapterId: string,
+  afterLessonId?: string | null
 ): Promise<{ ok: boolean; error?: string; lessonId?: string }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
@@ -297,18 +325,18 @@ export async function attachSurveyToChapter(
   if (!chapter) return { ok: false, error: "Choose a chapter." };
   const slug = survey.slug || slugifySurveyTitle(survey.title);
   const lessonId = `${chapter}-survey-${slug}`.replace(/[^a-zA-Z0-9_-]+/g, "-").slice(0, 80);
-  const last = await client
+  const siblings = await client
     .from("lessons")
-    .select("position")
+    .select("id, position")
     .eq("chapter_id", chapter)
-    .order("position", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  const position = Number(last.data?.position || 0) + 1;
+    .order("position", { ascending: true });
+  if (siblings.error) return { ok: false, error: describe(siblings.error) };
+  const orderedIds = (siblings.data || []).map((row) => String(row.id)).filter((id) => id !== lessonId);
+  const insertAt = insertIndexAfterLesson(orderedIds, afterLessonId);
   const row: Record<string, unknown> = {
     id: lessonId,
     chapter_id: chapter,
-    position,
+    position: insertAt + 1,
     type: "survey",
     title: survey.title,
     blurb: survey.description || survey.title,
@@ -324,6 +352,10 @@ export async function attachSurveyToChapter(
     error = retry.error;
   }
   if (error) return { ok: false, error: describe(error) };
+  orderedIds.splice(insertAt, 0, lessonId);
+  const { saveChapterOrder } = await import("./content");
+  const rewritten = await saveChapterOrder(chapter, orderedIds);
+  if (!rewritten.ok) return { ok: false, error: rewritten.error || "Survey was added, but the chapter order could not be saved." };
   if (!survey.isActive) await setCustomSurveyActive(survey.id, true);
   const { invalidateCourseOutline } = await import("./student-lesson");
   invalidateCourseOutline();

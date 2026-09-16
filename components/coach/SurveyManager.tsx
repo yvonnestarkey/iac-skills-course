@@ -16,8 +16,11 @@ import {
   setCustomSurveyActive,
   slugifySurveyTitle,
   studentSurveyPath,
+  SURVEY_PLACE_END,
+  SURVEY_PLACE_START,
   SURVEY_QUESTION_TYPES,
   task2SelfEvaluationDraft,
+  type CourseChapterOption,
   type CustomSurvey,
   type SurveyDraft,
   type SurveyQuestion,
@@ -37,8 +40,9 @@ function draftFromSurvey(survey: CustomSurvey): SurveyDraft {
 export default function SurveyManager() {
   const router = useRouter();
   const [surveys, setSurveys] = useState<CustomSurvey[]>([]);
-  const [chapters, setChapters] = useState<{ id: string; title: string }[]>([]);
+  const [chapters, setChapters] = useState<CourseChapterOption[]>([]);
   const [attachChapter, setAttachChapter] = useState<Record<string, string>>({});
+  const [attachAfter, setAttachAfter] = useState<Record<string, string>>({});
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
@@ -142,16 +146,26 @@ export default function SurveyManager() {
 
   const attach = async (survey: CustomSurvey) => {
     const chapterId = attachChapter[survey.id] || chapters[0]?.id || "";
+    const afterLessonId = attachAfter[survey.id] || SURVEY_PLACE_END;
     setBusy(true);
-    const result = await attachSurveyToChapter(survey, chapterId);
+    const result = await attachSurveyToChapter(survey, chapterId, afterLessonId);
     setBusy(false);
     if (!result.ok) {
       setNotice(result.error || "Could not add this survey to the chapter.");
       return;
     }
     const chapter = chapters.find((item) => item.id === chapterId);
-    setNotice(`Added “${survey.title}” to ${chapter?.title || "the chapter"} as a survey lesson.`);
+    const afterLesson = chapter?.lessons.find((lesson) => lesson.id === afterLessonId);
+    const place =
+      afterLessonId === SURVEY_PLACE_START
+        ? "at the start"
+        : afterLesson
+          ? `after “${afterLesson.title}”`
+          : "at the end";
+    setNotice(`Added “${survey.title}” to ${chapter?.title || "the chapter"} ${place}.`);
     await load();
+    const refreshed = await fetchCourseChapters();
+    if (refreshed.ok) setChapters(refreshed.data);
   };
 
   return (
@@ -159,7 +173,7 @@ export default function SurveyManager() {
       <div className="coach-head">
         <div>
           <h1>Custom surveys</h1>
-          <p className="muted">Build forms without code, then attach them to a chapter so they appear in the student sidebar.</p>
+          <p className="muted">Build forms without code, then place them after any lesson in a chapter so they appear in the student sidebar.</p>
         </div>
         <div className="actions">
           <button className="primary" type="button" onClick={startNew}>
@@ -197,20 +211,46 @@ export default function SurveyManager() {
                 </p>
                 {chapters.length ? (
                   <div className="survey-attach-row">
-                    <select
-                      className="select-line"
-                      value={attachChapter[survey.id] || chapters[0].id}
-                      onChange={(event) =>
-                        setAttachChapter((current) => ({ ...current, [survey.id]: event.target.value }))
-                      }
-                      aria-label={`Chapter for ${survey.title}`}
-                    >
-                      {chapters.map((chapter) => (
-                        <option key={chapter.id} value={chapter.id}>
-                          {chapter.title}
-                        </option>
-                      ))}
-                    </select>
+                    <label className="survey-attach-field">
+                      Chapter
+                      <select
+                        className="select-line"
+                        value={attachChapter[survey.id] || chapters[0].id}
+                        onChange={(event) => {
+                          const chapterId = event.target.value;
+                          setAttachChapter((current) => ({ ...current, [survey.id]: chapterId }));
+                          setAttachAfter((current) => ({ ...current, [survey.id]: SURVEY_PLACE_END }));
+                        }}
+                        aria-label={`Chapter for ${survey.title}`}
+                      >
+                        {chapters.map((chapter) => (
+                          <option key={chapter.id} value={chapter.id}>
+                            {chapter.title}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="survey-attach-field">
+                      After which lesson
+                      <select
+                        className="select-line"
+                        value={attachAfter[survey.id] || SURVEY_PLACE_END}
+                        onChange={(event) =>
+                          setAttachAfter((current) => ({ ...current, [survey.id]: event.target.value }))
+                        }
+                        aria-label={`Place ${survey.title} after which lesson`}
+                      >
+                        <option value={SURVEY_PLACE_START}>At the start of the chapter</option>
+                        {(chapters.find((chapter) => chapter.id === (attachChapter[survey.id] || chapters[0].id))?.lessons || []).map(
+                          (lesson) => (
+                            <option key={lesson.id} value={lesson.id}>
+                              After: {lesson.title}
+                            </option>
+                          )
+                        )}
+                        <option value={SURVEY_PLACE_END}>At the end of the chapter</option>
+                      </select>
+                    </label>
                     <button className="ghost" type="button" disabled={busy} onClick={() => void attach(survey)}>
                       Add to chapter
                     </button>

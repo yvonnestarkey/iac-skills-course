@@ -26,7 +26,7 @@ import {
 import { supabaseConfigured, supabaseProjectRef } from "@/lib/supabase";
 import { useStore } from "@/lib/store";
 import type { Chapter, Lesson } from "@/lib/types";
-import { fetchCustomSurveys, type CustomSurvey } from "@/lib/custom-surveys";
+import { fetchCustomSurveys, insertIndexAfterLesson, SURVEY_PLACE_END, SURVEY_PLACE_START, type CustomSurvey } from "@/lib/custom-surveys";
 import { invalidateCourseOutline } from "@/lib/student-lesson";
 import CourseOutlineBoard from "@/components/coach/CourseOutlineBoard";
 
@@ -44,13 +44,18 @@ const BLANK = {
   surveyId: "",
   videoUrl: "",
   bannerUrl: "",
+  afterLessonId: SURVEY_PLACE_END,
 };
 
 /** New teaching work goes before the chapter's Ask the Coach and survey lessons. */
-function insertLesson(chapter: Chapter, lesson: Lesson) {
+function insertLesson(chapter: Chapter, lesson: Lesson, index?: number) {
   const existing = chapter.lessons.findIndex((l) => l.id === lesson.id);
   if (existing >= 0) {
     chapter.lessons[existing] = lesson;
+    return;
+  }
+  if (index != null) {
+    chapter.lessons.splice(Math.max(0, Math.min(index, chapter.lessons.length)), 0, lesson);
     return;
   }
   const tail = chapter.lessons.findIndex((l) => l.type === "ask" || l.type === "survey");
@@ -94,11 +99,11 @@ export default function ContentManager() {
 
   const set = (next: Partial<typeof BLANK>) => setForm((current) => ({ ...current, ...next }));
 
-  const addDrafts = (drafts: LessonDraft[]) => {
+  const addDrafts = (drafts: LessonDraft[], insertAt?: number) => {
     mutate((draft) => {
       drafts.forEach((d) => {
         const chapter = draft.chapters.find((c) => c.id === d.chapterId);
-        if (chapter) insertLesson(chapter, d.lesson);
+        if (chapter) insertLesson(chapter, d.lesson, insertAt);
       });
     });
   };
@@ -125,17 +130,24 @@ export default function ContentManager() {
     }
     const existingIds = board.flatMap((item) => item.lessons.map((lesson) => lesson.id));
     const lesson = buildLesson(nextLiveLessonId(chapter.id, existingIds), form);
+    const siblingIds = chapter.lessons.map((item) => item.id);
+    const insertAt = insertIndexAfterLesson(siblingIds, form.afterLessonId);
+    const orderedIds = [...siblingIds];
+    orderedIds.splice(insertAt, 0, lesson.id);
     setBusy(true);
-    addDrafts([{ chapterId: chapter.id, lesson }]);
-    const problem = await saveToDb([{ chapterId: chapter.id, lesson }], chapter.lessons.length);
+    addDrafts([{ chapterId: chapter.id, lesson }], insertAt);
+    const problem = await saveToDb([{ chapterId: chapter.id, lesson }], insertAt + 1);
+    const orderProblem = alsoSave && supabaseConfigured ? await saveChapterOrder(chapter.id, orderedIds) : { ok: true, error: "" };
     invalidateCourseOutline();
     await loadBoard();
     setBusy(false);
-    setForm({ ...BLANK, chapter: chapter.id, type: form.type });
+    setForm({ ...BLANK, chapter: chapter.id, type: form.type, afterLessonId: SURVEY_PLACE_END });
     setEditingId(null);
     setStatus({
-      kind: problem ? "warn" : "ok",
-      text: `“${lesson.title}” added to ${chapter.title} and it is live in the student sidebar.${problem}`,
+      kind: problem || !orderProblem.ok ? "warn" : "ok",
+      text: `“${lesson.title}” added to ${chapter.title} and it is live in the student sidebar.${problem}${
+        orderProblem.ok ? "" : ` ${orderProblem.error || "Could not save the new lesson order."}`
+      }`,
     });
   };
 
@@ -267,6 +279,7 @@ export default function ContentManager() {
       surveyId: lesson.survey_id || "",
       videoUrl: lesson.video_url || "",
       bannerUrl: lesson.banner_image_url || "",
+      afterLessonId: SURVEY_PLACE_END,
     });
     setStatus({ kind: "ok", text: `Editing “${lesson.title}”.` });
   };
@@ -388,7 +401,7 @@ export default function ContentManager() {
               id="cm-chapter"
               className="select-line"
               value={form.chapter}
-              onChange={(event) => set({ chapter: event.target.value })}
+              onChange={(event) => set({ chapter: event.target.value, afterLessonId: SURVEY_PLACE_END })}
             >
               {board.length ? (
                 board.map((c) => (
@@ -401,6 +414,27 @@ export default function ContentManager() {
               )}
             </select>
           </div>
+          {editingId ? null : (
+            <div className="plan-field">
+              <label htmlFor="cm-after">
+                <strong>After which lesson</strong>
+              </label>
+              <select
+                id="cm-after"
+                className="select-line"
+                value={form.afterLessonId}
+                onChange={(event) => set({ afterLessonId: event.target.value })}
+              >
+                <option value={SURVEY_PLACE_START}>At the start of the chapter</option>
+                {(board.find((chapter) => chapter.id === form.chapter)?.lessons || []).map((lesson) => (
+                  <option key={lesson.id} value={lesson.id}>
+                    After: {lesson.title}
+                  </option>
+                ))}
+                <option value={SURVEY_PLACE_END}>At the end of the chapter</option>
+              </select>
+            </div>
+          )}
           <div className="plan-field">
             <label htmlFor="cm-type">
               <strong>Lesson type</strong>
@@ -566,7 +600,7 @@ export default function ContentManager() {
                   </option>
                 ))}
               </select>
-              <p className="muted small">Build the form under Custom surveys, then drop it into this chapter.</p>
+              <p className="muted small">Build the form under Custom surveys, then choose which lesson it should follow.</p>
             </div>
           ) : null}
           {!teachingFields && !workFields ? (

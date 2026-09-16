@@ -4236,13 +4236,26 @@ a.live-session-watch:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  align-items: center;
+  align-items: flex-end;
   margin-top: 10px;
+}
+
+.survey-attach-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 180px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5b6b68;
 }
 
 .survey-attach-row .select-line {
   flex: 1;
   min-width: 180px;
+  font-weight: 500;
+  color: var(--ink);
 }
 
 .course-outline-chapter {
