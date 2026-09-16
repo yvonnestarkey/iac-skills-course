@@ -3,8 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { Bell, LogOut, Mail } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
-import { unreadForCoach, unreadForStudent } from "@/lib/comms";
-import { waitingQuestions } from "@/lib/course";
+import { unreadForCoach } from "@/lib/comms";
 import { useStore } from "@/lib/store";
 import { useStudentNav } from "@/lib/student-nav";
 import { signOutStudent } from "@/lib/student-lesson";
@@ -14,19 +13,12 @@ export default function TopBar() {
   const { data, session, setSession } = useStore();
   const router = useRouter();
   const pathname = usePathname();
-  const demoWaiting = waitingQuestions(data).length;
   const inboxWaiting = useInboxWaiting();
-  const unread =
-    session && session.role === "coach"
-      ? unreadForCoach(data)
-      : session && session.role === "student"
-        ? unreadForStudent(data, session.id)
-        : 0;
+  const unread = session && session.role === "coach" ? unreadForCoach(data) : 0;
   const isCoach = Boolean(session && session.role === "coach");
-  const inboxHref = isCoach ? "/coach/inbox" : "/notifications";
-  const notifyHref = isCoach ? "/coach/notifications" : "/notifications";
+  const inboxHref = "/coach/inbox";
+  const notifyHref = "/coach/notifications";
   const courseNav = useStudentNav();
-  const waiting = isCoach ? inboxWaiting + demoWaiting : 0;
 
   const signOut = async () => {
     await signOutStudent();
@@ -60,7 +52,6 @@ export default function TopBar() {
             {unread ? <span className="pill">{unread}</span> : null}
           </button>
         ) : null}
-        {waiting ? <span className="pill">{waiting} waiting</span> : null}
         {isCoach ? <span className="coach-view-pill">Coach View</span> : null}
         {isCoach ? (
           <button className="coach-signout" type="button" onClick={() => void signOut()}>

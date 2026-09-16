@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AuditThread from "@/components/comms/AuditThread";
-import { commsOf, labelForGroup } from "@/lib/comms";
+import { commsOf, labelForGroup, markAllCoachCommunicationsRead } from "@/lib/comms";
 import { cohortName } from "@/lib/course";
 import { cohortStudents } from "@/lib/metrics";
 import { fetchRosterStudents } from "@/lib/profiles";
@@ -11,7 +11,7 @@ import { useStore } from "@/lib/store";
 import type { CommunicationAudience, Student } from "@/lib/types";
 
 export default function CoachNotificationsPage() {
-  const { data, coach, setNotifyDraft } = useStore();
+  const { data, coach, setNotifyDraft, mutate } = useStore();
   const router = useRouter();
   const [audience, setAudience] = useState<CommunicationAudience>("cohort");
   const [liveStudents, setLiveStudents] = useState<Student[]>([]);
@@ -24,6 +24,10 @@ export default function CoachNotificationsPage() {
       if (result.ok) setLiveStudents(result.students);
     });
   }, []);
+
+  useEffect(() => {
+    mutate((draft) => markAllCoachCommunicationsRead(draft));
+  }, [mutate]);
 
   useEffect(() => {
     if (!studentId && students[0]) setStudentId(students[0].id);

@@ -9,7 +9,10 @@ import {
   fetchInboxMessages,
   formatInboxTime,
   groupInboxByStudent,
+  markAllCoachInboxRead,
+  markCoachThreadResolved,
   postInboxMessage,
+  refreshCoachAlerts,
   type InboxKind,
   type InboxThread,
 } from "@/lib/inbox";
@@ -37,12 +40,21 @@ export default function CoachInbox() {
     setThreads(next);
     setSelectedEmail((current) => {
       if (current && next.some((thread) => thread.studentEmail === current)) return current;
-      return next.find((thread) => thread.queued)?.studentEmail || null;
+      return next.find((thread) => thread.queued)?.studentEmail || next[0]?.studentEmail || null;
     });
   }, []);
 
   useEffect(() => {
-    load();
+    let cancelled = false;
+    (async () => {
+      await markAllCoachInboxRead();
+      if (cancelled) return;
+      refreshCoachAlerts();
+      await load();
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [load]);
 
   useEffect(() => {
@@ -100,6 +112,7 @@ export default function CoachInbox() {
     }
     setText("");
     setStatus(kind === "feedback" ? "Feedback sent to the student dashboard." : "Reply sent.");
+    refreshCoachAlerts();
     await load();
   };
 

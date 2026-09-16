@@ -114,3 +114,9 @@ export function markRead(draft: CourseData, commId: string, readerId: string) {
   if (!comm) return;
   if (!comm.readBy.includes(readerId)) comm.readBy.push(readerId);
 }
+
+export function markAllCoachCommunicationsRead(draft: CourseData) {
+  (draft.communications || []).forEach((comm) => {
+    if (!comm.readBy.includes("coach")) comm.readBy.push("coach");
+  });
+}

@@ -1,21 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchInboxMessages, groupInboxByStudent } from "./inbox";
+import { useCallback, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { COACH_ALERTS_EVENT, fetchInboxMessages, unreadStudentThreadCount } from "./inbox";
 
 export function useInboxWaiting(): number {
+  const pathname = usePathname();
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    let cancelled = false;
+  const refresh = useCallback(() => {
     fetchInboxMessages().then((result) => {
-      if (cancelled || !result.ok) return;
-      setCount(groupInboxByStudent(result.data).filter((thread) => thread.queued).length);
+      if (!result.ok) return;
+      setCount(unreadStudentThreadCount(result.data));
     });
-    return () => {
-      cancelled = true;
-    };
   }, []);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh, pathname]);
+
+  useEffect(() => {
+    const onRefresh = () => refresh();
+    window.addEventListener(COACH_ALERTS_EVENT, onRefresh);
+    return () => window.removeEventListener(COACH_ALERTS_EVENT, onRefresh);
+  }, [refresh]);
 
   return count;
 }

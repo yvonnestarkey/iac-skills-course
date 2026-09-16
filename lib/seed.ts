@@ -495,7 +495,7 @@ export const SEED: CourseData = {
       audience: "cohort",
       audienceLabel: "January 2027 · 6 students",
       recipientIds: ["maya", "jordan", "alex", "sam", "priya", "tomas"],
-      readBy: ["maya"],
+      readBy: ["maya", "coach"],
       replies: [
         {
           id: "r-seed-jordan",

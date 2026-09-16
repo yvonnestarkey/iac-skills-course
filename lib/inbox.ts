@@ -294,6 +294,38 @@ export async function markOwnInboxRead(): Promise<{ ok: boolean; error?: string 
   return { ok: false, error: lastError || "Could not mark inbox messages as read." };
 }
 
+export function unreadStudentThreadCount(messages: InboxMessage[]): number {
+  return groupInboxByStudent(messages).filter((thread) =>
+    thread.messages.some((item) => item.from === "student" && !item.read)
+  ).length;
+}
+
+export const COACH_ALERTS_EVENT = "coach-alerts-refresh";
+
+export function refreshCoachAlerts(): void {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new Event(COACH_ALERTS_EVENT));
+}
+
+export async function markAllCoachInboxRead(): Promise<{ ok: boolean; error?: string }> {
+  const { client, user, error: authError } = await authClient();
+  if (!client || !user) return { ok: false, error: authError || "Sign in required." };
+
+  const now = new Date().toISOString();
+  const attempts: Record<string, unknown>[] = [{ read: true, read_at: now }, { read: true }];
+  let lastError = "";
+
+  for (const patch of attempts) {
+    let query = client.from("inbox_messages").update(patch).eq("from_role", "student");
+    if ("read" in patch) query = query.eq("read", false);
+    const { error } = await query;
+    if (!error) return { ok: true };
+    lastError = describe(error);
+  }
+
+  return { ok: false, error: lastError || "Could not mark inbox messages as read." };
+}
+
 export async function markCoachThreadResolved(student: {
   studentId?: string | null;
   studentEmail: string;

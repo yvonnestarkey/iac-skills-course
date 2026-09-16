@@ -29,6 +29,11 @@ function withCurrentCohorts(data: CourseData): CourseData {
       ...student,
       cohort: normalizeCohortId(student.cohort),
     })),
+    communications: (data.communications || []).map((comm) => {
+      const readBy = comm.readBy || [];
+      const seenByCoach = comm.id.startsWith("n-seed") || readBy.includes("coach");
+      return { ...comm, readBy: seenByCoach ? [...new Set([...readBy, "coach"])] : readBy };
+    }),
   };
 }
 
