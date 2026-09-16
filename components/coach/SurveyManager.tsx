@@ -3,8 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  attachSurveyToChapter,
   deleteCustomSurvey,
   emptySurveyDraft,
+  fetchCourseChapters,
   fetchCustomSurveys,
   newSurveyQuestion,
   isInfoBlock,
@@ -33,6 +35,8 @@ function draftFromSurvey(survey: CustomSurvey): SurveyDraft {
 export default function SurveyManager() {
   const router = useRouter();
   const [surveys, setSurveys] = useState<CustomSurvey[]>([]);
+  const [chapters, setChapters] = useState<{ id: string; title: string }[]>([]);
+  const [attachChapter, setAttachChapter] = useState<Record<string, string>>({});
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
@@ -51,6 +55,9 @@ export default function SurveyManager() {
 
   useEffect(() => {
     void load();
+    fetchCourseChapters().then((result) => {
+      if (result.ok) setChapters(result.data);
+    });
   }, []);
 
   const startNew = () => {
@@ -131,12 +138,26 @@ export default function SurveyManager() {
     }
   };
 
+  const attach = async (survey: CustomSurvey) => {
+    const chapterId = attachChapter[survey.id] || chapters[0]?.id || "";
+    setBusy(true);
+    const result = await attachSurveyToChapter(survey, chapterId);
+    setBusy(false);
+    if (!result.ok) {
+      setNotice(result.error || "Could not add this survey to the chapter.");
+      return;
+    }
+    const chapter = chapters.find((item) => item.id === chapterId);
+    setNotice(`Added “${survey.title}” to ${chapter?.title || "the chapter"} as a survey lesson.`);
+    await load();
+  };
+
   return (
     <div className="survey-manager">
       <div className="coach-head">
         <div>
           <h1>Custom surveys</h1>
-          <p className="muted">Build forms without code. Active surveys appear for students at their slug URL.</p>
+          <p className="muted">Build forms without code, then attach them to a chapter so they appear in the student sidebar.</p>
         </div>
         <button className="primary" type="button" onClick={startNew}>
           New survey
@@ -156,9 +177,30 @@ export default function SurveyManager() {
                   <span className={`badge ${survey.isActive ? "ok" : ""}`}>{survey.isActive ? "Active" : "Draft"}</span>
                 </div>
                 <p className="muted small">
-                  /student/surveys/{survey.slug} · {survey.questions.length} question
-                  {survey.questions.length === 1 ? "" : "s"}
+                  {survey.questions.length} question{survey.questions.length === 1 ? "" : "s"}
+                  {survey.isActive ? " · Active for students" : " · Draft"}
                 </p>
+                {chapters.length ? (
+                  <div className="survey-attach-row">
+                    <select
+                      className="select-line"
+                      value={attachChapter[survey.id] || chapters[0].id}
+                      onChange={(event) =>
+                        setAttachChapter((current) => ({ ...current, [survey.id]: event.target.value }))
+                      }
+                      aria-label={`Chapter for ${survey.title}`}
+                    >
+                      {chapters.map((chapter) => (
+                        <option key={chapter.id} value={chapter.id}>
+                          {chapter.title}
+                        </option>
+                      ))}
+                    </select>
+                    <button className="ghost" type="button" disabled={busy} onClick={() => void attach(survey)}>
+                      Add to chapter
+                    </button>
+                  </div>
+                ) : null}
                 <div className="actions">
                   <button className="ghost" type="button" onClick={() => startEdit(survey)}>
                     Edit

@@ -29,6 +29,7 @@ alter table public.lessons add column if not exists requires_submission boolean 
 alter table public.lessons add column if not exists requires_coach_approval boolean not null default false;
 alter table public.lessons add column if not exists prereq_lesson_id text;
 alter table public.lessons add column if not exists pdf_url text;
+alter table public.lessons add column if not exists survey_id uuid;
 
 alter table public.lessons enable row level security;
 

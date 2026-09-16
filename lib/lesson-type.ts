@@ -38,7 +38,7 @@ export function lessonTypeLabel(type: string): string {
     case "ask":
       return "Ask your coach";
     case "survey":
-      return "Check-in";
+      return "Survey";
     default:
       return type.replace(/[_-]+/g, " ");
   }

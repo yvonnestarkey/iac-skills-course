@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CSV_COLUMNS,
   CSV_TEMPLATE,
@@ -17,6 +17,8 @@ import type { LessonDraft, ParseResult } from "@/lib/content";
 import { supabaseConfigured, supabaseProjectRef } from "@/lib/supabase";
 import { useStore } from "@/lib/store";
 import type { Chapter, CourseData, Lesson } from "@/lib/types";
+import { fetchCustomSurveys, type CustomSurvey } from "@/lib/custom-surveys";
+import { invalidateCourseOutline } from "@/lib/student-lesson";
 
 const BLANK = {
   chapter: "",
@@ -29,6 +31,7 @@ const BLANK = {
   takeaways: "",
   due: "",
   brief: "",
+  surveyId: "",
 };
 
 /** New teaching work goes before the chapter's Ask the Coach and survey lessons. */
@@ -61,6 +64,13 @@ export default function ContentManager() {
   const [alsoSave, setAlsoSave] = useState(true);
   const [status, setStatus] = useState<{ kind: "ok" | "warn"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
+  const [surveys, setSurveys] = useState<CustomSurvey[]>([]);
+
+  useEffect(() => {
+    fetchCustomSurveys().then((result) => {
+      if (result.ok) setSurveys(result.data);
+    });
+  }, []);
 
   const set = (next: Partial<typeof BLANK>) => setForm((current) => ({ ...current, ...next }));
 
@@ -84,11 +94,16 @@ export default function ContentManager() {
       setStatus({ kind: "warn", text: "Give the lesson a title first." });
       return;
     }
+    if (form.type === "survey" && !form.surveyId) {
+      setStatus({ kind: "warn", text: "Choose a custom survey to attach." });
+      return;
+    }
     const chapter = data.chapters.find((c) => c.id === form.chapter) || data.chapters[0];
     const lesson = buildLesson(nextLessonId(data, chapter.id), form);
     setBusy(true);
     addDrafts([{ chapterId: chapter.id, lesson }]);
     const problem = await saveToDb([{ chapterId: chapter.id, lesson }], chapter.lessons.length);
+    invalidateCourseOutline();
     setBusy(false);
     setForm({ ...BLANK, chapter: chapter.id, type: form.type });
     setStatus({
@@ -119,6 +134,7 @@ export default function ContentManager() {
     setBusy(true);
     addDrafts(parsed.drafts);
     const problem = await saveToDb(parsed.drafts, 100);
+    invalidateCourseOutline();
     setBusy(false);
     setCsv("");
     setPreview(null);
@@ -177,6 +193,7 @@ export default function ContentManager() {
 
   const teachingFields = form.type === "video" || form.type === "reading";
   const workFields = form.type === "assignment" || form.type === "upload";
+  const surveyFields = form.type === "survey";
 
   return (
     <>
@@ -358,6 +375,35 @@ export default function ContentManager() {
                 />
               </div>
             </>
+          ) : null}
+          {surveyFields ? (
+            <div className="plan-field">
+              <label htmlFor="cm-survey">
+                <strong>Custom survey</strong>
+              </label>
+              <select
+                id="cm-survey"
+                className="select-line"
+                value={form.surveyId}
+                onChange={(event) => {
+                  const picked = surveys.find((item) => item.id === event.target.value);
+                  set({
+                    surveyId: event.target.value,
+                    title: form.title.trim() || picked?.title || "",
+                    blurb: form.blurb.trim() || picked?.description || "",
+                    brief: picked?.slug || "",
+                  });
+                }}
+              >
+                <option value="">Select a survey…</option>
+                {surveys.map((survey) => (
+                  <option key={survey.id} value={survey.id}>
+                    {survey.title}
+                  </option>
+                ))}
+              </select>
+              <p className="muted small">Build the form under Custom surveys, then drop it into this chapter.</p>
+            </div>
           ) : null}
           {!teachingFields && !workFields ? (
             <div className="plan-field">

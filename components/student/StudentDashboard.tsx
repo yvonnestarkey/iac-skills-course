@@ -83,10 +83,6 @@ export default function StudentDashboard() {
           <p>Assignment feedback and coach notes.</p>
           {unreadCount ? <span className="pill">{unreadCount} unread</span> : null}
         </Link>
-        <Link href="/student/surveys" className="student-hub-card">
-          <strong>Surveys</strong>
-          <p>Answer coach-built check-ins and feedback forms.</p>
-        </Link>
         <Link href="/student/planner" className="student-hub-card">
           <strong>Study planner</strong>
           <p>Set your hours, slots, and target finish date.</p>

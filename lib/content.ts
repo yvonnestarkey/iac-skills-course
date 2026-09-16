@@ -148,6 +148,10 @@ export function buildLesson(id: string, fields: Record<string, string>): Lesson 
       (type === "ask"
         ? "Send a question to your coach and it lands in your thread."
         : "Two minutes of feedback on this chapter.");
+    if (type === "survey") {
+      if (fields.surveyId) lesson.survey_id = fields.surveyId;
+      if (fields.brief.trim()) lesson.brief = fields.brief.trim();
+    }
   }
   return lesson;
 }
@@ -209,6 +213,7 @@ export interface LessonRow {
   takeaways: string[] | null;
   due: string | null;
   brief: string | null;
+  survey_id?: string | null;
 }
 
 export function draftToRow(draft: LessonDraft, position: number): LessonRow {
@@ -226,6 +231,7 @@ export function draftToRow(draft: LessonDraft, position: number): LessonRow {
     takeaways: l.takeaways || null,
     due: l.due || null,
     brief: l.brief || null,
+    survey_id: l.survey_id || null,
   };
 }
 
@@ -238,6 +244,7 @@ export function rowToDraft(row: LessonRow): LessonDraft {
   if (row.takeaways) lesson.takeaways = row.takeaways;
   if (row.due) lesson.due = row.due;
   if (row.brief) lesson.brief = row.brief;
+  if (row.survey_id) lesson.survey_id = row.survey_id;
   return { chapterId: row.chapter_id, lesson };
 }
 
@@ -266,7 +273,11 @@ export async function pushLessons(drafts: LessonDraft[], startPosition: number):
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
   const rows = drafts.map((draft, i) => draftToRow(draft, startPosition + i));
-  const { error } = await client.from("lessons").upsert(rows, { onConflict: "id" });
+  const first = await client.from("lessons").upsert(rows, { onConflict: "id" });
+  if (!first.error) return { ok: true };
+  if (!/survey_id/i.test(first.error.message)) return { ok: false, error: describe(first.error) };
+  const stripped = rows.map(({ survey_id: _surveyId, ...row }) => row);
+  const { error } = await client.from("lessons").upsert(stripped, { onConflict: "id" });
   if (error) return { ok: false, error: describe(error) };
   return { ok: true };
 }

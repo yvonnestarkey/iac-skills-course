@@ -167,6 +167,65 @@ export function studentSurveyPath(slug: string): string {
   return `/student/surveys/${encodeURIComponent(slug)}`;
 }
 
+export async function fetchCourseChapters(): Promise<{
+  ok: boolean;
+  error?: string;
+  data: { id: string; title: string }[];
+}> {
+  const client = getSupabase();
+  if (client) {
+    const { data, error } = await client.from("chapters").select("id, title, position").order("position", { ascending: true });
+    if (!error && data?.length) {
+      return { ok: true, data: data.map((row) => ({ id: String(row.id), title: String(row.title || row.id) })) };
+    }
+  }
+  const { outlineFromSeed } = await import("./student-lesson");
+  return { ok: true, data: outlineFromSeed().map((chapter) => ({ id: chapter.id, title: chapter.title })) };
+}
+
+export async function attachSurveyToChapter(
+  survey: CustomSurvey,
+  chapterId: string
+): Promise<{ ok: boolean; error?: string; lessonId?: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const chapter = chapterId.trim();
+  if (!chapter) return { ok: false, error: "Choose a chapter." };
+  const slug = survey.slug || slugifySurveyTitle(survey.title);
+  const lessonId = `${chapter}-survey-${slug}`.replace(/[^a-zA-Z0-9_-]+/g, "-").slice(0, 80);
+  const last = await client
+    .from("lessons")
+    .select("position")
+    .eq("chapter_id", chapter)
+    .order("position", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const position = Number(last.data?.position || 0) + 1;
+  const row: Record<string, unknown> = {
+    id: lessonId,
+    chapter_id: chapter,
+    position,
+    type: "survey",
+    title: survey.title,
+    blurb: survey.description || survey.title,
+    brief: slug,
+    duration: "5 min",
+    survey_id: survey.id,
+  };
+  let { error } = await client.from("lessons").upsert(row, { onConflict: "id" });
+  if (error && /survey_id/i.test(error.message)) {
+    const fallback = { ...row };
+    delete fallback.survey_id;
+    const retry = await client.from("lessons").upsert(fallback, { onConflict: "id" });
+    error = retry.error;
+  }
+  if (error) return { ok: false, error: describe(error) };
+  if (!survey.isActive) await setCustomSurveyActive(survey.id, true);
+  const { invalidateCourseOutline } = await import("./student-lesson");
+  invalidateCourseOutline();
+  return { ok: true, lessonId };
+}
+
 export async function fetchCustomSurveys(): Promise<{ ok: boolean; error?: string; data: CustomSurvey[] }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };

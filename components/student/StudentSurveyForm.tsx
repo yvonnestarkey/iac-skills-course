@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import {
+  fetchCustomSurvey,
   fetchCustomSurveyBySlug,
   fetchOwnSurveyResponse,
   formatSurveyAnswer,
@@ -16,7 +17,25 @@ import {
 } from "@/lib/custom-surveys";
 import LinkedText from "@/components/ui/LinkedText";
 
-export default function StudentSurveyForm({ slug }: { slug: string }) {
+export default function StudentSurveyForm({
+  slug,
+  surveyId,
+  embedded = false,
+  allowInactive = false,
+  hideTitle = false,
+  onSubmitted,
+  nextHref,
+  nextTitle,
+}: {
+  slug?: string;
+  surveyId?: string | null;
+  embedded?: boolean;
+  allowInactive?: boolean;
+  hideTitle?: boolean;
+  onSubmitted?: () => void;
+  nextHref?: string | null;
+  nextTitle?: string | null;
+}) {
   const [survey, setSurvey] = useState<CustomSurvey | null>(null);
   const [existing, setExisting] = useState<CustomSurveyResponse | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -24,17 +43,24 @@ export default function StudentSurveyForm({ slug }: { slug: string }) {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const onSubmittedRef = useRef(onSubmitted);
+  onSubmittedRef.current = onSubmitted;
 
   useEffect(() => {
     let cancelled = false;
-    fetchCustomSurveyBySlug(slug).then(async (result) => {
+    const load = async () => {
+      const result = surveyId
+        ? await fetchCustomSurvey(surveyId)
+        : slug
+          ? await fetchCustomSurveyBySlug(slug)
+          : { ok: false, error: "No survey is attached to this lesson.", survey: null };
       if (cancelled) return;
       if (!result.ok) {
         setLoading(false);
         setError(result.error || "Could not load this survey.");
         return;
       }
-      if (!result.survey || !result.survey.isActive) {
+      if (!result.survey || (!result.survey.isActive && !allowInactive)) {
         setLoading(false);
         setError("This survey is not available.");
         return;
@@ -44,11 +70,13 @@ export default function StudentSurveyForm({ slug }: { slug: string }) {
       if (cancelled) return;
       setExisting(own.response);
       setLoading(false);
-    });
+      if (own.response) onSubmittedRef.current?.();
+    };
+    void load();
     return () => {
       cancelled = true;
     };
-  }, [slug]);
+  }, [slug, surveyId, allowInactive]);
 
   const setAnswer = (id: string, value: string) => {
     setAnswers((current) => ({ ...current, [id]: value }));
@@ -79,34 +107,52 @@ export default function StudentSurveyForm({ slug }: { slug: string }) {
       return;
     }
     setDone(true);
+    onSubmitted?.();
   };
+
+  const nextAction =
+    nextHref && nextTitle ? (
+      <Link className="primary" href={nextHref}>
+        Next: {nextTitle} →
+      </Link>
+    ) : null;
 
   if (loading) {
     return (
-      <article className="lesson-body wide">
+      <Frame embedded={embedded}>
         <p className="empty">Loading survey…</p>
-      </article>
+      </Frame>
     );
   }
 
   if (!survey) {
     return (
-      <article className="lesson-body wide">
-        <p className="kicker">Survey</p>
-        <h1>Survey unavailable</h1>
+      <Frame embedded={embedded}>
+        {!hideTitle ? (
+          <>
+            <p className="kicker">Survey</p>
+            <h1>Survey unavailable</h1>
+          </>
+        ) : null}
         <p className="empty">{error || "This survey could not be found."}</p>
-        <Link className="ghost" href="/student/surveys">
-          ← All surveys
-        </Link>
-      </article>
+        {embedded ? nextAction : (
+          <Link className="ghost" href="/student/surveys">
+            ← All surveys
+          </Link>
+        )}
+      </Frame>
     );
   }
 
   if (existing || done) {
     return (
-      <article className="lesson-body wide survey-rich-text">
-        <p className="kicker">Survey</p>
-        <h1>{survey.title}</h1>
+      <Frame embedded={embedded} className="survey-rich-text">
+        {!hideTitle ? (
+          <>
+            <p className="kicker">Survey</p>
+            <h1>{survey.title}</h1>
+          </>
+        ) : null}
         <p className="lead">Thank you. Your response has been saved.</p>
         {existing ? (
           <div className="work-list">
@@ -125,19 +171,26 @@ export default function StudentSurveyForm({ slug }: { slug: string }) {
           </div>
         ) : null}
         <div className="actions">
-          <Link className="ghost" href="/student/surveys">
-            ← All surveys
-          </Link>
+          {nextAction}
+          {embedded ? null : (
+            <Link className="ghost" href="/student/surveys">
+              ← All surveys
+            </Link>
+          )}
         </div>
-      </article>
+      </Frame>
     );
   }
 
   return (
-    <article className="lesson-body wide survey-rich-text">
-      <p className="kicker">Survey</p>
-      <h1>{survey.title}</h1>
-      {survey.description ? (
+    <Frame embedded={embedded} className="survey-rich-text">
+      {!hideTitle ? (
+        <>
+          <p className="kicker">Survey</p>
+          <h1>{survey.title}</h1>
+        </>
+      ) : null}
+      {survey.description && !hideTitle ? (
         <p className="lead">
           <LinkedText text={survey.description} />
         </p>
@@ -166,13 +219,28 @@ export default function StudentSurveyForm({ slug }: { slug: string }) {
           <button className="primary" type="submit" disabled={busy}>
             {busy ? "Submitting…" : "Submit"}
           </button>
-          <Link className="ghost" href="/student/surveys">
-            Cancel
-          </Link>
+          {embedded ? nextAction : (
+            <Link className="ghost" href="/student/surveys">
+              Cancel
+            </Link>
+          )}
         </div>
       </form>
-    </article>
+    </Frame>
   );
+}
+
+function Frame({
+  embedded,
+  className,
+  children,
+}: {
+  embedded?: boolean;
+  className?: string;
+  children: ReactNode;
+}) {
+  if (embedded) return <div className={className}>{children}</div>;
+  return <article className={`lesson-body wide ${className || ""}`.trim()}>{children}</article>;
 }
 
 function SurveyInfoCard({ question }: { question: SurveyQuestion }) {

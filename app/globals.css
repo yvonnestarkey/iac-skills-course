@@ -474,9 +474,11 @@ h1 {
 .main {
   padding: 0 0 60px;
   min-width: 0;
+  width: 100%;
 }
 
 .player {
+  width: 100%;
   background: var(--dark);
 }
 
@@ -586,19 +588,22 @@ h1 {
   font-family: var(--serif);
   font-size: 22px;
   margin: 8px 0 0;
-  max-width: 640px;
+  max-width: none;
   line-height: 1.35;
 }
 
 .lesson-body {
   background: var(--card);
   padding: 30px 34px 34px;
-  max-width: 790px;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
   border-bottom: 1px solid var(--line);
 }
 
 .lesson-body.wide {
-  max-width: 830px;
+  width: 100%;
+  max-width: none;
 }
 
 .kicker {
@@ -650,12 +655,12 @@ h1 {
 }
 
 .lesson-body:has(.lesson-pdf-viewer) {
-  max-width: min(1120px, 100%);
+  max-width: none;
 }
 
 .main > .lesson-pdf-viewer {
   width: 100%;
-  max-width: min(1120px, 100%);
+  max-width: none;
   margin: 0;
   padding: 24px 34px 0;
 }
@@ -4054,6 +4059,19 @@ input[type="tel"]:focus {
 
 .survey-manager .work-item .actions {
   margin-top: 10px;
+}
+
+.survey-attach-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.survey-attach-row .select-line {
+  flex: 1;
+  min-width: 180px;
 }
 
 .survey-question-card.survey-info-block {

@@ -37,6 +37,8 @@ export interface StudentLesson {
   pdf_url?: string;
   resource_downloads?: unknown;
   unlock_at?: string | null;
+  survey_id?: string | null;
+  survey_slug?: string | null;
   next: { id: string; title: string } | null;
   source: "supabase" | "seed";
 }
@@ -142,6 +144,8 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     pdf_url,
     resource_downloads: lesson.resource_downloads,
     unlock_at: lesson.unlock_at || null,
+    survey_id: lesson.survey_id || null,
+    survey_slug: lesson.type === "survey" ? lesson.brief || null : null,
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
   };
@@ -339,6 +343,16 @@ function writeOutlineCache(data: OutlineChapter[]) {
   }
 }
 
+export function invalidateCourseOutline() {
+  memoryOutline = null;
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.removeItem(OUTLINE_STORAGE_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
 function nextFromOutline(outline: OutlineChapter[], lessonId: string): { id: string; title: string } | null {
   const list = outline.flatMap((chapter) => chapter.lessons);
   const index = list.findIndex((item) => item.id === lessonId);
@@ -489,7 +503,7 @@ export function safeStudentPath(value: string | null | undefined): string {
 }
 
 const LESSON_ROW_COLUMNS =
-  "id, title, type, duration, seconds, chapter_id, position, video_url, video_urls, blurb, body, takeaways, due, brief, requires_submission, requires_coach_approval, prereq_lesson_id, pdf_url, resource_downloads, unlock_at, video_duration_seconds, estimated_read_minutes, duration_minutes";
+  "id, title, type, duration, seconds, chapter_id, position, video_url, video_urls, blurb, body, takeaways, due, brief, requires_submission, requires_coach_approval, prereq_lesson_id, pdf_url, resource_downloads, unlock_at, video_duration_seconds, estimated_read_minutes, duration_minutes, survey_id";
 
 async function loadLessonRow(client: NonNullable<ReturnType<typeof getSupabase>>, lessonId: string) {
   const withPdf = await client.from("lessons").select(LESSON_ROW_COLUMNS).eq("id", lessonId).maybeSingle();
@@ -540,6 +554,8 @@ export async function fetchStudentLesson(
           pdf_url,
           resource_downloads: data.resource_downloads,
           unlock_at: asPrereq(data.unlock_at) || null,
+          survey_id: asPrereq((data as { survey_id?: unknown }).survey_id) || null,
+          survey_slug: asLessonType(data.type) === "survey" ? String(data.brief || "").trim() || null : null,
           next: nextFromOutline(tree, lessonId),
           source: "supabase",
         },

@@ -7,6 +7,7 @@ import { LessonPdfPlaceholder } from "@/components/student/LessonLoadingSkeleton
 import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
 import LessonSubmissionForm from "@/components/student/LessonSubmissionForm";
+import StudentSurveyForm from "@/components/student/StudentSurveyForm";
 import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
 import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult } from "@/lib/accessControl";
@@ -80,6 +81,14 @@ export default function StudentPlayer({
     await persist({ completed: next, notes }, false);
   };
 
+  const completeSurveyLesson = async () => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    setCompleted(true);
+    setLessonCompleted(lesson.id, true);
+    await persist({ completed: true, notes }, true);
+  };
+
   const onNotesChange = (value: string) => {
     setNotes(value);
     if (notesTimer.current) clearTimeout(notesTimer.current);
@@ -144,76 +153,96 @@ export default function StudentPlayer({
         </p>
         <h1>{lesson.title}</h1>
         {status ? <p className="notice">{status}</p> : null}
-        {kind === "reading" ? (
-          <div className="reading-hero">
-            <span>{lesson.duration}</span>
-            <p>{lesson.blurb}</p>
-          </div>
-        ) : lesson.blurb ? (
-          <p className="lead">{lesson.blurb}</p>
-        ) : null}
-        {lesson.due ? <p className="lead">Due {lesson.due}</p> : null}
-        {lesson.brief ? <p>{lesson.brief}</p> : null}
-        {(lesson.body || []).map((paragraph, index) => (
-          <p key={`${lesson.id}-body-${index}`}>{paragraph}</p>
-        ))}
-        {(lesson.takeaways || []).length ? (
-          <div className="takeaways">
-            <h3>Takeaways</h3>
-            <ul>
-              {lesson.takeaways!.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
+        {kind === "survey" ? (
+          <>
+            {lesson.blurb ? <p className="lead">{lesson.blurb}</p> : null}
+            <StudentSurveyForm
+              embedded
+              hideTitle
+              allowInactive
+              surveyId={lesson.survey_id}
+              slug={lesson.survey_slug || undefined}
+              onSubmitted={() => {
+                void completeSurveyLesson();
+              }}
+              nextHref={lesson.next ? `${basePath}/${lesson.next.id}` : null}
+              nextTitle={lesson.next?.title || null}
+            />
+          </>
+        ) : (
+          <>
+            {kind === "reading" ? (
+              <div className="reading-hero">
+                <span>{lesson.duration}</span>
+                <p>{lesson.blurb}</p>
+              </div>
+            ) : lesson.blurb ? (
+              <p className="lead">{lesson.blurb}</p>
+            ) : null}
+            {lesson.due ? <p className="lead">Due {lesson.due}</p> : null}
+            {lesson.brief ? <p>{lesson.brief}</p> : null}
+            {(lesson.body || []).map((paragraph, index) => (
+              <p key={`${lesson.id}-body-${index}`}>{paragraph}</p>
+            ))}
+            {(lesson.takeaways || []).length ? (
+              <div className="takeaways">
+                <h3>Takeaways</h3>
+                <ul>
+                  {lesson.takeaways!.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
 
-        <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
+            <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
 
-        <label className="student-notes-label" htmlFor="student-notes">
-          Your notes
-        </label>
-        <textarea
-          id="student-notes"
-          rows={6}
-          placeholder="Write notes for this lesson…"
-          value={notes}
-          onChange={(event) => onNotesChange(event.target.value)}
-          onBlur={() => persist({ completed, notes }, true)}
-        />
+            <label className="student-notes-label" htmlFor="student-notes">
+              Your notes
+            </label>
+            <textarea
+              id="student-notes"
+              rows={6}
+              placeholder="Write notes for this lesson…"
+              value={notes}
+              onChange={(event) => onNotesChange(event.target.value)}
+              onBlur={() => persist({ completed, notes }, true)}
+            />
 
-        <div className="actions">
-          <button className={completed ? "ghost" : "primary"} type="button" onClick={markComplete}>
-            {completed ? "Completed ✓" : "Mark as complete"}
-          </button>
-          {lesson.next ? (
-            <Link className="ghost" href={`${basePath}/${lesson.next.id}`}>
-              Next: {lesson.next.title} →
-            </Link>
-          ) : null}
-        </div>
-        {showSubmission && user ? (
-          <LessonSubmissionForm
-            lessonId={lesson.id}
-            studentId={user.id}
-            requiresCoachApproval={Boolean(lesson.requires_coach_approval)}
-            saved={submissions[lesson.id]}
-            onSaved={(submission) => {
-              setSubmission(lesson.id, submission);
-              setCompleted(true);
-              setLessonCompleted(lesson.id, true);
-              persist({ completed: true, notes }, true);
-            }}
-          />
-        ) : null}
-        {lesson.type === "ask" || showSubmission ? (
-          <StudentCoachThread
-            compact
-            title={lesson.type === "ask" ? "Ask the Coach" : "Message your coach about this work"}
-            context={`${lesson.chapterTitle} · ${lesson.title}`}
-            lessonId={lesson.id}
-          />
-        ) : null}
+            <div className="actions">
+              <button className={completed ? "ghost" : "primary"} type="button" onClick={markComplete}>
+                {completed ? "Completed ✓" : "Mark as complete"}
+              </button>
+              {lesson.next ? (
+                <Link className="ghost" href={`${basePath}/${lesson.next.id}`}>
+                  Next: {lesson.next.title} →
+                </Link>
+              ) : null}
+            </div>
+            {showSubmission && user ? (
+              <LessonSubmissionForm
+                lessonId={lesson.id}
+                studentId={user.id}
+                requiresCoachApproval={Boolean(lesson.requires_coach_approval)}
+                saved={submissions[lesson.id]}
+                onSaved={(submission) => {
+                  setSubmission(lesson.id, submission);
+                  setCompleted(true);
+                  setLessonCompleted(lesson.id, true);
+                  persist({ completed: true, notes }, true);
+                }}
+              />
+            ) : null}
+            {lesson.type === "ask" || showSubmission ? (
+              <StudentCoachThread
+                compact
+                title={lesson.type === "ask" ? "Ask the Coach" : "Message your coach about this work"}
+                context={`${lesson.chapterTitle} · ${lesson.title}`}
+                lessonId={lesson.id}
+              />
+            ) : null}
+          </>
+        )}
       </article>
     </>
   );
