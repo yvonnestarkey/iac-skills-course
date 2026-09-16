@@ -3,18 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AskCoachThread from "@/components/coach/AskCoachThread";
-import BmcrCalculator from "@/components/lesson/BmcrCalculator";
+import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
 import { fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
 import AuditThread from "@/components/comms/AuditThread";
 import { commsForStudent } from "@/lib/comms";
 import { SURVEY_QUESTIONS } from "@/lib/constants";
-import {
-  fetchStudentBmcrEvaluations,
-  formatPct,
-  type BmcrEvaluation,
-} from "@/lib/bmcr";
-import { fetchCourseOutline } from "@/lib/student-lesson";
 import {
   chapterCode,
   cohortName,
@@ -41,8 +35,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const seeded = data.students.find((s) => s.id === studentId) || null;
   const [live, setLive] = useState<Student | null>(null);
   const [loadingLive, setLoadingLive] = useState(!seeded);
-  const [bmcrs, setBmcrs] = useState<BmcrEvaluation[]>([]);
-  const [lessonTitles, setLessonTitles] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (seeded) return;
@@ -51,19 +43,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       setLoadingLive(false);
     });
   }, [studentId, seeded]);
-
-  useEffect(() => {
-    fetchStudentBmcrEvaluations(studentId).then(setBmcrs);
-    fetchCourseOutline().then((outline) => {
-      const titles: Record<string, string> = {};
-      outline.forEach((chapter) => {
-        chapter.lessons.forEach((lesson) => {
-          titles[lesson.id] = lesson.title;
-        });
-      });
-      setLessonTitles(titles);
-    });
-  }, [studentId]);
 
   const student = seeded || live;
   if (loadingLive) {
@@ -302,43 +281,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         </div>
       </section>
 
-      <section className="card">
-        <h2>BMCR evaluations</h2>
-        {bmcrs.length ? (
-          <div className="work-list">
-            {bmcrs.map((evaluation) => {
-              const title = evaluation.assignment_id.startsWith("survey:")
-                ? "Standalone survey BMCR"
-                : lessonTitles[evaluation.assignment_id] || evaluation.assignment_id;
-              return (
-                <div className="work-item" key={evaluation.id || evaluation.assignment_id}>
-                  <div className="work-head">
-                    <strong>{title}</strong>
-                    <span className="score-chip small">
-                      BMCR {formatPct(evaluation.bmcr_conversion_pct ?? 0)}
-                    </span>
-                  </div>
-                  <p className="muted small">
-                    Basic marks {formatPct(evaluation.basic_mark_pct ?? 0)}
-                    {evaluation.submitted_at ? ` · ${evaluation.submitted_at.slice(0, 10)}` : ""}
-                  </p>
-                  <BmcrCalculator
-                    readOnly
-                    idPrefix={`coach-${evaluation.id || evaluation.assignment_id}`}
-                    value={evaluation}
-                  />
-                  {evaluation.challenges.length ? (
-                    <p className="muted small">Challenges: {evaluation.challenges.join(" · ")}</p>
-                  ) : null}
-                  {evaluation.key_takeaways ? <p>{evaluation.key_takeaways}</p> : null}
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <p className="empty">No BMCR evaluations yet.</p>
-        )}
-      </section>
+      <BmcrEvaluationsPanel studentId={student.id} />
 
       <section className="card">
         <h2>Module survey responses</h2>

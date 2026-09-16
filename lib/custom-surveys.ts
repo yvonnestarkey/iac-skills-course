@@ -568,6 +568,45 @@ export async function fetchSurveyResponses(
   };
 }
 
+export async function fetchStudentSurveyPacks(
+  studentId: string
+): Promise<{ survey: CustomSurvey; response: CustomSurveyResponse }[]> {
+  const client = getSupabase();
+  if (!client || !studentId) return [];
+  const { data, error } = await client
+    .from("custom_survey_responses")
+    .select("*")
+    .eq("student_id", studentId)
+    .order("created_at", { ascending: false });
+  if (error || !data?.length) return [];
+  const rows = data as Record<string, unknown>[];
+  const surveyIds = [...new Set(rows.map((row) => String(row.survey_id || "")).filter(Boolean))];
+  const surveys = surveyIds.length
+    ? await client.from("custom_surveys").select("*").in("id", surveyIds)
+    : { data: [] as Record<string, unknown>[] };
+  const surveyMap = new Map(
+    ((surveys.data || []) as Record<string, unknown>[]).map((row) => [String(row.id), surveyFromRow(row)])
+  );
+  return rows.flatMap((row) => {
+    const survey = surveyMap.get(String(row.survey_id || ""));
+    if (!survey) return [];
+    return [
+      {
+        survey,
+        response: {
+          id: String(row.id),
+          surveyId: String(row.survey_id),
+          studentId: String(row.student_id || ""),
+          studentName: "",
+          studentEmail: "",
+          answers: asAnswers(row.answers),
+          createdAt: String(row.created_at || ""),
+        },
+      },
+    ];
+  });
+}
+
 export function downloadSurveyCsv(survey: CustomSurvey, responses: CustomSurveyResponse[]): void {
   const columns = survey.questions.filter((question) => questionCollectsAnswer(question.type));
   const headers = ["Student", "Email", "Submitted", ...columns.map((question) => question.label || question.id)];

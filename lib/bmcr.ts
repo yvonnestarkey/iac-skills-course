@@ -67,6 +67,21 @@ export function formatPct(value: number): string {
   return `${(Math.round(value * 10) / 10).toFixed(1)}%`;
 }
 
+export function computeActualMarkPct(marks: Pick<BmcrMarks, "question_total_my_marks" | "question_total_markplan">): number {
+  if (asNumber(marks.question_total_markplan) <= 0) return 0;
+  return (asNumber(marks.question_total_my_marks) / asNumber(marks.question_total_markplan)) * 100;
+}
+
+function formatMarkNumber(value: number): string {
+  const rounded = Math.round(asNumber(value) * 10) / 10;
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+}
+
+export function formatMarksWithPct(earned: number, total: number): string {
+  if (asNumber(total) <= 0) return `${formatMarkNumber(earned)} / —`;
+  return `${formatMarkNumber(earned)} / ${formatMarkNumber(total)} (${formatPct((asNumber(earned) / asNumber(total)) * 100)})`;
+}
+
 export function hasBmcrData(marks: BmcrMarks): boolean {
   return (
     asNumber(marks.basic_my_marks) > 0 ||

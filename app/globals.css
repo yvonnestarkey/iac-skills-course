@@ -4353,3 +4353,57 @@ input[type="tel"]:focus {
     grid-template-columns: 1fr;
   }
 }
+
+.bmcr-summary-table td strong {
+  font-weight: 800;
+}
+
+.bmcr-detail-modal {
+  max-width: 760px;
+  max-height: min(90vh, 880px);
+  overflow: auto;
+  padding: 22px 24px 20px;
+}
+
+.bmcr-detail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bmcr-detail-modal h2 {
+  margin-bottom: 4px;
+}
+
+.bmcr-detail-modal h3 {
+  margin: 22px 0 8px;
+  font-size: 15px;
+}
+
+.bmcr-checklist {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bmcr-checklist div {
+  background: #f4f8f7;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.bmcr-checklist dt {
+  font-size: 12px;
+  font-weight: 700;
+  color: #5b6b68;
+  margin-bottom: 4px;
+}
+
+.bmcr-checklist dd {
+  margin: 0;
+  font-size: 14.5px;
+}
