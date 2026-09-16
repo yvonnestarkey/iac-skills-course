@@ -129,27 +129,24 @@ create policy "students update own survey response pdfs"
     and split_part(name, '/', 3) = auth.uid()::text
   );
 
-drop policy if exists "staff upload survey feedback files" on storage.objects;
-create policy "staff upload survey feedback files"
+drop policy if exists "staff upload course pdfs" on storage.objects;
+create policy "staff upload course pdfs"
   on storage.objects for insert
   to authenticated
   with check (
-    bucket_id = 'course-pdfs'
-    and split_part(name, '/', 1) = 'survey-feedback'
+    bucket_id in ('course-pdfs', 'lesson-banners')
     and public.is_course_staff()
   );
 
-drop policy if exists "staff update survey feedback files" on storage.objects;
-create policy "staff update survey feedback files"
+drop policy if exists "staff update course pdfs" on storage.objects;
+create policy "staff update course pdfs"
   on storage.objects for update
   to authenticated
   using (
-    bucket_id = 'course-pdfs'
-    and split_part(name, '/', 1) = 'survey-feedback'
+    bucket_id in ('course-pdfs', 'lesson-banners')
     and public.is_course_staff()
   )
   with check (
-    bucket_id = 'course-pdfs'
-    and split_part(name, '/', 1) = 'survey-feedback'
+    bucket_id in ('course-pdfs', 'lesson-banners')
     and public.is_course_staff()
   );

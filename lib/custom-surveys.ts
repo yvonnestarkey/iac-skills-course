@@ -975,17 +975,23 @@ export async function uploadCoachFeedbackFile(
   const { data: session } = await client.auth.getUser();
   if (!session.user) return { ok: false, error: "Sign in required." };
   const ext = (file.name.split(".").pop() || "pdf").toLowerCase().replace(/[^a-z0-9]/g, "") || "pdf";
-  const path = `survey-feedback/${surveyId}/${responseId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-  const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
-    upsert: true,
-    contentType: file.type || "application/octet-stream",
-  });
-  if (uploaded.error) {
-    return { ok: false, error: "Could not upload that file. Paste the survey storage SQL in Supabase if this is the first coach attachment." };
+  const stamp = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const attempts = [
+    { bucket: "course-pdfs", path: `surveys/feedback/${surveyId}/${responseId}-${stamp}` },
+    { bucket: "course-pdfs", path: `surveys/${responseId}-${stamp}` },
+    { bucket: "course-pdfs", path: `survey-feedback/${surveyId}/${responseId}-${stamp}` },
+    { bucket: "lesson-banners", path: `surveys/feedback/${responseId}-${stamp}` },
+  ];
+  for (const attempt of attempts) {
+    const uploaded = await client.storage.from(attempt.bucket).upload(attempt.path, file, {
+      upsert: true,
+      contentType: file.type || (ext === "pdf" ? "application/pdf" : "application/octet-stream"),
+    });
+    if (uploaded.error) continue;
+    const { data } = client.storage.from(attempt.bucket).getPublicUrl(attempt.path);
+    if (data?.publicUrl) return { ok: true, url: data.publicUrl, name: file.name.trim() || "feedback" };
   }
-  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
-  if (!data?.publicUrl) return { ok: false, error: "Could not get a public URL for that file." };
-  return { ok: true, url: data.publicUrl, name: file.name.trim() || "feedback" };
+  return { ok: false, error: "Could not upload that file. Try a PDF, or paste a public file URL into the feedback notes." };
 }
 
 export async function fetchStudentSurveyPacks(
