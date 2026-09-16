@@ -101,9 +101,22 @@ function secondsFrom(duration: string, seconds: string): number {
  * lesson ids have to follow the chapter's own numbering, not its id.
  */
 export function lessonPrefix(chapter: Chapter): string {
-  const sample = chapter.lessons.find((l) => /^(.+?)l\d+$/.test(l.id));
-  if (sample) return /^(.+?)l\d+$/.exec(sample.id)[1];
+  const sample = (chapter.lessons || []).find((l) => /^(.+?)l\d+$/.test(l.id));
+  const match = sample ? /^(.+?)l\d+$/.exec(sample.id) : null;
+  if (match?.[1]) return match[1];
   return chapter.id.replace(/^ch/, "c");
+}
+
+export function nextLiveLessonId(chapterId: string, existingIds: string[] = []): string {
+  const slug = (chapterId || "lesson").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "") || "lesson";
+  const used = new Set(existingIds);
+  let n = 1;
+  let id = `${slug}-l${n}`;
+  while (used.has(id) || used.has(`${slug}l${n}`)) {
+    n += 1;
+    id = `${slug}-l${n}`;
+  }
+  return id.slice(0, 80);
 }
 
 /** Accepts a chapter id (ch1), its lesson prefix (c1), a number (1), or any part of the title. */
@@ -123,7 +136,7 @@ export function nextLessonId(data: CourseData, chapterId: string, taken: string[
   const chapter = data.chapters.find((c) => c.id === chapterId);
   const prefix = chapter ? lessonPrefix(chapter) : chapterId;
   const used = new Set([...allLessons(data).map((l) => l.id), ...taken]);
-  let n = (chapter?.lessons.length || 0) + 1;
+  let n = (chapter?.lessons?.length || 0) + 1;
   while (used.has(`${prefix}l${n}`)) n += 1;
   return `${prefix}l${n}`;
 }

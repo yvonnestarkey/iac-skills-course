@@ -1,16 +1,17 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, Mail } from "lucide-react";
+import { Bell, LogOut, Mail } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import { unreadForCoach, unreadForStudent } from "@/lib/comms";
 import { waitingQuestions } from "@/lib/course";
 import { useStore } from "@/lib/store";
 import { useStudentNav } from "@/lib/student-nav";
+import { signOutStudent } from "@/lib/student-lesson";
 import { useInboxWaiting } from "@/lib/use-inbox-waiting";
 
 export default function TopBar() {
-  const { data, session } = useStore();
+  const { data, session, setSession } = useStore();
   const router = useRouter();
   const pathname = usePathname();
   const demoWaiting = waitingQuestions(data).length;
@@ -27,8 +28,14 @@ export default function TopBar() {
   const courseNav = useStudentNav();
   const waiting = isCoach ? inboxWaiting + demoWaiting : 0;
 
+  const signOut = async () => {
+    await signOutStudent();
+    setSession(null);
+    router.replace("/");
+  };
+
   return (
-    <header className="topbar">
+    <header className={`topbar ${isCoach ? "coach-topbar" : ""}`}>
       <BrandMark href={isCoach ? "/coach" : "/"} />
       <div className="topbar-right flex items-center gap-2 flex-wrap">
         {isCoach ? (
@@ -54,7 +61,13 @@ export default function TopBar() {
           </button>
         ) : null}
         {waiting ? <span className="pill">{waiting} waiting</span> : null}
-        {isCoach ? <span className="muted small student-email">Coach</span> : null}
+        {isCoach ? <span className="coach-view-pill">Coach View</span> : null}
+        {isCoach ? (
+          <button className="coach-signout" type="button" onClick={() => void signOut()}>
+            <LogOut size={16} aria-hidden="true" />
+            Sign Out
+          </button>
+        ) : null}
         {courseNav ? (
           <button
             className={`course-menu-btn ${courseNav.open ? "on" : ""}`}

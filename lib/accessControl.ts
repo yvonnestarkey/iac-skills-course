@@ -22,8 +22,8 @@ export interface AccessCheckOptions {
   now?: Date;
 }
 
-export function catalogFromOutline(chapters: OutlineChapter[]): LessonGate[] {
-  return chapters.flatMap((chapter) => chapter.lessons.map(outlineToGate));
+export function catalogFromOutline(chapters: OutlineChapter[] | null | undefined): LessonGate[] {
+  return (chapters || []).flatMap((chapter) => (chapter?.lessons || []).map(outlineToGate));
 }
 
 export function outlineToGate(lesson: LessonGate | OutlineLesson): LessonGate {

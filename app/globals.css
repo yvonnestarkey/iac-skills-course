@@ -156,6 +156,113 @@ h1 {
   min-width: 0;
 }
 
+.coach-topbar {
+  background: #1b2430;
+  border-bottom: 1px solid #2c3848;
+  color: #e8eef4;
+}
+
+.coach-topbar .mark strong,
+.coach-topbar .mark em,
+.coach-topbar .student-player-brand strong,
+.coach-topbar .student-player-brand em {
+  color: #f4f7fb;
+}
+
+.coach-topbar .mark em,
+.coach-topbar .student-player-brand em {
+  color: #b7c4d4;
+  font-style: normal;
+}
+
+.coach-topbar .notify-btn,
+.coach-topbar .course-menu-btn {
+  background: #243044;
+  border-color: #3a4a60;
+  color: #e8eef4;
+}
+
+.coach-topbar .notify-btn.on,
+.coach-topbar .course-menu-btn.on {
+  background: #4338ca;
+  border-color: #4338ca;
+  color: #fff;
+}
+
+.coach-topbar .pill {
+  background: #e4d3bd;
+  color: #1b2430;
+}
+
+.coach-view-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 11px;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.coach-signout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 13px;
+  background: #e4d3bd;
+  color: #1b2430;
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+.coach-signout:hover {
+  background: #f3e6d4;
+}
+
+.coach-preview-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.coach-preview-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 22px;
+  background: #312e81;
+  color: #fff;
+}
+
+.coach-preview-banner span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.coach-preview-banner strong {
+  font-size: 14.5px;
+}
+
+.coach-preview-banner .primary {
+  background: #e4d3bd;
+  color: #1b2430;
+  border: 0;
+}
+
+.coach-preview-banner .coach-view-pill {
+  background: #e4d3bd;
+  color: #1b2430;
+}
+
 .notify-btn {
   position: relative;
   display: flex;

@@ -97,11 +97,14 @@ export default function StudentPlayer({
     }, 700);
   };
 
-  const ordered = splitCoursePhases(outline).flatMap((phase) => phase.chapters);
+  const ordered = splitCoursePhases(outline || []).flatMap((phase) => phase.chapters || []);
   const catalog = useMemo(() => catalogFromOutline(outline), [outline]);
-  const liveAccess = checkLessonAccess(outlineToGate(lesson), catalog, submissions, { completed: completedMap });
+  const liveAccess = checkLessonAccess(outlineToGate(lesson), catalog, submissions || {}, { completed: completedMap || {} });
   const access = catalog.length ? liveAccess : initialAccess || liveAccess;
-  const chapterLocked = outline.length > 0 && isChapterSequentiallyLocked(outline, lesson.chapterId, completedMap);
+  const chapterLocked =
+    Boolean(lesson.chapterId) &&
+    (outline || []).length > 0 &&
+    isChapterSequentiallyLocked(outline || [], lesson.chapterId, completedMap || {});
   const resume = findResumeLesson(ordered, completedMap);
   const showSubmission = lesson.requires_submission === true || lesson.requires_coach_approval === true;
   const kind = displayLessonType(lesson);

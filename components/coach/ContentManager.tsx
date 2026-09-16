@@ -12,7 +12,7 @@ import {
   duplicateLesson,
   fetchManagedCourse,
   moveLessonToChapter,
-  nextLessonId,
+  nextLiveLessonId,
   pullLessons,
   pushLessons,
   saveChapterOrder,
@@ -60,7 +60,7 @@ function insertLesson(chapter: Chapter, lesson: Lesson) {
 
 export default function ContentManager() {
   const { data, mutate } = useStore();
-  const [form, setForm] = useState({ ...BLANK, chapter: data.chapters[0].id });
+  const [form, setForm] = useState({ ...BLANK, chapter: "" });
   const [csv, setCsv] = useState("");
   const [preview, setPreview] = useState<ParseResult | null>(null);
   const [alsoSave, setAlsoSave] = useState(true);
@@ -68,11 +68,13 @@ export default function ContentManager() {
   const [busy, setBusy] = useState(false);
   const [surveys, setSurveys] = useState<CustomSurvey[]>([]);
   const [board, setBoard] = useState<ManagedChapter[]>([]);
+  const [boardReady, setBoardReady] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const loadBoard = async () => {
     const result = await fetchManagedCourse();
     if (result.ok && result.data) setBoard(result.data);
+    setBoardReady(true);
   };
 
   useEffect(() => {
@@ -81,6 +83,14 @@ export default function ContentManager() {
     });
     void loadBoard();
   }, []);
+
+  useEffect(() => {
+    if (!board.length) return;
+    setForm((current) => {
+      if (current.chapter && board.some((chapter) => chapter.id === current.chapter)) return current;
+      return { ...current, chapter: board[0].id };
+    });
+  }, [board]);
 
   const set = (next: Partial<typeof BLANK>) => setForm((current) => ({ ...current, ...next }));
 
@@ -108,8 +118,13 @@ export default function ContentManager() {
       setStatus({ kind: "warn", text: "Choose a custom survey to attach." });
       return;
     }
-    const chapter = data.chapters.find((c) => c.id === form.chapter) || data.chapters[0];
-    const lesson = buildLesson(nextLessonId(data, chapter.id), form);
+    const chapter = board.find((item) => item.id === form.chapter) || board[0];
+    if (!chapter) {
+      setStatus({ kind: "warn", text: "No live chapters yet. Add a chapter in the course outline first." });
+      return;
+    }
+    const existingIds = board.flatMap((item) => item.lessons.map((lesson) => lesson.id));
+    const lesson = buildLesson(nextLiveLessonId(chapter.id, existingIds), form);
     setBusy(true);
     addDrafts([{ chapterId: chapter.id, lesson }]);
     const problem = await saveToDb([{ chapterId: chapter.id, lesson }], chapter.lessons.length);
@@ -375,11 +390,15 @@ export default function ContentManager() {
               value={form.chapter}
               onChange={(event) => set({ chapter: event.target.value })}
             >
-              {data.chapters.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.title}
-                </option>
-              ))}
+              {board.length ? (
+                board.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.title}
+                  </option>
+                ))
+              ) : (
+                <option value="">{boardReady ? "No live chapters yet" : "Loading live chapters…"}</option>
+              )}
             </select>
           </div>
           <div className="plan-field">

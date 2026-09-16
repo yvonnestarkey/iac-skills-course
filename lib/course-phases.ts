@@ -55,16 +55,17 @@ export function isMainTaskAssignment(chapterTitle: string, lesson: { title: stri
   return isNumberedTaskChapter(chapterTitle) && isTaskSubmissionAssignment(chapterTitle, lesson);
 }
 
-export function splitCoursePhases(chapters: OutlineChapter[]): CoursePhase[] {
-  const firstTask = chapters.findIndex((chapter) => isTaskChapter(chapter.title));
-  let phase1 = firstTask === -1 ? chapters : chapters.slice(0, firstTask);
-  let phase2 = firstTask === -1 ? [] : chapters.slice(firstTask);
+export function splitCoursePhases(chapters: OutlineChapter[] | null | undefined): CoursePhase[] {
+  const list = (chapters || []).filter(Boolean);
+  const firstTask = list.findIndex((chapter) => isTaskChapter(chapter.title || ""));
+  let phase1 = firstTask === -1 ? list : list.slice(0, firstTask);
+  let phase2 = firstTask === -1 ? [] : list.slice(firstTask);
 
-  const hasNamedPhases = chapters.some((chapter) => isSectionChapter(chapter.title) || isTaskChapter(chapter.title));
-  if (!hasNamedPhases && chapters.length > 1) {
-    const mid = Math.max(1, Math.ceil(chapters.length / 2));
-    phase1 = chapters.slice(0, mid);
-    phase2 = chapters.slice(mid);
+  const hasNamedPhases = list.some((chapter) => isSectionChapter(chapter.title || "") || isTaskChapter(chapter.title || ""));
+  if (!hasNamedPhases && list.length > 1) {
+    const mid = Math.max(1, Math.ceil(list.length / 2));
+    phase1 = list.slice(0, mid);
+    phase2 = list.slice(mid);
   }
 
   const phases: CoursePhase[] = [
@@ -90,8 +91,9 @@ export function chapterProgress(chapter: OutlineChapter, completed: Record<strin
   pct: number;
   complete: boolean;
 } {
-  const total = chapter.lessons.length;
-  const done = chapter.lessons.filter((lesson) => completed[lesson.id]).length;
+  const lessons = chapter?.lessons || [];
+  const total = lessons.length;
+  const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
   return { done, total, pct: total ? Math.round((done / total) * 100) : 0, complete: total > 0 && done === total };
 }
 
@@ -171,12 +173,12 @@ export function findResumeLesson(
   chapters: OutlineChapter[],
   completed: Record<string, boolean>
 ): { chapter: OutlineChapter; lesson: OutlineLesson } | null {
-  for (const chapter of chapters) {
-    const lesson = chapter.lessons.find((item) => !completed[item.id]);
+  for (const chapter of chapters || []) {
+    const lesson = (chapter.lessons || []).find((item) => !completed[item.id]);
     if (lesson) return { chapter, lesson };
   }
-  const lastChapter = chapters[chapters.length - 1];
-  const lastLesson = lastChapter?.lessons[lastChapter.lessons.length - 1];
+  const lastChapter = (chapters || [])[(chapters || []).length - 1];
+  const lastLesson = lastChapter?.lessons?.[(lastChapter.lessons || []).length - 1];
   if (lastChapter && lastLesson) return { chapter: lastChapter, lesson: lastLesson };
   return null;
 }

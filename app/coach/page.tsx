@@ -41,7 +41,7 @@ export default function CoachHomePage() {
             <strong>Inbox</strong>
             <span className="muted">Student questions and assignment feedback</span>
           </button>
-          <button onClick={() => router.push("/coach/content")}>
+          <button onClick={() => router.push("/coach/builder")}>
             <strong>Course creator</strong>
             <span className="muted">Add lessons and import CSV content</span>
           </button>

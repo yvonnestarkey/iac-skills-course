@@ -15,12 +15,13 @@ export default function StudentCourseNav() {
   const nav = useStudentNav();
   const pathname = usePathname();
   const prefix = `${basePath}/`;
+  const chapters = outline || [];
   const segment = pathname.startsWith(prefix) ? pathname.slice(prefix.length).split("/")[0] : null;
   const activeLessonId = segment && !RESERVED.has(segment) ? segment : null;
   const onDashboard = pathname === basePath;
   const onOverview = pathname === `${basePath}/overview`;
-  const lessons = outline.flatMap((chapter) => chapter.lessons);
-  const done = lessons.filter((lesson) => completed[lesson.id]).length;
+  const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
+  const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
   const total = lessons.length;
   const pct = total ? Math.round((done / total) * 100) : 0;
   const close = () => nav?.setOpen(false);
@@ -46,13 +47,13 @@ export default function StudentCourseNav() {
         </p>
       </div>
       <CoursePhaseAccordions
-        chapters={outline}
-        completed={completed}
+        chapters={chapters}
+        completed={completed || {}}
         activeLessonId={activeLessonId}
         basePath={basePath}
         onNavigate={close}
         variant="nav"
-        submissions={submissions}
+        submissions={submissions || {}}
         unlocked={unlocked}
       />
     </>

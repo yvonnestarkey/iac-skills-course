@@ -9,10 +9,11 @@ import { useStudentSession } from "@/lib/student-session";
 export default function StudentOverview() {
   const { outline, completed, submissions } = useStudentSession();
   const { unlocked, basePath } = useCoursePreview();
-  const lessons = outline.flatMap((chapter) => chapter.lessons);
-  const done = lessons.filter((lesson) => completed[lesson.id]).length;
-  const ordered = splitCoursePhases(outline).flatMap((phase) => phase.chapters);
-  const resume = findResumeLesson(ordered, completed);
+  const chapters = outline || [];
+  const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
+  const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
+  const ordered = splitCoursePhases(chapters).flatMap((phase) => phase.chapters || []);
+  const resume = findResumeLesson(ordered, completed || {});
   const allDone = lessons.length > 0 && done === lessons.length;
 
   return (
@@ -25,7 +26,7 @@ export default function StudentOverview() {
           : "Expand any section to preview upcoming titles. Locked lessons stay closed until you finish the work before them."}
       </p>
 
-      {resume ? (
+      {resume?.lesson && resume.chapter ? (
         <section className="resume-banner">
           <div>
             <p className="kicker">{allDone ? "Course complete" : "Resume course"}</p>
@@ -39,11 +40,11 @@ export default function StudentOverview() {
       ) : null}
 
       <CoursePhaseAccordions
-        chapters={outline}
-        completed={completed}
+        chapters={chapters}
+        completed={completed || {}}
         basePath={basePath}
         variant="hub"
-        submissions={submissions}
+        submissions={submissions || {}}
         unlocked={unlocked}
       />
     </article>

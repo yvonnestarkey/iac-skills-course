@@ -275,12 +275,15 @@ export async function fetchCourseChapters(): Promise<{
   const client = getSupabase();
   if (client) {
     const { data, error } = await client.from("chapters").select("id, title, position").order("position", { ascending: true });
-    if (!error && data?.length) {
-      return { ok: true, data: data.map((row) => ({ id: String(row.id), title: String(row.title || row.id) })) };
+    if (!error) {
+      return {
+        ok: true,
+        data: (data || []).map((row) => ({ id: String(row.id), title: String(row.title || row.id) })),
+      };
     }
+    return { ok: false, error: error.message, data: [] };
   }
-  const { outlineFromSeed } = await import("./student-lesson");
-  return { ok: true, data: outlineFromSeed().map((chapter) => ({ id: chapter.id, title: chapter.title })) };
+  return { ok: false, error: "Supabase is not configured.", data: [] };
 }
 
 export async function attachSurveyToChapter(

@@ -161,6 +161,7 @@ export default function CoursePhaseAccordions({
                   const stats = chapterProgress(chapter, completed);
                   const chapterLocked = !unlocked && isChapterSequentiallyLocked(chapters, chapter.id, completed);
                   const chapterOpen = Boolean(openChapters[chapter.id]);
+                  const lessons = chapter.lessons || [];
                   return (
                     <article
                       key={chapter.id}
@@ -175,7 +176,7 @@ export default function CoursePhaseAccordions({
                         <span>
                           <h3>
                             {chapterLocked ? <Lock size={13} className="phase-lock" aria-label="Locked" /> : null}
-                            {chapter.title}
+                            {chapter.title || "Untitled chapter"}
                           </h3>
                           <span className="muted small">
                             {stats.done} of {stats.total} complete
@@ -193,7 +194,7 @@ export default function CoursePhaseAccordions({
                           {chapter.summary ? <p className="chapter-summary">{chapter.summary}</p> : null}
                           {variant === "hub" ? (
                             <ul className="student-dash-lessons">
-                              {chapter.lessons.map((lesson) => (
+                              {lessons.map((lesson) => (
                                 <li key={lesson.id}>
                                   <LessonEntry
                                     lesson={lesson}
@@ -211,7 +212,7 @@ export default function CoursePhaseAccordions({
                               ))}
                             </ul>
                           ) : (
-                            chapter.lessons.map((lesson) => (
+                            lessons.map((lesson) => (
                               <LessonEntry
                                 key={lesson.id}
                                 lesson={lesson}

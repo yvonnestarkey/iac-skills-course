@@ -8,6 +8,7 @@ import CoachPreviewShell from "@/components/coach/CoachPreviewShell";
 import { CoursePreviewProvider } from "@/lib/course-preview";
 import { StudentNavProvider } from "@/lib/student-nav";
 import { StudentSessionProvider } from "@/lib/student-session";
+import { StudentInboxProvider } from "@/lib/use-student-inbox";
 import { useStore } from "@/lib/store";
 
 export default function CoachLayout({ children }: { children: ReactNode }) {
@@ -26,11 +27,13 @@ export default function CoachLayout({ children }: { children: ReactNode }) {
   if (isPreview) {
     return (
       <StudentSessionProvider>
-        <CoursePreviewProvider>
-          <StudentNavProvider>
-            <CoachPreviewShell>{children}</CoachPreviewShell>
-          </StudentNavProvider>
-        </CoursePreviewProvider>
+        <StudentInboxProvider>
+          <CoursePreviewProvider>
+            <StudentNavProvider>
+              <CoachPreviewShell>{children}</CoachPreviewShell>
+            </StudentNavProvider>
+          </CoursePreviewProvider>
+        </StudentInboxProvider>
       </StudentSessionProvider>
     );
   }

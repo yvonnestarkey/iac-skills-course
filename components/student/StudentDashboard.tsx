@@ -15,12 +15,13 @@ export default function StudentDashboard() {
   const { unlocked, basePath } = useCoursePreview();
   const { inboxWaiting, unreadCount } = useStudentInbox();
   const [coachingUnseen, setCoachingUnseen] = useState(false);
-  const lessons = outline.flatMap((chapter) => chapter.lessons);
-  const done = lessons.filter((lesson) => completed[lesson.id]).length;
+  const chapters = outline || [];
+  const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
+  const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
   const pct = lessons.length ? Math.round((done / lessons.length) * 100) : 0;
   const name = unlocked ? "Coach" : user?.email ? user.email.split("@")[0] : "there";
-  const ordered = splitCoursePhases(outline).flatMap((phase) => phase.chapters);
-  const resume = findResumeLesson(ordered, completed);
+  const ordered = splitCoursePhases(chapters).flatMap((phase) => phase.chapters || []);
+  const resume = findResumeLesson(ordered, completed || {});
   const allDone = lessons.length > 0 && done === lessons.length;
   const inboxHref = unlocked ? "/coach/inbox" : "/student/inbox";
   const notifyHref = unlocked ? "/coach/notifications" : "/student/notifications";
@@ -42,7 +43,7 @@ export default function StudentDashboard() {
         </div>
       </div>
 
-      {resume ? (
+      {resume?.lesson && resume.chapter ? (
         <section className="resume-banner">
           <div>
             <p className="kicker">{allDone ? "Course complete" : "Resume course"}</p>
@@ -56,15 +57,19 @@ export default function StudentDashboard() {
       ) : null}
 
       <nav className="student-hub" aria-label="Student shortcuts">
-        <Link href="/student/coaching" className="student-hub-card">
-          <strong>1-on-1 Coaching</strong>
-          <p>Book a private session or access your meeting summaries and recordings.</p>
-          {coachingUnseen ? <span className="pill">Meeting Summary & Recording Available</span> : null}
-        </Link>
-        <Link href="/student/events" className="student-hub-card">
-          <strong>Live Sessions & Events</strong>
-          <p>Join upcoming live calls, download calendar invites, and view past recordings.</p>
-        </Link>
+        {unlocked ? null : (
+          <>
+            <Link href="/student/coaching" className="student-hub-card">
+              <strong>1-on-1 Coaching</strong>
+              <p>Book a private session or access your meeting summaries and recordings.</p>
+              {coachingUnseen ? <span className="pill">Meeting Summary & Recording Available</span> : null}
+            </Link>
+            <Link href="/student/events" className="student-hub-card">
+              <strong>Live Sessions & Events</strong>
+              <p>Join upcoming live calls, download calendar invites, and view past recordings.</p>
+            </Link>
+          </>
+        )}
         <Link href={`${basePath}/overview`} className="student-hub-card">
           <strong>Course Overview</strong>
           <p>
@@ -83,12 +88,14 @@ export default function StudentDashboard() {
           <p>Assignment feedback and coach notes.</p>
           {unreadCount ? <span className="pill">{unreadCount} unread</span> : null}
         </Link>
-        <Link href="/student/planner" className="student-hub-card">
-          <strong>Study planner</strong>
-          <p>Set your hours, slots, and target finish date.</p>
-        </Link>
+        {unlocked ? null : (
+          <Link href="/student/planner" className="student-hub-card">
+            <strong>Study planner</strong>
+            <p>Set your hours, slots, and target finish date.</p>
+          </Link>
+        )}
       </nav>
-      <StudentPersonalNotes />
+      {unlocked ? null : <StudentPersonalNotes />}
     </article>
   );
 }

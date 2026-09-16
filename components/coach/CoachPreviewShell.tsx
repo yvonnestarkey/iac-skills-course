@@ -24,9 +24,17 @@ export default function CoachPreviewShell({ children }: { children: ReactNode })
   if (!ready) {
     return (
       <div className="student-player">
-        <header className="student-player-bar">
-          <BrandMark href={COURSE_PREVIEW_BASE} />
-        </header>
+        <div className="coach-preview-chrome">
+          <div className="coach-preview-banner">
+            <strong>Previewing Course as Student</strong>
+            <button className="primary" type="button" onClick={() => router.push("/coach")}>
+              Back to Coach Dashboard
+            </button>
+          </div>
+          <header className="student-player-bar">
+            <BrandMark href={COURSE_PREVIEW_BASE} />
+          </header>
+        </div>
         <p className="student-loading">Loading the course…</p>
       </div>
     );
@@ -34,42 +42,49 @@ export default function CoachPreviewShell({ children }: { children: ReactNode })
 
   return (
     <div className="student-player">
-      <header className="topbar">
-        <BrandMark href={COURSE_PREVIEW_BASE} />
-        <div className="topbar-right flex items-center gap-2 flex-wrap">
-          <button
-            className={`notify-btn ${pathname.startsWith("/coach/inbox") ? "on" : ""}`}
-            type="button"
-            aria-label="Inbox"
-            onClick={() => router.push("/coach/inbox")}
-          >
-            <Mail size={18} aria-hidden="true" />
+      <div className="coach-preview-chrome">
+        <div className="coach-preview-banner">
+          <span>
+            <span className="coach-view-pill">Coach View</span>
+            <strong>Previewing Course as Student</strong>
+          </span>
+          <button className="primary" type="button" onClick={() => router.push("/coach")}>
+            Back to Coach Dashboard
           </button>
-          <button
-            className={`notify-btn ${pathname.startsWith("/coach/notifications") ? "on" : ""}`}
-            type="button"
-            aria-label="Notifications"
-            onClick={() => router.push("/coach/notifications")}
-          >
-            <Bell size={18} aria-hidden="true" />
-          </button>
-          <span className="muted small student-email">Coach</span>
-          <button className="ghost student-signout" type="button" onClick={() => router.push("/coach")}>
-            Coach home
-          </button>
-          {nav ? (
-            <button
-              className={`course-menu-btn ${nav.open ? "on" : ""}`}
-              aria-expanded={nav.open}
-              aria-controls="student-course-nav"
-              type="button"
-              onClick={nav.toggle}
-            >
-              {nav.open ? "Close" : "Course"}
-            </button>
-          ) : null}
         </div>
-      </header>
+        <header className="topbar">
+          <BrandMark href={COURSE_PREVIEW_BASE} />
+          <div className="topbar-right flex items-center gap-2 flex-wrap">
+            <button
+              className={`notify-btn ${pathname.startsWith("/coach/inbox") ? "on" : ""}`}
+              type="button"
+              aria-label="Inbox"
+              onClick={() => router.push("/coach/inbox")}
+            >
+              <Mail size={18} aria-hidden="true" />
+            </button>
+            <button
+              className={`notify-btn ${pathname.startsWith("/coach/notifications") ? "on" : ""}`}
+              type="button"
+              aria-label="Notifications"
+              onClick={() => router.push("/coach/notifications")}
+            >
+              <Bell size={18} aria-hidden="true" />
+            </button>
+            {nav ? (
+              <button
+                className={`course-menu-btn ${nav.open ? "on" : ""}`}
+                aria-expanded={nav.open}
+                aria-controls="student-course-nav"
+                type="button"
+                onClick={nav.toggle}
+              >
+                {nav.open ? "Close" : "Course"}
+              </button>
+            ) : null}
+          </div>
+        </header>
+      </div>
       <div className="shell">
         {nav?.open ? (
           <button className="nav-backdrop" aria-label="Close course menu" type="button" onClick={() => nav.setOpen(false)} />
