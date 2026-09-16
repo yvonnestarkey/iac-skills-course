@@ -54,11 +54,21 @@ export interface CustomSurvey {
   slug: string;
   isActive: boolean;
   isAssignment: boolean;
+  requiresGrade: boolean;
   pdfUrl: string;
   questions: SurveyQuestion[];
   createdAt: string;
   updatedAt: string;
 }
+
+export type SurveyResponseStatus = "submitted" | "graded" | "rejected" | "resubmit";
+
+export const SURVEY_RESPONSE_STATUSES: { id: SurveyResponseStatus; label: string }[] = [
+  { id: "submitted", label: "Submitted" },
+  { id: "graded", label: "Graded" },
+  { id: "rejected", label: "Rejected" },
+  { id: "resubmit", label: "Resubmit" },
+];
 
 export interface CustomSurveyResponse {
   id: string;
@@ -67,7 +77,21 @@ export interface CustomSurveyResponse {
   studentName: string;
   studentEmail: string;
   answers: Record<string, string>;
+  status: SurveyResponseStatus;
+  grade: number | null;
+  feedback: string;
+  feedbackFileUrl: string;
+  gradedBy: string;
+  gradedByName: string;
+  gradedAt: string;
   createdAt: string;
+  updatedAt: string;
+}
+
+export interface SurveySubmissionRow extends CustomSurveyResponse {
+  surveyTitle: string;
+  isAssignment: boolean;
+  requiresGrade: boolean;
 }
 
 export interface SurveyDraft {
@@ -76,6 +100,7 @@ export interface SurveyDraft {
   slug: string;
   isActive: boolean;
   isAssignment: boolean;
+  requiresGrade: boolean;
   pdfUrl: string;
   questions: SurveyQuestion[];
 }
@@ -196,6 +221,7 @@ export function task2SelfEvaluationDraft(): SurveyDraft {
     slug: "task-2-case-study-planning-rtfq",
     isActive: false,
     isAssignment: false,
+    requiresGrade: false,
     pdfUrl: "",
     questions: [
       templateQuestion("info-section-a", "info_link", "Section A — Task execution checklist", {
@@ -248,6 +274,7 @@ export function emptySurveyDraft(): SurveyDraft {
     slug: "",
     isActive: false,
     isAssignment: false,
+    requiresGrade: false,
     pdfUrl: "",
     questions: [newSurveyQuestion("short_text")],
   };
@@ -288,6 +315,7 @@ function surveyFromRow(row: Record<string, unknown>): CustomSurvey {
     slug: String(row.slug || ""),
     isActive: row.is_active === true,
     isAssignment: row.is_assignment === true,
+    requiresGrade: row.requires_grade === true,
     pdfUrl: String(row.pdf_url || ""),
     questions: asSurveyQuestions(row.questions),
     createdAt: String(row.created_at || ""),
@@ -305,6 +333,59 @@ function asAnswers(value: unknown): Record<string, string> {
     else next[key] = String(answer);
   });
   return next;
+}
+
+function asResponseStatus(value: unknown): SurveyResponseStatus {
+  if (value === "graded" || value === "rejected" || value === "resubmit") return value;
+  return "submitted";
+}
+
+function asGrade(value: unknown): number | null {
+  if (value == null || value === "") return null;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function responseFromRow(
+  row: Record<string, unknown>,
+  profile?: { name: string; email: string },
+  graderName?: string
+): CustomSurveyResponse {
+  return {
+    id: String(row.id),
+    surveyId: String(row.survey_id || ""),
+    studentId: String(row.student_id || ""),
+    studentName: profile?.name || "",
+    studentEmail: profile?.email || "",
+    answers: asAnswers(row.answers),
+    status: asResponseStatus(row.status),
+    grade: asGrade(row.grade),
+    feedback: String(row.feedback || ""),
+    feedbackFileUrl: String(row.feedback_file_url || ""),
+    gradedBy: String(row.graded_by || ""),
+    gradedByName: graderName || "",
+    gradedAt: String(row.graded_at || ""),
+    createdAt: String(row.created_at || ""),
+    updatedAt: String(row.updated_at || ""),
+  };
+}
+
+export function surveyPdfUploads(survey: CustomSurvey, answers: Record<string, string>): SurveyPdfUploadAnswer[] {
+  return survey.questions
+    .filter((question) => isPdfUploadBlock(question.type))
+    .map((question) => parsePdfUploadAnswer(answers[question.id]))
+    .filter((item): item is SurveyPdfUploadAnswer => Boolean(item));
+}
+
+export function surveyResponseStatusLabel(status: SurveyResponseStatus): string {
+  return SURVEY_RESPONSE_STATUSES.find((item) => item.id === status)?.label || "Submitted";
+}
+
+export function surveyResponseStatusClass(status: SurveyResponseStatus): string {
+  if (status === "graded") return "ok";
+  if (status === "rejected") return "warn";
+  if (status === "resubmit") return "ask";
+  return "";
 }
 
 export function formatSurveyAnswer(value: string | undefined, type?: SurveyQuestionType): string {
@@ -513,6 +594,7 @@ export async function saveCustomSurvey(
     slug,
     is_active: draft.isActive,
     is_assignment: draft.isAssignment,
+    requires_grade: draft.requiresGrade,
     pdf_url: pdfUrl,
     questions,
     updated_at: new Date().toISOString(),
@@ -528,6 +610,11 @@ export async function saveCustomSurvey(
       column: "is_assignment",
       required: draft.isAssignment,
       sql: "alter table public.custom_surveys add column if not exists is_assignment boolean not null default false;",
+    },
+    {
+      column: "requires_grade",
+      required: draft.requiresGrade,
+      sql: "alter table public.custom_surveys add column if not exists requires_grade boolean not null default false;",
     },
     {
       column: "pdf_url",
@@ -655,15 +742,7 @@ export async function fetchOwnSurveyResponse(
   const row = data as Record<string, unknown>;
   return {
     ok: true,
-    response: {
-      id: String(row.id),
-      surveyId: String(row.survey_id),
-      studentId: String(row.student_id),
-      studentName: "",
-      studentEmail: session.user.email || "",
-      answers: asAnswers(row.answers),
-      createdAt: String(row.created_at || ""),
-    },
+    response: responseFromRow(row, { name: "", email: session.user.email || "" }),
   };
 }
 
@@ -708,11 +787,17 @@ export async function submitCustomSurveyResponse(
   if (!client) return { ok: false, error: "Supabase is not configured." };
   const { data: session } = await client.auth.getUser();
   if (!session.user) return { ok: false, error: "Sign in required." };
-  const { error } = await client.from("custom_survey_responses").insert({
+  const payload: Record<string, unknown> = {
     survey_id: surveyId,
     student_id: session.user.id,
     answers,
-  });
+    status: "submitted",
+  };
+  let { error } = await client.from("custom_survey_responses").insert(payload);
+  if (error && /status/i.test(error.message || "")) {
+    delete payload.status;
+    ({ error } = await client.from("custom_survey_responses").insert(payload));
+  }
   if (error) {
     if (error.code === "23505") return { ok: false, error: "You have already submitted this survey." };
     return { ok: false, error: describe(error) };
@@ -757,17 +842,150 @@ export async function fetchSurveyResponses(
     data: rows.map((row) => {
       const studentId = String(row.student_id || "");
       const profile = names.get(studentId);
+      return responseFromRow(row, profile);
+    }),
+  };
+}
+
+async function loadProfileNames(
+  client: NonNullable<ReturnType<typeof getSupabase>>,
+  ids: string[]
+): Promise<Map<string, { name: string; email: string }>> {
+  const names = new Map<string, { name: string; email: string }>();
+  const unique = [...new Set(ids.filter(Boolean))];
+  if (!unique.length) return names;
+  const profiles = await client.from("profiles").select("id, full_name, email").in("id", unique);
+  (profiles.data || []).forEach((profile) => {
+    names.set(String(profile.id), {
+      name: String(profile.full_name || "").trim() || String(profile.email || "Student"),
+      email: String(profile.email || ""),
+    });
+  });
+  return names;
+}
+
+export async function fetchAllSurveySubmissions(): Promise<{
+  ok: boolean;
+  error?: string;
+  data: SurveySubmissionRow[];
+}> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
+  const { data, error } = await client.from("custom_survey_responses").select("*").order("created_at", { ascending: false });
+  if (error) {
+    if (tableMissing(error.message)) {
+      return { ok: false, error: "Run the custom surveys SQL in Supabase first.", data: [] };
+    }
+    return { ok: false, error: describe(error), data: [] };
+  }
+  const rows = (data || []) as Record<string, unknown>[];
+  const surveyIds = [...new Set(rows.map((row) => String(row.survey_id || "")).filter(Boolean))];
+  const surveys = surveyIds.length
+    ? await client.from("custom_surveys").select("*").in("id", surveyIds)
+    : { data: [] as Record<string, unknown>[] };
+  const surveyMap = new Map(
+    ((surveys.data || []) as Record<string, unknown>[]).map((row) => [String(row.id), surveyFromRow(row)])
+  );
+  const studentIds = rows.map((row) => String(row.student_id || ""));
+  const graderIds = rows.map((row) => String(row.graded_by || ""));
+  const names = await loadProfileNames(client, [...studentIds, ...graderIds]);
+  return {
+    ok: true,
+    data: rows.map((row) => {
+      const survey = surveyMap.get(String(row.survey_id || ""));
+      const student = names.get(String(row.student_id || ""));
+      const grader = names.get(String(row.graded_by || ""));
       return {
-        id: String(row.id),
-        surveyId: String(row.survey_id),
-        studentId,
-        studentName: profile?.name || "Student",
-        studentEmail: profile?.email || "",
-        answers: asAnswers(row.answers),
-        createdAt: String(row.created_at || ""),
+        ...responseFromRow(row, student || { name: "Student", email: "" }, grader?.name),
+        surveyTitle: survey?.title || "Survey",
+        isAssignment: survey?.isAssignment === true,
+        requiresGrade: survey?.requiresGrade === true,
       };
     }),
   };
+}
+
+export async function fetchSurveySubmission(
+  id: string
+): Promise<{ ok: boolean; error?: string; survey: CustomSurvey | null; response: CustomSurveyResponse | null }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured.", survey: null, response: null };
+  const { data, error } = await client.from("custom_survey_responses").select("*").eq("id", id).maybeSingle();
+  if (error) return { ok: false, error: describe(error), survey: null, response: null };
+  if (!data) return { ok: true, survey: null, response: null };
+  const row = data as Record<string, unknown>;
+  const survey = await fetchCustomSurvey(String(row.survey_id || ""));
+  const names = await loadProfileNames(client, [String(row.student_id || ""), String(row.graded_by || "")]);
+  const student = names.get(String(row.student_id || ""));
+  const grader = names.get(String(row.graded_by || ""));
+  return {
+    ok: true,
+    survey: survey.survey,
+    response: responseFromRow(row, student || { name: "Student", email: "" }, grader?.name),
+  };
+}
+
+export async function saveSurveyReview(input: {
+  id: string;
+  status: SurveyResponseStatus;
+  grade: number | null;
+  feedback: string;
+  feedbackFileUrl: string;
+}): Promise<{ ok: boolean; error?: string; response?: CustomSurveyResponse }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const { data: session } = await client.auth.getUser();
+  if (!session.user) return { ok: false, error: "Sign in required." };
+  if (input.status === "submitted") return { ok: false, error: "Choose Graded, Rejected, or Resubmit." };
+  const payload: Record<string, unknown> = {
+    status: input.status,
+    grade: input.grade,
+    feedback: input.feedback.trim(),
+    feedback_file_url: input.feedbackFileUrl.trim(),
+    graded_by: session.user.id,
+    graded_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+  const optional = ["status", "grade", "feedback", "feedback_file_url", "graded_by", "graded_at", "updated_at"];
+  let { data, error } = await client.from("custom_survey_responses").update(payload).eq("id", input.id).select("*").maybeSingle();
+  for (let attempt = 0; attempt < optional.length && error; attempt += 1) {
+    const missing = optional.find((column) => column in payload && (error?.message || "").includes(column));
+    if (!missing) break;
+    if (missing === "status" || missing === "feedback" || missing === "graded_by") {
+      return {
+        ok: false,
+        error:
+          "Paste this SQL in Supabase so grading can be stored:\n\nalter table public.custom_survey_responses add column if not exists status text not null default 'submitted';\nalter table public.custom_survey_responses add column if not exists grade numeric;\nalter table public.custom_survey_responses add column if not exists feedback text not null default '';\nalter table public.custom_survey_responses add column if not exists feedback_file_url text;\nalter table public.custom_survey_responses add column if not exists graded_by uuid;\nalter table public.custom_survey_responses add column if not exists graded_at timestamptz;\nalter table public.custom_survey_responses add column if not exists updated_at timestamptz not null default now();",
+      };
+    }
+    delete payload[missing];
+    ({ data, error } = await client.from("custom_survey_responses").update(payload).eq("id", input.id).select("*").maybeSingle());
+  }
+  if (error) return { ok: false, error: describe(error) };
+  return { ok: true, response: data ? responseFromRow(data as Record<string, unknown>) : undefined };
+}
+
+export async function uploadCoachFeedbackFile(
+  file: File,
+  surveyId: string,
+  responseId: string
+): Promise<{ ok: boolean; error?: string; url?: string; name?: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const { data: session } = await client.auth.getUser();
+  if (!session.user) return { ok: false, error: "Sign in required." };
+  const ext = (file.name.split(".").pop() || "pdf").toLowerCase().replace(/[^a-z0-9]/g, "") || "pdf";
+  const path = `survey-feedback/${surveyId}/${responseId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
+    upsert: true,
+    contentType: file.type || "application/octet-stream",
+  });
+  if (uploaded.error) {
+    return { ok: false, error: "Could not upload that file. Paste the survey storage SQL in Supabase if this is the first coach attachment." };
+  }
+  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
+  if (!data?.publicUrl) return { ok: false, error: "Could not get a public URL for that file." };
+  return { ok: true, url: data.publicUrl, name: file.name.trim() || "feedback" };
 }
 
 export async function fetchStudentSurveyPacks(
@@ -795,15 +1013,7 @@ export async function fetchStudentSurveyPacks(
     return [
       {
         survey,
-        response: {
-          id: String(row.id),
-          surveyId: String(row.survey_id),
-          studentId: String(row.student_id || ""),
-          studentName: "",
-          studentEmail: "",
-          answers: asAnswers(row.answers),
-          createdAt: String(row.created_at || ""),
-        },
+        response: responseFromRow(row),
       },
     ];
   });

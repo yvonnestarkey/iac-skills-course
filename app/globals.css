@@ -1916,6 +1916,36 @@ input[type="tel"]:focus {
   margin-bottom: 16px;
 }
 
+.table-wrap {
+  overflow-x: auto;
+}
+
+.submissions-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 0 0 16px;
+}
+
+.submissions-search {
+  flex: 1 1 240px;
+  min-width: 180px;
+}
+
+.submission-review-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .submission-review-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .kicker .assignment-flag,
 .duration-badge.assignment-flag {
   background: var(--dark);

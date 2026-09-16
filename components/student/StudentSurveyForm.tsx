@@ -170,6 +170,25 @@ export default function StudentSurveyForm({
         ) : null}
         <p className="lead">Thank you. Your response has been saved.</p>
         <SurveyQuestionPdf survey={survey} submitted />
+        {existing && (existing.feedback || existing.feedbackFileUrl || existing.status !== "submitted") ? (
+          <aside className="survey-info-card">
+            <strong>Coach review</strong>
+            <p>
+              Status: {existing.status === "graded" ? "Graded" : existing.status === "rejected" ? "Rejected" : existing.status === "resubmit" ? "Please resubmit" : "Submitted"}
+              {existing.grade != null ? ` · Grade: ${existing.grade}` : ""}
+            </p>
+            {existing.feedback ? (
+              <p>
+                <LinkedText text={existing.feedback} />
+              </p>
+            ) : null}
+            {existing.feedbackFileUrl ? (
+              <a className="ghost" href={existing.feedbackFileUrl} target="_blank" rel="noopener noreferrer">
+                Open coach file ↗
+              </a>
+            ) : null}
+          </aside>
+        ) : null}
         {existing ? (
           <div className="work-list">
             {survey.questions.map((question) =>

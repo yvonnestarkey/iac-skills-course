@@ -224,13 +224,7 @@ export default function StudentListsPage() {
           loading={!analyticsReady}
         />
       ) : (
-        <AssignmentsTab
-          students={students}
-          lessons={assignmentLessons}
-          lessonIds={lessonIds}
-          surveyPairs={surveyPairs}
-          onOpenProfile={openProfile}
-        />
+        <AssignmentsTab students={students} />
       )}
     </div>
   );

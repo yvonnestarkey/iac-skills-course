@@ -20,6 +20,7 @@ alter table public.custom_surveys add column if not exists created_at timestampt
 alter table public.custom_surveys add column if not exists updated_at timestamptz not null default now();
 alter table public.custom_surveys add column if not exists pdf_url text;
 alter table public.custom_surveys add column if not exists is_assignment boolean not null default false;
+alter table public.custom_surveys add column if not exists requires_grade boolean not null default false;
 
 create unique index if not exists custom_surveys_slug_uidx
   on public.custom_surveys (slug);
@@ -38,12 +39,27 @@ alter table public.custom_survey_responses add column if not exists survey_id uu
 alter table public.custom_survey_responses add column if not exists student_id uuid;
 alter table public.custom_survey_responses add column if not exists answers jsonb not null default '{}'::jsonb;
 alter table public.custom_survey_responses add column if not exists created_at timestamptz not null default now();
+alter table public.custom_survey_responses add column if not exists updated_at timestamptz not null default now();
+alter table public.custom_survey_responses add column if not exists status text not null default 'submitted';
+alter table public.custom_survey_responses add column if not exists grade numeric;
+alter table public.custom_survey_responses add column if not exists feedback text not null default '';
+alter table public.custom_survey_responses add column if not exists feedback_file_url text;
+alter table public.custom_survey_responses add column if not exists graded_by uuid;
+alter table public.custom_survey_responses add column if not exists graded_at timestamptz;
+
+alter table public.custom_survey_responses drop constraint if exists custom_survey_responses_status_check;
+alter table public.custom_survey_responses
+  add constraint custom_survey_responses_status_check
+  check (status in ('submitted', 'graded', 'rejected', 'resubmit'));
 
 create unique index if not exists custom_survey_responses_survey_student_uidx
   on public.custom_survey_responses (survey_id, student_id);
 
 create index if not exists custom_survey_responses_survey_idx
   on public.custom_survey_responses (survey_id, created_at desc);
+
+create index if not exists custom_survey_responses_status_idx
+  on public.custom_survey_responses (status, created_at desc);
 
 alter table public.custom_surveys enable row level security;
 alter table public.custom_survey_responses enable row level security;
@@ -111,4 +127,29 @@ create policy "students update own survey response pdfs"
     bucket_id = 'course-pdfs'
     and split_part(name, '/', 1) = 'survey-responses'
     and split_part(name, '/', 3) = auth.uid()::text
+  );
+
+drop policy if exists "staff upload survey feedback files" on storage.objects;
+create policy "staff upload survey feedback files"
+  on storage.objects for insert
+  to authenticated
+  with check (
+    bucket_id = 'course-pdfs'
+    and split_part(name, '/', 1) = 'survey-feedback'
+    and public.is_course_staff()
+  );
+
+drop policy if exists "staff update survey feedback files" on storage.objects;
+create policy "staff update survey feedback files"
+  on storage.objects for update
+  to authenticated
+  using (
+    bucket_id = 'course-pdfs'
+    and split_part(name, '/', 1) = 'survey-feedback'
+    and public.is_course_staff()
+  )
+  with check (
+    bucket_id = 'course-pdfs'
+    and split_part(name, '/', 1) = 'survey-feedback'
+    and public.is_course_staff()
   );

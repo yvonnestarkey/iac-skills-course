@@ -110,6 +110,7 @@ function draftFromSurvey(survey: CustomSurvey): SurveyDraft {
     slug: survey.slug,
     isActive: survey.isActive,
     isAssignment: survey.isAssignment,
+    requiresGrade: survey.requiresGrade,
     pdfUrl: survey.pdfUrl || "",
     questions: survey.questions.length ? survey.questions : [newSurveyQuestion()],
   };
@@ -382,6 +383,7 @@ export default function SurveyManager() {
                 <p className="muted small">
                   {survey.questions.length} question{survey.questions.length === 1 ? "" : "s"}
                   {survey.isAssignment ? " · Assignment" : ""}
+                  {survey.requiresGrade ? " · Requires grade" : ""}
                   {survey.pdfUrl ? " · Includes PDF" : ""}
                   {survey.isActive ? " · Active for students" : " · Draft"}
                 </p>
@@ -588,6 +590,14 @@ function SurveyEditor({
           onChange={(event) => onChange({ ...draft, isAssignment: event.target.checked })}
         />
         Mark this form as an Assignment (Track submissions, missing status, and due dates)
+      </label>
+      <label className="roster-check">
+        <input
+          type="checkbox"
+          checked={draft.requiresGrade}
+          onChange={(event) => onChange({ ...draft, requiresGrade: event.target.checked })}
+        />
+        Requires Grade / Numeric Score (If unchecked, submission defaults to feedback-only or simple &apos;Graded&apos; status)
       </label>
 
       <h3>Insert into course</h3>
