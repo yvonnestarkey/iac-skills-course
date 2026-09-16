@@ -166,8 +166,8 @@ export default function StudentSurveyForm({
         ) : null}
         <p className="empty">{error || "This survey could not be found."}</p>
         {embedded ? nextAction : (
-          <Link className="ghost" href="/student/surveys">
-            ← All surveys
+          <Link className="ghost" href="/student/feedback">
+            ← All feedback
           </Link>
         )}
       </Frame>
@@ -221,8 +221,8 @@ export default function StudentSurveyForm({
         <div className="actions">
           {nextAction}
           {embedded ? null : (
-            <Link className="ghost" href="/student/surveys">
-              ← All surveys
+            <Link className="ghost" href="/student/feedback">
+              ← All feedback
             </Link>
           )}
         </div>
@@ -270,7 +270,7 @@ export default function StudentSurveyForm({
             {busy ? "Submitting…" : "Submit"}
           </button>
           {embedded ? nextAction : (
-            <Link className="ghost" href="/student/surveys">
+            <Link className="ghost" href="/student/feedback">
               Cancel
             </Link>
           )}

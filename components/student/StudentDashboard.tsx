@@ -7,11 +7,12 @@ import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
 import { fetchCoachingDashboardHint } from "@/lib/coaching";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useCoursePreview } from "@/lib/course-preview";
+import { hasCoachReview } from "@/lib/custom-surveys";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
 
 export default function StudentDashboard() {
-  const { user, outline, completed } = useStudentSession();
+  const { user, outline, completed, surveyReviews } = useStudentSession();
   const { unlocked, basePath } = useCoursePreview();
   const { inboxWaiting, unreadCount } = useStudentInbox();
   const [coachingUnseen, setCoachingUnseen] = useState(false);
@@ -25,6 +26,7 @@ export default function StudentDashboard() {
   const allDone = lessons.length > 0 && done === lessons.length;
   const inboxHref = unlocked ? "/coach/inbox" : "/student/inbox";
   const notifyHref = unlocked ? "/coach/notifications" : "/student/notifications";
+  const feedbackCount = Object.values(surveyReviews || {}).filter(hasCoachReview).length;
 
   useEffect(() => {
     if (!user?.id || unlocked) return;
@@ -78,6 +80,13 @@ export default function StudentDashboard() {
               : "Browse every section and task, including locked upcoming titles."}
           </p>
         </Link>
+        {unlocked ? null : (
+          <Link href="/student/feedback" className="student-hub-card">
+            <strong>Survey & assignment feedback</strong>
+            <p>See every submission, grade, and coach comment in one place.</p>
+            {feedbackCount ? <span className="pill">{feedbackCount} with feedback</span> : null}
+          </Link>
+        )}
         <Link href={inboxHref} className="student-hub-card">
           <strong>Inbox</strong>
           <p>Questions and replies with your coach.</p>
@@ -85,7 +94,7 @@ export default function StudentDashboard() {
         </Link>
         <Link href={notifyHref} className="student-hub-card">
           <strong>Notifications</strong>
-          <p>Assignment feedback and coach notes.</p>
+          <p>Course announcements and coach notes.</p>
           {unreadCount ? <span className="pill">{unreadCount} unread</span> : null}
         </Link>
         {unlocked ? null : (

@@ -1143,15 +1143,27 @@ export async function fetchStudentSurveyPacks(
   const surveyMap = new Map(
     ((surveys.data || []) as Record<string, unknown>[]).map((row) => [String(row.id), surveyFromRow(row)])
   );
-  return rows.flatMap((row) => {
-    const survey = surveyMap.get(String(row.survey_id || ""));
-    if (!survey) return [];
-    return [
-      {
-        survey,
-        response: responseFromRow(row),
-      },
-    ];
+  return rows.map((row) => {
+    const surveyId = String(row.survey_id || "");
+    const survey =
+      surveyMap.get(surveyId) ||
+      ({
+        id: surveyId,
+        title: "Submitted work",
+        description: "",
+        slug: "",
+        isActive: false,
+        isAssignment: false,
+        requiresGrade: false,
+        pdfUrl: "",
+        questions: [],
+        createdAt: "",
+        updatedAt: "",
+      } satisfies CustomSurvey);
+    return {
+      survey,
+      response: responseFromRow(row),
+    };
   });
 }
 
