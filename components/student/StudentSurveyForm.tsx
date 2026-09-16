@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
+import BmcrCalculator from "@/components/lesson/BmcrCalculator";
 import {
   fetchCustomSurvey,
   fetchCustomSurveyBySlug,
   fetchOwnSurveyResponse,
   formatSurveyAnswer,
+  isBmcrBlock,
   isInfoBlock,
   questionCollectsAnswer,
   safeHref,
@@ -15,11 +17,13 @@ import {
   type CustomSurveyResponse,
   type SurveyQuestion,
 } from "@/lib/custom-surveys";
+import { parseBmcrAnswer, stringifyBmcrAnswer } from "@/lib/bmcr";
 import LinkedText from "@/components/ui/LinkedText";
 
 export default function StudentSurveyForm({
   slug,
   surveyId,
+  lessonId,
   embedded = false,
   allowInactive = false,
   hideTitle = false,
@@ -29,6 +33,7 @@ export default function StudentSurveyForm({
 }: {
   slug?: string;
   surveyId?: string | null;
+  lessonId?: string | null;
   embedded?: boolean;
   allowInactive?: boolean;
   hideTitle?: boolean;
@@ -88,7 +93,7 @@ export default function StudentSurveyForm({
       (question) =>
         questionCollectsAnswer(question.type) &&
         question.required &&
-        !formatSurveyAnswer(answers[question.id])
+        !formatSurveyAnswer(answers[question.id], question.type)
     );
     if (missing) {
       setError(`Please answer “${missing.label}”.`);
@@ -98,9 +103,9 @@ export default function StudentSurveyForm({
     setError("");
     const payload: Record<string, string> = {};
     survey.questions.forEach((question) => {
-      if (questionCollectsAnswer(question.type)) payload[question.id] = formatSurveyAnswer(answers[question.id]);
+      if (questionCollectsAnswer(question.type)) payload[question.id] = (answers[question.id] || "").trim();
     });
-    const result = await submitCustomSurveyResponse(survey.id, payload);
+    const result = await submitCustomSurveyResponse(survey.id, payload, lessonId);
     setBusy(false);
     if (!result.ok) {
       setError(result.error || "Could not submit.");
@@ -164,7 +169,11 @@ export default function StudentSurveyForm({
                   <strong>
                     <LinkedText text={question.label} />
                   </strong>
-                  <p>{formatSurveyAnswer(existing.answers[question.id]) || "—"}</p>
+                  {isBmcrBlock(question.type) ? (
+                    <BmcrCalculator value={parseBmcrAnswer(existing.answers[question.id])} readOnly idPrefix={`saved-${question.id}`} />
+                  ) : (
+                    <p>{formatSurveyAnswer(existing.answers[question.id], question.type) || "—"}</p>
+                  )}
                 </article>
               )
             )}
@@ -276,7 +285,7 @@ function SurveyField({
   const fieldId = `survey-${question.id}`;
   return (
     <div className="plan-field">
-      <label htmlFor={question.type === "radio" || question.type === "rating" ? undefined : fieldId}>
+      <label htmlFor={question.type === "radio" || question.type === "rating" || question.type === "multi_select" || isBmcrBlock(question.type) ? undefined : fieldId}>
         <strong>
           <LinkedText text={question.label} />
           {question.required ? " *" : ""}
@@ -330,6 +339,37 @@ function SurveyField({
           value={value}
           onChange={(event) => onChange(event.target.value)}
           required={question.required}
+        />
+      ) : null}
+      {question.type === "multi_select" ? (
+        <div className="survey-choice-list bmcr-challenges" role="group" aria-label={question.label}>
+          {question.options.map((option, optionIndex) => {
+            const selected = value
+              .split(";")
+              .map((item) => item.trim())
+              .filter(Boolean);
+            const on = selected.includes(option);
+            return (
+              <label className={`roster-check${on ? " bmcr-tag-on" : ""}`} key={`${question.id}-${optionIndex}`}>
+                <input
+                  type="checkbox"
+                  checked={on}
+                  onChange={() => {
+                    const next = on ? selected.filter((item) => item !== option) : [...selected, option];
+                    onChange(next.join("; "));
+                  }}
+                />
+                {option}
+              </label>
+            );
+          })}
+        </div>
+      ) : null}
+      {isBmcrBlock(question.type) ? (
+        <BmcrCalculator
+          idPrefix={question.id}
+          value={parseBmcrAnswer(value)}
+          onChange={(marks) => onChange(stringifyBmcrAnswer(marks))}
         />
       ) : null}
       {question.type === "rating" ? (

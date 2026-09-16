@@ -4214,3 +4214,132 @@ input[type="tel"]:focus {
   align-items: center;
   margin-top: 4px;
 }
+
+.survey-question-card.survey-bmcr-block {
+  background: #f4f8f7;
+}
+
+.bmcr-calculator {
+  margin: 8px 0 4px;
+}
+
+.bmcr-table-wrap {
+  overflow-x: auto;
+}
+
+.bmcr-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 420px;
+}
+
+.bmcr-table th,
+.bmcr-table td {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.bmcr-table thead th {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted, #5b6b68);
+}
+
+.bmcr-table tbody th {
+  font-weight: 700;
+  width: 34%;
+}
+
+.bmcr-table .select-line {
+  margin: 0;
+  width: 100%;
+}
+
+.bmcr-table .bmcr-total th,
+.bmcr-table .bmcr-total td {
+  background: #f4f8f7;
+  font-weight: 700;
+}
+
+.bmcr-sum {
+  display: inline-block;
+  min-width: 3ch;
+}
+
+.bmcr-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 14px 0 8px;
+}
+
+.bmcr-stat {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: #fff;
+}
+
+.bmcr-stat span {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #5b6b68;
+}
+
+.bmcr-stat b {
+  display: block;
+  margin: 6px 0 4px;
+  font-size: 22px;
+  color: #1f7b70;
+}
+
+.bmcr-stat small {
+  color: #5b6b68;
+  font-size: 12px;
+}
+
+.bmcr-feedback {
+  border: 1px solid var(--line);
+  border-left: 4px solid #1f7b70;
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: #f4f8f7;
+  margin: 12px 0 4px;
+}
+
+.bmcr-feedback strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.bmcr-feedback p {
+  margin: 0;
+}
+
+.bmcr-challenges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.bmcr-tag-on {
+  font-weight: 700;
+  color: #1f7b70;
+}
+
+.bmcr-submission-heading {
+  font-size: 16px;
+  margin: 22px 0 6px;
+}
+
+@media (max-width: 640px) {
+  .bmcr-stats {
+    grid-template-columns: 1fr;
+  }
+}

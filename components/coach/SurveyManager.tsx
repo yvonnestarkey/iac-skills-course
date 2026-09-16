@@ -9,6 +9,7 @@ import {
   fetchCourseChapters,
   fetchCustomSurveys,
   newSurveyQuestion,
+  isBmcrBlock,
   isInfoBlock,
   questionNeedsOptions,
   saveCustomSurvey,
@@ -16,6 +17,7 @@ import {
   slugifySurveyTitle,
   studentSurveyPath,
   SURVEY_QUESTION_TYPES,
+  task2SelfEvaluationDraft,
   type CustomSurvey,
   type SurveyDraft,
   type SurveyQuestion,
@@ -159,9 +161,22 @@ export default function SurveyManager() {
           <h1>Custom surveys</h1>
           <p className="muted">Build forms without code, then attach them to a chapter so they appear in the student sidebar.</p>
         </div>
-        <button className="primary" type="button" onClick={startNew}>
-          New survey
-        </button>
+        <div className="actions">
+          <button className="primary" type="button" onClick={startNew}>
+            New survey
+          </button>
+          <button
+            className="ghost"
+            type="button"
+            onClick={() => {
+              setEditingId(null);
+              setDraft(task2SelfEvaluationDraft());
+              setNotice("");
+            }}
+          >
+            Task 2 self-evaluation template
+          </button>
+        </div>
       </div>
       {error ? <div className="notice">{error}</div> : null}
       {notice ? <div className="notice">{notice}</div> : null}
@@ -325,10 +340,11 @@ function SurveyEditor({
       <h3>Questions and info blocks</h3>
       {draft.questions.map((question, index) => {
         const info = isInfoBlock(question.type);
+        const bmcr = isBmcrBlock(question.type);
         return (
-        <article className={`survey-question-card${info ? " survey-info-block" : ""}`} key={question.id}>
+        <article className={`survey-question-card${info ? " survey-info-block" : ""}${bmcr ? " survey-bmcr-block" : ""}`} key={question.id}>
           <div className="survey-question-head">
-            <strong>{info ? `Info block ${index + 1}` : `Question ${index + 1}`}</strong>
+            <strong>{info ? `Info block ${index + 1}` : bmcr ? `BMCR block ${index + 1}` : `Question ${index + 1}`}</strong>
             <div className="actions">
               <button className="ghost" type="button" onClick={() => onMoveQuestion(index, -1)} disabled={index === 0}>
                 Up
@@ -362,10 +378,17 @@ function SurveyEditor({
               onChangeQuestion(question.id, {
                 type,
                 required: isInfoBlock(type) ? false : question.required,
+                label: isBmcrBlock(type) && !question.label.trim() ? "BMCR Calculator" : question.label,
+                helperText:
+                  isBmcrBlock(type) && !question.helperText.trim()
+                    ? "Enter marks from your marked attempt. Basic Marks % and BMCR update as you type."
+                    : question.helperText,
                 options: questionNeedsOptions(type)
                   ? question.options.length
                     ? question.options
-                    : ["Option 1", "Option 2"]
+                    : type === "multi_select"
+                      ? ["Procrastination", "Self-doubt", "Mental Block"]
+                      : ["Option 1", "Option 2"]
                   : [],
               });
             }}
@@ -381,7 +404,9 @@ function SurveyEditor({
             className="select-line"
             value={question.label}
             onChange={(event) => onChangeQuestion(question.id, { label: event.target.value })}
-            placeholder={info ? "Refer back to this lesson" : "How are you finding the course?"}
+            placeholder={
+              info ? "Refer back to this lesson" : bmcr ? "BMCR Calculator" : "How are you finding the course?"
+            }
           />
           <label className="student-notes-label">{info ? "Body text" : "Helper text"}</label>
           <textarea
@@ -395,6 +420,12 @@ function SurveyEditor({
                 : "Optional hint under the question. URLs become clickable."
             }
           />
+          {bmcr ? (
+            <p className="muted small">
+              Students get an interactive marks table (Basic, Average, Higher Grade, Question Total) with live Basic
+              Marks % and BMCR, plus coaching feedback. Results save to assignment BMCR evaluations.
+            </p>
+          ) : null}
           {info ? (
             <>
               <label className="student-notes-label">Resource URL</label>
@@ -467,6 +498,20 @@ function SurveyEditor({
           onClick={() => onChange({ ...draft, questions: [...draft.questions, newSurveyQuestion("info_link")] })}
         >
           + Add info / course link
+        </button>
+        <button
+          className="ghost"
+          type="button"
+          onClick={() => onChange({ ...draft, questions: [...draft.questions, newSurveyQuestion("bmcr_calculator")] })}
+        >
+          + Add BMCR calculator
+        </button>
+        <button
+          className="ghost"
+          type="button"
+          onClick={() => onChange({ ...draft, questions: [...draft.questions, newSurveyQuestion("multi_select")] })}
+        >
+          + Add multi-select
         </button>
         <button className="primary" type="button" disabled={busy} onClick={onSave}>
           {busy ? "Saving…" : "Save survey"}

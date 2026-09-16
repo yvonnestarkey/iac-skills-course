@@ -30,6 +30,26 @@ export interface Lesson {
   banner_image_url?: string | null;
 }
 
+/** Student BMCR (Basic Mark Conversion Ratio) evaluation for an assignment lesson. */
+export interface BmcrEvaluation {
+  id?: string;
+  student_id: string;
+  assignment_id: string;
+  basic_my_marks: number;
+  basic_markplan: number;
+  average_my_marks: number;
+  average_markplan: number;
+  higher_my_marks: number;
+  higher_markplan: number;
+  question_total_my_marks: number;
+  question_total_markplan: number;
+  basic_mark_pct?: number;
+  bmcr_conversion_pct?: number;
+  challenges: string[];
+  key_takeaways: string;
+  submitted_at?: string;
+}
+
 /** Student work submitted for a gated lesson. */
 export interface Submission {
   id?: string;

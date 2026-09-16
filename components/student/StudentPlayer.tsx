@@ -165,6 +165,7 @@ export default function StudentPlayer({
               embedded
               hideTitle
               allowInactive
+              lessonId={lesson.id}
               surveyId={lesson.survey_id}
               slug={lesson.survey_slug || undefined}
               onSubmitted={() => {

@@ -1,18 +1,37 @@
+import {
+  BMCR_CHALLENGES,
+  bmcrAssignmentId,
+  formatBmcrAnswer,
+  hasBmcrData,
+  isBmcrAnswer,
+  parseBmcrAnswer,
+  saveBmcrEvaluation,
+} from "./bmcr";
 import { downloadRosterCsv } from "./roster";
 import { safeHref } from "./rich-text";
 import { getSupabase } from "./supabase";
 
 export { safeHref } from "./rich-text";
 
-export type SurveyQuestionType = "dropdown" | "radio" | "short_text" | "long_text" | "rating" | "info_link";
+export type SurveyQuestionType =
+  | "dropdown"
+  | "radio"
+  | "short_text"
+  | "long_text"
+  | "rating"
+  | "info_link"
+  | "multi_select"
+  | "bmcr_calculator";
 
 export const SURVEY_QUESTION_TYPES: { id: SurveyQuestionType; label: string }[] = [
   { id: "dropdown", label: "Single Select Dropdown" },
   { id: "radio", label: "Multiple Choice Radio" },
+  { id: "multi_select", label: "Multi-select tags" },
   { id: "short_text", label: "Short Text" },
   { id: "long_text", label: "Long Text / Paragraph" },
   { id: "rating", label: "Rating Scale (1-5)" },
   { id: "info_link", label: "Info / Course Link" },
+  { id: "bmcr_calculator", label: "BMCR Calculator" },
 ];
 
 export interface SurveyQuestion {
@@ -66,11 +85,15 @@ function tableMissing(message: string): boolean {
 }
 
 export function questionNeedsOptions(type: SurveyQuestionType): boolean {
-  return type === "dropdown" || type === "radio";
+  return type === "dropdown" || type === "radio" || type === "multi_select";
 }
 
 export function isInfoBlock(type: SurveyQuestionType): boolean {
   return type === "info_link";
+}
+
+export function isBmcrBlock(type: SurveyQuestionType): boolean {
+  return type === "bmcr_calculator";
 }
 
 export function questionCollectsAnswer(type: SurveyQuestionType): boolean {
@@ -90,11 +113,86 @@ export function newSurveyQuestion(type: SurveyQuestionType = "short_text"): Surv
   return {
     id: `q-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
     type,
-    label: "",
-    helperText: "",
+    label: type === "bmcr_calculator" ? "BMCR Calculator" : "",
+    helperText:
+      type === "bmcr_calculator"
+        ? "Enter marks from your marked attempt. Basic Marks % and BMCR update as you type."
+        : "",
     required: false,
-    options: questionNeedsOptions(type) ? ["Option 1", "Option 2"] : [],
+    options: questionNeedsOptions(type)
+      ? type === "multi_select"
+        ? [...BMCR_CHALLENGES]
+        : ["Option 1", "Option 2"]
+      : [],
     resourceUrl: "",
+  };
+}
+
+function templateQuestion(
+  id: string,
+  type: SurveyQuestionType,
+  label: string,
+  extra: Partial<SurveyQuestion> = {}
+): SurveyQuestion {
+  return {
+    id,
+    type,
+    label,
+    helperText: extra.helperText || "",
+    required: extra.required ?? false,
+    options: extra.options || [],
+    resourceUrl: extra.resourceUrl || "",
+  };
+}
+
+export function task2SelfEvaluationDraft(): SurveyDraft {
+  return {
+    title: "Task 2 — Case Study Planning & RTFQ",
+    description:
+      "Self-evaluation for Task 2. Work through the checklist, name what got in the way, capture one takeaway, then complete the BMCR from your marked attempt.",
+    slug: "task-2-case-study-planning-rtfq",
+    isActive: false,
+    questions: [
+      templateQuestion("info-section-a", "info_link", "Section A — Task execution checklist", {
+        helperText: "Be honest about how you actually worked this question, not how you meant to work it.",
+      }),
+      templateQuestion("q-reframe", "radio", "Did you reframe before you started this question?", {
+        required: true,
+        options: ["Yes", "Partially", "Not this time"],
+        helperText: "Did you change the association with “not knowing” before you opened the question?",
+      }),
+      templateQuestion("q-index", "radio", "Did you index the case study?", {
+        required: true,
+        options: ["Yes", "Partially", "No"],
+      }),
+      templateQuestion("q-read-vs-look", "radio", "Read vs Look — how did you actually work the case study?", {
+        required: true,
+        options: ["I read it", "I mostly looked", "Mixed"],
+      }),
+      templateQuestion("q-rtfq", "long_text", "RTFQ comments — what did you notice in the required?", {
+        required: true,
+        helperText: "What did the wording actually ask for? Where did you misread, rush, or skip a constraint?",
+      }),
+      templateQuestion("info-section-b", "info_link", "Section B — Challenges", {
+        helperText: "Select every challenge that showed up on this attempt.",
+      }),
+      templateQuestion("q-challenges", "multi_select", "Which challenges showed up?", {
+        options: [...BMCR_CHALLENGES],
+      }),
+      templateQuestion("info-section-c", "info_link", "Section C — Key takeaway", {
+        helperText: "One clear thing you will do differently on the next question.",
+      }),
+      templateQuestion("q-takeaway", "long_text", "Key takeaway", {
+        required: true,
+      }),
+      templateQuestion("info-section-d", "info_link", "Section D — BMCR calculator", {
+        helperText: "Use your marked attempt and the markplan. Question Total My Marks is the sum of the three rows above it.",
+      }),
+      templateQuestion("q-bmcr", "bmcr_calculator", "BMCR Calculator", {
+        required: true,
+        helperText: "Basic Marks % = Basic Markplan ÷ Question Total Markplan. BMCR = Basic My Marks ÷ Basic Markplan.",
+      }),
+    ],
   };
 }
 
@@ -154,12 +252,14 @@ function asAnswers(value: unknown): Record<string, string> {
   Object.entries(value as Record<string, unknown>).forEach(([key, answer]) => {
     if (Array.isArray(answer)) next[key] = answer.map((item) => String(item || "")).filter(Boolean).join("; ");
     else if (answer == null) next[key] = "";
+    else if (typeof answer === "object") next[key] = JSON.stringify(answer);
     else next[key] = String(answer);
   });
   return next;
 }
 
-export function formatSurveyAnswer(value: string | undefined): string {
+export function formatSurveyAnswer(value: string | undefined, type?: SurveyQuestionType): string {
+  if (type === "bmcr_calculator" || isBmcrAnswer(value)) return formatBmcrAnswer(value);
   return (value || "").trim();
 }
 
@@ -365,9 +465,42 @@ export async function fetchOwnSurveyResponse(
   };
 }
 
+export async function persistSurveyBmcrEvaluation(input: {
+  survey: CustomSurvey;
+  answers: Record<string, string>;
+  studentId: string;
+  lessonId?: string | null;
+}): Promise<void> {
+  const bmcrQuestion = input.survey.questions.find((question) => isBmcrBlock(question.type));
+  if (!bmcrQuestion) return;
+  const marks = parseBmcrAnswer(input.answers[bmcrQuestion.id]);
+  const challengeQuestion =
+    input.survey.questions.find((question) => question.id === "q-challenges") ||
+    input.survey.questions.find((question) => question.type === "multi_select");
+  const takeawayQuestion =
+    input.survey.questions.find((question) => question.id === "q-takeaway") ||
+    input.survey.questions.find((question) => question.type === "long_text" && /takeaway/i.test(question.label));
+  const challenges = (input.answers[challengeQuestion?.id || ""] || "")
+    .split(";")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const key_takeaways = (input.answers[takeawayQuestion?.id || ""] || "").trim();
+  if (!hasBmcrData(marks) && !challenges.length && !key_takeaways) return;
+  const assignmentId = bmcrAssignmentId(input.lessonId, input.survey.id);
+  if (!assignmentId) return;
+  await saveBmcrEvaluation({
+    studentId: input.studentId,
+    assignmentId,
+    marks,
+    challenges,
+    key_takeaways,
+  });
+}
+
 export async function submitCustomSurveyResponse(
   surveyId: string,
-  answers: Record<string, string>
+  answers: Record<string, string>,
+  lessonId?: string | null
 ): Promise<{ ok: boolean; error?: string }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
@@ -381,6 +514,15 @@ export async function submitCustomSurveyResponse(
   if (error) {
     if (error.code === "23505") return { ok: false, error: "You have already submitted this survey." };
     return { ok: false, error: describe(error) };
+  }
+  const survey = await fetchCustomSurvey(surveyId);
+  if (survey.survey) {
+    await persistSurveyBmcrEvaluation({
+      survey: survey.survey,
+      answers,
+      studentId: session.user.id,
+      lessonId,
+    });
   }
   return { ok: true };
 }
@@ -433,7 +575,7 @@ export function downloadSurveyCsv(survey: CustomSurvey, responses: CustomSurveyR
     response.studentName,
     response.studentEmail,
     response.createdAt,
-    ...columns.map((question) => formatSurveyAnswer(response.answers[question.id])),
+    ...columns.map((question) => formatSurveyAnswer(response.answers[question.id], question.type)),
   ]);
   downloadRosterCsv(`${survey.slug || "survey"}-responses.csv`, headers, lines);
 }

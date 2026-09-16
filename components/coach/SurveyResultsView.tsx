@@ -106,7 +106,7 @@ export default function SurveyResultsView({ surveyId }: { surveyId: string }) {
                   {survey.questions
                     .filter((question) => questionCollectsAnswer(question.type))
                     .map((question) => (
-                      <td key={question.id}>{formatSurveyAnswer(response.answers[question.id]) || "—"}</td>
+                      <td key={question.id}>{formatSurveyAnswer(response.answers[question.id], question.type) || "—"}</td>
                     ))}
                 </tr>
               ))}

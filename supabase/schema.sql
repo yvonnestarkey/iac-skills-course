@@ -369,6 +369,33 @@ $$;
 revoke all on function public.calendar_plan(text) from public;
 grant execute on function public.calendar_plan(text) to anon, authenticated;
 
+-- Student BMCR evaluations (see supabase/assignment-bmcr.sql for RLS).
+create table if not exists public.assignment_bmcr_evaluations (
+  id uuid primary key default gen_random_uuid(),
+  student_id uuid references public.profiles(id) on delete cascade,
+  assignment_id text,
+  basic_my_marks numeric not null default 0,
+  basic_markplan numeric not null default 0,
+  average_my_marks numeric not null default 0,
+  average_markplan numeric not null default 0,
+  higher_my_marks numeric not null default 0,
+  higher_markplan numeric not null default 0,
+  question_total_my_marks numeric not null default 0,
+  question_total_markplan numeric not null default 0,
+  basic_mark_pct numeric generated always as (
+    case when question_total_markplan > 0 then (basic_markplan / question_total_markplan) * 100 else 0 end
+  ) stored,
+  bmcr_conversion_pct numeric generated always as (
+    case when basic_markplan > 0 then (basic_my_marks / basic_markplan) * 100 else 0 end
+  ) stored,
+  challenges text[],
+  key_takeaways text,
+  submitted_at timestamptz default now()
+);
+
+create unique index if not exists assignment_bmcr_student_assignment_uidx
+  on public.assignment_bmcr_evaluations (student_id, assignment_id);
+
 -- Private dashboard notes. No staff read path — coaches cannot see these.
 create table if not exists public.student_notes (
   user_id     uuid primary key references auth.users (id) on delete cascade,
