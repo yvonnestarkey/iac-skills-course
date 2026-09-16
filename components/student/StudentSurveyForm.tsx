@@ -8,6 +8,7 @@ import {
   fetchCustomSurveyBySlug,
   fetchOwnSurveyResponse,
   formatSurveyAnswer,
+  hasCoachReview,
   isBmcrBlock,
   isInfoBlock,
   isPdfUploadBlock,
@@ -16,6 +17,8 @@ import {
   safeHref,
   stringifyPdfUploadAnswer,
   submitCustomSurveyResponse,
+  surveyResponseStatusClass,
+  surveyResponseStatusLabel,
   uploadSurveyResponsePdf,
   type CustomSurvey,
   type CustomSurveyResponse,
@@ -160,6 +163,16 @@ export default function StudentSurveyForm({
   }
 
   if (existing || done) {
+    const review = existing && hasCoachReview(existing) ? existing : null;
+    const lead = review
+      ? review.status === "graded"
+        ? "Your coach has graded this."
+        : review.status === "rejected"
+          ? "Your coach rejected this submission."
+          : review.status === "resubmit"
+            ? "Your coach asked you to resubmit."
+            : "Your coach has left feedback."
+      : "Thank you. Your response has been saved. Your coach has not reviewed it yet.";
     return (
       <Frame embedded={embedded} className="survey-rich-text">
         {!hideTitle ? (
@@ -168,27 +181,9 @@ export default function StudentSurveyForm({
             <h1>{survey.title}</h1>
           </>
         ) : null}
-        <p className="lead">Thank you. Your response has been saved.</p>
+        <p className="lead">{lead}</p>
+        {existing ? <CoachReviewCard response={existing} /> : null}
         <SurveyQuestionPdf survey={survey} submitted />
-        {existing && (existing.feedback || existing.feedbackFileUrl || existing.status !== "submitted") ? (
-          <aside className="survey-info-card">
-            <strong>Coach review</strong>
-            <p>
-              Status: {existing.status === "graded" ? "Graded" : existing.status === "rejected" ? "Rejected" : existing.status === "resubmit" ? "Please resubmit" : "Submitted"}
-              {existing.grade != null ? ` · Grade: ${existing.grade}` : ""}
-            </p>
-            {existing.feedback ? (
-              <p>
-                <LinkedText text={existing.feedback} />
-              </p>
-            ) : null}
-            {existing.feedbackFileUrl ? (
-              <a className="ghost" href={existing.feedbackFileUrl} target="_blank" rel="noopener noreferrer">
-                Open coach file ↗
-              </a>
-            ) : null}
-          </aside>
-        ) : null}
         {existing ? (
           <div className="work-list">
             {survey.questions.map((question) =>
@@ -270,6 +265,30 @@ export default function StudentSurveyForm({
         </div>
       </form>
     </Frame>
+  );
+}
+
+function CoachReviewCard({ response }: { response: CustomSurveyResponse }) {
+  return (
+    <aside className={`survey-info-card survey-review-card ${surveyResponseStatusClass(response.status)}`}>
+      <strong>Coach review</strong>
+      <p>
+        <span className={`badge ${surveyResponseStatusClass(response.status)}`}>{surveyResponseStatusLabel(response.status)}</span>
+        {response.grade != null ? ` Grade: ${response.grade}` : ""}
+      </p>
+      {response.feedback.trim() ? (
+        <p>
+          <LinkedText text={response.feedback} />
+        </p>
+      ) : (
+        <p className="muted small">No written comments yet.</p>
+      )}
+      {response.feedbackFileUrl ? (
+        <a className="primary" href={response.feedbackFileUrl} target="_blank" rel="noopener noreferrer">
+          Open coach file ↗
+        </a>
+      ) : null}
+    </aside>
   );
 }
 

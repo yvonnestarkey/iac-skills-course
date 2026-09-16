@@ -15,6 +15,7 @@ import {
   type OutlineChapter,
   type StudentUser,
 } from "./student-lesson";
+import { fetchOwnSurveyResponses, type CustomSurveyResponse } from "./custom-surveys";
 import { fetchStudentSubmissions, type StudentSubmission } from "./student-submissions";
 
 export type OnboardingGate = "unknown" | "needed" | "done";
@@ -25,6 +26,7 @@ interface StudentSessionValue {
   outline: OutlineChapter[];
   completed: Record<string, boolean>;
   submissions: Record<string, StudentSubmission>;
+  surveyReviews: Record<string, CustomSurveyResponse>;
   onboarding: OnboardingGate;
   setLessonCompleted: (lessonId: string, completed: boolean) => void;
   setSubmission: (lessonId: string, submission: StudentSubmission) => void;
@@ -40,16 +42,22 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   const [outline, setOutline] = useState<OutlineChapter[]>([]);
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
   const [submissions, setSubmissions] = useState<Record<string, StudentSubmission>>({});
+  const [surveyReviews, setSurveyReviews] = useState<Record<string, CustomSurveyResponse>>({});
   const [onboarding, setOnboarding] = useState<OnboardingGate>("unknown");
 
   const loadProgress = useCallback(async (userId: string) => {
-    const [ids, nextSubmissions] = await Promise.all([fetchCompletedLessonIds(userId), fetchStudentSubmissions(userId)]);
+    const [ids, nextSubmissions, nextReviews] = await Promise.all([
+      fetchCompletedLessonIds(userId),
+      fetchStudentSubmissions(userId),
+      fetchOwnSurveyResponses(userId),
+    ]);
     const next: Record<string, boolean> = {};
     ids.forEach((id) => {
       next[id] = true;
     });
     setCompleted(next);
     setSubmissions(nextSubmissions);
+    setSurveyReviews(nextReviews);
   }, []);
 
   useEffect(() => {
@@ -91,6 +99,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
         setUser(null);
         setCompleted({});
         setSubmissions({});
+        setSurveyReviews({});
         setOnboarding("unknown");
         clearOnboardingGateCache();
         void clearOnboardingSkipCookie();
@@ -136,6 +145,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setCompleted({});
     setSubmissions({});
+    setSurveyReviews({});
     setOnboarding("done");
   }, []);
 
@@ -146,13 +156,14 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       outline,
       completed,
       submissions,
+      surveyReviews,
       onboarding,
       setLessonCompleted,
       setSubmission,
       reloadProgress,
       signOut,
     }),
-    [ready, user, outline, completed, submissions, onboarding, setLessonCompleted, setSubmission, reloadProgress, signOut]
+    [ready, user, outline, completed, submissions, surveyReviews, onboarding, setLessonCompleted, setSubmission, reloadProgress, signOut]
   );
 
   return <StudentSessionContext.Provider value={value}>{children}</StudentSessionContext.Provider>;

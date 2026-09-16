@@ -98,7 +98,7 @@ export default function SubmissionReview({ id }: { id: string }) {
         gradedByName: result.response.gradedByName || "You",
       });
     }
-    setNotice("Review saved.");
+    setNotice(result.error || "Review saved. The student has been notified.");
   };
 
   const pickFile = async (file: File | null) => {

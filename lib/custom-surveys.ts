@@ -8,6 +8,7 @@ import {
   parseBmcrAnswer,
   saveBmcrEvaluation,
 } from "./bmcr";
+import { notifyAssignmentFeedback } from "./notifications";
 import { downloadRosterCsv } from "./roster";
 import { safeHref } from "./rich-text";
 import { getSupabase } from "./supabase";
@@ -388,6 +389,33 @@ export function surveyResponseStatusClass(status: SurveyResponseStatus): string 
   return "";
 }
 
+export function surveyReviewSummary(response: Pick<CustomSurveyResponse, "status" | "grade">): string {
+  const label = surveyResponseStatusLabel(response.status);
+  if (response.status === "graded" && response.grade != null) return `${label} · ${response.grade}`;
+  return label;
+}
+
+export function hasCoachReview(response: Pick<CustomSurveyResponse, "status" | "grade" | "feedback" | "feedbackFileUrl">): boolean {
+  return (
+    response.status !== "submitted" ||
+    response.grade != null ||
+    Boolean(response.feedback.trim()) ||
+    Boolean(response.feedbackFileUrl)
+  );
+}
+
+function reviewNotificationCopy(survey: CustomSurvey, response: CustomSurveyResponse): { title: string; message: string } {
+  const kind = survey.isAssignment ? "assignment" : "survey";
+  const title = `${surveyResponseStatusLabel(response.status)}: ${survey.title}`;
+  const lines = [`Your coach reviewed your ${kind} “${survey.title}”.`];
+  if (response.status === "graded" && response.grade != null) lines.push(`Grade: ${response.grade}`);
+  if (response.status === "resubmit") lines.push("Please open it, make the changes they asked for, and submit again.");
+  if (response.feedback.trim()) lines.push(response.feedback.trim());
+  if (response.feedbackFileUrl) lines.push(`[Open coach file](${response.feedbackFileUrl})`);
+  if (survey.slug) lines.push(`[Open your review](${studentSurveyPath(survey.slug)})`);
+  return { title, message: lines.join("\n\n") };
+}
+
 export function formatSurveyAnswer(value: string | undefined, type?: SurveyQuestionType): string {
   if (type === "pdf_upload") return parsePdfUploadAnswer(value)?.url || "";
   if (type === "bmcr_calculator" || isBmcrAnswer(value)) return formatBmcrAnswer(value);
@@ -746,6 +774,25 @@ export async function fetchOwnSurveyResponse(
   };
 }
 
+export async function fetchOwnSurveyResponses(studentId?: string): Promise<Record<string, CustomSurveyResponse>> {
+  const client = getSupabase();
+  if (!client) return {};
+  let userId = studentId || "";
+  if (!userId) {
+    const { data: session } = await client.auth.getUser();
+    userId = session.user?.id || "";
+  }
+  if (!userId) return {};
+  const { data, error } = await client.from("custom_survey_responses").select("*").eq("student_id", userId);
+  if (error || !data) return {};
+  const map: Record<string, CustomSurveyResponse> = {};
+  data.forEach((row) => {
+    const item = responseFromRow(row as Record<string, unknown>);
+    if (item.surveyId) map[item.surveyId] = item;
+  });
+  return map;
+}
+
 export async function persistSurveyBmcrEvaluation(input: {
   survey: CustomSurvey;
   answers: Record<string, string>;
@@ -962,7 +1009,33 @@ export async function saveSurveyReview(input: {
     ({ data, error } = await client.from("custom_survey_responses").update(payload).eq("id", input.id).select("*").maybeSingle());
   }
   if (error) return { ok: false, error: describe(error) };
-  return { ok: true, response: data ? responseFromRow(data as Record<string, unknown>) : undefined };
+  const saved = data ? responseFromRow(data as Record<string, unknown>) : undefined;
+  if (saved?.studentId) {
+    const survey = await fetchCustomSurvey(saved.surveyId);
+    if (survey.survey) {
+      const copy = reviewNotificationCopy(survey.survey, {
+        ...saved,
+        feedback: input.feedback,
+        feedbackFileUrl: input.feedbackFileUrl,
+        status: input.status,
+        grade: input.grade,
+      });
+      const notified = await notifyAssignmentFeedback({
+        studentId: saved.studentId,
+        studentEmail: saved.studentEmail,
+        title: copy.title,
+        message: copy.message,
+      });
+      if (!notified.ok) {
+        return {
+          ok: true,
+          response: saved,
+          error: `Review saved, but the student was not notified${notified.error ? `: ${notified.error}` : "."}`,
+        };
+      }
+    }
+  }
+  return { ok: true, response: saved };
 }
 
 const COACH_FEEDBACK_STORAGE_SQL = `insert into storage.buckets (id, name, public)

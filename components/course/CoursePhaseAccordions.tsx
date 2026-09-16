@@ -7,6 +7,11 @@ import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
 import { catalogFromOutline, checkLessonAccess } from "@/lib/accessControl";
 import type { StudentSubmission } from "@/lib/student-submissions";
 import {
+  surveyResponseStatusClass,
+  surveyReviewSummary,
+  type CustomSurveyResponse,
+} from "@/lib/custom-surveys";
+import {
   chapterProgress,
   findLessonLocation,
   isChapterSequentiallyLocked,
@@ -27,6 +32,7 @@ function LessonEntry({
   href,
   variant,
   onNavigate,
+  review,
 }: {
   lesson: OutlineLesson;
   locked: boolean;
@@ -35,9 +41,11 @@ function LessonEntry({
   href: string;
   variant: "nav" | "hub";
   onNavigate?: () => void;
+  review?: CustomSurveyResponse;
 }) {
   const badge = durationBadge(lesson);
   const kind = displayLessonType(lesson);
+  const reviewText = review ? surveyReviewSummary(review) : "";
   const icon = (
     <LessonTypeIcon type={kind} title={lesson.title} done={done && !locked} size={13} />
   );
@@ -46,7 +54,11 @@ function LessonEntry({
       {locked ? <Lock size={12} className="lesson-lock" aria-label="Locked" /> : null}
       {lesson.title}
       {lesson.is_assignment ? <span className="duration-badge assignment-flag">Assignment</span> : null}
-      <span className="duration-badge">{badge}</span>
+      {review && review.status !== "submitted" ? (
+        <span className={`badge ${surveyResponseStatusClass(review.status)}`}>{reviewText}</span>
+      ) : (
+        <span className="duration-badge">{badge}</span>
+      )}
     </span>
   );
   const body =
@@ -60,7 +72,11 @@ function LessonEntry({
         <span className="icon">{icon}</span>
         <span className="label">
           {title}
-          {done && !locked ? <span className="lesson-meta">Completed</span> : null}
+          {review && review.status !== "submitted" ? (
+            <span className="lesson-meta">{reviewText}</span>
+          ) : done && !locked ? (
+            <span className="lesson-meta">Completed</span>
+          ) : null}
         </span>
       </>
     );
@@ -92,6 +108,7 @@ export default function CoursePhaseAccordions({
   onNavigate,
   variant = "nav",
   submissions = {},
+  surveyReviews = {},
   unlocked = false,
 }: {
   chapters: OutlineChapter[];
@@ -101,6 +118,7 @@ export default function CoursePhaseAccordions({
   onNavigate?: () => void;
   variant?: "nav" | "hub";
   submissions?: Record<string, StudentSubmission | undefined>;
+  surveyReviews?: Record<string, CustomSurveyResponse>;
   unlocked?: boolean;
 }) {
   const phases = useMemo(() => splitCoursePhases(chapters), [chapters]);
@@ -208,6 +226,7 @@ export default function CoursePhaseAccordions({
                                     href={`${basePath}/${lesson.id}`}
                                     variant="hub"
                                     onNavigate={onNavigate}
+                                    review={lesson.survey_id ? surveyReviews[lesson.survey_id] : undefined}
                                   />
                                 </li>
                               ))}
@@ -226,6 +245,7 @@ export default function CoursePhaseAccordions({
                                 href={`${basePath}/${lesson.id}`}
                                 variant="nav"
                                 onNavigate={onNavigate}
+                                review={lesson.survey_id ? surveyReviews[lesson.survey_id] : undefined}
                               />
                             ))
                           )}

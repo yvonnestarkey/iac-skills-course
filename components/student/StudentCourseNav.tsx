@@ -10,7 +10,7 @@ import { useStudentNav } from "@/lib/student-nav";
 const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys"]);
 
 export default function StudentCourseNav() {
-  const { outline, completed, submissions } = useStudentSession();
+  const { outline, completed, submissions, surveyReviews } = useStudentSession();
   const { unlocked, basePath } = useCoursePreview();
   const nav = useStudentNav();
   const pathname = usePathname();
@@ -54,6 +54,7 @@ export default function StudentCourseNav() {
         onNavigate={close}
         variant="nav"
         submissions={submissions || {}}
+        surveyReviews={surveyReviews || {}}
         unlocked={unlocked}
       />
     </>

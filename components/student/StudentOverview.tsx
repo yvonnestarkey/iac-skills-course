@@ -7,7 +7,7 @@ import { useCoursePreview } from "@/lib/course-preview";
 import { useStudentSession } from "@/lib/student-session";
 
 export default function StudentOverview() {
-  const { outline, completed, submissions } = useStudentSession();
+  const { outline, completed, submissions, surveyReviews } = useStudentSession();
   const { unlocked, basePath } = useCoursePreview();
   const chapters = outline || [];
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
@@ -45,6 +45,7 @@ export default function StudentOverview() {
         basePath={basePath}
         variant="hub"
         submissions={submissions || {}}
+        surveyReviews={surveyReviews || {}}
         unlocked={unlocked}
       />
     </article>

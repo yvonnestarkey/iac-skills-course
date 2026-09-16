@@ -4447,10 +4447,21 @@ a.live-session-watch:hover {
   margin: 0 0 12px;
 }
 
-.survey-info-card .primary {
-  display: inline-flex;
-  align-items: center;
-  margin-top: 4px;
+.survey-info-card.survey-review-card {
+  margin-top: 8px;
+}
+
+.survey-info-card.survey-review-card.ok {
+  border-left-color: #1f7b70;
+}
+
+.survey-info-card.survey-review-card.warn {
+  border-left-color: #990f49;
+  background: #fbf6f4;
+}
+
+.survey-info-card.survey-review-card.ask {
+  border-left-color: #b45309;
 }
 
 .survey-question-card.survey-bmcr-block {
