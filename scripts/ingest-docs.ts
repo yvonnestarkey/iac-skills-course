@@ -3,7 +3,9 @@
  *
  * Paste supabase/knowledge_base.sql first. Then:
  *   npx tsx scripts/ingest-docs.ts
+ *   npx tsx scripts/ingest-docs.ts iac-june-2026
  *
+ * Optional argv tokens limit ingest to matching file paths.
  * Needs OPENAI_API_KEY, NEXT_PUBLIC_SUPABASE_URL, and SUPABASE_SERVICE_ROLE_KEY in .env.local.
  * Reads .txt, .md, and .pdf. A PDF is skipped when a .txt or .md with the same stem exists.
  * Re-running replaces previous rows for that document title. Category is the folder name
@@ -108,7 +110,10 @@ async function main() {
   if (!openaiKey) throw new Error("Missing OPENAI_API_KEY in .env.local");
   if (!existsSync(DOCS_DIR)) throw new Error(`Create ${DOCS_DIR} and add .txt, .md, or .pdf files.`);
 
-  const files = listFiles(DOCS_DIR);
+  const filter = process.argv.slice(2);
+  const files = listFiles(DOCS_DIR).filter(
+    (file) => !filter.length || filter.some((token) => file.includes(token))
+  );
   if (!files.length) throw new Error(`No .txt, .md, or .pdf files found in ${DOCS_DIR}`);
 
   const openai = new OpenAI({ apiKey: openaiKey });

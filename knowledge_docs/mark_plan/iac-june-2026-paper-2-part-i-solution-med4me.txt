@@ -1,0 +1,173 @@
+Source: SAICA IAC June 2026 — Paper 2 Part I suggested solution (Med4Me).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC JUNE 2026
+PAPER 2 PART I SUGGESTED
+SOLUTION
+Part (a) Prepare, using the direct method, the operating and investing
+activities sections of the consolidated statement of cash flows of
+the Med4Me Group in accordance with IFRS® Accounting
+Standards for FY2025.
+• Comparative amounts are not required.
+• Notes are not required.
+• The financing activities section and the reconciliation of the
+cash and cash equivalent balances are not required.
+• Round all amounts to the nearest rand.
+Marks
+Ref. R
+Cash flows from operating activities
+Cash receipts from customers W1 73 390 568 1P
+Cash paid to suppliers and employees W2 (39 103 041) 1P
+Cash generated from operations 34 287 527
+Interest income received (given) 800 000 1
+Finance costs paid W3 (1 213 873) 1P
+Taxation paid W4 (5 886 000) 1P
+Net cash inflows from operating activities 27 987 654
+Cash flows from investing activities
+Additions to property, plant and equipment for
+expansion (5 400 000 (1) + 5 500 000 (1) + 167
+000 (1)) (11 067 000) 3P
+Additions to property, plant and equipment for
+maintenance W5 (8 855 490) 1P
+Proceeds from disposal of property, plant and
+equipment (given) 50 000 2
+Net cash outflows in investing activities (19 872 490)
+WORKINGS
+W1: Cash receipts from customers
+Revenue per SPLOCI (given) 68 961 000 1
+Decrease in trade receivables
+(11 390 000 (0.5) – 6 921 000 (0.5)) 4 469 000
+0.5 +
+0.5
+Expected credit losses on trade receivables
+(given) (3 000) 1
+Decrease in contract liabilities on payments
+received in advance (449 000 (0.5) – 553 000
+(0.5)) (104 000)
+0.5 +
+0.5
+Part I © SAICA 20261
+IAC JUNE 2026
+PAPER 2 PART I SUGGESTED
+SOLUTION
+Increase in contract liability on patient loyalty
+programme 67 568
+SASP of products sold 500 000 1
+SASP of HealthMulas 425 000 1
+925 000
+Transaction price allocated to HealthMulas
+(500 000 (1) x 425 000 / 925 000 (1)) 229 730 2
+Contract liability at year end
+(229 730 x 125 000 / 425 000) 67 568 1P
+73 390 568
+Part I © SAICA 20262
+IAC JUNE 2026
+PAPER 2 PART I SUGGESTED
+SOLUTION
+W2: Cash paid to suppliers and employees
+Operating expenses and ECL (given) (46 973 000) 1 13
+Add: IFRS 2 staff costs for 2025 expense 642 100
+31 December 2025 SARs liability
+(14 directors (1) x 400 (1) x 146 (1)) 817 600 3 14
+31 December 2024 SARs liability
+(13 directors (1) x 200 (1) x 135 (1) x 1 / 2 (1)) (175 500) 4 15
+642 100
+Less: Settlement of share appreciation rights (817 600) 1 16
+Add: Depreciation – right of use asset 218 053
+N (5 years + 3 years) = 8 1 17
+I/YR = 9% 0.5 17
+PMT = 285 000 1 17
+Comp PV = 1 577 423 1 577 423
+Initial direct costs 167 000 1 18
+1 744 423
+Depreciation (1 744 423 / 8 years) 218 053 1PM 19
+Add: Depreciation – rest of PPE (given) 5 713 000 1 20
+Less: Profit on sale of old vehicle (given) (1 000) 1 21
+Add: Provisions expense on lawsuit 19 407
+Opening balance – other current liabilities 729 000 0.5 22
+Decrease in contract liabilities on payments
+received in advance (449 000 – 553 000) (104 000) 1P 23
+Increase in contract liabilities on patient loyalty
+programme (67 568 / 125 000 x 100 000) 54 054 1P 24
+Decrease in share appreciation rights liability
+(175 500 – 0) or (817 600 – 642 100) (175 500) 1P 25
+Increase in current portion of lease liability
+N (8 years – 1 year) = 7 0.5P 26
+I/YR = 9% 0.5 26
+PMT (285 000 x 1.065) = 303 525 0.5 26
+Comp PV = 1 527 627
+Current portion (P1 Amrt Princ) 166 039 0.5P 27
+Closing balance – other current liabilities (689 000) 0.5 28
+Increase in provision for lawsuit (bal figure) 19 407
+Part I © SAICA 20263
+IAC JUNE 2026
+PAPER 2 PART I SUGGESTED
+SOLUTION
+Decrease in inventories
+(18 125 000 (0.5) - 20 409 000 (0.5)) 2 284 000
+0.5 +
+0.5 29
+Decrease in trade payables
+(9 271 000 (0.5) – 9 459 000 (0.5)) (188 000)
+0.5 +
+0.5 30
+(39 103 041)
+W3: Finance cost paid
+Interest expense (given) 651 968 1 33
+Interest expense capitalised to PPE
+(265 095 + 296 810) * 561 905 1P 34
+1 213 873
+* Could also present borrowing cost as separate
+line in investment activities
+Part I © SAICA 20264
+IAC JUNE 2026
+PAPER 2 PART I SUGGESTED
+SOLUTION
+W4: Taxation paid
+Opening balance – current tax liability 206 000 0.5 36
+Opening balance – deferred tax liability 11 813 000 0.5 37
+Current year tax expense 6 876 000 1 38
+Closing balance – current tax asset 637 000 0.5 39
+Closing balance – deferred tax asset 419 000 0.5 40
+Closing balance – deferred tax liability (14 065 000) 0.5 41
+5 886 000
+W5: Replacements / Maintenance of PPE
+Opening balance of PPE 49 156 000 0.5 45
+Add: Acquisition of right-of-use asset 1 744 423 1P 46
+Add: Capitalisation of lease reassessment
+(1 527 627 (0.5) – 1 434 392 (0.5) (P1 Amrt Bal)) 93 235 1P 47
+Add: Purchase price paid of the properties
+(2 000 000 (1) + 3 400 000 (1)) 5 400 000 2 48
+Add: Renovation costs paid in cash
+(3 000 000 (1) + 2 500 000 (1) (5 000 000 x
+6/12))
+5 500 000 2 49
+Add: Borrowing costs capitalised - Newcastle 265 095
+N = 60 1 50
+PMT = 29 375 1 50
+FV = 3 000 000 1 50
+PV = 2 993 750 (3 000 000 – 6 250) 1 50
+Comp I = 0.98%
+Interest capitalised (Amrt P1 – P9 Int) 265 095 1P 51
+Add: Borrowing costs capitalised - QwaQwa 296 810
+N = 60 1 52
+PV = R5 000 000 1 52
+I (12.25% / 12) = 1.02% 1 52
+Comp PMT = 111 858
+Interest capitalised (Amrt P1 – P6 Int) 296 810 1P 53
+Less: Depreciation (5 713 000 + 218 053) (5 931 053) 1PM 54
+Less: Carrying amount of old vehicle
+(50 000 – 1 000) (49 000) 1 55
+Less: Closing balance of PPE (65 331 000) 0.5 56
+Part I © SAICA 20265
+IAC JUNE 2026
+PAPER 2 PART I SUGGESTED
+SOLUTION
+(8 855 490)
+Available 67
+Maximum 67
+X1: Communication: for presentation format 1 1
+Y2: Integrative thinking (e.g. linking IAS 10 to IAS 37 on the provision) 1 57
+Y3: Problem solving (for identifying cash flow vs. non-cash flow items) 1 59
+Total for part I 70
+Part I © SAICA 20266

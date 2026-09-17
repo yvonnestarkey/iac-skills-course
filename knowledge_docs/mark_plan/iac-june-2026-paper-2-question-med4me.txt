@@ -1,0 +1,356 @@
+Source: SAICA IAC June 2026 — Paper 2 question (Med4Me).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC June 2026 1 (of 7) © SAICA 2026
+Paper 2
+PAPER 2 120 marks
+All amounts exclude value-added tax (VAT), unless otherwise stated.
+1 Background
+Medical for Me Ltd (‘Med4Me’) is a group of medical companies listed on the Johannesburg
+Stock Exchange (JSE). Med4Me was established in the early 2000s, with the purpose of
+providing a range of medical, dental, day hospital, mental health and trauma medical services
+through its own clinics in larger towns in rural areas. Initially, business was good, and the
+company was able to open several clinics in these rural areas.
+However, as time went on, management noticed an increasing number of missed
+appointments and late arrivals that put pressure on the clinics and medical staff and led to
+declining revenues. An investigation revealed that the reason for this decline was that many
+of the patients lived far away from the clinics and transport was often unreliable.
+As a solution, management decided to ‘decentralise’ its clinics by expanding into smaller towns
+by partnering with independent doctors. A newly formed company, BohlokoaHealth Ltd
+(‘BHealth’) was founded and incorporated in South Africa for this purpose. Med4Me and the
+independent doctors (all natural persons) own 52% and 48% respectively of the issued share
+capital of BHealth. Accordingly, Med4Me exercises control over BHealth, which is consolidated
+in the Med4Me group accounts. The financial year end of all companies in the Med4Me Group
+is 31 December. All companies in the group apply IFRS® Accounting Standards, are South
+African residents for income tax purposes and registered vendors in terms of the VAT Act.
+IAC June 2026 2 (of 7) © SAICA 2026
+Paper 2
+2 Financial information
+The summarised consolidated annual financial statements for the Med4Me group for the 2025
+financial year (FY2025) as prepared on 15 January 2026, are provided below:
+MEDICAL FOR ME LTD
+SUMMARISED CONSOLIDATED STATEMENT OF FINANCIAL POSITION
+AS AT 31 DECEMBER
+2025 2024
+R R
+Assets
+Non-current assets
+Property, plant and equipment 65 331 000 49 156 000
+Deferred tax asset 419 000 –
+65 750 000 49 156 000
+Current assets
+Inventories 18 125 000 20 409 000
+Trade receivables 6 921 000 11 390 000
+Cash and cash equivalents 12 352 000 17 772 000
+Current tax asset 637 000 –
+38 035 000 49 571 000
+Total assets 103 785 000 98 727 000
+Equity and liabilities
+Equity 65 379 000 68 317 000
+Non-current liabilities
+Interest-bearing borrowings 6 869 000 179 000
+Other non-current liabilities 4 565 000 3 704 000
+Deferred tax liability 14 065 000 11 813 000
+25 499 000 15 696 000
+Current liabilities
+Interest-bearing borrowings 2 947 000 4 320 000
+Trade payables 9 271 000 9 459 000
+Other current liabilities 689 000 729 000
+Current tax liability – 206 000
+12 907 000 14 714 000
+Total equity and liabilities 103 785 000 98 727 000
+IAC June 2026 3 (of 7) © SAICA 2026
+Paper 2
+MEDICAL FOR ME LTD
+SUMMARISED CONSOLIDATED STATEMENT OF PROFIT OR LOSS
+AND OTHER COMPREHENSIVE INCOME
+FOR THE YEAR ENDED 31 DECEMBER 2025
+R
+Revenue 68 961 000
+Operating expenses (46 973 000)
+Expected credit losses on trade receivables (3 000)
+Operating profit 21 985 000
+Interest income 800 000
+Interest expense (651 968)
+Profit before tax 22 133 032
+Tax expense (6 876 000)
+Net profit 15 257 032
+The following information was correctly taken into account in the preparation of the
+consolidated financial statements above:
+1 The group earns its revenue from the sale of medical products in its pharmacies and
+various tests and treatments offered by the clinics. Patients can either use their eligible
+medical aid coverage to cover their medical costs or pay for their medical costs in cash
+up front. Trade receivables represent outstanding balances with medical aid companies.
+Expected credit losses are raised on trade receivables. Payments received in advance
+for certain treatments are recorded as contract liabilities until the treatments are
+provided, whereafter they are recognised as revenue. Contract liabilities relating to
+payments received in advance amounted to R449 000 at 31 December 2025 (2024:
+R553 000) and are included in the other current liabilities line item in the statement of
+financial position. These contract liabilities are separate from the amounts relating to the
+patient loyalty programme (see point 2).
+2 Patient loyalty programme
+Med4Me was searching for an innovative way to attract and keep its patients. Med4Me’s
+market research has shown that patients visit a clinic only when they have a health
+issue. However, Med4Me wished to change that by promoting a healthy lifestyle by
+motivating and encouraging patients to come to its clinics for regular checkups. It
+therefore launched a patient loyalty programme during FY2025 specifically for BHealth
+clinics. BHealth soon noticed a shift in patient behaviour and also found that the loyalty
+programme was attracting new patients to the clinics. An additional benefit is that it
+enabled BHealth to gather valuable health information about its patients that it could use
+to provide a higher quality of service.
+Patients earn points, called HealthMulas, based on their spend on a defined list of
+preventative health check services at BHealth clinics, such as glucose tests and blood
+pressure tests. One HealthMula is earned for every R1 spent at a clinic and each
+HealthMula can be redeemed for R1. So, for example, a blood pressure test that costs
+R50 will earn 50 HealthMulas, and a glucose test that costs R80 will earn 80
+HealthMulas. In this way, patients build up a HealthMula savings account. The
+HealthMulas can be used as consideration to pay for products and medicine in the
+pharmacy and future treatments at the clinic. The HealthMulas cannot be used to pay
+for the preventative health checks on the defined list and cannot be exchanged for cash.
+IAC June 2026 4 (of 7) © SAICA 2026
+Paper 2
+The HealthMulas are valid for a period of two years from the date they are earned. Any
+unused HealthMulas expire after this two-year period.
+The following information is available for FY2025 in respect of the loyalty programme:
+Total value of preventative health check services in respect of the loyalty
+programme, sold at their stand-alone selling price R500 000
+Percentage of HealthMulas expected to expire after a two-year period 15%
+Number of HealthMulas utilised in 2025 300 000
+Number of HealthMulas expected to be utilised in 2026 100 000
+Number of HealthMulas expected to be utilised in 2027 25 000
+Contract liabilities in relation to the patient loyalty programme are included in the other
+current liabilities and other non-current liabilities line items in the statement of financial
+position respectively.
+3 Share appreciation rights (SARs)
+On 1 January 2024, Med4Me, the holding company, granted 200 SARs each to 16
+BHealth executive directors. The SARs entitle the executive directors to a cash payment
+if the Med4Me share price appreciates over time, to be paid by Med4Me. BHealth has
+no obligations to settle the scheme. The vesting of the SARs is subject to vesting
+conditions and the vesting date is 31 December 2025.
+The vesting conditions are as follows:
+• Remaining in the employ of BHealth until 31 December 2025.
+• Profit after tax per the management accounts for BHealth in those two years
+should be at least R10 million cumulatively.
+• The number of SARs will be doubled at vesting date if the profit after tax per the
+management accounts for BHealth is at least R15 million cumulatively in those two
+years.
+• The final SARs cash payout value is based on the Med4Me closing price on the
+JSE on 30 December 2025.
+By 31 December 2024, only one executive director had left BHealth’s employ and
+BHealth estimated that a further two executive directors would leave by 31 December
+2025. However, only one executive director left BHealth during FY2025.
+The fair values of the SARs and the profit after tax as per the management accounts
+were estimated to be as follows:
+Date
+Fair value of
+each SAR
+BHealth cumulative profit after tax for
+the two years ended 31 December 2025
+1 January 2024* R103 R10 250 000 (estimated)
+31 December 2024 R135 R10 762 500 (estimated)
+30/31 December 2025 R146 R15 531 250 (actual)
+* For the sake of clarity: In the 1 January 2024 management accounts reflect the
+fair value of each SAR was calculated to be R103, based on an estimated
+cumulative profit after tax for the two years ended 31 December 2025 of
+R10 250 000.
+IAC June 2026 5 (of 7) © SAICA 2026
+Paper 2
+The SARs were paid out to the executive directors on 31 December 2025. Prior to that,
+the obligations relating to the SARs were presented in the other current liabilities line
+item in the statement of financial position (SoFP).
+4 Lease agreement
+On 1 January 2025, Med4Me entered into a lease agreement to obtain a medical waste
+and sterilisation machine, for a non-cancellable lease period of five years, with Sango
+Medical Equipment, a third party. The first lease payment was R285 000 per annum
+payable in arrears on 31 December 2025. The agreement stipulates an annual increase
+on 31 December that is based on the published consumer price index (CPI) rate during
+the preceding 12 months. The published CPI was 5,2% on 1 January 2025 and 6,5% on
+31 December 2025. The first increase in lease payments will take place on 31 December
+2026 and annually thereafter.
+Med4Me does not have an option to purchase the medical waste and sterilisation
+machine at the end of the lease term, but the lease agreement provides for an option to
+extend the lease for a further three years. At lease inception and to date, Med4Me had
+the intention to extend the lease.
+The medical waste and sterilisation machine has the latest technology and is regularly
+updated by Sango Medical Equipment. Med4Me incurred installation costs of R167 000
+on 1 January 2025, which were only payable six months later on 30 June 2025.
+Med4Me’s incremental borrowing rate was 9% per annum (compounded annually) on
+1 January 2025. The interest rate implicit in the lease was not readily determinable by
+Med4Me.
+The group presents right-of-use lease assets as part of property, plant and equipment
+in the SoFP and lease liabilities as part of other non-current liabilities and other current
+liabilities respectively in the SoFP.
+5 Depreciation of R5 713 000 relating to property, plant and equipment for FY2025 is
+included in the operating expenses line item in the summarised consolidated statement
+of profit or loss and other comprehensive income (SoPL and OCI). This amount is
+separate from the effects of the lease above.
+6 As part of the expansion strategy, BHealth decided to open clinics in new locations. The
+first locations were identified as Newcastle in KwaZulu-Natal and the QwaQwa region in
+the Free State. In these areas it identified existing buildings that could be used for the
+new clinics. Each new clinic will maintain an independent system of accounting, as a
+division of BHealth.
+The purchase of the buildings and the renovations were funded separately as follows:
+• To fund the purchase price of the buildings in Newcastle and QwaQwa, Med4Me
+provided a loan to BHealth to enable BHealth to purchase the buildings.
+• To finance the renovations (which do not constitute maintenance or repairs),
+BHealth sourced financing from RMD Bank (a registered vendor and independent
+third party). The financing was provided on the condition that Med4Me guarantees
+the repayment of the loan should BHealth default.
+The purchase and renovation of both buildings meet the definition of a qualifying asset
+in terms of IAS 23 Borrowing Costs. Med4Me paid the purchase price of the buildings
+directly to the seller of the properties. The old buildings and the renovation costs incurred
+were acquired from registered vendors.
+IAC June 2026 6 (of 7) © SAICA 2026
+Paper 2
+The details of the loans are as follows:
+Newcastle QwaQwa
+Initial purchase price R2 million R3,4 million
+Acquisition date 31 March 2025 1 June 2025
+Loan from Med4Me R2 million R3,4 million
+- Interest rate (market
+related)
+10,75% per annum, fixed
+(interest paid monthly in
+arrears)
+10,75% per annum, fixed
+(interest paid monthly in
+arrears)
+- Term 20 years 20 years
+- Loan origination date 31 March 2025 1 June 2025
+Renovation cost R3 million in total, paid
+monthly in equal amounts in
+arrears over the renovation
+period
+R5 million in total, paid
+monthly in equal amounts
+in arrears over the
+renovation period
+Renovation period 9 months 12 months
+Commencement date 1 April 2025 1 July 2025
+Loan from RMD Bank R3 million R5 million
+- Interest rate (market
+related)
+11,75% per annum, fixed
+(interest paid monthly in
+arrears)
+12,25% per annum, fixed
+(interest paid monthly in
+arrears)
+- Term 5 years 5 years
+- Loan origination date 1 April 2025 1 July 2025
+- Capital repayment All on maturity Capital repayable monthly
+in arrears from 31 July
+2025
+- Initiation fees R6 250 None
+The initiation fees charged by RMD Bank were paid by BHealth at inception of the loan
+agreement. The payment of the initiation fees was a pre-condition by RMD Bank for
+advancing the loan capital to BHealth. Surplus cash was not reinvested and did not
+attract interest income during the renovation period. The new clinics only commence
+trading once their renovations have been completed.
+7 During FY2025, the group sold an old vehicle to a third party for R50 000 cash and
+realised a profit on the sale (before tax) of R1 000. This is presented as a gain in the
+operating expenses line item in the summarised consolidated SoPL and OCI.
+8 During FY2025, there were also replacements of property, plant and equipment items to
+maintain operating capacity. These replacements were paid in cash. There were no
+other acquisitions for expansion other than those mentioned in the scenario.
+9 A client was suing and claiming damages from Med4Me for an unsuccessful procedure
+that occurred during loadshedding. At 31 December 2025, Med4Me’s legal advisors
+were of the opinion that there was a 40% probability that Med4Me would be found to be
+liable. On 15 January 2026, the court ruled in favour of the client and Med4Me was
+ordered to pay damages. Med4Me settled the amount on 18 January 2026. Provisions,
+when applicable, are presented as part of other current liabilities.
+10 Med4Me charges a management fee to each clinic for services rendered for
+procurement of medical equipment and consumables to cover maintenance costs. The
+management fee is calculated as 10% of the revenue of each clinic. A market-related
+IAC June 2026 7 (of 7) © SAICA 2026
+Paper 2
+fee charged for these types of services amounts to 7% of revenue. Med4Me has an
+assessed loss of R1,55 million in respect of the 2025 year of assessment. All other
+companies in the group accrued a normal tax liability in the 2025 year of assessment.
+11 Interest income and interest expenses are presented as part of operating activities in
+the statement of cash flows. All interest income was received in cash. Interest expenses
+presented in the SoPL and OCI were paid in cash.
+12 There were no other movements in equity that affect operating and investing activities
+in the statement of cash flows.
+13 There was no other comprehensive income and accordingly no deferred tax on any other
+comprehensive income.
+14 Apart from the transactions evident in the scenario, there were no other changes in other
+current liabilities.
+15 Any impact of discounting a significant financing component in accordance with IFRS
+15 Revenue from Contracts with Customers may be ignored.
+16 The Med4Me Group annual financial statements for the financial year ended
+31 December 2025 were authorised for issue on 18 February 2026.
+IAC June 2026 1 (of 1) © SAICA 2026
+Paper 2 part I required
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2026
+PROFESSIONAL PAPER 2
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 2 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Prepare, using the direct method, the operating and investing activities
+sections of the consolidated statement of cash flows of the Med4Me
+Group in accordance with IFRS® Accounting Standards for FY2025.
+• Comparative amounts are not required.
+• Notes are not required.
+• The financing activities section and the reconciliation of the cash
+and cash equivalent balances are not required.
+• Round all amounts to the nearest rand.
+X1: Communication skill – presentation
+Y2: Integrative thinking
+Y3: Problem solving
+67
+1
+1
+1 70
+Total for part I 70
+IAC June 2026 1 (of 1) © SAICA 2026
+Paper 2 part II required
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2026
+PROFESSIONAL PAPER 2
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 2 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(b) With reference to note 2 on the patient loyalty programme, discuss the
+VAT consequences and the effect on taxable income of the patient
+loyalty programme for BHealth’s 2025 year of assessment and all
+relevant VAT periods falling within that year.
+• Provide supporting calculations.
+Y2: Integrative thinking
+9
+1 10
+(c) Discuss the normal tax implications of the expense relating to the
+SARs for BHealth and its employees in respect of their 2025 and 2026
+years of assessment.
+• Do not perform calculations.
+X1: Communication skill – logical argument
+7
+1 8
+(d) Advise, with reasons, the management of BHealth whether it would be
+able to register the new clinics in Newcastle and QwaQwa as separate
+vendors for VAT purposes. 6 6
+(e) Discuss the VAT consequences (with supporting calculations) for all
+relevant VAT periods falling within the 2025 year of assessment, as
+well as the normal tax consequences for BHealth for the following
+transactions in respect of its 2025 year of assessment:
+• Acquisition of the old buildings in Newcastle and QwaQwa and
+the renovation costs incurred in respect of the old buildings.
+• Initiation fees charged by RMD bank.
+• Interest expense incurred on the loans obtained from Med4Me
+and RMD Bank.
+o Do not calculate the amount of the interest.
+Y1: Critical thinking
+19
+1 20
+(f) Discuss the income tax implications of the management fees levied
+by the holding company of the Med4Me Group on the clinics.
+• Do not address ethical frameworks.
+6
+6
+Total for part II 50
+TOTAL FOR THE PAPER 120

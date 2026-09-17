@@ -1,0 +1,436 @@
+Source: SAICA IAC June 2026 — Paper 3 Part II suggested solution (Beita).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC 2026
+PAPER 3 PART II
+SUGGESTED SOLUTION
+Part II 1 © SAICA 2026
+Part (c) Discuss any ethical concerns you may have arising from the
+wayin which Beita Furniture is managed.
+Mark
+s
+1 Non-compliance with laws and regulations
+1.1 Payment below minimum wage:
+Illegal - The company pay its employees at rates below the legislated
+minimum wages and therefore do not adhere to National Minimum Wage
+Act.
+Other ethical frameworks - Dino has also indicated it will only apply for
+exemption if someone asks for it, which appears to be dishonest business
+dealings and is unfair for employees, the employees will have less
+disposable income to spend, which will have a negative impact on the
+employees and their families.
+1
+1
+1.2 Purchasing of pallets:
+Theft - The company is purchasing pallets that could potentially be stolen
+goods (other company’s name, price clearly not market-related) and may
+not be in compliance with the Prevention and Combating of Corrupt
+Activities Act.
+1
+1.3 Appointment of auditors s90 Co Act:
+The directors appointed auditors who also perform management
+functions,such as tax returns and compilation of financial statements,
+resulting in a
+breach of s90(2) of the Companies Act.
+1
+1.4 Payment of dividends Co Act:
+It appears that the requirements of the Companies Act to perform a
+liquidity
+test have not been performed as Beita is paying dividends when they
+areonly performing a solvency test and no liquidity test.
+1
+1.5 Transfer of assets to Beita Furniture:
+The company acquired the assets of an NPO. Assets of an NPO may only
+be used for the purposes / objective for which it was set up and upon
+dissolution should go to a similar NPO.
+In addition, the assets were transferred at net book value and not at its
+fair market value.
+Transferring those assets at net book value into a for-profit company for
+the private benefit of Dino and Siphiwe potentially breaches the conditions
+of the public benefit organization approval in terms of the Income Tax Act
+and the dissolution rule that such assets should pass to a similar
+organization.
+1B
+1B
+1B
+1.6 Labour Laws:
+It appears that no UIF or SDL is being paid on the salaries. The amounts
+projected are still the same as the gross salaries (rather than cost to
+company). This is non-compliance with UIF and SDL legislations. 1B
+1.7 There is no HR Department in place, as well as evidence of missing HR
+documentation (e.g., Abulele’s contract) – This may be intentional to
+conceal the entities compliance with labour law
+1B
+2 Conflicts of interest
+IAC 2026
+PAPER 3 PART II
+SUGGESTED SOLUTION
+Part II 2 © SAICA 2026
+2.1 Conflict in appointing service provider
+Dino did not excuse herself from any decisions regarding the purchase
+ofpallets in which her boyfriend had a direct financial interest in terms of
+the
+Companies Act, section 75.
+Dino has abused her position to gain an (unfair) advantage over the
+company hence the decision is not for the best interest of the entity or
+aligned to his fiduciary duties
+1
+1
+2.2 Conflict in appointing auditors
+Beita appointed auditors where Siphiwe’s brother will be the audit partner
+–
+this conflict of interest will negatively impact the auditor’s independence
+and objectivity. Due to the lack of independence, the audit opinion may be
+incorrect, and users could make incorrect decisions in relying on it.
+The appointed auditor seems to possibly lack the necessary skills and
+experience (as they do not specialise in the industry) as well as staffing
+(only 1 staff member assigned) Due to the lack of necessary skills, the
+audit opinion may be incorrect, and users could make incorrect decisions
+in relying on it.
+1
+1
+2.3 Continued donations towards Beita Furniture’s:
+The directors deliberately included the name of the NPO in the new name
+of the formed company, thereby causing possible confusion and may leave
+the donors with the impression they are dealing with an NPO and not a for-
+profitcompany. (This also goes against Companies Act section 11(2)(a).)
+At the point where the new company was incorporated, it will be a concern
+whether Beita informed the current suppliers (relating to the rental of
+R500 / pallets at R10 each). The suppliers might be agreeing to lower
+rates because they think that they are still assisting the community with the
+projects.
+1
+1
+3 Competence and due care (section 76 of the Companies Act)
+3.1 Beita is appointing staff who might not have the necessary skills and
+experience for the positions (Zolani) which is not in the best interest of the
+entity as Zolani will be inexperienced to appropriately perform his dutie.
+1
+3.2 Beita is paying dividends when it appears the company does not have
+sufficient liquidity (applying for a loan), which indicates a lack of due care in
+managing operations.
+1
+3.3 The directors have not put appropriate safeguards in place in respect of
+conflicts of interests. 1
+3.4 Due to various laws and regulations not being adhered to, it does appear
+the directors are running a company without the relevant knowledge and
+experience to do so. 1
+4 Integrity and ‘fair business dealings’
+IAC 2026
+PAPER 3 PART II
+SUGGESTED SOLUTION
+Part II 3 © SAICA 2026
+4.1 Dino and Siphiwe were able to appoint Zolani at a very low salary for a
+candidate with her qualifications. This does not seem to be good business
+dealings, and such employees will not remain with a company for long
+before
+moving to a business that would pay her a market-related fee. This will not
+be good for the company to rotate finance staff in the long run. 1
+4.2 Dino and Siphiwe closed the NPO in favour of a profit company which
+may not be in stakeholders’ best interest (e.g., loss of skills development
+opportunities) / Zolani was appointed at a very low salary (any valid
+example from case study)
+1
+Available 22
+Maximum 10
+Total for part (c) 10
+IAC 2026
+PAPER 3 PART II
+SUGGESTED SOLUTION
+Part II 4 © SAICA 2026
+Part (d) Discuss the matters Fezile, as auditor, should consider in
+reaction to the WhatsApp conversation between Zolani and
+Abulele, takingall other relevant information into consideration.
+• Do not discuss any detailed steps Fezile should take in
+reaction to theconcerns.
+Mark
+s
+1 According to the WhatsApp Zolani sent to Abulele, Dino, the CEO,
+providedher with the wage rate, being R25 per hour (included in appendix
+1) and made it clear that it would not increase in the foreseeable future.
+This is below the minimum wage rate of R28,79 per hour, as per the
+National
+Minimum Wage Act (read with the Basic Conditions of Employment Act).
+1
+2 NOCLAR (SAICA CoPC)
+2.1 Fezile, as a registered auditor in practice would need to comply with
+parts 1, 3 and 4A of the SAICA Code of professional conduct.
+1
+2.2 He must thus consider whether the wage payment below the legal
+minimum wage constitutes a possible NOCLAR in terms of the definitions
+and section 360 of the SAICA CoPC.
+1
+2.2 The payment of R25 per hour to the trainee carpenters is below the
+stipulated rate by the National Minimum Wage Act and is an act of non-
+compliance contradictory to the Basic Conditions of Employment Act,
+which is fundamental to the operating aspects of the business.
+1
+2.3 The act is intentional, for it was a clear instruction regarding the
+employees’ wage
+1
+2.5 The CEO of Beita gave the instruction to pay R25 per hour (involvement
+ofmanagement / those charged with governance).
+1
+2.6 It does constitute a possible NOCLAR to which Fezile needs to react
+according to section 360 of the SAICA CoPC and report to the appropriate
+authority.
+1
+2.7 In terms of S360 (paragraph 2) a self-interest threat is created to the
+fundamental principles of integrity and professional behaviour of Fezile if he
+fears losing Beita as a client by raising the NOCLAR and/or is discouraged
+from responding appropriately.
+1
+3 Fezile, the lead engagement partner, needs to consider whether this
+constitutes a reportable irregularity in terms of section 1
+(definitions) of the Auditing Profession Act.
+3.1 The wage that is lower than the minimum wage is unlawful act because
+it iscontrary to the Basic Conditions of Employment Act, because Beita
+should
+be paying R28,79 per hour according to a law and only paying R25.
+1
+3.2 The wage rate was communicated to Zolani by Dino, the CEO (a member
+ofmanagement of Beita).
+1
+3.3 This would constitute a material breach in fiduciary duty as the CEO is
+notacting in the best interests of the contractors, which is not in good faith.
+1
+3.4 The Department of Labour could impose a fine and/or penalty on Beita
+Furniture and thus this act could cause financial loss to the entity.
+1
+IAC 2026
+PAPER 3 PART II
+SUGGESTED SOLUTION
+Part II 5 © SAICA 2026
+3.5 Therefore, this would constitute a reportable irregularity, and the
+auditor
+would have to take the necessary steps as provided in section 45 of the
+Auditing Profession Act.
+1
+4 Sections 44(2) and 44(3) of the Auditing Profession Act
+According to these sections, the auditor should not issue an unqualified
+audit report if the auditor has reported a reportable irregularity that has
+not been finalised. Because the non-compliance with the Basic
+Conditions of
+Employment Act constitutes a reportable irregularity; this should be
+considered. 1
+5 Other
+Fezile should consider whether the non-compliance by Beita with the
+National Minimum Wage Act has a direct effect on the financial statement
+amounts and disclosures in terms of ISA 250.
+Fezile should consider the integrity of the client and whether they should
+continue their involvement with Beita in future audit engagements.
+Fezile should consider the impact of non-compliance and the integrity of
+Beita’s management on the audit risk assessment and audit process:
+e.g., Fezile should consider the impact of the illegal activity and client
+integrity on planning considerations such as increased risk of material
+misstatement at financial statement level, audit approach and risk
+responses (incorporating unpredictability, professional scepticism, Fezile’s
+direction and supervision during the audit).
+e.g., The non-compliance may lead to reputational damage of Beita
+Furniture and this, together with any fines/penalties, will need to be
+considered by Fezile during the Going concern assessment of the
+company.
+e.g., The lack of available formal employment contract indicates potential
+weaknesses in payroll controls (proper documentation) and a weak
+control environment. This may result in increased risk of misstatement of
+employee costs which should be responded to in the audit plan.
+1
+1
+1
+1
+1
+Max 3
+Available 19
+Maximum 9
+Y2: Integrative
+thinkingRefer to at least two different sources (APA, CoPC, Companies
+Act or other
+general considerations) in formulating the engagement partner’s response
+1
+Total for part (d) 10
+IAC 2026
+PAPER 3 PART II
+SUGGESTED SOLUTION
+Part II 6 © SAICA 2026
+Part (e) Describe the substantive procedures the auditor would perform
+on the issue of shares and the dividend payment made by Beita
+Furniture during FY2025.
+• Do not discuss audit procedures related to the following:
+o Management representations;
+o Analytical procedures;
+o Notices of and quorums at any meeting; and
+o Presentation and disclosure requirements.
+Mark
+s
+The following substantive procedures would be performed to obtain sufficient
+appropriate audit evidence about the issuing of shares and the dividend
+payment made during FY2025:
+1 General procedures
+1.1 For the issuing of shares: Obtain the securities register of Beita and
+compare the value of the total issued shares to the respective journal
+entries, general ledger, trial balance, and financial statements.
+1
+1.2 For the dividends: Obtain the schedule of dividends paid and compare it
+to
+the dividends paid journal entry, general ledger, trial balance, and
+financialstatements.
+1
+1.3 Reperform casting and cross casting of the schedule/details of dividends
+and securities registerto ensure the mathematical accuracy thereof. 1
+1.4 Scrutinise the schedule of dividend payments and securities register to
+identify any unusual items, for example:
+On the schedule of dividend payments: instances where the dividend per
+share is not R0,20, duplicate payments to a shareholder, zero payment to
+a shareholder, etc.
+1
+On the securities register: more or less than four shareholders, empty
+fields (shareholders with no shareholding interest, no shareholder name,
+etc.)
+1
+1.5 For any unusual items identified or any discrepancies in any audit
+procedures, follow up with management and obtain corroborative
+evidence to support management’s explanation; or request that
+management processes a correction.
+1
+2 Issuing of shares
+2.1 Inspect the Memorandum of Incorporation (MOI) to verify and confirm that
+the authorised share capital is 150 000 shares.
+1
+2.2 Inspect the MOI for any prohibitions or limitations on the ability of Beita to
+issue shares.
+1
+2.3
+For the shares issued to the founding directors (1 January 2025), inspect
+the minutes of the board:
+• To confirm that the issue of 37 500 shares to each director was
+duly authorised (unless the MOI states otherwise); and
+• That the board resolved that the consideration for the shares be in
+the form of the book value of the assets from the NPO
+1
+1
+IAC 2026
+PAPER 3 PART II
+SUGGESTED SOLUTION
+Part II 7 © SAICA 2026
+2.4 Inspect the fixed assets register of Beita Furniture to verify that the assets
+from the NPO were recorded in Beita Furniture’s records before the
+shares were issued.
+1
+2.5 Inspect the share register to ensure that 37 500 shares each were issued
+to Dino and Siphiwe at incorporation on 1 January 2025.
+1
+2.6 For the shares issued to Joseph and Fulani (employees) on 31 July 2025,
+inspect the minutes of the board meeting held on 3 July 2025 to ensure
+that:
+• the issue of 12 500 shares each to Joseph and Fulani was approved
+by both Siphiwe and Dino (a documented resolution);
+• Siphiwe and Dino, in their capacity as current shareholders of a
+private company, did not want to take up the additional shares
+themselves; and
+• Siphiwe and Dino, as directors of the company, confirmed that the
+shareswill be issued at R0,01 per share;
+• consider, through inspection of supporting documentation such as
+share valuations, whether the issue price of R0.01 per share is
+appropriate or reasonable consideration in terms of the Companies
+Act.
+1
+1
+1
+1
+2.7 Using the MOI (for the authorised number of shares) and the share register
+(for the total number of issued shares):
+• recalculate the number of shares that may still be issued / available
+for issue (unissued shares) and compare the number of available
+shares to the 25 000 shares issued to Joseph and Fulani, to
+determine that Beita had sufficient authorised shares to be issued.
+1
+2.8 Inspect the bank statement to verify that two deposits of R125 each w e r e
+received before the shares were issued. (fully paid consideration –
+section 40 of the Companies Act). 1
+2.9 Inspect the securities register at 31 December 2025 to verify that Dino,
+Siphiwe, Joseph and Fulani’s shareholdings and other details are
+captured according to the details in the MOI and minutes of the board
+meeting held
+on 3 July 2025.
+1
+2.1
+0
+Inspect copies of share certificates issued to Dino, Siphiwe, Joseph and
+Fulani,and verify that the shareholdings, names and other details are
+accurate.
+1
+3 Dividend payments
+3.1 Inspect the MOI to ensure that dividend payments are allowed and that
+there
+are no restrictions and that there are no additional requirements that
+needto be met.
+1
+3.2 Inspect the minutes of the board meeting held on 4 December 2025 to
+confirm:
+• that the dividend declaration was approved;
+• the dividend amount of R0,20 per share; and
+• that the directors considered and concluded that the requirements
+of the solvency and liquidity test were complied with as per the
+Companies Act.
+1
+1
+1
+IAC 2026
+PAPER 3 PART II
+SUGGESTED SOLUTION
+Part II 8 © SAICA 2026
+3.3 Confirm, by inspection of the security register, that the respective
+shareholders qualify for the dividend (that they were valid shareholders on
+4 December 2025).
+1
+3.4 Compare the number of shares in the schedule of dividends to the
+securitiesregister.
+1
+3.5 Recalculate the dividend payable by multiplying the number of shares
+eachshareholder holds on this date with R0,20 per share.
+1
+3.6 Inspect the bank statements and cash payment journals and confirm that –
+• the amount of dividends paid to each individual shareholder, as well as
+the total dividends, agree with the dividend approved at the directors’
+meetings and the schedule of dividends; and
+• the date of payment was indeed 30 December 2025 (less than 120
+business days after the approval of the dividend).
+1
+1
+4 With regard to the solvency and liquidity test
+4.1 Inspect the accounting records used by the directors to perform the
+solvency
+and liquidity test to ensure that the directors’ calculations were based on
+accurate and complete accounting records and financial statements.
+1
+4.2 Reperform the solvency and liquidity test based on the accounting
+records, which need to comply with IFRS, to confirm that the test was
+applied the test correctly (including whether the company can pay its
+debts in the ordinary course of business for the following 12 months and
+recalculating the net asset value of the company to ensure that the
+assets, fairly valued, exceed
+the liabilities, fairly valued).
+1
+IAC 2026
+PAPER 3 PART II
+SUGGESTED SOLUTION
+Part II 9 © SAICA 2026
+5. Taxation payable on dividends paid
+5.1 Reperform the calculation of the dividends withholding tax using the
+amounts as per the dividends schedule and the applicable tax rate (20%),
+as per the provisions of the tax legislation.
+1
+5.2 Inspect the provision of the payment (or the bank statement) and the
+SARSdocumentation / returns submitted for the taxation payable
+(withholding) on
+the dividend declaration and if accounted for respond appropriately.
+1
+Available 33
+Maximum 23
+X1: Communication skill – clarity of
+expressionFormulating clear, understandable and executable
+audit procedures
+using appropriate verbs
+1
+Total for part (e) 24
+Total for part II 44

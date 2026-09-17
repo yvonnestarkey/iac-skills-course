@@ -1,0 +1,296 @@
+Source: SAICA IAC June 2026 — Paper 2 Part II suggested solution (Med4Me).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC JUNE 2026
+PAPER 2 PART II S U G G E S T E D
+SOLUTION
+Part (b) With reference to note 2 on the patient loyalty programme,
+discuss the VAT consequences and the effect on taxable income
+of the patient loyalty programme for BHealth’s 2025 year of
+assessment and all relevant VAT periods falling within that year.
+• Provide supporting calculations
+Marks
+1 VAT consequences
+1.1 Output tax will be levied on the value of the preventative health care
+check services (in the loyalty programme) supplied by the clinics as it is a
+taxable supply. 1
+1.2 Calculation: R500 000 x 15% = R75 000
+If clearly stated that selling price =open market value; 100/115 * R500 000
+- marked with the amount included in GI below. 1C
+1.3 The issue of the HealthMulas by BHealth has no VAT consequences
+( HealthMulas are same as a token, voucher or stamp), as it issued at no
+consideration (section 10(18) of the VAT Act). 1
+1.4 The HealthMulas utilised by patients of the clinics during 2025, is
+consideration not in money and therefore the market value of the
+consideration will be used (section 10(3)(b) of the VAT Act). 1
+1.5 Therefore, output tax of R45 000 (R300 000 x 15%) is accounted for
+when the HealthMulas are utilised. 1C
+1.6 The time of supply is the general time of supply, which is the earlier of the
+invoice or payment for both R500 000 and R300 000. 1
+1.7 Input tax can be deducted on the expenditure incurred in providing the
+preventative health care check services when the services are supplied
+(for consideration in money or otherwise) (para. (a) of the definition of input
+tax read with section 17(1) of the VAT Act). 1
+2 Normal tax consequences
+2.1 The amount of the preventative health care check services provided of
+R500 000 is included in gross income of BHealth as it is cash or
+otherwise (section 1(1) of the Income Tax Act). 1
+2.2 The issue of the loyalty points by BHealth did not constitute expenditure
+actually incurred, as no expenditure was incurred nor does an
+unconditional liability exist as it is dependent on the person redeeming or
+utilising the points awarded in future. 1
+2.3 HealthMulas used as consideration to pay for preventative health check
+services will be expenditure incurred when its redeemed and will be
+deductible in terms of section 11(a) as the expenditure is in the
+production of income and for purposes of trade and actually incurred. 1
+2.4 As listed preventative health check services supplied to patients will result
+future expenditure on contracts (s24C of the Income Tax Act). 1
+2.5 However,the revenue contract and the loyalty programme contract are two
+separate contracts that are not inextricably linked (Clicks Retailers (Pty)
+Ltd. v CSARS) thus
+Alternative: if clearly stated that patients spend on listed preventative
+health services HeathMulas are automatically earned as it is a sameness
+basis 1P
+Part II © SAICA 20261
+IAC JUNE 2026
+PAPER 2 PART II S U G G E S T E D
+SOLUTION
+2.6 no allowance in respect of future expenditure is deductible in terms of
+section 24C of the Income Tax Act or
+Alternative: BHealth will be able to claim an allowance for future
+expenditure 1
+Available 13
+Maximum 9
+Y2: Integrative thinking
+Addressed both VAT and normal tax consequences of the same transaction,
+reflecting genuine integration
+1
+Total for part (b) 10
+Part (c) Discuss the normal tax implications of the expense relating to the
+SARs for BHealth and its employees in respect of their 2025 and
+2026 years of assessment.
+• Do not perform calculations.
+Marks
+2 BHealth
+2.1 The cash-settled SAR benefit by Med4Me to the directors of BHealth is not
+expenditure for BHealth as it has no unconditional legal obligation
+(case law principle) and it will have no tax effect, 1
+3 Employees
+3.1 2025 YOA (1 March 2024 to 28 Febr 2025)
+The SARs are equity instruments as defined as they are contractual
+rights of which the value is determined with reference to a share
+(definition of ‘equity instrument’ in para. (c) of section 8C(7)). 1
+3.2 The SARs were granted to the executive directors by virtue of
+employment (section 8C(1)). 1
+3.3 The contractual rights of SAR on 1 January 2024 is a restricted
+instrument as it has not yet vested, thus section 10(1)(nD)(i) exemption
+would have applied in the 2025 YOA.
+The resignation of a director would not trigger a vesting event
+(s8C(3)(b)).
+1
+1
+3.4 2026 YOA (1 March 2025 to 28 Febr 2026)
+The amount of SARS doubled up as the R15 million target was met,
+accordingly, the gain on the vesting date (31 December 2025) must
+included the double value in the income of each employee. 1
+3.5 The cash-based gain is the market value of the contractual right of SAR at
+the vesting date (value of the cash-settled SAR benefit), less any
+consideration paid (section 8C(2)(a)(ii)). 1
+Part II © SAICA 20262
+IAC JUNE 2026
+PAPER 2 PART II S U G G E S T E D
+SOLUTION
+3.6 The directors receive a cash payment on the vesting date, which
+constitutes remuneration as defined in the Fourth Schedule. Accordingly,
+PAYE must be withheld and paid to SARS.No base cost of the shares
+arises due to the nature of the cash-settled SAR benefit (not
+shares). 1
+Available 8
+Maximum 7
+X1: Communication skill – logical argument
+award the mark only where both relevant parties are identified and applied
+namely B Health and the employees.
+1
+Total for part (c) 8
+Part II © SAICA 20263
+IAC JUNE 2026
+PAPER 2 PART II S U G G E S T E D
+SOLUTION
+Part (d) Advise, with reasons, the management of BHealth whether it
+would be able to register the new clinics in Newcastle and
+QwaQwa as separate vendors for VAT purposes.
+Marks
+1 The buildings in Newcastle and QwaQwa will be acquired by BHealth,
+which is a resident of the RSA and who already is a registered vendor
+thus no reapplication is needed. 1
+2 As both branches are in South African, section 23(2A) is not applicable.
+In terms of section 50(1), BHealth (vendor) may apply in writing to the
+Commissioner for the two separate branches to be registered separately
+for the purposes of the Act. 1
+3 Each separate clinic may register as separate vendors in terms of section
+50(1) of the VAT Act because – 1C
+3.1 • each clinic maintains its own independent accounting system, and 1
+3.2 • each clinic can be separately identified by reference to the
+location of the clinic (Newcastle and Qwa Qwa) (section 50(2) of the
+VAT Act). 1
+4 In terms of section 50(5), where the one or both branches fails to adhere to
+the requirements of the VAT Act, the VAT liability reverts to the original
+vendor. (BHealth). 1
+Available 6
+Maximum 6
+Total for part (d) 6
+Part II © SAICA 20264
+IAC JUNE 2026
+PAPER 2 PART II S U G G E S T E D
+SOLUTION
+Part (e) Discuss the VAT consequences (with supporting calculations), for all
+relevant VAT periods falling within the 2025 year of assessment, as
+well as the normal tax consequences for BHealth for the following
+transactions in respect of its 2025 year of assessment.
+• Acquisition of the old buildings in Newcastle and QwaQwa and
+the renovation costs incurred in respect of the old buildings.
+• Initiation fees charged by RMD bank.
+• Interest expense incurred on the loans obtained from Med4Me
+and RMD Bank.
+o Do not calculate the amount of the interest.
+Marks
+1 VAT consequences
+1.1 Acquisition of buildings and renovation costs
+1.1.1 Input tax may be claimed on the acquisition of the old buildings and
+renovation costs because BHealth acquired the goods for the purpose of
+making taxable supplies in the course of its enterprise, and the
+suppliers levied output tax on the supplies (paragraph (a) of the definition
+of "input tax" in section 1(1) of the VAT Act). 1
+1.1.2 Input tax on the acquisition may be deducted to the extent that the
+buildings will be used to make taxable supplies. As the buildings will
+be used 100% for taxable supplies, the full input tax may be claimed
+(section 17(1), read with the definition of "input tax" in section 1(1) of the
+VAT Act). 1
+1.1.3 On the acquisition of fixed property, input tax is only deductible to the
+extent that payment has been made. However, as the purchase was
+financed by a loan and not by the seller, the full input tax may be claimed
+(section 16(3)(a)). 1
+1.1.4 Input tax on acquisition of buildings (R2 million + R3,4 million) x 15% =
+R810 000 1
+1.1.5 Input tax on renovation cost (R3 million + R5 million) x 15% =
+R1 200 000 1
+1.2 Interest expense
+1.2.1 There is no input tax on the interest expense as interest is a financial
+service and an exempt supply (no output tax was levied by Med4Me
+and RMD Bank) (section 2(1)(f) read with section 12(a) of the VAT Act). 2
+1.3 Initiation fees
+1.3.1 The initiation fees paid to RMD Bank is deemed not to be a financial
+service as the consideration payable is in respect of a fee that relates to
+section 2(1)(f) of the VAT Act (proviso to section 2(1) of the VAT Act) and
+is therefore a taxable supply. 1
+1.3.2 Therefore, BHealth may claim input tax on the initiation fees, as RMD
+Bank levied output tax on the supply and the expenditure was incurred in
+the course of making taxable supplies. 1
+1.3.3 Input tax on raising fees incurred (R6 250 x 15% = R938) 1
+2 Normal tax consequences
+Part II © SAICA 20265
+IAC JUNE 2026
+PAPER 2 PART II S U G G E S T E D
+SOLUTION
+2.1 Acquisition of the buildings and renovation costs
+2.1.1 The loan amount is not "received by" the taxpayer for purposes of the
+gross income definition because it is received subject to an obligation to
+repay it. 1
+2.1.2 The expense on purchasing the buildings/renovations is capital in nature
+and not deductible in terms of section 11(a) or section 11(d). 1
+2.1.3 No capital allowances can be claimed on the buildings as they are not
+new and unused buildings.
+1
+2.1.4 No capital allowances on renovation cost in the current year as it was
+not brought into use in the 2025 year of assessment.
+2.1.5 The expenditure in respect of the initiation fees and the interest was
+actually incurred by BHealth as the raising fees and interest became
+due and payable in the 2025 year of assessment. 1
+2.2 Interest expense
+2.2.1 The interest expense would have been allowed as a deduction in terms of
+section 24J(2) of the Income Tax Act as the amount would have been
+incurred in the production of income and for the purposes of trade. 1
+2.2.2 BHealth is the issuer of an instrument because the debt is interest-
+bearing and BHealth has the obligation to repay the loan and has the
+incurred interest. (s24J) 1
+2.3 Initiation fee
+2.3.1 Initiation fees are regarded as ‘interest or similar finance charges’ in
+terms of 11(x) read with section 24J (1) of Income Tax Act. (IT 76795,
+‘Taxpayer Trust v Commissioner for the South African Revenue Service’)
+Alternative: Initiation fees are not ‘interest or similar finance charges’,
+because it is not of the same kind or nature of interest,
+1
+2.3.2 The Initiation fees would have been allowed as a deduction in terms of
+section 24J(2) of the Income Tax Act as the amount would have been
+incurred in the production of income and for the purposes of trade.
+Alternative: The initiation fee is not capital in nature and is therefore
+deductible under section 11(a). However, the deduction is limited by
+section 23H(1)(ii) as the benefit extends beyond the current year of
+assessment.
+1
+2.4 Pre-trade expenditure
+2.4.1 The interest and the initiation fees would be deductible in terms of
+section 11A against BHealth’s income, as the expenditure was incurred
+prior to trade.
+Alternative: The interest and the initiation fees would be deductible in
+terms of section 11(a), as the new clinics are merely an extension of
+BHealth's existing trade and the expenditure was incurred in the
+production of income and is not capital in nature.
+1
+Part II © SAICA 20266
+IAC JUNE 2026
+PAPER 2 PART II S U G G E S T E D
+SOLUTION
+2.4.2 However, the interest and initiation fees cannot exceed the income
+derived from that trade during the year of assessment.
+1
+2.4.3 As no income has been derived by the new clinics, no deduction will be
+allowed in the 2025 year of assessment, and it may be carried
+forward to the next year of assessment.
+1
+Available 21
+Maximum 19
+Y1: Critical thinking – identification and application of the VAT and income tax
+consequences relating to the acquisition, renovations, initiation fees and interest
+expense.
+1
+Total for part (e) 20
+Part (f) Discuss the income tax implications of the management fees
+levied by the holding company of the Med4Me on the clinics.
+• Do not address ethical frameworks.
+Marks
+1 The fact that the amount of the management fee charged, is above a market
+related amount, may well mean that the expenditure was not wholly incurred
+for purposes of trade, as it may well have been to utilise the assessed
+loss. It may therefore be necessary to evaluate whether an impermissible
+tax avoidance arrangement exists 1
+2 There is an agreement in place as Med4Me charges a management fee
+under an agreement 1
+3 The agreement entitles Med4Me to management fees, resulting in
+income accruing to the company. 1
+4 As Med4Me has an assessed loss, it is possible that the intention is to use
+the assessed loss to reduce the normal tax liabilities of the other
+companies within the same group, effectively shifting profits to the holding
+company with no normal tax consequences. (All other group companies
+incurred a normal tax liability.) 1
+5 As the arrangement results in a tax benefit, the party obtaining that benefit
+may be unable to demonstrate that, having regard to the relevant facts and
+circumstances, obtaining a tax benefit was not the sole or main purpose
+of the avoidance arrangement. 1
+6 The agreement may be seen by the Commissioner as an impermissible tax
+avoidance arrangement in terms of section 80A of the Income Tax Act, as
+the transaction would not have been entered into for bona fide business
+purposes other than obtaining a tax benefit. (Presumption of purpose –
+section 80G). 1
+7 The expenditure, or part thereof, may be disallowed by SARS, and Med4Me
+will have to include the full amount of the management fees in its gross
+income as an amount that has accrued to it. 1
+Available 7
+Part II © SAICA 20267
+IAC JUNE 2026
+PAPER 2 PART II S U G G E S T E D
+SOLUTION
+Maximum 6
+Total for part (f) 6
+Total for part II 50
+Part II © SAICA 20268

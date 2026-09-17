@@ -1,0 +1,906 @@
+Source: SAICA IAC June 2026 — Paper 1 Part II suggested solution (Inpahla).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 1 © SAICA 2026
+Part (e) Discuss the business ethics and professional ethical considerations
+that NKT would need to consider about the alleged impact of defaults
+on loan covenants.
+• Include relevant safeguards.
+• Assume that NKT also performed the interim review for the year.
+Marks
+1 ISSUE 1: Pressure to conceal breach of loan covenants to avoid
+impact
+1.1. Business ethics considerations (including King IV Principle 1 & 3)
+from management’s perspective
+1.1.1. Inpahla management might be under pressure to conceal the breach in
+loan covenants (to avoid its impact), which would compromise their
+ethical leadership due to failure to act transparently (King IV. P1.RP1f).
+1
+1.1.2. Management might engage in dubious or fraudulent actions to conceal
+material misstatements and avoid a modified audit opinion.
+1
+1.1.3. This would lead to a lack of fairness towards the public and government
+(key stakeholders of the company) (King IV.P1.RP1e), which would lead to
+loss of public trust.
+1
+1.1.4. Due to the impact that default on loan covenants could have on the
+company and potentially the country, management is incentivised to
+manipulate the financial statements to hide high debt exposure.
+Engaging in such an action would lead to a lack of integrity (due to
+dishonesty), hence failing to lead ethically as required by King IV
+(P1.RP1a).
+1
+1
+1.2. Professional ethics considerations for NKT arising from management
+pressure to conceal breach of loan covenants to avoid impact
+1.2.1. The auditors might fail to identify and report on reportable
+irregularities and material irregularities, hence failing to comply with the
+Auditing Professions Act.
+1
+1.2.2. The auditors might not act appropriately in accordance with the
+requirements of the SAICA/IRBA Code of Professional Conduct and
+NOCLAR requirements if they come across suspected or actual non-
+compliance with key financial reporting legislation in the SOC.
+1
+2. ISSUE 2: Management may attempt to unduly influence, through
+intimidation/emotional blackmail, the auditors' audit opinion
+2.1. Business ethics considerations (including King IV Principle 1 & 3)
+from management’s perspective
+2.1.1 Management might try to unduly influence/place pressure on the
+auditor’s sound judgement using emotional blackmail of the alleged
+potential impact this could have on the country to avoid a modified audit
+opinion.
+1
+Inpahla is a SOC and has adopted the recommended practices of King IV,
+hence engaging in emotional blackmail would result in a contravention with
+the following recommended practices of the King IV Code:
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 2 © SAICA 2026
+2.1.2. Emotional blackmail of the auditors would not exhibit integrity (P1.RP1a),
+acting in good faith, as the intention is to take advantage of the impact
+that a modified opinion could have on the company (and allegedly the
+country) to prevent the auditors from pointing out material
+misstatements that could be as a result of fraud.
+1
+2 . 1 .
+3.
+Management may intentionally make an effort to divert responsibility
+(King IV P1.RP1c) and accountability (King IV P1.RP1d) for material
+misstatements (which could potentially also be as a result of material
+irregularities) and non-compliance with key laws and regulations, as they
+want an unmodified opinion regardless of the auditors' findings.
+1
+2.1.4. Those charged with governance would not be acting with fairness (King
+IV P1.RP1e) towards stakeholders (the government and the public) by
+wanting an audit opinion to be issued that may not reflect the true
+outcomes of the findings of the audit which would compromise their
+decision-making.
+1
+2.1.5. The governing body of Inpahla must ensure that the company is in
+compliance with the Constitution (King IV P3.RP12), and the Public Audit
+Act instituted by the Constitution, requires public audits to be
+conducted in a manner that enforces financial accountability, and
+transparency, and pressuring the auditors to issue an improper audit
+opinion would go against these requirements.
+1
+2.2. Ethical theories consideration
+2.2.1. Giving in to pressure to conceal a breach of loan covenants would exhibit
+the agency problem per the agency theory, as management might want
+to protect their own reputation/own image (of failing to steer the
+company effectively) whilst not acting in the best interest of the SOC and
+its stakeholders (the government and the public).
+1
+2.2.2. The fiduciary duty of the directors to fulfil their role of safeguarding and
+appropriately accounting for the use of taxpayer money (provided by the
+government as key shareholder) would be breached if the financial
+statements are fraudulent, as directors would not be acting in the best
+interest of all stakeholders involved, contrary to the requirements of the
+stakeholder theory.
+1
+2.3. Companies Act of 2008 (as amended) fiduciary duty considerations:
+2.3.1. If the directors engage in actions to manipulate the financial statements
+in order to avoid a breach of loan covenants (especially in the second half
+of the financial year), this would be a lack of good faith (as it is
+dishonest) and the directors would be in breach of their fiduciary duty in
+terms of the Companies Act (s76).
+1
+3 General business ethics considerations for NKT arising from ISSUE 2:
+3.1. NKT may face a moral/ethical dilemma of balancing the client’s/
+management interests versus ensuring that an appropriate audit
+opinion is provided.
+1
+3.2. On the one hand: if an unfavourable audit opinion is issued, it would lead
+to debt covenants being breached, which could result in compromising
+the going concern of the entity and could lead to thousands of job
+losses and triggering government support (bad for others).
+1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 3 © SAICA 2026
+3.3.1. Government support would mean that taxpayer money would need to be
+redirected from service delivery (e.g. healthcare, education, water and
+sanitation, etc.) to save the struggling company (bad for others).
+1
+3.3.2. Further government bailouts could trigger a lowered credit rating for the
+country which could have a negative impact on the citizens (bad for
+others).
+1
+3.4. On the other hand: if NKT expresses an inappropriate audit opinion over
+the Inpahla financial statements, they would be issuing a false
+statement, and the auditors would be in contravention with the Auditing
+Profession Act of 2005 (section 44 and 52) and would be found guilty of
+improper conduct (bad for self).
+1
+3.5. In addition, expressing an unmodified audit opinion over financial
+misstatements that are materially misstated due to fraud will lead to no
+consequence management for those involved in the fraud (if any)
+which is not in the best interest of the government or the public (bad
+for others).
+1
+3.6. NKT as a firm has a duty as a corporate citizen and should consider all
+stakeholder interests and not just Inpahla’s in its decision and given the
+nature of the circumstances.
+1
+3.7. The effective functioning of the audit committee should be
+considered since, with their proper oversight over the audit process,
+management would be less likely to pressure the auditors into an
+inappropriate audit opinion.
+1
+4 Professional ethics considerations for NKT arising from ISSUE 2
+If, as a result of the pressure that management faces to prevent and
+conceal a breach of loan covenants, management requests the auditors to
+express an unmodified opinion over the financial statements, the auditor
+should consider the following professional ethics considerations:
+4.1. NKT is a registered audit firm providing professional services to the public
+and, thus, professional accountants in public practice; hence, the audit
+engagement team (including the engagement partner) must comply with
+parts 1, 2 (in capacity as employees of NKT), 3, and 4A (in their capacity
+as auditors) of the SAICA/IRBA Code of Professional Conduct.
+1
+4.2. NKT would need to consider that if they issue an inappropriate audit
+opinion over a set of financial statements that contain material
+misstatements, they could be found guilty of misconduct per the IRBA
+Rules Regarding Improper Conduct for failing to adhere to the Auditing
+Professions Act of 2005 (section 44).
+1
+5. Consideration of threats that could arise towards compliance with
+fundamental principles:
+5.1. Due to the implications of the defaults, there might be a perceived
+intimidation threat if NKT is under pressure (perceived or real) to issue an
+unmodified audit opinion, and this threat will influence the auditors’
+adherence of the following fundamental principles:
+½
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 4 © SAICA 2026
+5.1.1. Integrity
+• Intentionally issuing an inappropriate audit opinion would exhibit a lack
+of honesty, as NKT would knowingly be associated with false or
+misleading financial statements.
+½
+1
+5.1.2. Objectivity
+• NKT’s professional judgement could be compromised by
+management’s emotional blackmail regarding the potential impact of a
+modified opinion on Inpahla’s loan covenants. This creates the risk that
+the auditor may be biased or pressured into issuing an
+unmodified audit opinion in response to management’s concerns.
+½
+1
+5.1.3. Professional behaviour
+• Intentionally issuing an inappropriate audit opinion over financial
+statements would result in a breach of the Auditing Professions Act
+• Issuing an incorrect audit opinion over a set of SOC financial
+statements that are materially misstated would not be acting in the
+best interest of the public and may discredit the profession.
+• Close association with a client (and its management) who are not
+transparent with key stakeholders in order to protect their self-interest
+whilst breaching laws such as the Companies Act and potentially the
+PFMA could reflect badly on NKT’s reputation and bring the
+profession into disrepute.
+½
+1
+1
+1
+5.1.4. Professional Competence and Due Care/Professional Behaviour
+• Issuing an audit opinion contrary to audit findings would be contrary to
+the requirements of ISA (ISA220R in terms of audit quality ethical
+requirements; ISA450 for inappropriate evaluation of misstatements
+identified; and ISA 700R for forming an inappropriate audit opinion) with
+auditing pronouncements relating to the conduct of an audit.
+(Note: the mark is awarded based on the angle of the candidate’s
+discussion – not adhering to auditing pronouncements is a breach section
+44 of the Auditing Professions Act).
+½
+1
+5.2. Level of the threats:
+It appears that these threats are not at an acceptable level because of
+the political pressures to improve and report favourable results and the
+pressure management is under to show good results due to the impact
+of loan defaults.
+1
+5.3. Any threats arising from the ethical issue would be significant/not at an
+acceptable level due to the significant public interest of Inpahla and the
+negative impact on stakeholder trust.
+1
+5.4. Actions/safeguards to reduce the threats - Safeguards that NKT may
+consider if they are faced with the ethical dilemma include the following
+(Maximum 3 marks):
+5.4.1. Reporting any undue pressure faced to appropriate authorities such as
+an audit committee, the AGSA, and/or the Regulatory Body (the IRBA).
+1
+5.4.2. Seeking guidance from NKT’s firm policy in dealing with such
+matters.
+1
+5.4.3. Appoint a quality reviewer to review the audit file and determine if the
+audit opinion is appropriate.
+1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 5 © SAICA 2026
+5.4.4. NKT should take care that all decisions, discussions, and pertinent
+information are properly documented.
+1
+5.4.5. NKT should include more experienced team members on the audit. 1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 6 © SAICA 2026
+Available 41,5
+Maximum 13
+I2 Business ethics – the mark will be awarded if a candidate demonstrates the ability
+to recognise different points of view (the business, Inpahla, auditors, shareholders,
+government, credit agencies)
+1
+Total for part (e) 14
+Note: The principles for ethical leadership under P1 of the King IV Code are
+universal ethical principles and candidates are awarded the marks for discussing
+these, even if they did not link it to King IV.
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 7 © SAICA 2026
+Part (f) Discuss the factors that NKT should have considered before the
+firm accepted the audit of Inpahla for FY2026.
+• Exclude the factors considered in part (e) from your answer.
+Marks
+1 Client consideration
+1.1. Aspects negatively affecting the integrity of Inpahla and those
+charged with governance:
+1.1.1. Instances of crime, theft, irregular tender processes, and corruption
+have been reported and raise questions regarding management’s
+integrity.
+1
+1 . 1 .
+2.
+Downgrading by the debt rating agencies given the problems at Inpahla
+reflect negatively on management and governance oversight and
+directional leadership.
+1
+1.1.3. The political pressure on the company to show improved results could
+affect management’s integrity and decisions made and lead to a
+possible manipulation of results.
+1
+1.1.4. Management’s request for exemption from compliance with PFMA and
+other relevant regulations casts doubt on their integrity, as this shows a
+disregard for compliance with key laws and regulations intended to
+protect the public.
+1
+1.1.5. Management has disregarded the requirements of section 90(2)(iv)
+read with (v) of the Companies Act since a cooling-off period of 2
+financial years has not yet passed since NKT provided accounting
+services and hence NKT is not eligible to be appointed as auditors.
+Note: section 90(2) applies to a person or firm.
+1
+1.1.6. In addition, it is questionable whether the audit committee is
+performing their functions of nominating an auditor that is independent,
+as set out in section 94(7)(a) of the Companies Act OR Management did
+not consider the recommendations of the audit committee pertaining
+to the independence of auditors, as the previous auditing firm held the
+position for 35 years.
+1
+1.2. The auditors should consider the outcomes of any recent performance
+audits conducted on Inpahla and whether the company’s resources are
+being managed with economy, efficiency, and effectiveness.
+1
+1.3. NKT should consider whether prior years' audit reports contained any
+material irregularities and whether proactive measures are in place to
+address/resolve them.
+1
+1.4. NKT should consider the level of past unauthorised, irregular, fruitless,
+and wasteful expenditure incurred at Inpahla, and whether management
+is making a proactive, rigorous effort to reduce them.
+1
+Aspects positively affecting management integrity:
+1.5. A positive factor is that the company has been in operation since 1860 and
+management has plans to implement turnaround strategies to curtail
+the losses showing commitment to effective leadership.
+1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 8 © SAICA 2026
+1.6. The company has adopted the recommended practices of the King IV
+Report, suggesting management's effort to strive for good governance
+and commitment to effective and ethical leadership.
+1
+1.7. Management has also demonstrated commitment to preserving the
+natural environment as Inpahla invested in green initiatives to
+minimise its impact on the environment and to align with the United
+Nations Sustainable Development.
+1
+2 Ethical considerations, including those related to independence
+2.1. NKT is an audit firm and provides assurance services to the public and,
+therefore, professional accountants in public practice; hence, the firm and
+the audit team members must apply sections 1, 3, and 4A of the SAICA
+and IRBA Codes of Professional Conduct.
+1
+2.2. In terms of the Companies Act section 90(2), any person who has been
+involved in the maintenance of financial records or preparation of
+financial statements (in the past two years) or habitually performs the
+duties of accountant will not be perceived as independent and NKT should
+first evaluate what ‘some accounting services’ entailed and for how long it
+was provided to determine if it is allowed to take up this appointment while
+still being able to adhere to the Companies Act. (Theory)
+1
+2.3. The size of the audit fee for the services rendered and the impact on the
+overall audit fee structure of NKT, as this engagement will bring significant
+revenue to NKT should be considered.
+1
+2.4. NKT needs to consider whether the audit fee from Inpahla represents more
+than 15% of NKT's total audit fee income. If so, NKT must determine
+whether a quality reviewer is available, as a review of the engagement
+quality will be required (ET410.18).
+1
+3 The following circumstances create threats to the fundamental
+principles:
+3.1. Issue 1: NKT has rendered some accounting services to Inpahla during
+the past five years (ET601.4):
+½
+3.1.1. This creates a self-review threat to objectivity since:
+• NKT team members might be biased when assessing financial
+information/financial statement areas that are derived from the
+accounting services NKT provided and not appropriately review the
+judgments that went into the work.
+½½
+1
+3.1.2. This also creates a self-review threat to professional competence and
+due care since:
+• The team may not act diligently when applying the ISAs (especially risk
+assessment and response) due to overreliance on the prior work
+executed by the firm.
+½½
+1
+3.1.3. This also creates a self-interest threat to integrity since:
+• Since the NKT might overlook material misstatements in financial
+information/records that were prepared by NKT accounting service
+providers to hide these in order to avert reputational damage.
+½½
+1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 9 © SAICA 2026
+3.2. Issue 2: The Inpahla audit will bring in a significant amount of revenue
+for NKT and if the fees are significant in proportion to the total audit fees of
+NKT (ET410.11).
+½
+3.2.1. It creates a self-interest threat to objectivity/integrity:
+• As the audit team members might overlook material misstatements or
+non-compliance with significant laws and regulations to maintain a
+positive relationship with management to keep the NKT audit
+engagement.
+• The auditors might fail to report reportable irregularities and
+material irregularities in order to preserve the relationship with the
+client.
+½½
+1
+1
+3.3. Issue 3: NOCLAR (ET360) considerations due to many instances of crime
+and theft that included irregular tender processes and corruption that could
+include management involvement.
+½
+3.3.1. The presence of alleged corruption and fraud creates a self-interest/
+intimidation threat to professional behaviour:
+• If the team becomes aware of corruption or fraud, they might be
+tempted not to disclose this out of fear of association with a client
+that undermines public confidence or fear that it could create a
+perception to the public that the auditor was accepting of the
+behaviour.
+½ ½
+1
+3.4. Level of threats/significance of threats – all threats are significant, as
+Inpahla is a SOC and of significant public interest.
+1
+3.5. Safeguards to reduce the level of threats to an acceptable level or to
+eliminate the threats include (max 2):
+3.5.1. • NKT should not have accepted the audit since the firm is not
+eligible to be appointed as auditors of Inpahla since no 2-year
+cooling-off period (required by s90 of the Companies Act) has
+passed since they provided accounting services.
+1
+3.5.2. • NKT should consider whether it may be appropriate to appoint a
+quality reviewer if it aligns with the firm policy.
+1
+4 Auditor consideration
+4.1. Whether NKT, as a medium-sized audit firm, has sufficient staff with
+available time to audit Inpahla, given that it has six divisions and
+widespread business operations throughout South Africa (increased scope
+of the audit).
+1
+4.2. Whether NKT has the accounting expertise to audit the complex
+accounting issues resulting from the bonds, forex transactions, and areas
+of high estimation uncertainty such as the assessment of the appropriate
+use of the going concern assumption in the preparation of the financial
+statements.
+1
+4.3. Whether NKT has the necessary knowledge/sufficient time to gain
+knowledge and understanding to audit state-owned entities / given the
+unique legislation, regulations and accounting and audit requirements
+relating to it (PFMA, Public Audit Act, etc.).
+1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 10 © SAICA 2026
+4.4. NKT staff may not have sufficient knowledge/sufficient time to gain
+knowledge and understanding of government support, including
+guarantees, and the impact these have on the assessment of the going
+concern of SOCs.
+1
+4.5. The outcome of communications with the previous auditors, BAC Inc.,
+and whether any professional reasons exist for not accepting the audit
+engagement (Also consider whether communication with the AGSA would
+be relevant).
+1
+5. Financial responsibility
+5.1. Given concerns about Inpahla's going concern, consider its ability to pay
+the audit fee.
+1
+6. Preconditions of the audit
+6.1. NKT should consider whether IFRS is permitted and whether it conflicts
+with any requirements of the PFMA Act regarding its adoption.
+1
+6.2. Given that Inpahla is a state-owned entity, its audit falls within the scope
+of the Public Audit Act (PAA) and its regulations.
+1
+6.2.1. Therefore, the auditor appointment process in terms of the PAA, its
+regulations and the IRBA Guide for RA’s performing audits where the AGSA
+has opted not to perform the audit must be complied with:
+1
+6.2.2. Inpahla should have notified the AGSA of its intention to appoint NKT, and
+the AGSA must have given its consent for the appointment
+1
+6.2.3. Considerations on whether there are any conditions of appointment /
+reporting deadlines, from the AGSA, that must be accepted by NKT and
+Inpahla before the appointment, as most SOCs must submit their final audit
+reports four months after year-end.
+1
+7 Terms of engagement
+7.1. The board’s comment that an existing engagement letter for accounting
+services can be used as the engagement letter for the audit will not be
+sufficient, and a new engagement letter must be agreed upon, because
+the scope, responsibilities, and the nature of the services required have
+changed.
+1
+Additional issues (from part e) if candidates did not interpret question
+e appropriately:
+It appears that management has the intention of hiding any breach of
+loan covenants, bringing their integrity into question.
+1
+Professional ethical consideration related:
+The auditors may fail to report any reportable or material irregularities
+arising from management's efforts to conceal a breach of loan covenants. 1
+Management’s integrity may be in question if they attempted to unduly
+influence the audit opinion through emotional blackmail of the impact
+an unmodified opinion could have on loan covenants.
+1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 11 © SAICA 2026
+Professional ethical consideration related:
+Management is of the view that a modified audit opinion would result in
+default on loan covenants that could have a significant impact on the
+company and the economy,
+½
+This creates an intimidation threat to objectivity/integrity:
+• The audit team members might feel pressured to issue an
+unmodified audit opinion regardless of the actual outcome of the
+work executed on the audit due to concerns of the impact a negative
+audit outcome would have on the company, jobs in the public sector
+and potentially the South African economy.
+½ ½
+1
+Available 50
+Maximum 10
+X1 Communication skill – logical argument
+Ability to present logical arguments in applying the facts of the scenario to the
+requirements of the standards
+1
+Total for part (f) 11
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 12 © SAICA 2026
+Part (g)(i) Assess the risk of material misstatement at the financial statement
+level of Inpahla for the FY2026 audit; and
+Marks
+The following are factors that will increase the risk of material misstatement at
+the financial statement level:
+1. Inpahla bonds’ are listed on the JSE, and there is a risk that Inpahla might
+manipulate the financial statements in order to comply with the
+requirements of the JSE to be eligible to list bonds and/or to meet
+shareholders’ expectations.
+1
+2. Management may have an incentive to fraudulently manipulate the
+financial statements to meet the financial ratios and other requirements
+specified in the debt covenants/improve the level of debt, as non-
+compliance could trigger the immediate repayment of the outstanding debt.
+1
+3. Debt agencies have downgraded Inpahla’s credit rating, thereby creating
+incentive for management to manipulate the financial statements to present
+more favourable financial performance and financial position in an effort to
+sway the credit agencies’ rating in a positive direction.
+1
+4. The reported fraud, irregular tender processes and other governance
+deficiencies may indicate a weakened control environment, which
+increases the susceptibility of the financial statements to material
+misstatement due to fraud.
+1
+5. Non-compliance with the Companies Act (sections 76 and 90), together
+with the stringent regulatory requirements of the Public Finance
+Management Act (PFMA), may create an incentive for management to
+manipulate financial statements to conceal non-compliance or to
+present the entity as compliant with applicable laws and regulations.
+1
+6. NKT was newly appointed as auditors for FY2026, and since it will be the
+first time that NKT audits Inpahla’s financial statements:
+6.1
+.
+There is a risk that management will use it as an opportunity to misstate
+opening balances (as they know the auditor would not have audited the
+prior year amounts)
+1
+6.2
+.
+There is a risk that the accounting policies may not be consistently
+applied compared with prior financial years.
+1
+7. The company operates through multiple divisions, increasing the risk that
+errors may occur when the financial information of the various divisions
+is aggregated into the company's financial statements, including the
+incorrect accounting for or elimination of interdivisional transactions.
+1
+8. There is a high risk that Inpahla may inappropriately prepare its financial
+statements on the going concern basis (use of the going concern
+assumption not appropriate) due to the following (max 3):
+1
+8.1
+.
+The interim results for FY2026 reflected a significant deterioration in
+liquidity and an increase in obligations; and the reported operating loss
+represents a continued increase in losses from previous years.
+1
+8.2
+.
+There is increased financial pressure resulting from external pressures
+such as increases in the oil price, loadshedding; the deterioration of the rand
+and losses stemming from adverse foreign exchange movements.
+1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 13 © SAICA 2026
+8.3
+.
+There are several operating challenges for Inpahla, including (but not
+limited to) ageing infrastructure, damage due to train collisions; lack of
+support from equipment manufacturers; instances of train derailments, which
+could contribute to ongoing financial strain on the company.
+1
+8 . 4
+.
+The inability to settle long-term debts should the loan covenants be
+breached, resulting in long-term debt becoming repayable immediately place
+further financial strain on Inpahla.
+1
+8.5
+.
+The legal dispute with the supplier (Wuoche), may significantly disrupt
+Inphala's operations, resulting in an inability to provide services to customers,
+reduced tax revenues and increased unemployment. These factors may
+adversely affect Inpahla's future cash flows.
+1
+9. Due to the perceived political pressure to improve and report favourable
+results, management will have an incentive to misstate the financial results
+to present a better financial position and profits than is actually the case.
+1
+10. Inpahla is exploring a potential partnership with the private sector;
+hence, there is an incentive to manipulate the financial statements by
+overstating assets and income and understating liabilities and expenses to
+make the SOC appear like a lucrative investment.
+1
+11. There are transactions with related parties (other SOC’s, government
+entities, including national, provincial and local):
+11.
+1
+This provides management with an opportunity to conceal fraudulent
+financial reporting (transactions not at arm’s length).
+1
+11.
+2
+The related party transactions may not be correctly disclosed in terms of
+the requirements of IAS 24.
+1
+12. The financial statements are subject to an increased risk of material
+misstatement due to the significant judgments, estimation uncertainty
+and technical complexity involved in applying multiple IFRS
+requirements. Examples include (max 2):
+1
+12.
+1
+IFRS 9: Classification and measurement of bonds, foreign exchange
+contracts, covenant-related considerations, and financial liabilities.
+1
+12.
+2
+IAS 21: Accounting for foreign currency transactions and translation. 1
+12.
+3
+IAS 36: Impairment assessments require significant estimates of future cash
+flows and recoverable amounts.
+1
+The following factors will reduce the risk of material misstatement at the
+financial statement level:
+13. Management is committed to finding solutions to funding problems as
+they have implemented turnaround strategies (government funding and
+privatisation) which mitigate the risk that the going concern basis of
+accounting is not appropriate.
+1
+14. As the government is the sole shareholder, it could provide financial
+support for Inpahla's operations, given their strategic significance to the
+country, thereby mitigating the risk that the going-concern basis of accounting
+is not appropriate.
+1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 14 © SAICA 2026
+15. The audit committee's involvement in the appointment of NKT as the
+auditors/management’s reasons for changing auditors is intended to
+improve public trust in the entity’s financial reporting and mitigate
+conflicts of interest and perceived biases. Therefore, there is a commitment
+to improve the reliability of financial reporting.
+1
+16. The adoption of the King IV Report suggests efforts towards good
+governance that improve the control environment and reduce the risk of
+material misstatements.
+1
+17. Conclusion: Given the significance of the risks discussed above, the risk of
+material misstatement at the financial statement level for the company will be
+assessed as high.
+1
+Available 27
+Maximum 12
+Total for part (g)(i) 12
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 15 © SAICA 2026
+Part (g)(ii) Describe a suitable overall audit response for the FY2026 audit
+based on your risk assessment.
+• Do not address the risks identified in part (g)(i) individually
+but describe the risk responses in general for all risks.
+Marks
+1. Due to the high risk of material misstatement, coupled with a weakened
+control environment, and increased risks of fraudulent financial reporting, a
+more substantive-based audit approach will be followed with less reliance
+on controls.
+1
+1.1. The nature of the procedures will also be more detailed testing with
+less reliance on analytical procedures.
+1
+1.2. There will be a focus on opening balances, as it is a first-time audit. 1
+1.3. Lower overall/performance materiality in planning and performing the
+audit.
+1
+1.4. Increase sample sizes and/or locations (divisions) to be tested. 1
+2. The areas of high risk require specific audit attention, which will focus on:
+2.1. The concerns identified on whether the going concern of accounting is
+appropriate;
+1
+2.2. Compliance with laws and regulations (with reference to irregular tender
+processes);
+1
+2.3. Areas where management has an incentive and opportunity to override
+controls and engage in fraudulent financial reporting;
+1
+2.4. Legal disputes and their impact on financial statements, including
+disclosure of notes to the financial statements.
+1
+2.5. Identification of unauthorised, irregular, fruitless and wasteful
+expenditure.
+1
+2.6. Presence of material irregularities to be dealt with under the material
+irregularity process set out in the Public Audit Act.
+1
+3. Direction and control of the audit, which will include:
+3.1. Application of more professional skepticism and judgement in testing
+and interpretation of findings and management's responses; and
+1
+3.2. Incorporating an element of unpredictability in selecting items for testing
+and the audit procedures to be performed.
+1
+4. Given the increased political pressure and debt exposure and the
+related incentive for manipulation of financial results to meet debt
+covenants, and allegations of fraud and corruption, NKT should:
+4.1. Place less reliance on management representation letters and obtain more
+persuasive evidence;
+1
+4.2. Include more experienced staff on the engagement (involvement of fraud
+experts and senior staff in the audit); and
+1
+4.3. Increased direction, supervision and review of work performed by team
+members.
+1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 16 © SAICA 2026
+4.4. Make use of an engagement quality control reviewer to review the work
+performed (due to all judgement involved and the increased risk of
+inappropriateness of going concern basis of accounting).
+1
+4.5. Engage experts/specialists within NKT who have public sector audit
+expertise to support the planning and execution of the audit.
+Available 18
+Maximum 6
+X1 Communication skill – clarity of
+expression Using straightforward, unambiguous language to describe the risks and
+audit response so that the reader can immediately follow the candidate’s thought
+process from risk to audit response to expected outcome
+1
+Total for part (g)(ii) 7
+Total for part (g) 19
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 17 © SAICA 2026
+Part (h) Formulate the audit procedures to perform at the FY2026 year end
+to audit the going concern of Inpahla.
+Marks
+1 Standard procedures to assess the going concern status of Inpahla
+1.1 Obtain a management representation letter dealing specifically with the
+going concern of Inpahla and the status of the turnaround strategies
+proposed by management.
+1
+1.2 Inspect the board meetings and have discussions with management on the
+going concern status of the company and assess whether
+management’s plans (including the turnaround strategies) are significant
+to overcome the adverse effects of the operational challenges and high
+debt levels.
+1
+1.3 Obtain the cash flow budgets and forecast from Impala and perform
+the following procedures:
+1.3.1 Recalculate/cast and cross-cast the forecasts to verify the accuracy of
+the forecast.
+1
+1.3.2 Determine whether the period used by management is appropriate and for
+at least 12 months.
+1
+1.3.3 Inspect the cash flow forecasts for obvious errors and omissions (for
+example, inclusion of non-cash flow terms, duplicate amounts, direction of
+the in and outflows)
+1
+1.3.4 Compare the cash flow forecast for the current financial year with events
+after the financial reporting date (subsequent to year-end) to identify
+whether adjustments are required to the cash flow forecast/whether
+additional information is available about amounts included in the forecast.
+1
+1.3.5 Obtain the budgets and forecast for 2025 and compare with the actual
+results as per the trial balance/management accounts for 2025 and
+consider the reliability and accuracy of management’s budgeting and
+forecasts (based on experience, the competence of management in terms
+of preparing forecasts, etc.);
+1
+1.3.6 Through discussion with management (or inspection of supporting
+documentation), assess the knowledge, experience, and competence
+of the individual(s) who prepared the cash flow forecasts.
+1
+1.3.7 Through inspection of cash flow forecast/tmanagement discussions,
+assess whether there are indicators of management bias in selecting the
+method, significant assumptions and data used in performing the cash flow
+forecast (ISA 540).
+1
+1.3.8 Through discussion with management, assess whether management has
+taken the appropriate steps to understand and address estimation
+uncertainty (ISA 540).
+1
+1.3.9 Where management has not taken the appropriate steps to understand
+and address estimation uncertainty, request that they perform
+additional procedures to do so (ISA 540).
+1
+1.3.1
+0
+Through discussions with management (and if supporting documentation is
+available), consider the reasonableness of assumptions underlying the
+forecast.
+1
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 18 © SAICA 2026
+1.4 Inspect loan agreements, guarantee agreements, and other supporting
+documentation to confirm the existence, legality, and enforceability of
+arrangements with lenders and credit providers to provide or maintain
+financial support and evaluate the financial ability of these parties to
+provide additional funding.
+1
+1.5 Inspect minutes of the board to review their assessment of the liquidity and
+solvency of the company/discussions around the appropriateness of going
+concern and the approval of the cash flow forecast.
+1
+1.6 Obtain legal confirmation from Inpahla’s lawyers to confirm the status of
+any pending lawsuits and the possibility of outflows in the next 12 months.
+1
+2 Consider and audit the impact of the turnaround strategies on the
+going concern of the company
+2.1 Inspect minutes of shareholders’ and directors’ meetings supporting
+the turnaround strategies (government as shareholder, board).
+1
+2.2 Confirm, with management’s permission, directly from the government:
+2.2.1 The R47 billion guarantee at the date of finalising the audit and the
+conditions thereof;
+1
+2.2.2 The injection of additional equity: amount, condition, date of injection,
+and
+1
+2.2.3 The outcome of the request for the reduction/exemption of certain
+PFMA procurement requirements.
+1
+3 Privatisation considerations
+3.1 Enquire from the government, as a shareholder (minister), the status of
+the request/plans for privatisation and the conditions and timeliness, etc.
+1
+3.2 Enquire from management whether legislative approval has been
+granted under the Public Finance Management Act (PFMA) for Inpahla
+to proceed with issuing notice to private sector to consider the proposed
+partnership.
+1
+3.3 Inspect the MOI of Inpahla to determine whether there are any restrictions
+in terms of entering into partnerships/selling of a stake to the private sector.
+1
+3.4 Discuss with management (lawyers/head of unions) the potential impact
+of the proposed privatisation on unions and other key stakeholders,
+including the likelihood of industrial action or legal proceedings.
+1
+3.5 Inspect supporting documentation/evidence regarding the
+privatisation arrangements (contracts, agreements, government
+pronouncements, etc.) and the procedures to be followed when such
+transactions are on the table.
+1
+3.6 Enquire from management whether the transaction would be overseen by
+the National Treasury and the Competition Commission should
+approval be granted for the transaction to proceed.
+1
+3.7 Recalculate the entity’s key liquidity and solvency ratios using draft
+financial information/results and evaluate whether they are consistent with
+management’s assessment of the entity’s ability to continue as a going
+concern.
+IAC JUNE 2026
+PAPER 1 PART II
+SUGGESTED SOLUTION
+Part II 19 © SAICA 2026
+Available 25
+Maximum 10
+Total for part (h) 10
+Total for part II 54

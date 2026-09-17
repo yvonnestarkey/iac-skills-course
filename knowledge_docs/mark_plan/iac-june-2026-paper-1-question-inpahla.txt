@@ -1,0 +1,269 @@
+Source: SAICA IAC June 2026 — Paper 1 question (Inpahla).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC June 2026 1 (of 5) © SAICA 2026
+Paper 1
+PAPER 1 120 marks
+1 Background
+Inpahla SOC Ltd (‘Inpahla’) is a wholly state-owned entity operating in the freight and logistics
+industry that delivers goods throughout South Africa. Inpahla was first formed in 1860 and is
+incorporated as a company in terms of the Companies Act with a financial year end of
+31 March. Inpahla is subject to taxation in terms of the Income Tax Act, and none of the
+exemptions applicable to section 10 is available to it. It has adopted IFRS® Accounting
+Standards. Inpahla is not subject to any specific exemptions available to state-owned
+enterprises.
+Inpahla has historically been the primary provider of bulk transport services for the mining
+industry, and owns railways, ports and fuel pipeline infrastructure in South Africa. The vision
+of the company is to unify and develop the South African economy by providing a globally
+competitive, stable, reliable and cost-effective transport system. This should promote
+sustainable growth and diversification of the country’s economy.
+The company has the following divisions: national ports authority, port terminals, fuel pipelines,
+engineering, freight rail, and property.
+Inpahla has historically performed well, meeting its dual objectives of serving the country and
+running at a profit to provide revenues for the government. In the past, the company relied on
+operational cash generation and retained profits, coupled with a conservative debt policy, to
+fund its activities. Inpahla’s average debt-to-equity ratio, including short-term debt, has
+historically averaged between 40% and 45%, while its cash interest cover ratio was maintained
+at a comfortable level of approximately four times. The cash interest cover ratio is calculated
+as cash generated from operations (after changes in working capital) plus interest paid,
+divided by interest paid.
+In recent times the company has come under financial pressure, with deteriorating profitability
+and rising debt levels due to increasing oil prices and losses stemming from adverse foreign
+exchange movements. These factors have reinforced concerns about the deteriorating
+domestic inflation outlook that persisted during previous reporting periods and subsequent
+changes to interest rates by the South African Reserve Bank to reduce inflation, which
+negatively impacted Inpahla’s operations. In addition, South Africa’s persistent electricity
+constraints and heightened volatility in global prices for commodity exports also affected
+mining customers, driving customer volumes and profitability down.
+The interim results for the 2026 financial year (FY2026) reflected a significant deterioration in
+Inpahla’s liquidity position and an increase in its obligations. The cash interest cover ratio
+declined to 1,93 times.
+Furthermore, Inpahla’s profitability decreased because of various operational challenges that
+resulted in a decline in the volume of goods transported. These included the following:
+• Ageing infrastructure;
+• Damages due to train collisions;
+• Community unrest and riots that affected the company’s ability to deliver;
+• Shortage of spares for maintenance and repairs of equipment because of inflexible
+procurement and localisation requirements (e.g., the requirement to buy spares from
+local producers rather than import them);
+• Lack of support from equipment manufacturers due to contractual disputes;
+• Instances of train derailments;
+IAC June 2026 2 (of 5) © SAICA 2026
+Paper 1
+• Theft of railway tracks;
+• Adverse weather conditions;
+• Power outages affecting lines due to electricity constraints or breakdowns; and
+• Many instances of crime and theft that included irregular tender processes and
+corruption.
+2 Debt covenants
+Inpahla’s persisting operational challenges, deteriorating performance, pressure on cash
+flows, and ongoing liquidity and funding constraints, have placed debt covenants at risk. This
+has resulted in debt rating agencies downgrading the credit rating of Inpahla.
+Inpahla has bonds that are listed on the Johannesburg Stock Exchange and other international
+markets. It recently published its reviewed interim results for the six months ended
+30 September 2025 that showed a larger net loss than in the same period in FY2025. It also
+reported a further increase in its net liability position from FY2025. Its auditors issued an
+unmodified review report with an emphasis of matter paragraph on going concern for the
+interim results.
+The company is said to be experiencing political pressure to improve and report favourable
+results due to increasing pressure on the government’s finances. A significant proportion of
+Inpahla’s debt is guaranteed by the South African government. Inpahla management have
+stated that, in view of the significant debt exposure, a modified audit opinion would result in a
+default on the loan covenants. This would cause the company’s long-term debt to become
+immediately payable, which could trigger the government’s guarantee. In management’s
+opinion, this could lead to a further downgrade of the country’s sovereign risk by credit rating
+agencies, potentially driving the country into a recession.
+3 Turnaround strategies
+In response to these challenges, the company has developed two potential turnaround
+strategies relating specifically to the funding required to drive improvement in operational
+performance, volume recovery and a return to profitability.
+Proposal 1: Government funding and an increase in debt
+Inpahla could request a guarantee of R47 billion from the government to support the funding
+of the turnaround strategy. This would be used to raise further debt. Currently, lenders will not
+provide funding to Inpahla without additional guarantees from the government.
+The government would also be requested to inject additional equity into Inpahla in return for
+the issue of more shares to reduce debt and meet the required financial ratios for Inpahla to
+continue participating in the debt capital markets.
+Furthermore, the company would also request a reduction in the onerous requirements of
+public finance management legislation and regulations related to procurement requirements.
+These relate particularly to spares for locomotives1 and port equipment, as such legislation
+and regulations limit the speed with which procurement can be executed.
+1 The powered component of a train, used for pulling railway carriages.
+IAC June 2026 3 (of 5) © SAICA 2026
+Paper 1
+Proposal 2: Privatisation
+Inpahla could enter into a public-private partnership with private sector participants on a basis
+of 60% and 40% public sector and private sector ownership respectively. This would take the
+form of setting up new subsidiary corporate entities. Corporate assets would be moved into
+these subsidiary companies. This would enable Inpahla to contribute assets that are currently
+not fully utilised and in need of capital investment for repairs and maintenance, while the
+private investors would inject capital and bring the experience required to get the assets
+operational. Both would share the benefits brought about by the partnership.
+4 Damaged locomotives
+Ten years ago, Inpahla purchased locomotives from a supplier, the Wuoche Locomotives
+Corporation (‘Wuoche’) in China. A number of these locomotives were damaged by
+derailments, accidents and incidents of vandalism. As a result, they have been out of service
+and standing idle for six years or more. Wuoche has refused to supply the parts or design
+information to repair the locomotives due to contractual disputes and ongoing corruption cases
+in the original purchase process. This has resulted in payments for the locomotives being
+frozen.
+Due to the damaged locomotives, there has been a gradual deterioration in the services that
+Inpahla is able to provide to its freight customers, affecting the mining industry in particular.
+This has resulted in lost revenue for Inpahla and the mining customers which cannot trade as
+they cannot deliver their goods. Furthermore, there has been lost tax revenues to the
+government and increased unemployment.
+According to legal experts, the dispute relating to Wuoche, the original supplier, will not be
+resolved within the next five years and it is unlikely that it will agree to sell replacement parts
+to Inpahla.
+A proposal has been made to place the locomotives in a public-private partnership where
+Inpahla partners with a private company, which will provide the funding to repair the
+locomotives. The partnership will use a new supplier who would have to redesign, manufacture
+and fit the components to get the damaged locomotives running. It is estimated that the entire
+process will take approximately 12 months. A German supplier, Zug AG, approached Inpahla
+with the redesign proposal. Zug has the necessary expertise to adapt existing parts from its
+locomotive products to repair the damaged locomotives, which will attract redesign costs.
+An assessment was performed to bring one locomotive back into service. The following
+information was obtained from this reasonability assessment:
+• The expectation is that once the locomotives are running again, they will have a five-
+year operating period.
+• The average redesign cost per locomotive is expected to be EUR95 000, payable
+immediately. The redesign cost will be deductible for tax purposes in the year in which it
+is incurred.
+• The average manufacture and fitment cost is anticipated to be EUR184 000 per
+locomotive. Half is payable at the start of the project, and half when installed at the end
+of the first year. The South African Revenue Service (SARS) will allow deduction of these
+repair component costs of 50% in year 1, 30% in year 2, and 20% in year 3 after being
+brought into use. The repair component will have a zero fair value and tax value at the
+end of the operating period.
+IAC June 2026 4 (of 5) © SAICA 2026
+Paper 1
+• The original cost of one locomotive was R19 million. It can be sold for R12 million in its
+current condition, which is the same as its current tax value. The tax deduction on the
+locomotives will be claimed on a straight-line method after the locomotives are placed
+back in service.
+• The locomotive will have a tax value of R6 million at the end of the five years of operation,
+and a fair market value of R11 million.
+Once fully repaired, the locomotives will be placed back in service on the original route. The
+company expects to earn a contribution of R4,3 million per annum per locomotive once fully
+repaired. The additional average fixed costs per locomotive that will be incurred on route
+maintenance will amount to R250 000 per annum once operations resume.
+The proposal is to fund the repair cost using a debt instrument at an average interest cost of
+8,5% per annum. The working capital required for each locomotive will need to be increased
+by R120 000 initially, and then maintained for inflationary increases.
+Indirect impacts of having the trains back in service for the government include increased
+collections by SARS from the rail customers, who will be able to resume their operations, and
+therefore earn additional profit that can be taxed. It is anticipated that SARS will collect
+additional tax revenue per annum once the trains are running again. Additional mining royalties
+that could be collected by SARS are estimated at R600 000 per locomotive per annum.
+According to management, Inpahla’s target rate of return for rail operations is 13%.
+Additional information
+• The Euro to rand exchange rate on the implementation date of the project of 1 April 2026
+was EUR1 : ZAR20.
+• Forecast exchange rates are as follows:
+o March 2027 EUR1 : ZAR20,40
+o March 2028 EUR1 : ZAR20,80
+• The current and projected inflation rate in South Africa is 5%.
+• The tax rate applicable to Inpahla is 27%.
+5 Green initiatives
+During FY2026, Inpahla invested in green technologies to minimise its impact on the
+environment. The green initiatives are aligned to the aims of the United Nations Sustainable
+Development Goals 6 (clean water and sanitation) and 7 (sustainable and clean energy).
+Inpahla installed solar panels on the rooftops of its buildings. This initiative not only reduces
+Inpahla’s carbon footprint but also decreases its reliance on Eskom to power the operations
+at its warehouses. In addition, traditional lighting systems were replaced by LED lighting. The
+warehouses were also insulated and equipped with energy-efficient climate control systems.
+The initiatives also resulted in a decreased monthly energy cost.
+A rainwater harvesting system to collect and store rainwater for non-drinkable uses has also
+been implemented. The harvested rainwater is used for the washing of vehicles, local
+community irrigation and flushing of toilets.
+IAC June 2026 5 (of 5) © SAICA 2026
+Paper 1
+6 Governance and assurance
+The Inpahla board of directors and those charged with governance in all material aspects
+subscribe to the principles of sound governance and ethical conduct. Inpahla has accordingly
+adopted the King IV Report on Corporate Governance. It also strives to comply with all
+relevant legislation and regulations.
+As provided for in section 4(3) of the Public Audit Act, the Auditor-General of South Africa
+opted not to perform the audit of Inpahla. Inpahla decided to change its auditors in 2025. The
+board also wanted to enhance transparency and accountability and ensure rigorous
+adherence to regulatory standards. This decision was taken with the consent of its
+shareholder. The board also felt that a change in auditors might be warranted to mitigate
+conflicts of interest or perceived biases, thereby improving public trust in the entity's financial
+reporting.
+After a rigorous audit tender process under the direction of Tomas Tank, the chair of the audit
+committee, Ngabane KpT Inc. (‘NKT’), a medium-sized audit firm, was appointed as auditors
+for FY2026. The board resolved that since NKT has provided some accounting services to
+Inpahla during the past five years, there would be no need to sign a new engagement letter. It
+replaced BAC Inc., who had acted as external auditors for the last 35 years. John James, the
+audit partner in charge, is excited about this opportunity because the audit will bring a
+significant amount of revenue to NKT.
+IAC June 2026 1 (of 1) © SAICA 2026
+Paper 1 part I required
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2026
+PROFESSIONAL PAPER 1
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 1 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Prepare a SWOT analysis in view of the going concern challenges
+experienced by Inpahla.
+• Do not discuss the turnaround strategies in section 3.
+Z1: Business internal environment
+Z2: Business external environment
+20
+1
+1 22
+(b) Evaluate the two turnaround strategy financing proposals, based on the
+current situation of Inpahla.
+Y4: Judgement and decision making
+10
+1 11
+(c) Prepare a capital budget, based on a single locomotive, to assess the
+viability of the proposal by Zug AG for the damaged locomotives and
+conclude whether Inpahla should go ahead with the proposal.
+• Include nil effects, where relevant.
+27
+27
+(d) Discuss how Inpahla’s green initiatives align with the United Nations
+Sustainable Development Goals 6 and 7. 6 6
+Total for part I 66
+IAC June 2026 1 (of 1) © SAICA 2026
+Paper 1 part II required
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2026
+PROFESSIONAL PAPER 1
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 1 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(e) Discuss the business ethics and professional ethical considerations that
+NKT would need to consider about the alleged impact of defaults on loan
+covenants.
+• Include relevant safeguards.
+• Assume that NKT also performed the interim review for the year.
+I2: Business ethics – ethical reasoning skills
+13
+1 14
+(f) Discuss the factors that NKT should have considered before the firm
+accepted the audit of Inpahla for FY2026.
+• Exclude the factors considered in part (e) from your answer.
+X1: Communication skill – logical argument
+10
+1 11
+(g) (i) Assess the risk of material misstatement at the financial statement
+level of Inpahla for the FY2026 audit; and
+(ii) Describe a suitable overall audit response for the FY2026 audit
+based on your risk assessment.
+• Do not address the risks identified in part (g)(i) individually but
+describe the overall audit responses in general for all risks.
+X1: Communication skill – clarity of expression
+12
+6
+1 19
+(h) Formulate the audit procedures to perform at the FY2026 year end to audit
+the going concern of Inpahla. 10 10
+Total for part II 54
+TOTAL FOR THE PAPER 120
