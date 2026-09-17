@@ -1,8 +1,9 @@
 import BrandMark from "@/components/BrandMark";
 import SenjaTestimonials from "@/components/SenjaTestimonials";
 import FaqAccordion from "@/components/sales/FaqAccordion";
+import SkillsAccordion from "@/components/sales/SkillsAccordion";
 import WaitlistForm from "@/components/sales/WaitlistForm";
-import { PRICING_TIERS, REFERRAL, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO, VALUE_PROPS } from "@/lib/sales-copy";
+import { BMCR_SECTION, PRICING_TIERS, REFERRAL, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO } from "@/lib/sales-copy";
 import Link from "next/link";
 
 export default function SalesLanding() {
@@ -37,22 +38,18 @@ export default function SalesLanding() {
         </div>
       </section>
 
+      <section className="sales-section" id="bmcr">
+        <p className="kicker">{BMCR_SECTION.kicker}</p>
+        <h2>{BMCR_SECTION.title}</h2>
+        <p className="muted sales-intro">{BMCR_SECTION.body}</p>
+      </section>
+
       <section className="sales-section" id="skills">
-        <p className="kicker">Why this course</p>
-        <h2>Why focus on Skills instead of theory?</h2>
+        <h2>What Skills will we work on?</h2>
         <p className="muted sales-intro">
-          We&apos;re very quick to revert to revision and theory to solve our mark problems. But is this REALLY
-          what&apos;s costing you marks? Your goal is to get marks for the questions in the exam. We help you USE the
-          knowledge you already have.
+          These practical Skills improve your ability to answer questions and get marks for what you already know
         </p>
-        <div className="sales-value-grid">
-          {VALUE_PROPS.map((item) => (
-            <article key={item.title} className="card">
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </article>
-          ))}
-        </div>
+        <SkillsAccordion />
       </section>
 
       <section className="sales-section" id="pricing">

@@ -5029,6 +5029,64 @@ a.live-session-watch:hover {
   color: var(--muted);
 }
 
+.sales-skills-list {
+  border-top: 1px solid var(--line);
+}
+
+.sales-skill {
+  border-bottom: 1px solid var(--line);
+}
+
+.sales-skill button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 16px 2px;
+  font-size: 16.5px;
+  font-weight: 650;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.sales-skill button:hover {
+  color: var(--medium);
+}
+
+.sales-skill svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--medium);
+  transition: transform 0.18s ease;
+}
+
+.sales-skill.open svg {
+  transform: rotate(180deg);
+}
+
+.sales-skill p {
+  margin: 0;
+  padding: 0 28px 16px 2px;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 15px;
+}
+
+@media (max-width: 640px) {
+  .sales-skill button {
+    font-size: 15.5px;
+    padding: 14px 0;
+  }
+
+  .sales-skill p {
+    padding-right: 4px;
+  }
+}
+
 .sales-footer {
   display: flex;
   flex-wrap: wrap;

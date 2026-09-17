@@ -13,26 +13,44 @@ export const SALES_VIDEO = {
   src: "https://player.vimeo.com/video/1015651602?badge=0&autopause=0&player_id=0&app_id=58479",
 };
 
-export const VALUE_PROPS = [
+export const BMCR_SECTION = {
+  kicker: "Diagnostic",
+  title: "BMCR Diagnostic Tool",
+  body: "The BMCR (Basic Mark Conversion Ratio) proves whether you need theory or not. It shows you just how much you know, and whether you're getting marks for ANYTHING you know — so you stop defaulting to more revision when the leak is application.",
+} as const;
+
+export const COURSE_SKILLS = [
   {
-    title: "Individual Feedback",
-    body: "You submit questions, I give you personalised feedback on YOUR question. How and where to improve your communication, application and marks. This is way more than marking — I discuss your answer, your approach, and then give you practical advice to improve it.",
+    title: "Marking Tool: How to calculate whether you need revision",
+    detail: "Diagnostic tool to quantify whether you lack theory or application skill.",
   },
   {
-    title: "Step-by-Step Question Methods",
-    body: "I give you practical steps to improve your discussion questions, how to structure and plan your answer, and how to decide whether you need more revision. You WILL improve your marks, for ALL topics.",
+    title: "Skill: Planning your case study",
+    detail: "How to index and structure scenario information during reading time.",
   },
   {
-    title: "BMCR Tool",
-    body: "The BMCR (Basic Mark Conversion Ratio) proves whether you need theory or not. It shows you just how much you know, and whether you're getting marks for ANYTHING you know — so you stop defaulting to more revision when the leak is application.",
+    title: "Skill: Reading the question (RTFQ)",
+    detail: "Eliminating misread errors that cost up to 10% of available marks.",
   },
   {
-    title: "Planning Case Studies",
-    body: "Task 2 is about planning your case study and required: slowing down, reading instead of browsing, and tagging what the examiner is actually asking before you start writing.",
+    title: "Skill: Discussion Questions",
+    detail: "Frameworks to structure discussion points clearly for full marks.",
   },
   {
-    title: "Question Misread Prevention",
-    body: "RTFQ: Read The F-ing Question. Extra tools for nasty wording, the power of 'thing', and spotting what the examiner is doing so you stop bleeding marks to misreads.",
+    title: "Skill: Strategic Thinking",
+    detail: "Staying mark-focused to secure pass marks under exam pressure.",
+  },
+  {
+    title: "Skill: Structuring & Planning your Answer",
+    detail: "Knowing what details to cover vs. what to leave out.",
+  },
+  {
+    title: "Marking Tool: Improving Application & Communication",
+    detail: "Self-marking methods to refine communication quality.",
+  },
+  {
+    title: "Performance Tool: How to calm down on demand",
+    detail: "Stress-management techniques to prevent exam freeze/panic.",
   },
 ] as const;
 
