@@ -118,6 +118,12 @@ export const REFERRAL = {
   body: "We offer special referral discounts when you sign up with a peer or study group. Refer a friend, and both of you get an exclusive discount code at checkout! If you want to enrol a group of students from your firm, email me for rates.",
 } as const;
 
+export const PAYMENT_CAPTION =
+  "Accepts all major international and local credit/debit cards at checkout via Stripe. Charged in USD (or converted automatically by your bank at current exchange rates).";
+
+export const WAITLIST_SUBTITLE =
+  "Enter your details below to lock in your waitlist spot. As soon as the platform launches end-October 2026, we will automatically set up your student account and email you a secure link to log in and set your password.";
+
 export const FAQS = [
   {
     question: "Why is this course different?",
@@ -158,5 +164,5 @@ export function waitlistButtonLabel(exam: WaitlistExam): string {
 }
 
 export function waitlistSuccessCopy(_exam?: WaitlistExam | string): string {
-  return "You're on the list! We will email you as soon as registration officially opens for the January 2027 IAC Exam.";
+  return "Thanks for joining! Keep an eye on your inbox—we'll send your student portal activation link and temporary setup instructions as soon as early access opens in October.";
 }

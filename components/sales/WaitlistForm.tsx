@@ -2,44 +2,37 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { waitlistButtonLabel, waitlistSuccessCopy } from "@/lib/sales-copy";
+import { WAITLIST_SUBTITLE, waitlistButtonLabel, waitlistSuccessCopy } from "@/lib/sales-copy";
 import {
   WAITLIST_EXAMS,
-  WAITLIST_INSTITUTIONS,
-  WAITLIST_PAYMENTS,
-  isWaitlistExam,
+  WAITLIST_PUBLIC_INSTITUTIONS,
   isWaitlistInstitution,
-  isWaitlistPayment,
   joinWaitlist,
-  type WaitlistExam,
   type WaitlistInstitution,
-  type WaitlistPayment,
 } from "@/lib/waitlist";
 
 export default function WaitlistForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [exam, setExam] = useState<WaitlistExam>("January 2027 IAC Exam");
   const [institution, setInstitution] = useState<WaitlistInstitution | "">("");
-  const [payment, setPayment] = useState<WaitlistPayment>("Once-off ($327)");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [joined, setJoined] = useState(false);
+  const exam = WAITLIST_EXAMS[0];
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     setError("");
     setBusy(true);
-    if (!isWaitlistInstitution(institution)) {
+    if (!isWaitlistInstitution(institution) || institution === "Other") {
       setBusy(false);
-      setError("Choose your institution / professional body.");
+      setError("Choose your institution.");
       return;
     }
     const result = await joinWaitlist({
       full_name: fullName,
       email,
       preferred_cohort: exam,
-      preferred_payment: payment,
       institution,
     });
     setBusy(false);
@@ -63,6 +56,7 @@ export default function WaitlistForm() {
             setJoined(false);
             setFullName("");
             setEmail("");
+            setInstitution("");
           }}
         >
           Add another email
@@ -75,7 +69,7 @@ export default function WaitlistForm() {
     <form className="waitlist-form" onSubmit={(event) => void submit(event)}>
       <p className="kicker">January 2027 IAC Exam</p>
       <h2>Join the waitlist</h2>
-      <p className="muted">Get the email when registration opens. No payment now — tell us your exam, institution, and how you would like to pay.</p>
+      <p className="muted">{WAITLIST_SUBTITLE}</p>
       <label htmlFor="waitlist-name">Full Name</label>
       <input
         id="waitlist-name"
@@ -98,23 +92,7 @@ export default function WaitlistForm() {
         onChange={(event) => setEmail(event.target.value)}
         required
       />
-      <label htmlFor="waitlist-exam">Target Exam</label>
-      <select
-        id="waitlist-exam"
-        name="exam"
-        value={exam}
-        onChange={(event) => {
-          const next = event.target.value;
-          if (isWaitlistExam(next)) setExam(next);
-        }}
-      >
-        {WAITLIST_EXAMS.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="waitlist-institution">Institution / Professional Body</label>
+      <label htmlFor="waitlist-institution">Institution</label>
       <select
         id="waitlist-institution"
         name="institution"
@@ -128,23 +106,7 @@ export default function WaitlistForm() {
         <option value="" disabled>
           Select one
         </option>
-        {WAITLIST_INSTITUTIONS.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="waitlist-payment">Preferred Payment Option</label>
-      <select
-        id="waitlist-payment"
-        name="payment"
-        value={payment}
-        onChange={(event) => {
-          const next = event.target.value;
-          if (isWaitlistPayment(next)) setPayment(next);
-        }}
-      >
-        {WAITLIST_PAYMENTS.map((option) => (
+        {WAITLIST_PUBLIC_INSTITUTIONS.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>

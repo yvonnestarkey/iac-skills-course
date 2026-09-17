@@ -4,7 +4,7 @@ import CourseFeatures from "@/components/sales/CourseFeatures";
 import FaqAccordion from "@/components/sales/FaqAccordion";
 import SkillsAccordion from "@/components/sales/SkillsAccordion";
 import WaitlistForm from "@/components/sales/WaitlistForm";
-import { COURSE_DATES, PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO } from "@/lib/sales-copy";
+import { COURSE_DATES, PAYMENT_CAPTION, PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO } from "@/lib/sales-copy";
 import Link from "next/link";
 
 export default function SalesLanding() {
@@ -70,6 +70,7 @@ export default function SalesLanding() {
             </article>
           ))}
         </div>
+        <p className="muted small sales-payment-note">{PAYMENT_CAPTION}</p>
         <aside className="sales-referral">
           <h3>{REFERRAL.title}</h3>
           <p>{REFERRAL.body}</p>

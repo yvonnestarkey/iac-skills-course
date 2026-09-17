@@ -4,6 +4,7 @@ import { getSupabase } from "./supabase";
 export const WAITLIST_EXAMS = ["January 2027 IAC Exam"] as const;
 export const WAITLIST_PAYMENTS = ["Once-off ($327)", "6 Installments ($60/mo)"] as const;
 export const WAITLIST_INSTITUTIONS = ["SAICA", "ICAZ", "ICAN", "Other"] as const;
+export const WAITLIST_PUBLIC_INSTITUTIONS = ["SAICA", "ICAZ", "ICAN"] as const;
 
 export type WaitlistExam = (typeof WAITLIST_EXAMS)[number];
 export type WaitlistPayment = (typeof WAITLIST_PAYMENTS)[number];
@@ -40,7 +41,7 @@ export async function joinWaitlist(input: {
   full_name: string;
   email: string;
   preferred_cohort: WaitlistExam;
-  preferred_payment: WaitlistPayment;
+  preferred_payment?: WaitlistPayment | null;
   institution: WaitlistInstitution;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
   const supabase = getSupabase();
@@ -50,11 +51,12 @@ export async function joinWaitlist(input: {
   const email = input.email.trim().toLowerCase();
   if (!full_name || !email) return { ok: false, error: "Enter your full name and email address." };
 
+  const preferred_payment = input.preferred_payment || null;
   const { error } = await supabase.rpc("join_waitlist", {
     p_full_name: full_name,
     p_email: email,
     p_preferred_cohort: input.preferred_cohort,
-    p_preferred_payment: input.preferred_payment,
+    p_preferred_payment: preferred_payment,
     p_institution: input.institution,
   });
   if (!error) return { ok: true };
@@ -63,7 +65,7 @@ export async function joinWaitlist(input: {
     full_name,
     email,
     preferred_cohort: input.preferred_cohort,
-    preferred_payment: input.preferred_payment,
+    preferred_payment,
     institution: input.institution,
   });
   if (!insertError || insertError.code === "23505") return { ok: true };
