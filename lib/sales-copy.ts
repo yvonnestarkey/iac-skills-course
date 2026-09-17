@@ -124,6 +124,9 @@ export const PAYMENT_CAPTION =
 export const WAITLIST_SUBTITLE =
   "Enter your details below to lock in your waitlist spot. As soon as the platform launches end-October 2026, we will automatically set up your student account and email you a secure link to log in and set your password.";
 
+export const WAITLIST_FIRM_NOTE =
+  "If you want to enrol a group of students from your firm, email me for rates.";
+
 export const FAQS = [
   {
     question: "Why is this course different?",

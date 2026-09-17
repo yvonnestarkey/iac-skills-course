@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import Link from "next/link";
-import { WAITLIST_SUBTITLE, waitlistButtonLabel, waitlistSuccessCopy } from "@/lib/sales-copy";
+import { WAITLIST_FIRM_NOTE, WAITLIST_SUBTITLE, waitlistButtonLabel, waitlistSuccessCopy } from "@/lib/sales-copy";
 import {
   WAITLIST_EXAMS,
   WAITLIST_PUBLIC_INSTITUTIONS,
@@ -120,9 +119,7 @@ export default function WaitlistForm() {
       <button className="primary" type="submit" disabled={busy}>
         {busy ? "Joining…" : waitlistButtonLabel(exam)}
       </button>
-      <Link className="waitlist-login-link" href="/login">
-        Student / Coach Login ↗
-      </Link>
+      <p className="muted small waitlist-firm-note">{WAITLIST_FIRM_NOTE}</p>
     </form>
   );
 }

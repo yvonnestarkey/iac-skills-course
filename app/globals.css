@@ -4899,11 +4899,10 @@ a.live-session-watch:hover {
   width: 100%;
 }
 
-.waitlist-login-link {
-  display: block;
-  margin-top: 12px;
+.waitlist-firm-note {
+  margin: 12px 0 0;
   text-align: center;
-  font-weight: 700;
+  line-height: 1.5;
 }
 
 .waitlist-success {
