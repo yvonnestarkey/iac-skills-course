@@ -90,7 +90,6 @@ export default function SalesLanding() {
       <footer className="sales-footer">
         <BrandMark href="/" />
         <p className="muted small">Accounting Study Advice · IAC Skills Board Course</p>
-        <Link href="/login">Student / Coach Login ↗</Link>
       </footer>
     </div>
   );
