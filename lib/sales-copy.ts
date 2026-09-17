@@ -5,6 +5,8 @@ export const SALES_BADGE = "IAC Skills Board Course — January 2027 IAC Exam";
 export const SALES_HEADLINE =
   "The only course that gives you individual feedback to build exam skills for the IAC exam, to help you get marks for your knowledge.";
 
+export const SALES_AUDIENCE = "Suitable for SAICA, ICAZ, and ICAN candidates";
+
 export const SALES_SUBHEAD =
   "The only IAC Prep course that gives you individual feedback on YOUR practice questions. We focus on the Skills you need to turn your knowledge into marks.";
 
@@ -13,15 +15,47 @@ export const SALES_VIDEO = {
   src: "https://player.vimeo.com/video/1015651602?badge=0&autopause=0&player_id=0&app_id=58479",
 };
 
-export const BMCR_SECTION = {
-  kicker: "Diagnostic",
-  title: "BMCR Diagnostic Tool",
-  body: "The BMCR (Basic Mark Conversion Ratio) proves whether you need theory or not. It shows you just how much you know, and whether you're getting marks for ANYTHING you know — so you stop defaulting to more revision when the leak is application.",
-} as const;
+export const COURSE_FEATURES = [
+  {
+    title: "Submit Tasks & Get Individual Feedback",
+    body: "You'll submit questions, and we'll give you feedback on YOUR attempt and how to improve your marks.",
+    icon: "pen",
+  },
+  {
+    title: "Step-by-Step Methods to Improve Application & Communication",
+    body: "I'll give you practical tools to improve your answers. I'll show you HOW to improve your discussion questions, and the planning of your answers to get you the marks you deserve.",
+    icon: "wrench",
+  },
+  {
+    title: "One-on-One Sessions",
+    body: "Online one-on-ones to help you with the stuff YOU'RE struggling with.",
+    icon: "mic",
+  },
+  {
+    title: "CTA Revision Syllabus",
+    body: "The CTA Syllabus is included in Revision course form, including exam technique.",
+    icon: "book",
+  },
+  {
+    title: "Live Sessions",
+    body: "General Feedback on tasks and exam technique. Motivation and encouragement.",
+    icon: "video",
+  },
+  {
+    title: "On-Demand Online Course",
+    body: "Work through the content at your own pace.",
+    icon: "laptop",
+  },
+  {
+    title: "Study Guidance",
+    body: "Study advice to help you reduce stress, improve performance, and approach your study sessions more effectively.",
+    icon: "compass",
+  },
+] as const;
 
 export const COURSE_SKILLS = [
   {
-    title: "Marking Tool: How to calculate whether you need revision",
+    title: "BMCR Tool: How to calculate whether you need revision",
     detail: "Diagnostic tool to quantify whether you lack theory or application skill.",
   },
   {

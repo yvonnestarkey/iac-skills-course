@@ -4942,10 +4942,51 @@ a.live-session-watch:hover {
   margin-bottom: 8px;
 }
 
-.sales-value-grid p,
-.sales-quote-grid p {
+.sales-audience {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 650;
+  color: var(--medium);
+}
+
+.sales-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sales-feature {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.sales-feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #f3eee8;
+  color: var(--medium);
+  flex-shrink: 0;
+}
+
+.sales-feature h3 {
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+
+.sales-feature p {
   margin: 0;
+  color: var(--muted);
   line-height: 1.55;
+  font-size: 14.5px;
 }
 
 .sales-pricing-grid {
@@ -5102,7 +5143,8 @@ a.live-session-watch:hover {
   .sales-hero,
   .sales-value-grid,
   .sales-quote-grid,
-  .sales-pricing-grid {
+  .sales-pricing-grid,
+  .sales-feature-grid {
     grid-template-columns: 1fr;
   }
 

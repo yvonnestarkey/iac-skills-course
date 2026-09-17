@@ -5,11 +5,14 @@ import Link from "next/link";
 import { waitlistButtonLabel, waitlistSuccessCopy } from "@/lib/sales-copy";
 import {
   WAITLIST_EXAMS,
+  WAITLIST_INSTITUTIONS,
   WAITLIST_PAYMENTS,
   isWaitlistExam,
+  isWaitlistInstitution,
   isWaitlistPayment,
   joinWaitlist,
   type WaitlistExam,
+  type WaitlistInstitution,
   type WaitlistPayment,
 } from "@/lib/waitlist";
 
@@ -17,6 +20,7 @@ export default function WaitlistForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [exam, setExam] = useState<WaitlistExam>("January 2027 IAC Exam");
+  const [institution, setInstitution] = useState<WaitlistInstitution | "">("");
   const [payment, setPayment] = useState<WaitlistPayment>("Once-off ($327)");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -26,11 +30,17 @@ export default function WaitlistForm() {
     event.preventDefault();
     setError("");
     setBusy(true);
+    if (!isWaitlistInstitution(institution)) {
+      setBusy(false);
+      setError("Choose your institution / professional body.");
+      return;
+    }
     const result = await joinWaitlist({
       full_name: fullName,
       email,
       preferred_cohort: exam,
       preferred_payment: payment,
+      institution,
     });
     setBusy(false);
     if (result.ok === false) {
@@ -65,7 +75,7 @@ export default function WaitlistForm() {
     <form className="waitlist-form" onSubmit={(event) => void submit(event)}>
       <p className="kicker">January 2027 IAC Exam</p>
       <h2>Join the waitlist</h2>
-      <p className="muted">Get the email when registration opens. No payment now — tell us your target exam and how you would like to pay.</p>
+      <p className="muted">Get the email when registration opens. No payment now — tell us your exam, institution, and how you would like to pay.</p>
       <label htmlFor="waitlist-name">Full Name</label>
       <input
         id="waitlist-name"
@@ -99,6 +109,26 @@ export default function WaitlistForm() {
         }}
       >
         {WAITLIST_EXAMS.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      <label htmlFor="waitlist-institution">Institution / Professional Body</label>
+      <select
+        id="waitlist-institution"
+        name="institution"
+        value={institution}
+        required
+        onChange={(event) => {
+          const next = event.target.value;
+          if (isWaitlistInstitution(next)) setInstitution(next);
+        }}
+      >
+        <option value="" disabled>
+          Select one
+        </option>
+        {WAITLIST_INSTITUTIONS.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>

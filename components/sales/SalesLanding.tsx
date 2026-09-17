@@ -1,9 +1,10 @@
 import BrandMark from "@/components/BrandMark";
 import SenjaTestimonials from "@/components/SenjaTestimonials";
+import CourseFeatures from "@/components/sales/CourseFeatures";
 import FaqAccordion from "@/components/sales/FaqAccordion";
 import SkillsAccordion from "@/components/sales/SkillsAccordion";
 import WaitlistForm from "@/components/sales/WaitlistForm";
-import { BMCR_SECTION, PRICING_TIERS, REFERRAL, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO } from "@/lib/sales-copy";
+import { PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO } from "@/lib/sales-copy";
 import Link from "next/link";
 
 export default function SalesLanding() {
@@ -20,6 +21,7 @@ export default function SalesLanding() {
         <div className="sales-hero-copy">
           <p className="sales-badge">{SALES_BADGE}</p>
           <h1>{SALES_HEADLINE}</h1>
+          <p className="sales-audience">{SALES_AUDIENCE}</p>
           <p className="lead">{SALES_SUBHEAD}</p>
           <div className="sales-video">
             <p className="kicker">{SALES_VIDEO.title}</p>
@@ -38,11 +40,7 @@ export default function SalesLanding() {
         </div>
       </section>
 
-      <section className="sales-section" id="bmcr">
-        <p className="kicker">{BMCR_SECTION.kicker}</p>
-        <h2>{BMCR_SECTION.title}</h2>
-        <p className="muted sales-intro">{BMCR_SECTION.body}</p>
-      </section>
+      <CourseFeatures />
 
       <section className="sales-section" id="skills">
         <h2>What Skills will we work on?</h2>
