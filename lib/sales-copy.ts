@@ -32,9 +32,9 @@ export const COURSE_FEATURES = [
     icon: "mic",
   },
   {
-    title: "CTA Revision Syllabus",
-    body: "The CTA Syllabus is included in Revision course form, including exam technique.",
-    icon: "book",
+    title: "Script Evaluation Tools",
+    body: "Script Evaluation Tools to help you evaluate the areas you need to work on for past attempts, both Skills and Topics.",
+    icon: "clipboard",
   },
   {
     title: "Live Sessions",

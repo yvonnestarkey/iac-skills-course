@@ -1,13 +1,13 @@
 "use client";
 
-import { BookOpen, Compass, Laptop, Mic, PenTool, Video, Wrench, type LucideIcon } from "lucide-react";
+import { ClipboardCheck, Compass, Laptop, Mic, PenTool, Video, Wrench, type LucideIcon } from "lucide-react";
 import { COURSE_FEATURES } from "@/lib/sales-copy";
 
 const ICONS: Record<(typeof COURSE_FEATURES)[number]["icon"], LucideIcon> = {
   pen: PenTool,
   wrench: Wrench,
   mic: Mic,
-  book: BookOpen,
+  clipboard: ClipboardCheck,
   video: Video,
   laptop: Laptop,
   compass: Compass,
