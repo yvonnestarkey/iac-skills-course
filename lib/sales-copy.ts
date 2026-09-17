@@ -122,7 +122,7 @@ export const PAYMENT_CAPTION =
   "Accepts all major international and local credit/debit cards at checkout via Stripe. Charged in USD (or converted automatically by your bank at current exchange rates).";
 
 export const WAITLIST_SUBTITLE =
-  "Enter your details below to lock in your waitlist spot. As soon as the platform launches end-October 2026, we will automatically set up your student account and email you a secure link to log in and set your password.";
+  "Enter your details below to lock in your waitlist spot. As soon as we launch end-September, we'll set up your free student account and email you details so you can browse through the course.";
 
 export const WAITLIST_FIRM_NOTE =
   "If you want to enrol a group of students from your firm, email me for rates.";
@@ -167,5 +167,5 @@ export function waitlistButtonLabel(exam: WaitlistExam): string {
 }
 
 export function waitlistSuccessCopy(_exam?: WaitlistExam | string): string {
-  return "Thanks for joining! Keep an eye on your inbox—we'll send your student portal activation link and temporary setup instructions as soon as early access opens in October.";
+  return "Thanks for joining! As soon as early access opens end-September, we'll set up your student account and email you details so you can log in and browse the course before the official start in October.";
 }
