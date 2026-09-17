@@ -10,3 +10,13 @@ calendars/
 
 .DS_Store
 .env*.local
+
+# SAICA source PDFs stay local; ingest uses the extracted .txt files
+knowledge_docs/**/*.pdf
+
+# Playwright scrape
+playwright-report/
+test-results/
+.thinkific-chrome/
+.thinkific-scrape-go
+.thinkific-inspect.json

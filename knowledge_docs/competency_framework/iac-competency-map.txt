@@ -1,0 +1,83 @@
+SAICA CA of the Future — IAC competency map (for the diagnostic engine)
+
+Use this map when explaining why a student converted (or failed to convert) knowledge into application marks. SAICA owns the competency framework. IAC is the Initial Assessment of Competence, formerly ITC.
+
+Documents behind this map:
+- B. Entry Level Competency Framework (approved 21 April 2026). Appendix 1 applies from IAC 2027.
+- C. Academic programme guidance (approved October 2023).
+- Appendix 1 detailed competencies and learning outcomes.
+
+What IAC is testing
+IAC assesses the academic-programme slice of entry-level competence. At-entry competence is Academic Programme + Training Programme + Professional Programme. Outcomes marked "not assessed" still have to be developed, but they cannot be tested in a written IAC or APC paper.
+
+The framework is integrated. A script that only recites a standard, a definition, or a tax rule has used technical knowledge in isolation. A mark-earning answer integrates:
+1. Professional values and attitudes (ethics, citizenship, lifelong learning)
+2. Enabling competencies / acumens (digital, relational, decision-making, business)
+3. Technical competencies in the value-creation process (inputs, activities, outputs)
+
+Proficiency levels (1 foundational, 2 intermediate, 3 advanced)
+Levels stack: level 2 includes level 1; level 3 includes 1 and 2. The expert level is post-qualification, not IAC.
+
+Technical competence is judged on three dimensions:
+- Knowledge: identify and describe key ideas (level 1) versus a detailed, comprehensive understanding (levels 2 and 3).
+- Application: explain significance and linkages (level 1); apply to non-complex routine situations with limited integration (level 2); apply to complex routine situations, evaluate and synthesise across competency areas, using integrative thinking (level 3).
+- Problem-solving: recognise issues and seek guidance (level 1); prepare or analyse solutions with limited judgement (level 2); evaluate or formulate solutions for specified and implicit problems, with rigour and sound judgement (level 3).
+
+Diagnostic mapping to Tier 1 / Tier 2
+Tier 1 Knowledge (~35%) sits mainly on the knowledge dimension and on "identify / state the principle".
+Tier 2 Application (~65%) sits on the application and problem-solving dimensions: use the facts, choose the technique, integrate across areas, conclude or advise.
+
+The distinction between proficiency 2 and 3 is not extra theory. It is harder application and judgement. A student who "knew the work" but dropped application marks has a conversion problem, not a syllabus-coverage problem, until basic knowledge lines are also missing.
+
+Routine IAC tasks are prevalent, relevant, and of a size a generalist entry-level CA would meet. Non-routine / specialist depth is only expected at foundational level 1.
+
+Enabling competencies that show up as lost application marks
+- X1 Communication: the required format (memo, report, discussion, advise) and a structured argument, not a heading list.
+- Y1 Critical thinking, Y2 Integrative thinking, Y3 Problem solving, Y4 Judgement and decision-making, Y5 Professional scepticism: tag facts to issues, weigh alternatives, conclude.
+- Z Business acumen: place the technical answer in the entity's context (strategy, risk, stakeholders).
+- W Digital acumen: data, systems, and controls where the required asks for them.
+
+Technical areas (value-creation chain)
+Inputs — Area 1 A Strategy and governance to create sustainable value
+- A1 Governance model
+- A2 Business strategy
+- A3 Aligning the business model with the business strategy
+- A4 Finance strategy
+- A5 Tax strategy
+
+Business activities — Area 2 B Stewardship of capitals: business processes and risk management
+- B1 Reporting fundamentals
+- B2 Business systems and processes
+- B3 Risk management and control
+
+Business activities — Area 3 C Decision-making to increase, decrease or transform capitals
+- C1 Performance measurement for management and other internal users
+- C2 Financing decisions
+- C3 Investment decisions
+- C4 Use of derivatives
+- C5 Business valuation
+- C6 Performance management systems
+- C7 Financially troubled business
+- C8 Tax law implications
+
+Outputs — Area 4 D Reporting on value creation
+- D1 Performance measurement for users of external / extended reports
+
+Outputs — Area 5 E Tax governance and compliance
+- E1 Tax governance
+- E2 Laws and regulations
+
+Outputs — Area 6 F Assurance and related services
+- F1 Concepts and principles of assurance engagements
+- F2 Audits of historical financial statements of non-specialised profit-orientated entities
+- F3 Audits of historical financial statements of public sector entities
+- F4 Other assurance services
+- F5 Other related services
+
+Professional values and attitudes (often implicit in the required)
+- I Ethics: I1 Personal, I2 Business, I3 Professional
+- II Citizenship: II1 Personal, II2 Corporate
+- III Lifelong learning: III1 Self-development, III2 Adaptive mindset and agility, III3 Emotional intelligence
+
+Coaching implication
+Plan the required, identify the competency area, state the level-1 principle, then spend the marks on application: facts, consequences, integration, and a justified conclusion in the format asked. Do not default to more syllabus revision until the conversion leak is closed.

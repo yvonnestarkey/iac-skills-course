@@ -1,0 +1,3137 @@
+Source: SAICA CA of the Future — Guidance on the Content, Development and Assessment of Competencies in the Academic Programme (approved October 2023).
+Extracted for internal IAC diagnostic use. SAICA owns this competency framework.
+
+CA(SA)
+COMPETENCY FRAMEWORK
+“CA of the Future”
+Date update approved: 28 June 20231
+Date further updated and approved: 12 October
+20232
+GUIDANCE ON THE CONTENT3, DEVELOPMENT AND
+ASSESSMENT OF COMPETENCIES IN THE
+ACADEMIC PROGRAMME
+This document must be read together with the following documents:
+• Preface to the CA(SA) Competency Framework 2021 (still to be updated);
+• CA(SA) Competency Framework 2021 (still to be updated); and
+• Guidance on the Content, Development and Assessment of Competencies in the SAICA Training
+Programme 2021 (still to be updated); and
+• Guidance on the Initial Test of Competence (in process of being finalised).
+1 Outcome of the CA2025 Project
+2 Further updates were made reflecting changes to the PVAAs (simplification)
+3 In the context of the academic programme content includes Competencies, Learning Outcomes and Minimum Content
+(knowledge)
+
+Version control
+V1 16 February 2021 Approved by the IPD on 4 February 2021
+V2 November 2022 – May 2023 Academic workgroup review – 2022/2023
+Approved by CAPDC on 28 June 2023
+V2.1 October 2023 Further minor changes made to PVAAs to align to the training programme
+changes Approved by CAPDC 12 October 2023
+
+INDEX
+A. INTRODUCTION
+B. SAICA COMPETENCY FRAMEWORK SUITE OF DOCUMENTS
+C. PROFICIENCY LEVELS
+D. THE CONTEXT IN WHICH COMPETENCIES ARE TO BE DEVELOPED AND ASSESSED
+IN THE ACADEMIC PROGRAMME
+E. OUTCOME OF THE COMPETENCY FRAMEWORK
+1. PROFESSIONAL VALUES AND ATTITUDES
+I Ethics values and attitudes
+II Citizenship attitudes and values
+III Lifelong learning attitudes and values
+2. ENABLING COMPETENCIES
+Z Business Acumen
+Y Decision Making Acumen
+X Relational Acumen
+W Digital Acumen
+3. TECHNICAL COMPETENCIES IN THE VALUE CREATION PROCESS
+AREA 1 A. STRATEGY AND GOVERNANCE TO CREATE SUSTAINABLE VALUE
+A.1 Governance Model
+A.2 Business Strategy
+A.3 Aligning the Business Model with the Business Strategy
+A.4 Finance Strategy
+A.5 Tax Strategy
+AREA 2 B. STEWARDSHIP OF CAPITALS: BUSINESS PROCESSES AND RISK MANAGEMENT
+B.1 Reporting Fundamentals
+B.2 Business Systems and Processes
+B.3 Risk Management and Control
+AREA 3 C. DECISION-MAKING TO INCREASE, DECREASE OR TRANSFORM CAPITALS
+C.1 Performance Measurement for Management and Other Internal Users of Financial
+Information
+C.2 Financing Decisions
+C.3 Investment Decisions
+C.4 Use of Derivatives
+C.5 Business Valuation
+C.6 Performance Management Systems
+C.7 Financially Troubled Business
+C.8 Tax Law Implications
+
+AREA 4 D. REPORTING ON VALUE CREATION
+D.1 Performance Measurement for Users of External Extended Reports
+AREA 5 E. TAX GOVERNANCE AND COMPLIANCE
+E.1 Tax Governance
+E.2 Laws and Regulations
+AREA 6 F. ASSURANCE AND RELATED SERVICES
+F.1 Concepts and Principles of Assurance Engagements
+F.2 Audits of Historical Financial Statements of Non-Specialised Profit Orientated Entities
+F.3 Audits of Historical Financial Statements of Public Sector Entities
+F.4 Other Assurance Services
+F.5 Other Related Services
+
+A. INTRODUCTION
+The objective of this document is to equip providers of the academic programme with guidance for the
+development and implementation of the SAICA Competency Framework (flowing from the CA2025
+project) in the SAICA accredited programme.
+This is a living document and will be subject to regular and ongoing review.
+1. COMPONENTS OF THE COMPETENCY FRAMEWORK:
+1.1. The competency framework is made up of the following components which in implementation
+are all integrated:
+Ethically responsible leaders
+fulfilling their social mandate by
+using integrated thinking to create
+sustainable value
+Icon Elements of the professional competencies
+Professional values and attitudes
+Enabling competencies (defined as
+acumens)
+Technical competencies in the value
+creation process
+The aforementioned competencies are depicted in Figure 1 below:
+
+1.2. CAs need to integrate all relevant competencies (professional values and attitudes, enabling
+competencies (acumens) and technical competencies) to provide quality deliverables (inputs,
+services, products and experiences) on a wide range of inputs, activities and outputs that lead
+to outcomes in an organisation’s value creation process. This requires integrated thinking (also
+presented as an enabling competency below) to achieve viable solutions while considering all
+alternatives, by obtaining a broader understanding of an issue, creating a design or formulating
+a plan, etc.
+1.3. There are three competency types, namely:
+(i) Professional Values and Attitudes;
+(ii) Enabling competencies (acumens); and
+(iii) Technical competencies in the value creation process.
+1.4. The competency types cannot be developed or assessed in isolation and indeed it is where these
+competency types overlap that thinking in an integrated manner is achieved.
+
+B. SAICA COMPETENCY FRAMEWORK SUITE OF DOCUMENTS
+• Sets out the
+• components of the qualification process
+• definitions of key concepts used in the CA(SA) Competency Framework 2021 Suite of
+Document
+A. PREFACE
+• Identifies and describes the professional competencies (professional values and attitudes,
+enabling competencies and technical competencies) that a CA(SA) should demonstrate at
+entry point to the profession.
+B. CA(SA) ENTRY LEVEL COMPETENCY FRAMEWORK
+• Provides providers of the academic programme with guidance for the development and
+implementation of the SAICA Accredited programme.
+C. GUIDANCE ON THE CONTENT, DEVELOPMENT AND
+ASSESSMENT OF COMPETENCIES IN THE ACADEMIC
+PROGRAMME
+• Sets out the
+• fundamental principles on which the format of the training programme is based,
+• fundamental principles on which the assessment of trainee accountants is based
+D. GUIDANCE ON THE CONTENT, DEVELOPMENT AND
+ASSESSMENT OF COMPETENCIES IN THE TRAINING
+PROGRAMME
+• Provides providers of the Academic Programme with Guidance on the purpose and nature
+of the ITC
+E. THE INITIAL ASSESSMENT OF COMPETENCE (IAC)
+• Provides providers of the Professional Programme with guidance for the development and
+assessment of competencies prescribed for the APC
+F. THE PROFESSIONAL PROGRAMME AND THE ASSESSMENT
+OF PROFESIONAL COMPETENCE (APC)
+
+C. PROFICIENCY LEVELS
+1. CAs at entry-level are expected to demonstrate competence at defined levels of proficiency.
+Three levels of proficiency (ranging from 1 (the lowest) to 3 (the highest) in the context of the
+academic programme are explained in this section and cover competency development from
+foundational to expert levels. The first three levels of proficiency (foundational, intermediate and
+advanced) are used in the competency framework. The expert level is achieved post-
+qualification.
+2. A proficiency level is specified for each of the professional values and attitudes, enabling
+competencies and technical competencies (i.e. different measures are used). The competency
+framework defines levels of proficiency at entry level to the profession. Guidance documentation
+to academics and training officers provides further clarity on proficiency levels for competencies
+to be obtained during the academic and training programmes. The academic guidance document
+also specifies proficiency levels for elements of technical competencies which should be
+achieved during the academic programme, to reach the overall level of proficiency per technical
+competency as specified in the competency framework.
+3. The proficiency levels to be applied to the academic programme are illustrated in the tables
+below:
+PROFESSIONAL VALUES AND ATTITUDES
+1
+Foundational level of
+competence
+2
+Intermediate level of
+competence
+3
+Advanced level of
+competence
+Proficiency levels are distinguished with reference to: (i) frequency and (ii) context
+Display professional values and attitudes:
+(i) Frequency Occasionally Always under specific
+applicable circumstances
+Always under all applicable
+circumstances
+(ii) Context In a simple context with
+straightforward situations
+and/or circumstances
+In an easily understood
+context with complexity
+limited to specific situations
+and/or circumstances
+In a difficult context with
+complex situations and/or
+circumstances
+
+ENABLING COMPETENCIES (ACUMENS)
+1
+Foundational level of
+competence
+2
+Intermediate level of
+competence
+3
+Advanced level of
+competence
+Proficiency levels are distinguished with reference to: (i) when the competencies are used during task
+performance, (ii) level of task understanding, and (iii) knowledge and skills needed for task performance,
+Use enabling competencies during task performance:
+(i) When the
+competencies
+are used during
+task
+performance
+During task involvement To initiate tasks and
+perform tasks on a
+preliminary/ preparatory
+basis
+To complete all steps in
+tasks
+(ii) Level of task
+understanding
+Displaying a basic level of
+task understanding (key
+ideas and principles)
+Displaying an intermediate
+level of task understanding
+(detailed knowledge
+including some analysis/
+evaluation)
+Displaying an advanced
+level of task understanding
+(clear problem
+identification, thorough
+analysis/ evaluation and
+useful conclusions/
+recommendations are
+made)
+(iii) Knowledge and
+skills needed
+for task
+performance
+Using limited knowledge
+sources and skills needed
+to perform the task
+Using multiple knowledge
+sources and skills in certain
+areas and limited in others
+to perform the task
+Integrating multiple
+knowledge sources and
+skills in all areas to perform
+the task
+
+TECHNICAL COMPETENCIES
+1
+Foundational level of
+competence
+2
+Intermediate level of
+competence
+3
+Advanced level of
+competence
+Proficiency levels are distinguished with reference to: (i) level of knowledge of the subject matter, (ii) level of
+application and (iii) problem solving to distinguish proficiency levels.
+Display technical competence by:
+(i) Knowledge
+dimension
+Identify and describe the
+key ideas / principles /
+fundamental concepts of
+the subject matter
+pertaining to routine and
+non-routine situations
+[Technical expertise or
+detailed knowledge not
+required]
+Demonstrate a detailed and comprehensive understanding4
+of the subject matter pertaining to routine situations.
+(ii) Application
+dimension
+Identify and explain the
+significance and relevance
+of the subject matter and
+recognise the linkages with
+other subject matter(s).
+• Apply the knowledge to
+non-complex routine
+situations.
+• Identify and utilise the
+relevant knowledge within
+and across competency
+area(s) in a limited
+manner.
+• Apply the knowledge to
+complex routine
+situations.
+• Evaluate and synthesise
+the knowledge within and
+across competency
+areas (Integrative
+thinking is required).
+(iii) Problem
+solving
+dimension
+Recognise issues when
+encountered and seek
+further depth / guidance.
+Prepare or analyse solutions
+for specified problems and
+applying limited judgement.
+Evaluate or formulate
+solutions for specified and
+implicit problems – applying
+a high degree of rigour,
+and/or exercise sound
+judgement in making
+recommendations.
+4. The proficiency levels build on each other. Intermediate level of competence means
+demonstrating proficiency at level 2, in addition to demonstrating proficiency at level 1. Advance
+level of competence means demonstrating proficiency at level 3, in addition to demonstrating
+proficiency at levels 1 and 2.
+5. Definitions:
+Routine situations Situations (situations, events, or transactions) that are:
+(a) Prevalent, determined with reference to the frequency with which they occur
+in practice and how relevant they are in practice (occur frequently and are
+very relevant),
+(b) Of a size or degree of complexity likely to be encountered by a
+typical/generalist CA(SA) at the point of qualification, and
+(c) That require a typical/generalist CA(SA) at the point of qualification to apply
+knowledge and judgement to make a recommendation.
+Non-routine Situations (situations, events or transactions) that are:
+4 ‘Detailed and comprehensive understanding’ covers breadth and depth of the subject matter. The distinction between
+levels 2 and 3 is reflected in the application and problem-solving dimensions.
+
+situations (a) Prevalent, determined with reference to how infrequently they occur in
+practice and how relevant they are in practice (occur infrequently),
+(b) Of a size or degree of complexity unlikely to be encountered by a
+typical/generalist CA(SA) at the point of qualification, but
+(c) Of a size or degree of complexity that requires judgement at a different level
+of expertise or specialist knowledge. [In these situations, the typical/generalist
+entry level CA (SA) is expected to demonstrate a ‘level 1 foundational level of
+competence’]
+6. Complexity is influenced by the following factors:
+1
+Foundational level of
+competence
+2
+Intermediate level of
+competence
+3
+Advanced level of
+competence
+Information
+• Structured
+• Limited amount of information
+• Semi-structured
+• Larger amount of information
+• Unstructured
+• Large amount of information
+Technique/ What to do with information
+• Define, list, explain or
+contrast techniques or
+methods
+• Recall, translate or interpret
+information
+• Make basic predictions based
+on information
+• Relevant information provided
+• Choose the appropriate
+technique and apply to a
+problem
+• Extract and/or summarise key
+information
+• Organise information by
+deconstruction
+• Mostly relevant information
+provided
+• Identify various techniques
+and judge the
+appropriateness of each to
+solve a problem
+• Devise or create a method or
+technique to solve a problem
+• Organise information from
+various sources and evaluate
+information for accuracy
+• Distinguish between relevant
+and irrelevant information
+Typical requirements/ verbs
+• Define and recall
+• Translations, interpretation
+and extrapolation
+• Applying theories or methods
+• Calculations, analysis,
+classifications and
+calculations where one or
+more method is involved
+• Deconstruct a problem and
+understand how the parts fit
+together
+• Discussions, arguments or
+reasoning to perform an
+analysis or make decision
+• Applying multiple techniques,
+adjustments, projections or
+recalculations to create a
+plan, solution or structure
+• Formulate a solution, make
+recommendations and come
+to a conclusion
+• Provide advice
+Verbs
+Classify, Comprehend, Convert,
+Define, Demonstrate,
+Demonstrate appreciation,
+Demonstrate awareness,
+Demonstrate understanding,
+Describe, Discuss, Distinguish,
+Estimate, Explain, Express,
+Extend, Generalise, Give
+Analyse, Apply, Arrange,
+Assess, Assign, Break down,
+Calculate, Categorise, Change,
+Choose, Compare, Complete,
+Construct, Contrast, Compute,
+Construct, Criticise,
+Demonstrate, Describe with
+evaluation, Differentiate,
+Advise, Appraise, Argue,
+Arrange, Assemble, Assess,
+Choose, Collect, Combine,
+Compare (complex), Compose,
+Conclude, Construct, Contrast
+(complex), Create, Criticise,
+Defend, Design, Develop,
+Devise, Discriminate, Estimate,
+
+1
+Foundational level of
+competence
+2
+Intermediate level of
+competence
+3
+Advanced level of
+competence
+examples, Identify, Illustrate,
+Infer, Interpret, List, Memorise,
+Name, Order, Outline,
+Paraphrase, Predict, Recall,
+Recognise, Restate, Rewrite,
+Select, State, Summarise,
+Translate, Understand, Write
+Discover, Discuss, Distinguish,
+Employ, Estimate, Examine,
+Experiment, Identify, Infer,
+Interpret, Investigate,
+Manipulate, Model, Modify,
+Operate, Order, Perform,
+Prepare, Prioritise, Produce,
+Question, Reconcile, Relate,
+Reorganise, Report, Review,
+Revise, Schedule, Select,
+Separate, Set up, Show, Solve,
+Summarise, Tell, Tabulate,
+Use, Utilise, Write
+Evaluate, Explain, Formulate,
+Generate, Integrate, Interpret,
+Invent, Judge, Justify, Manage,
+Organise, Plan, Predict,
+Propose, Rate, Rearrange,
+Recommend, Reconstruct,
+Relate, Reorganise, Resolve,
+Revise, Select, Set up, Solve,
+Summarise, Support,
+Synthesise, Tell, Value, Write
+7. NOTE: Where no proficiency level is indicated against a learning outcome, this indicates that
+the academic programme must address the learning outcome, but that the learning outcome
+need not be formally assessed in the academic programme.
+8. Learning and development as a CA(SA) continues post qualification and it is therefore
+reasonable to expect that in some roles CAs(SA) would reach a specialist or mastery level on
+some of the competencies and learning outcomes. This means that a proficiency level beyond
+a level 3 may be achieved or expected.
+9. This further proficiency level can be described as:
+a) Demonstrating specialist knowledge (depth of knowledge in a specific area),
+b) Applying this specialist knowledge critically and creatively in complex, integrated and
+ambiguous situations which may involve multiple interpretations, and
+c) Generating solutions for defined outputs for unspecified problems and applying a high
+degree of rigour while exercising sound professional judgement.
+10. Once qualified, there is a need for a CA(SA) to apply the principle in the Code of Professional
+Conduct that requires the professional to evaluate and ensure they have the necessary
+professional competence and to exercise due care in preforming their specific role. The
+requirement to continue to learn and develop post qualification is also clearly articulated in the
+SAICA CPD policy which seeks to measure ongoing lifelong learning and development.
+
+D. THE CONTEXT IN WHICH COMPETENCIES ARE TO BE DEVELOPED AND
+ASSESSED IN THE ACADEMIC PROGRAMME
+1. While it is acknowledged that students in the academic programme have a very diverse range
+of lived experiences, at the point of qualification, entry-level CAs(SA) are expected to consistently
+demonstrate the competencies in the Competency Framework (at the levels indicated) in relation
+to entities, situations, events, or transactions that are -
+• prevalent, determined with reference to how frequently they occur in practice and how
+relevant they are in practice, and
+• of a size or degree of complexity likely to be encountered by a CA(SA) at the point of
+qualification.
+2. In constructing this academic guidance document, the Academic Workgroup has specifically
+considered prevalence and size or degree of complexity in setting the proficiency levels.
+3. While the following areas are not specifically excluded for assessment purposes, the situations,
+events or transactions will not require understanding of area-specific standards, regulations or
+legislation, but the assessment will instead focus on non-area specific situations, events or
+transactions:
+• Agriculture, pastoral or other farming activities,
+• Banking and financial institutions,
+• Collective investments (e.g. unit trust funds),
+• Co-operatives,
+• Insurance companies,
+• Medical aid funds,
+• Mineral resources (i.e. mining, oil and gas companies),
+• Retirement funds and
+• Service concessions.
+4. It is recognised that the public sector is a context in which many entry-level Cas(SA) work.
+However, in order to ensure that the syllabus remains manageable for a four-year academic
+programme, the decision was taken to require only a foundational level of competence in
+outcomes relating to the public sector in the academic programme. Of course, if the ‘life-long
+learning, values and attitudes’ competency area is sufficiently developed to a proficiency level 2
+in the academic programme, and a level 3 for ‘the self-development’ component at the entry-
+point to the profession (as required), it would be possible for the entry level CA(SA) to upskill
+him/herself to function effectively in the public sector context.
+5. The same is true for the industry-specific situations (outlined in point 3 above) that are unlikely
+to have been encountered at the entry-point to the profession or are non-routine in nature.
+
+E. OUTCOME OF THE COMPETENCY FRAMEWORK
+In achieving professional competence, CAs are expected to display professional values and attitudes,
+and for each area (inputs, business processes, outputs leading to outcomes) be able to integrate relevant
+acumens and technical competencies. In addition, such integration should be done within, between and
+across areas.
+The outcome of effective integration of professional competencies manifests as CAs(SA) having the
+potential to be responsible leaders who behave ethically and create sustainable value for a wide
+range of stakeholders within an organisational context. With their ability to display integrated thinking,
+CAs are then able to interpret, analyse and evaluate financial and non-financial information, thus
+influencing others, and together making impactful decisions, and thereby contributing
+meaningfully to the economy and to society.
+1. PROFESSIONAL VALUES AND ATTITUDES
+These define professional behaviour and identify professional accountants as CAs, and as members of
+the CA profession. CAs draw on their personal and professional values and their ability to act with
+honesty, integrity, accountability and trustworthiness to demonstrate moral and ethical behaviour in the
+business context and to protect the public interest. By doing more than adhering to the rules of
+professional conduct, CAs are required at all times to uphold ethical principles and conduct themselves
+professionally in a manner that exemplifies and enhances the reputation of the CA profession. As lifelong
+learners, CAs maintain and develop their competence in order to adapt and work in an agile way to deal
+with complexities.
+PROFESSIONAL VALUES AND ATTITUDES
+Competency area pervasive in all other
+competencies Competency short name
+I Ethics, values and attitudes I1 Personal ethics
+I2 Business ethics
+I3 Professional ethics
+II Citizenship, values and attitudes II1 Personal citizenship
+II2 Professional citizenship
+II3 Corporate citizenship
+III Lifelong learning, values and attitudes II1 Self-development
+II2 Adaptive mind set and agility
+
+Rossouw and Van Vuuren (2003) make a distinction between cognitive competence, behavioural
+competence, and managerial competence with respect to ethics. In terms of the professional values and
+attitudes (“PVA”), and specifically ethics and citizenship, the academic programme provides the
+opportunity for the development of both cognitive competence (i.e. technical competence (refer to the
+“minimum content” column in the table below, together with the related proficiency levels) and behavioural
+competence (i.e. professional values and attitudes’) (refer to the “learning outcomes” column in the table
+below). Note that, given the context of the academic and training programmes, it is likely that managerial
+competence will only be achieved post-qualification.
+Detailed information on the competencies and learning outcomes required in relation to the development
+of professional values and attitudes is presented in the table below.
+Note: Proficiency levels for the Professional Values and Attitudes and the Technical Competencies that
+are blacked out indicate that the learning outcome must be developed in the academic programme, but
+that there is no requirement for them to be assessed.
+
+I ETHICS VALUES AND ATTITUDES
+This competency area includes personal business and professional ethics and describes the ethical principles values and attitudes an individual must apply also
+when interacting with others.
+I1 Personal ethics
+Personal ethics refers to a personal value system applied by an individual to decision-making, conduct and interaction between the self and others.
+Learning Outcomes Level5 Minimum content6 Level7
+a) Act honestly and demonstrate integrity, accountability and trustworthiness
+including while interacting with others.
+3 The other (link to II1 Personal citizenship).
+(Note: ‘The other’ is a concept already known in some definitions of ethics (moral
+philosophy). Refer also to sociology and other social sciences.)
+3
+b) Carry out work in a manner that protects public interest, the client, employer
+and other relevant stakeholders, and put these before one’s own interest
+The theory is included in I3 Professional ethics
+c) Evaluate the impact of different value systems implicit in, among others,
+religion, culture, social standing, economic status and personal experiences
+2 Worldviews, ethics, values, norms.
+Factors shaping the development of identity and values, including:
+• Family and community
+• Culture
+• Social context
+• Belief systems i.e. religious and secular
+• Diversity and shared/common values
+2
+d) Describe ethics theories (normative and applied) and how they can provide
+the reasoning behind the decisions, actions and behaviour of a person.
+Ethics theories limited to:
+• Virtue Ethics
+• Utilitarian Ethics
+• Deontological Ethics
+• Egalitarianism Ethics
+• Common good approach to Ethics (including Ubuntu Ethics)
+• Fairness or justice approach to Ethics
+5 Proficiency levels for Professional Values and Attitudes
+6 i.e. areas in which cognitive competence should be developed and assessed
+7 Proficiency levels for Technical Competencies
+
+I1 Personal ethics
+Personal ethics refers to a personal value system applied by an individual to decision-making, conduct and interaction between the self and others.
+Learning Outcomes Level5 Minimum content6 Level7
+e) Apply an ethical decision-making process which incorporates the ethics
+triangle, which requires critical thinking and ethical reasoning skills, to solve
+personal ethical dilemmas or make personal ethical decisions.
+3 Ethics triangle (good for self and good for others) 3
+I2 Business ethics
+Business ethics refers to the ethical principles and values applied by the organisation to decision-making, conduct and the relationship between the organisation, its stakeholders
+and society (King IV).
+Learning Outcomes Level Minimum content Level
+a) Evaluate the significance of ethics within the business environment, and the
+ways in which it is managed within an organisation, as part of its ethical
+organisational culture
+Sustainability; Stakeholder Inclusivity, Relationships and Management; Social
+Responsibility; Corporate citizenship.
+Managing organisational ethics including:
+• Organisational culture
+• Leadership and governance
+• Codes of ethics
+• Institutionalising ethics
+Monitoring and reporting on ethics
+b) Analyse the interrelationships between governance, ethics, work values and
+the law
+Corporate governance and Content from I1 above and
+c) Report ethics related issues to higher levels of management, legal or
+regulatory authorities or others, when appropriate
+Monitoring and reporting on ethics is included in the content elsewhere in I2 Business
+ethics
+d) Describe ethics theories (normative and applied) and how they can provide
+the reasoning behind the corporate culture, decisions-, actions- and
+behaviour of management and employees when they act as agents of the
+corporation.
+2 Ethics theories
+• Virtue Ethics
+• Utilitarian Ethics
+• Deontological Ethics
+• Egalitarianism Ethics
+• Common good approach to Ethics
+• Fairness or justice approach to Ethics
+Theoretical underpinnings
+• Stakeholder Theory
+
+I2 Business ethics
+Business ethics refers to the ethical principles and values applied by the organisation to decision-making, conduct and the relationship between the organisation, its stakeholders
+and society (King IV).
+Learning Outcomes Level Minimum content Level
+• Shareholder Theory
+• Agency Theory
+• Institutional Theory
+• Legitimacy Theory
+• Resource-dependency Theory
+Resource-based View
+e) Apply an ethical decision-making process which incorporates the ethics
+triangle, which requires critical thinking and ethical reasoning skills, to solve
+ethical dilemmas or make business ethical decisions.
+3 • Ethics triangle (good for self and good for others)
+• Corporate governance as defined by KING IV
+• Responsible leadership and sustainable development
+3
+I3 Professional ethics
+Professional ethics refers to the fundamental ethical principles and values applied by a professional CA to decision-making, conduct and the relationship between the professional,
+its stakeholders and society
+Learning Outcomes Level Minimum content Level
+a) Distinguish between ethical principles and rules of conduct, and apply the
+fundamental ethical principles of integrity, objectivity, professional
+competence and due care, confidentiality and professional behaviour in
+different scenarios
+3 Serving the public interest
+SAICA and IRBA Codes of Professional Conduct
+3
+b) Identify threats to ethical principles and apply appropriate safeguards to
+facilitate ethical behaviour
+c) Apply an ethics-based reasoning process (based on professional values and
+attitudes and an organisational code of ethics) to solve ethics dilemmas
+relating to organisational ethics and corporate culture
+Ethical decision-making in business, including ethical dilemmas.
+d) Analyse all courses of potentially unethical action as well as the
+consequences of each (e.g., disciplinary actions)
+e) Report ethical issues to SAICA, legal or regulatory authorities or others when
+appropriate
+The theory is included in the content of I2 Business ethics.
+
+I3 Professional ethics
+Professional ethics refers to the fundamental ethical principles and values applied by a professional CA to decision-making, conduct and the relationship between the professional,
+its stakeholders and society
+Learning Outcomes Level Minimum content Level
+f) By way of general conduct, demonstrate a commitment to the ethical values
+upheld by the profession
+The theory is included in the content of section I2 Professional ethics.
+II CITIZENSHIP, VALUES AND ATTITUDES
+“Citizenship” is most often used to indicate nationality and explain the rights and responsibilities attached to “membership” of a nation state. Although it is the
+individual/the person who is a citizen, a citizen cannot exist without belonging to a state.
+II1 Personal citizenship
+Personal citizenship is used to indicate that there are rights/responsibilities to being a member of multiple communities (see details of the communities that individuals belong to
+at II1 Personal citizenship and II2 relates to membership of the accountancy profession).
+Learning Outcomes Level Minimum content Level
+a) Demonstrate a responsive, valuing and tolerant approach to diversity and
+individual differences
+2 Citizenship and the responsibilities of the individual as a member of multiple
+communities, including:
+• A local-cultural community (link to content at I1 Personal ethics)
+• A professional community (link to content at I3 Professional ethics)
+• A national community (this should include the South-African rights paradigm
+informed by the Constitution and the social contract between a citizen and the state
+framing the moral and legal responsibilities of the individual to contribute to the tax
+revenue of the state)
+• The African community
+• The Global community
+2
+b) Describe the impact you have made on the community which you live, study
+or work through example e.g., acts of philanthropy, social responsibility and
+environmental stewardship
+2 To be developed by initiating and/or participating in community engagement projects
+within the several contexts (the UN SDGs could be incorporated here)
+2
+
+II2 Corporate citizenship
+Corporate citizenship relates to the corporation’s responsibilities/rights in society which has long been part of the field of business ethics (see I2 Business ethics). Being a member
+of a corporation, a CA should assist the corporation to become and be seen as a good corporate citizen.
+Learning Outcomes Level Minimum content Level
+a) Identify situations where organisations demonstrate a responsive, valuing
+and tolerant approach to cultural diversity and individual differences
+This is included in II1 Personal citizenship as one of the communities to which a
+person belongs
+b) For a business decision, weigh up the short-term financial benefits of that
+decision against its long-term strategic and/or societal impact (sustainability(
+Content at I2 Business ethics
+c) Consider the degree to which an organisation’s strategy and/or business
+model aligns with the 17 SDGs (the Sustainable Development Goals as
+published by the United Nations)
+UN Sustainable Development Goals
+III LIFELONG LEARNING VALUES AND ATTITUDES
+Life-long learning refers to the process of self-initiated education aimed at self-development and acquiring an adaptive and agile mind set
+There is no minimum content prescribed for the academic programme.
+Instead, this is a skill which is developed over the course of the academic programme. This is best developed through the use of effective and innovative ways of applying a
+teaching and learning strategy that requires students to practice self-directed learning. The aim is to develop a lifelong learner as learning continues post qualification.
+Students should be able to apply, in a self-critical manner, learning strategies which effectively address his or her personal, technical and other professional learning needs as and
+when they arise.
+III1 Self-development
+Self-development refers to the planning and management of personal development and an appreciation of how personal strengths and weaknesses may impact work, learning
+and goal attainment.
+Level Learning Outcomes
+3 a) Adopt an attitude of life-long learning and staying abreast of current trends and emerging issues
+b) Take responsibility for your own development needs and opportunities
+
+2 c) Actively seek appropriate learning opportunities (technical and other professional development) in a variety of different ways
+2 d) Set and monitor personal learning and development objectives through a wide range of life-long learning opportunities
+III2 Adaptive mind set and agility
+Adaptive mind set and agility refers to taking initiative to improve performance and well-being by reviewing and reflecting on work performance.
+Level Learning Outcomes
+2 a) Identify and distinguish between the need to learn, unlearn and relearn, so as to facilitate adaptation to changing practices, roles and work contexts
+b) Demonstrate the mindset and behaviours required to work in an agile way to deal with complexities
+III3 Emotional Intelligence (Moved from relational acumen)
+Establish and sustain trusting relationships based on self-awareness, sensitivity to the situation, culture and people involved.
+a) Exercise self-awareness and self-discipline; Apply self-reflection and self-awareness skills and techniques to ensure continuous learning and growth. Accept
+constructive feedback from others.
+2 b) Display the ability to understand, use, and manage your own emotions in positive ways to communicate effectively, empathise with others, overcome challenges
+and defuse conflict.
+c) Show persistence and resiliency in pursuing goals despite obstacles and setbacks
+
+2. ENABLING COMPETENCIES
+These are essential skills that influence the ways that CAs(SA) work, ways that they think, ways they are
+living in the world, and the tools that they use in the workplace. Enabling competencies are pervasive to
+a CA’s work and behaviour, are transversal and are to be used effectively across different environments,
+functions and roles. Enabling competencies allow a CA to effectively demonstrate his/her professional
+competence, by displaying decision-making, business, digital and relational acumens. The foundation for
+the further development of enabling competencies is set during the Academic Programme, while these
+are further developed with real-life and practical experience during the Training Programme, and which
+form the foundation for a strong life-long learning ethic.
+Acumen is defined as “the ability to judge well; keen discernment, insight” (Collins English Dictionary,
+2008). These acumens are necessary qualities of a CA(SA), enabling the performance of his/her work in
+the value creation process. They are skills which should be demonstrated and applied by a CA in
+conjunction with their specific technical knowledge. These acumens may in some cases not contain any
+suggested or minimum content as numerous opportunities to develop and demonstrate these acumens
+exist. The Academic Programme can assist in this development by providing different opportunities to
+develop or demonstrate these acumens (such as teaching various theories, using videos as educational
+material and requiring students to do projects). Each prospective CA should take ownership of developing
+these acumens using both the formal academic programme and other developmental opportunities.
+ACUMENS Competency short name
+Z Business acumen Z1 Business internal environment
+Z2 Business external environment
+Z3 Innovation, creativity and curiosity
+Y Decision-making acumen Y1 Analytical/critical thinking
+Y2 Integrative thinking
+Y3 Problem solving
+Y4 Judgement and decision-making
+Y5 Professional scepticism
+Y6 Ethical reasoning
+X Relational acumen X1 Communication skills
+X2 Leadership skills
+X3 People skills
+X4 Relationship-building skills
+X5 Teamwork
+X6 Self-management
+X7 Managing others
+X8 Emotional intelligence
+
+ACUMENS Competency short name
+W Digital acumen W1 Computational thinking
+W2 Data knowledge and strategy
+W3 Data analytics
+W4 Automation
+W5 New developments and protocols (e.g. artificial intelligence
+(AI), blockchain, Internet of Things etc.)
+W6 Cyber security
+W7 User competencies
+WHAT DO WE MEAN BY INTEGRATED THINKING?
+Integrated thinking is the active consideration by an organisation of the relationships between its various
+operating and functional units and the capitals that the organisation uses or effects to create value over
+the short, medium and long term. Organisations that practice integrated thinking make a deliberate and
+coordinated effort to connect an organisation’s strategy, governance, performance and prospects as part
+of their sustainability journey.
+Sustainability is the integration of environmental, health, social, equity and economic vitality in order to
+create thriving, healthy, diverse and resilient communities for the present generation and generations to
+come. The practice of sustainability recognises how these issues are interconnected and requires a
+systems approach and an acknowledgement of complexity.
+X, Y and Z are the enabling competencies needed to engage in Integrated Thinking
+
+Z. BUSINESS ACUMEN
+The ability to make quick correct and/or focused strategic decisions and good judgements in a business or business division
+Z1 Business internal environment
+Using your understanding of the entity’s internal operations, assist in the process of making strategic decisions and good judgements in a business or business division
+Level Learning Outcomes Minimum content
+2 a) Evaluate the role of business in society by distinguishing between traditional
+measures of business success (including the drivers impacting profitability, cash
+flow and market orientation) and value creation in business (with reference to the
+six capitals)
+• The types and purposes of entities
+• Business models
+• Measures of business success, (including People, Planet, Prosperity and Profit; and ESG)
+• Integrated reporting
+o What is integrated reporting
+o Value Creation and the 6 capitals
+• Business organisation structure and design (private and public sector)
+o Business processes, including:
+o Marketing
+o Sales
+o Supply chain management
+o Production
+o Research and development
+o Human resources
+o Finance
+o Use UN SDG’s
+o Stakeholder theory (I2 Business ethics)
+o Stakeholder Inclusivity
+o Stakeholder Engagement
+b) Distinguish between different types of entities (profit, non-profit and public sector)
+and the roles they play in society
+c) Describe how an organisation creates value through the business model
+d) Describe an organisation’s business model taking cognisance of its various capital
+resources used to optimise value creation for stakeholders (e.g. customers (provide
+revenue by buying products), shareholders (provide capital), employees (provide
+talents and skills) and suppliers (provide products and services internally or
+externally)
+e) Align the organisation’s context with its governance, strategy and its business
+model
+See UN SDGs
+f) Use a holistic perspective to interpret an organisation’s business processes
+(including how it serves stakeholders such as customers, employees, surrounding
+community and investors)
+Read widely
+
+Z2 Business external environment
+Using your understanding of the entity’s’ external environment, assist in the process of making strategic decisions and good judgements in a business or business division
+Level Learning Outcomes Minimum content
+2 a) Describe the effect of local and global influences (including stakeholder
+relationships) on measures of business success and value creation
+• UN Sustainable Development Goals
+• Stakeholders and stakeholder relationships
+• Political systems and decision-making
+• Public Sector vs Private sector (role and importance of the public sector) (refer to
+paragraph D4 for clarification of expectations relating to the expected level of competence
+regarding the public sector))
+• Micro-economic factors
+o Market forces (supply / demand)
+o Elasticity
+o Consumer demand theory
+o Theory of capital markets
+o Competition
+o The labour market
+o Inequality and distribution
+o Externalities
+o Gains from trade
+o The role of government
+• Macro-economic factors
+o Measuring national income
+o Aggregated demand / supply
+o The multiplier
+o Money, banking and monetary policy
+o Unemployment
+o Inflation and deflation
+o International trade
+o Exchange rates
+o Open and closed economies
+o Market efficiency
+o Productivity and growth
+• Tax Policy (refer to E1.1)
+• Social and demographic factors
+o Social and demographic trends
+b) Interpret the influence of the external environment (political, economic, tax policy
+related, social, technological, legal, and environmental) on and as context for an
+organisation’s strategy, business model and processes
+c) Use a broad perspective (taking into account, for example, competitive advantage
+and threats, industry trends, emerging technology/industry disruptors, market
+opportunities, stakeholder focus) together with an organisation’s mission/strategy,
+to analyse an organisation’s business model
+d) Connect business strategies with global priorities (with reference to the six
+capitals)
+
+Z2 Business external environment
+Using your understanding of the entity’s’ external environment, assist in the process of making strategic decisions and good judgements in a business or business division
+Level Learning Outcomes Minimum content
+o Social structure, values, attitudes
+• Technological factors
+o Refer W ‘Digital Acumen’
+• Legal factors
+o Refer E2 ‘Compliance with Laws and Regulations’
+• Sustainability factors
+o Wicked problems (climate change, resource depletion, ecosystem degradation,
+biodiversity loss, natural resource depletion etc.) Stakeholder attitudes, Shareholder
+Activism
+Z3 Innovation and creativity
+Developing new concepts, innovative ways or new ideas promoting a business success or wide-spread use, using a questioning or inquisitive mind-set.
+Level Learning Outcomes Minimum content
+1 a) Recognise the need to address problems or situations from a fresh perspective and
+challenge existing paradigms and ways of doing business
+• Explore techniques to develop innovation and creativity
+• Case studies on innovative business leaders and innovative business models
+b) Demonstrate appreciation for the need to explore innovative or different
+approaches to a particular problem or situation / Demonstrate a curious mind-set
+c) Identify opportunities for innovation and ways to improve business outcomes
+
+Y DECISION MAKING ACUMEN
+This competency area refers to cognitive processes to decide on actions or between alternatives and includes analytical / critical thinking, integrative thinking,
+problem-solving, judgement and decision-making and professional scepticism
+The Academic Programme should assist in development of these acumens by providing different opportunities to develop or demonstrate these acumens. Students on the CA
+programme should, however, seek and be offered examples of opportunities outside the formal academic programme environment to further develop these learning outcomes.
+Y1 Critical thinking
+Research, investigate, critically analyse, reflect and apply professional judgement to the evaluation of data and information from a variety of sources and perspectives.
+Level Learning Outcomes
+3 a) Demonstrate an intellectually disciplined questioning mind-set to develop a purpose, problem or question.
+b) Source, select and manage information (quantitative as well as qualitative) from multiple sources and perspectives through research, analysis, synthesis and integration
+c) Conceptualise, apply, analyse, synthesize, and evaluate information gathered
+d) Identify, and question/challenge information / assumptions, empirical grounding, and bias behind received and discovered information to gain a high level of understanding
+and to interpret the results or analysis
+e) Use critical analysis and reasoning strategies or techniques to uncover key and/or underlying issues, and identify connections or patterns across diverse situations
+f) Recognise causes, implications and consequences of actions/events to facilitate informed decision-making
+Y2 Integrative thinking
+Integrative thinking is a decision-making approach for complex problems based on finding new, creative solutions rather than merely choosing the best solution from a list of
+alternatives.
+Level Learning Outcomes
+2 a) Synthesise and make sense of ideas and information from a variety of sources to create a design, formulate a plan, arrive at a viable solution to a problem, obtain a
+broader understanding of an issue etc.
+b) Apply the above (a) in the interpretation, analysis and evaluation of financial and non-financial information for impactful decision-making
+
+Y3 Problem solving
+Collate and compare information from multiple sources to correctly define a problem, assess alternative solutions against decision criteria and make the optimal decision.
+Level Learning Outcomes
+3 a) Use a questioning mind-set during problem identification and analysis
+1 b) Weigh the relevance and accuracy of information; challenge assumptions, and probe for detail
+3 c) Use reasoning, critical analysis and innovative thinking to identify likely impacts of different issues and the implications of corresponding courses of action
+2 d) Demonstrate flexibility, creativity and innovation in generating solutions and identifying new opportunities
+3 e) Make decisions and recommendations on a rational and timely basis, supported by facts and research
+2 f) Identify when to seek assistance from experts/specialists to expedite problem-solving, decision-making and/ or reaching conclusions (based on theoretical scenarios
+provided)
+Y4 Judgement and decision-making
+The ability to make considered and effective decisions, come to sensible conclusions, perceive and distinguish relationships, understand situations, and form objective opinions/
+Level Learning Outcomes
+2 a) Remain aware of the impact of personal biases on decision-making
+b) Determine for each alternative course of action:
+(i) likely outcome
+(ii) apparent effectiveness of addressing the root causes of problems
+(iii) feasibility of effective implementation
+(iv) stakeholder support for effective implementation
+(v) ranking in relation to the other identified courses of action
+c) Use evidence, experience and technical competencies to make insightful decisions through an interrelated process that includes the following steps:
+(i) Determine the scope of the matter/problem
+(ii) Collect and verify relevant financial and non-financial information
+(iii) Apply accumulated knowledge and experience and make use of appropriate concepts, principles, and procedures while also responding appropriately to statutory
+and professional requirements, regulations and policies (with due recognition of stakeholder interests, and protection of public interest), to investigate a context-
+based course of action
+(iv) Negotiate and reconcile differing views to find acceptable compromises leading to agreement where possible
+(v) Recommend, justify and prioritise the decision, solution, conclusion or course of action based on degree of urgency or some other criterion
+(vi) Recognise the wider potential impact of decisions and the potential internal and external responses
+
+Y5 Professional scepticism
+Having a questioning mind. Being alert to anything that may indicate misstatement due to error or fraud. Critically assessing evidence.
+Level Learning Outcomes
+2 Apply a diligent and impartial mind-set when making enquiries or questioning others:
+a) Obtain and understand information in order to challenge views developed by others
+b) Evaluate the integrity of the information, its source, and the appropriateness of the presentation
+c) Withhold judgement until completion of a thoughtful consideration of known information in relation to available facts
+d) Demonstrate divergent thinking by recognising subtle and patent links between available information sources to find explanations for situations that might not otherwise
+be discovered
+e) Demonstrate convergent thinking by testing the plausible explanations through evaluation of assumptions and identification of potential bias and other impediments (e.g.,
+flawed arguments or contradictions)
+f) Demonstrate the ability and willingness to stand one’s ground when facing pressure to act in haste or change one’s view
+
+X RELATIONAL ACUMEN
+Relational acumen is defined as the “art of developing relationships” (Churchley, Neufeld, Purvey, 2013). It is the ability to develop, maintain and adapt relationships
+and stakeholder networks to ensure facilitation of required action; the delivery of relevant feedback and the development of relational trust
+The Academic Programme should assist in development of these acumens by providing different opportunities to develop or demonstrate these acumens. Each prospective CA
+should, however, take ownership of developing these acumens using both the formal academic programme and other opportunities “outside the classroom” during their tertiary
+studies.
+The minimum content column contains non-exhaustive examples of the tasks and related proficiency level that should be reached by the end of the Academic Programme.
+X1 Communication skills
+Effectively convey information and ideas to individuals and groups in a variety of situations in a focused way using verbal and non-verbal techniques and skills.
+Level Learning Outcomes Learning outcome contextualised for academic programme and minimum content
+2 a) Apply effective listening and discussion techniques to obtain and clarify relevant
+information
+Be able to take part in discussions (such as group or class discussions) to obtain and clarify
+relevant information with the use of prompts/guidance from the facilitator.
+Obtaining and clarifying information as demonstrated in written assessments.
+Suggested minimum content
+• Different models for listening e.g. HUIRIER model
+• Discriminative, informational, critical and empathetic listening
+3 b) Communicate (verbally and non-verbally) using clear and concise messaging, in a
+professional manner, appropriate to the audience and situation, and consider
+cultural and language differences (where necessary)
+• Be able to apply verbal and non-verbal communication skills in day to day and professional
+communication (such as team or client discussions, meetings or conference calls) as
+explained below:
+o Use messaging that is appropriate to the audience and situation with limited guidance
+sought from a more experienced CA or other professional.
+o Be able to take responsibility for basic communication, have communication reviewed
+where necessary and seek guidance when required.
+o Be able to adjust the content and messaging to the appropriate audience and situation.
+• Agreed upon deliverables which require formal communication (such as a formal client
+presentation, audit committee document, technical report, or formal memo to a client) is
+addressed appropriately as set out in (d) “Apply contemporary presentation modes...” and
+(e) “Prepare written correspondence...” below.
+Suggested minimum content
+
+X1 Communication skills
+Effectively convey information and ideas to individuals and groups in a variety of situations in a focused way using verbal and non-verbal techniques and skills.
+Level Learning Outcomes Learning outcome contextualised for academic programme and minimum content
+• Types of non-verbal communication e.g. kinesics, haptics etc.
+• Functions of non-verbal communication e.g. complementing, substituting, contradicting,
+accenting, repeating, regulating
+3 c) Communicate in writing using clear and concise messaging (incorporating
+visuals where appropriate) that is professional, appropriate to the audience and
+situation, considers any legal, ethical, regulatory and business requirements
+(where appropriate), and consider cultural and language differences (where
+necessary)
+• Be able to apply written communication skills in day to day and professional communication
+(such as reports, memos etc) as explained below:
+o Use messaging that is appropriate to the audience and situation with limited guidance
+sought from a more experienced CA or other professional.
+o Be able to take responsibility for basic communication, have communication reviewed
+where necessary and seek guidance when required.
+o Be able to adjust the content and messaging to the appropriate audience and situation.
+• Agreed upon deliverables which require formal communication (such as a formal client
+presentation, audit committee document, technical report, or formal memo to a client) is
+addressed appropriately as set out in (d) “Apply contemporary presentation modes...” and
+(e) “Prepare written correspondence...” below.
+X2 Leadership skills
+Work with others and manage and lead teams.
+Level Learning Outcomes Minimum content
+2 a) Use visible strategic direction to motivate and facilitate others’ efforts to excel, in
+an accountable, responsible and selfless manner
+Content from I2 (Business Ethics) above: Responsible leadership
+b) Proactively/pre-emptively take the lead to foster collaboration and influence others
+to work towards a common goal, and to challenge them to deliver quality work that
+meets high standards
+Content from I2 (Business Ethics) above: Responsible leadership
+c) Empower and develop others by providing advice, support and mentorship Content from I2 (Business Ethics) above: Responsible leadership
+3 d) Treat others respectfully, courteously and equitably Content from II1 (Personal Citizenship) above: Citizenship and the responsibilities of the
+individual as a member of multiple communities
+
+X3 People skills
+People skills are patterns of behaviour and behavioural interactions. Among people, it is an umbrella term for skills under three related set of abilities: personal effectiveness,
+interaction skills, and intercession skills
+Level Learning Outcomes Minimum content
+1 a) Apply personal influence and negotiation skills and facilitate discussions and
+understanding between parties, influencing and negotiating where needed, to
+reach consensus.
+Content from II1 (Personal Citizenship) above: Citizenship and the responsibilities of the
+individual as a member of multiple communities
+b) Apply conflict resolution skills to minimise impact of or resolve conflict Content from I1 (Personal Ethics): Worldviews, ethics, values, norms.
+Factors shaping the development of identity and values, including
+• Family and community
+• Culture
+• Social context
+• Belief systems i.e. religious and secular
+3 c) Apply consultative skills to obtain information, solve problems and/or maximise
+benefits from opportunities
+Content from Z3 (Innovation and Creativity)
+d) Apply self-management skills to work independently, and to manage work pressure
+and its impact on others
+Content from II1 (Personal Citizenship) above: Citizenship and the responsibilities of the
+individual as a member of multiple communities
+e) Adapt to the management and leadership styles and cultures of an organisation Content from I1 (Personal Ethics): Worldviews, ethics, values, norms.
+Factors shaping the development of identity and values.
+3 f) Apply personal influence and negotiation skills to persuade others and build
+consensus. Voice own opinion and debate in an effective manner
+Content from II1 (Personal Citizenship) above: Citizenship and the responsibilities of the
+individual as a member of multiple communities
+Content from I1 (Personal Ethics): Worldviews, ethics, values, norms.
+Factors shaping the development of identity and values.
+2 g) Be cognisant of cultural differences Content from II1 (Personal Citizenship) above: Citizenship and the responsibilities of the
+individual as a member of multiple communities
+Content from I1 (Personal Ethics): Worldviews, ethics, values, norms.
+Factors shaping the development of identity and values.
+X4 Relationship-building skills
+Build authentic relationships and effective collaboration across a wide range of teams and stakeholders
+
+X4 Relationship-building skills
+Level Learning Outcomes Learning outcome contextualised for academic programme
+1 a) Identify when it is appropriate to seek assistance from experts/specialists to solve
+problems, make decisions and/or reach conclusions
+Identify within the context of the A4 world (theoretically), when to seek assistance from experts
+or specialists
+b) Seek opportunities and build strategic professional relationships (also cross-
+functional business partnerships) to achieve common goals
+Be able to build relationships with some members of a team/small group (this could be group
+work within the Academic Programme or other team settings outside the formal classroom
+environment such as sport teams or clubs).
+c) Identify and apply strategies to proactively build relationships, networks and
+alliances
+Understand the importance of networking and relationships with a professional role.
+X5 Teamwork
+Interrelated abilities that let you work effectively in an organised group. Teamwork happens when people cooperate and use their individual skills to achieve common goals.
+Level Learning Outcomes Minimum content
+3 a) Work effectively with others as a resourceful and trustworthy team member through
+sharing knowledge, cooperating and / or collaborating to achieve team goals
+Content from II1 (Personal Citizenship) above: Citizenship and the responsibilities of the
+individual as a member of multiple communities
+Content from I1 (Personal Ethics): Worldviews, ethics, values, norms.
+Factors shaping the development of identity and values.
+2 b) Apply delegation skills to effectively manage teams and projects, thus ensuring
+timeous and quality outcomes
+Be able to allocate responsibilities and manage the progress of others in small group/team
+settings (these could be group work within the Academic Programme or other team settings
+such as sport teams or clubs).
+c) Manage conflict between individuals and across teams Content from I1 (Personal Ethics): Worldviews, ethics, values, norms.
+Factors shaping the development of identity and values.
+3 d) Assume shared responsibility Content from II1 (Personal Citizenship) above: Citizenship and the responsibilities of the
+individual as a member of multiple communities
+e) Value individual contributions by team members Content from II1 (Personal Citizenship) above: Citizenship and the responsibilities of the
+individual as a member of multiple communities
+X6 Self-management
+Plan and manage personal development and appreciate how personal strengths and weaknesses may impact work, learning and goal attainment.
+Level Learning Outcomes Learning outcome contextualised for academic programme
+3 a) Manages self by working independently and diligently Be able to apply these skills to the demands of the Academic Programme with limited
+
+X6 Self-management
+b) Display self-management skills to work independently and manage time and
+work pressure, being cognisant of the impact of this on others
+assistance.
+c) Individual manages their overall well-being (balanced lifestyle)
+d) Set appropriate goals, monitor and self-reflect on own performance
+X7 Managing others
+Work with others and manage and lead teams.
+Level Learning Outcomes Learning outcome contextualised for academic programme
+2 a) Apply skills of planning, resource allocation and delegation to effectively manage
+teams and projects, thus ensuring timeous and quality outcomes
+Be able to apply these skills to the demands of the Academic Programme with limited
+assistance.
+b) Develop, organise and prioritise tasks (recognising their resource constraints) and
+mange progress so as to achieve professional commitments/outcomes
+Prioritising your studies and managing your progress
+c) Oversee team members’ progress and performance in the context of tasks, plans,
+projects or operational activities
+Be able to manage the progress of others in small group/team settings (these could be group
+work within the Academic Programme or other team settings such as sport teams or clubs).
+d) Provide constructive feedback Content from I2 (Business Ethics) above: Responsible leadership
+
+W DIGITAL ACUMEN
+This competency area refers to digital topics that influence ways of work and business decisions and includes computational thinking, data knowledge and strategy,
+data analytics, new developments and protocols, cyber security and user competencies.
+Digital acumen is made up of two types of competencies:
+• W1: Enabling
+• W2 – W7: Technical (minimum knowledge is therefore defined)
+Proficiency levels for the above must therefore be interpreted in line with each type of competency
+W1 Computational thinking
+Computational thinking is a set of problem-solving methods that involve expressing problems and their solutions in ways that a computer could also execute.
+Level Learning Outcomes Minimum content
+3 a) Decomposition of problem into smaller sub-problems • Be able to communicate a problem to a computer (using the four pillars on the left), who will
+then solve the problem on behalf of the human. Then be able to interpret the result
+presented by the computer
+• Implement and/or interpret a basic computer program by using and understanding:
+o Variables
+o Expressions
+o Conditional Statements
+o Loops
+o Functions
+o Objects
+b) Find patterns (similarities, shared characteristics) among the sub-problems
+c) Determine relevant characteristics and discard irrelevant characteristics
+d) Write an algorithm to solve a problem, using any programming language (such as
+Microsoft VBA, Python)
+e) Evaluate the appropriateness of a presented algorithm to solve a problem
+Note: Proficiency levels detailed below (W2 to W7) are to be read in line with the Technical competency proficiency levels as this part of the digital acumen is more in line with the
+technical competencies. (i.e. has a knowledge component as well as an application and problem-solving component).
+It is critical that the below competencies and learning outcomes are integrated fully with all aspects of the technical competencies in the value creation process.
+
+W2 Data knowledge and strategy
+Understanding the types of financial and non-financial information available within an entity, identifying possible relationships between data sets, requesting the required data
+(including normalisation (clean-up) thereof), understanding the security and privacy risks associated with the use, storage and transfer of data, and understanding the importance
+of the implementation of sufficient data protection policies and controls. Advanced data management should be performed by expert data scientists and/or IT experts.
+Level Learning Outcomes Minimum content
+2 a) Explain underlying characteristics of basic data concepts (such as data structures,
+data files, databases, normalisation of data and metadata), taking cognizance of
+how these characteristics influence and interact with one another
+Data management techniques as it pertains to:
+• Various data sources (both financial and non-financial; structured and unstructured)
+• Accessing data from various sources
+• Sources and attributes of data
+• Data structures and models
+• Data files and databases
+• The normalisation (clean-up) of data and metadata
+• Data protection policies and controls
+• Data quality, accessibility, interoperability
+• The risks associated with data transfer.
+• Data protection, privacy, intellectual property rights and ethical issues applicable to the
+specific jurisdictions in which the data could be stored (e.g. POPI in SA, GDPR
+internationally)
+o Confidentiality of data
+o Integrity of data
+o Availability of data
+• Implications, risks and ethics of communication on social media
+• Understand policies versus processes
+b) Describe sources and forms of data8 (financial and non-financial, structured and
+unstructured)
+c) Know how and where to store data and access stored data (e.g., own location,
+service provider, cloud, etc.)
+d) Identify the risks, compliance requirements and consequences associated with the
+specific environments in which data is stored (including geographical legal
+restrictions in some areas (e.g., POPI in SA, GDPR)
+e) Identify and distinguish between the ways in which access to data should be
+controlled (data classification), and determine the consequent risks if the necessary
+controls are not implemented
+f) Identify and distinguish between the ways in which local data and data-in-transit
+should be controlled (including data in transit between systems, and the interfaces
+involved in the process), and determine the risks (including not reaching a business
+objective) if the necessary controls are not implemented
+1 g) Explain data strategies that deal with data privacy, including ethical issues in data
+management
+h) Explain data strategies that deal with intellectual property rights in data
+management
+8 Including big data, characterised by its volume, variety, velocity and veracity, and the value of data being created/generated
+
+W2 Data knowledge and strategy
+Understanding the types of financial and non-financial information available within an entity, identifying possible relationships between data sets, requesting the required data
+(including normalisation (clean-up) thereof), understanding the security and privacy risks associated with the use, storage and transfer of data, and understanding the importance
+of the implementation of sufficient data protection policies and controls. Advanced data management should be performed by expert data scientists and/or IT experts.
+Level Learning Outcomes Minimum content
+2 i) In relation to the above matters evaluate policies
+W3 Data analytics
+Performing basic data modelling or where necessary requesting advanced data modelling by experts, and then interpreting the results, concluding and reporting/ presenting/
+communicating as applicable. The W2 competency comprises both a technical computer skill and the ability to apply the underlying technical competency.
+Level Learning Outcomes Minimum content
+2 a) Identify the practical challenges of data analytics (e.g., data volume and quality,
+and privacy, regulatory and ethical issues)
+• Data analytics techniques
+• The data analytics process:
+o Plan what data analytics are required
+o Access and prepare data for use
+o Consider the relevance and reliability of data
+o Perform the data analytics procedures
+o Evaluate the results
+• Principles of continuous auditing
+• Statistical data modelling techniques
+3 b) Use processes of inspection, extraction, transformation, loading (ETL) and
+modelling data (as discussed below) (see (e) to (h)) to discover information able to
+enhance problem solving and decision-making
+c) Use data analytic software tools to analyse data (e.g., ACL, IDEA, advanced
+Excel™ functions)
+2 d) Interpret the results to solve a defined business or audit problem and suggest
+further steps to be taken
+3 e) Data inspection:
+(i) Describe the elements of a specific business process by documenting the
+workflow
+(ii) Define the problem to be solved and determine clear measurement priorities
+(iii) For the data available, distinguish between relevant and irrelevant data for the
+problem to be solved
+(iv) Identify additional data that would be relevant to solve the problem.
+(v) Evaluate the input controls responsible for ensuring that the data captured and
+used is valid, accurate and complete
+f) Data extraction and loading: Examine the data (or evaluate the input controls used)
+to ensure that the data imported into the data analysis software is valid, accurate
+
+W3 Data analytics
+Performing basic data modelling or where necessary requesting advanced data modelling by experts, and then interpreting the results, concluding and reporting/ presenting/
+communicating as applicable. The W2 competency comprises both a technical computer skill and the ability to apply the underlying technical competency.
+Level Learning Outcomes Minimum content
+and complete
+g) Data transformation:
+(i) Perform data normalisation (clean-up) (e.g. standardisation of fields and
+records, removal of duplicates, verification of anomalies, sorting of data)
+(ii) Identify anomalies in the data by applying professional scepticism
+h) Data modelling:
+(i) Classify the relevant fields based on its data type (e.g., dichotomous, nominal,
+ordinal, interval, ratio)
+(ii) Choose appropriate analytical methods and identify alternative approaches,
+taking the data types and the specific analytical task into account
+(iii) Perform descriptive statistics to measure central tendencies and the variability
+of the data
+(iv) Identify and explain the assumptions of multiple linear regression
+(v) Perform a multiple linear regression using data analytics software tools to
+predict the outcome of a variable based on the value of two or more variables
+(vi) Identify relationships between data in different forms and different data sets,
+and build relationship models between data sets to achieve a business or audit
+objective
+(vii) Use appropriate techniques to identify outliers
+(viii) Evaluate the validity and accuracy of the results by applying professional
+scepticism
+W4 Automation
+Automation is the technology by which a process or procedure is performed with minimal human assistance
+Level Learning Outcomes Minimum content
+3 a) Identify opportunities to automate and / or modernise processes and evaluate the
+benefits and risks associated with this
+• Basic principles of automation, including identifying use cases and its underlying benefits
+and risks
+• Understand the level of automation required based on the data structures present in the
+
+W4 Automation
+b) Evaluate the need for cognitive computing systems in the automation process process (e.g. artificial intelligence, robotic process automation, required for unstructured
+data)
+• Understand the role of ethics in AI
+• Practically implementing automation on a routine task
+c) Build a command that automates a process
+W5 New developments and protocols (e.g. artificial intelligence (AI), blockchain, Internet of Things etc.)
+Level Learning Outcomes Minimum content
+1 a) Describe new developments and explain how they can be used (e.g., identify
+opportunities to address accounting and business problems, limitations, risks, etc.)
+Broad background on recent digital developments (e.g. annual Gartner Group report and
+Deloitte Tech Trend report) as it pertains to:
+• The different applications in a business environment (potential benefits, costs)
+• The limitations and risks associated with the use (including appropriateness for use in
+different business functions, interaction and compatibility with other areas of technology and
+existing processes)
+• Relevant general, application and data controls applicable to the use of new developments
+and protocols
+• Ethics of the use of technology and monetising data
+W6 Cyber security
+Cyber security is the practice of defending computers and servers, mobile devices, electronic systems, networks and data from malicious attacks
+Level Learning Outcomes Minimum content
+2 a) Explain the impact of cyber risks on the organisation • Broad background of:
+o Types of cyber threats and the sources and access points of such threats
+o The potential consequences of such threats
+• Controls to manage cyber threats, including:
+o Protection, detection and response (including best practices to secure and safeguard
+organisational IT infrastructure, laptops, other portable devices, software, cloud and other
+storage, data etc.)
+o The potential role of forensic analysis (i.e. detecting and documenting the course,
+reasons, culprits, and consequences of a security incident)
+o Public key cryptography (encryption and digital signatures)
+b) Identify available techniques to mitigate cyber risks
+
+W7 User competencies
+Use technology ethically as an enabler to optimise decision making and to promote business efficiencies and controls.
+Level Learning Outcomes Minimum content
+3 a) Apply word processing software skills in a manner relevant to an
+accounting/business context, to enhance communication (e.g., letters,
+memorandums, reports, working papers, and other written correspondence), so as
+to meet all legal, ethical, regulatory and business requirements,
+• Practically using the following software in an accounting/ business context:
+o Word processing software
+o Presentation software
+o Spreadsheet software
+o Accounting software
+o Digital collaboration platforms
+• Principles of copyright and licenses relevant to digital information and content
+• Controls relevant to securing and safeguarding IT resources and data
+b) Use presentation software in an accounting/ business context
+c) Use spreadsheet software in an accounting/ business context utilising advanced
+excel function such as more complex formula, short cut keys, macro;s or pivot
+tables for example
+d) Use accounting software to create and view financial transactions
+e) Communicate and collaborate with others using a wide range of digital devices,
+technologies and platforms
+f) Apply visualisation techniques and tools to develop simple dashboards
+g) Secure and safeguard information technology resources such as organisational IT
+infrastructure, laptops (and other portable devices), software, cloud (and other)
+storage, and data
+
+3. TECHNICAL COMPETENCIES IN THE VALUE CREATION PROCESS
+3.1. CAs(SA) have always been renowned for their technical competence and the development of
+these competencies is a key aspect of the academic programme. Technical competencies reflect
+the knowledge of CAs as professional accountants which enables them to deliver quality work in
+public practice, industry, the public sector, academia and more.
+3.2. Technical competence is defined as the ability to apply technical competencies (the content that
+makes up the subject of accountancy, as well as other business disciplines that together
+constitute the essential body of knowledge for CAs) and to perform a role to a defined standard.
+Technical competencies in the value creation process are categorized into six areas (1 Strategy
+and Governance, 2 Stewardship of Capitals, 3 Decision-making, 4 Reporting, 5 Compliance and
+6 Assurance and Related Services) and these are displayed in Figure 3.
+3.3. This competency framework uses an organisation’s value creation process to articulate the
+technical competencies. Such a process requires that the organisation adopt a business model
+for transforming inputs through business activities into outputs that lead to outcomes and aims
+that fulfil its strategic purpose and create sustainable value over the short, medium and long term
+(King IV, 2016). The organisation draws on various capitals (financial, manufactured, intellectual,
+human, social and relationship, and natural) as inputs and, through its business activities, these
+are converted to outputs which lead to outcomes (IIRC, 2013).
+3.4. Inputs: These relate to the capitals on which the organisation depends or that differentiate it and
+are seen to be material to understanding the robustness and resilience of the organisation’s
+
+business model (IIRC, 2013). The organisation’s strategy, providing a sense of identity and
+general direction, drives its business model. The CA(SA) as a professional accountant provides
+insights and impactful decisions that influence the organisation’s short-, medium- and long-term
+strategic objectives, and which culminate in the organisation’s business model. Those charged
+with governance have ultimate responsibility for how the organisation’s strategy, governance and
+performance lead to value creation over time (IIRC, 2013). The organisation’s strategy is
+achieved through implementing resource allocation plans (IIRC, 2013). For purpose of this
+framework, technical competencies on INPUTS comprise of STRATEGY AND GOVERNANCE
+matters to create sustainable value, including the organisation’s governance model, its business
+strategy, its business model and finance strategy, and also by taking into account tax strategy
+and tax risk management.
+3.5. Business activities: Capitals (stocks of value) on which the organisation depends to be
+successful are increased, decreased or transformed through its business activities (IIRC, 2013).
+CAs(SA), as professional accountants with the ability to interpret, analyse and evaluate financial
+and non-financial information, ideally position themselves to influence decision-making affecting
+the organisation’s business activities, for example having an impact on how the organisation
+differentiates itself in the marketplace, generates income, approaches the need to innovate and
+to adapts to change. For purposes of this framework, technical competencies on BUSINESS
+ACTIVITIES comprise of STEWARDSHIP OF CAPITALS (reporting fundamentals, business
+systems and processes, and risk management and control) and DECISION-MAKING to
+increase, decrease or transform capitals. The latter includes performance measurement for
+decision-making by management and other internal users of financial information, financing
+decisions, investment decisions, the use of derivatives, business valuation, performance
+management systems, decisions on financially troubled businesses as well as related tax law
+implications.
+3.6. Outputs leading to outcomes: Stakeholders are informed about the organisation’s outputs
+(e.g., financial position and performance, products and services) leading to outcomes (e.g., tax
+payments, net increase/decrease in the capitals) (IIRC, 2013). Various communications (for
+example integrated reports or other extended external reports, financial statements and tax
+returns) are used for this purpose. With his/her knowledge of financial and non-financial reporting
+standards, auditing standards, laws and regulations, the CA(SA) as a professional accountant is
+a key role player in reporting, assurance and compliance processes. For purpose of this
+framework, technical competencies on OUTPUTS leading to OUTCOMES comprises
+REPORTING on value creation, which includes performance measurement for external users of
+general-purpose financial statements for non-specialised profit-orientated entities, public sector
+entities and other not-for-profit entities. Technical competencies on COMPLIANCE address tax
+governance and laws and regulations. For ASSURANCE AND RELATED SERVICES, the
+technical competencies comprise concepts and principles of assurance engagements, audits of
+historical financial statements for non-specialised profit orientated entities, public sector entities,
+other not-for-profit entities, other assurance services and other related services.
+
+TECHNICAL COMPETENCIES IN THE VALUE CREATION PROCESS
+INPUTS
+AREA 1 SUB-CATEGORY
+A Strategy and
+governance to
+create sustainable
+value
+A1 Governance model
+A2 Business strategy
+A3 Aligning the business model with the business strategy
+A4 Finance strategy
+A5 Tax strategy
+BUSINESS ACTIVITIES
+AREA 2 SUB-CATEGORY
+B Stewardship of
+capitals: business
+processes and risk
+management
+B1 Reporting fundamentals
+B2 Business systems and processes
+B3 Risk management and control
+AREA 3 SUB-CATEGORY
+C Decision-making to
+increase, decrease
+or transform
+capitals
+C1 Performance measurement for decision-making by management
+and other internal users of financial information
+C2 Financing decisions
+C3 Investment decisions
+C4 Use of derivatives
+C5 Business valuation
+C6 Performance management systems
+C7 Financially troubled businesses
+C8 Tax law implications
+OUTPUTS LEADING TO OUTCOMES
+AREA 4 SUB-CATEGORY
+D Reporting on value
+creation
+D1 Performance measurement for users of extended external reports
+OUTPUTS LEADING TO OUTCOMES
+AREA 5 SUB-CATEGORY
+E Compliance E1 Tax governance
+E2 Laws and regulations
+
+AREA 6 SUB-CATEGORY
+F Assurance and
+related services
+F1 Concepts and principles of assurance engagements
+F2 Audits of historical financial statements of a non-specialised profit
+orientated entity
+F3 Audits of historical financial statements of a public sector entities
+F4 Other assurance services
+F5 Other related services
+Detailed information on technical competencies is presented in the tables below:
+
+AREA 1
+INPUTS
+STRATEGY AND GOVERNANCE TO CREATE SUSTAINABLE VALUE
+A1 GOVERNANCE MODEL
+This competency area refers to authority and accountability of role players in a governance process and includes the governance model of a business, including
+the fundamentals of governance (including governance theories and approaches to achieving effective governance), governance structures and practices as well
+as internal auditing as a governance mechanism.
+A1.1 Governance fundamentals
+Level Learning Outcome Minimum content
+2 Use different worldviews and theoretical underpinnings to interpret key stakeholder
+roles and responsibilities (agency theory, shareholder/stakeholder theory, Ubuntu)
+• Agency theory
+• Shareholder / stakeholder theory
+• Legitimacy theory
+• Social responsibility
+• Environmental responsibility
+• Ubuntu
+• Need for, and limitations of, corporate governance regulations
+• Difference approaches to achieving effective corporate governance (legislation and codes)
+A1.2 The entity’s governance structures and practices
+Level Learning Outcomes Minimum content
+3 a) Evaluate governance structures and practices of a profit company in terms of King
+IV (and successors) and relevant laws (e.g., Companies Act, 2008) and regulations
+• King IV Report
+o Sector supplements (awareness only)
+• Relevant sections of Companies Act – refer to Laws and Regulations (E2.1)
+• Relevant sections of the Public Finance Management Act – refer to Laws and Regulations
+(E2.1)
+• Relevant sections of the Municipal Finance Management Act – refer to Laws and
+1 b) Explain the governance structures and practices of organisations other than profit
+companies in terms of King IV (and successors) and relevant laws (e.g. PFMA) and
+regulations
+2 c) Analyse ways to align the governance structures and practices with the overall
+
+A1.2 The entity’s governance structures and practices
+Level Learning Outcomes Minimum content
+purpose of a profit company Regulations (E2.1)
+• Relevant sections of the Municipal Systems Act – refer to Laws and Regulations (E2.1)1 d) Explain ways to align the governance structures and practices with the overall
+purpose of organisations other than profit companies
+A.1.3 Internal audit
+Level Learning Outcomes Minimum content
+2 a) Assess the effectiveness of the internal audit function with reference to its status
+and scope, and whether reported findings are acted upon
+• ISA 610: Evaluating the Internal Audit Function
+• King IV Report: Assurance
+b) Discuss the participation of internal audit in an organisation’s combined assurance
+process
+A1.4 IT Governance
+Level Learning Outcome Minimum content
+1 Understand the IT governance structures and practices of the organisation Use an appropriate framework, e.g. COBIT
+A2 BUSINESS STRATEGY
+This competency area refers to actions and decisions of an organisation to achieve its goals and includes the strategy development process, the external and
+internal influences on the organisation’s business strategy, the IT and data strategy as well as the implementation of the developed business and other strategies
+A2.1 Strategy development process
+Level Learning Outcomes Minimum content
+2 a) Following a multi-capital management approach, analyse and align the overall
+purpose of an organisation (to provide sustainable value to the organisation and its
+stakeholders) with its context, vision, mission, values, and mandates
+• Definition of purpose, corporate values, objectives and strategies
+• Application of appropriate analysis tools for considering the internal and external
+environment.
+• Application of integrated thinking in strategy formulation.
+• Contrasting competitive strategy models.
+b) Facilitate and advise on the strategy development process of the organization
+
+A2.1 Strategy development process
+Level Learning Outcomes Minimum content
+c) Review key stakeholder roles and responsibilities in the organisation’s business
+plan and the execution of its business strategy
+• Identifying and recognising key stakeholders of an entity, and their interests and influence.
+d) Review the organisation’s strategic direction and highlight areas of potential value
+and risk
+A2.2 External and internal influences on the organisation’s strategy
+Level Learning Outcomes Minimum content
+2 a) Assess the contextual influencers on an organisation’s external and internal
+environment (also taking into account, economic, industry, competition, market,
+social, natural, technology and legal, regulatory, political spheres) by using relevant
+strategic analysis tools, frameworks and models
+• The drivers of change in the business ecosystem.
+• External and internal influences on an entity’s strategy
+o Macro opportunities and threats (economic, political, regulatory / legal, technological and
+competitive environment)
+o Internal strengths and weaknesses (structures, relationships, resources, systems and
+processes)
+o Natural environment and sustainability
+o Corporate culture
+o Human resource management
+o Industrial relations
+o Remuneration strategies
+o Motivational aspects
+o Goal congruence and alignment
+o Code of conduct and ethical codes
+o The role of technology and the digital environment, transformation, and ecosystems.
+b) Review the impact of organisational internal factors (e.g., tone of the leadership,
+human resources policies, personnel selection and development, remuneration
+strategies, management/trade union relationships, the six capitals) on the
+organisation’s strategy
+c) Review the impact of events and activities related to the organisation’s context
+while creating their business strategy
+d) Identify and evaluate significant opportunities and risks associated with the entity’s
+external and internal environments
+A2.3 Implementing strategy
+Level Learning Outcomes Minimum content
+3 a) Review context relevant models to appraise the organisation’s capabilities to
+achieve the business strategy and purpose
+• Context relevant strategy models
+• SWOT analysis
+• PESTLE analysis
+• Porters five forces
+b) Identify and evaluate significant business risks, strengths, weaknesses,
+opportunities and threats associated with the organisation’s external and internal
+environments
+
+A2.3 Implementing strategy
+Level Learning Outcomes Minimum content
+2 a) Prepare a strategic response to the organisation’s competitive environment by
+applying strategic analysis tools to identified external and internal factors
+• Use of the balanced scorecard in managing different aspects of the business, putting
+effective drivers in place.
+• Value chain analysis
+• Four corner’s analysis
+• Risk management models, critical success factors and key performance indicators.
+b) Assess the risk tolerance of the entity’s stakeholders’ and its balance with
+opportunity
+c) Identify priorities and actions either to mitigate critical risks or capitalise on
+opportunities
+d) Formulate insights into the impact of future opportunities and risks
+A2.4 IT and data strategy
+Level Learning Outcomes Minimum content
+2 a) Review the organisation’s overall IT and data strategy (e.g., data quality,
+accessibility, interoperability and compliance with standards)
+• Considering the efficiency and effectiveness of the entity’s IT solutions in meeting its IT
+needs and in helping to solve common business problems, based on the entity’s overall
+strategy
+• The feasibility of using the latest IT technologies
+• The manner in which the entity uses IT to obtain, create and disseminate information that
+helps to achieve its various strategies
+• The development of an appropriate IT structure, including committees to address the entity’s
+IT needs
+• The evaluation of the adequacy of the entity’s strategy regarding waste management with
+regard to IT hardware disposal
+• Cloud applications and services
+• Data analytics and interpretation
+• Accumulation, storage, use, protection and ethicality to big data use
+• Data use in intelligent systems such as neural networks and artificial intelligence
+• Interfacing machines and people
+• Process automation and artificial intelligence
+• Blockchain
+• The internet of things
+b) Analyse the impact of the organisation’s business strategy and business model and
+its data strategy and objectives
+c) Formulate recommendations on the organisation’s existing IT and data strategy
+
+A3 ALIGNING THE BUSINESS MODEL WITH THE BUSINESS STRATEGY
+This competency area refers to how an organisation’s strategy is embedded in a plan aimed at successful operation and includes the building blocks of the business
+model, disruptive business models, the change management process and building relations and growth strategies.
+A3.1 Building blocks of the business model
+Level Learning Outcomes Minimum content
+2 a) Assess the business model of the organisation in terms of its key building blocks • Key building blocks of the business model of the entity which may include:
+o Customer segments
+o Value propositions
+o Channels (communication, distribution and sales)
+o Customer relationships
+o Revenue streams
+o Key resources
+− Physical
+− Intellectual
+− Human
+− Financial
+− Digital
+o Key activities
+o Key partnerships
+o Cost structure
+o Assesses corporate culture
+o Utilises analytical tools for assessing feasibility of strategies formulated
+b) Consider and apply different perspectives to evaluate the organisation’s
+business model (e.g., risk, innovation, investment, etc.)
+c) Assess the organisation’s business model as a vehicle for the implementation of
+its business strategy
+d) Assess the organisation’s business model as a vehicle for long-term value
+creation for stakeholders
+A3.2 Disruptive business models
+Level Learning Outcomes Minimum content
+2 a) Assess the effectiveness or threat of disruptive business models • Utilising new technologies to reformulate value propositions
+• Unlearning and relearning business models
+• Reflective models to drive re-development
+• Monitoring the transient nature of digital value
+• Timing of disruptive models
+• Building an ecosystem
+b) Assess the organisational pursuit of, and responses to disruptive business
+models
+
+A3.3 Change management process
+Level Learning Outcomes Minimum content
+1 a) Evaluate how management changes impact on business strategy, other
+strategic plans, business plans and functional plans
+• Business plans
+• Complexity theory and organizational behaviour
+• French and raven's five bases of power
+• Hybrid organization theory
+• Informal organizational theory
+• Understanding systems with Mintzberg's organography
+• Context relevant change management theories and approaches
+b) Use organisational behaviour theories to evaluate the impact of changed
+strategic decisions on the performance of the organisation, divisions,
+teams/groups and individuals
+c) Use business objectives to monitor, evaluate and report on the progress and
+success of strategic change initiatives
+d) Evaluate the implementation processes of change management
+e) Identify and evaluate information that will help assess and manage the internal
+and external environment
+f) Identify and evaluate significant environmental trends as well as legitimate
+needs and expectations of stakeholders and assesses their implications for the
+entity in meeting its overall objectives
+g) Identify the entity’s material impact on environmental, economic and social
+systems and consequently identifies any risks relating to the entity’s continuity
+A3.4 Building relations and growth strategies
+Level Learning Outcomes Minimum content
+2 a) Evaluate different growth strategies (e.g., organic, mergers and acquisitions,
+joint ventures, strategic alliances, divestment decisions) which the organisation
+could implement, taking cognisance of its overall objectives and the creation of
+value
+• Acquisitions, takeovers, restructurings
+• Issues that can arise from a change in control
+• Due diligence, risks
+• Corporate culture
+• Stakeholder theoryb) Analyse stakeholder profiles to identify potential strategic alliances and
+partnerships
+c) Evaluate stakeholder potential to achieve and improve joint efficiencies.
+
+A.4 FINANCE STRATEGY
+This competency area refers to actions and decisions of an organisation to achieve its finance goals and includes the organisation’s finance plan (including the
+finance strategy), factors influencing the finance strategy and the appraisal of the finance strategy
+A4.1 Finance plan
+Level Learning Outcome Minimum content
+2 Evaluate the organisation’s finance plan in the context of its business needs, overall
+finance strategy and business strategy
+• Purpose of the firm
+• Inclusive capitalism
+• Multi stakeholder approach
+• Sustainable wealth creation
+• Efficiency of markets
+• Socio-economic conditions
+• Agency problem
+• Employment
+• Transformation
+• The six capitals (<IR> Framework)
+• Triple context – Economy, society, environment
+• ESG
+• Forms of business organisations
+A4.2 Factors influencing the finance strategy
+Level Learning Outcome Minimum content
+2 Identify and analyse environmental factors (e.g., financial markets (national and
+global) and other relevant factors (refer to A2.2)) to determine the influence thereof on
+the finance strategy of the organisation
+Refer Business Strategy (A2.2) and Finance Strategy (A4.1)
+A4.3 Appraise the finance strategy
+Level Learning Outcomes Minimum content
+3 a) Assess models used to appraise the organisation’s finance strategy; ensure that it
+is aligned with the organisation’s value creation objective, supports business need
+and ensures appropriate resources are allocated
+• Form of ownership (e.g. public vs private company, proprietorship, partnership)
+• Extent of ownership (e.g. direct investment vs outsourcing or strategic alliances)
+b) Advise on appropriate finance strategy, including value creation for stakeholders
+
+A.5 TAX STRATEGY
+This competency area refers to actions and decisions of an organisation to achieve its tax goals and includes the organisation’s tax strategy, tax risk management
+and tax morality.
+A5.1 Tax strategy
+Level Learning Outcomes Minimum content
+1 a) Identify the tax strategy of the business and explain how the organisation’s internal
+and external environments influence the tax strategy of a business
+• The relevant tax strategy concepts
+o Tax optimisation as a contribution to society vs tax minimisation as a business expense
+o Tax minimisation vs tax avoidance vs tax evasion
+o Tax incidence
+• South African developments framing strategy in the context of taxation, for example King
+reports
+• Refer to Ethics and Citizenship (I and II)
+• Refer to Business internal environment (Z1) and Business external environment (Z2)
+• Refer to Business Strategy (A2) and Aligning the business model with the business strategy
+(A3)
+• Refer to Tax Landscape in South Africa (E1.1)
+b) Explain the tax implications of various legal forms and business structures and of
+self-employment vs employment status
+A5.2 Tax risk management
+Level Learning Outcomes Minimum content
+1 a) Identify tax risks associated with the entity’s external and internal environments • Financial risks associated with underpayment, overpayment or late payment of taxes
+• Non-financial risks (e.g., compliance, operational and reputational)
+• General and specific tax avoidance legislation
+• Interest, Refunds, Administrative and understatement penalties, Criminal offences
+• Emerging trends and forthcoming changes in tax related non-financial reporting. (Refer to
+Reporting Fundamentals (B1.1(k)))
+• Refer to Risk management and control (B3)
+• Refer to Business Acumen (Z)
+• Refer to Tax Landscape in South Africa (E1.1)
+b) Explain the relevant anti-avoidance legislation provisions including possible
+consequences of tax avoidance and tax evasion
+c) Identify when to seek assistance from tax experts to expedite problem-solving,
+decision-making and/ or reaching conclusions on tax matters
+d) Explain understatement and administrative non-compliance penalties and interest
+levied on late or under payment of taxation
+e) Explain the potential consequences of the non-compliance with tax legislation, the
+evasion of tax or obtaining undue refunds by fraud, or unauthorized filing of a return
+on behalf of a third party
+
+A5.3 Tax morality
+Level Learning Outcome Minimum content
+1 Explain the social contract between a citizen and the state framing the moral and legal
+responsibilities to contribute to the tax revenue of the state. The social contract could
+be described as an agreement between citizens and the state. The state creates
+prosperity and as a consequence the country requires a commitment from people
+through tax payments.
+Refer to Ethics and Citizenship (I and II).
+
+AREA 2
+BUSINESS ACTIVITIES
+B. STEWARDSHIP OF CAPITALS: BUSINESS PROCESSES AND RISK MANAGEMENT
+B1 REPORTING FUNDAMENTALS
+This competency area forms a base or core for knowledge on reporting knowledge and includes the fundamental reporting concepts and accounting information
+systems.
+B1.1 Fundamental reporting concepts
+Level Learning Outcomes Minimum content
+2 a) Identify users’ needs and develop a reporting approach by selecting suitable
+reporting and regulatory framework(s) which satisfies most users’ needs in general
+purpose reporting by:
+Refer also to the Principles of Examination for the IFRS Accounting Standards Syllabus
+(i) Considering the fundamental theories related to reporting Agency theory, stakeholder theory, legitimacy theory
+(ii) Considering the objective, usefulness and limitations of the available reporting
+frameworks
+IFRS, IFRS for SMEs, GRAP, <IR> Framework9, The Global Reporting Initiative, The UN’s
+Sustainable Development Goals
+(iii) Considering the objective, nature and characteristics of regulatory frameworks
+and requirements
+Companies Act, JSE Listings Requirements, King IV Report, Public Finance Management Act,
+Municipal Finance Management Act
+2 b) Apply the qualitative characteristics and principles of useful information IFRS, <IR> Framework
+2 c) Identify, define and evaluate appropriate reporting boundaries IFRS, <IR> Framework
+3 d) Identify, define and evaluate the different elements in reporting frameworks IFRS, <IR> Framework
+e) Apply the recognition and de-recognition criteria to an element IFRS
+9 Subject to developments in this area being monitored as part of the annual review of the Competency Framework. This applies to all reference to the <IR> Framework.
+
+B1.1 Fundamental reporting concepts
+Level Learning Outcomes Minimum content
+f) Select and apply a measurement basis to an element IFRS
+g) Critically analyse and prepare presentation and disclosures for a selected
+framework and reporting boundary
+IFRS, <IR> Framework
+1 h) Explain the concepts of capital and capital maintenance IFRS
+2 i) Critically analyse non-GAAP financial disclosures in an ethical manner IFRS
+1 j) Explain and contrast the various formats of reporting XBRL
+k) Identify and explain emerging trends and forthcoming changes in financial and non-
+financial reporting
+IFRS, <IR> Framework
+B1.2 Accounting information systems
+Level Learning Outcomes Minimum content
+3 a) Maintain an accounting information system that is manual, automated or a
+combination of both.
+Double-entry accounting system
+Types of accounting records:
+• Source records
+• Journals
+• Ledgers (including the chart of accounts)
+• Trial balances
+• Financial statements
+Refer to minimum content under W – Digital Acumen
+2 b) Evaluate the effectiveness and efficiency of an organisation’s accounting
+information system with reference to its needs and objectives and advise on
+opportunities to improve an entity’s system, particularly within the context of using
+automated technology solutions to improve the quality and efficiency of its functions
+Refer to minimum content under W - Digital Acumen and B2.1 Transaction business
+processes and digital technologies
+
+B2 BUSINESS SYSTEMS AND PROCESSES
+This competency area refers to a collection of workflow processes within a system and includes the transactional business processes and digital technologies used
+by a business to convert inputs into outputs.
+B2.1 Transactional business processes and digital technologies
+This section has to be read carefully in conjunction with the context in which competencies are to be developed and assessed in the academic programme in section A (refer to
+page 3). The entry level CA(SA) is usually going to be involved in financial systems and controls, but not in compliance and operational systems and controls. However, the CA(SA)
+has to have a sufficient awareness of compliance and operational systems and controls to be able to identify a potential risk arising from these systems and controls not being
+properly designed or implemented or not operating effectively.
+Level Learning Outcomes Minimum content
+a) Assess whether an organisation’s transactional business processes accurately
+report performance relative to stated objectives:
+• Basic principles of internal control (financial and non-financial)
+• Components of internal control
+• Business processes and cycles (e.g. sales and receivables, purchases and payables,
+production and inventory)
+• Control and business objectives, including control frameworks
+• Risk (including fraud risk) assessment processes
+• Basic principles of data analysis and visualization. Refer to Data Analytics (W3)
+• Broad background on recent digital developments (e.g. annual Gartner Group report and
+Deloitte Tech Trend report)
+2 (i) Financial objectives (e.g. financial performance / targets)
+1 (ii) Non-financial (e.g. human capital, environmental, operational and
+compliance) objectives
+2 b) Identify the risks pertaining to the organisation’s information system environment
+(hardware, software and networks)
+c) Design the internal controls for an organisation’s transactional business processes
+(including digital technologies) to reduce business risks (relating to completeness,
+accuracy, validity and integrity of information) to an acceptable level:
+2 (i) Financial internal controls
+1 (ii) Non-financial (e.g. operational and compliance) internal controls
+d) Evaluate the design of internal controls for an organisation’s transactional business
+processes (including digital technologies) to reduce business risks (relating to
+completeness, accuracy, validity and integrity of information) to an acceptable
+level:
+2 (i) Financial internal controls
+1 (ii) Non-financial (e.g. operational and compliance) internal controls
+
+B2.1 Transactional business processes and digital technologies
+This section has to be read carefully in conjunction with the context in which competencies are to be developed and assessed in the academic programme in section A (refer to
+page 3). The entry level CA(SA) is usually going to be involved in financial systems and controls, but not in compliance and operational systems and controls. However, the CA(SA)
+has to have a sufficient awareness of compliance and operational systems and controls to be able to identify a potential risk arising from these systems and controls not being
+properly designed or implemented or not operating effectively.
+Level Learning Outcomes Minimum content
+2 e) Assess the effectiveness of the organisation’s chart of accounts
+3 f) Review and analyse information and investigate possible signs of error, fraud and
+illegal acts (e.g., inconsistency of data, lack of completeness, unexpected trends)
+1 g) Describe possible IT and digital solutions to automate and improve existing
+processes and/or introduce new technologies by considering different alternatives,
+key factors and cost benefit implications
+B2.2 Transactional business processes and digital technologies
+Level Learning Outcomes Minimum content
+2 Advise on the organisation’s business processes, including account reconciliations
+and month-end closing, (such as receivables, accounts payable, inventory and
+production, human resources and payroll, investing and financing)
+• Basic principles of internal control
+• Components of internal control
+• Business processes and cycles (e.g. sales and receivables, purchases and payables,
+production and inventory)
+• Control and business objectives
+• Business frameworks, including control frameworks
+• Risk assessment processes
+• Basic principles of data analysis
+
+B3 RISK MANAGEMENT AND CONTROL
+This competency refers to actions and decisions to ensure effective operations, reliable information and compliance with rules and regulations. This area includes
+the risk management systems and processes, the control systems and processes, the combined assurance model within the organisation as well as the testing of
+controls for operational effectiveness.
+This section is intended to ensure a comprehensive, enterprise-wide view of an organisation. With regards to internal controls, the section should be read carefully in conjunction
+with the context in which competencies are to be developed and assessed in the academic programme in section A. The entry level CA(SA) is usually going to be involved in
+financial controls, but not in compliance and operational controls. However, the CA(SA) has to have a sufficient awareness of compliance and operational controls to be able to
+identify a potential risk arising from these controls not being properly designed or implemented or not operating effectively.
+B3.1 Risk management systems and processes
+Level Learning Outcomes Minimum content
+1 a) Explain the importance of integrating and standardising risk management
+processes across the organisation – taking into account the organisation’s risk
+management philosophy, risk management strategy and risk management
+processes
+• Value creation
+o Definition, strategy, measurement, management, reporting, use of six capitals, business
+models.
+• Vision and mission statements.
+• Integrity of information, data and reporting
+• Risk management in relation to value creation
+• Enterprise Risk Management (ERM)
+o Principles of risk management
+o Risk management frameworks (e.g. COSO – always the latest version, ISO 31000, etc.)
+o Enterprise-wide risk management (operational, financial, informational as well as strategic
+and environmental risks)
+o Risk management philosophy, strategy and governance (including consideration of the
+King Code and legislation where applicable – refer to E2: Laws and Regulations)
+o Risk maturity
+o Risk management policy
+o Risk management plan
+o Risk appetite vs risk tolerance limits
+o Identification of risk events/factors (including emerging and unusual risks)
+o Risk assessment (likelihood and impact)
+2 b) Use innovative/best practice approaches to managing significant business risks
+effectively and efficiently, such as an Enterprise Risk Management (ERM)
+framework
+2 c) Identify the impact and likelihood of strategic, operational, financial and
+informational risks to achieving business objectives (e.g., business sustainability
+and value creation over the short, medium and long term)
+1 d) Explain the process to monitor changes in the organisation’s risk environment to
+diagnose significant, unusual and emerging risks to which the business is exposed
+(use metrics such as key risk indicators)
+e) Identify effective controls or mitigation options for the organisation to manage risks,
+including unusual and emerging risks to which the business is exposed:
+2 (i) Financial risks and controls
+1 (ii) Non-financial (e.g., compliance and operational) risks and controls
+
+B3.1 Risk management systems and processes
+Level Learning Outcomes Minimum content
+f) Explain the possible consequences for the organisation of having an ineffective risk
+management programme and advise on improvements to controls or mitigation
+options to ensure appropriate risk responses for reasonably foreseeable
+emergency scenarios and events:
+o Risk response (including internal control, laws, regulations, policies, procedures,
+acceptance, transference, sharing of risk and avoidance)
+o Risk documentation – risk register – documenting risk identified, assessment of risk,
+o Risk monitoring through amongst others the use of key risk indicators (KRIs)
+o Risk assurance on the risk management process
+o Internal and external communication of risk, risk management and results.
+• Systems of internal controls, including the diagnosis (and recommendations for
+improvement) of weaknesses in these systems in risk reduction.
+• Possible consequences (and improvements) for an organisation having an ineffective risk
+management programme.
+2 (i) Financial risks, controls or other responses.
+1 (ii) Non-financial (e.g., compliance and operational) risks, controls or other
+responses
+2 g) Use risk reporting systems to communicate to others the risk management process
+and results, including recommendations for improvement
+B3.2 Control systems and processes
+Level Learning Outcomes Minimum content
+a) Review the organisation’s control frameworks and control policies across the
+organisation to determine effectiveness in achieving its business objectives and
+value creation:
+Control frameworks (e.g. COBIT)
+• general IT controls (change management, access, computer operations, business
+continuity management and disaster recovery planning, systems development life cycle,
+cyber security)
+• Information processing controls (application specific IT internal controls)
+• Artificial intelligence (AI - refer to New developments and protocols (e.g. artificial intelligence
+(AI), blockchain, Internet of Things etc.) (W5)
+• Realistic continuous auditing
+• Monitoring and improving the effectiveness of controls
+• Systems of internal controls, including the diagnosis (and recommendations for
+improvement) of weaknesses in these systems in risk reduction.
+2 (i) general IT controls such as change management, access, computer
+operations, business continuity management and disaster recovery planning,
+systems development life cycle, cyber security
+2 (ii) Information processing controls and the corollary impact on the organisations’
+reporting objectives (including risk of misstatements of account balances,
+class of transactions and disclosures.)
+b) Using the relationship between general IT controls, information processing controls
+and data controls, assess the effectiveness of controlling risks. Consider:
+(i) general IT controls such as change management, access, computer
+operations, business continuity management and disaster recovery planning,
+systems development life cycle, cyber security
+(ii) Information processing controls and the corollary impact on the organisations’
+reporting objectives (including risk of misstatements of account balances,
+class of transactions and disclosures.)
+
+B3.2 Control systems and processes
+Level Learning Outcomes Minimum content
+2 (i) for financial information-related systems
+1 (ii) for non-financial information-related systems
+2 c) Assess the impact of information processing controls on data acquisition,
+processing (including adaptive processes), reporting and decision making.
+1 d) Have an awareness that AI (refer to W5) can be implemented within an application
+as a control technique and ultimately should facilitate realistic continuous auditing
+e) Monitor compliance and effectiveness of controls
+(financial/operational/compliance), and propose recommendations to improve the
+effectiveness of existing controls to manage the business risks:
+2 (i) Financial related risks and controls.
+1 (ii) Non-financial (e.g. compliance and operational) risks and controls
+B.3.3 Test internal controls
+Level Learning Outcomes Minimum content
+2 a) Evaluate the operating effectiveness of internal control, including the use of
+Automated Tools and Techniques (ATTs) for all processes.
+• Objectives of testing internal controls
+• The need for and appropriateness of testing of controls
+• Formulating tests of controls in order to test the operating effectiveness thereof
+• Use of ATTs in testing internal controls
+• Analyse and report on the results of the tests of controls
+• Systems of internal controls, including the diagnosis (and recommendations for
+improvement) of weaknesses in these systems in risk reduction
+b) Identify improvements to the internal controls for the processes:
+2 (i) Financial controls
+1 (ii) Non-financial (compliance and operational) controls
+B3.4 Combined assurance as control system
+Level Learning Outcome Minimum content
+2 Assess the organisation’s combined assurance model to evaluate the effectiveness of
+the control environment in supporting the integrity of information, data and reporting
+• Control frameworks (e.g., COBIT)
+• General IT controls (change management, access, computer operations, business
+continuity management and disaster recovery planning, systems development life cycle,
+cyber security)
+• Information processing controls (application specific IT internal controls)
+
+B3.4 Combined assurance as control system
+Level Learning Outcome Minimum content
+• Artificial intelligence (AI - refer to New developments and protocols (e.g. artificial intelligence
+(AI), blockchain, Internet of Things etc.) (W5)
+• Realistic continuous auditing
+• Monitoring and improving the effectiveness of controls
+• Systems of internal controls, including the diagnosis (and recommendations for
+improvement) of weaknesses in these systems in risk reduction.
+
+AREA 3
+C. DECISION MAKING TO INCREASE, DECREASE OR TRANSFORM CAPITALS
+C1 PERFORMANCE MEASUREMENT FOR MANAGEMENT AND OTHER INTERNAL USERS OF FINANCIAL INFORMATION
+This competency refers to a set of activities and outputs for management and other internal users to reach the organization’s goals. This area includes decision-
+making based on price setting and capacity utilization information, decision-making based on budgeting and expenditure forecasting, internal cost allocation and
+transfer pricing options as well as uncertainty, volatility or inaccuracy, and consideration of qualitative factors in decision making
+C1.1 Decision-making based on price setting and capacity utilization information
+Level Learning Outcomes Minimum content
+2 a) Identify financial information that is relevant to decision-making regarding price
+setting and capacity utilisation
+• Criteria for relevant information
+• Nature of costs
+o Cost classification
+o Cost behaviour
+o Cost-volume-profit analysis
+o Cost estimation
+o High-low
+o Scatter graphs
+o Cost objects
+Application to decisions
+• Pricing strategies (long-term and short-term pricing, relevant costing)
+• Capacity utilization
+• Identification of the requirement for, and the ability to apply contribution per unit of limiting
+factors
+• Scenarios
+o Special orders
+o Make or buy
+o Product mix
+o Single or multiple constraints in existence
+o Sell or process further
+b) Apply techniques (e.g., target costing, value analysis and the product life cycle) to
+create solutions on alternative pricing options and capacity utilisations, by taking
+into account the implications of existing constraints; contribution per limiting factor
+(theory of constraints); applicability of basic principles of linear programming, and
+inter-relationships between constraints, where more than one constraint exists
+c) Advise on the financial impact of business decisions based on price setting and
+capacity utilisation
+
+C1.1 Decision-making based on price setting and capacity utilization information
+Level Learning Outcomes Minimum content
+o Product line decisions
+o Adding / dropping parts of operation
+o Cost Management
+• Theory of constraints
+• Activity-based costing
+• Activity-based management
+• Target costing
+• Life cycle costing
+• Value engineering
+C1.2 Decision-making based on budgeting and expenditure forecasting
+Level Learning Outcomes Minimum content
+2 a) Understand the budgeting and expenditure forecasting processes which translate
+the organisation’s business strategy into financial targets and tactical plans and
+that can be executed in a risk-controlled manner
+• Corporate strategy and long-term planning (as it relates to budgeting)
+• Budgeting
+o relevant costing
+o operating budgets (sales, production, procurement, and general and administrative) over
+an appropriate period of time
+o financial budgets (capital expenditures, working capital) over an appropriate period of
+time
+o special project budgets to be included in business plans
+o forecasts
+o short-term cash flow projections
+o long-term cash flow forecasts, identifying the need for financing
+• Variance analysis
+• Balance scorecard, including key performance indicators (KPIs)
+b) Use effective and consistent modelling, planning and forecasting processes
+across business unit(s) to benchmark performance and trends for decision-making
+c) Analyse the organisation’s actual performance (using financial and non-financial
+information) against the budgeting and expenditure forecasting information to
+interpret variances for decision-making
+C1.3 Decision-making based on internal cost allocation and transfer pricing options
+Level Learning Outcomes Minimum content
+2 a) Evaluate key business processes with regard to costs and income allocation to
+identify performance issues
+• Standard costing
+• Variance analysis
+• Absorption costing
+
+C1.3 Decision-making based on internal cost allocation and transfer pricing options
+Level Learning Outcomes Minimum content
+b) Evaluate costing methods (e.g., standard, marginal and absorption methods) to
+inform decision-making
+• Cost allocation
+• Divisional performance measurement
+• Designing standard costing systems
+• ABC and overhead analysis
+• Transfer pricing
+c) Interpret material, labour, variable/fixed overhead and associated variances to
+inform decision-making
+d) Evaluate how costing methods could be adapted to promote sustainability in the
+organisation’s value creation process
+e) Apply an appropriate basis to allocate indirect costs across business units
+f) Evaluate an organisation’s transfer pricing systems and the effects of transfer
+prices
+C1.4 Uncertainty, volatility or inaccuracy, and consideration of qualitative factors in decision-making
+Level Learning Outcomes Minimum content
+2 a) Perform sensitivity and scenario analyses on key variables affecting the financial
+outcome of the decision, and interpret the result of the calculation
+• Cost Volume Profit Analysis
+• Sensitivity and Scenario analyses
+• Risk and Uncertainty
+• Probabilities and distributions
+• Qualitative considerations under CVP, Relevant costing and Capital Budgeting
+b) Incorporate the possibility of various outcomes into the decision-making process,
+including the use of probabilities and expected values
+c) Assess alternatives and recommend a course of action, considering both
+quantitative and qualitative factors, and whether the proposed decision is
+consistent with the organisation’s strategic objectives and plans
+
+C2 FINANCING DECISIONS
+This competency area refers to actions and activities to raise capital and includes financing decisions taken by the organisation relating to its cash management,
+sources of funds, the distribution of profits and the appraisal of capital structures.
+C2.1 Cash management
+Level Learning Outcomes Minimum content
+3 a) Provide advice on cash management processes (analyse and evaluate cash flow
+and working capital), to ensure financial risks are managed or mitigated
+• Management of working capital
+o Accounts receivable
+o Inventories (including a basic knowledge of EOQ)
+o Accounts payable
+• Working capital cycle
+• Cash management (excluding Baumol & Miller-Ore)
+b) Develop strategies for managing and monitor the entity’s working capital
+2 c) Interpret cash management solutions (including foreign currency cash flows) for
+the organisation’s usual funding needs, also considering complex or unusual
+business requirements
+d) Assess alternative cash management solutions in the market and consider these
+in relation to the organisation’s strategic objectives
+C2.2 Sources of funds
+Level Learning Outcomes Minimum content
+1 a) Demonstrate knowledge of basic corporate funding arrangements, including how
+measures in capital and money markets function
+• Sources and forms of finance (including ESG-linked funding instruments):
+• Capital and money markets as potential sources of finance, initial public offering, rights
+issues
+• Venture capital (excluding tax) and private equity as potential sources of finance
+• Identification of possible markets and most appropriate market
+• Basic understanding of the workings of capital and money markets
+• Understanding the benefits and risks associated with debt funding
+• Long-, medium- and short-term finance
+• Asset securitization (excluding tax)
+• Discounting and factoring of accounts receivable (excluding tax)
+• Leases and project specific finance (refer also 3.1)
+• Foreign finance
+• Crowd funding
+3 b) Evaluate possible sources of funding available to the organisation taking into
+consideration its size and stage of development (e.g., crowd sourcing for start-up
+businesses) and identify the most appropriate sources of funding to achieve its
+business strategies and objectives, including value creation for stakeholders
+c) Recommend appropriate funding arrangements after consideration of related
+consequences, costs, benefits, implications for operational and future financing
+decisions and tax, and other legal implications
+d) Develop a financial proposal or financing plan that agrees with outcomes in the
+organisation’s strategic objectives
+
+C2.2 Sources of funds
+Level Learning Outcomes Minimum content
+• Consider classification requirements in terms of IAS 32
+C2.3 Decisions related to distribution of profits
+Level Learning Outcomes Minimum content
+2 a) Analyse the manner in which an entity distributes cash or assets to shareholders
+by means of dividends or share buybacks
+The dividend decision:
+• Factors affecting the dividend decision
+• Relevance and irrelevance theories
+• Setting appropriate dividend policies
+• Scrip dividends
+• Share buy-backs
+• Regulation
+b) Recommend the most appropriate method to distribute profits
+C2.4 Capital structure appraisal
+Level Learning Outcomes Minimum content
+3 a) Use appropriate modelling techniques to estimate an organisation’s cost of capital
+using an appropriate methodology
+• The cost of capital
+o Cost of debt
+o Cost of preference shares
+o Cost of equity (including shortcomings of models including CAPM)
+o Consider factors affecting cost of equity (such as dividends, and the capital asset pricing
+model (including asset specific betas))
+o Weighted average cost of capital (including consideration of the appropriateness of using
+WACC)
+o Shortcomings of using the WACC
+o Project specific cost of capital
+• Interaction of the investment and financing decisions
+• Cost of capital for foreign investments
+• Capital structure
+o Theory of capital structure and the effect thereof on the market value of the company (only
+understanding of Miller Modigliani’s theory is required)
+2 b) Assess and consider an optimal capital structure for the organisation (quantitatively
+and qualitatively) by challenging shareholder models, and linking capital structures
+to value creation for stakeholders
+
+C3 INVESTMENT DECISIONS
+This competency area refers to the determination of how much, when and where capital needs to be spend or debit need to be acquired to reach the goals of the
+organisation. It includes investment decisions taken by the organisation relating to the appraisal of its capital investment and allocation of capital.
+3.1 Capital investment appraisal
+Level Learning Outcomes Minimum content
+3 a) Appraise major capital expenditure and investment decisions using appropriate
+capital budgeting techniques (large complex projects and expenditure relating to
+e.g., property, plant and equipment, and research and development, foreign capital
+projects)
+• Capital budgeting decisions
+o Replacement
+o Acquisition of new capital assets
+o Strategic management decisions
+o Decisions under conditions of uncertainty
+• Capital budgeting techniques
+o Net present value
+o Payback and discounted payback
+o Internal rate of return
+o Modified internal rate of return
+o Accounting rate of return
+o Real option analysis
+• Asset specific finance
+o Lease versus borrowing
+o ESG-linked financing
+• Issues in capital investment appraisal
+o Differing project life cycles
+o Capital rationing
+o Possibility of abandonment or expansion
+o Impact of inflation
+o Analysis of and allowance for risk
+o Probabilities and decision trees
+o Sensitivity analysis (including the use of equivalent annual annuities)
+o Scenario analysis
+o Qualitative factors
+o Post-investment audit
+o International capital budgeting
+o Sustainability factors
+2 b) Review investment appraisals in accordance with the strategic objectives of an
+organisation, including value creation for stakeholders and other non-financial
+considerations.
+c) To evaluate the alternatives for asset-specific finance: Analyse the cost of asset-
+specific finance such as a loan, instalment sale and lease, as alternatives to the
+organisation’s usual method of financing acquisitions
+d) For investment appraisals with capital restriction: Assess ways in which capital
+rationing is managed (also consider complimentary investments vs mutually
+exclusive investments) in the context of the organisation’s capital investment plan
+
+3.1 Capital investment appraisal
+Level Learning Outcomes Minimum content
+• International capital budgeting
+C3.2 Capital allocation process
+Level Learning Outcomes Minimum content
+2 a) Analyse the organisation’s capital allocation process for alignment with its strategic
+objectives, including value creation
+Incorporate knowledge from other areas
+b) Interpret the available methods of capital allocation (mergers and acquisitions,
+investment in organic growth, repurchase shares, pay down debt and pay
+dividends) for the organisation to inform decision-making
+C4 USE OF DERIVATIVES
+This competency area refers contracts between parties based on value of agreed-upon underlying assets and includes aspects to the use of derivatives and the
+financial risks associated with derivatives
+C4.1 Financial risks
+Level Learning Outcomes Minimum content
+2 a) Review treasury risk management policies, specifically those related to financial
+risk (e.g., hedging policy, investment policy, and insurance coverage)
+Risk and return
+• Risk assessment
+o Business risk and financial risk
+o Unsystematic and systematic risk
+o Return
+o Measurement of return
+o Risk mitigation and hedging
+o Investment policy
+o Insurance coverage
+o Risk weighting and ranking
+• Macro-economic risks
+o Interest rates
+o Foreign exchange
+b) Identify and evaluate the significant financial risks within an organisation, including
+interest rate risks, foreign exchange risks, funding risk and commodity risks
+c) Assess changes in the macroeconomic environment and changes within the
+organisation, and evaluate their impact on the organisation’s financial risk
+d) Assess risk management policies that relate specifically to financial risk, so that
+policies are consistent with the entity’s overall risk management policies
+e) Assess exposure in order to manage the level of these financial risks
+f) Design changes to risk management policies in line with the assessment of the
+impact on the entity’s finances
+
+C4.1 Financial risks
+Level Learning Outcomes Minimum content
+o Commodity prices
+o Fiscal and monetary policy
+• Appropriate risk management models
+C4.2 Instruments
+Level Learning Outcomes Minimum content
+2 a) Analyse various derivative instruments to determine the optimal way to mitigate an
+organisation’s financial risks
+Treasury function
+• Role of treasury
+• Cash management (excluding Baumol & Miller-Ore)
+• Workings of foreign exchange and interest rates
+• Understanding risks related to –
+o foreign exchange
+o interest rate
+o duration
+o refinancing and liquidity risks
+o Hedging and risk management
+- Operational hedges (natural hedges)
+ Forwards (e.g. FECs)
+ Futures (excluding tax)
+ Options (excluding tax)
+ The use of caps, floors and collars in relation to interest rates (excluding the pricing
+thereof, as well as the offsetting of risk from the perspective of the financial
+institution) (excluding tax)
+ Swaps (no detailed calculations for interest rate swaps) (excluding tax)
+ CFDs (excluding tax)
+b) Identify the need for, and evaluates on a preliminary basis, the usefulness of
+forward and future contracts, swaps, put and call options (including warrants) and
+other derivatives, in meeting the entity’s objectives and staying within its risk
+tolerance level.
+c) Suggest and assess appropriate derivative instruments to mitigate risks
+d) Differentiate between the use of derivatives for hedging and speculation purposes.
+
+C5 BUSINESS VALUATION
+This competency area refers to the process to estimate the value of a business interest and includes the valuation of a business, the valuation of intangibles as well
+as mergers, acquisitions and divestitures.
+C5.1 Valuation of a business
+Level Learning Outcomes Minimum content
+3 a) Calculate and contrast appropriate valuation methods (e.g., asset-based
+approaches, multiplier-based approaches, discounted cash flow, market-based
+approaches) to analyse and interpret a plausible range of values for a business unit
+or an organisation
+• Private Equity and Venture Capital Valuation Guidelines or International Valuation
+Standards
+• Valuation of:
+o equity shares
+o preference shares
+o debentures and bonds
+o convertible securities (excluding tax)
+o options (including the use of the Black-Scholes model – understanding how model works,
+numbers to be provided, only include Black Scholes/ Binomial models/ Monte Carlo
+simulation to the extent of understanding how changes in the key drivers impact option
+value) (excluding tax)
+• Selection of the appropriate valuation basis:
+o Multiplier based approaches (e.g. market to book ratio, EBIT, EBITDA, PE, revenue)
+o Dividend growth model
+o Net assets (incorporating liquidation basis)
+o Free cash flow
+o Adjusted present value
+o Market-based approaches
+• Valuations for mergers
+o Qualitative factors for valuations
+b) Perform financial analysis, evaluates assumptions, interprets the results,
+benchmarks and draws conclusions as to the entity’s present and forecasted
+financial situation and valuation
+2 c) Assess the influence of the entity’s competitive, economic, social, political and
+internal factors (culture, incentives) on the results
+d) Adapt valuation methods to value new-age businesses
+e) Assess the impact of the above on affected stakeholders
+3 f) Evaluate the critical assumptions and facts that underlie the valuation estimate, for
+review and input by others, including –
+(i) ownership structures (e.g. shares or assets, private company, partnership,
+listed or not)
+(ii) legal risk (e.g. completeness of liabilities)
+(iii) risks related to both business sustainability and general sustainability
+(iv) growth strategies and growth prospects
+C5.2 Valuations of intangibles
+Level Learning Outcome Minimum content
+1 a) Analyse drivers underpinning the value of intangibles, and interpret the analysis to
+perform a valuation of intangibles
+Valuation models
+• Relief from royalty method
+
+C5.2 Valuations of intangibles
+Level Learning Outcome Minimum content
+• Multi period excess earnings method
+• With and without method
+• Real option pricing
+• Replacement cost method less obsolescence
+• Premium profits method (valuing brands)
+C5.3 Mergers, acquisitions and divestitures (excluding tax)
+Level Learning Outcomes Minimum content
+2 a) Analyse and evaluate the impact of mergers, acquisitions and divestitures on
+business strategy
+• Buyouts, takeovers, restructurings
+• Organic growth strategies
+• Growth strategies through mergers and acquisitions
+• Joint ventures
+• Strategic alliances
+• Divestment decisions
+• Considering appropriate growth models / matrices
+• Risks and financial implications of a proposed start-up, expansion, merger, acquisition,
+strategic alliance or divestiture, including –
+o the strategic context
+o corporate culture
+o legal implications
+o pricing considerations
+o impact of synergy
+o financing considerations
+o management buy-outs
+o Black Economic Empowerment (BEE)
+o post-acquisition review
+o industry regulation (e.g. mining, banks and broadcasting)
+o environmental, social and governance implications
+• Identifies, based on the analysis –
+o the structure of the transaction (e.g. percentage ownership, assets v shares, expansion
+through franchising / alliance / joint venture)
+o financing options and terms
+2 b) Analyse and evaluate the risks and financial implications of mergers, acquisitions
+and divestitures versus organic growth options for the organisation
+c) Advise on merger, acquisition and divestiture scenarios by considering:
+(i) The structure of the transaction (e.g., percentage ownership, assets v shares,
+expansion through franchising / alliance / joint venture)
+(ii) Financing options and terms
+(iii) Systems, information, confidentiality and disclosure requirements
+(iv) Key risks and rewards, and potential fit with strategies
+(v) Due diligence procedures
+d) Advise and evaluate differing funding structures and transaction terms for mergers
+and acquisitions
+e) Evaluate post-implementation reviews of the selected mergers, acquisitions and
+divestitures transactions and evaluate the outcomes
+
+C5.3 Mergers, acquisitions and divestitures (excluding tax)
+Level Learning Outcomes Minimum content
+o systems, information, confidentiality and disclosure requirements
+o key risks and rewards and potential fit with strategies
+o due diligence procedures
+o conflict of interest issues
+• Strategic context
+• Qualitative aspects, transaction attractiveness, defences etc.
+• Acquisition growth strategies
+• Legal implications
+o Chapter 5 of the Companies Act and the Takeover regulations
+o Competitions Act
+• Impact on pricing considerations
+o Impact of synergy
+• Financing considerations (Cash, share issue, share swap, rights issues, debt)
+• Effects on EPS and NAV
+• Management buy-outs
+• BBBEE considerations
+• Post-acquisition review
+• Due diligence
+C6 PERFORMANCE MANAGEMENT SYSTEMS
+This competency area refers to activities to track and monitor performance and includes organisational performance based on key performance indicators,
+performance evaluation and reward structures including offering incentives
+C6.1 Performance based on key performance indicators (KPI)
+Level Learning Outcomes Minimum content
+2 a) Analyse the organisation’s performance management framework, appraisal
+methodology and measures used to offer incentives
+• The role of decentralised control
+• Responsibility accounting
+• Divisional Performance incentivisation
+• Share based compensation
+• Behavioural aspects
+2 b) Assess financial and non-financial key performance indicators (KPI) in business
+appraisal and evaluate the appropriateness thereof in reaching business
+objectives and creating value for stakeholders
+
+C6.1 Performance based on key performance indicators (KPI)
+c) Assess the appropriateness of non-financial KPIs to evaluate the entity’s
+effectiveness and efficiency
+• Balance Scorecard
+• King IV
+d) Critique the appropriateness and coherence of KPIs used for the different capitals
+C6.2 Performance evaluation
+Level Learning Outcomes Minimum content
+3 a) Interpret and analyse management information taking cognisance of the
+organisation’s business objectives and external and internal environment (e.g.,
+competitive, economic, social, political and internal factors (culture, incentives))
+• Analysis of financial information
+o Objective of analysis
+o Calculation and interpretation of ratios
+o Discussion and conclusion
+• Analysis of non-financial information
+o Contents of the integrated report (or other external extended reports) in terms of strategy
+and risk
+o Ratios and targets and interpretation
+o Non-financial indicators and appropriate monitoring models (Balanced scorecard)
+• Financial statement analysis
+• Discounted Cash flow
+• Balance Scorecard
+• Key performance indicators
+• King IV
+• Ratios and variance analysis
+• Cost volume profit and sensitivity analysis
+• Data analytics
+b) Perform financial analysis using appropriate techniques, evaluate assumptions,
+interpret the results, benchmark and draw conclusions as to the organisation’s
+present and forecast financial situation
+2 c) Use an integrated performance management system based on the six capitals to
+evaluate their contribution to creating value for stakeholders
+d) Use data analytics to analyse and interpret management, financial and non-
+financial information (evaluate risk and opportunities, key causes of business
+variance, and areas of strength or concern in performance) to advise on potential
+improvement
+3 e) Evaluate the impact of the above interpretations and analyses on costs, delivery
+of products/services and KPIs, to inform decision-making on performance
+management and appraisal
+C6.3 Reward structures and offering incentives
+Level Learning Outcomes Minimum content
+2 a) Assess the effectiveness and appropriateness of the organisation’s appraisal
+methodology with reference to reward structures and measures used to offer
+incentives, to inform decision-making thereon
+Divisional Performance incentivisation
+b) Identify whether the organisation’s performance management drives value
+creation for stakeholders, to inform decision-making
+
+C7 FINANCIALLY TROUBLED BUSINESSES
+This competency area refers to an organisation that struggles to pay its debts and includes the assessment of under-performance and strategies to overcome under-
+performance.
+C7.1 Assessment of under-performance
+Level Learning Outcomes Minimum content
+1 a) Identify the underperformance by doing a preliminary analysis of:
+(i) The severity of the situation
+(ii) The causes of financial difficulty
+(iii) The potential for the success or failure of proposed recovery plans and
+suggest an appropriate course of action
+Refer Business Strategy (A2)
+Financial statement Analysis (Altman)
+b) Identify the possible courses of action to rectify the situation (exclude formal
+business rescue, insolvency process)
+C7.2 Strategies to overcome under-performance
+Level Learning Outcomes Minimum content
+1 a) Describe implications of business rescue in terms of relevant laws (e.g.,
+Companies Act, 2008) and regulations
+b) Identify and explain strategies to overcome underperformance (e.g., consolidation,
+retrenchments, business rescue, winding up)
+c) Perform a preliminary analysis of –
+(i) the severity of the situation
+(ii) the causes of financial difficulty
+(iii) the potential for the success or failure of proposed recovery plans and
+suggests an appropriate course of action
+d) Identify the possible courses of action to rectify the situation
+
+C8 TAX LAW IMPLICATIONS
+This competency area refers to the tax implications relating to financing decisions, investment decisions, financially troubled businesses and reward structures.
+C8.1 Tax implications for selected aspects of decision-making
+Level Learning Outcomes Minimum content
+2 a) Identify the tax implications that can arise from a change in control or ownership
+structure and calculate the tax implications of financing and investment decisions
+Normal tax (including CGT) and VAT from the perspective of the seller and the buyer relevant
+to
+• Lease vs a buy decision for plant and machinery, equipment or buildings
+• Disposal or acquisition of assets vs shares
+• Disposal and acquisition of other assets
+• Corporate rules
+• Refer to Financing decisions (C2.2), Investing decisions (C3.1) and Use of derivatives
+(C4.2)
+b) Explain and calculate the taxation implications of returns to investors for the
+business and the investor
+• Normal tax and VAT implications on related income flows and on disposal of shares, rental
+properties and interest-bearing investments
+• Refer to Financing decisions (C2.3)
+c) Identify and calculate the tax implications of transactions between connected
+persons
+• Definition of connected person and consequences of connected person status
+• Transfer pricing regulations
+• Limitation of deductions
+• Limitation or ring fencing of losses
+• Adjustment of base cost and proceeds of assets
+• Corporate rules
+d) Explain and calculate the tax implications for possible courses of action for a
+financially troubled business for both the business and other stakeholders
+• Set-off, ring-fencing and limitation of trading in companies with assessed losses
+• Debt relief and compromise with creditors
+• Liquidation costs and distributions including normal tax (including CGT) and VAT
+implications on disposal of assets
+• Severance benefits and retirement benefits arising on retrenchment
+3 e) Advise on the tax consequences of different compensation structures and
+remuneration packages from the perspective of both the employer and the
+employee
+• Normal tax and VAT implications associated with Seventh Schedule benefits, salaries and
+wages, bonuses, share incentive schemes and learnerships
+• Refer to Financing decisions (C2.3)
+
+C8.1 Tax implications for selected aspects of decision-making
+Level Learning Outcomes Minimum content
+1 f) Explain the impact of international expansion, both inward and outward, on the SA
+tax liability and calculate the tax implications of international transactions
+Taxation of foreign income of residents and non-residents, including
+• CFCs (only recognition; no calculations)
+• Thin capitalisation (debt/equity rules)
+• Prevention and relief from double taxation (DTAs, foreign tax rebates and deductions)
+• Withholding taxes on dividends and interest
+2 g) Explain and calculate the normal tax implications of foreign exchange
+transactions, gains and losses
+• Normal tax implications of foreign exchange gains and losses
+• Foreign currency translation rules in respect of accruals and expenses Capital gains tax
+implications of an asset acquired and/or disposed of in a foreign currency
+
+AREA 4
+OUTPUTS LEADING TO OUTCOMES
+D. REPORTING ON VALUE CREATION
+D1 PERFORMANCE MEASUREMENT FOR USERS OF EXTENDED EXTERNAL REPORTS
+This competency area refers to analysing and reporting information regarding the performance of organisations and includes financial reporting in accordance with
+IFRS and other reporting frameworks as well as extended external reports.
+D1.1 Financial reporting: in accordance with International Financial Reporting Standards (IFRS)
+Level Learning Outcomes Minimum content
+3 Prepare, analyse and evaluate general purpose financial statements in accordance
+with IFRS for an entity, which could be a for-profit entity, an SME, a public sector entity
+or a not-for-profit entity
+• The IASB Standard setting process
+• Preface to IFRS Standards
+• Conceptual Framework for Financial Reporting
+• Principles of Examination for the IFRS Accounting Standards Syllabus
+D1.2 Financial reporting: in accordance with other frameworks
+Level Learning Outcomes Minimum content
+1 Identify the reporting framework (other than IFRS), which could be relevant to the
+reporting entity and such entity’s users
+GRAP Reporting Framework, IFRS for SMEs Reporting Framework
+D1.3 External extended reporting
+Level Learning Outcomes Minimum content
+2 a) Assess the appropriateness of disclosures in in extended external reports IFRS, <IR> Framework
+b) In relation to extended external reporting:
+(i) Analyse relevant information to identify relevant analytical comparisons (e.g.
+sales to emissions)
+• IFRS, <IR> Framework
+• Refer to Performance Management Systems (C6)
+
+D1.3 External extended reporting
+Level Learning Outcomes Minimum content
+(ii) Display integrated thinking to evaluate value creation in the short, medium
+and long term by taking cognisance of the organization’s governance
+strategy, risk management, and performance, metrics and targets in the
+context of its external environment
+(iii) Integrate information and data to assess the relationships between the
+different capitals used by the organisation in its extended external reports and
+how these are used to create sustainable value for stakeholders
+c) In relation with the SDGs: Understand that the International <IR> framework can
+be used as a basis for adopting SDG disclosure recommendations
+• <IR> Framework
+• UN Sustainable Development Goals
+• Refer to Business Internal Environment (Z1) and Business External Environment (Z2)
+
+AREA 5
+E. TAX GOVERNANCE AND COMPLIANCE
+E.1 TAX GOVERNANCE
+This competency area refers to tax rules and regulations and includes the tax landscape in South Africa, the interpretation of tax legislation, the application of tax
+legislation to calculate the tax obligation and the application of tax legislation to comply with administrative provisions.
+E1.1 Tax landscape in South Africa
+Level Learning Outcomes Minimum content
+1 a) Identify and describe the different role-players influencing the tax landscape in
+South Africa
+• Role-players and legislation influencing the tax landscape
+o Parliament (vote for amendment to Act) President (Approval of amendment to Act)
+o Public participation and consultation
+o Minister of Finance (specifically national budgeting process)
+o National treasury (tax policy and drafting of legislation)
+o South African Tax Review Committees (e.g. Davis Committee)
+o SARS (tax administration)
+o Political parties and unions
+o Tax Ombudsman
+o Professional bodies (SAICA, SAIPA and SAIT including tax practitioners)
+o Taxpayers (individual, companies, financial institution, insurance, farming, mining, bank,
+SME, government)
+o International Tax policy organisations (OECD, IMF, World Bank, ATAF)
+• Design features used in tax design
+o Tax bases (income, wealth and consumption)
+o Tax deductions, exemptions and credits
+o Tax rate structures (flat tax, flat rates, proportional rates, progressive rates, marginal tax
+rate, effective tax rate, and regressive tax rates)
+o Tax incidence
+o Tax mix (direct tax, indirect tax, group tax, user charges, levies and licenses)
+• Different types of taxes in South Africa
+o Normal tax (Income tax base)
+o Withholding tax (Income tax base)
+b) Describe the role and interaction of the different types of taxes in South Africa with
+reference to the design features used in tax design
+c) Explain the underlying principles of a tax system
+
+E1.1 Tax landscape in South Africa
+Level Learning Outcomes Minimum content
+o Turnover tax (Income tax base)
+o Dividends tax (Income tax base)
+o Donations tax (Wealth tax base)
+o Tax related legislations
+o Tax Administration Act 28 of 2011
+o Income Tax Act 58 of 1962
+o Transfer Duty Act 40 of 1949 (Wealth tax base)
+o Estate Duty Act 45 of 1955 (Wealth tax base)
+o Securities Transfer Tax Act 25 of 2007 (Wealth tax base)
+o Value-Added Tax Act 89 of 1991 (Consumption tax base)
+o Customs and Excise Act 91 of 1964 (Consumption tax base)
+o Unemployment Insurance Contributions Act 4 of 2002 (Income tax base)
+o Skills Development Levies Act 9 of 1999 (Income tax base) 99 (Income tax base)
+E1.2 Interpretation of tax legislation
+Level Learning Outcomes Minimum content
+1 a) Describe the rules applied and process followed in judicial decisions to interpret tax
+legislation (including primary and secondary sources) and double tax agreements
+(DTAs)
+• General rules of interpretation of tax legislation
+• Judicial decisions
+o Legal Precedence principles
+o Tax Board
+o Tax Court
+o Provisional Divisions of the High Court
+o Supreme Court of Appeal
+• Sources of tax legislation
+o Different tax Acts and amendment Acts and Bills (refer to Tax Landscape in South Africa
+(E1.1))
+o Regulations (Government Gazette)
+o Judicial decisions with legal precedence
+o Interpretation Notes
+o Explanatory Memorandums
+o Tax Rulings
+• OECD model tax convention to the extent that it is relevant to passive income, employment
+income and business profits.
+2 b) Demonstrate the ability to apply the principles of tax interpretation to any new or
+unfamiliar tax legislation
+
+E1.3 Application of tax legislation to calculate tax obligation
+Level Learning Outcomes Minimum content
+3 a) Evaluate the taxpayer’s tax profile Tax profile
+• Nature of taxpayer
+• Residency status
+• Nature and source of income
+• Organisational structure (connected persons and group companies)
+• VAT vendor status (including definition of enterprise)
+2 b) Analyse the transaction or event, identify the profile of the interacting parties and
+identify and explain taxes and anti-avoidance provisions of possible application
+• Transactions or events (nature, source and value), including acquisitions, disposals, change
+of use, income, expenditure, disability, resignation, retrenchment; retirement, death, ,
+liquidation, emigration and immigration
+• Profile of parties, including individuals (natural persons), residents and non-residents, ,
+deceased estates, employers, employees, companies, public entities, trusts, connected
+persons, VAT vendor status
+• Taxes (refer to Tax Landscape in South Africa (E1.1)) and anti-avoidance provisions of
+possible application
+2 c) Apply the relevant law to the facts, determine the tax position and compute the tax
+payable (VAT or normal tax) for individuals and companies
+• The VAT model:
+o Output tax
+o Input tax
+o Adjustments
+o Net amount
+• The Income Tax model:
+o Income earned
+o Exemptions available
+o Deductions and allowances and set off available to the individual
+o Capital gains and other inclusions income
+o Roll-over provisions
+o Rates of tax
+o Rebates and credits
+o Prepaid taxes
+• Taxes of possible application (refer to Tax Landscape in South Africa (E1.1), and
+interpretation of tax legislation (refer Tax Landscape in South Africa (E1.2))
+
+E1.3 Application of tax legislation to calculate tax obligation
+Level Learning Outcomes Minimum content
+1 d) Identify further information required to complete a tax computation or finalise tax
+advice or the need to obtain specialist advice to ensure compliance with all possible
+taxes
+Refer to Tax Landscape in South Africa (E1.3(a),(b) and (c))
+E1.4 Application of tax legislation to comply with administrative provisions
+Level Learning Outcomes Minimum content
+1 a) Identify and describe the different administrative obligations and remedies of a
+taxpayer
+The administrative obligations and remedies, including:
+• Registration
+• Recordkeeping
+• Provision of information (including third party reporting)
+• Withholding obligations and payments
+• Tax returns
+• Tax assessments
+• Dispute resolution process
+• Tax liability and payment
+• Taxpayer rights
+2 b) Prepare VAT and Income Tax returns in compliance with applicable tax filing
+requirements for individual taxpayers or companies and other incorporated entities
+undertaking routine tax transactions
+Preparation and submission of tax returns (VAT201, ITR12, ITR14 and IRP6)
+
+E.2 LAWS AND REGULATIONS
+This competency area refers to regulation created by governmental agency which is often implemented in a law and includes compliance with applicable laws and
+regulations by an organisation.
+E2.1 Compliance with laws and regulations
+Level Learning Outcomes Minimum content
+1 a) Describe the basic legal concepts and structure of the South African legal system • Overview of the SA legal system
+• Contract law
+• Property rights
+• Consumer Protection Act
+• National Credit Act
+• Protection of Personal Information Act
+• Promotion of Access to Information Act
+• Labour law
+• Broad-Based Black Economic Empowerment Act
+• Money laundering legislation
+• Tax legislation – refer to E1.1
+• Companies Act
+o Chapter 1: sections 1 to 4; 8
+o Chapter 2
+− Part B: sections 15 to 16; 20 to 22
+− Part C: sections 23 to 34
+− Part D: sections 35 to 48
+− Part F: sections 57 to 78
+o Chapter 3
+− Part A: sections 84 to 85
+− Part B: sections 86 to 89
+− Part C: sections 90 to 93
+− Part D: section 94
+o Chapter 6: Part A: sections 128-137
+o Chapter 7: Part A: section 159
+o Chapter 9: Part A: sections 213-214
+b) Identify and describe the implications of applicable laws and regulations on the
+organisation
+2 c) Apply the law of contract and company law to selected case studies.
+1 d) Identify when to seek assistance from experts/specialists on legal matters to
+expedite problem-solving, decision-making and/or reaching conclusions
+
+E2.1 Compliance with laws and regulations
+Level Learning Outcomes Minimum content
+• Public Finance Management Act
+o Chapter 1 (Object and Application of Act)
+o Chapter 4 (National and Provincial Budgets)
+o Chapter 5 (Departments and Constitutional Institutions)
+o Chapter 6 (Public Entities)
+o Chapter 9 (Audit Committees)
+• Municipal Finance Management Act
+o Chapter 1 (Object and Application of Act)
+o Chapter 4 (Municipal Budgets)
+o Chapter 8 (Responsibilities of Municipal Officials)
+o Chapter 9 (Municipal Budget and Treasury Offices)
+o Chapter 11 (Goods and Services, Part 1 Supply Chain Management)
+o Chapter 12 (Financial Reporting and Auditing)
+o Chapter 14 (Internal Audit, Audit Committee)
+• Municipal Systems Act
+o Chapter 5 (Integrated Development Planning)
+o Chapter 6 (Performance Management)
+o Chapter 7 (Local Public Administration and Resources
+
+AREA 6
+F. ASSURANCE AND RELATED SERVICES
+F.1 CONCEPTS AND PRINCIPLES OF ASSURANCE ENGAGEMENTS
+This competency area refers to fundamental assumptions and understandings of assurance services and includes the concept of assurance, the expectation gap,
+the regulatory environment of assurance engagements, ethical principles of assurance providers and the assurance engagement risk considerations.
+F1.1 Concept of assurance
+Level Learning Outcomes Minimum content
+3 a) Advise on an organisation’s need for assurance engagements (public interest;
+distinction between statutory and voluntary audits)
+• Regulatory principles relating to the need for assurance engagements
+• Principles of assurance and related services engagements for financial and non-financial
+informationb) Identify all stakeholders involved in an assurance engagement and the impact of
+their functions and responsibilities
+c) Contrast the levels of assurance provided to users from a range of assurance and
+related services reports that are ordinarily provided by a professional services firm
+F1.2 Expectation gap
+Level Learning Outcomes Minimum content
+1 a) Explain the expectation gap with reference to the implications thereof and ways to
+overcome the gap
+• Concept of the expectation gap
+• Roles and responsibilities of the auditor
+• Principles of assurance engagements for financial and non-financial informationb) Explain the role of professional auditors in assurance engagements from a public
+interest perspective
+
+F1.3 Regulatory environment of assurance engagements
+Level Learning Outcomes Minimum content
+1 a) Outline standard-setting, the structure and use of the IAASB standards and IFAC
+standards and explain the implications of pending changes in assurance standards
+(exposure drafts, discussion papers etc.) to future assurance engagements
+• Structure of assurance pronouncements issued by the IAASB, IRBA and SAICA
+• Principles of assurance engagements for financial and non-financial information
+• The authority of auditing and assurance standards, practice statements and other
+pronouncements issued nationally and internationally
+• The standard setting process of the IAASB, SAICA, IRBA, and current projects
+• Auditor’s rights and duties in terms of applicable regulations (e.g. Companies Act, APA,
+Public Audit Act)
+• Quality management standards and pronouncements
+• Inspections by the IRBA
+2 b) Apply regulatory requirements (laws, regulations, standards) that
+define/affect/protect the auditor’s rights and duties
+c) Apply regulatory requirements (laws, regulations, standards) pertinent to an
+assurance engagement in the performance of the engagement
+d) Explain the quality management measures applicable to assurance engagements
+at:
+1 (i) firm level, and for inter-firm inspections and regulatory inspections
+2 (ii) engagement level
+F1.4 Ethical principles
+Level Learning Outcomes Minimum content
+3 Advise, from an ethical perspective, on the conduct and practices of a firm and its staff
+involved in the rendering of assurance engagements (codes of ethics and other
+professional and legal requirements)
+• SAICA Code of Professional Conduct and Appendix 4 of By-Laws
+• IRBA Rules Regarding Improper Conduct and Code of Professional Conduct
+• Relevant sections of the Guide on S90 of the Companies Act
+F1.5 Assurance engagement risk considerations
+Level Learning Outcomes Minimum content
+2 a) Determine whether all the key elements of an assurance engagement are present
+and understood before accepting an assurance engagement
+• Principles of assurance engagements for financial and non-financial information
+• Pronouncements relating to the overall objectives of the auditor
+• Quality management standards and pronouncements
+• Pronouncements and regulations relating to acceptance and continuance of assurance
+engagements
+• Basic principles of legal liability of the auditor in South Africa
+1 b) Describe the sources of liability (including professional negligence) arising from an
+assurance engagement
+2 c) Consider the following matters before acceptance of an assurance engagement:
+(i) Competency to perform the engagement and the presence of requisite
+capabilities including time and resources;
+(ii) Relevant ethical requirements;
+
+F1.5 Assurance engagement risk considerations
+Level Learning Outcomes Minimum content
+(iii) Integrity of the client
+1 d) Describe the key matters which underlie the agreement of scope and terms of an
+assurance engagement (new and continuous)
+F.2 AUDITS OF HISTORICAL FINANCIAL STATEMENTS OF NON-SPECIALISED PROFIT ORIENTATED ENTITIES
+This competency area refers to audits of profit-orientated companies not operating in specialised industries and includes the concepts and principles of audits of
+historic financial information, performing an audit of historic financial information, reliance on other parties and communicating audit findings relating to non-
+specialised profit orientated entities.
+F2.1 Concepts and principles of audits of historical financial information
+Level Learning Outcomes Minimum content
+3 By applying F1 in this context, explain and apply the objective of an audit of historical
+financial statements together with reasonable assurance as outcome, and how it will
+impact on stakeholders
+Overall objectives of the independent auditor and the conduct of an audit in accordance with
+International Standards on Auditing
+F2.2 Perform an audit of historical financial information
+Level Learning Outcomes Minimum content
+a) By applying F1, follow the stages involved in performing an audit: • Pronouncements relating to the overall objectives of the auditor
+• Pronouncements relevant to the various stages of the audit process, excluding
+pronouncements relating to the following, which are considered to be beyond the scope of
+the context in which competencies are to be developed and assessed in the academic
+programme in section A:
+o The use of service organisations (currently ISA402 and ISAE3402)
+o Initial audit engagements - opening balances (currently ISA510)
+o Key audit matters (currently ISA701)*
+o Comparative information (currently ISA710)
+o Financial reporting frameworks and the auditor’s report (currently SAAPS2)
+o Illustrative auditor’s reports (currently SAAPS3)
+2 (i) Apply pre-engagement activities and identify relevant issues
+(ii) Plan the audit engagement, taking into account its objectives and the criteria
+governing the audit opinion
+2 (iii) Formulate risk assessment procedures to obtain the necessary
+understanding of the auditee sufficient to plan and perform the audit
+2 (iv) Determine materiality for the audit engagement
+
+F2.2 Perform an audit of historical financial information
+Level Learning Outcomes Minimum content
+3 (v) Assess the risks of material misstatement at the financial statement level
+and at the assertion level for different classes of transactions and events,
+including related disclosures, and account balances with their disclosures
+*= In the context of the auditor’s report, students must, however, be aware of the purpose of
+communicating key audit matters (currently ISA701.2 - 3) and their definition (currently
+ISA701.8).
+2 (vi) Formulate a suitable overall audit strategy and audit approach
+3 (vii) Formulate appropriate further audit procedures based on the identified risks
+of material misstatement
+2 (viii) Assess the evidence and results of the analysis and procedures
+(ix) Document the work performed and its results
+(x) Draw draft conclusions
+b) Based on all of the above, formulate a draft audit opinion
+c) Apply F2.2 (a) and (b) to the audit of a group of companies where all companies in
+the group have the same independent auditor.
+F2.3 Reliance on other parties
+Level Learning Outcomes Minimum content
+2 a) Identify the possibility of, and need to, rely on other parties (internal and external
+auditors, and internal and external experts)
+Pronouncements relating to reliance on other parties, including experts in data analysis (refer
+to Data knowledge and strategy (W2)), but excluding pronouncements relating to the use of
+component auditors in the audit of group financial statements and component auditors
+(currently dealt with in ISA600) (the latter is considered to be beyond the scope of the context
+in which competencies are to be developed and assessed in the academic programme in
+section A). in section A
+1 b) Describe suitable procedures to ensure audit quality is maintained when relying on
+the work performed by other parties
+F2.4 Communicate audit findings
+Level Learning Outcomes Minimum content
+2 a) Communicate matters to be reported to management and those charged with
+governance
+• Pronouncements relating to communication to management and those charged with
+governance
+• Pronouncements relating to reporting by the auditor, excluding pronouncements relating to
+the following, which are considered to be beyond the scope of the context in which
+competencies are to be developed and assessed in the academic programme in section A
+b) Prepare an appropriate auditor’s report
+
+F2.4 Communicate audit findings
+Level Learning Outcomes Minimum content
+o Key audit matters (currently ISA701)
+o Comparative information (currently ISA710)
+o Financial reporting frameworks and the auditor’s report (currently SAAPS2)
+o Illustrative auditor’s reports (currently SAAPS3)
+F.3 AUDITS OF HISTORICAL FINANCIAL STATEMENTS OF PUBLIC SECTOR ENTITIES
+This competency area refers to audits of public sector entities and includes the concepts and principles of audits of historic financial information, performing an
+audit of historic financial information, reliance on other parties and communicating audit findings relating to public sector entities.
+Level Learning Outcomes Minimum content
+1 Explain how the audit of historical financial statements of a public sector entity differs
+from that of a non-specialised profit orientated entity.
+• IRBA Guide for registered auditors: Auditing in the public sector
+• IRBA Guide for registered auditors: Guidance on performing audits on behalf of the AGSA
+F.4 OTHER ASSURANCE SERVICES
+This competency area refers to assurance services other than an audit and includes assurance engagements on other non-financial information including the
+combined assurance process.
+F4.1 Assurance engagements on other non-financial information
+Level Learning Outcomes Minimum content
+2 a) Describe the external auditor’s role in an organisation’s combined assurance
+process
+• Pronouncements relevant to assurance engagements other than audits or reviews of
+historical financial information
+• Refer to Audits of historical financial statements of a non-specialised profit orientated entity
+(F2)
+1 b) Explain how the assurance engagement on other non-financial information would
+differ from the audit of non-specialised profit-orientated entities
+
+F4.2 Review engagements
+Level Learning Outcomes Minimum content
+Same as the various
+proficiency levels in F2
+(to the extent that the
+learning outcomes are
+applicable to reviews)
+Perform the steps in the review engagement Pronouncements relating to review engagements
+F.5 OTHER RELATED SERVICES
+This competency area refers to non-assurance related services and includes the compilation of financial statements, agreed upon procedures engagements, forensic
+audit, internal audit and due diligence engagements.
+F5.1 Related services engagements
+Level Learning Outcomes Minimum content
+1 a) Explain an organisation’s need for related services (e.g., agreed upon procedures,
+compilation of financial statements) and other services (e.g., due diligence,
+accounting services associated with prospectuses, expert services)
+• Basic principles of related services engagements for financial and non-financial information,
+including International Framework for Assurance Engagements
+• Refer to Audits of historical financial statements of a non-specialised profit orientated entity
+(F2)
+b) Describe statutory, professional and ethical issues related to the undertaking of the
+other related services (e.g., codes of ethics, IAASB framework and other regulatory
+requirements (national and international))
+F5.2 Compilation of financial statements
+Level Learning Outcomes Minimum content
+1 Within the context of F5.1, describe the characteristics of a compilation engagement
+and the related considerations and describe the steps to be followed in performing a
+compilation engagement.
+Pronouncements relevant to compilation engagements
+
+F5.3 Agreed upon procedures engagements
+Level Learning Outcomes Minimum content
+1 Within the context of F5.1, describe the characteristics of an agreed-upon procedures
+engagement and the related considerations and describe the steps to be followed in
+performing an agreed upon procedures engagement.
+Pronouncements relevant to agreed-upon procedures engagements
+F5.4 Forensic audit
+Level Learning Outcomes Minimum content
+1 Describe the differences between a forensic audit and an audit of historical financial
+statements
+Differences between a forensic audit and an audit of historical financial statements
+F5.5 Internal audit (including value-for-money and performance audits)
+Level Learning Outcomes Minimum content
+1 Describe the characteristics of an internal audit engagement (including value-for-
+money and performance audits) and the related considerations
+• Types of internal audit services
+• Basic principles of internal audit, including differences from external audit
+F5.6 Due diligence engagements
+Level Learning Outcomes Minimum content
+1 Describe the characteristics of a due diligence engagement and the related
+considerations
+Basic principles of due diligence engagements, including differences from an external audit

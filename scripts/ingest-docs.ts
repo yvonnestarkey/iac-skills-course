@@ -5,8 +5,9 @@
  *   npx tsx scripts/ingest-docs.ts
  *
  * Needs OPENAI_API_KEY, NEXT_PUBLIC_SUPABASE_URL, and SUPABASE_SERVICE_ROLE_KEY in .env.local.
- * Reads .txt, .md, and .pdf. Category is the folder name when it is competency_framework,
- * examiner_report, or mark_plan.
+ * Reads .txt, .md, and .pdf. A PDF is skipped when a .txt or .md with the same stem exists.
+ * Re-running replaces previous rows for that document title. Category is the folder name
+ * when it is competency_framework, examiner_report, or mark_plan.
  */
 
 import { existsSync, readFileSync, readdirSync } from "node:fs";
@@ -38,15 +39,23 @@ function loadEnvLocal() {
   }
 }
 
-function listFiles(dir: string): string[] {
+function collectFiles(dir: string): string[] {
   if (!existsSync(dir)) return [];
   const out: string[] = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...listFiles(full));
+    if (entry.isDirectory()) out.push(...collectFiles(full));
     else if (/\.(txt|md|pdf)$/i.test(entry.name) && !entry.name.startsWith(".")) out.push(full);
   }
   return out;
+}
+
+function listFiles(dir: string): string[] {
+  const all = collectFiles(dir);
+  const textStems = new Set(
+    all.filter((file) => /\.(txt|md)$/i.test(file)).map((file) => file.replace(/\.(txt|md)$/i, ""))
+  );
+  return all.filter((file) => !/\.pdf$/i.test(file) || !textStems.has(file.replace(/\.pdf$/i, "")));
 }
 
 function categoryFor(file: string): string {
@@ -111,6 +120,11 @@ async function main() {
     const category = categoryFor(file);
     const text = await readFileText(file);
     const chunks = chunkText(text);
+    if (!chunks.length) throw new Error(`No text extracted from ${path.relative(ROOT, file)}`);
+    const exactDelete = await supabase.from("knowledge_base").delete().eq("document_title", title);
+    if (exactDelete.error) throw new Error(exactDelete.error.message);
+    const chunkDelete = await supabase.from("knowledge_base").delete().like("document_title", `${title} (%`);
+    if (chunkDelete.error) throw new Error(chunkDelete.error.message);
     console.log(`${path.relative(ROOT, file)} → ${chunks.length} chunk(s) [${category}]`);
     for (let i = 0; i < chunks.length; i += 16) {
       const batch = chunks.slice(i, i + 16);

@@ -1,0 +1,1781 @@
+Source: SAICA CA of the Future — B. Entry Level Competency Framework (approved 21 April 2026).
+Extracted for internal IAC diagnostic use. SAICA owns this competency framework.
+
+CA(SA)
+COMPETENCY FRAMEWORK
+“CA of the Future”
+B. ENTRY LEVEL COMETENCY FRAMEWORK
+This document must be read together with the following documents:
+• A. The Preface document;
+• C. Guidance on the Content, Development and Assessment of Competencies in
+the Academic Programme;
+• D. Guidance on the Content, Development and Assessment of Competencies in
+the SAICA Training Programme;
+• E. Guidance on the Initial Assessment of Competence (IAC); and
+• F. Guidance on the Professional Programme and the Assessment of Professional
+Competence (APC); and
+• Appendix 1. Detailed competencies setting out the learning outcomes for the
+Professional Values Attitudes and Acumens (PVAAs) and the Technical
+competencies at point of entry
+•
+Copyright, Proprietary Rights and Permitted Use
+© The South African Institute of Chartered Accountants (SAICA). All rights reserved.
+This Competency Framework constitutes proprietary intellectual property and professional
+know-how of SAICA. It has been developed and is maintained as part of SAICA’s mandate
+to uphold the quality, integrity, and high professional standards of the Chartered Accountant
+profession, which underpin public confidence and the value and attractiveness of SAICA
+membership and designation.
+Access to, or use of, this Competency Framework does not confer any right, licence, or
+interest in the intellectual property contained herein. Except where expressly permitted by
+SAICA in writing, no part of this Framework may be copied, reproduced, adapted, published,
+distributed, or used for commercial, quasi-commercial, or third-party standard-setting
+purposes.
+This Framework may be used solely for legitimate educational, regulatory, or professional
+purposes, in a manner that preserves its integrity, acknowledges SAICA as the owner and
+source, and does not undermine SAICA’s role as custodian of professional standards or
+dilute the value associated with SAICA membership and designation.
+Any authorised access to or use of this Competency Framework is subject to, and must be
+exercised in accordance with, SAICA’s Intellectual Property Management Policy, as
+amended from time to time.
+
+Version control
+V1 14 January
+2021 Document presented to Combined academic workgroup 18 January 2020
+V2
+24 January
+2021
+Reflects changes effected by the Combined Academic and Training
+Workgroups 18 January 2020.
+Approved IPDC: 4 February 2021
+V3
+15 February
+2026
+• Renamed – CA of the Future
+• Includes updates to the updates that were made to the CA of the Future
+Competency Framework, and approved by the CA Professional
+Development Committee (CAPDC) in October 2023
+• Reflects changes effected by the Combined Academic and Training
+Workgroups from 2021 to October 2025
+• Changes made based on a review of the technical sections A, B3 and C
+(excluding Tax strategy) in order to reduce syllabus overload
+• Alignment of verbs and proficiency levels
+• Some other minor changes effected in other section (PVAAs)
+Approved CAPDC: 21 April 2026 (Appendix 1 was approved on the 3rd
+December 2026- Applicable to IAC 2027)
+Acronyms
+AGA(SA) Associate General Accountant (South Africa)
+APC Assessment of Professional Competencies
+CA(SA) Chartered Accountant (South Africa)
+CAPDC Chartered Accountant Professional Development committee
+CHE Council for Higher Education
+HEQSF Higher Education Quality Sub-Framework
+HEQC Higher Education Quality Council
+HEI Higher Education Institutions (encompassing both Public and Private
+institutes)
+IAC Initial Assessment of Competence: Formerly known as the Initial Test of
+Competence (ITC)
+IPD Initial Professional Development
+NQF National Qualifications Framework
+PGDA Postgraduate Diploma in Accounting (PGDA): A SAICA endorsed PGDA or an
+equivalent qualification
+PP Professional Programme
+PVA Professional values and attitudes
+PVAA Professional values, attributes and Acumens (Enabling competencies)
+SAQA South African Qualifications Authority
+SAICA The South African Institute of Chartered Accountants
+
+INDEX
+A. INTRODUCTION 1
+B. THE SAICA COMPETENCY FRAMEWORK SUITE OF DOCUMENTS 3
+C. COMPONENTS OF THE COMPETENCY FRAMEWORK 4
+D. DEFINING CAs AT ENTRY POINT TO THE PROFESSION, AND BEYOND 6
+E. COMPETENCY PROFICIENCY LEVELS 10
+F. OUTCOME OF THE COMPETENCY FRAMEWORK 15
+1. PROFESSIONAL VALUES AND ATTITUDES
+I Ethics values and attitudes 17
+II Citizenship attitudes and values 17
+III Lifelong learning attitudes and values 18
+2. ENABLING COMPETENCIES
+W Digital acumen 21
+X Relational acumen 22
+Y Decision making acumen 22
+Z Business Acumen 23
+3. TECHNICAL COMPETENCIES IN THE VALUE CREATION PROCESS 24
+Area 1 A. Strategy and governance to create sustainable value 27
+Area 2 B. Stewardship of capitals: business processes and risk management 29
+Area 3 C. Decision-making to increase, decrease or transform capitals 30
+Area 4 D. Reporting on value creation 32
+Area 5 E. Tax Governance and Compliance 32
+Area 6 F. Assurance and related services 32
+APPENDIX 1: PVAA AND TECHNICAL COMPETENCIES AND DETAIL OUTCOMES
+ACROSS THE VARIOUS PROGRAMMES LINK
+APPENDIX 2: GLOSSARY OF TERMS 35
+1
+
+A. INTRODUCTION
+This document should be read after “A. Preface” as that document sets out to identify and describe the
+components of and concepts used in the development of the Competency Framework for Entry-Level Chartered
+Accountants (SA) (CAs(SA)) and its related guidance documents.
+For the purposes of the competency framework and as documented in Section E of the Preface, Chartered
+Accountants1 are defined as:
+Responsible leaders2 who behave ethically and create sustainable value for a wide range of stakeholders
+within an organisation. Using integrated thinking to interpret, analyse and evaluate financial and non-financial
+information. This enables them to influence others, and together, make impactful decisions thereby
+contributing meaningfully to the economy and to society.
+CAs(SA) are able to enter into a wide range of different roles and occupations post registering as a CA(SA) and
+the underlying qualification process is designed to prepare CAs(SA), who undertake relevant an ongoing
+continuous profession development (CPD), to enter a wide range of roles within business and the public sector.
+The primary role of an entry level CA(SA) is to prepare relevant, reliable and meaningful information for
+stakeholders and to interpret, analyse and evaluate such information for impactful decision-making. Meaningful
+financial and non-financial information has integrity, is relevant, accurate and useful for impactful decision-
+making.
+CAs(SA) at point of entry, in addition to being able to demonstrate technical competence, should also
+demonstrate ethical behaviour, and acumens related to decision making, a broad understanding of business, be
+digitally fluent and demonstrate human centred skills. The combination of this is professional competence.
+This definition is expanded on further in Section D of this document to include the definition of an “at entry”
+Chartered accountant.
+The competency framework identifies and describes the professional competencies (professional values and
+attitudes, enabling competencies and technical competencies) that a CA should demonstrate at entry point to
+the profession. The competency framework provides a reference point for current and prospective CAs,
+employers and the public, thus enabling a clear understanding of the foundational professional competencies
+the CA is able to demonstrate as he/she embarks upon their career. The competency framework also provides
+the base upon which the education, training, professional and assessment programmes of SAICA are
+developed and delivered.
+Foundational professional competencies developed at point of entry can be refined to support specialist roles
+after entering the CA profession. As lifelong learners, CAs need to undertake relevant continuing professional
+development (CPD) activities to achieve competence for post-qualification roles. CPD activities that take place
+after entering the CA profession have the purpose of ensuring practitioners maintain and develop the
+competencies required to continue to perform their roles competently.
+1 Chartered Accountants referred to in this document are those registered at the South African Institute of Chartered Accountants
+(SAICA).
+2 Responsible leadership applies not to one’s level of seniority or title within an organisation, but rather to the ability to make a difference
+to those around you. (#difference makers)
+2
+
+The competency framework not only serves SAICA, which strives to be regarded as the pre-eminent professional
+accounting body in South Africa, but is also a building block in the qualification paths of registered auditors and
+tax practitioners. SAICA is accredited by the Independent Regulatory Board for Auditors (IRBA) and this enables
+registration as a Registered Auditor (RA) for those SAICA members with the appropriate auditing training (i.e.,
+completion of the Audit Development Programme3). SAICA is also recognised as a professional body by the
+South African Revenue Service (SARS), which enables its members to register as tax practitioners.
+3 Please refer to the IRBA website for more information on the Audit Development Programme
+3
+
+B. SAICA COMPETENCY FRAMEWORK SUITE OF DOCUMENTS
+• Sets out the
+• components of the qualification process
+• definitions of key concepts used in the CA(SA) Competency Framework Suite of
+Documents
+A. PREFACE
+• Identifies and describes the professional competencies (professional values and attitudes,
+enabling acumens (PVAA's) and technical competencies) that a CA(SA) should
+demonstrate at entry point to the profession.
+B. CA(SA) ENTRY LEVEL COMPETENCY FRAMEWORK
+• Provides endorsed providers of the academic programme with guidance for the content
+development and assessment.
+C. GUIDANCE ON THE CONTENT, DEVELOPMENT AND
+ASSESSMENT OF COMPETENCIES IN THE ACADEMIC
+PROGRAMME
+• Sets out the
+• fundamental principles on which the format of the training programme is based,
+• fundamental principles on which the assessment of trainee accountants is based
+D. GUIDANCE ON THE CONTENT, DEVELOPMENT AND
+ASSESSMENT OF COMPETENCIES IN THE TRAINING
+PROGRAMME
+• Provides providers of the Academic Programme with Guidance on the purpose and nature
+of the IAC
+E. THE INITIAL ASSESSMENT OF COMPETENCE (IAC)
+• Provides providers of the Professional Programme with guidance for the development and
+assessment of competencies
+F. THE PROFESSIONAL PROGRAMME AND THE ASSESSMENT
+OF PROFESIONAL COMPETENCE (APC)
+Appendix 1: Detailed competencies setting out the learning outcomes for the Professional Values Attitudes and Acumens
+(PVAAs) and the Technical competencies at point of entry to the profession and across the various programmes
+4
+
+C. COMPONENTS OF THE COMPETENCY FRAMEWORK:
+1. The competency framework is made up of the following components which in implementation are all
+integrated:
+Ethically responsible leaders
+fulfilling their social mandate
+by using integrated thinking to
+create sustainable value
+Icon Elements of the professional
+competencies
+Professional values and attitudes
+Enabling competencies (defined as
+acumens)
+Technical competencies in the value
+creation process
+The aforementioned competencies are depicted in Figure 1 below:
+5
+
+2. CAs need to integrate all relevant competencies (professional values and attitudes, enabling
+competencies (acumens) and technical competencies) to provide quality deliverables (inputs, services,
+products and experiences) on a wide range of inputs, activities and outputs that lead to outcomes in an
+organisation’s value creation process. This requires integrated thinking (also presented as an enabling
+competency below) to achieve viable solutions while considering all alternatives, by obtaining a broader
+understanding of an issue, creating a design or formulating a plan, etc.
+There are three competency types4, namely:
+(i) Professional Values and Attitudes;
+(ii) Enabling competencies (acumens); and
+(iii) Technical competencies in the value creation process.
+3. The competency types cannot be developed or assessed in isolation and indeed it is where these
+competency types overlap that thinking in an integrated manner is achieved.
+4 The term PVAA’s is used to describe the professional values and attitudes as well as the acumens (enabling competencies)
+
+D. DEFINING CAs AT ENTRY POINT TO THE PROFESSION AND BEYOND
+1. Defining CAs(SA)
+For the purposes of this framework, CAs(SA) are those professionals who are:
+Responsible leaders who behave ethically and create sustainable value for a wide range
+of stakeholders within an organisation.
+Responsible leaders: These leaders need to display respect, courage and consideration for the
+future (creation of sustainable value for the individual, the organisation and for humanity on a
+global basis) by developing key relationships and by demonstrating a clear regard for justice
+(recognise difference between what is right and wrong). A CA(SA) is a responsible leader with a
+specific background in professional accountancy. This implies that a CA(SA) should always
+display professional values and attitudes, have the full range of technical competencies of a
+professional accountant and also those enabling competencies to demonstrate responsible
+leadership qualities in a specific domain.
+Behave ethically: The CA profession is committed to maintaining public confidence through an
+overriding commitment to behave ethically in all professional tasks and interactions with others.
+All CAs are required at all times to uphold ethical principles and to conduct themselves
+professionally, in a manner that exemplifies and enhances the reputation of the CA profession.
+Create sustainable value: CAs create value when they provide quality deliverables
+(contributions, services, products and experiences) on a wide range of inputs, activities and
+outputs that lead to outcomes in an organisation’s value creation process. This value creation
+needs to be sustainable, thus sustaining the organisation and the context in which it exists. By
+enhancing its positive impact on the economy, society and the environment and by eradicating or
+ameliorating its negative impact on them, the organisation creates value for society and CAs have
+a marked effect on or ability to influence the organisation’s value creation process.
+As responsible leaders who behave ethically and create sustainable value for a wide
+range of stakeholders within an organisation, CAs use:
+Integrated thinking to interpret, analyse and evaluate financial and non-financial information.
+This enables them to influence others, and together, make impactful decisions thereby
+contributing meaningfully to the economy and to society.
+Integrated thinking: The core of creating sustainable value is integrated thinking. It requires
+synthesis and sense-making of ideas and information to develop a more complete understanding
+of issues and/ or the implications of alternatives. At an individual level CAs use integrated thinking
+for the interpretation, analysis and evaluation of financial and non-financial information to achieve
+viable solutions whilst considering all alternatives, obtaining a broader understanding of an issue,
+creating a design or formulating a plan etc. Such integrated thinking is done during active
+consideration of relationships between various operating and functional units of an organisation
+and the capitals that are affected or used. Integrated thinking requires CAs to always display
+professional values and attitudes whilst thinking about value creation in an integrated manner.
+This entails integrating enabling competencies with technical competencies.
+Interpret, analyse and evaluate financial and non-financial information: CAs need to have the
+full range of professional competencies for the interpretation, analysis and evaluation of financial
+and non-financial information. In addition to preparing historical financials, budgets and business
+
+documents based on past transactions in accordance with rules and standards, CAs need to
+interpret, analyse and evaluate information on where value (tangible and intangible) is created and
+destroyed based on real time information and forward-looking predictions, to gain insights that
+could affect business models. This process includes understanding and modelling of non-
+financial drivers of business performance.
+To make impactful decisions whilst influencing others: CAs need to have a marked effect or
+influence on an organisation’s value creation process. This requires that they establish, maintain
+and develop internal and external relationships to participate in and inform an organisation’s value
+creation process. Well-developed enabling competencies, complemented by sound technical
+competencies, enable CAs, whilst displaying professional values and attitudes, to make impactful
+decisions whilst influencing others.
+Contribute meaningfully to the economy and society: The CA profession strives to make a
+meaningful contribution to the economy and society by serving and protecting public interest from
+a sustainable development perspective. Behavioural standards set out in the Code of Professional
+Conduct recognise the CA profession’s public interest responsibility. This is supplemented by
+professional standards and guidance that help to ensure CAs deliver quality work on which
+relevant stakeholders can rely. A CA discharges his/her public interest responsibility by not only
+complying with, or being seen to be complying with the letter of the Code of Professional Conduct,
+but by their ability to apply the spirit of professionalism grounded in the fundamental ethical
+principles of integrity, objectivity, professional competence and due care, and confidentiality, as
+well as professional behaviour.
+2. CAs at entry point to the profession
+The definition of a CA at entry point to the profession is aligned to SAICA’s strategic objective,
+namely to “develop responsible leaders” who are able to develop, influence and lead others,
+irrespective of their role or job title.
+This statement requires further expansion in order to be clear in defining the foundational
+competencies expected of CAs at entry level to the profession. At entry point to the profession
+CAs:
+Have the potential to become responsible leaders who behave ethically and create
+sustainable value for a wide range of stakeholders within an organisation.
+They use integrated thinking to interpret, analyse and evaluate financial and non-
+financial information. This enables them to influence others and support impactful
+decision-making, thereby contributing meaningfully to the economy and to society.
+Responsible leadership qualities at entry point to the profession: Leadership ability is unlikely
+to result only from pre-qualification education, training and professional programmes. Professional
+competencies, as explained in this competency framework should, however, equip an entry-level
+CA to acquire leadership ability with post-qualification experience and participation in lifelong
+learning. Thus, the competency framework focuses on professional competencies serving as a
+foundation for the further development of responsible leadership abilities after entry to the
+profession. Responsible leadership applies not to one’s level of seniority or title within an
+organisation, but rather to the ability to make a difference to those around you. (#difference
+makers)
+
+Behave ethically at entry to the profession: Recently qualified CAs should uphold ethical
+principles and conduct themselves professionally. Such conduct is required at all times and in a
+manner that exemplifies and enhances the reputation of the CA profession.
+Create sustainable value at entry point to the profession: At entry point to the profession CAs
+have an effect on or an ability to influence an organisation’s value creation process when they
+provide quality deliverables (contributions, services, products and experiences) on a wide range
+of inputs, activities and outputs that lead to outcomes in the value creation process.
+Integrated thinking at entry point to the profession: At entry point to the profession CAs have
+to display integrated thinking when they participate in an organisation’s value creation process. It
+requires, as explained above, synthesis and sense-making of ideas and information to develop a
+more complete understanding of issues and/or the implications of alternatives. Recently qualified
+CAs use integrated thinking to interpret, analyse and evaluate financial and non-financial
+information to achieve viable solutions whilst considering all alternatives. Furthermore, in an
+organisation’s value creation process, integrated thinking requires active consideration of
+relationships between various operating and functional units of an organisation and the capitals
+that are affected or used. Thus, recently qualified CAs need to think about value creation in an
+integrated manner. It requires them to always display professional values and attitudes and
+integrate enabling competencies with technical competencies.
+Interpret, analyse and evaluate financial and non-financial information at entry point to the
+profession: Actions and decisions of a recently qualified CA generally do not yet have a high-
+level strategic impact. Thus a recently qualified CA’s technical competencies used for
+interpretation, analysis and evaluation of financial and non-financial information still need to be
+elevated from the purely technical to include directing and leading at a strategic level. Technical
+competencies should be taught and assessed in education programmes with this objective in
+mind. A recently qualified CA’s proficiency in enabling competencies influences ways of work,
+ways of thinking and tools used to interpret, analyse and evaluate financial and non-financial
+information.
+Making impactful decisions whilst influencing others at entry point to the profession:
+Significant influence through impactful decision-making is unlikely to be achieved by only making
+use of pre-qualification education, training and professional programmes. Professional
+competencies, as explained in this competency framework, should, however, equip a CA at entry
+point to the profession to acquire the ability to exercise significant influence through impactful
+decision-making with accumulation of post-qualification experience and the pursuit of lifelong
+learning. Thus, the competency framework focuses on professional competencies serving as a
+foundation for the further development of this ability after entry to the profession.
+Contribute meaningfully to society: CAs at entry point to the profession make a meaningful
+contribution to society by serving and protecting public interest from a sustainable development
+perspective. This requires that they adhere to the Code of Professional Conduct and deliver
+quality work in terms of the profession’s standards and guidance. A broad spectrum of
+stakeholders relies on the work of newly qualified CAs. Thus, they must not only comply with, and
+be seen to comply with the letter of the Code of Professional Conduct, but also the spirit of
+professionalism grounded in the fundamental ethical principles of integrity, objectivity,
+professional competence, due care and confidentiality, as well as demonstrating professional
+behaviour.
+
+3. CAs beyond entering the profession
+CAs are lifelong learners who undertake relevant CPD activities to achieve competence for post-
+qualification roles. These include, amongst others, responsible leadership and value creation in
+diverse environments, which are deemed complex and/or ambiguous.
+Lifelong learning: The development and acquisition of competencies after entry to the profession
+(post qualification) are not limited to demonstrating abilities in relation to responsible leadership or
+making impactful decisions whilst influencing others, but are likely to occur in many spheres of
+competence, depending on the specific roles and responsibilities to which a CA is exposed.
+Professional competence needs to be maintained (by remaining abreast of changes in existing
+technical and enabling competencies) and developed (to incorporate new technical or enabling
+competencies or improve proficiency levels linking to technical and enabling competencies) in
+areas which relate to a particular field/role in which a CA is generally active after entering the
+profession. In order for these competencies to be effectively and appropriately maintained and
+developed, CAs need to embrace lifelong learning as a professional value and attitude.
+From the above, it is therefore clear that the competency framework is contextualised within the
+fundamental concepts of integrated reporting, sustainable development and value creation.
+Furthermore, the fundamental principles of ethical behaviour, professional competence and
+responsible leadership guide the qualities, characteristics or attributes of CAs and provide the
+foundation for their professional conduct are set out in the preface.
+
+E. COMPETENCY PROFICIENCY LEVELS
+1. CAs at entry-level are expected to demonstrate competence at defined levels of proficiency.
+Three levels of proficiency (ranging from 1 (the lowest) to 3 (the highest) in the context of the
+academic programme are explained in this section and cover competency development from
+foundational to expert levels. The first three levels of proficiency (foundational, intermediate
+and advanced) are used in the competency framework. The expert level is achieved post-
+qualification.
+2. A proficiency level is specified for each of the professional values and attitudes, enabling
+competencies and technical competencies (i.e. different measures are used). The
+competency framework defines levels of proficiency at entry level to the profession. Guidance
+documentation to academics and training officers provides further clarity on proficiency levels
+for competencies to be developed during the academic, training and professional
+programmes. This academic guidance document specifies proficiency levels for elements of
+technical competencies which should be achieved during the academic programme, to reach
+the overall level of proficiency per technical competency as specified in the competency
+framework.
+3. The proficiency levels to be applied to the academic programme are illustrated in the tables
+below:
+PROFESSIONAL VALUES AND ATTITUDES
+1
+Foundational level
+of competence
+2
+Intermediate level of
+competence
+3
+Advanced level of
+competence
+Proficiency levels are distinguished with reference to: (i) frequency and (ii) context,
+Display professional values and attitudes:
+(i) Frequency Occasionally Always under specific
+applicable
+circumstances
+Always under all
+applicable circumstances
+(ii) Context In a simple context
+with straightforward
+situations and/or
+circumstances
+In an easily
+understood context
+with complexity limited
+to specific situations
+and/or circumstances
+In a difficult context with
+complex situations
+and/or circumstances
+ENABLING COMPETENCIES
+(ACUMENS)1- Foundational
+level of
+competence
+2- Intermediate level
+of competence
+3-Advanced level
+of competenceProficiency levels are distinguished with reference to: (i) type of task, (ii) level of task
+understanding, (iii) knowledge and skills needed for task performance, (iv) dependencies and (v)
+level of guidance. Using enabling competencies during task performance:
+i. type of task Follows pre-
+determined steps to
+perform the task
+Initiating tasks and
+perform tasks on a
+preliminary
+/preparatory basis
+Initiating tasks and
+complete all steps in tasks
+ii. level of task
+understanding
+Displaying a basic
+level of task
+understanding (key
+ideas and
+principles)
+Displaying an
+intermediate level of task
+understanding (detailed
+knowledge including
+some analysis/
+evaluation)
+Displaying an advanced
+level of task
+understanding (clear
+problem identification,
+thorough analysis
+/evaluation and useful
+recommendations are
+made)
+
+iii. knowledge
+and skills
+needed for
+task
+performance
+Using limited
+knowledge and
+skills needed to
+perform the task
+Using multiple
+knowledge sources and
+skills in certain (or some)
+areas
+AND
+Using limited knowledge
+sources and skills in
+other areas to perform
+the task
+Integrating multiple
+knowledge sources and
+skills in all areas, to
+perform a task
+iv.dependencies
+(applicable to
+training
+programme
+only)
+i. Working under
+supervision and
+ii. Carrying out
+tasks with a low
+level of risk and
+complexity using
+established
+processes
+i. Working as part of a
+team and
+ii. Carrying out some
+tasks independently,
+being responsible for
+the quality of own
+work
+i. Managing own work
+and being responsible
+for the quality and
+quantity of the work
+done and
+ii. May be responsible for
+leading a team and
+managing certain
+functions
+v. level of
+guidance
+(applicable to
+training
+programme
+only)
+Requiring frequent
+guidance Requiring limited guidance Requiring little or no
+guidance
+TECHNICAL COMPETENCIES
+1
+Foundational level
+of competence
+2
+Intermediate level of
+competence
+3
+Advanced level of
+competence
+Proficiency levels are distinguished with reference to: (i) level of knowledge of the subject
+matter, (ii) level of application and (iii) problem solving to distinguish proficiency levels.
+Display technical competence by:
+(i) Knowledge
+dimension
+Identify and describe
+the key ideas /
+principles /
+fundamental concepts
+of the subject matter
+pertaining to routine
+and non-routine
+situations [Technical
+expertise or detailed
+knowledge not
+required]
+Demonstrate a detailed and comprehensive
+understanding5 of the subject matter pertaining to
+routine situations.
+(ii) Application
+dimension
+Identify and explain
+the significance and
+relevance of the
+subject matter and
+• Apply the knowledge
+to non-complex
+routine situations.
+• Apply the knowledge to
+complex routine
+situations.
+5 ‘Detailed and comprehensive understanding’ covers breadth and depth of the subject matter. The distinction between levels 2 and
+3 is reflected in the application and problem-solving dimensions.
+
+TECHNICAL COMPETENCIES
+1
+Foundational level
+of competence
+2
+Intermediate level of
+competence
+3
+Advanced level of
+competence
+recognise the linkages
+with other subject
+matter(s).
+• Identify and utilise the
+relevant knowledge
+within and across
+competency area(s)
+in a limited manner.
+• Evaluate and
+synthesise the
+knowledge within and
+across competency
+areas (Integrative
+thinking is required).
+(iii) Problem
+solving
+dimension
+Recognise issues
+when encountered
+and seek further
+depth / guidance.
+Prepare or analyse
+solutions for specified
+problems and applying
+limited judgement.
+Evaluate or formulate
+solutions for specified
+and implicit problems –
+applying a high degree of
+rigour, and/or exercise
+sound judgement in
+making
+recommendations.
+4. The proficiency levels build on each other. Intermediate level of competence means
+demonstrating proficiency at level 2, in addition to demonstrating proficiency at level 1.
+Advance level of competence means demonstrating proficiency at level 3, in addition to
+demonstrating proficiency at levels 1 and 2.
+5. Definitions:
+Routine
+situations
+Situations (situations, events, or transactions) that are:
+(a) Prevalent, determined with reference to the frequency with which
+they occur in practice and how relevant they are in practice (occur
+frequently and are very relevant),
+(b) Of a size or degree of complexity likely to be encountered by a
+typical/generalist CA(SA) at the point of qualification, and
+(c) That require a typical/generalist CA(SA) at the point of qualification to
+apply knowledge and judgement to make a recommendation.
+Non-routine
+situations
+Situations (situations, events or transactions) that are:
+(a) Prevalent, determined with reference to how infrequently they occur
+in practice and how relevant they are in practice (occur infrequently),
+(b) Of a size or degree of complexity unlikely to be encountered by a
+typical/generalist CA(SA) at the point of qualification, but
+(c) Of a size or degree of complexity that requires judgement at a
+different level of expertise or specialist knowledge. [In these
+situations, the typical/generalist entry level CA(SA) is expected to
+demonstrate a ‘level 1 foundational level of competence’]
+
+6. Complexity is influenced by the following factors:
+1
+Foundational level of
+competence
+2
+Intermediate level of
+competence
+3
+Advanced level of
+competence
+Information
+• Structured
+• Limited amount of
+information
+• Semi-structured
+• Larger amount of
+information
+• Unstructured
+• Large amount of
+information
+Technique/ What to do with information
+• Define, list, explain or
+contrast techniques or
+methods
+• Recall, translate or interpret
+information
+• Make basic predictions
+based on information
+• Relevant information
+provided
+• Choose the appropriate
+technique and apply to a
+problem
+• Extract and/or summarise
+key information
+• Organise information by
+deconstruction
+• Mostly relevant information
+provided
+• Identify various techniques
+and judge the
+appropriateness of each to
+solve a problem
+• Devise or create a method
+or technique to solve a
+problem
+• Organise information from
+various sources and
+evaluate information for
+accuracy
+• Distinguish between
+relevant and irrelevant
+information
+Typical requirements/ verbs
+• Define and recall
+• Translations, interpretation
+and extrapolation
+• Applying theories or
+methods
+• Calculations, analysis,
+classifications and
+calculations where one or
+more method is involved
+• Deconstruct a problem and
+understand how the parts fit
+together
+• Discussions, arguments or
+reasoning to perform an
+analysis or make decision
+• Applying multiple
+techniques, adjustments,
+projections or recalculations
+to create a plan, solution or
+structure
+• Formulate a solution, make
+recommendations and
+come to a conclusion
+• Provide advice
+
+Verbs
+Classify, Comprehend,
+Convert, Define,
+Demonstrate, Demonstrate
+appreciation, Demonstrate
+awareness, Demonstrate
+understanding, Describe,
+Discuss, Distinguish,
+Estimate, Explain, Express,
+Extend, Generalise, Give
+examples, Identify, Illustrate,
+Infer, Interpret, List,
+Memorise, Name, Order,
+Outline, Paraphrase, Predict,
+Recall, Recognise, Restate,
+Rewrite, Select, State,
+Summarise, Translate,
+Understand, Write
+Analyse, Apply, Arrange,
+Assess, Assign, Break down,
+Calculate, Categorise,
+Change, Choose, Compare,
+Complete, Construct,
+Contrast, Compute,
+Construct, Criticise,
+Demonstrate, Describe with
+evaluation, Differentiate,
+Discover, Discuss,
+Distinguish, Employ,
+Estimate, Examine,
+Experiment, Identify, Infer,
+Interpret, Investigate,
+Manipulate, Model, Modify,
+Operate, Order, Perform,
+Prepare, Prioritise, Produce,
+Question, Reconcile, Relate,
+Reorganise, Report, Review,
+Revise, Schedule, Select,
+Separate, Set up, Show,
+Solve, Summarise, Tell,
+Tabulate, Use, Utilise, Write
+Advise, Appraise, Argue,
+Arrange, Assemble, Assess,
+Choose, Collect, Combine,
+Compare (complex),
+Compose, Conclude,
+Construct, Contrast
+(complex), Create, Criticise,
+Defend, Design, Develop,
+Devise, Discriminate,
+Estimate, Evaluate, Explain,
+Formulate, Generate,
+Integrate, Interpret, Invent,
+Judge, Justify, Manage,
+Organise, Plan, Predict,
+Propose, Rate, Rearrange,
+Recommend, Reconstruct,
+Relate, Reorganise, Resolve,
+Revise, Select, Set up, Solve,
+Summarise, Support,
+Synthesise, Tell, Value, Write
+7. Learning and development as a CA(SA) continues post qualification, and it is therefore
+reasonable to expect that in some roles CAs(SA) would reach a specialist or mastery level
+on some of the competencies and learning outcomes. This means that a proficiency level
+beyond a level 3 may be achieved or expected post entering the profession.
+8. This further proficiency level can be described as:
+a) Demonstrating specialist knowledge (depth of knowledge in a specific area),
+b) Applying this specialist knowledge critically and creatively in complex, integrated and
+ambiguous situations which may involve multiple interpretations, and
+c) Generating solutions for defined outputs for unspecified problems and applying a high
+degree of rigour while exercising sound professional judgement.
+9. Once qualified, there is a need for a CA(SA) to apply the principle in the Code of
+Professional Conduct that requires the professional to evaluate and ensure they have the
+necessary professional competence and to exercise due care in preforming their specific
+role. The requirement to continue to learn and develop post qualification is also clearly
+articulated in the SAICA CPD policy which seeks to measure ongoing lifelong learning and
+development.
+
+F OUTCOME OF THE COMPETENCY FRAMEWORK
+In achieving professional competence, CAs are expected to display professional values and
+attitudes, and for each area (inputs, business processes, outputs leading to outcomes) be able
+to integrate relevant acumens and technical competencies. In addition, such integration should
+be done within, between and across areas.
+This section is accompanied by Appendix 1: Professional Competency outcomes
+(PVAA’s) and Technical Competency learning outcomes detailed across the various
+programmes. The appendix documents the competency framework learning outcomes at
+entry to the CA profession and across the various programmes, namely the Academic
+programme, the training programme and the professional programme
+The outcome of effective integration of professional competencies manifests as CAs(SA),
+at point of entry to the profession, having the potential to be responsible leaders who
+behave ethically and are able to create sustainable value for a wide range of
+stakeholders within an organisational context. With their ability to display integrated
+thinking, CAs are then able to interpret, analyse and evaluate financial and non-
+financial information, thus influencing others, and together making impactful
+decisions, and thereby contributing meaningfully to the economy and to society.
+1. PROFESSIONAL VALUES AND ATTITUDES
+These define professional behaviour and identify professional accountants as CAs, and as
+members of the CA profession. CAs draw on their personal and professional values and their
+ability to act with honesty, integrity, accountability and trustworthiness to demonstrate moral
+and ethical behaviour in the business context and to protect the public interest. By doing more
+than adhering to the rules of professional conduct, CAs are required at all times to uphold
+ethical principles and conduct themselves professionally in a manner that exemplifies and
+enhances the reputation of the CA profession. As lifelong learners, CAs maintain and develop
+their competence in order to adapt and work in an agile way to deal with complexities.
+PROFESSIONAL VALUES AND ATTITUDES
+Competency area pervasive in all other
+competencies Competency short name
+I Ethics, values and attitudes I1 Personal ethics
+I2 Business ethics
+I3 Professional ethics
+II Citizenship, values and attitudes II1 Personal citizenship
+II2 Professional citizenship
+II3 Corporate citizenship
+
+III Lifelong learning, values and
+attitudes
+III1 Self-development
+III2 Adaptive mind set and agility
+III3 Emotional Intelligence
+Rossouw and Van Vuuren (2003) make a distinction between cognitive competence,
+behavioural competence, and managerial competence with respect to ethics. In terms of the
+professional values and attitudes (“PVA”), and specifically ethics and citizenship, the academic
+programme provides the opportunity for the development of both cognitive competence (i.e.
+technical competence (refer to the “minimum content” column in the table below, together with
+the related proficiency levels) and behavioural competence (i.e. professional values and
+attitudes’) (refer to the “learning outcomes” column in the table below). Note that, given the
+context of the academic and training programmes, it is likely that managerial competence will
+only be achieved post-qualification.
+The table that follows details the competency area in the Professional Values and Attitudes,
+an overall explanation of the area, the competency related to the area and the definition of the
+competency.
+Detailed information on professional values and attitudes is presented in a separate document:
+Appendix 1. This Appendix documents the proficiency levels, outcomes and minimum content
+of the PVAA’s. It is presented at “entry level” (the competency framework) and across the
+various programmes, namely the Academic programme, the Training programme and the
+Professional programme. It also includes the minimum content to be covered in the Academic,
+Training and Professional Programme.
+
+PROFESSIONAL VALUES AND ATTITUDES
+Competency Area Explanation Sub-category Definition
+I Ethics, values and
+attitudes:
+This competency area includes
+personal, business and professional
+ethics and describes the ethical
+principles, values and attitudes an
+individual must apply, also when
+interacting with others
+I1 Personal ethics Personal ethics refers to a personal value system applied
+by an individual to decision-making, conduct and
+interaction between the self and others.
+I2 Business ethics
+Business ethics refers to the ethical principles and values
+applied by the organisation to decision-making, conduct
+and the relationship between the organisation, its
+stakeholders and society (King IV).
+I3 Professional
+ethics
+Professional ethics refers to the fundamental ethical
+principles and values applied by a professional CA to
+decision-making, conduct and the relationship between
+the professional, its stakeholders and society
+II Citizenship, values
+and
+“Citizenship” is most often used to
+indicate nationality and explain the
+rights and responsibilities attached to
+“membership” of a nation state.
+Although it is the individual/the
+person who is a citizen, a citizen
+cannot exist without belonging to a
+state.
+II1 Personal
+citizenship
+Personal citizenship is used to indicate that there are
+rights/responsibilities to being a member of multiple
+communities (see details of the communities that
+individuals belong to at II1 Personal citizenship and II2
+relates to membership of the accountancy profession).
+II2 Corporate
+citizenship
+Corporate citizenship relates to the corporation’s
+responsibilities/rights in society which has long been part
+of the field of business ethics (see I2 Business ethics).
+Being a member of a corporation, a CA should assist the
+corporation to become and be seen as a good corporate
+citizen.
+
+Competency Area Explanation Sub-category Definition
+III Lifelong learning,
+values and attitudes
+Life-long learning refers to the
+process of self-initiated education
+and ongoing learning aimed at self-
+development and acquiring an
+adaptive and agile mind set
+III1 Self-development Self-development refers to the planning and management
+of personal development and an appreciation of how
+personal strengths and weaknesses may impact work,
+learning and goal attainment.
+III2 Adaptive mind
+set and agility Adaptive mind set and agility refers to taking initiative to
+improve performance and well-being by reviewing and
+reflecting on work performance.
+III3 Emotional
+Intelligence
+Establish and sustain trusting relationships based on self-
+awareness, sensitivity to the situation, culture and people
+involved.
+
+2. ENABLING COMPETENCIES
+These are essential skills that influence the ways that CAs(SA) work, ways that they think,
+ways they are living in the world, and the tools that they use in the workplace. Enabling
+competencies are pervasive to a CA’s work and behaviour, are transversal and are to be used
+effectively across different environments, functions and roles. Enabling competencies allow a
+CA to effectively demonstrate their professional competence, by displaying decision-making,
+business, digital and relational acumens. The foundation for the further development of
+enabling competencies is set during the Academic Programme, while these are further
+developed with real-life and practical experience during the Training Programme and the
+Professional Programme, and which form the foundation for a strong life-long learning ethic.
+Acumen is defined as “the ability to judge well; keen discernment, insight” (Collins English
+Dictionary, 2008). These acumens are necessary qualities of a CA(SA), enabling the
+performance of their work in the value creation process. They are skills which should be
+demonstrated and applied by a CA in conjunction with their specific technical knowledge.
+These acumens may in some cases not contain any suggested or minimum content as
+numerous opportunities to develop and demonstrate these acumens exist. The Academic
+Programme can assist in this development by providing different opportunities to develop or
+demonstrate these acumens (such as teaching various theories, using videos as educational
+material and requiring students to do projects). Each prospective CA should take ownership
+of developing these acumens using both the formal academic programme and other
+developmental opportunities.
+ACUMENS Competency short name
+W Digital acumen W1 Computational thinking
+W2 Data knowledge and strategy
+W3 Data analytics
+W4 Automation
+W5 New developments and protocols (e.g. artificial
+intelligence (AI), blockchain, Internet of Things etc.)
+W6 Cyber security
+W7 User competencies
+X
+Relational acumen
+X1 Communication skills
+X2 Leadership skills
+X3 People skills
+X4 Relationship-building skills
+X5 Teamwork
+X6 Self-management
+X7 Managing others
+Y Decision-making
+acumen
+Y1 Analytical/critical thinking
+Y2 Integrative thinking
+Y3 Problem solving
+Y4 Judgement and decision-making
+Y5 Professional scepticism
+Z Business acumen
+Z1 Business internal environment
+Z2 Business external environment
+Z3 Innovation, creativity and curiosity
+
+2.1 What do we mean by integrated thinking?
+Integrated thinking is the active consideration by an organisation of the relationships between
+its various operating and functional units and the capitals that the organisation uses or effects
+to create value over the short, medium and long term. Organisations that practice integrated
+thinking make a deliberate and coordinated effort to connect an organisation’s strategy,
+governance, performance and prospects as part of their sustainability journey.
+Sustainability is the integration of environmental, health, social, equity and economic vitality in
+order to create thriving, healthy, diverse and resilient communities for the present generation
+and generations to come. The practice of sustainability recognises how these issues are
+interconnected and requires a systems approach and an acknowledgement of complexity.
+X, Y and Z are the enabling competencies needed to engage in Integrated Thinking.
+2.2 Competency areas and definitions of enabling competencies
+The table that follows details the competency area in the Professional Values and Attitudes,
+an overall explanation of the area, the competency related to the area and the definition of the
+competency.
+Detailed information on professional values and attitudes is presented in a separate document:
+Appendix 1. This Appendix documents the proficiency levels, outcomes and minimum content
+of the PVAA’s. It is presented at the At Entry Level (the competency framework) and across
+the various programmes, namely the Academic programme, the training programme and the
+professional programme. It also includes the minimum content to be covered in the Academic,
+Training and Professional Programme.
+
+ACUMEN EXPLANATION SUB-CATEGORY DEFINITION
+W Digital acumen:
+This competency area refers to
+digital topics that influence ways of
+work and business decisions and
+includes computational thinking, data
+knowledge and strategy, data
+analytics, new developments and
+protocols, cyber security and user
+competencies
+W1 Computational
+thinking
+Computational thinking is a set of problem-solving methods
+that involve expressing problems and their solutions in ways
+that a computer could also execute.
+W2 Data knowledge
+and strategy
+Understanding the types of financial and non-financial
+information available within an entity, identifying possible
+relationships between data sets, requesting the required
+data (including normalisation (clean-up) thereof),
+understanding the security and privacy risks associated with
+the use, storage and transfer of data, and understanding the
+importance of the implementation of sufficient data
+protection policies and controls. Advanced data
+management should be performed by expert data scientists
+and/or IT experts
+W3 Data analytics
+Performing basic data modelling or where necessary
+requesting advanced data modelling by experts, and then
+interpreting the results, concluding and reporting/
+presenting/ communicating as applicable. The W2
+competency comprises both a technical computer skill and
+the ability to apply the underlying technical competency.
+W4 Automation Automation is the technology by which a process or
+procedure is performed with minimal human assistance
+W5
+New
+developments
+and protocols
+Includes new developments such as artificial intelligence
+(AI), blockchain, the Internet of Things etc.
+W6 Cyber security Cyber security is the practice of defending computers and
+servers, mobile devices, electronic systems, networks and
+data from malicious attacks
+W7 User
+Competencies
+Use technology ethically as an enabler to optimise decision
+making and to promote business efficiencies and controls.
+ENABLING COMPETENCIES/ACUMENS
+
+ACUMEN EXPLANATION SUB-CATEGORY DEFINITION
+X Relational
+acumen
+Relational acumen is defined as the
+“art of developing relationships”
+(Churchley, Neufeld, Purvey, 2013).
+It is the ability to develop, maintain
+and adapt relationships and
+stakeholder networks to ensure
+facilitation of required action; the
+delivery of relevant feedback and the
+development of relational trust
+X1 Communication
+skills
+Effectively convey information and ideas to individuals and
+groups in a variety of situations in a focused way using
+verbal and non-verbal techniques and skills.
+X2 Leadership skills Work with others and manage and lead teams.
+X3 People skills
+People skills are patterns of behaviour and behavioural
+interactions. Among people, it is an umbrella term for skills
+under three related set of abilities: personal effectiveness,
+interaction skills, and intercession skills
+X4 Relationship-
+building skills Build authentic relationships and effective collaboration
+across a wide range of teams and stakeholders
+X5 Teamwork
+Interrelated abilities that let you work effectively in an
+organised group. Teamwork happens when people
+cooperate and use their individual skills to achieve common
+goals.
+X6 Self-management
+Plan and manage personal development and appreciate
+how personal strengths and weaknesses may impact work,
+learning and goal attainment.
+X7 Managing others Work with others and manage and lead teams.
+Y Decision-making
+acumen
+This competency area refers to
+cognitive processes to decide on
+actions or between alternatives and
+includes analytical / critical thinking,
+integrated thinking, problem-solving,
+judgement and decision-making and
+professional scepticism
+Y1 Analytical/critical
+thinking
+Research, investigate, critically analyse, reflect and apply
+professional judgement to the evaluation of data and
+information from a variety of sources and perspectives.
+Y2 Integrated
+thinking
+Integrative thinking is a decision-making approach for
+complex problems based on finding new, creative solutions
+rather than merely choosing the best solution from a list of
+alternatives.
+Y3 Problem solving
+Collate and compare information from multiple sources to
+correctly define a problem, assess alternative solutions
+against decision criteria and make the optimal decision.
+Y4 Judgement and
+decision-making The ability to make considered and effective decisions,
+come to sensible conclusions, perceive and distinguish
+
+ACUMEN EXPLANATION SUB-CATEGORY DEFINITION
+relationships, understand situations, and form objective
+opinions.
+Y5 Professional
+scepticism
+Having a questioning mind. Being alert to anything that may
+indicate misstatement due to error or fraud. Critically
+assessing evidence.
+Z Business
+acumen:
+The ability to make quick correct
+and/or focused strategic decisions
+and good judgements in a business
+or business division
+Z1 Business internal
+environment
+Using your understanding of the entity’s internal operations,
+assist in the process of making strategic decisions and good
+judgements in a business or business division
+Z2 Business external
+environment
+Using your understanding of the entity’s’ external
+environment, assist in the process of making strategic
+decisions and good judgements in a business or business
+division
+Z3 Innovation and
+creativity
+Developing new concepts, innovative ways or new ideas
+promoting a business success or wide-spread use, using a
+questioning or inquisitive mind-set.
+
+3. TECHNICAL COMPETENCIES IN THE VALUE CREATION PROCESS
+CAs(SA) have always been renowned for their technical competence and the
+development of these competencies is a key deliverable of the academic programme
+which is endorsed by SAICA. Technical competencies reflect the knowledge of CAs as
+professional accountants which enables them to deliver quality work in public practice,
+industry, the public sector, academia and more.
+Technical competence is defined as the ability to apply technical competencies (the
+content that makes up the subject of accountancy, as well as other business disciplines
+that together constitute the essential body of knowledge for CAs) and to perform a role
+to a defined standard. Technical competencies in the value creation process are
+categorized into six areas (1 Strategy and Governance, 2 Stewardship of Capitals, 3
+Decision-making, 4 Reporting, 5 Compliance and 6 Assurance and Related Services)
+and these are displayed in Figure 3.
+This competency framework uses an organisation’s value creation process to
+articulate the technical competencies. Such a process requires that the organisation
+adopt a business model for transforming inputs through business activities into outputs
+that lead to outcomes and aims that fulfil its strategic purpose and create sustainable
+value over the short, medium and long term (King IV, 2016). The organisation draws
+on various capitals (financial, manufactured, intellectual, human, social and
+relationship, and natural) as inputs and, through its business activities, these are
+converted to outputs which lead to outcomes (IIRC, 2013).
+Inputs: These relate to the capitals on which the organisation depends or that
+differentiate it and are seen to be material to understanding the robustness and
+resilience of the organisation’s business model (IIRC, 2013). The organisation’s
+strategy, providing a sense of identity and general direction, drives its business model.
+The CA(SA) as a professional accountant provides insights and impactful decisions
+that influence the organisation’s short-, medium- and long-term strategic objectives,
+and which culminate in the organisation’s business model. Those charged with
+governance have ultimate responsibility for how the organisation’s strategy,
+governance and performance lead to value creation over time (IIRC, 2013). The
+organisation’s strategy is achieved through implementing resource allocation plans
+(IIRC, 2013). For purpose of this framework, technical competencies on INPUTS
+comprise of STRATEGY AND GOVERNANCE matters to create sustainable value,
+
+including the organisation’s governance model, its business strategy, its business
+model and finance strategy, and also by taking into account tax strategy and tax risk
+management.
+Business activities: Capitals (stocks of value) on which the organisation depends to
+be successful are increased, decreased or transformed through its business activities
+(IIRC, 2013). CAs(SA), as professional accountants with the ability to interpret,
+analyse and evaluate financial and non-financial information, ideally position
+themselves to influence decision-making affecting the organisation’s business
+activities, for example having an impact on how the organisation differentiates itself in
+the marketplace, generates income, approaches the need to innovate and to adapts
+to change. For purposes of this framework, technical competencies on BUSINESS
+ACTIVITIES comprise of STEWARDSHIP OF CAPITALS (reporting fundamentals,
+business systems and processes, and risk management and control) and DECISION-
+MAKING to increase, decrease or transform capitals. The latter includes performance
+measurement for decision-making by management and other internal users of financial
+information, financing decisions, investment decisions, the use of derivatives, business
+valuation, performance management systems, decisions on financially troubled
+businesses as well as related tax law implications.
+Outputs leading to outcomes: Stakeholders are informed about the organisation’s
+outputs (e.g., financial position and performance, products and services) leading to
+outcomes (e.g., tax payments, net increase/decrease in the capitals) (IIRC, 2013).
+Various communications (for example integrated reports or other extended external
+reports, financial statements and tax returns) are used for this purpose. With his/her
+knowledge of financial and non-financial reporting standards, auditing standards, laws
+and regulations, the CA(SA) as a professional accountant is a key role player in
+reporting, assurance and compliance processes. For purpose of this framework,
+technical competencies on OUTPUTS leading to OUTCOMES comprises
+REPORTING on value creation, which includes performance measurement for
+external users of general-purpose financial statements for non-specialised profit-
+orientated entities, public sector entities and other not-for-profit entities. Technical
+competencies on COMPLIANCE address tax governance and laws and regulations.
+For ASSURANCE AND RELATED SERVICES, the technical competencies comprise
+concepts and principles of assurance engagements, audits of historical financial
+statements for non-specialised profit orientated entities, public sector entities, other
+not-for-profit entities, other assurance services and other related services.
+INPUTS
+AREA 1 SUB-CATEGORY
+A Strategy and
+governance to
+create
+sustainable
+value
+A1 Governance model
+A2 Business strategy
+A3 Aligning the business model with the business strategy
+A4 Finance strategy
+A5 Tax strategy
+BUSINESS ACTIVITIES
+AREA 2 SUB-CATEGORY
+B Stewardship of
+capitals:
+business
+processes and
+risk management
+B1 Reporting fundamentals
+B2 Business systems and processes
+B3 Risk management and control
+
+AREA 3 SUB-CATEGORY
+C Decision-making
+to increase,
+decrease or
+transform
+capitals
+C1 Performance measurement for decision-making by
+management and other internal users of financial
+information
+C2 Financing decisions
+C3 Investment decisions
+C4 Use of derivatives
+C5 Business valuation
+C6 Performance management systems
+C7 Financially troubled businesses
+C8 Tax law implications
+OUTPUTS LEADING TO OUTCOMES
+AREA 4 SUB-CATEGORY
+D Reporting on
+value creation
+D1 Performance measurement for users of extended external
+reports
+AREA 5 SUB-CATEGORY
+E Compliance E1 Tax governance
+E2 Laws and regulations
+AREA 6 SUB-CATEGORY
+F Assurance and
+related services
+F1 Concepts and principles of assurance engagements
+F2 Audits of historical financial statements of a non-specialised
+profit orientated entity
+F3 Audits of historical financial statements of a public sector
+entities
+F4 Other assurance services
+F5 Other related services
+3.1 Competency areas and definitions of enabling competencies
+The table that follows details the technical competencies in the value creation process (Inputs,
+activities and outputs), competency areas, the competency related to the area and the
+definition of the competency.
+Detailed information on the enabling competencies is presented Appendix 2. The workbook
+appendix documents the proficiency levels, outcomes and minimum content of the technical
+competencies. It is presented at the At Entry Level (the competency framework) and across
+the various programmes, namely the Academic programme, the training programme and the
+professional programme. It also includes the minimum content to be covered in the Academic,
+Training and Professional Programme.
+
+AREA 1- Strategy and governance to create sustainable
+value SUB-CATEGORY Sub-Category Definition
+A
+Strategy and
+governance to
+create
+sustainable
+value
+Strategy and Governance
+involves the authoritative and
+accountable framework for an
+organisation's actions and
+decisions, encompassing the
+fundamental governance model,
+the development and
+implementation of a business
+strategy to achieve goals, and the
+alignment of the business model
+with that strategy. This includes
+the formulation of specific
+financial and tax strategies, while
+considering internal and external
+influences, to ensure the
+organisation's goals are met and
+value is created.
+A1 Governance
+model
+The authority and accountability of role players
+in a governance process and includes the
+governance model of a business, including the
+fundamentals of governance (including
+governance theories and approaches to
+achieving effective governance), governance
+structures and practices as well as internal
+auditing as a governance mechanism.
+A2 Business strategy
+The actions and decisions of an organisation to
+achieve its goals and includes the strategy
+development process, the external and internal
+influences on the organisation’s business
+strategy, the IT and data strategy as well as the
+implementation of the developed business and
+other strategies
+A3
+Aligning the
+business model
+with the business
+strategy
+This competency area refers to how an
+organisation’s strategy is embedded in a plan
+aimed at successful operation and includes the
+building blocks of the business model, disruptive
+business models, the change management
+process and building relations and growth
+strategies.
+INPUTS
+
+AREA 1- Strategy and governance to create sustainable
+value SUB-CATEGORY Sub-Category Definition
+A4 Finance strategy
+This competency area refers to actions and
+decisions of an organisation to achieve its
+finance goals and includes the organisation’s
+finance plan (including the finance strategy),
+factors influencing the finance strategy and the
+appraisal of the finance strategy
+A5 Tax strategy
+This competency area refers to actions and
+decisions of an organisation to achieve its tax
+goals and includes the organisation’s tax
+strategy, tax risk management and tax morality.
+INPUTS
+
+Business Activities
+AREA 2_ Business Activities Sub-Category Definition
+B
+Stewardship of capitals:
+business processes and risk
+management
+Stewardship of capitals is the
+responsible and accountable
+management of an
+organisation's resources. This
+is achieved through effective
+business processes and a
+robust risk management
+system that ensures reliable
+operations, compliance with
+regulations, and the creation of
+value.
+B1 Reporting
+fundamentals
+This competency area forms a base or core for
+knowledge on reporting knowledge and includes the
+fundamental reporting concepts and accounting
+information systems.
+B2 Business systems
+and processes
+This competency area refers to a collection of
+workflow processes within a system and includes
+the transactional business processes and digital
+technologies used by a business to convert inputs
+into outputs.
+B3 Risk management
+and control
+This competency refers to actions and decisions to
+ensure effective operations, reliable information and
+compliance with rules and regulations. This area
+includes the risk management systems and
+processes, the control systems and processes, the
+combined assurance model within the organisation
+as well as the testing of controls for operational
+effectiveness.
+AREA 3: Decision-making to increase, decrease or transform
+capitals SUB-CATEGORY Sub-Category Definition
+
+C
+Decision-making to increase,
+decrease or transform
+capitals
+This area involves making
+strategic financial and
+operational decisions to
+manage and optimise an
+organization's resources
+(capitals). It includes measuring
+performance, making key
+choices about financing and
+investments, utilising
+derivatives, and assessing
+business value. The goal is to
+ensure the organisation's
+financial health, manage risks,
+and implement strategies for
+growth or recovery from
+financial trouble, while also
+considering the tax implications
+of these decisions.
+C1
+Performance
+measurement for
+decision-making by
+management and
+other internal users
+of financial
+information
+This competency refers to a set of activities and
+outputs for management and other internal users to
+reach the organization’s goals. This area includes
+decision-making based on price setting and capacity
+utilization information, decision-making based on
+budgeting and expenditure forecasting, internal cost
+allocation and transfer pricing options as well as
+uncertainty, volatility or inaccuracy, and
+consideration of qualitative factors in decision
+making
+C2 Financing decisions
+This competency area refers to actions and activities
+to raise capital and includes financing decisions
+taken by the organisation relating to its cash
+management, sources of funds, the distribution of
+profits and the appraisal of capital structures.
+C3 Investment
+decisions
+This competency area refers to the determination of
+how much, when and where capital needs to be
+spend or debit need to be acquired to reach the
+goals of the organisation. It includes investment
+decisions taken by the organisation relating to the
+appraisal of its capital investment and allocation of
+capital.
+C4 Use of derivatives
+This competency area refers contracts between
+parties based on value of agreed-upon underlying
+assets and includes aspects to the use of derivatives
+and the financial risks associated with derivatives
+
+C
+Decision-making to increase,
+decrease or transform
+capitals (cont)
+C5 Business valuation
+This competency area refers to the process to
+estimate the value of a business interest and
+includes the valuation of a business, the valuation of
+intangibles as well as mergers, acquisitions and
+divestitures.
+C6
+Performance
+management
+systems
+This competency area refers to activities to track
+and monitor performance and includes
+organisational performance based on key
+performance indicators, performance evaluation and
+reward structures including offering incentives
+C7 Financially troubled
+businesses
+This competency area refers to an organisation that
+struggles to pay its debts and includes the
+assessment of under-performance and strategies to
+overcome under-performance.
+C8 Tax law implications
+This competency area refers to the tax implications
+relating to financing decisions, investment decisions,
+financially troubled businesses and reward
+structures.
+
+AREA 5 Explanation Sub-Category Sub-category definitions
+E Compliance
+Compliance is the act of
+adhering to applicable laws and
+regulations, including the
+interpretation and application of
+specific tax legislation, as
+required by governmental
+agencies and legislation.
+E1 Tax governance
+This competency area refers to tax rules and
+regulations and includes the tax landscape in South
+Africa, the interpretation of tax legislation, the
+application of tax legislation to calculate the tax
+obligation and the application of tax legislation to
+comply with administrative provisions.
+E2 Laws and
+regulations
+This competency area refers to regulation created
+by governmental agency which is often implemented
+in a law and includes compliance with applicable
+laws and regulations by an organisation.
+AREA 6 Explanation Sub-Category Sub-category definitions
+F Assurance and related
+services
+This area involves the
+application of fundamental F1 Concepts and
+principles of
+This competency area refers to fundamental
+assumptions and understandings of assurance
+OUTPUTS LEADING TO OUTCOMES
+AREA 4 SUB-CATEGORY Sub-Category Definition
+D Reporting on value creation
+This competency area refers to
+analysing and reporting
+information regarding the
+performance of organisations
+and includes financial reporting
+in accordance with IFRS and
+other reporting frameworks as
+well as extended external
+reports.
+D1
+Performance
+measurement for
+external users of
+general purpose
+financial statements
+This competency area refers to analysing and
+reporting information regarding the performance of
+organisations and includes financial reporting in
+accordance with IFRS and other reporting
+frameworks as well as extended external reports.
+
+AREA 6 Explanation Sub-Category Sub-category definitions
+principles and concepts of
+assurance engagements to
+provide confidence in
+information. It includes audits
+of historical financial
+statements for various types of
+entities as well as a range of
+other assurance and non-
+assurance services, such as
+compiling financial statements,
+forensic audits, and internal
+audit.
+assurance
+engagements
+services and includes the concept of assurance, the
+expectation gap, the regulatory environment of
+assurance engagements, ethical principles of
+assurance providers and the assurance
+engagement risk considerations
+F2
+Audits of historical
+financial statements
+of a non-specialised
+profit orientated
+entity
+This competency area refers to audits of profit-
+orientated companies not operating in specialised
+industries and includes the concepts and principles
+of audits of historic financial information, performing
+an audit of historic financial information, reliance on
+other parties and communicating audit findings
+relating to non-specialised profit orientated entities.
+F3
+Audits of historical
+financial statements
+of a public sector
+entities
+This competency area refers to audits of public
+sector entities and includes the concepts and
+principles of audits of historic financial information,
+performing an audit of historic financial information,
+reliance on other parties and communicating audit
+findings relating to public sector entities.
+F4
+Audits of historical
+financial statements
+of other not-for-
+profit entities
+This competency area refers to assurance services
+other than an audit and includes assurance
+engagements on other non-financial information
+including the combined assurance process.
+F5 Other assurance
+services
+This competency area refers to non-assurance
+related services and includes the compilation of
+financial statements, agreed upon procedures
+engagements, forensic audit, internal audit and due
+diligence engagements.
+
+APPENDIX 1: PVAA AND TECHNICAL COMPETENCIES AND DETAIL OUTCOMES
+ACROSS THE VARIOUS PROGRAMMES
+This separate excel workbook forms an appendix to the competency framework document.
+It documents the competency framework learning outcomes and proficiency levels at entry to
+the CA profession and across the various programmes, namely the Academic programme, the
+training programme and the professional programme for each of the competency areas as
+stipulated in this document.
+
+APPENDIX 2: GLOSSARY OF TERMS
+Acumen Acumen is defined as “the ability to judge well; keen discernment, insight”
+(Collins dictionary)Agility The ability to reassess the needs of the situation being dealt with and to
+respond and adapt quickly and easily
+Attitude Attitude is the pervasive way a CA thinks and feels about being a
+professional accountant, the profession, business and life
+Artificial intelligence Artificial intelligence is the simulation of human intelligence through expert
+computer systems to perform tasks/processes previously requiring human
+intelligenceBig data Big data refers to extremely large computer-generated data sets, and
+characterised by the volume, variety, velocity, veracity and value of data
+being created/generated through new and powerful computational
+resources to reveal patterns, trends, and associations not previously
+discernibleBlockchain Blockchain is a type of distributed ledger, functioning as a decentralised
+database, for maintaining a permanent and tamper-proof record of
+transactional data. It is a system in which the records of transactions
+made, for example, in bitcoin or other cryptocurrencies are maintained
+across several computers belonging to a peer-to-peer network. Each of
+the computers in the network maintains a copy of the ledger to prevent a
+single point of failure, and all copies are updated and validated
+simultaneously
+Business An integrated set of activities and assets that is capable of being conducted
+and managed for the purpose of providing goods or services to customers,
+generating investment income (such as dividends or interest) or generating
+other income from ordinary activities.Business model A business model is the conceptual structure supporting the viability of a
+business, including its purpose, its goals and its ongoing plans for
+achieving them. A business model reflects how an organisation fulfils its
+purposeCognitive computing
+systems
+Cognitive computing systems use computerised models to simulate
+human cognition processes by synthesizing data from various
+information sources (and includes weighing context and conflicting
+evidence), to find solutions in complex situationsCompetence-related terms
+Competency area
+(within each
+competency type)
+Each competency type has a number of different competency areas to
+assist in grouping common competencies and learning outcomes
+together. Competency areas are a class or group in which each
+member has a characteristic common to all the rest; one of the
+fundamental classes to which objects of knowledge can be assigned.
+For example, Professional Values and Attitudes (competency type) has
+three competency areas being:
+I. Ethics, values and attitudes
+II. Citizenship, values and attitudes
+III. Lifelong learning values and attitudes.
+Competency area
+descriptor Describes at a high level what the competency area is (within the
+competency type)
+
+Competency
+(short name and
+descriptor)
+Each competency area has a number of individual competencies
+which are described at a high level. These competencies in turn have
+a number of learning outcomes used to detail how competence
+should be demonstrated.
+Competencies define the applied knowledge, skills and professional
+values/attitudes that enable professionals to successfully perform
+their work while learning objectives are specific to a course of
+instruction. Competencies are relevant to an individual's job
+responsibilities, roles and capabilities.
+An easy definition of competency is that it is something you need to
+be able to do well in a specific job role. ... To achieve competence in a
+particular job, a person should be able to perform various tasks or apply
+knowledge, skills and professional values/attitudes at a target
+proficiency level.
+Competence is “being able to perform a work role to a defined standard,
+with
+reference to real working environments”, it is thus “the
+demonstrated ability to perform relevant roles or tasks to the
+required standard” (IFAC, 2008: IES 8).
+Learning outcomes Learning outcomes establish the content and the depth of
+knowledge, understanding, and application required for each
+competency. Learning outcomes can be achieved within the context
+of an academic programme, work environment or a professional
+accounting education program.
+Learning outcomes are detailed statements which identify what the
+prospective CA(SA) should know and be able to do / demonstrate at
+the end of the academic and training programmes (and which are
+assessed by education providers and training offices)
+Proficiency levels Proficiency levels are described differently for each of the
+competency types (professional values and attitudes, enabling
+competencies and technical competencies).
+There are three levels of proficiency defined. The levels demonstrate
+progression through the development of competence up to the point of
+entry. Level 4 represents an aspirational level of proficiency post
+qualification.
+The proficiency level expected at point of entry to the profession is set
+out in this document. This level of proficiency is achieved by combining
+the proficiency levels to be achieved in the academic programme and
+the training programme as indicated in the respective guidance
+documents.
+Universities may elect to include additional content or go beyond
+the proficiency levels outlined in the academic guidance
+document.
+Cyber security Cyber security protects computers, servers, networks, programs
+and data from malicious attacks, damage and/or unauthorised
+access
+Data modelling Data modelling is the analysis of data objects and their relationships to
+other data objects
+Integrity Acting ethically and honestly; carrying out work with an
+objective frame of mind and maintaining independence from
+related parties both in fact and appearance
+Internet of things
+The Internet of Things is a network of interrelated computing devices,
+mechanical and/or digital machines, appliances, and other equipment
+and objects equipped with computer chips and sensors that enable
+them to send and receive data through the Internet
+
+Machine learning Machine learning is a branch of artificial intelligence that provides
+systems with the ability to automatically learn and improve from
+experience, without being explicitly programmed to do so
+Non-specialised
+entities
+Entities that are not defined as specialised
+Organisation
+An organisation refers to a group of people that are organised for a
+specific purpose such as a company, institution, association or a
+professional body. It is used interchangeably with the term entity.
+Responsible
+Leadership
+Leadership encompasses the competencies required to collaborate
+with others and inspire teams to achieve organizational goals
+Process automation Robotic process automation refers to the use of software with artificial
+intelligence and machine learning capabilities to perform high-volume,
+repeatable tasks that were previously performed by humans
+Six capitals
+The six capitals in integrated reporting are: financial, manufactured,
+intellectual, human, social and relationship, and natural capital. These
+represent the key resources and relationships that organizations rely on
+to create value over time
+Specialised entities The following entities are considered to be specialised and are excluded
+from all professional competencies in this competency framework:
+• Agriculture
+• Cooperatives
+• Collective investments
+The following entities are considered to be specialised and are excluded
+from technical competencies discussed in sections D and F in this
+competency framework:
+• Banking and financial institutions
+• Insurance companies
+• Medical aid funds
+• Mineral resources
+• Pension funds
+• Retirement funds
+• Service concessions
+Sustainable
+development goals
+(SDGs)
+The scheme to achieve a more sustainable future for all, addressing
+global challenges such as those related to poverty, inequality, climate
+change, environmental degradation, peace and justice
+(https://www.un.org/sustainabledevelopment/sustainable-development-
+goals/)
+Values Values are the guiding principles used by a CA in formulating his/her
+judgement of what is important in the profession, business and life
+
+Value creation “Value created by an organization over time manifests itself in
+increases, decreases or transformations of the capitals caused by the
+organization’s business activities and outputs. That value has two
+interrelated aspects – value created for:
+• The organization itself, which enables financial returns to the
+providers of financial capital
+• Others (i.e., stakeholders and society at large)” (The
+International <IR> Framework 2013:10)
