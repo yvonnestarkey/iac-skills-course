@@ -23,6 +23,7 @@ const TABS = [
   { id: "surveys", label: "Surveys", href: null },
   { id: "roster", label: "Student Roster", href: null },
   { id: "bmcr", label: "BMCR Analytics", href: null },
+  { id: "waitlist", label: "Waitlist", href: "/coach/waitlist" },
   { id: "inbox", label: "Inbox", href: "/coach/inbox" },
 ] as const;
 

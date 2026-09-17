@@ -43,7 +43,7 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isLogin = pathname === "/student/login";
+  const isLogin = pathname === "/student/login" || pathname === "/login";
   const isOnboarding = pathname === "/onboarding" || pathname.startsWith("/onboarding/");
 
   if (isLogin) {
@@ -52,7 +52,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if ((isStudentAppPath(pathname) || isOnboarding) && !user) {
-    const login = new URL("/student/login", request.url);
+    const login = new URL("/login", request.url);
     if (isStudentAppPath(pathname) && pathname !== "/student") {
       login.searchParams.set("next", pathname);
     }
@@ -85,5 +85,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/student", "/student/:path*", "/onboarding", "/onboarding/:path*", "/coach/:path*"],
+  matcher: ["/student", "/student/:path*", "/onboarding", "/onboarding/:path*", "/coach/:path*", "/login"],
 };

@@ -150,3 +150,12 @@ export interface CustomSurveyResponseRow {
   answers: Record<string, unknown>;
   created_at: string;
 }
+
+/** Lead captured from the public sales waitlist on `/`. */
+export interface WaitlistRow {
+  id: string;
+  full_name: string;
+  email: string;
+  preferred_cohort: string;
+  created_at: string;
+}

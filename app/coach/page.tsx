@@ -16,6 +16,10 @@ export default function CoachHomePage() {
         </p>
         <h3 style={{ marginTop: 22 }}>Where do you want to go?</h3>
         <div className="people hub-choices">
+          <button onClick={() => router.push("/coach/waitlist")}>
+            <strong>Waitlist</strong>
+            <span className="muted">Leads from the sales page, filter by cohort, export CSV</span>
+          </button>
           <button onClick={() => router.push("/coach/surveys")}>
             <strong>Custom surveys</strong>
             <span className="muted">Build forms, collect answers, and export CSV</span>

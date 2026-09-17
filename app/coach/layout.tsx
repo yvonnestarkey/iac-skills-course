@@ -6,35 +6,49 @@ import type { ReactNode } from "react";
 import TopBar from "@/components/TopBar";
 import CoachPreviewShell from "@/components/coach/CoachPreviewShell";
 import { CoursePreviewProvider } from "@/lib/course-preview";
+import { isCoachAccount } from "@/lib/roles";
 import { StudentNavProvider } from "@/lib/student-nav";
-import { StudentSessionProvider } from "@/lib/student-session";
+import { StudentSessionProvider, useStudentSession } from "@/lib/student-session";
 import { StudentInboxProvider } from "@/lib/use-student-inbox";
 import { useStore } from "@/lib/store";
 
 export default function CoachLayout({ children }: { children: ReactNode }) {
-  const { ready, session } = useStore();
+  return (
+    <StudentSessionProvider>
+      <CoachLayoutInner>{children}</CoachLayoutInner>
+    </StudentSessionProvider>
+  );
+}
+
+function CoachLayoutInner({ children }: { children: ReactNode }) {
+  const { ready: storeReady, session, setSession } = useStore();
+  const { ready: authReady, user } = useStudentSession();
   const pathname = usePathname();
   const router = useRouter();
-  const isCoach = Boolean(session && session.role === "coach");
   const isPreview = pathname.startsWith("/coach/preview");
+  const isDemoCoach = Boolean(session && session.role === "coach");
+  const isAuthCoach = isCoachAccount(user);
+  const allowed = isDemoCoach || isAuthCoach;
 
   useEffect(() => {
-    if (ready && !isCoach) router.replace("/");
-  }, [ready, isCoach, router]);
+    if (isAuthCoach && !isDemoCoach) setSession({ role: "coach", id: "coach" });
+  }, [isAuthCoach, isDemoCoach, setSession]);
 
-  if (!ready || !isCoach) return null;
+  useEffect(() => {
+    if (storeReady && authReady && !allowed) router.replace("/login");
+  }, [storeReady, authReady, allowed, router]);
+
+  if (!storeReady || !authReady || !allowed) return null;
 
   if (isPreview) {
     return (
-      <StudentSessionProvider>
-        <StudentInboxProvider>
-          <CoursePreviewProvider>
-            <StudentNavProvider>
-              <CoachPreviewShell>{children}</CoachPreviewShell>
-            </StudentNavProvider>
-          </CoursePreviewProvider>
-        </StudentInboxProvider>
-      </StudentSessionProvider>
+      <StudentInboxProvider>
+        <CoursePreviewProvider>
+          <StudentNavProvider>
+            <CoachPreviewShell>{children}</CoachPreviewShell>
+          </StudentNavProvider>
+        </CoursePreviewProvider>
+      </StudentInboxProvider>
     );
   }
 

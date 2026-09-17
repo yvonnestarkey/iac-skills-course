@@ -69,7 +69,7 @@ export default function OnboardingForm({
   useEffect(() => {
     if (!ready) return;
     if (!user) {
-      router.replace("/student/login");
+      goToStudentLogin();
       return;
     }
     if (isCoachAccount(user) || onboarding === "done") {

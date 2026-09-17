@@ -703,5 +703,5 @@ export async function signOutStudent(): Promise<void> {
 
 export function goToStudentLogin(): void {
   if (typeof window === "undefined") return;
-  window.location.replace("/student/login");
+  window.location.replace("/login");
 }

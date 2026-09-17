@@ -1,12 +1,13 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { ensureStudentProfile } from "@/lib/profiles";
 import { fetchOnboardingGate } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
 import { goToStudentLogin, safeStudentPath, studentUserFromAuth } from "@/lib/student-lesson";
+import { useStore } from "@/lib/store";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -15,7 +16,8 @@ type Mode = "signin" | "signup";
 export default function StudentLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { ready, user, signOut } = useStudentSession();
+  const { ready, user, onboarding, signOut } = useStudentSession();
+  const { setSession } = useStore();
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +29,12 @@ export default function StudentLoginForm() {
   const goToOnboarding = () => {
     router.replace("/onboarding");
   };
+
+  useEffect(() => {
+    if (!ready || !user || isCoachAccount(user) || onboarding === "unknown") return;
+    if (onboarding === "done") router.replace(nextPath);
+    else router.replace("/onboarding");
+  }, [ready, user, onboarding, nextPath, router]);
 
   if (ready && isCoachAccount(user)) {
     return (
@@ -41,7 +49,14 @@ export default function StudentLoginForm() {
           <button className="primary" type="button" onClick={() => router.push("/coach/preview")}>
             Preview student course
           </button>
-          <button className="ghost" type="button" onClick={() => router.push("/coach")}>
+          <button
+            className="ghost"
+            type="button"
+            onClick={() => {
+              setSession({ role: "coach", id: "coach" });
+              router.push("/coach");
+            }}
+          >
             Coach dashboard
           </button>
           <button
@@ -106,6 +121,7 @@ export default function StudentLoginForm() {
           user_metadata: data.user.user_metadata,
         });
         if (isCoachAccount(studentUser)) {
+          setSession({ role: "coach", id: "coach" });
           router.replace("/coach");
           return;
         }
@@ -145,10 +161,10 @@ export default function StudentLoginForm() {
   };
   return (
     <section className="card login student-login">
-      <h1 className="brand">{mode === "signin" ? "Student sign in" : "Create your account"}</h1>
+      <h1 className="brand">{mode === "signin" ? "Student / coach sign in" : "Create your account"}</h1>
       <p className="muted">
         {mode === "signin"
-          ? "Sign in with your email and password to open the IAC Skills Course."
+          ? "Sign in with your email and password to open the IAC Skills Course or the coach dashboard."
           : "Register with your email and a password to start the IAC Skills Course."}
       </p>
       {!supabaseConfigured ? (
