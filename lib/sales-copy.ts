@@ -1,9 +1,9 @@
-import { WAITLIST_COHORTS, type WaitlistCohort } from "./waitlist";
+import { WAITLIST_EXAMS, type WaitlistExam } from "./waitlist";
 
-export const SALES_BADGE = "IAC Skills Board Course — January 2027 & June 2027 Cohorts";
+export const SALES_BADGE = "IAC Skills Board Course — January 2027 IAC Exam";
 
 export const SALES_HEADLINE =
-  "The only course that gives you individual feedback to build exam skills, to help you get marks for your knowledge.";
+  "The only course that gives you individual feedback to build exam skills for the IAC exam, to help you get marks for your knowledge.";
 
 export const SALES_SUBHEAD =
   "The only IAC Prep course that gives you individual feedback on YOUR practice questions. We focus on the Skills you need to turn your knowledge into marks.";
@@ -120,12 +120,12 @@ export const FAQS = [
   },
 ] as const;
 
-export const WAITLIST_COHORT_OPTIONS = WAITLIST_COHORTS;
+export const WAITLIST_COHORT_OPTIONS = WAITLIST_EXAMS;
 
-export function waitlistButtonLabel(cohort: WaitlistCohort): string {
-  return `Join the Waitlist for ${cohort.replace(" Cohort", "")}`;
+export function waitlistButtonLabel(exam: WaitlistExam): string {
+  return `Join the Waitlist for ${exam}`;
 }
 
-export function waitlistSuccessCopy(cohort: WaitlistCohort | string): string {
-  return `You're on the list! We will email you as soon as enrollment officially opens for the ${cohort} cohort.`;
+export function waitlistSuccessCopy(_exam?: WaitlistExam | string): string {
+  return "You're on the list! We will email you as soon as registration officially opens for the January 2027 IAC Exam.";
 }

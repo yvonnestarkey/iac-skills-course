@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { exportWaitlistCsv, fetchWaitlistLeads, WAITLIST_COHORTS, WAITLIST_PAYMENTS, type WaitlistLead } from "@/lib/waitlist";
+import { exportWaitlistCsv, fetchWaitlistLeads, WAITLIST_EXAMS, WAITLIST_PAYMENTS, type WaitlistLead } from "@/lib/waitlist";
 
-type Filter = "all" | (typeof WAITLIST_COHORTS)[number];
+type Filter = "all" | string;
 type PaymentFilter = "all" | (typeof WAITLIST_PAYMENTS)[number];
 
 export default function WaitlistTab() {
@@ -33,6 +33,14 @@ export default function WaitlistTab() {
     };
   }, []);
 
+  const examOptions = useMemo(() => {
+    const values = new Set<string>(WAITLIST_EXAMS);
+    leads.forEach((lead) => {
+      if (lead.preferred_cohort) values.add(lead.preferred_cohort);
+    });
+    return [...values];
+  }, [leads]);
+
   const visible = useMemo(
     () =>
       leads.filter((lead) => {
@@ -51,7 +59,7 @@ export default function WaitlistTab() {
       <div className="coach-head">
         <div>
           <h1>Waitlist</h1>
-          <p className="muted">Leads from the public sales page. Filter by preferred cohort or payment plan and export the email list.</p>
+          <p className="muted">Leads from the public sales page. Filter by target exam or payment plan and export the email list.</p>
         </div>
         <div className="actions">
           <button className="primary" type="button" onClick={() => exportWaitlistCsv(visible)} disabled={!visible.length}>
@@ -85,16 +93,16 @@ export default function WaitlistTab() {
         <button type="button" className={filter === "all" ? "active" : ""} onClick={() => setFilter("all")}>
           All ({leads.length})
         </button>
-        {WAITLIST_COHORTS.map((cohort) => {
-          const count = leads.filter((lead) => lead.preferred_cohort === cohort).length;
+        {examOptions.map((exam) => {
+          const count = leads.filter((lead) => lead.preferred_cohort === exam).length;
           return (
             <button
-              key={cohort}
+              key={exam}
               type="button"
-              className={filter === cohort ? "active" : ""}
-              onClick={() => setFilter(cohort)}
+              className={filter === exam ? "active" : ""}
+              onClick={() => setFilter(exam)}
             >
-              {cohort} ({count})
+              {exam} ({count})
             </button>
           );
         })}
@@ -129,7 +137,7 @@ export default function WaitlistTab() {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Preferred cohort</th>
+                <th>Target exam</th>
                 <th>Preferred payment</th>
                 <th>Joined</th>
               </tr>

@@ -16,7 +16,7 @@ alter table public.waitlist add column if not exists preferred_payment text;
 
 alter table public.waitlist drop constraint if exists waitlist_cohort_check;
 alter table public.waitlist add constraint waitlist_cohort_check
-  check (preferred_cohort in ('January 2027', 'June 2027'));
+  check (preferred_cohort in ('January 2027 IAC Exam', 'January 2027', 'June 2027'));
 
 alter table public.waitlist drop constraint if exists waitlist_payment_check;
 alter table public.waitlist add constraint waitlist_payment_check
@@ -37,7 +37,7 @@ create policy "anyone can join waitlist"
   with check (
     char_length(trim(full_name)) > 0
     and char_length(trim(email)) > 2
-    and preferred_cohort in ('January 2027', 'June 2027')
+    and preferred_cohort in ('January 2027 IAC Exam', 'January 2027', 'June 2027')
     and (
       preferred_payment is null
       or preferred_payment in ('Once-off ($327)', '6 Installments ($60/mo)')
@@ -75,8 +75,8 @@ begin
   if v_name = '' or v_email !~ '^[^@]+@[^@]+\.[^@]+$' then
     raise exception 'Enter a name and a valid email.';
   end if;
-  if p_preferred_cohort not in ('January 2027', 'June 2027') then
-    raise exception 'Choose January 2027 or June 2027.';
+  if p_preferred_cohort not in ('January 2027 IAC Exam', 'January 2027', 'June 2027') then
+    raise exception 'Choose the January 2027 IAC Exam.';
   end if;
   if v_payment is not null and v_payment not in ('Once-off ($327)', '6 Installments ($60/mo)') then
     raise exception 'Choose once-off or 6 installments.';

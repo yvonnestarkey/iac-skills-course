@@ -4,23 +4,23 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { waitlistButtonLabel, waitlistSuccessCopy } from "@/lib/sales-copy";
 import {
-  WAITLIST_COHORTS,
+  WAITLIST_EXAMS,
   WAITLIST_PAYMENTS,
-  isWaitlistCohort,
+  isWaitlistExam,
   isWaitlistPayment,
   joinWaitlist,
-  type WaitlistCohort,
+  type WaitlistExam,
   type WaitlistPayment,
 } from "@/lib/waitlist";
 
 export default function WaitlistForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [cohort, setCohort] = useState<WaitlistCohort>("January 2027");
+  const [exam, setExam] = useState<WaitlistExam>("January 2027 IAC Exam");
   const [payment, setPayment] = useState<WaitlistPayment>("Once-off ($327)");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [joined, setJoined] = useState<WaitlistCohort | null>(null);
+  const [joined, setJoined] = useState(false);
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -29,7 +29,7 @@ export default function WaitlistForm() {
     const result = await joinWaitlist({
       full_name: fullName,
       email,
-      preferred_cohort: cohort,
+      preferred_cohort: exam,
       preferred_payment: payment,
     });
     setBusy(false);
@@ -37,7 +37,7 @@ export default function WaitlistForm() {
       setError(result.error);
       return;
     }
-    setJoined(cohort);
+    setJoined(true);
   };
 
   if (joined) {
@@ -45,12 +45,12 @@ export default function WaitlistForm() {
       <div className="waitlist-success" role="status">
         <p className="kicker">Waitlist</p>
         <h2>You&apos;re on the list!</h2>
-        <p>{waitlistSuccessCopy(joined)}</p>
+        <p>{waitlistSuccessCopy()}</p>
         <button
           className="ghost"
           type="button"
           onClick={() => {
-            setJoined(null);
+            setJoined(false);
             setFullName("");
             setEmail("");
           }}
@@ -63,9 +63,9 @@ export default function WaitlistForm() {
 
   return (
     <form className="waitlist-form" onSubmit={(event) => void submit(event)}>
-      <p className="kicker">January 2027 &amp; June 2027</p>
+      <p className="kicker">January 2027 IAC Exam</p>
       <h2>Join the waitlist</h2>
-      <p className="muted">Get the email when enrollment opens. No payment now — tell us your cohort and how you would like to pay.</p>
+      <p className="muted">Get the email when registration opens. No payment now — tell us your target exam and how you would like to pay.</p>
       <label htmlFor="waitlist-name">Full Name</label>
       <input
         id="waitlist-name"
@@ -88,19 +88,19 @@ export default function WaitlistForm() {
         onChange={(event) => setEmail(event.target.value)}
         required
       />
-      <label htmlFor="waitlist-cohort">Preferred Cohort</label>
+      <label htmlFor="waitlist-exam">Target Exam</label>
       <select
-        id="waitlist-cohort"
-        name="cohort"
-        value={cohort}
+        id="waitlist-exam"
+        name="exam"
+        value={exam}
         onChange={(event) => {
           const next = event.target.value;
-          if (isWaitlistCohort(next)) setCohort(next);
+          if (isWaitlistExam(next)) setExam(next);
         }}
       >
-        {WAITLIST_COHORTS.map((option) => (
+        {WAITLIST_EXAMS.map((option) => (
           <option key={option} value={option}>
-            {option} Cohort
+            {option}
           </option>
         ))}
       </select>
@@ -126,7 +126,7 @@ export default function WaitlistForm() {
         </p>
       ) : null}
       <button className="primary" type="submit" disabled={busy}>
-        {busy ? "Joining…" : waitlistButtonLabel(cohort)}
+        {busy ? "Joining…" : waitlistButtonLabel(exam)}
       </button>
       <Link className="waitlist-login-link" href="/login">
         Student / Coach Login ↗

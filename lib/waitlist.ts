@@ -1,23 +1,28 @@
 import { downloadRosterCsv } from "./roster";
 import { getSupabase } from "./supabase";
 
-export const WAITLIST_COHORTS = ["January 2027", "June 2027"] as const;
+export const WAITLIST_EXAMS = ["January 2027 IAC Exam"] as const;
 export const WAITLIST_PAYMENTS = ["Once-off ($327)", "6 Installments ($60/mo)"] as const;
 
-export type WaitlistCohort = (typeof WAITLIST_COHORTS)[number];
+export type WaitlistExam = (typeof WAITLIST_EXAMS)[number];
 export type WaitlistPayment = (typeof WAITLIST_PAYMENTS)[number];
+export type WaitlistCohort = WaitlistExam;
 
 export interface WaitlistLead {
   id: string;
   full_name: string;
   email: string;
-  preferred_cohort: WaitlistCohort | string;
+  preferred_cohort: WaitlistExam | string;
   preferred_payment?: WaitlistPayment | string | null;
   created_at: string;
 }
 
-export function isWaitlistCohort(value: string): value is WaitlistCohort {
-  return (WAITLIST_COHORTS as readonly string[]).includes(value);
+export function isWaitlistExam(value: string): value is WaitlistExam {
+  return (WAITLIST_EXAMS as readonly string[]).includes(value);
+}
+
+export function isWaitlistCohort(value: string): value is WaitlistExam {
+  return isWaitlistExam(value);
 }
 
 export function isWaitlistPayment(value: string): value is WaitlistPayment {
@@ -27,7 +32,7 @@ export function isWaitlistPayment(value: string): value is WaitlistPayment {
 export async function joinWaitlist(input: {
   full_name: string;
   email: string;
-  preferred_cohort: WaitlistCohort;
+  preferred_cohort: WaitlistExam;
   preferred_payment: WaitlistPayment;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
   const supabase = getSupabase();
@@ -79,7 +84,7 @@ export async function fetchWaitlistLeads(): Promise<{ ok: true; leads: WaitlistL
 export function exportWaitlistCsv(leads: WaitlistLead[]): void {
   downloadRosterCsv(
     "iac-waitlist.csv",
-    ["Full name", "Email", "Preferred cohort", "Preferred payment", "Joined"],
+    ["Full name", "Email", "Target exam", "Preferred payment", "Joined"],
     leads.map((lead) => [
       lead.full_name,
       lead.email,
