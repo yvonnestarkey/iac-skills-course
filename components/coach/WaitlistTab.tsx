@@ -162,6 +162,7 @@ export default function WaitlistTab() {
                 <th>Target exam</th>
                 <th>Institution</th>
                 <th>Preferred payment</th>
+                <th>Query</th>
                 <th>Joined</th>
               </tr>
             </thead>
@@ -175,6 +176,7 @@ export default function WaitlistTab() {
                   <td>{lead.preferred_cohort}</td>
                   <td>{lead.institution || "—"}</td>
                   <td>{lead.preferred_payment || "—"}</td>
+                  <td>{lead.query || "—"}</td>
                   <td>{new Date(lead.created_at).toLocaleString()}</td>
                 </tr>
               ))}

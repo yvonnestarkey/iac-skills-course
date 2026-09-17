@@ -4885,12 +4885,19 @@ a.live-session-watch:hover {
 }
 
 .waitlist-form select,
-.waitlist-form input {
+.waitlist-form input,
+.waitlist-form textarea {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 13px 14px;
   background: #fff;
+}
+
+.waitlist-form textarea {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.5;
 }
 
 .waitlist-form .primary {

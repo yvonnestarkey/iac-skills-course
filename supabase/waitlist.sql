@@ -1,6 +1,6 @@
 -- Public waitlist from the sales page on /.
 -- Paste into the Supabase SQL editor (Dashboard → SQL Editor → New query).
--- Safe to re-run: adds preferred_payment and institution for existing waitlist tables.
+-- Safe to re-run: adds preferred_payment, institution, and query for existing waitlist tables.
 
 create table if not exists public.waitlist (
   id uuid primary key default gen_random_uuid(),
@@ -9,12 +9,14 @@ create table if not exists public.waitlist (
   preferred_cohort text not null,
   preferred_payment text,
   institution text,
+  query text,
   created_at timestamptz not null default now(),
   constraint waitlist_email_key unique (email)
 );
 
 alter table public.waitlist add column if not exists preferred_payment text;
 alter table public.waitlist add column if not exists institution text;
+alter table public.waitlist add column if not exists query text;
 
 alter table public.waitlist drop constraint if exists waitlist_cohort_check;
 alter table public.waitlist add constraint waitlist_cohort_check
@@ -69,13 +71,15 @@ grant insert on public.waitlist to anon;
 drop function if exists public.join_waitlist(text, text, text);
 drop function if exists public.join_waitlist(text, text, text, text);
 drop function if exists public.join_waitlist(text, text, text, text, text);
+drop function if exists public.join_waitlist(text, text, text, text, text, text);
 
 create or replace function public.join_waitlist(
   p_full_name text,
   p_email text,
   p_preferred_cohort text,
   p_preferred_payment text default null,
-  p_institution text default null
+  p_institution text default null,
+  p_query text default null
 )
 returns void
 language plpgsql
@@ -87,6 +91,7 @@ declare
   v_email text := lower(trim(p_email));
   v_payment text := nullif(trim(coalesce(p_preferred_payment, '')), '');
   v_institution text := nullif(trim(coalesce(p_institution, '')), '');
+  v_query text := nullif(trim(coalesce(p_query, '')), '');
 begin
   if v_name = '' or v_email !~ '^[^@]+@[^@]+\.[^@]+$' then
     raise exception 'Enter a name and a valid email.';
@@ -100,16 +105,20 @@ begin
   if v_institution is not null and v_institution not in ('SAICA', 'ICAZ', 'ICAN', 'Other') then
     raise exception 'Choose SAICA, ICAZ, ICAN, or Other.';
   end if;
+  if v_query is not null and char_length(v_query) > 2000 then
+    raise exception 'Keep your question under 2000 characters.';
+  end if;
 
-  insert into public.waitlist (full_name, email, preferred_cohort, preferred_payment, institution)
-  values (v_name, v_email, p_preferred_cohort, v_payment, v_institution)
+  insert into public.waitlist (full_name, email, preferred_cohort, preferred_payment, institution, query)
+  values (v_name, v_email, p_preferred_cohort, v_payment, v_institution, v_query)
   on conflict (email) do update
     set full_name = excluded.full_name,
         preferred_cohort = excluded.preferred_cohort,
         preferred_payment = excluded.preferred_payment,
-        institution = excluded.institution;
+        institution = excluded.institution,
+        query = excluded.query;
 end;
 $$;
 
-revoke all on function public.join_waitlist(text, text, text, text, text) from public;
-grant execute on function public.join_waitlist(text, text, text, text, text) to anon, authenticated;
+revoke all on function public.join_waitlist(text, text, text, text, text, text) from public;
+grant execute on function public.join_waitlist(text, text, text, text, text, text) to anon, authenticated;

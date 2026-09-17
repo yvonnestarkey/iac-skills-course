@@ -14,6 +14,7 @@ export default function WaitlistForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [institution, setInstitution] = useState<WaitlistInstitution | "">("");
+  const [query, setQuery] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [joined, setJoined] = useState(false);
@@ -33,6 +34,7 @@ export default function WaitlistForm() {
       email,
       preferred_cohort: exam,
       institution,
+      query,
     });
     setBusy(false);
     if (result.ok === false) {
@@ -56,6 +58,7 @@ export default function WaitlistForm() {
             setFullName("");
             setEmail("");
             setInstitution("");
+            setQuery("");
           }}
         >
           Add another email
@@ -111,6 +114,16 @@ export default function WaitlistForm() {
           </option>
         ))}
       </select>
+      <label htmlFor="waitlist-query">Have any questions about the course? (Optional)</label>
+      <textarea
+        id="waitlist-query"
+        name="query"
+        rows={4}
+        placeholder="e.g., Ask about firm sponsorships, study material access, or module schedules..."
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        maxLength={2000}
+      />
       {error ? (
         <p className="student-auth-error" role="alert">
           {error}

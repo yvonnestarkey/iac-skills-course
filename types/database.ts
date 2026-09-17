@@ -159,5 +159,6 @@ export interface WaitlistRow {
   preferred_cohort: string;
   preferred_payment?: string | null;
   institution?: string | null;
+  query?: string | null;
   created_at: string;
 }
