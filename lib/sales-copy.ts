@@ -35,29 +35,6 @@ export const VALUE_PROPS = [
   },
 ] as const;
 
-export const TESTIMONIALS = [
-  {
-    quote:
-      "When I saw my results all I wanted to do was scream and say \"Yay Yvonne I made it\". THE BMCR, RTFQ woooooow! Your lessons and methodology not only equipped me with the knowledge I needed, but also gave me the confidence to believe in myself.",
-    highlight: "BMCR tool",
-  },
-  {
-    quote:
-      "The individual feedback was very helpful as it was personalised for me and speaking to things that I needed to improve on. They provide detailed feedback and that helped a lot in improving the way of answering questions.",
-    highlight: "Individual feedback",
-  },
-  {
-    quote:
-      "Definitely. I wouldn't be able to improve myself without the valuable individual feedback. The individual feedback, in some way, also made me feel calmer about my studies.",
-    highlight: "Individual feedback",
-  },
-  {
-    quote:
-      'Yes. Very true, as it focuses on how one can change their mindset from "I need more theory" to "I know the basics about a topic, I need to practice more so I can improve on my communication, exam technique etc". The course helps one build confidence on the fact that they have the basic knowledge on the topic and they just need to improve on communication skills.',
-    highlight: "Mindset shift",
-  },
-] as const;
-
 export const FAQS = [
   {
     question: "Why is this course different?",

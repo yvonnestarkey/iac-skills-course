@@ -1,14 +1,8 @@
 import BrandMark from "@/components/BrandMark";
+import SenjaTestimonials from "@/components/SenjaTestimonials";
 import FaqAccordion from "@/components/sales/FaqAccordion";
 import WaitlistForm from "@/components/sales/WaitlistForm";
-import {
-  SALES_BADGE,
-  SALES_HEADLINE,
-  SALES_SUBHEAD,
-  SALES_VIDEO,
-  TESTIMONIALS,
-  VALUE_PROPS,
-} from "@/lib/sales-copy";
+import { SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO, VALUE_PROPS } from "@/lib/sales-copy";
 
 export default function SalesLanding() {
   return (
@@ -61,16 +55,7 @@ export default function SalesLanding() {
       </section>
 
       <section className="sales-section" id="testimonials">
-        <p className="kicker">From students who passed</p>
-        <h2>Student testimonials</h2>
-        <div className="sales-quote-grid">
-          {TESTIMONIALS.map((item) => (
-            <blockquote key={item.highlight + item.quote.slice(0, 24)} className="card">
-              <p className="kicker">{item.highlight}</p>
-              <p>{item.quote}</p>
-            </blockquote>
-          ))}
-        </div>
+        <SenjaTestimonials />
       </section>
 
       <section className="sales-section" id="faq">
