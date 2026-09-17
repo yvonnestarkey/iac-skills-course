@@ -42,6 +42,10 @@ export default function SalesLanding() {
 
       <CourseFeatures />
 
+      <section className="sales-section" id="testimonials">
+        <SenjaTestimonials />
+      </section>
+
       <section className="sales-section" id="skills">
         <h2>What Skills will we work on?</h2>
         <p className="muted sales-intro">
@@ -75,10 +79,6 @@ export default function SalesLanding() {
           <h3>{REFERRAL.title}</h3>
           <p>{REFERRAL.body}</p>
         </aside>
-      </section>
-
-      <section className="sales-section" id="testimonials">
-        <SenjaTestimonials />
       </section>
 
       <section className="sales-section" id="faq">
