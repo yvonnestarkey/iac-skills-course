@@ -44,10 +44,19 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   const isLogin = pathname === "/student/login";
+  const isOnboarding = pathname === "/onboarding" || pathname.startsWith("/onboarding/");
 
   if (isLogin) {
     response.cookies.set(onboardingSkipCookieClear());
     return response;
+  }
+
+  if ((isStudentAppPath(pathname) || isOnboarding) && !user) {
+    const login = new URL("/student/login", request.url);
+    if (isStudentAppPath(pathname) && pathname !== "/student") {
+      login.searchParams.set("next", pathname);
+    }
+    return copyCookies(response, NextResponse.redirect(login));
   }
 
   if (!isStudentAppPath(pathname) || !user) return response;

@@ -14,6 +14,7 @@ import {
   type OnboardingCountry,
 } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
+import { goToStudentLogin } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
 
 const STEPS = ["IAC exam", "CTA / PGDA", "Notes", "Contact"] as const;
@@ -187,7 +188,7 @@ export default function OnboardingForm({
             type="button"
             onClick={async () => {
               await signOut();
-              router.replace("/student/login");
+              goToStudentLogin();
             }}
           >
             Sign Out

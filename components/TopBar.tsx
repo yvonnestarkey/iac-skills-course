@@ -23,7 +23,7 @@ export default function TopBar() {
   const signOut = async () => {
     await signOutStudent();
     setSession(null);
-    router.replace("/");
+    window.location.replace("/");
   };
 
   return (

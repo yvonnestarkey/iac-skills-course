@@ -15,7 +15,7 @@ export default function RoleSwitcher({ current }: { current: "students" | "coach
       router.push("/coach");
       return;
     }
-    router.push("/student");
+    router.push("/coach/preview");
   };
 
   return (

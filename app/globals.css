@@ -271,6 +271,17 @@ h1 {
   color: #1b2430;
 }
 
+.coach-preview-banner .ghost {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.45);
+  background: transparent;
+}
+
+.coach-preview-banner .ghost:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
 .notify-btn {
   position: relative;
   display: flex;

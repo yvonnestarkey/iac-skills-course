@@ -146,7 +146,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     setCompleted({});
     setSubmissions({});
     setSurveyReviews({});
-    setOnboarding("done");
+    setOnboarding("unknown");
   }, []);
 
   const value = useMemo(

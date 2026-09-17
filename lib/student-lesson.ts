@@ -526,10 +526,9 @@ export function studentUserFromAuth(user: { id: string; email?: string | null; u
 export async function getStudentUser(): Promise<StudentUser | null> {
   const client = getSupabase();
   if (!client) return null;
-  const { data } = await client.auth.getSession();
-  const user = data.session?.user;
-  if (!user) return null;
-  return studentUserFromAuth(user);
+  const { data, error } = await client.auth.getUser();
+  if (error || !data.user) return null;
+  return studentUserFromAuth(data.user);
 }
 
 export async function fetchCompletedLessonIds(userId: string): Promise<string[]> {
@@ -669,8 +668,40 @@ export async function saveLessonProgress(lessonId: string, progress: LessonProgr
 }
 
 export async function signOutStudent(): Promise<void> {
-  const { clearOnboardingSkipCookie } = await import("./onboarding");
+  const { clearOnboardingSkipCookie, clearOnboardingGateCache } = await import("./onboarding");
   await clearOnboardingSkipCookie();
+  try {
+    clearOnboardingGateCache();
+  } catch {
+    // Cache helper is browser-only.
+  }
   const client = getSupabase();
-  if (client) await client.auth.signOut();
+  if (client) {
+    try {
+      await client.auth.signOut({ scope: "global" });
+    } catch {
+      await client.auth.signOut();
+    }
+  }
+  if (typeof window !== "undefined") {
+    try {
+      await fetch("/api/auth/signout", { method: "POST", credentials: "same-origin" });
+    } catch {
+      // Client sign-out still ran.
+    }
+    try {
+      Object.keys(window.localStorage).forEach((key) => {
+        if (key.startsWith("sb-") || key.includes("supabase.auth") || key === "accounting-study-advice-session") {
+          window.localStorage.removeItem(key);
+        }
+      });
+    } catch {
+      // Private mode may block storage.
+    }
+  }
+}
+
+export function goToStudentLogin(): void {
+  if (typeof window === "undefined") return;
+  window.location.replace("/student/login");
 }

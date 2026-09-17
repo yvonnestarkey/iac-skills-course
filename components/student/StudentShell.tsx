@@ -9,6 +9,7 @@ import RoleSwitcher from "@/components/RoleSwitcher";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import StudentNotifyMenu from "@/components/student/StudentNotifyMenu";
 import { isCoachAccount } from "@/lib/roles";
+import { goToStudentLogin, safeStudentPath } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentInbox, StudentInboxProvider } from "@/lib/use-student-inbox";
 import { StudentNavProvider, useStudentNav } from "@/lib/student-nav";
@@ -64,11 +65,27 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
 
   const leave = async () => {
     await signOut();
-    router.replace("/student/login");
+    goToStudentLogin();
   };
 
   return (
     <div className="student-player">
+      {isCoachAccount(user) ? (
+        <div className="coach-preview-banner">
+          <span>
+            <span className="coach-view-pill">Coach Preview Mode</span>
+            <strong>You are viewing the student dashboard with a coach account.</strong>
+          </span>
+          <span>
+            <button className="ghost" type="button" onClick={() => router.push("/coach")}>
+              Coach dashboard
+            </button>
+            <button className="primary" type="button" onClick={() => void leave()}>
+              Sign in as student
+            </button>
+          </span>
+        </div>
+      ) : null}
       <header className="topbar">
         <BrandMark />
         <div className="topbar-right flex items-center gap-2 flex-wrap">
@@ -123,15 +140,17 @@ function StudentGate({ children }: { children: ReactNode }) {
     if (!ready) return;
     if (isLogin) {
       if (!user || onboarding === "unknown") return;
-      if (isCoachAccount(user) || onboarding === "done") {
-        router.replace("/student");
+      if (isCoachAccount(user)) return;
+      const next = safeStudentPath(new URLSearchParams(window.location.search).get("next"));
+      if (onboarding === "done") {
+        router.replace(next);
         return;
       }
       router.replace("/onboarding");
       return;
     }
     if (!user) {
-      router.replace("/student/login");
+      goToStudentLogin();
       return;
     }
     if (onboarding === "needed") router.replace("/onboarding");

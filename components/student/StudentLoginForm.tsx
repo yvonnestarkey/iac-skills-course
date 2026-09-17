@@ -1,28 +1,65 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { ensureStudentProfile } from "@/lib/profiles";
 import { fetchOnboardingGate } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
-import { studentUserFromAuth } from "@/lib/student-lesson";
+import { goToStudentLogin, safeStudentPath, studentUserFromAuth } from "@/lib/student-lesson";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
+import { useStudentSession } from "@/lib/student-session";
 
 type Mode = "signin" | "signup";
 
 export default function StudentLoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { ready, user, signOut } = useStudentSession();
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const nextPath = safeStudentPath(searchParams.get("next"));
 
   const goToOnboarding = () => {
     router.replace("/onboarding");
   };
+
+  if (ready && isCoachAccount(user)) {
+    return (
+      <section className="card login student-login">
+        <p className="kicker">Coach session</p>
+        <h1 className="brand">Login as a student</h1>
+        <p className="muted">
+          You are signed in as {user?.email || "a coach"}. This is a coach account. Preview the course, or sign out to
+          log in with a student email.
+        </p>
+        <div className="actions">
+          <button className="primary" type="button" onClick={() => router.push("/coach/preview")}>
+            Preview student course
+          </button>
+          <button className="ghost" type="button" onClick={() => router.push("/coach")}>
+            Coach dashboard
+          </button>
+          <button
+            className="ghost"
+            type="button"
+            disabled={busy}
+            onClick={async () => {
+              setBusy(true);
+              await signOut();
+              goToStudentLogin();
+            }}
+          >
+            Sign out and log in as a student
+          </button>
+        </div>
+      </section>
+    );
+  }
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -69,14 +106,14 @@ export default function StudentLoginForm() {
           user_metadata: data.user.user_metadata,
         });
         if (isCoachAccount(studentUser)) {
-          router.replace("/student");
+          router.replace("/coach");
           return;
         }
         const gate = await fetchOnboardingGate(data.user.id);
-        router.replace(gate === "done" ? "/student" : "/onboarding");
+        router.replace(gate === "done" ? nextPath : "/onboarding");
         return;
       }
-      router.replace("/student");
+      router.replace(nextPath);
       return;
     }
 

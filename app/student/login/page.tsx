@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import StudentLoginForm from "@/components/student/StudentLoginForm";
 
 export const metadata: Metadata = {
@@ -6,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function StudentLoginPage() {
-  return <StudentLoginForm />;
+  return (
+    <Suspense fallback={<p className="student-loading">Loading…</p>}>
+      <StudentLoginForm />
+    </Suspense>
+  );
 }
