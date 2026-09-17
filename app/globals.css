@@ -4989,27 +4989,51 @@ a.live-session-watch:hover {
   font-size: 14.5px;
 }
 
+.sales-dates {
+  padding-bottom: 12px;
+}
+
+.sales-dates .sales-intro {
+  margin-bottom: 0;
+}
+
 .sales-pricing-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 }
 
+.sales-price-card {
+  padding: 14px 16px;
+  border-radius: 16px;
+}
+
+.sales-price-card .kicker {
+  margin-bottom: 4px;
+}
+
+.sales-price-card h3 {
+  margin-bottom: 2px;
+  font-size: 20px;
+}
+
 .sales-price-card .sales-price {
   font-family: var(--serif);
-  font-size: 36px;
+  font-size: 32px;
   line-height: 1.1;
-  margin: 4px 0 6px;
+  margin: 2px 0 4px;
 }
 
-.sales-price-card ul {
-  margin: 14px 0 0;
-  padding-left: 18px;
-  line-height: 1.55;
+.sales-price-card .sales-price-detail {
+  margin: 0;
+  font-size: 13.5px;
 }
 
-.sales-price-card li + li {
-  margin-top: 6px;
+.sales-price-card .sales-price-body {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 14.5px;
 }
 
 .sales-referral {

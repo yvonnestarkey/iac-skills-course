@@ -4,7 +4,7 @@ import CourseFeatures from "@/components/sales/CourseFeatures";
 import FaqAccordion from "@/components/sales/FaqAccordion";
 import SkillsAccordion from "@/components/sales/SkillsAccordion";
 import WaitlistForm from "@/components/sales/WaitlistForm";
-import { PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO } from "@/lib/sales-copy";
+import { COURSE_DATES, PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO } from "@/lib/sales-copy";
 import Link from "next/link";
 
 export default function SalesLanding() {
@@ -50,6 +50,12 @@ export default function SalesLanding() {
         <SkillsAccordion />
       </section>
 
+      <section className="sales-section sales-dates" id="dates">
+        <p className="kicker">{COURSE_DATES.kicker}</p>
+        <h2>{COURSE_DATES.title}</h2>
+        <p className="muted sales-intro">{COURSE_DATES.body}</p>
+      </section>
+
       <section className="sales-section" id="pricing">
         <p className="kicker">Pricing</p>
         <h2>Choose how you pay</h2>
@@ -59,13 +65,8 @@ export default function SalesLanding() {
               <p className="kicker">{tier.kicker}</p>
               <h3>{tier.title}</h3>
               <p className="sales-price">{tier.price}</p>
-              <p className="muted">{tier.detail}</p>
-              <ul>
-                {tier.highlights.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-              {"note" in tier && tier.note ? <p className="muted small">{tier.note}</p> : null}
+              <p className="muted sales-price-detail">{tier.detail}</p>
+              <p className="sales-price-body">{tier.body}</p>
             </article>
           ))}
         </div>

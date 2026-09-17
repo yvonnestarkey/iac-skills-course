@@ -88,6 +88,12 @@ export const COURSE_SKILLS = [
   },
 ] as const;
 
+export const COURSE_DATES = {
+  kicker: "Course Dates",
+  title: "When does the course run?",
+  body: "Official start end-October 2026, running until the exam in January. Students can start the course as soon as it's launched to allow more time to practice the Skills they'll learn here.",
+} as const;
+
 export const PRICING_TIERS = [
   {
     id: "once-off" as const,
@@ -95,12 +101,7 @@ export const PRICING_TIERS = [
     title: "Full Upfront Payment",
     price: "$327",
     detail: "Approx. R5,300 once-off",
-    highlights: [
-      "Full access to all 6 core task submissions with personalized individual feedback",
-      "SIM exam review",
-      "BMCR diagnostic tool",
-      "CTA revision syllabus",
-    ],
+    body: "Single payment for complete, unrestricted course access.",
   },
   {
     id: "installments" as const,
@@ -108,17 +109,13 @@ export const PRICING_TIERS = [
     title: "6-Month Installment Plan",
     price: "$60 / month",
     detail: "for 6 months (Approx. R970/mo)",
-    note: "Fixed 6-month payment plan. Full course access starts immediately upon registration.",
-    highlights: [
-      "Same full course access as the once-off plan",
-      "Pay over 6 months — not a subscription",
-    ],
+    body: "Fixed 6-month payment plan. Same full course access starting immediately upon registration.",
   },
 ] as const;
 
 export const REFERRAL = {
   title: "Study Together & Save!",
-  body: "We offer special referral discounts when you sign up with a peer or study group. Refer a friend, and both of you get an exclusive discount code at checkout!",
+  body: "We offer special referral discounts when you sign up with a peer or study group. Refer a friend, and both of you get an exclusive discount code at checkout! If you want to enrol a group of students from your firm, email me for rates.",
 } as const;
 
 export const FAQS = [
