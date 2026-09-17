@@ -5156,3 +5156,137 @@ a.live-session-watch:hover {
     max-width: none;
   }
 }
+
+.eval-form {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0 28px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.eval-form label,
+.eval-notes {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.eval-form input[type="number"] {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 13px 14px;
+  background: #fff;
+}
+
+.eval-form input[type="number"]:focus {
+  outline: 2px solid rgba(153, 15, 73, 0.28);
+  border-color: var(--link);
+}
+
+.eval-marks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0;
+  padding: 12px 14px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.eval-marks legend {
+  padding: 0 6px;
+  font-family: var(--serif);
+  font-weight: 700;
+}
+
+.eval-scores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 12px 0 18px;
+}
+
+.eval-score {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.eval-score-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.eval-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.eval-grid article,
+.eval-drops,
+.eval-steps {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.eval-drops,
+.eval-steps {
+  margin-top: 14px;
+}
+
+.eval-drops ul,
+.eval-history ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.eval-drops li {
+  display: grid;
+  gap: 4px;
+}
+
+.eval-steps ol {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+
+.eval-history {
+  margin-top: 28px;
+}
+
+.eval-history button {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.eval-history button:hover {
+  border-color: var(--link);
+}
+
+@media (max-width: 800px) {
+  .eval-marks,
+  .eval-scores,
+  .eval-grid {
+    grid-template-columns: 1fr;
+  }
+}

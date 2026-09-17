@@ -1,0 +1,8 @@
+Mark plan shape (sample)
+
+A typical IAC discussion / application part is weighted toward using the facts:
+- Identify the issue from the required (small).
+- State the relevant principle or rule (Tier 1 / knowledge).
+- Apply that principle to the specific facts, with a consequence or conclusion (Tier 2 / application).
+
+If a student earns most of the knowledge line items but little of the "apply to X" line items, the script is a conversion problem, not a syllabus gap.

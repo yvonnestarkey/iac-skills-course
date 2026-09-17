@@ -81,11 +81,17 @@ export default function StudentDashboard() {
           </p>
         </Link>
         {unlocked ? null : (
-          <Link href="/student/feedback" className="student-hub-card">
-            <strong>Survey & assignment feedback</strong>
-            <p>See every submission, grade, and coach comment in one place.</p>
-            {feedbackCount ? <span className="pill">{feedbackCount} with feedback</span> : null}
-          </Link>
+          <>
+            <Link href="/student/evaluator" className="student-hub-card">
+              <strong>Script evaluator</strong>
+              <p>Paste mark-sheet scores and get an AI diagnostic against examiner commentary.</p>
+            </Link>
+            <Link href="/student/feedback" className="student-hub-card">
+              <strong>Survey & assignment feedback</strong>
+              <p>See every submission, grade, and coach comment in one place.</p>
+              {feedbackCount ? <span className="pill">{feedbackCount} with feedback</span> : null}
+            </Link>
+          </>
         )}
         <Link href={inboxHref} className="student-hub-card">
           <strong>Inbox</strong>

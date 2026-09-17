@@ -10,15 +10,18 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "scrape:thinkific": "tsx scripts/scrape-thinkific.ts",
-    "seed:supabase": "tsx scripts/seed-supabase.ts"
+    "seed:supabase": "tsx scripts/seed-supabase.ts",
+    "ingest:docs": "tsx scripts/ingest-docs.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.116.0",
     "lucide-react": "^1.45.0",
     "next": "15.5.9",
+    "openai": "^7.17.0",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "unpdf": "^1.8.1"
   },
   "devDependencies": {
     "@types/node": "22.10.2",

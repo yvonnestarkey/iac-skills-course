@@ -7,7 +7,7 @@ import { useCoursePreview } from "@/lib/course-preview";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentNav } from "@/lib/student-nav";
 
-const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback"]);
+const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator"]);
 
 export default function StudentCourseNav() {
   const { outline, completed, submissions, surveyReviews } = useStudentSession();
@@ -20,6 +20,7 @@ export default function StudentCourseNav() {
   const activeLessonId = segment && !RESERVED.has(segment) ? segment : null;
   const onDashboard = pathname === basePath;
   const onOverview = pathname === `${basePath}/overview`;
+  const onEvaluator = pathname === "/student/evaluator";
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
   const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
   const total = lessons.length;
@@ -36,6 +37,11 @@ export default function StudentCourseNav() {
           <Link href={`${basePath}/overview`} className={`dash-link ${onOverview ? "active" : ""}`} onClick={close}>
             Course Overview
           </Link>
+          {unlocked ? null : (
+            <Link href="/student/evaluator" className={`dash-link ${onEvaluator ? "active" : ""}`} onClick={close}>
+              Script evaluator
+            </Link>
+          )}
         </nav>
         <h2>Course modules</h2>
         <p className="muted">IAC Skills Course</p>

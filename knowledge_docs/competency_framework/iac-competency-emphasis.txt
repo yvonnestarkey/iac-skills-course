@@ -1,0 +1,11 @@
+IAC competency emphasis (sample for the diagnostic engine)
+
+Candidates are expected to convert technical knowledge into marks through structured application. Knowing a standard, a definition, or a tax rule is Tier 1. Using it on the facts, in the required format, with a justified conclusion is Tier 2.
+
+Typical mark leaks:
+- Restating the scenario instead of answering the required.
+- Listing issues with no application to the client's facts.
+- Missing the communication format (memo, report, discussion) asked for in the required.
+- Spending time on higher-grade technical points while basic available marks are left unclaimed.
+
+Action the examiner wants: plan the required, tag facts to issues, write the basic discussion shape, then add application.
