@@ -2,7 +2,8 @@ import { WAITLIST_COHORTS, type WaitlistCohort } from "./waitlist";
 
 export const SALES_BADGE = "IAC Skills Board Course — January 2027 & June 2027 Cohorts";
 
-export const SALES_HEADLINE = "The only course that gives you individual feedback to build exam skills, not just theory.";
+export const SALES_HEADLINE =
+  "The only course that gives you individual feedback to build exam skills, to help you get marks for your knowledge.";
 
 export const SALES_SUBHEAD =
   "The only IAC Prep course that gives you individual feedback on YOUR practice questions. We focus on the Skills you need to turn your knowledge into marks.";
@@ -34,6 +35,39 @@ export const VALUE_PROPS = [
     body: "RTFQ: Read The F-ing Question. Extra tools for nasty wording, the power of 'thing', and spotting what the examiner is doing so you stop bleeding marks to misreads.",
   },
 ] as const;
+
+export const PRICING_TIERS = [
+  {
+    id: "once-off" as const,
+    kicker: "Option 1",
+    title: "Full Upfront Payment",
+    price: "$327",
+    detail: "Approx. R5,300 once-off",
+    highlights: [
+      "Full access to all 6 core task submissions with personalized individual feedback",
+      "SIM exam review",
+      "BMCR diagnostic tool",
+      "CTA revision syllabus",
+    ],
+  },
+  {
+    id: "installments" as const,
+    kicker: "Option 2",
+    title: "6-Month Installment Plan",
+    price: "$60 / month",
+    detail: "for 6 months (Approx. R970/mo)",
+    note: "Fixed 6-month payment plan. Full course access starts immediately upon registration.",
+    highlights: [
+      "Same full course access as the once-off plan",
+      "Pay over 6 months — not a subscription",
+    ],
+  },
+] as const;
+
+export const REFERRAL = {
+  title: "Study Together & Save!",
+  body: "We offer special referral discounts when you sign up with a peer or study group. Refer a friend, and both of you get an exclusive discount code at checkout!",
+} as const;
 
 export const FAQS = [
   {

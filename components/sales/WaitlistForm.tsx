@@ -3,12 +3,21 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { waitlistButtonLabel, waitlistSuccessCopy } from "@/lib/sales-copy";
-import { WAITLIST_COHORTS, isWaitlistCohort, joinWaitlist, type WaitlistCohort } from "@/lib/waitlist";
+import {
+  WAITLIST_COHORTS,
+  WAITLIST_PAYMENTS,
+  isWaitlistCohort,
+  isWaitlistPayment,
+  joinWaitlist,
+  type WaitlistCohort,
+  type WaitlistPayment,
+} from "@/lib/waitlist";
 
 export default function WaitlistForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [cohort, setCohort] = useState<WaitlistCohort>("January 2027");
+  const [payment, setPayment] = useState<WaitlistPayment>("Once-off ($327)");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [joined, setJoined] = useState<WaitlistCohort | null>(null);
@@ -17,7 +26,12 @@ export default function WaitlistForm() {
     event.preventDefault();
     setError("");
     setBusy(true);
-    const result = await joinWaitlist({ full_name: fullName, email, preferred_cohort: cohort });
+    const result = await joinWaitlist({
+      full_name: fullName,
+      email,
+      preferred_cohort: cohort,
+      preferred_payment: payment,
+    });
     setBusy(false);
     if (result.ok === false) {
       setError(result.error);
@@ -51,7 +65,7 @@ export default function WaitlistForm() {
     <form className="waitlist-form" onSubmit={(event) => void submit(event)}>
       <p className="kicker">January 2027 &amp; June 2027</p>
       <h2>Join the waitlist</h2>
-      <p className="muted">Get the email when enrollment opens. No payment now — just your name, email, and cohort.</p>
+      <p className="muted">Get the email when enrollment opens. No payment now — tell us your cohort and how you would like to pay.</p>
       <label htmlFor="waitlist-name">Full Name</label>
       <input
         id="waitlist-name"
@@ -74,7 +88,7 @@ export default function WaitlistForm() {
         onChange={(event) => setEmail(event.target.value)}
         required
       />
-      <label htmlFor="waitlist-cohort">Cohort</label>
+      <label htmlFor="waitlist-cohort">Preferred Cohort</label>
       <select
         id="waitlist-cohort"
         name="cohort"
@@ -87,6 +101,22 @@ export default function WaitlistForm() {
         {WAITLIST_COHORTS.map((option) => (
           <option key={option} value={option}>
             {option} Cohort
+          </option>
+        ))}
+      </select>
+      <label htmlFor="waitlist-payment">Preferred Payment Option</label>
+      <select
+        id="waitlist-payment"
+        name="payment"
+        value={payment}
+        onChange={(event) => {
+          const next = event.target.value;
+          if (isWaitlistPayment(next)) setPayment(next);
+        }}
+      >
+        {WAITLIST_PAYMENTS.map((option) => (
+          <option key={option} value={option}>
+            {option}
           </option>
         ))}
       </select>

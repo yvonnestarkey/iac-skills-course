@@ -4822,7 +4822,7 @@ a.live-session-watch:hover {
 
 .sales-hero-copy h1 {
   font-size: clamp(32px, 4.4vw, 48px);
-  max-width: 18ch;
+  max-width: 22ch;
   margin-bottom: 14px;
 }
 
@@ -4948,6 +4948,46 @@ a.live-session-watch:hover {
   line-height: 1.55;
 }
 
+.sales-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sales-price-card .sales-price {
+  font-family: var(--serif);
+  font-size: 36px;
+  line-height: 1.1;
+  margin: 4px 0 6px;
+}
+
+.sales-price-card ul {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  line-height: 1.55;
+}
+
+.sales-price-card li + li {
+  margin-top: 6px;
+}
+
+.sales-referral {
+  margin-top: 18px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--sand);
+  border: 1px solid var(--sand-line);
+}
+
+.sales-referral h3 {
+  margin-bottom: 6px;
+}
+
+.sales-referral p {
+  margin: 0;
+  line-height: 1.55;
+}
+
 .sales-faq-list {
   display: grid;
   gap: 10px;
@@ -5003,7 +5043,8 @@ a.live-session-watch:hover {
 @media (max-width: 900px) {
   .sales-hero,
   .sales-value-grid,
-  .sales-quote-grid {
+  .sales-quote-grid,
+  .sales-pricing-grid {
     grid-template-columns: 1fr;
   }
 

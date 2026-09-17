@@ -2,14 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { exportWaitlistCsv, fetchWaitlistLeads, WAITLIST_COHORTS, type WaitlistLead } from "@/lib/waitlist";
+import { exportWaitlistCsv, fetchWaitlistLeads, WAITLIST_COHORTS, WAITLIST_PAYMENTS, type WaitlistLead } from "@/lib/waitlist";
 
 type Filter = "all" | (typeof WAITLIST_COHORTS)[number];
+type PaymentFilter = "all" | (typeof WAITLIST_PAYMENTS)[number];
 
 export default function WaitlistTab() {
   const router = useRouter();
   const [leads, setLeads] = useState<WaitlistLead[]>([]);
   const [filter, setFilter] = useState<Filter>("all");
+  const [paymentFilter, setPaymentFilter] = useState<PaymentFilter>("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -32,8 +34,13 @@ export default function WaitlistTab() {
   }, []);
 
   const visible = useMemo(
-    () => (filter === "all" ? leads : leads.filter((lead) => lead.preferred_cohort === filter)),
-    [filter, leads]
+    () =>
+      leads.filter((lead) => {
+        if (filter !== "all" && lead.preferred_cohort !== filter) return false;
+        if (paymentFilter !== "all" && lead.preferred_payment !== paymentFilter) return false;
+        return true;
+      }),
+    [filter, paymentFilter, leads]
   );
 
   return (
@@ -44,7 +51,7 @@ export default function WaitlistTab() {
       <div className="coach-head">
         <div>
           <h1>Waitlist</h1>
-          <p className="muted">Leads from the public sales page. Filter by preferred cohort and export the email list.</p>
+          <p className="muted">Leads from the public sales page. Filter by preferred cohort or payment plan and export the email list.</p>
         </div>
         <div className="actions">
           <button className="primary" type="button" onClick={() => exportWaitlistCsv(visible)} disabled={!visible.length}>
@@ -93,6 +100,25 @@ export default function WaitlistTab() {
         })}
       </div>
 
+      <div className="filters">
+        <button type="button" className={paymentFilter === "all" ? "active" : ""} onClick={() => setPaymentFilter("all")}>
+          All plans
+        </button>
+        {WAITLIST_PAYMENTS.map((plan) => {
+          const count = leads.filter((lead) => lead.preferred_payment === plan).length;
+          return (
+            <button
+              key={plan}
+              type="button"
+              className={paymentFilter === plan ? "active" : ""}
+              onClick={() => setPaymentFilter(plan)}
+            >
+              {plan} ({count})
+            </button>
+          );
+        })}
+      </div>
+
       {loading ? <p className="empty">Loading waitlist…</p> : null}
       {error ? <div className="notice">{error}</div> : null}
       {!loading && !error && !visible.length ? <p className="empty">No waitlist leads in this filter yet.</p> : null}
@@ -104,6 +130,7 @@ export default function WaitlistTab() {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Preferred cohort</th>
+                <th>Preferred payment</th>
                 <th>Joined</th>
               </tr>
             </thead>
@@ -115,6 +142,7 @@ export default function WaitlistTab() {
                     <a href={`mailto:${lead.email}`}>{lead.email}</a>
                   </td>
                   <td>{lead.preferred_cohort}</td>
+                  <td>{lead.preferred_payment || "—"}</td>
                   <td>{new Date(lead.created_at).toLocaleString()}</td>
                 </tr>
               ))}

@@ -2,7 +2,7 @@ import BrandMark from "@/components/BrandMark";
 import SenjaTestimonials from "@/components/SenjaTestimonials";
 import FaqAccordion from "@/components/sales/FaqAccordion";
 import WaitlistForm from "@/components/sales/WaitlistForm";
-import { SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO, VALUE_PROPS } from "@/lib/sales-copy";
+import { PRICING_TIERS, REFERRAL, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO, VALUE_PROPS } from "@/lib/sales-copy";
 import Link from "next/link";
 
 export default function SalesLanding() {
@@ -53,6 +53,31 @@ export default function SalesLanding() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="sales-section" id="pricing">
+        <p className="kicker">Pricing</p>
+        <h2>Choose how you pay</h2>
+        <div className="sales-pricing-grid">
+          {PRICING_TIERS.map((tier) => (
+            <article key={tier.id} className="card sales-price-card">
+              <p className="kicker">{tier.kicker}</p>
+              <h3>{tier.title}</h3>
+              <p className="sales-price">{tier.price}</p>
+              <p className="muted">{tier.detail}</p>
+              <ul>
+                {tier.highlights.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              {"note" in tier && tier.note ? <p className="muted small">{tier.note}</p> : null}
+            </article>
+          ))}
+        </div>
+        <aside className="sales-referral">
+          <h3>{REFERRAL.title}</h3>
+          <p>{REFERRAL.body}</p>
+        </aside>
       </section>
 
       <section className="sales-section" id="testimonials">
