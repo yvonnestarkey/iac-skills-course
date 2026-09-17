@@ -1,0 +1,512 @@
+Source: SAICA IAC June 2025 — Paper 1 question (Ubud).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC June 2025 1 (of 10) © SAICA 2025
+Paper 1
+PAPER 1 120 marks
+Ignore value-added tax (VAT).
+1 Background
+UbudCargo (Pty) Ltd (‘UC’) is an innovative start-up technology company aiming to
+revolutionise the trucking industry with its cutting-edge platform called CargoPlat™.
+CargoPlat™ serves as a connection hub between truck drivers and the transport industry,
+similar to an ‘Uber for trucks’ model. Since its inception, UC has received significant attention
+from venture capital investors due to its disruptive potential in the trucking industry.
+Customers who need cargo transported use the online or mobile CargoPlat™ application
+(‘app’) to interact with truck drivers and carrier companies (companies that own trucks),
+provided they are registered on CargoPlat™. The CargoPlat™ app has over 10 000 registered
+carriers that are available to transport cargo for UC’s customers. In 2024, UC handled
+shipments via the app for more than 90 000 customers operating in South Africa. UC
+generates profit from the margin charged between the value of the services provided to
+customers and what UC pays to the registered carriers.
+Although most of the road transport industry in South Africa has benefited from the difficulties
+experienced by the rail industry, UC experienced low revenue in 2024 due to weak freight
+demand and excess carrier capacity. Customers and suppliers also faced demand pressure
+due to higher interest rates and inflation.
+UC faces stiff competition from traditional logistics companies, other technology-based service
+companies and trucking companies. UC is committed to investing in technology to bring
+solutions to its customers and help solve their complex logistical challenges. The staff of UC
+mainly comprise data scientists, engineers and developers who are committed to building the
+next generation of tools and processes that will change how supply chains function.
+IAC June 2025 2 (of 10) © SAICA 2025
+Paper 1
+The company's founder and chief executive officer, Trokkie Smith, has a clear vision for the
+future of trucking logistics. However, the low-interest rate environment that previously fuelled
+a funding boom in businesses of this nature has reversed and investors are more cautious
+with their funding decisions. Despite interest from venture capital firms, UC finds itself facing
+funding pressures. This has prompted rigorous interrogation from potential investors regarding
+the company's expansion plans, unit economics1, valuation, and the potential impairment of
+intangible assets associated with the platform.
+Financial reporting considerations, such as compliance with IAS 38 Intangible Assets with
+regard to platform costs, and financial statement analysis are important in evaluating the
+company's viability and growth prospects. In addition, compliance with IFRS 16 Leases has
+added another layer of complexity, as UC has concluded various 2–5 year leasing agreements
+for premises and servers to host CargoPlat™. UC has a 31 December financial year end.
+Investors and stakeholders have also expressed concerns over potential risks such as data
+breaches on the platform, regulatory compliance issues and the possibility of price fixing or
+collusion among truck drivers.
+As UC navigates these challenges and opportunities, the company seeks to maintain its
+trajectory of growth and innovation while addressing the financial, operational and regulatory
+complexities inherent in driving the trucking industry's digital transformation.
+2 Compliance with IFRS® Accounting Standards (IFRS) and appointment of new
+auditors
+In 2022, UC appointed an accountant, who had boasted about his excellent knowledge of
+IFRS, to prepare the financial statements. However, he suddenly resigned in March 2024 after
+the financial statements for the year ended 31 December 2023 (FY2023) were audited. Since
+then, the chief financial officer (CFO), Bongani Xaba, discovered that IFRS may not have been
+applied correctly in all instances in the FY2023 financial statements. Bongani started referring
+to the previous financial accountant as ‘That Accountant’ (‘Mr TAcc’) whenever these non-
+compliant instances came up in discussions. These errors were not identified during the
+FY2023 audit and the board of directors feels that it would be a ‘waste of money’ to pay audit
+fees for FY2024 financial statements that contained errors. UC’s Memorandum of
+Incorporation (MOI) does not contain a voluntary audit clause and an audit is also not required
+by the shareholders. They are therefore not sure if it is necessary for UC’s FY2024 financial
+statements to be audited or whether an independent review would be sufficient.
+Should it be necessary for the financial statements to be audited, the board of directors
+decided that it would change auditors and appoint Ingxelo Auditors Inc. (‘Ingxelo’) as UC’s
+auditor for FY2024. Ingxelo’s only registered auditor is Maxwell Jones. Bongani has also
+requested that Maxwell assist with the corrections of the errors made by Mr TAcc, but not to
+assist with the calculation or processing of the corrections.
+1 Unit economics describes a business’ revenues and costs in relation to an individual unit. A unit can refer to any
+item that is quantifiable and that creates value for a business. Therefore, unit economics indicates how much value
+each item or unit generates for the business. In the case of UC, this can refer to revenue per customer and profit
+(or contribution) per customer.
+IAC June 2025 3 (of 10) © SAICA 2025
+Paper 1
+The following information is relevant:
+2.1 Development of the CargoPlat™ app
+UC completed the development of its CargoPlat™ app by 31 December 2022, when the app
+was capable of operating in the manner intended by management. The following are relevant
+extracts from the minutes of the board meetings held during 2022:
+Date Discussion or action points
+10 January 2022 • Trokkie started the meeting with an opening statement, ‘I have a
+dream!’ and with that, the dream of the CargoPlat™ app was born.
+Trokkie presented a detailed proposal, which emphasised that UC
+has the technology and resources to develop such an app and
+use it effectively in its operations.
+• However, UC needed to secure funding for the project. All the
+directors pledged their commitment to making Trokkie’s dream a
+reality.
+• UC appointed a company to undertake market research on
+whether a market for such an app exists and how many users
+were likely to use such an app.
+• The board approved the detailed proposal that Trokkie presented.
+5 March 2022 • The market research report was tabled, which indicated a
+significant number of users are likely to use such an app and
+services.
+• The research found that such apps could be used for six years,
+after which additional competitors would have entered the market.
+• UC instructed the finance team to prepare a detailed budget of
+the expected costs to develop such an app and future expected
+profits from using the app.
+• UC would apply for a bank loan to fund the project.
+• UC instructed the IT team to conceptualise and plan the app.
+2 May 2022 • The board approved the technical details of the app after
+considering the IT team's proposal.
+• The board instructed the IT team to design an outline framework
+for a concept version of the design of the app.
+11 June 2022 • The board approved the formal budget of future expected profits
+from using the app as well as a forecast for the development costs
+of the CargoPlat™ app and the expected profits.
+• The board resolved that the local bank be approached for a loan
+and that the budget be submitted to it as part of its loan
+application.
+17 June 2022 • UC received confirmation that its local bank had approved the
+company’s loan application.
+• The local bank provided a repayment schedule.
+28 August 2022 • The board –
+o approved the concept version of the design of the app;
+o gave the go-ahead to the IT team to commence the
+development; and
+o resolved that the app be tested by an independent application
+consultant.
+30 November 2022 • The test report of the independent application consultant was
+tabled at the meeting, and it was found that the app was
+IAC June 2025 4 (of 10) © SAICA 2025
+Paper 1
+technically up to standard, although some minor changes had to
+be made.
+• The board approved the report and instructed the IT team to make
+the final changes.
+• The formal launch was scheduled for 31 December 2022.
+The IT team made the final changes in December 2022, and the app was launched on
+31 December 2022 at an extravagant new year eve event during an IT convention held in
+Mbombela.
+Bongani provided the following correct details of the expenditure paid in respect of the
+CargoPlat™ app:
+Notes R’000
+Research phase 1 1 200
+Development phase, including the costs of registering the app as
+a trademark 1 5 010
+Launch event during IT convention 170
+2 6 380
+Notes
+1 The research phase and the development phase correspond to the definition set out in
+IAS 38. All expenses incurred during the development phase occurred after the
+requirements of para. 57 of IAS 38 had been met.
+2 Mr TAcc had capitalised the total amount of the expenditure as the initial cost of the app
+that was recognised as an intangible asset.
+During FY2023, Mr TAcc had revalued the application as he believed its value had increased
+significantly due to the success of the app and the number of users. As no active market for
+such apps exists, he asked an external valuer to value the app, who valued the app at
+R6,5 million on 31 December 2023. Mr TAcc then recognised a R120 000 revaluation gain as
+a revaluation surplus. Mr TAcc did not recognise any amortisation during FY2023, arguing that
+the revalued carrying amount exceeded the initial cost of the application.
+2.2 Lease of server
+On 1 January 2023, UC entered into a lease agreement with IT&Tech Supplies (Pty) Ltd (‘ITT’)
+to lease a high-performance server from ITT for a non-cancellable lease term of three years.
+This was to accommodate the additional storage space UC needed for storing information in
+respect of its CargoPlat™ app. The server being leased consists of several components,
+including the hardware, motherboards, central processing unit (CPU), random access memory
+(RAM), chipsets and the basic input / output system. All the internal components of servers
+need to be connected and working in sync for the server to act as one uniform device.
+In terms of the lease agreement, lease payments of R25 500 are payable monthly in arrears.
+The interest rate implicit in the lease on 1 January 2023 was 11,75% per annum, compounded
+monthly. On 1 January 2023, ITT paid R50 000 to UC as an incentive to enter into the lease
+agreement with ITT rather than a competitor.
+Mr TAcc considered this single lease agreement in substance to consist of several individual
+leases of the underlying components. He therefore elected to apply the recognition exemption
+IAC June 2025 5 (of 10) © SAICA 2025
+Paper 1
+for lessees in terms of IFRS 16 and recognised the lease payments accordingly since
+1 January 2023. He based this election on the low value of the individual components of the
+server, which varied between R30 000 and R75 000 per component.
+2.3 Lease of head office building and warehouse
+On 1 January 2023, UC entered into a lease agreement, as the lessee, with Embi Properties
+(Pty) Ltd (‘EmbiP’). This lease was for UC’s head office building and the adjacent warehouse,
+consisting of floor areas of 300 m2 and 900 m2 respectively.
+The lease contract between UC and EmbiP contains the following:
+• Description and detail of the property;
+• A fixed annual rental of R450 per m2, payable annually in advance on 1 January.
+• A 6% increase in the fixed rental on 1 January of each subsequent year.
+• A lease term of five years.
+• A refundable deposit of R100 000 payable on 1 January 2023.
+3 Relevant accounting policies
+• UC accounts for its intangible assets using the cost model and amortises intangible
+assets on a straight-line basis over their useful lives in terms of IAS 38.
+• UC recognises and presents right-of-use assets separately from other assets.
+• An underlying lease asset is regarded as having a low value if its value is less than
+R80 000 (this threshold is acceptable in terms of IFRS 16).
+• UC recognises the accumulated depreciation on right-of-use assets in a separate
+account in the general ledger.
+4 Potential takeover
+Due to the funding difficulties experienced by UC, some directors felt that the business should
+be sold. It has attracted the attention of some larger traditional logistics companies who want
+to leverage off UC’s technology.
+Emperor Logistics Ltd (‘EL’), a company listed on the A2X Markets Stock Exchange (A2X) has
+approached UC with a purchase offer. EL has offered R120 million for the acquisition of an
+80% shareholding and will decide after the offer to purchase has been accepted by the
+directors of UC whether to settle the purchase price by issuing shares or paying cash.
+In view of this offer, Trokkie has asked Bongani to calculate the fair value of UC.
+IAC June 2025 6 (of 10) © SAICA 2025
+Paper 1
+Extract from the management accounts relating to UC, as provided by Bongani:
+UbudCargo (Pty) Ltd
+Financial information for the year ended / ending 31 December
+Notes
+Actual
+2023
+Actual
+2024
+Forecast
+2025
+Forecast
+2026
+R’000 R’000 R’000 R’000
+Revenue 1 158 400 124 800 149 760 172 224
+Purchased transport and
+related services 2 (122 220) (102 410) (107 531) (112 908)
+Personnel and related services (10 570) (8 750) (9 275) (9 832)
+Other selling, general and
+administrative expenses 3 (8 499) (9 620) (10 005) (10 505)
+Operating profit 17 111 4 020 22 949 38 979
+Finance cost 4 (5 172) (4 767) (5 053) (5 356)
+Income before tax 11 939 (747) 17 896 33 623
+Income tax expense (3 002) (25) (5 200) (11 210)
+Net profit / (loss) 8 937 (772) 12 696 22 413
+Average employees (including
+executive directors) 45 40 55 60
+Number of customers 5 89 000 95 000 105 000 110 000
+IAC June 2025 7 (of 10) © SAICA 2025
+Paper 1
+The following is an extract of the statement of financial position that was provided by Bongani.
+This statement of financial position was prepared after all errors in complying with IFRS (see
+sections 2.1 and 2.2 above) were appropriately corrected.
+UbudCargo (Pty) Ltd
+Statement of financial position as at 31 December 2024
+Notes 2024
+R’000
+2023
+R’000
+Assets
+Non-current assets
+Property, plant and equipment 7 375 7 474
+Intangible assets 8 30 938 30 951
+Right-of-use assets 7 10 617 11 164
+Investment in associate 1 200 800
+50 130 50 389
+Current assets
+Cash and cash equivalents 1 018 1 522
+Trade receivables 22 225 26 038
+Prepaid expenses 352 257
+23 595 27 817
+Total assets 73 725 78 206
+Equity and liabilities
+Equity
+Share capital 6 3 500 3 500
+Retained earnings 3 491 7 200
+6 991 10 700
+Non-current liabilities
+Interest-bearing loans 2 21 595 25 371
+Deferred tax liabilities 65 58
+Lease liabilities 7 6 249 6 589
+27 909 32 018
+Current liabilities
+Trade and other payables 22 958 23 439
+Accrued expenses 5 740 3 516
+Income tax payable 2 102 1 065
+Short-term portion of interest-bearing
+loans 3 205 2 305
+Short-term portion of lease liabilities 7 4 820 5 163
+38 825 35 488
+Total equity and liabilities 73 725 78 206
+Notes
+1 Customers are charged on a transactional basis or pre-arranged contract rates with
+most of the contracts being for a three-year term to allow for renegotiation. The terms
+and conditions in respect of transactions concluded on UC’s CargoPlat™ stipulate that
+UC remains solely responsible and liable for ensuring delivery services are rendered to
+customers. The directors of UC believe they will be able to increase UC’s market share
+in 2025 and 2026 by 20% and 15% respectively. The increase in revenue will stabilise
+IAC June 2025 8 (of 10) © SAICA 2025
+Paper 1
+at 7% from 2027 onwards. UC’s largest customer accounted for about 10% of total
+revenue in 2024.
+2 Purchased transport costs represent amounts paid to the owners of trucks for services
+rendered. Most of the purchased transport from UC carriers are priced on the spot basis
+(or transactional basis) with very few being based on pre-arranged contract rates. Spot
+basis means rates are negotiated on a shipment-by-shipment basis and fluctuate
+dynamically in accordance with changes in supply and demand. The contract is between
+UC and the carrier (not the customer) and UC is able to stipulate and / or substitute
+multiple carriers to meet UC’s delivery obligation to customers using the CargoPlat™
+app. UC is responsible for prompt payment to suppliers selected to render services to
+customers. The nature of this business is such that transportation of cargo often takes
+time and customers pay when delivery is made.
+3 The following amounts are amongst others included in other selling, general and
+administrative expenses:
+2023 2024 2025 2026
+R’000 R’000 R’000 R’000
+Amortisation of intangible assets 1 820 1 850 1 920 1 960
+Depreciation on right-of-use assets 2 520 2 580 2 230 2 140
+Share of profit of associate 120 135 140 143
+Depreciation on property, plant and
+equipment 710 705 695 680
+Bad debts 82 90 110 130
+4 Finance costs relate to interest on loans and lease liabilities. All loans and lease liabilities
+have been correctly reflected in terms of IFRS in the forecast by Bongani and are
+accounted for at amortised cost.
+5 The CFO believes UC will be able to increase the number of customers through an
+extensive marketing campaign that will be launched in 2025.
+6 UC’s five shareholders had each invested R700 000 when they initially founded the
+company.
+7 In addition to the leases noted in sections 2.2 and 2.3, UC also leases a number of
+warehouses and office buildings across South Africa, as well as various server
+components.
+8 The intangible assets include the self-developed CargoPlat™ app, and other
+applications and trademarks acquired.
+IAC June 2025 9 (of 10) © SAICA 2025
+Paper 1
+Bongani performed the following valuation as at 31 December 2024 using the free cash flow
+to firm valuation method:
+Free cash flow to firm valuation as at 31 December 2024
+Notes 2024 2025 2026
+R’000 R’000 R’000
+Income before tax 17 896 33 623
+Revenue adjustment a 619 507 712 433
+Depreciation on property, plant and
+equipment 695 680
+Bad debts 110 130
+Amortisation of intangible assets 1 920 1 960
+Synergy benefits (reduced costs) b 1 620 1 620
+Lease instalments c (1 250) (1 250)
+Taxation paid (5 200) (11 210)
+Dividends received from associate (80) (80)
+Tax saving on dividends received 22 22
+Finance costs 5 053 5 356
+Property, plant and equipment d (7 488) (8 611)
+Investment in associate d (20) (20)
+Intangible assets d (14) (14)
+Movement in working capital e 15 992 16 791
+Free cash flow 648 763 751 430
+Terminal value
+[(751 430*1,07)/(0,1264-0,07)] 14 255 854
+648 763 15 007 285
+PV of FCF and TV @ WACC2 12 404 112
+Lease liability at market value (11 069)
+Intangible assets at market value f 32 000
+Value of 100% equity 12 425 043
+Minority discount g (1 242 504)
+Equity value 11 182 539
+WACC calculation
+Beta of MH Roberts Transport h 0,81
+Risk-free rate 8,80%
+Expected return on SA market 13,45%
+Ke = 8,8%+0,81*(13,45%-8,8%) 12,57%
+Kd i 12%
+WACC
+(12,68%*60%)+(12,57%*40%) j 12,64%
+Notes
+(a) Bongani believes that EL will be able to get 100% of the revenue from the platform when
+it takes over UC. The revenue in the statement of profit and loss amounts to 15% of the
+amount charged by UC, with the rest being paid over to carriers. An adjustment for the
+85% of the revenue which was not included in the statement of profit or loss has been
+added net of tax in the valuation.
+2 PV = present value; FCF = free cash flow; TV = terminal value; WACC = weighted average cost of capital.
+IAC June 2025 10 (of 10) © SAICA 2025
+Paper 1
+(b) Bongani also believes there will be savings in costs due to economies of scale that will
+be achieved after acquisition. The cost savings will result from EL being able to reduce
+IT services and personnel costs once the takeover is completed.
+(c) This amount represents the future lease instalment payments for all leases UC has
+entered into.
+(d) Bongani estimates that UC will only need to acquire property, plant and equipment equal
+to 5% of revenue in the forecast years. Intangible assets represent the movement in
+intangible assets from FY2023 to FY2024 and increased by 5% per annum. Bongani
+forecasts that UC will add to its investment in the associate in 2025 and 2026.
+(e) Current assets less current liabilities for FY2024 increased by 5% in 2025 and again in
+2026.
+(f) This represents the market value of intangible assets held by UC as at 31 December
+2024.
+(g) EL will only be acquiring 80% of the shares in UC. This represents a 10% minority
+discount applied to the valuation.
+(h) There is no listed company on the A2X which is very similar to UC, so the beta of MH
+Roberts Transport (‘Roberts’), a company incorporated in the United States of America
+and listed on the New York Stock Exchange, was used. Roberts’ revenues amount to
+more than USD10 billion3 and its app also brings together customers who want their
+cargo transported using trucks as well as air and sea transport. Roberts has a debt-
+equity ratio of 1,5. The largest customer of Roberts accounted for less than 2% of its
+revenue in 2024.
+(i) This represents the market-related rate on interest-bearing debt, being 12,68% per
+annum.
+(j) UC’s target debt-to-equity ratio of 0,6 was used in the WACC calculation. This is
+because the current weights do not reflect what the directors believe is possible for UC.
+5 Additional information
+1 Inflation in South Africa is expected to stabilise at 5% per annum for the next ten years.
+South African ten-year government bonds have a yield of 12,23% per annum while the
+yield on bonds maturing in 2026 is 8,80% per annum.
+2 The expected market return on the South African equity market is currently 13,45%.
+3 The transport industry is expected to have an annual growth rate of 5% for the next three
+years, then stabilise at 5,9% thereafter.
+4 The corporate tax rate in South Africa is 27% and is expected to remain the same during
+the investment period.
+5 The formula to lever and un-lever beta coefficients is as follows:
+Hamada formula: Beta (levered) = Beta (unlevered) x [1 + [(1 – tax rate) x (debt / equity)]]
+6 All amounts are material.
+3 USD = United States dollar.
+IAC June 2025 1 (of 1) © SAICA 2025
+Paper 1 required part I
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2025
+PROFESSIONAL PAPER 1
+This paper consists of one scenario and THREE required parts.
+Answer each required part in a separate answer book.
+PAPER 1 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) With reference to the development of the CargoPlat™ app –
+(i) explain, with reasons, from which date an intangible asset should
+have been recognised given that the CargoPlat™ app meets the
+definition of an intangible asset in terms of IAS 38; and
+(ii) prepare an extract of the prior period error note in the financial
+statements of UC for FY2024.
+• Only present any correction for each individual financial
+statement line affected and do not present any subtotal or
+total of any statement.
+• Do not present the totals of the closing balance of equity
+items at the end of the year.
+• Narrative information is not required.
+• Ignore all forms of taxation.
+X1: Communication skill for part (a)(i) – logical argument
+7
+8
+1 16
+(b) With reference to the lease agreement with ITT –
+(i) discuss whether you agree that UC may have elected the
+recognition exemption at the commencement of the lease; and
+(ii) prepare the journal entries to correct all aspects of the lease on
+1 January 2024.
+• Irrespective of your answer in part (b)(i), assume that UC
+has not elected the recognition exemption.
+• Assume that journal entries that relate to any previous
+financial year cannot be posted to the previous year, and
+that any correction should be made to the opening balance
+of the items as at the beginning of the current year.
+• Assume the corrections are material.
+• Ignore all forms of taxation.
+4
+12
+16
+Total for part I 32
+IAC June 2025 1 (of 1) © SAICA 2025
+Paper 1 required part II
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2025
+PROFESSIONAL PAPER 1
+This paper consists of one scenario and THREE required parts.
+Answer each required part in a separate answer book.
+PAPER 1 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(c) Discuss whether or not UC’s financial statements for FY2024 are
+required to be audited or if an independent review would be sufficient.
+X1: Communication skill – logical argument
+10
+1 11
+(d) Discuss the ethical requirements that Ingxelo will have to consider as
+part of the pre-engagement activities of the audit of UC’s financial
+statements for FY2024.
+• Do not discuss the significance considerations of the SAICA or
+IRBA Codes of Professional Conduct.
+• Do not provide safeguards.
+Y6: Ethical reasoning
+11
+1 12
+(e) Describe the substantive tests of detail procedures you would perform
+to obtain sufficient appropriate audit evidence regarding the initial
+recognition and measurement as well as the subsequent
+measurement of the individual lease liability relating to the office
+building and the warehouse for FY2023 and FY2024.
+• Assume that the present auditors are not relying on the work of
+the previous auditor.
+X1: Communication skill – clarity of expression
+14
+1 15
+Total for part II 38
+IAC June 2025 1 (of 1) © SAICA 2025
+Paper 1 required part III
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2025
+PROFESSIONAL PAPER 1
+This paper consists of one scenario and THREE required parts.
+Answer each required part in a separate answer book.
+PAPER 1 PART III – REQUIRED
+Marks
+Sub-
+total Total
+(f) Perform an analysis of the financial information, based on the extracts
+from the management accounts prepared by Bongani by –
+(i) calculating profitability and liquidity ratios; and
+(ii) commenting on the outcome of the calculations you performed
+in part (f)(i).
+• Your calculations should include unit economic ratios.
+• Do not perform an analysis on the free cash flow valuation
+performed by Bongani.
+Y1: Critical thinking for part (f)(ii)
+19
+10
+1 30
+(g) Criticise the free cash flow valuation performed by Bongani.
+• Do not re-perform the valuation.
+• Assume that calculations are arithmetically correct.
+Y2: Integrative thinking
+19
+1 20
+Total for part III 50
+TOTAL FOR THE PAPER 120

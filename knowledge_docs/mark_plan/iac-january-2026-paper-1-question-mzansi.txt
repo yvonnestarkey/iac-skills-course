@@ -1,0 +1,454 @@
+Source: SAICA IAC January 2026 — Paper 1 question (Mzansi).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Initial Assessment of Competence
+Professional Paper 1
+January 2026
+Copyright, proprietary rights and permitted use
+© The South African Institute of Chartered Accountants (SAICA). All rights reserved.
+The SAICA Initial Assessment of Competence (IAC) questions, solutions and examiners comments (‘these
+documents’) constitutes proprietary intellectual property and professional know-how of SAICA. It has been
+developed and is maintained as part of SAICA’s mandate to uphold the quality, integrity, and high
+professional standards of the Chartered Accountant profession, which underpin public confidence and the
+value and attractiveness of SAICA membership and designation.
+Access to, or use of, these documents does not confer any right, licence, or interest in the intellectual
+property contained herein. Except where expressly permitted by SAICA in writing, no part of these
+documents may be copied, reproduced, adapted, published, distributed, or used for commercial,
+quasi-commercial, or third-party standard-setting purposes.
+These documents may be used solely for legitimate educational, regulatory, or professional purposes, in a
+manner that preserves their integrity, acknowledges SAICA as the owner and source, and does not
+undermine SAICA’s role as custodian of professional standards or dilute the value associated with SAICA’s
+membership and designation.
+Any authorised access to or use of these documents is subject to, and must be exercised in accordance
+with, SAICA’s Intellectual Property Management Policy, as amended from time to time.
+Disclaimer clause: All names of persons, places and business entities mentioned in these documents are
+fictitious and any resemblance to real persons, living or dead, places and business entities are purely
+coincidental.
+IAC January 2026 1 (of 9 pages) © SAICA 2026
+Paper 1
+PAPER 1 120 marks
+Ignore value-added tax (VAT).
+1 Background
+Mzansi Trendz (Pty) Ltd (‘MT’) is a South African retailer. Incorporated in 1998, the company
+operates 75 stores across South Africa. MT offers fashionable merchandise, often including
+locally sourced fabrics and designs. The company caters for middle-to-upper-income customers
+and does not offer credit facilities.
+MT is a wholly-owned subsidiary of Inala Investments Ltd (‘Inala’), a diversified holding company
+with investments in several retail companies. Jim Isaacs, the chair and chief executive officer of
+Inala, is a former politician who gained significant wealth through strategic investments following
+his departure from public office.
+All Inala Group companies are audited by Sentinal & Associates Registered Auditors (‘Sentinal’),
+prepare their annual financial statements in accordance with IFRS® Accounting Standards and
+have 31 December financial year ends.
+On 1 October 2019, Inala acquired MT, paying R300 million for a 100% controlling stake. The only
+equity balances in MT’s financial statements were share capital and retained earnings amounting
+to R253 million. All MT assets and liabilities were fairly valued at the date of acquisition, except
+for owner-occupied land that had been purchased at a cost of R40 million. On 1 October 2019,
+the land’s fair value was R46 million. The fair value of the land as at 31 December 2024 was
+R43 million. The land was subsequently sold during the financial year ended 31 December 2025
+(FY2025), and MT recognised a profit of R3,25 million on the sale in its separate financial
+statements. As at 31 December 2025, the goodwill recognised on MT’s acquisition had an
+accumulated impairment balance of R19 million.
+The audits of the Inala group companies for FY2025 are currently in progress. All the auditor’s
+reports must be issued by 25 March 2026.
+The information that follows pertains to the audit of the annual financial statements of MT for
+FY2025, which has been prepared using the going concern basis of accounting. The audit
+engagement partner has approved a materiality figure for auditing MT’s 2025 annual financial
+statements of R3 million.
+IAC January 2026 2 (of 9 pages) © SAICA 2026
+Paper 1
+2 Understanding the inventory account balance
+Inventory is MT’s largest asset. For financial reporting purposes, inventory is measured using the
+first-in, first-out method at the lower of cost and net realisable value (NRV).
+Inventory balances at the respective financial year ends comprised the following:
+FY2025 FY2024
+R’000 R’000
+Merchandise on hand 137 260 123 317
+Merchandise at sea 23 900 21 731
+Inventory obsolescence allowance (write down to NRV) (10 951) (13 025)
+150 209 132 023
+Merchandise at sea is inventory in transit from several of the company’s suppliers. This inventory
+is shipped free on board.
+Sales of merchandise during FY2025 amounted to R501 million compared to R554 million in the
+previous financial year, yielding a gross margin of 25% (FY2024: 33%).
+Due to the fast-changing nature of fashion, MT regularly marks its merchandise down to clear out
+slow-moving items and make way for new collections (as reflected in the inventory obsolescence
+allowance).
+MT operates a central distribution centre in Johannesburg where all merchandise is received and
+inspected. It is then distributed to individual stores. Lead times between dispatch from the
+Johannesburg distribution centre and arrival at the stores vary from one to five days. The company
+uses an integrated computerised perpetual inventory management system, which can track
+inventory levels, cost prices and selling prices in real-time.
+At year end, a physical inventory count is conducted at the distribution centre and stores to verify
+the accuracy of the perpetual inventory records. Differences between the quantities of inventory
+according to the company’s perpetual inventory records and those counted were identified and
+resulted in a net inventory write-down of R823 390 being recognised by MT (i.e., reflected in the
+year-end inventory figures). Management approved this adjustment as it identified a risk of
+inventory shortages in an environment where staff are demotivated by having to work long hours
+and not being awarded salary increases or bonuses in recent years.
+MT sources its merchandise from a mix of local and international suppliers. During FY2025,
+Watkins Shoe Manufacturers Ltd renegotiated its contract with MT to supply shoes on
+consignment, with amounts payable to the supplier now due at the end of the month in which the
+sale took place (i.e., extended credit is no longer provided). Consignment stock is inventory held
+by one party (the consignee) but owned by another party (the consignor) until it is sold to a
+customer.
+The returns of previously sold merchandise to customers of MT have also increased from prior
+years. In total, during FY2025, merchandise costing approximately R20 million was returned by
+customers for a variety of reasons, including because of defects in the merchandise.
+IAC January 2026 3 (of 9 pages) © SAICA 2026
+Paper 1
+3 Systems description for the markdown of merchandise selling prices
+The effective management of merchandise is vital to prevent financial losses due to inventory
+obsolescence. MT implemented a system to proactively mark down the selling prices of slow-
+moving merchandise a few years ago. Two types of discounts are applied to merchandise:
+promotional discounts (applied to improve sales for items that are still in season) and clearance
+sale discounts (applied to clear out end-of-season items). The following is an outline of this
+system:
+1 Once merchandise is delivered by a supplier, and the goods received note (GRN) is
+generated, a copy of the GRN is emailed to the merchandise manager, Paul Potgieter.
+2 For each merchandise item (e.g. ‘long sleeve fit & flare knitwear dress’) identified by a
+unique number on the GRN, Paul performs the following on the inventory management
+system:
+2.1 Reviews and, if necessary, amends the markup percentage (on cost) for the
+merchandise item;
+2.2 Captures the budgeted unit sales of the merchandise item by month, based on
+information given to him by the sales director; and
+2.3 Reviews and, if necessary, amends the start date of the final clearance sale of the
+merchandise item.
+3 Once the start date of the final clearance sale of the merchandise item (as captured in step
+2.3) arrives, the inventory management system automatically applies a fixed 50% clearance
+sale discount on the normal selling price to the merchandise item. This is implemented
+immediately at all stores.
+4 Each month Sarah Smith, the merchandise director, extracts a report from the inventory
+management system for merchandise items where the total actual unit sales are lower than
+the total budgeted unit sales and imports this report into Excel. For each item on the
+spreadsheet, she captures the proposed promotional discount percentage as well as the
+start and end date for which the discount is to apply. The discounts may be implemented
+for short periods of time (where sales are marginally behind those anticipated) or for
+extended periods (where sales are lagging significantly).
+5 A printout of this spreadsheet is discussed at the monthly executive management committee
+(Exco) meetings. After making the necessary revisions, the Exco approves the discount
+arrangement to be applied to underperforming merchandise lines.
+6 Using decisions made at the Exco, the merchandise records administrator, Debra Dube,
+captures the following details on the inventory management system for all MT stores:
+6.1 Merchandise item code;
+6.2 Approved promotional discount percentage (on normal selling price);
+6.3 Start date of the discount; and
+6.4 End date of the discount.
+This system has served the needs of MT well. Even though not documented in the description
+above, strong information processing controls have been incorporated into the system to ensure
+the integrity of the data captured and processed. MT has also implemented strong general IT
+controls, including those restricting access only to authorised individuals.
+IAC January 2026 4 (of 9 pages) © SAICA 2026
+Paper 1
+4 Audit of inventory write-down to NRV
+The audit team from Sentinal has commenced its audit work on the inventory account balance as
+at 31 December 2025. Audit procedures have been performed on the write-down to NRV and the
+following findings were extracted from working paper INV-104:
+Audit procedure Findings
+Enquire from the chief financial officer (CFO)
+about the method used to compute the
+inventory obsolescence allowance.
+The CFO explained that the inventory
+obsolescence allowance was computed as
+follows:
+• The NRV for all inventory on hand that had
+a final clearance sale start date before
+31 December 2025 was determined as
+50% of the selling price; and
+• The NRV for all other inventory items that
+are still in season but remain marked down
+at 31 December 2025 because sales are
+lagging, was determined by applying the
+approved promotional discount % to the
+item’s normal selling price.
+The obsolescence allowance was computed
+as the difference between cost and NRV for
+those inventory items where the item cost
+exceeded the item’s NRV.
+Compare the method used to compute the
+obsolescence allowance in the current year
+with the one that was used in the previous
+financial year.
+Done – the method used in FY2025 was
+consistent with that used in FY2024.
+Obtain the detailed workings supporting the
+allowance.
+Done – filed as working paper INV-106.1
+Agree, by inspection, the allowance as at
+31 December 2025 per the workings to the
+balance on the ‘inventory obsolescence’
+account in the general ledger/trial balance.
+Done – no exceptions found.
+Test the operating effectiveness of the direct
+(key) controls in the system for inventory
+markdowns.
+Done – the system for the markdown of
+merchandise selling prices (incl. the
+information processing controls) was found to
+be operating effectively during FY2025.
+Request that management include reference
+to the reasonableness of the inventory
+obsolescence amount in management’s
+written representation letter.
+Done – will be filed once the audit process
+concludes and before the auditor’s report is
+issued.
+As the data from MT’s inventory management system is compatible with the generalised audit
+software used by Sentinal, the audit team intends to use this software to improve the efficiency
+and effectiveness of the audit.
+1 Not included as part of the scenario.
+IAC January 2026 5 (of 9 pages) © SAICA 2026
+Paper 1
+5 Financing arrangement – loan from XYZ Bank
+MT relies on a substantial loan facility from a major South African bank, XYZ Bank. To secure this
+facility, MT agreed to pledge R50 million of its inventory held in the Johannesburg distribution
+centre as collateral for the loan. MT remains fully obligated for the outstanding loan balance
+(interest plus principal), irrespective of the collateral pledged to XYZ Bank.
+A total loan amount of R24 million was provided to MT on 1 February 2024. A fixed interest rate
+of 11,5% per annum, compounded annually, is payable on the loan.
+The loan agreement between MT and XYZ Bank contains the following key covenants:
+1 MT is required to maintain a –
+• minimum current ratio of 1,5:1,
+• maximum debt-to-equity ratio of 2:1, and
+• minimum annual earnings before interest, tax, depreciation and amortisation
+(EBITDA) of R15 million.
+2 A breach of any of the above constitutes a default.
+3 In the event of a default, XYZ Bank has the right to demand immediate repayment of the
+outstanding loan balance and, if not repaid, enforce the inventory collateral pledged.
+MT was able to maintain the loan agreement covenant ratios for a period, but during FY2025 the
+entity faced significant challenges, including increased competition from international retailers
+establishing physical stores in South Africa and customers buying from online retailers. The
+FY2025 revenue projections were not met and some of MT’s suppliers started to tighten their
+credit terms and cancelled lines of credit. This negatively impacted the entity’s operating cash
+flows, liquidity and profitability. When finalising the FY2025 results as at 31 December 2025, the
+company’s current ratio was calculated to be 1,2:1. EBITDA for FY2025 came in below
+R15 million, with the loss before tax provisionally calculated to be R1,5 million. This was the first
+full-year loss incurred by MT.
+Upon becoming aware of the breach of the debt covenant, XYZ Bank notified MT that a default
+had occurred and demanded immediate repayment of the outstanding loan. MT was unable to
+repay the outstanding loan amount due to a lack of available cash on hand given company
+performance and increased inventory balances.
+Accordingly, XYZ Bank formalised its right to claim the collateral pledged as security for the loan
+agreement, and initiated steps to obtain legal possession of the inventory in the distribution centre.
+XYZ Bank agreed to allow MT to continue to sell the inventory from its premises. On the
+subsequent sale of the pledged inventory, all amounts would be used to settle the loan obligation.
+In the event that the proceeds from these sales are insufficient to cover the outstanding loan
+balance, MT remains obligated for repaying any outstanding amounts to XYZ Bank. As at
+31 December 2025, MT had not sold any of the pledged inventory relating to the outstanding loan
+balance. MT commenced sales of pledged inventory in January 2026 and started repaying the
+loan balance from these sales proceeds.
+IAC January 2026 6 (of 9 pages) © SAICA 2026
+Paper 1
+In order to settle XYZ Bank’s outstanding loan balance and overdue interest, MT needed to sell
+the pledged inventory urgently. Therefore the inventory would have to be sold at a significant
+discount. MT estimated that it would take two to three months to settle the debt with XYZ Bank.
+Sarah established that the inventory held at the distribution centre had a carrying value of
+R65 million. She asserted that the R50 million that forms part of the pledged inventory to XYZ
+Bank should, in her opinion, be derecognised in the financial statements at year end and the
+balance thereof be used to offset the carrying amount of the loan reflected as at
+31 December 2025.
+6 Going concern assessment
+The audit team from Sentinal has identified the risk of the going concern basis of accounting being
+incorrectly applied in the 2025 financial statements of MT as ‘high’.
+Audit work was undertaken on the cash flow and profit forecasts prepared by the management of
+MT for FY2026. Based on these forecasts, which the audit team found reasonable, the audit team
+concluded that the company’s liquidity and profitability challenges would persist. When the audit
+team discussed this conclusion with the management of MT, management indicated that it was
+in the process of formulating an action plan to ensure that MT can continue operating as a going
+concern. This action plan involves the following:
+• Closing five unprofitable stores;
+• Reducing marketing expenditures in FY2026 by R1 million per month (or R12 million in
+total), compared to the expenditures in FY2025; and
+• Securing loan financing of R75 million from Inala, who was in the process of raising funds
+from the sale of some of its shares in MT to the African Industrial Development Bank (‘AID’).
+AID is a government-owned bank that invests in businesses and promotes economic
+development in South Africa and in the rest of Africa.
+In January 2026 management presented the audit team with revised forecasts incorporating the
+effects of this action plan. Management confirmed that MT could trade profitably and that the
+liquidity challenges could be overcome.
+Having performed further audit procedures on the action plan, the audit team concluded that
+material uncertainty exists that may cast significant doubt on MT’s ability to continue as a going
+concern. With no other material uncorrected misstatements having been identified or suspected,
+the audit team is considering the modifications required to the auditor’s report on MT’s annual
+financial statements for FY2025.
+7 Arrangement with AID
+Jim used his connections with several members of AID’s Investment Committee to persuade them
+to visit his private game farm for a weekend. There he persuaded the AID Investment Committee
+members to invest in MT and save the jobs of MT’s close to 500 employees.
+IAC January 2026 7 (of 9 pages) © SAICA 2026
+Paper 1
+The details of the arrangement between Inala and AID were finalised during December 2025. The
+following is an extract of the agreement that was signed by the AID and Inala representatives.
+Parties
+This agreement is between Inala (herein referred to as the ‘Investee’) and AID (herein referred
+to as the ‘Investor’).
+Undertaking
+Both parties undertake to enter into this agreement on the following attached terms and
+conditions.
+Sale of equity interest
+The Investor will acquire a 45% equity stake in MT, Inala’s subsidiary. Along with the 45% equity
+stake, the Investor is entitled to appoint three out of the five directors on the board of MT.
+Payment arrangement
+The Investor undertakes to provide the Investee with an amount of R90 million (hereinafter
+referred to as ‘the cash amount’). The cash amount is payable to the Investee in three equal
+tranches of R30 million. The first tranche will be payable to the Investee on 1 January 2026.
+The two remaining tranches will be payable to the Investee on 1 March 2026 and 1 June 2026.
+Other terms
+No amounts are repayable to the Investor. MT however anticipates paying an annual ordinary
+dividend of R9 million, commencing in FY2026, to ordinary shareholders, subject to business
+performance.
+The parties agree that the time value of money as it relates to the tranches that AID will pay over
+to Inala may be ignored.
+An actuary determined the following fair values relating to MT as at 1 January 2026:
+Percentage holding Fair value
+R’000
+45% equity stake in MT 132 000
+55% equity stake in MT 168 000
+When it became aware of the details of the AID agreement with Inala, the People for Democracy
+Party (PDP), a major opposition party in the South African government, strongly criticised this
+agreement in the media. The PDP argued that the agreement was only concluded because Jim
+used his political connections, and that there was no commercial logic to the transaction. The
+PDP felt that money was being diverted from other more worthy projects to the detriment of the
+people of South Africa.
+Upon reading the media reports, the chair of AID’s accounting authority (the public sector’s
+equivalent to a board of directors) called for a meeting to formulate an action plan to deal with the
+matter proactively.
+IAC January 2026 8 (of 9 pages) © SAICA 2026
+Paper 1
+8 Impact of AID on Inala’s investment in MT
+The arrangement with AID was approved by Inala’s board of directors during December 2025.
+AID thereafter appointed two non-executive directors and the chief financial officer to the board
+of MT. Therefore, AID became the controlling shareholder of MT.
+8.1 Disposal of MT shares
+The equity stake granted to AID triggered Inala’s disposal of 45% of its MT shares. Inala
+recognised a profit of R6 million on the disposal of MT shares on 1 January 2026, being the date
+on which all suspensive conditions of the agreement with AID were met.
+8.2 Extracts from the MT financial statements
+The following are extracts from the MT financial statements for FY2025. All amounts are correct.
+Statement of changes in equity as at 31 December 2025
+Share capital Retained earnings FVOCI reserve
+R’000 R’000 R’000
+100 000 178 000 See note 1
+Note 1
+This reserve relates to a listed bond that was issued by Louw Investments. MT purchased the
+bond on 1 January 2023 for an amount of R9,5 million, which was also its fair value.
+Other details pertaining to the bond are as follows:
+Description Details
+Principal amount R9,5 million
+Term 5 years
+Maturity amount R10,5 million
+Coupon, paid annually on 31 December R896 000
+MT correctly classified the bond as being subsequently measured at fair value through other
+comprehensive income (FVOCI) in accordance with IFRS 9 Financial Instruments,
+paragraph 4.1.2A.
+On 31 December 2024 and 31 December 2025, the bond's fair value was R8,4 million and
+R8,9 million, respectively.
+IAC January 2026 9 (of 9 pages) © SAICA 2026
+Paper 1
+Since the original recognition of the bond, it was established that there had been no significant
+increase in credit risk up to 31 December 2024 and 31 December 2025. The IFRS 9 expected
+credit losses relating to the bond are as follows:
+Expected credit losses as at 12-month expected
+credit losses
+Lifetime expected
+credit losses
+R’000 R’000
+31 December 2024 612 1 670
+31 December 2025 980 1 980
+9 Additional information
+• Ignore the time value of money with regard to the agreement with AID.
+• MT accounts for all its property, plant and equipment at cost in accordance with IAS 16,
+Property, Plant and Equipment.
+• The Inala Group accounts for owner-occupied land using the revaluation model and uses
+the cost model for all other items of property, plant and equipment in accordance with
+IAS 16.
+• There has been no changes to MT’s total issued share capital since 1 October 2016.
+• As at 31 December 2025, the goodwill recognised on MT’s acquisition has over the years
+been partially impaired by R19 million.
+• All amounts are material, unless stated otherwise.
+IAC January 2026 1 (of 1 page) © SAICA 2026
+Paper 1 Part I required
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2026
+PROFESSIONAL PAPER 1
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 1 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Discuss the effect of the information provided in section 2 (Understanding
+the inventory account balance) on the auditor’s assessment of the risk of
+material misstatement for the inventory account balance in the FY2025
+financial statements of MT.
+Y4: Judgement and decision making
+15
+1 16
+(b) Describe the key controls that MT should have implemented to ensure –
+(i) the accuracy and completeness of data captured by Paul that
+influence clearance sales; and
+(ii) the accuracy and completeness of the promotional discount details
+captured by Debra on the inventory management system.
+X1: Communication skill – clarity of expression
+10
+8
+1 19
+(c) Formulate the additional substantive audit procedures that should be
+performed by Sentinal to obtain sufficient appropriate audit evidence
+about the inventory obsolescence allowance balance as at
+31 December 2025.
+W1: Data analytics
+9
+1 10
+(d) With regard to MT’s liquidity and profitability challenges (under section 6:
+Going concern assessment) –
+(i) describe the additional audit procedures that should be performed
+by Sentinal on the action plan formulated by the management team
+of MT; and
+(ii) explain what modifications, if any, should be made to the auditor’s
+report on MT’s FY2025 financial statements.
+Z1: Business internal environment (for part (d)(i))
+13
+5
+1 19
+Total for part I 64
+IAC January 2026 1 (of 1 page) © SAICA 2026
+Paper 1 Part II required
+INITIAL ASSESSMENT OF COMPETENCE JANUARY 2026
+PROFESSIONAL PAPER 1
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 1 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(e) Based on IFRS® Accounting Standards, evaluate, with reasons, Sarah’s
+statement regarding the treatment of pledged inventory and the loan from
+XYZ Bank.
+X1: Communication skill – logical argument
+11
+1 12
+(f) Describe the steps that AID’s accounting authority should take following
+the criticism expressed in the media with regard to the agreement AID
+concluded with Inala.
+Z2: Business external environment
+9
+1 10
+(g) Prepare the journal entries that MT should process in its FY2025 separate
+financial statements to account for the Louw Investments bond.
+• Ignore tax.
+• Do not provide journal narrations.
+• Round all calculations to the nearest rand.
+12
+12
+(h) Calculate the group profit or loss, if any, that Inala should recognise in its
+consolidated financial statements relating to the disposal of the MT shares
+on 1 January 2026.
+• Ignore all tax with regard to the Louw Investments bond only.
+• Ignore the time value of money with regard to the payment tranches
+that AID will pay over to Inala.
+• Round all calculations to the nearest rand.
+22
+22
+Total for part II 56
+TOTAL FOR PAPER 1 120

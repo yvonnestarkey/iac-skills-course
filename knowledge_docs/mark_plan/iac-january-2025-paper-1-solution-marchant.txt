@@ -1,0 +1,623 @@
+Source: SAICA IAC January 2025 — Paper 1 suggested solution (Marchant).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JANUARY 2025
+PAPER 1 PART I SUGGESTED SOLUTION
+IAC January 2025 1 © SAICA 2025
+Paper 1
+Part (a) Calculate Marchant’s normal tax payable for the 2024 year of
+assessment.
+• Start your calculation of the vending machine trade with gross
+profit of R48 095.
+• Provide brief reasons for amounts that do not affect the taxable
+income calculation.
+Marks
+R R
+Para. (c): Basic cash salary (R21 900 x 12) 262 800 1
+Para. (i): Cell phone right of use 0
+No value: used mainly for the purposes of the employer’s
+business (para. 6(4)(bA) of the Seventh Schedule) 1
+s8(1)(a)(i)(bb): Allowance for incidental costs
+(R190 - R161) x 30 days 870 1
+s8(1)(a)(i)(aa): Re-imbursive travel allowance
+R5.20 x 8 400 km 43 680 1
+Business cost
+R8.53 x 8 400 km (71 671) 1P
+Deemed cost
+Fixed cost (R86 958 / 14 000) 6,21 1
+Fuel (171.7 c / 100) 1,72 1
+Repairs (60.4 c /100) 0,60 1
+Per km 8,53
+Specified rate per km 4,64 1
+Deemed cost as the contrary did not appear from the
+record of the actual expenses 1
+Vending machine trade
+Gross profit 48 095 0,5
+s11(d): Maintenance (11 754) 0.5
+Capital item included in maintenance added back 7 500 1
+s11(e): Wear and tear (R93 000 / 6 yrs X 12/12) (15 500) 1
+s11(a): Vehicle expenses
+Petrol 26 325
+Maintenance 4 320
+Insurance 5 984
+36 629
+x15%
+(5 494) 1
+s23(a): Private and domestic expenditure not deductible 0 1
+s11(a): Bank charges (R1 035 + R607) (1 642) 0.5
+s11(a): Cleaning materials (862) 0.5
+s11(a): Data costs (522) 0.5
+Vending machine trade income included in taxable income 19 821
+Taxable income 283 491
+s5 Normal tax per the tax tables
+1st R237 100 42 678
+> R237 100 (R283 491 - R267 100) x 26%) 12 062 54 740 1P
+ITC JANUARY 2025
+PAPER 1 PART I SUGGESTED SOLUTION
+IAC January 2025 2 © SAICA 2025
+Paper 1
+Less: s6 primary rebate (17 235) 0.5
+Less: s6A medical tax credit (R364 x 12) (4 368) 1
+Less: s6B additional medical tax credit
+Contributions 34 080
+Less: 4 x s6A MTC (17 472) 1P
+Excess contributions 16 608
+16 608
+Less: 7.5% x R283 491 (21 262) 1P
+0 0
+Normal tax payable 33 137
+Available 21
+Maximum 20
+Total for part (a) 20
+Part (b) Discuss, from an income tax and VAT perspective, whether it would
+have been more advantageous for VendiBoys to acquire the shares in
+OMV, or to have purchased the assets of the business.
+• Calculations are not required.
+Marks
+INCOME TAX
+1 Shares
+1.1 If VendiBoys buys the shares, the interest payable will not be incurred in
+the production of its income of VendiBoys derived from carrying on any
+trade. 1
+1.2 As the dividends are exempt from normal tax, the deduction of the
+interest is prohibited (section 23(f). 1
+1.3 and it is not for purpose of trade, as the investment in shares is held for
+investment purposes; 1
+1.4 However, s24O could be applicable;
+1.5 VendiBoys acquires at least 70% (in fact, 100%) of the shares (VendiBoys
+and VendiMan will form part of the same group of companies after the
+acquisition); 1
+1.6 VendiMan is an operating company as defined; at least 80% of its income
+comes from selling goods and/or rendering of service. That is, 100% of its
+income is from selling goods; and 1
+1.7 VendiMan's business is carried on continuously; 1
+1.8 Thus, the interest, as defined in section 24J calculated using the yield to
+maturity and on a day-to-day basis, will be deductible under section 24O. 1
+1.9 VendiBoys will buy the ‘history’ of VendiMan, which may include
+unknown liabilities, risks and claims against purchaser. This will include any
+potential tax claims for inappropriate deductions made or under declaration of
+income. 1
+1.10 The shares will have a base cost of R692 925. 1
+2 Assets
+2.1 In terms of section 24J, the finance costs are incurred in the production of
+income, and VendiBoys acquired the assets to produce income; and 1
+2.2 for purposes of trade, VendiBoys is trading.
+ITC JANUARY 2025
+PAPER 1 PART I SUGGESTED SOLUTION
+IAC January 2025 3 © SAICA 2025
+Paper 1
+2.3 Thus, the finance costs will be deductible under section 24J calculated
+using the yield to maturity and on a day-to-day basis. 1
+2.4 Buying assets allows a step-up in the base cost for capital allowances
+and other deductions as the purchaser is the new legal owner. 1
+3 VAT
+(The transfer of the shares would be subject to the Securities Transfer Tax.)
+3.1 The acquisition, or disposal of the shares, would have no value-added tax
+consequences for either party. It would be the supply of a financial services,
+section 2(1)(d) of the Act, and would therefore be an exempt supply. 1
+3.2 The purchase of the assets of the business, will be the acquisition of second-
+hands goods (as defined in section 1(1)). An amount equal to the tax fraction
+of the amount of consideration paid by VendiBoys will be input tax, paragraph
+(b) of the definition, and VendiBoys will be entitled to make a deduction
+thereof against its output tax 1
+CONCLUSION
+From a tax perspective it would have been better to buy the assets, as
+historical issues with SARS would have been avoided. 1P
+Available 15
+Maximum 12
+Y2: Integrative thinking 1
+Total for part (b) 13
+Part (c) Discuss the income tax implications for VendiBoys for the 2024 year of
+assessment in relation to the second-hand vending machines acquired
+in exchange for the 100% equity shares in Vendiboys issued to
+Marchant.
+Marks
+1 As VendiBoys, is a resident company, will issue equity shares in exchange for
+the second-hand machines (disposed of to the company) the application of
+section 42 needs to be considered.
+1
+2 Because Marchant will hold 100% of the equity shares in VendiBoys, he will at
+the close of the day on which that asset is disposed of, (1 March 2024), hold a
+qualifying interest in VendiBoys.
+1
+3 The market value of the second-hand vending machines, of R23 250 is equal to
+the base cost of R23 250
+1
+4 Marchant held the second-hand vending machines as capital assets and
+VendiBoys will continue to hold them as capital assets. Therefore, section 42
+applies.
+1
+5 As all the requirements of section 42 have been met, the provisions of section 42
+will apply, unless Marchant and VendiBoys agree in writing that this section does
+not apply.
+1
+6 Marchant will not elect out of section 42 as he would elect the most beneficial tax
+position.
+1
+7 Marchant and VendiBoys will be deemed to be one and the same person in
+relation to the vending machine in respect of the date of acquisition and the cost
+incurred to acquire the machines.
+1
+ITC JANUARY 2025
+PAPER 1 PART I SUGGESTED SOLUTION
+IAC January 2025 4 © SAICA 2025
+Paper 1
+8 The second-hand machines will be deemed to be acquired at its base cost (to
+Marchant) i.e. R23 250.
+1
+9 VendiBoys can claim a section 11(e) allowance, over the remaining write-off
+period of 5 years, apportioned where the year of assessment is less than 12
+months.
+1
+10 The contributed tax capital of VendiBoys increases by an amount equal to the
+base costs of the assets acquired, i.e. R23 250.
+1
+11 Because Marchante holds all the shares in VendiBoys immediately after
+VendiBoys acquired the assets, 24BA does not apply. It is therefore irrelevant
+that there may be a value-mismatch.
+1
+Available 11
+Maximum 7
+X1: Communication skills – clarity of expression 1
+Total for part (c) 8
+Part (d) Calculate the VAT payable or refundable for the March / April 2024 tax period
+for VendiBoys.
+• Provide brief reasons for amounts that do not affect the VAT payable or
+refundable calculation.
+• The amounts in the management accounts are inclusive of VAT.
+Marks
+Calculation Amount
+Output tax
+Revenue: cash 178 627
+Revenue: cards 2 801
+181 428 x 15% 27 214 1
+Input tax
+Cost of sales
+57 029 (99 878 - 42
+849) x 15%
+(8 554) 1
+Inventory acquired from OMV, no VAT paid 42 849 0 1
+Coins acquired; ‘money’ is not goods 0 1
+Refunds 3 778 x 15% (567) 1
+Employee costs, not in the furtherance of the
+‘enterprise’
+0 1
+Maintenance – machines 8 043 x 15% (1 206) 1
+Payments to property owners where vending
+machines are located
+6 400 x 15% (960)
+1
+Vending machine, notional input tax on second-
+hand goods
+Lower of consideration
+(547 975) or OMV (600
+000), 547 975 x 15/115 (71 475) 1,1
+Depreciation - accounting entry - no supply 0 1
+Section 8(25) cannot apply as Marchant is not a
+VAT vendor. 0
+ITC JANUARY 2025
+PAPER 1 PART I SUGGESTED SOLUTION
+IAC January 2025 5 © SAICA 2025
+Paper 1
+Inventory - R42 849 x 15/115
+(5 589) 1
+Subscription to OpKonnect platform 1 000 x 15% (150) 1
+Vehicle expenses:
+Petrol, zero-rated 0 1
+Maintenance 11 832 x 15% (1 775) 1
+Insurance 2 650 x 15% (398) 1
+Panel van – 2010 model, notional input tax on
+second hand goods
+Lower of consideration
+(90 850) or OMV (100
+000), 90 850 x 15/115 (11 850) 1
+Bank charges
+Cash deposits
+Note: Marchant includes cash from his friend’s
+bakery’s sales in VendiBoys' weekly cash deposits in
+exchange for enabling VendiBoys to buy inventory
+from one of the large wholesalers on the bakery’s
+account, and enabling VendiBoys to benefit from
+volume discounts. This is thus considered a ‘supply’
+in the furtherance of its ‘enterprise’ activities and
+output tax must be levied. Input tax can accordingly
+be claimed on the cash deposits. 1,235 x 15%
+(185)
+1
+Card fees 120 x 15% (18) 1
+Interest, financial service exempt supply 0 1
+Available 20
+Maximum 18
+Total for part (d) 18
+TOTAL FOR PART I 59
+ITC JANUARY 2025
+PAPER 1 PART II SUGGESTED SOLUTION
+IAC January 2025 6 © SAICA 2025
+Paper 1
+Part (e) Discuss Vendiboys’ business and financial risks arising from the
+purchase and operation of the assets from OMV.
+Marks
+1 The acquisition of assets from Jackie meant that Marchant had to scale up his
+operations and incur more costs.
+1
+2 As it is now a significantly larger business, there is a greater risk that sales could
+be insufficient to cover fixed costs (mostly employee costs and depreciation) which
+could require additional funding. 1
+3 Most of the additional costs are fixed. This increases the risk that the business will
+be making a loss if sales are not sufficient to cover the fixed costs.
+1
+4 Both businesses are in a loss-making positions, although the losses are distorted
+by the inclusion of personal expenses in the results.
+1
+5 Unless sales increase or costs are cut, this would not be a sustainable business. 1
+6 Marchant has a good knowledge of student snack preferences. He does not have
+this knowledge of preferences for a broader range of corporate customers, served
+by the additional vending machines.
+If his product mix or pricing is incorrect because of this lack of understanding
+of his customers, his sales volumes could decline.
+1
+1
+7 There is a risk that incorrect product choices are being made, causing an increase
+in slow-moving stock. This will result in stock write-offs, selling prices that need to
+be reduced for slow-moving stock or that the products sold are not as profitable as
+those when Marchant started his business.
+1
+1
+8 There is a risk that the machines are placed in areas that do not attract high traffic
+or in locations that are close to retailers who offer the same products at lower prices.
+1
+9 After Covid many call centres and other business implemented hybrid working
+arrangements, resulting in fewer employees being at the office, which will
+negatively affect sales.
+1
+10 There is no insurance for theft or damage to the vending machines or inventory,
+which means that VendiBoys is exposed to loss of revenue if the machines are out
+of order or machines or inventory are stolen.
+1
+11 Marchant's brother has a lot of responsibility in the operations of VendiBoys. He
+manages staff, oversees deliveries and monitors inventory levels. Yet, he has no
+experience in supply chain management. There is a risk that, due to
+mismanagement, machines are not properly refilled and sales are lost due to
+shortages in machines.
+1
+1
+12 The entire purchase consideration was funded by debt, exposing the company to
+solvency and liquidity risks.
+1
+13 It is not clear whether the loans are secured or whether the lenders have any
+recourse to the assets of VendiBoys.
+1
+14 Both loans are repayable at the same time, exposing VendiBoys to refinancing risk.
+Both loans are repayable in three years’ time which means that the additional
+vending machines must provide excess returns within that time frame. This
+increases the liquidity risk for VendiBoys.
+In view of the age of some of the machines, there is a risk that some of them may
+need to be decommissioned within the next three years, which is the repayment
+period of the loan. This will create cash flow constraints in VendiBoys.
+1
+1
+1
+15 Since Jack purchased the machines over many years, they are likely to be in a less
+suitable condition and may need to be repaired or upgraded. There is a risk that
+increased or unexpected maintenance may be required as a result of the age of the
+older machines.
+1
+ITC JANUARY 2025
+PAPER 1 PART II SUGGESTED SOLUTION
+IAC January 2025 7 © SAICA 2025
+Paper 1
+16 The sale of expired food items is wrong from an ethical perspective. It also exposes
+VendiBoys to reputational damage and the risk of litigation, which will result in
+financial loss.
+1
+17 VendiBoys has experienced connectivity issues with the OpKonnect app. Incorrect
+or incomplete sales data can lead to inappropriate product and/or pricing decisions.
+Similarly, incomplete inventory data can lead to poor inventory management
+decisions.
+1
+1
+18 Two family members intricately involved in managing a business can lead to
+significant operational and governance risks (e.g. could lead to complications if
+there are issues or disagreements develop).
+1
+19 The acquisition of the assets and consequent formation of VendiBoys has
+increased potential tax risks due to including personal expenses as part of business
+expenses (and not having appropriate controls / procedures in place) which could
+lead to fines and penalties.
+1
+Available 25
+Maximum 18
+X1: Communication skill – logical argument 1
+Total for part (e) 19
+Part (f) Identify and discuss, with reference to VendiBoys, the risks of material
+misstatement at the assertion level for FY2024 for the following
+account balances:
+• Inventory: existence, completeness and valuation; and
+• Property, plant and equipment: valuation.
+Marks
+1 Inventory: existence, completeness and valuation
+1.1 The financial statements will be used by banks for future funds. There is,
+therefore, a risk that management will overstate inventory to ensure that the
+financial results are favourable. Therefore, an incentive exists to overstate
+assets, specifically inventory (existence).
+1
+1.2 The occasional connectivity issues experienced with the OpKonnect platform
+could result in inaccurate reported inventory figures (all assertions).
+1
+1.3 The information from the app is not integrated with a financial accounting
+system; it is done ‘manually’ by Marchant when compiling the AFS, which
+increases the risk that the inventory value figures are inaccurate (all
+assertions).
+1
+1.4 The vending machines are in public areas, which increases the risk that
+inventory could be stolen (theft), and there is a risk that inventory at year end
+does not exist (existence).
+1
+1.5 The theft from machines, especially at university campuses, increased the risk
+of inventory being damaged (valuation) or stolen (existence).
+1
+1.6 Some of the vending machines stock products that have a limited ‘shelf life’, ,
+and the risk exists at year end that inventory has expired and that the value
+should be written down (valuation).
+1
+1.7 The panel van is used by the technicians and can carry many inventory
+items (to optimise route and replenishment):
+1
+ITC JANUARY 2025
+PAPER 1 PART II SUGGESTED SOLUTION
+IAC January 2025 8 © SAICA 2025
+Paper 1
+• There is the risk that inventory does not exist as it is inadequately verified by
+VendiBoys at year end (alternatively, it has been stolen, lost, or damaged
+(existence, valuation).
+• There is a risk that not all inventory is accounted for as it is in transport in the
+van (completeness).
+1
+1.8 Marchant believes that the OpKonnect app is reliable and accurate. His view
+that there is no need for regular inventory counts results in the increased risk
+that the existence of inventory is not verified or is not correctly valued (valuation).
+1
+1.9 The fact that the inventory's selling price is adjusted downwards ‘from time
+to time’ if the products do not sell, increases the risk that the inventory
+might not be valued correctly and not carried at the lower cost NRV)
+(valuation).
+1
+1.10 As there has been news coverage of specific suppliers selling counterfeit
+products, there is a risk that the vapes that Marchant purchased from the
+supplier are not original products and should be written off (not saleable)
+(accuracy and valuation).
+1
+2 Property, plant and equipment: valuation
+2.1 As vending machines usually require significant maintenance from seven
+years of age, there is a risk that the value of property, plant, and equipment is
+overstated, as the useful life of ten years may not be appropriate (valuation).
+1
+2.2 The value of the machines purchased from Jackie appears to be low
+(R600 000 for 30 machines), in comparison with the value of the machines
+Marchant owned in his personal capacity (R93 000 for three machines) before
+the new business opportunity. Therefore, there is a risk that the vending
+machines are not correctly valued in the financial statements at year end
+(valuation).
+1
+2.3 There is a risk that the value of property, plant and equipment is overstated as
+regular maintenance cost could possibly be incorrectly capitalised to the
+cost of the asset (and not expensed) (valuation).
+1
+2.4 There is a risk that the newly acquired vending machines have not been
+accounted for correctly (initial measurement), as the purchase price and the
+open market on the date of acquisition is different (valuation).
+1
+2.5 There is a risk that the depreciation rate for the different vending machines is
+inappropriate, as a ten-year depreciation rate across all vending machines
+may not be appropriate. Using a standardised rate is not a reasonable
+justification, and the useful life of each asset should be separately assessed
+(valuation).
+1
+2.6 The vending machines from OMV are older machines – this may indicate that
+the machines’ carrying value may be too high and impairment assessments
+should be done on an annual basis.
+1
+Available 17
+Maximum 13
+X1: Communication skill – clarity of expression 1
+Total for part (f) 14
+Part (g) Based on the data fields available from the OpKonnect app, describe how
+the audit team could use automated tools and techniques to obtain
+sufficient and appropriate evidence that VendiBoys’ revenue is fairly
+presented in the financial statements for FY2024.
+Marks
+ITC JANUARY 2025
+PAPER 1 PART II SUGGESTED SOLUTION
+IAC January 2025 9 © SAICA 2025
+Paper 1
+1 Download a report for sales for all vending machines for the period to obtain the
+total sales (to agree it to the general ledger and financial statements for accuracy).
+1
+2 Download a report for sales for all vending machines for the period to obtain the
+total sales for the vending machines and inspect the report for abnormal or manual
+entries.
+1
+3 Using ATTs, recalculate the total sales to ensure the accuracy of the revenue
+(and agree to the amounts reflected in management accounts/general ledger). 1
+4 Stratify the report into -
+4.1 cash and credit card sales to enable the audit team to perform more effective
+procedures OR extract a report reflecting cash and credit card sales separately.
+1
+4.2 Items to identify risks, for example days without sales, sales for round amounts
+not related to product prices, etc
+1
+5 Use audit software to extract exception reports as follows for further work to be
+performed:
+5.1 Generate a report of any breaks in the sequence number of sales transactions of
+vending machines. 1
+5.2 Generate a report of any duplications in sales transactions. 1
+5.3 Generate a report of dates on which no sales occurred, i.e., no ‘sales date’ on the
+sales transaction file. 1
+5.4 Generate a report of sales transactions with negative ‘item quantities’ or ‘item
+prices’. 1
+5.5 Generate reports with extracts of data per month, location etc 1
+6 Use audit software to analyse and compare the different datasets extracted to
+identify trends and patterns in sales data to assess the reasonability of sales
+transactions and for example, identify locations or months where sales were
+lower (or higher) than expected, machines were not working etc.
+1
+7 Auditors can reconcile (automated matching of) the cash collection records
+with cash sales transactions to verify that all cash received from vending machine
+sales is properly accounted for as revenue. 1
+8 Auditors can reconcile (automated matching of) the reported revenue from sales
+with other sources of revenue, such as bank deposits as per bank statements
+(any discrepancies will warrant further investigation). 1
+9 Auditors can compare sales data recorded by the vending machines with other
+sources of information using the inventory module. Any discrepancies between
+sales records and corresponding inventory movements can be investigated further. 1
+10 Auditors can validate credit card transactions to ensure that revenue from
+electronic payments is accurately recorded. They can cross-reference cashless
+payment data with sales transactions to confirm that all electronic transactions are
+included in revenue calculations. 1
+11 Using the transaction date field in the sales transaction file, generate a report of
+all transactions dated a week before and after year end to enable the audit team
+to perform further audit procedures on cut-off and ensure that it has been accounted
+for in the correct financial year. 1
+12 Auditors can analyse the machine usage statistics to identify unusual patterns or
+discrepancies that could indicate incomplete revenue reporting. For example, a
+significant increase in machine usage without a corresponding increase in sales
+transactions could suggest unrecorded revenue. 1
+13 Price and expiry verification: Automate checks to ensure that products sold are
+within their shelf life and that any price adjustments are accurately reflected in
+the sales records.
+1
+Available 18
+Maximum 12
+Y1: Critical thinking 1
+ITC JANUARY 2025
+PAPER 1 PART II SUGGESTED SOLUTION
+IAC January 2025 10 © SAICA 2025
+Paper 1
+Total for part (g) 13
+Part (h) Discuss ethical concerns regarding how the VendiBoys business is run
+by the Peddlar brothers.
+• Exclude the Companies Act and King IV Report on Corporate
+Governance from your answer.
+• Exclude any threats to fundamental principles from your answer.
+Marks
+1 Business ethics principles
+1.1 To do business by following sound business ethics principles, VendiBoys should
+consider the good for self and good for others in making ethical decisions.
+(Alternatively, A virtue-based approach would direct a company to make ethical
+decisions based on ‘do unto others what you would have them do unto you’.)
+1
+1.2 VendiBoys buys vapes and vape juices and sells them without the required
+licences, which will increase VendiBoys’ profitability (good for self).
+1
+1.3 However, there is the possibility that these vape products are counterfeit (after
+allegations surfaced) and pose a significant risk to the customers and their
+health and safety (bad for others).
+1
+1.4 Using nail polish remover to remove product expiry dates is an attempt to
+mislead customers and is dishonest in conducting its business and is misleading
+customers and could result in food poisoning.
+1
+1.5 Depositing money in exchange for receiving volume discounts when buying
+on a friend’s accounts from large wholesalers is possibly contravening legislation
+in terms of money laundering (good for self), tax or other legal consequences.
+1
+1.6 The actions of VendiBoys in selling vapes and vape juice products without the
+required licence are in contravention of the legislation and illegal and may
+result in fines.
+1
+1.7 Claiming personal expenses as business expenses for tax purposes
+contravenes tax legislation, resulting in revenue loss for tax authorities such
+as SARS.
+1
+1.8 VendiBoys should consider the reputational damage that may arise from
+misleading customers by selling vape products without a licence and selling goods
+that have expired (negative impact on the relationship with customers).
+1
+1.9 Customers can take possible legal action against VendiBoys for selling harmful
+products (expired products or vapes), resulting in claims against the company.
+1
+1.10 Potential new investors could lose confidence, and possible future funding from
+the bank is at risk because VendiBoys is not following sound ethical business
+practices.
+1
+1.11 VendiBoys is a small company, but the actions and decisions of the executive
+directors, could result in an undesired unethical culture throughout the entire
+business (tone at the top).
+1
+1.12 VendiBoys would breach various virtues, such as integrity and respect for others,
+as the brothers' actions are unfair and dishonest towards customers and
+stakeholders.
+1
+2 As a trainee accountant at an auditing firm, Marchant is subject to the SAICA
+CoPC; therefore, the fundamental principles are applicable.
+1
+3 Conflict of interest
+3.1 Marchant’s frequent engagement with clients during audit engagements to
+expand his network and discover new opportunities and new premises results in
+a conflict of interest and compromises his professional judgement.
+1
+4 Professional behaviour
+ITC JANUARY 2025
+PAPER 1 PART II SUGGESTED SOLUTION
+IAC January 2025 11 © SAICA 2025
+Paper 1
+4.1 The following instances of non-compliance with laws and regulations reflect
+negatively on his to professional behaviour:
+1
+4.2 The fact that vapor and vaping juice products are sold without the required
+licences contravenes laws and regulations, as the Retail tobacco and e-
+cigarette trading licence has yet to be obtained.
+1
+4.3 The arrangement to deposit cash on behalf of a friend’s business raises possible
+concerns about money laundering, which contravenes South African
+legislation.
+The most pertinent are the Financial intelligence centre act (38 of 2001) (FICA),
+General laws (anti money laundering and combating the financing of terrorism)
+amendment act (23 of 2022) (AML amendment act), the Prevention of organised
+crime act (121 of 1998) (POCA), and the Protection of constitutional democracy
+against terrorist and related activities act (33 of 2004) (POCDATARA).
+1
+4.4 Claiming personal expenses as business expenses for tax purposes
+contravenes tax legislation.
+1
+5 Professional competence and due care
+5.1 There are concerns about Marchant's application of technical knowledge; for
+example, the justification for using a ‘standardised depreciation period’ does not
+follow the accounting standards.
+1
+5.2 Marchant is responsible for preparing VendiBoys' financial statements, and the
+perceived lack of technical knowledge (see example above) raises concerns
+about the fair presentation of the financial statements.
+1
+6 Integrity
+6.1 A professional accountant shall comply with the principle of integrity, which
+requires an accountant to be straightforward fand honest in all professional and
+business relationships. Using nail polish remover to remove product expiration
+dates is an attempt to mislead customers and demonstrates dishonesty in
+conducting business, and is therefore a breach of integrity.
+1
+Available 21
+Maximum 14
+Y5: Professional scepticism 1
+Total for part (h) 15
+TOTAL FOR PART II 61

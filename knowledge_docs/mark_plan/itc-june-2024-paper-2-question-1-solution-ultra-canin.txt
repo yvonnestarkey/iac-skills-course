@@ -1,0 +1,395 @@
+Source: SAICA ITC June 2024 — Paper 2 Question 1 suggested solution (Ultra Canin).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 1 © SAICA 2024
+Part (a) Perform, outlining key assumptions, an EBITDA multiple earnings-
+based valuation for Petrus’ shareholding as at 31 December 2023. Marks
+Determination of maintainable EBITDA R’000
+The company is stable, and therefore, it would appear to be
+reasonable to use the 2023 figures as a starting point. (Or
+appropriately justify using an average.) 1
+Operation profit for 2023 159 096 1P
+Less: Other income (507) 1
+Add back: Depreciation 19 246 1
+Add back: Petrus Mahlangu salary 4 000 1
+Less: Strategic manager salary (1 000) 1
+(No tax adjustment as it is EBITDA)
+Less: Market-related salary adjustment (6 000) 1
+Market-related rental Australian operations (5 000) 1
+Maintainable EBITDA 169 835
+EBITDA multiplier Multiplier
+Multiplier of similar company: Eureka Pet
+(same country, same market)
+Alternatively: Multiplier of similar company: Organica (same market,
+more than one country)
+8 1
+1
+Adjust down for lower anticipated growth
+Alternatively: Adjust upwards for higher anticipated growth
+–1
+1
+Ultra Canin is a larger company – market power +1 1
+Valuation is for a minority interest of 33.33%, but it would give the
+acquiring shareholder control, therefore this should be considered to
+be a premium*
++1
+1
+Other valid adjustments (max 3 marks for adjustments)
+Listed - access to funding, marketability of the securities,
+Management - loss of Petrus/experience,
+Country risk - in case where Organica chosen,
+Competition - not adjusting for competition, and
+Geographical - presence in Australia versus Eureka
++/-
+3
+Adjusted multiplier 7
+Multiplier x maintainable EBITDA 1 188 845 1P
+Add: Investment in SunSolar 15 200 1
+CGT on SunSolar (Proceeds 15 200 – Base Cost 10 000) (1) x 80%
+x 27% (1)
+(1 123)
+2
+Add: Excess cash and equivalents (inclusion)
+(Cash required 10%*871 214 = 87 121)
+(Excess cash therefore 297 927 – 87 121 = 210 806)
+210 806 1P
+1
+1
+Less: Shareholder’s loan (debt) (165 967) 1
+Less: Outside shareholders’ share (10% x R31 million) (3 100) 1
+Less: Once-off moving cost (3 000) 1
+Taxation consequence on moving cost (below the EBITDA line)
+(R3 million x 27%)
+ALT: capital in nature, therefore Rnil adjustment
+810
+1
+Company value 1 242 471 1P
+One third share for Petrus Mahlangu 414 157 1P
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 2 © SAICA 2024
+The management account numbers should be used with caution, as
+they have not yet been audited. The price should perhaps be
+conditional on confirmation of the numbers once audited.
+1
+Restriction on the transferability of shares may require an
+adjustment, it is not clear if, after the refusal of the shareholders, the
+shares could be sold without limit. 1
+Available 31
+Maximum 17
+Communication skills – layout and structure 1
+Total for part (a) 18
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 3 © SAICA 2024
+Part (b) Identify and explain the key strategic considerations for Ultra Canin
+resulting from Petrus leaving the company. Marks
+1. The relationship with the funder and the relationship with his chain of
+organic stores will be lost in the future. This has brought synergistic benefits
+in the past.
+1.1 Any additional funding Ultra Canin may require would not be as easily
+available, and it would lose much of its cash in the sale transaction,
+having to repay the shareholder loan.
+1.2 The ability to partner with the chain of organics stores would be lost,
+therefore it would be more challenging and costly to expand the business
+without the benefit of sharing resources.
+1
+1
+1
+2. There is an element of flexibility that the remaining shareholders will now
+have without the constraints of Petrus, for instance the decisions will be taken
+between two shareholders versus the three. 1
+3. The remaining shareholders would have a bigger share of the company,
+therefore they would earn more returns, if each of the remaining two
+shareholders acquire an equal share of Petrus’s shareholding.
+1
+4. There will be a loss of key strategic input and skills from the accomplished
+director, as the company seems to be replacing the director with a lower-
+level resource in the form of a strategic manager (as indicative from the lower
+salary). Therefore, they may lose the level of strategic input, and
+there is the advantage of the savings on the salary and services to the
+company, provided by a cheaper resource.
+1
+1
+5. The links that the director provided in logistics and retail may be hard to
+maintain without his influence, and this may affect business operations
+negatively. 1
+6. This is an experienced director who is leaving versus the relatively lower
+experience of the remaining directors (Sihle and Penny). 1
+7. The savings on rental income in Australia will be lost if the company loses
+the connection. 1
+8. The remaining two directors will have an increased workload, and they
+will miss a third voice of reason. 1
+9. The 8% funding cost on the shareholder loan is beneficial. If the prime
+rate is 11,75%, Ultra Canin would presumably lose this benefit if Petrus
+leaves. 1
+10. To assist the current directors and the new strategic manager, Ultra Canin
+can consider requesting Petrus to still be involved on a part-time or
+consultancy basis after his resignation. This will assist in maintaining the vital
+relationships with the retail and logistics portions of the business and enable
+other individuals to build relationships in the interim. 1
+11. Petrus’s departure would also potentially cause an immediate cash
+flow, and it should be considered if the company would be able to afford
+the cash outflow (e.g repaying back of the shareholder loan). 1
+Available 14
+Maximum 7
+Total for part (b) 7
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 4 © SAICA 2024
+Part (c) Critically evaluate the two performance incentive options and
+advise the directors which of the two you would recommend.
+• Do not consider the tax consequences for either the
+employees or Ultra Canin.
+Marks
+1 Share option scheme
+1.1
+1.2
+1.3
+The company is a private company, therefore share options are less
+attractive as the market value of the shares cannot be determined as
+readily and cannot be tracked as one would do in a listed company.
+Employees would also not be able to dispose of the shares with ease,
+which means it would be more difficult to realise their value.
+Valuations would need to be performed regularly, which may be costly
+and could detract from the use of these instruments as a remuneration
+tool.
+1
+1
+1
+1.4 The share options would align the interests of the employees with those
+of the shareholders, which would limit agency costs. 1
+1.5 The granting of the share options at market value would be appropriate
+because if no value is added by the staff to the company and the share
+price does not increase, they would not receive any reward either. 1
+1.6 The vesting requirement that the employees would need to remain in
+the employ of the company for three years would be appropriate, as this
+would ensure the company retains the skills for that period. It
+encourages long-term behaviour, rather than short-term profiteering to the
+detriment of long-term profitability. 1
+1.7
+1.8
+1.9
+The requirement of maintaining an accounting ratio in the form of ROI is
+not optimal. Economic measures should rather be used.
+Accounting measures can be focused on in the short term and
+manipulated by actions that destroy value, such as selling assets for a
+profit, which also decreases the investment base. While this will result in a
+higher ROI, it damages long-term profitability.
+In addition, the 10% benchmark ROI does not seem to have any
+justification and seems arbitrary. This would demotivate employees.
+1
+1
+1
+1.10 Depending on the quantum, this would also dilute the existing
+shareholders’ investment holdings in the long run, which may create
+control or other shareholding issues. 1
+1.11 Would employees be attracted to the long term and are employees
+willing to stay for such a long period? The younger managers may want
+cash immediately for their needs? 1
+1.12 The benefit of the scheme is that there is no cash outflow, as it is settled
+in shares. 1
+1.13 It is not clear how the allocation between employees would work and
+whether there is a level of subjectivity. It could cause issues with the
+remaining staff if allocations are considered to be unfair. 1
+1.14 The condition that options lapse if the company fails to achieve a 10%
+ROI in any single year could be seen as too stringent. Even a temporary
+setback or a challenging economic environment could nullify the options,
+demotivating employees who might have otherwise contributed
+significantly to the company’s success.
+Employees may feel that it is unfair that they could lose their shares if
+performance drops / because of decisions made by top management,
+especially where they have no control over / input into the performance
+measures.
+1
+1
+2 Bonus bank – balanced scorecard
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 5 © SAICA 2024
+2.1 The balanced scorecard metric would be more appropriate for lower-
+level employees who do not have control over all aspects of this business,
+as they would be measured on elements that are within their sphere of
+control. 1
+2.2 The employees would not need to lay out cash to exercise the
+options, as they would with a share option (pay the exercise price), which
+would be more appropriate. 1
+2.3 The bonus bank is appropriate as this would result in the employees
+having to stay for four years to earn their whole bonus, thus retaining the
+skills. 1
+2.4 The entire bonus falling away hardly seems fair, especially to lower-
+level employees with limited decision-making powers. A slight reduction
+may be more appropriate. 1
+2.5 The employees would be incentivised to take a long-term view, so as
+to not jeopardise long-term performance for a short-term gain, which would
+be adverse to the shareholders. 1
+2.6 The bonus bank would encourage consistent performance, as the
+consequence of missing their targets in any one year would have a
+massive impact. They would lose all current and previously accumulated
+bonus amounts, as these would be forfeited. 1
+2.7 Allocations may be subjective and based on the importance of a role.
+This may create issues with employees who disagree with allocations and
+become disgruntled. 1
+2.8 The cash payments are more attractive to the employees who receive
+their reward earlier and directly in cash, with no need to exercise and
+purchase shares. 1
+2.9 However, the company does not receive the cash for the shares
+purchased, therefore it has a cash negative effect for the company. 1
+2.10 The company furthermore has to pay out the bonuses, which means
+that there is a double negative cash impact compared to the options. 1
+2.11 There is less risk for employees as they are remunerated regularly, and
+therefore there is less risk related to their future service. 1
+2.12 The criteria for the balanced scorecard appear to be very generic without
+information on how employees would be evaluated against the criteria.
+This may be a cause for concern for employees if the evaluation
+criteria is unclear or appears to be unfair. 1
+2.13 A balanced scorecard can be tailored to different roles and levels
+within the company - employees are therefore evaluated based on criteria
+relevant to their specific roles and contributions, which is not necessarily
+the case with the share option scheme. 1
+3 Conclusion
+3.1 Both of the alternatives are good options, but applicable to different
+types of employees.
+The share option rewards would be better suited to the senior
+employees who have influence over all aspects of the business. 1P
+3.2 The balanced scorecard and bonus bank option would be a better fit
+for the employees at lower levels who cannot control all aspects of the
+performance. 1P
+Available 30
+Maximum 10
+Total for part (c) 10
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 6 © SAICA 2024
+Part (d) Discuss the normal tax and employees’ taxation consequences
+of –
+• the share option scheme; and
+• the bonus bank scheme
+for Ultra Canin and for its employees.
+Marks
+Share option scheme – normal tax consequences
+1 Ultra Canin
+1.1 The issue of shares is not ‘expenditure’, and therefore no s11(a)
+deduction can be claimed for this (Labat).
+ALT: The issue of shares does not lead to a diminution of net assets,
+and therefore, it is not “expenditure” in terms of section 11(a), and
+therefore, not deductible. 1
+1.2 The granting of an option and the issue of shares is not a disposal for CGT
+purposes as indicated in terms of par 11(2)(b) of the Eighth Schedule,
+hence, Ultra Canin will not have any CGT consequences. 1
+1.3 The funds (market value of the shares at the date of granting the option)
+received by Ultra Canin when the options are exercised are excluded
+from Ultra Canin’s gross income as they are capital in nature (s1(1) –
+gross income definition). 1
+1.4 These funds will increase Ultra Canin’s ‘contributed tax capital’ as they
+are proceeds from the issue of shares. 1
+2 Employees
+2.1 The share options would be considered to be an ‘equity instrument’ as
+defined in s8C(7)) (para. (a) of that definition) as they constitute options to
+acquire shares in a company. 1
+2.2 The share options would be considered to be a ‘restricted equity
+instrument’ (s8C(7)) as the employee would need to remain in the
+employ of Ultra Canin for the three-year period, and the options would
+lapse if the company earned an accounting return on investment of less
+than 10% in any of the years. 1
+Date the options are granted
+2.3 A gain, which is the difference between the market value of the share
+options when issued and the consideration paid of Rnil by the employee,
+would have to be included in gross income. 1
+2.4 The gain would be exempt from income as the equity instrument has not
+yet vested (s10(1)(nD)). 1
+Date the options vest
+2.5 The share option vests when the restrictive conditions are lifted, which
+is in year four.
+Note to markers: this point can be addressed as part of normal tax or
+employees’ tax.
+1
+2.6 Upon vesting, a gain, which is the difference between the market value on
+the date of vesting (being the market value of the shares) and the
+consideration paid by the employee (the market value on the date the
+options were granted) must be included in gross income in terms of
+s8C(2)(a)(ii) read with par (n) of the gross income definition. 1
+2.7 Should the share options lapse, the employee dispose of the share
+option or die, before the restrictions are lifted, the share options would
+vest on that date. Should the employee resign, no tax implications would
+arise. 1
+2.8 Although the gain is capital in nature, as the employees held the share
+options for a period of at least three years, the gain on vesting will be
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 7 © SAICA 2024
+included in gross income in terms of s8C(2)(a)(ii) read with par (n) of the
+gross income definition, as s8C applies notwithstanding the provisions of
+stiC and s23(m). 1
+2.9 The share options would not be considered a taxable fringe benefit as
+equity instruments contemplated in s8C are not considered as such (para.
+2(a) of the 7th Schedule excludes any qualifying equity share acquired
+by an employee as contemplated in s8C). Therefore, there would be no
+inclusion in gross income in terms of par (i).
+ALT: The amount is not included in gross income in terms of par (c) of the
+gross income definition despite there being a causal relationship between
+the services rendered and the shares received, as s8C is excluded from
+the provisions of par (c). 1
+2.10 Any capital gain/capital loss on the share option realised by an employee
+upon the exercise of a share option needs to be disregarded in terms of
+par 58 of the Eighth Schedule. 1
+2.11 The base cost of the shares is equal to the market value of the shares at
+the date of vesting in terms of par 20(1)(h) of the Eighth Schedule. 1
+Bonus bank scheme – normal tax consequences
+3 Ultra Canin
+3.1 The bonus that would be paid (be it 25% or 75% that may be paid in later
+periods) would be deductible in terms of s11(a), as it meets the
+requirements of s11(a). 1
+3.2 However, Ultra Canin may only deduct the bonus when it is actually paid
+(s7B(2)) because this bonus is variable remuneration. 1
+4 Employees
+4.1 25% of the bonus that the employee is entitled to in the immediate year
+would be included in gross income (para. (c) of the gross income definition
+read together with s7B). 1
+4.2 However, the bonus will only be included in gross income when it is paid
+to an employee (s7B(2)). 1
+4.3 The remainder of the bonus (i.e., 75%) will only be included in gross
+income when an employee becomes unconditionally entitled to the
+amount (when the requirements of the balanced scorecard metric are met),
+and in terms of s7B, it will only be included in gross income when it is paid. 1
+Employees’ Tax consequences
+5.1 Employees’ tax withheld must be paid over to SARS by the 7th day of the
+month following the month in which the employees’ tax was withheld. 1
+Share option scheme
+Ultra Canin and Employees
+Date the options are granted
+5.2 On the granting of the share options, the gain, as explained above, would
+not be considered as ‘remuneration’ as there would be no ‘income’. The
+gain would have been exempt when the share options were issued in terms
+of s10(1)(nD). 1
+5.3 Therefore, no employees’ tax would be withheld by Ultra Canin on the date
+the options are granted. 1
+Date the options vest
+5.4 In terms of par (e) of the definition of “remuneration”, the gain that arises at
+the time of vesting in year four is included in income in terms of s8C and,
+therefore, regarded as “remuneration”. 1
+5.5 Therefore, employees’ tax must be withheld by Ultra Canin at the time the
+share options vests. 1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 8 © SAICA 2024
+5.6 In terms of par 11A(4) of the Fourth Schedule, Ultra Canin must obtain a
+directive from SARS determining the amount of employees’ tax. 1
+Bonus bank scheme
+Ultra Canin and Employees
+6.1 The bonus would be regarded as ‘remuneration’ in terms of par (a)
+definition of ‘remuneration’ of the Fourth Schedule. 1
+6.2 Therefore, employees’ tax must be withheld by Ultra Canin at the time the
+bonus is paid in terms of par 2(1B) of the Fourth Schedule. 1
+7 Employees
+7.1 The employees’ tax withheld would reduce the normal tax liability of the
+employee on assessment.
+Note to markers: this can be discussed as part of the share options or bonus
+scheme.
+1
+Available 29
+Maximum 14
+Communication skills – clarity of expression 1
+Total for part (d) 15

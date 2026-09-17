@@ -1,0 +1,268 @@
+Source: SAICA ITC June 2024 — Paper 4 Question 1 (Soda-XP).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Paper 4 question 1 1 (of 9) © SAICA 2024
+QUESTION 1 50 marks
+1 Background
+Soda-XP Ltd (‘Soda-XP’) is a diversified South African listed company with several
+subsidiaries. All companies in the Soda-XP Group apply International Financial Reporting
+Standards (IFRS). The financial year end of all companies in the Group is December.
+The information below relates to –
+1 Soda-XP’s interest in a subsidiary, LightOn (Pty) Ltd (‘LightOn’), which was sold during
+the financial year ended 31 December 2023 (FY2023), and
+2 its glass manufacturing cash-generating unit, known as Glass-It
+2 Disposal of majority interest in LightOn
+Soda-XP subscribed for 60 000 ordinary shares (a 60% controlling interest) in LightOn on
+incorporation, for a consideration of R300 000. LightOn manufactures electric lights and its
+profits have declined over the last few years with the introduction of LED lights. Soda-XP
+accounted for the investment in LightOn at cost in its separate financial statements in
+accordance with IAS 27 Separate Financial Statements.
+On 30 September 2023, Soda-XP sold 50 000 LightOn ordinary shares at a fair value of R90
+per share. Soda-XP recognised a profit on the sale of the shares of R4,25 million in its separate
+financial statements.
+LightOn was correctly never classified as held for sale or as a discontinued operation in terms
+of IFRS 5 Non-current Assets Held for Sale and Discontinued Operations. After the partial sale
+of LightOn shares, Soda-XP classified the remaining investment as subsequently measured
+at fair value through other comprehensive income in its separate financial statements.
+The financial statements of LightOn were yet to be consolidated into the financial statements
+of the Group, and no consolidation adjustments were made in respect of LightOn. The
+preliminary total consolidated profit of the Group after the consolidation of Soda-XP and its
+other subsidiaries (excluding LightOn) amounted to R50 million for FY2023.
+The accountant has correctly calculated the following information about Soda-XP’s interest in
+LightOn for FY2023:
+R’000
+LightOn’s total profit for the period ended 30 September 2023 850
+Total amount of Soda-XP’s 60% interest in LightOn on 30 September 2023
+(i.e., cost plus since-acquisition1 reserves attributable to Soda-XP) 4 700
+1 Since acquisition relates to the period post subscription.
+3 Impairment assessment of Glass-It
+Glass-It is one of Soda-XP’s operations that manufactures various glass products. During
+manufacturing, sand and other raw materials are melted at high temperatures, which requires
+a consistent electricity supply. The prolonged power outages in South Africa have negatively
+impacted the operations of Glass-It and have resulted in lower production and decreased profit
+margins.
+Paper 4 question 1 2 (of 9) © SAICA 2024
+At a meeting held in December 2023, the Board of Soda-XP approved a detailed plan to
+terminate the services of some employees, in an effort to save costs. The termination benefits
+will be paid in cash in FY2024, and will not be deductible for tax purposes by Soda-XP.
+The carrying amount of Glass-It on 31 December 2023 was correctly determined as follows:
+Notes R’000
+Land (revalued on 31 December 2022) 1 13 000
+Manufacturing plant (cost model) 2, 3 89 000
+Allocated goodwill (grossed up: R2 880 000 / 75%) 4 3 840
+5 105 840
+Notes
+1 The land was acquired at a cost of R12 million and is revalued every two years.
+2 The manufacturing plant consists of the building and heating system, and all items of
+machinery and equipment used in the manufacturing process. On 31 December 2023,
+the remaining useful lives of all items of the manufacturing plant, except for the glass-
+cutting machine, were five years. All items will be sold at the end of their useful lives.
+Soda-XP expects to receive R16 million (net after costs) from selling the manufacturing
+plant (excluding the glass-cutting machine) after five years.
+3 The glass-cutting machine is used to cut flat glass and is a vital part of the manufacturing
+process. On 31 December 2023 the remaining useful life of the glass-cutting machine
+was correctly considered to be two years. After this it will need to be replaced at an
+expected cost of R7 million. The glass-cutting machine has no residual value.
+4 Goodwill of R9 million arose when Soda-XP acquired a 75% ownership interest in
+PureGlass Ltd (‘PureGlass’) in FY2017. The non-controlling interest was initially
+measured at its proportionate interest in PureGlass’ net identifiable assets. It was
+expected that Glass-It would also benefit from the synergies of the business
+combination, and goodwill of R2,88 million was correctly allocated to it in terms of IFRS.
+The amount of the goodwill included in Glass-It was adjusted to reflect the grossed-up
+amount of goodwill.
+5 Soda-XP’s items of inventory on hand on 31 December 2023 would be sold in the
+ordinary course of business and were correctly excluded from Glass-It. There are no
+other corporate assets servicing Glass-It.
+Accounting policies
+1 The land is revalued every two years and is not revalued before being classified as held
+for sale.
+2 Before the assets are classified as held for sale, an impairment loss is first calculated
+and recognised in terms of IAS 36 Impairment of Assets.
+Paper 4 question 1 3 (of 9) © SAICA 2024
+During the impairment review of Glass-It, the financial accountant prepared the following
+value-in-use calculation:
+Present value of expected (pre-tax) cash flows
+Growth
+rates
+R’000
+(rounded)
+FY2024 (22 800 000 – 3 000 000) 19 800
+FY2025 (22 800 000 x 103,0%) 3,0% 23 484
+FY2026 (23 484 000 x 103,3%) 3,3% 24 259
+FY2027 (24 259 000 x 103,8%) 3,8% 25 181
+FY2028 (25 181 000 x 103,5%) 3,5% 26 062
+Present value discounted at 15% 81 690
+The expected cash flows are expressed in real terms and do not include any capital
+expenditures. Furthermore, the expected cash flows have been adjusted for the risk of
+increased hours of load shedding post FY2023. The expected cash flows for FY2024 include
+the payment of R3 million as termination benefits to employees in terms of the liability correctly
+recognised on 31 December 2023.
+While reviewing the calculations of the value in use, the financial director, Mr Max Major,
+ascertained the following:
+• The operating cash flows, which were based on reasonable and supportable
+assumptions that represent management’s best estimate of the range of economic
+conditions, are in line with the approved formal budget. As such, the expected cash flow
+in FY2024 of R22,8 million is reasonable.
+• All cash flows correctly occur at the end of each month and are earned evenly throughout
+the year (except for the payment of the R3 million in termination benefits).
+• The discount rate is a pre-tax rate that reflects current market assessments of the time
+value of money and all the risks specific to the assets (including the risk of increased
+hours of future load shedding). The discount rate includes the effect of price increases
+attributable to general inflation.
+• The growth rates are deemed to be appropriate.
+• The present value calculations are arithmetically accurate.
+Max re-performed the calculations of Glass-It’s recoverable amount. He correctly calculated
+the fair value less costs of disposal of Glass-It as R90 million, which was significantly higher
+than its value in use.
+The only asset of Glass-It for which its individual fair value less costs of disposal could be
+determined was the land. This was determined to be R12,5 million.
+The performance of Glass-It for FY2023 was as follows, before the recognition of any
+impairment or termination benefits:
+R’000
+Revenue 93 000
+Cost of sales (75 000)
+Other expenses (10 000)
+Profit for the year 8 000
+All items in profit or loss are fully taxable or deductible unless otherwise stated.
+Paper 4 question 1 4 (of 9) © SAICA 2024
+4 Soda-XP strategic considerations
+Soda-XP is considering ways to return to profitability and create value for shareholders,
+following the impairment indicators and the resultant impairment review of Glass-It as
+discussed in section 3. The key strategies identified include the following:
+• The company will focus on operating effectiveness which enables it to create, sell and
+deliver high quality products and services, faster, better or with fewer resources and
+defects than the competition.
+• There are two options with regard to Glass-It:
+Option 1: Move Glass-It to Botswana.
+Option 2: Sell Glass-It.
+Option 1: Move Glass-It to Botswana
+Soda-XP would sell the assets in the South African Glass-It operation and invest the proceeds
+in a new operation in Botswana. The following information that would impact the move to
+Botswana is available:
+• Botswana is dependent on South Africa and Zambia for electricity. It imports more than
+50% of its power requirements from these countries. Zambia predominantly generates
+hydro-electric power and is therefore dependent on adequate rainfall. In the first quarter
+of 2023 the country halted power cuts following adequate rainfall and good water levels.
+Botswana generates the remainder of its electricity requirements from coal power
+stations. The Botswana Power Corporation has been generating excess power to meet
+local demand during the off-peak hours, thus creating capacity to export to neighbouring
+countries.
+• In addition to the power shortages, Glass-It had other challenges which impacted cash
+flow and profitability. It imports machines and primary raw materials from China and
+India. Following the impact of the Covid-19 pandemic, the operations of its Chinese and
+Indian suppliers have returned to normal. Due to global supply chain constraints,
+however, these suppliers are unable to source sufficient inputs to allow Glass-It to return
+to full production. This has significantly increased the lead times for Glass-It and has
+resulted in a backlog of unfulfilled customer orders. Botswana does not have suppliers
+who can replace the Chinese and Indian suppliers. Both machines and primary raw
+materials are priced in United States dollar and Soda-XP does not hedge against foreign
+currency risks. The rand weakened against the dollar between 2022 and 2023.
+Option 2: Sale of Glass-It
+The second option that the Board of Directors is considering, is to sell Glass-It. In that case
+Glass-It would correctly be classified as a disposal group held for sale and as a discontinued
+operation on 31 December 2023. It would have met all the relevant criteria for such
+classifications in accordance with IFRS 5. All the assets of Glass-It would be included in the
+disposal group, and there would be no related assets or liabilities that would also be included
+in the disposal group.
+Paper 4 question 1 5 (of 9) © SAICA 2024
+5 Financial information on the target revenue, cost-volume and profit for Glass-It
+1 The relationship between the total cost of producing the glass components and the units
+produced is as follows:
+2 If option 1 is followed, the move to Botswana would reduce fixed costs by 25% because
+the fixed fuel costs are expected to be replaced by the relatively cheaper electricity.
+3 The following information relates to the target revenue, mark up and contribution:
+• Although the demand for glass is currently depressed, the target revenue and
+mark up on cost (for Glass-It) for FY2024 is R120 million and 25%, respectively.
+• The average contribution margin is 50%. The glass products and sales mix are
+expected to be constant.
+• Except for the specifically identifiable 25% reduction in fixed costs, the selling
+price, variable cost per unit and other expenses will remain the same after the
+move to Botswana.
+6 Selected working capital, cash flow and debt ratios for Glass-It
+The following are the financial metrics calculated for Glass-It from the most recent financial
+statements:
+Metric Glass-It Sector median
+Receivables turnover (days) 75 55
+Days inventory on hand 140 127
+Number of days payables 120 75
+Debt ratio 85% 55%
+Cash flow to revenue 12%
+Cash generated by operations R4 560 000
+Units produced Total cost
+R’000
+1 000 000 25 000
+3 000 000 50 000
+Paper 4 question 1 required 1 (of 2) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JUNE 2024
+PROFESSIONAL PAPER 4
+This paper consists of two questions.
+Answer each question in a separate answer book.
+PAPER 4 QUESTION 1 – REQUIRED
+Marks
+Sub-
+total Total
+(a) Calculate the consolidated profit of the Soda-XP Group from
+continuing operations for FY2023 after consolidating LightOn.
+• Ignore taxation.
+• Show any fair value adjustment or remeasurement separately
+in your calculations.
+• Ignore all adjustments relating to Glass-It.
+8
+8
+(b) Discuss five concerns that you may have about the calculation of the
+value in use for Glass-It, and for each concern, provide the
+appropriate treatment.
+• Limit your discussion to issues for which there is evidence of
+inaccuracies, inconsistencies, errors in application and/or non-
+compliance with IFRS in the scenario.
+Communication skills – logical argument
+10
+1 11
+(c) Prepare, on the assumption that Soda-XP decided to adopt option 2
+in section 4, the analysis of the single amount in respect of the
+discontinued operation in profit or loss in terms of IFRS 5.33b for
+inclusion in the notes to the consolidated financial statements of the
+Soda-XP Group for FY2023.
+• Indicate the allocation of the impairment loss to the respective
+assets in your calculations.
+• Round and present all amounts in R’000.
+• Do not split any income tax expense between current tax and
+deferred tax.
+• Do not provide a disclosure of information relating to any
+allocation to the owners of the parent or the non-controlling
+interests.
+• Do not provide comparative amounts.
+11
+11
+Continued on the next page
+Paper 4 question 1 required 2 (of 2) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JUNE 2024
+PROFESSIONAL PAPER 4
+This paper consists of two questions.
+Answer each question in a separate answer book.
+PAPER 4 QUESTION 1 – REQUIRED (cont.)
+Marks
+Sub-
+total Total
+(d) Using the information provided on the performance for FY2023 and in
+section 5, and on the assumption that the Soda-XP Group adopted
+option 1 –
+(i) calculate the amount by which the current gross profit should
+increase to reach the target gross profit of Glass-It in FY2024;
+(ii) calculate the sales value required for Glass-It to achieve the
+target gross profit for both the South African and Botswana
+operations in FY2024; and
+(iii) calculate and conclude, taking into account your answer to part
+(d)(ii) above, the impact that the move to Botswana will have on
+Glass-It’s profitability.
+2
+4
+2 8
+(e) Determine, assuming the Soda-XP Group adopted option 1, based on
+the information provided in sections 4 to 6, the strategies that could
+have been used to ensure that Glass-It remained solvent and liquid
+following the move to Botswana.
+Communication skills – appropriate style
+11
+1 12
+Total for the question 50

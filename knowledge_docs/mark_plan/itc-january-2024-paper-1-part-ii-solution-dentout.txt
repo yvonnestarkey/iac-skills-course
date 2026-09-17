@@ -1,0 +1,518 @@
+Source: SAICA ITC January 2024 — Paper 1 Part II suggested solution (Dentout).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 Part II 1 © SAICA 2024
+Part (e) Discuss, with reference to the information provided in sections 1
+and 2, any ethical threats and concerns you may have regarding
+the behaviour and actions of Michaela.
+• Do not discuss the significance of any threat.
+• Do not provide any safeguards.
+Marks
+1. Michaela is a professional accountant (CA(SA)) in public practice (audit
+manager at CAI) and in business (director and shareholder of DentOut),
+which means she needs to adhere to part 1, 2, 3 and 4 of the SAICA Code
+of professional conduct (depending on her role).
+1
+2. Roles and Responsibilities
+2.1 Michaela is a full-time employee (audit manager) at CAI who also
+executes duties for DentOut that one would normally expect to
+be done on a full-time basis.
+2.2 The aforementioned matter creates a self-interest threat to
+professional competence and due care since;
+• She may not be able to perform both parties’ work with the
+necessary diligence and dedication as she might not be
+able to execute her responsibilities at CAI and DentOut
+with due care and would have the necessary time to
+perform all her duties with the care needed.
+1
+½ ½
+1
+3. Preparation of AFS
+Michaela did not adhere to IFRS 16 requirements (not applying lease
+accounting to the rental of the premises) and IAS 16 requirements
+(accounting for assets at R0 value when they are still in use) when she
+prepared the financial statements of DentOut. This is in breach of the
+following sections of the Companies Act:
+3.1 Section 29 of the Companies Act as the financial statements of
+DentOut are not in compliance with the chosen accounting
+framework (IFRS 16 and IAS 16), being IFRS, when she states that
+they are provisions/accurate inventory records not kept when she
+prepared the financial statements of DentOut.
+3.2 Section 76 of the Companies Act since she did not adhere to IFRS
+16 requirements thus not performing her functions as director with
+the degree of care, skill and diligence expected or is acting in her
+own best interest.
+3.3 This could create a self-interest threat to Michaela’s Integrity/
+professional competence and due care / Objectivity because;
+3.4 Integrity as she was dishonest in pretending that the financial
+statements were prepared based on IFRS whilst they were not;
+Professional competence and due care as she was not acting
+diligently and in accordance with the applicable technical and
+professional standards being the IFRSs.
+Objectivity due to possible bias towards preparing own AFS
+especially since Michaela has financial interest (significant
+1
+1
+½ ½½½
+1
+1
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 Part II 2 © SAICA 2024
+financial stake) in DentOut and might use her position as an
+opportunity to further her own interests.
+4. Income Taxes
+4.1 Michaela is responsible for the calculation of income taxes and
+preparation of tax returns, and based on the due diligence report
+DentOut aggressively attempts to keep the tax liability low, hence:
+4.2 there is a self-interest threat to integrity since
+• She might get involved in tax evasion, thereby contravening
+laws as Michaela might be dishonest in declaring the
+company’s income and claiming the company’s expenses
+to keep the tax liability low.
+1
+½ ½
+1
+5. Conflict of Interest
+5.1 Michaela has a conflict of interest in so far it relates to her
+recommendation for CAI to become the auditor and non-
+assurance service provider to DentOut since she is a director and
+shareholder of DentOut and an employee of CAI.
+5.2 The above creates a self-interest /Self-review threat to his
+independence/objectivity since
+• the audit team at CAI for the audit of DentOut would be
+biased sinceshe is an audit manager and directly involved
+in the maintenance of financial records and preparation of
+the financial statements of DentOut.
+1
+½½ ½
+1
+6. Reward for recommending CIA.
+6.1 Michaela would be rewarded for recommending CAI as Jack
+specifically promised her a reward if she secures work from the
+RVR group.
+6.2 The reward creates a self-interest threat to integrity/
+objectivity since
+• she was not transparent in relation to being well rewarded
+if CAI is awarded the audit
+• she might overlook certain issues during the audit due to
+her involvement in the financial statements and the audit
+thereof
+1
+½½ ½
+1
+1
+7. Use of Substandard Parts
+7.1 Customers are billed the prices of new parts and spares, but the
+products they receive are substandard/second-hand without their
+knowledge.
+7.2 This causes a self-interest threat to her Integrity since
+• charging customers for new parts whilst
+1
+½½
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 Part II 3 © SAICA 2024
+substandard/second-hand parts are used, is dishonest
+and is acting in good faith as per section 76 of the
+Companies Act as dubious operational practices are
+occurring under her nose.
+• It is illegal (against the Customer Protection Act) to fit
+used/refurbished parts and services to customer vehicles
+without their knowledge. If Michaela is aware of this
+practice she is committing a common law offence.
+1
+1
+8. Non-Disclosure Agreement
+Michaela shared confidential information she obtained from RVR
+management (related to the audit and other services requested) with the
+managing partner of CAI in breach of the non-disclosure agreement
+signed and is therefore in breach of the fundamental principle of
+confidentiality.
+½
+1
+9. Professional Behaivour
+Based on the above, Michaela might compromise professional behaviour
+as it would cause harm to the reputation of the profession if her
+dishonesty, negligence in applying IFRS, breach of confidentiality and
+non-compliance with the Companies Act become known.
+½
+1
+10. KING IV
+Michaela are of the view that DentOut would not really gain any benefit
+from adopting the King IV Report principles, which brings into question
+their commitment to good corporate governance as well as adopting an
+ethical cultureas suggested by King IV as evident by the various ethical
+threats that does not seem to be addressed.
+Michaela as director have also not encouraged a stakeholder inclusive
+approach as her actions are good for self but not for others (e.g.
+customers getting old parts, quality of audit possibly compromised.)
+DentOut knowingly fitting reconditioned parts without customers
+knowledge demonstrates how the directors, specifically Michaela might
+be unethical as the action is not good for others. This action is not good
+for others because customers are being incorrectly charged for the parts
+and in addition some fatalities have occurred.
+1
+1
+1
+11. Michaela are not committed to sound internal controls, as is evident in the
+fact that there are limited internal controls and an example is that no
+accurate inventory records are kept. This role points to behaviour that
+could promote fraudulent activities (taking cost-benefits into account).
+1
+12. Most employment contracts contain a clause prohibiting a full-time
+employee from also receiving remuneration from other employment.
+Michaela may be in breach of her employment contract with CAI and be
+acting in breach of her employment conditions, or at least should have
+declared the interest to CAI.
+1
+Available 34
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 Part II 4 © SAICA 2024
+Maximum 12
+Communication skills – logical argument 1
+Total for part (e) 13
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 Part II 5 © SAICA 2024
+Part (f) Discuss, with reference to the information provided in sections 1
+and 2, factors that Jack Hammer needs to consider in deciding
+whether to accept the audit engagement of DentOut.
+• Exclude any discussion related to the ethical conduct of
+Marcello and Michaela.
+• Do not discuss the significance of threats.
+• Do not provide any safeguards.
+Marks
+Client integrity
+1. Since there are currently inadequate controls (no accurate inventory
+records are kept, limited segregation of duties) related to the accounting
+records and management of assets (no stock count of used parts), which
+brings management’s commitment to good governance into question.
+1
+2. King IV is currently not being applied to the company which brings
+management’s commitment to good governance into question.
+1
+3. There are indications of the Companies Act (s29 1(a) & 2) being disregarded,
+since DentOut has not adopted IFRS 16 Leases yet and IAS16 PPE assets
+(machinery) are included at no value when they are still in use which
+indicates that there may be other instances of non-compliance with the
+Companies Act.
+Section 76 of the Companies Act since she did not adhere to IFRS 16
+requirements thus not performing her functions as director with the degree of
+care, skill and diligence expected or is acting in her own best interest.
+1
+1
+4. The fact that DentOut (and its management) aggressively attempts to keep
+income tax payable as low as possible, could signal tax evasion, which
+brings the integrity of management into question.
+1
+5. The operational practices of DentOut are questionable since the
+company allegedly charges customers for new spares and parts when they
+fit reconditioned / used parts that the customers are unaware of.
+1
+6. Incorrectly charging customers for new spares and parts when they fit
+reconditioned / used parts is illegal in terms of the Consumer Protection Act
+and NOCLAR which indicates a lack of integrity of management. 1
+7. DentOut is an owner managed entity, hence there might be an incentive or
+opportunity be tempted to manipulate the financial statements and it would be
+easier to commit fraudulent financial reporting that goes undetected.
+1
+Legal risk perspective (association with client)
+8. From a legal risk perspective, there are already indications of a reportable
+irregularity related to the use of reconditioned / used spares and parts that
+may have already resulted in the fatality of a customer, hence it needs to be
+considered whether the auditor would want to be associated with DentOut
+because of the potential reputational risks
+The reportable irregularity related to the use of reconditioned / used
+spares might result in reporting obligations to IRBA in terms of APA
+1
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 Part II 6 © SAICA 2024
+9. The Mondi family has taken the matter of the death of Mandi to Blanche Carte,
+hence the company will be receiving bad publicity soon and the auditor
+would need to decide whether he/she wants to be associated with it potential
+reputational risks
+1
+Financial responsibility
+10. There is a possibility that DentOut might not be able to pay the audit fee
+since there may be new claims for refitment of parts on vehicles they have
+serviced or repaired and the additional capital investments that are
+required by RVR, which could place significant pressure on the cash flows.
+Or
+The company has a loyal customer base, showed steady growth over the
+years and Michaela and Marcello re-invest at least 25% of their equal share
+of profits each year, which could be an indication that, despite the possible
+claims against the company, it will still be able to pay the audit fee
+1
+Auditor independence (objectivity and integrity)
+11. Securing a client
+11.1 There was aggressive action by CAI to get the RVR audit contract as
+the managing partner instructed Michaela to spare no effort to secure
+the audit contract.
+11.2 This creates a self-interest threat to independence/objectivity and
+integrity since
+• It is likely that the audit team will overlook audit differences or
+questionable practices in order for CAI to keep the audit
+contract and potentially obtain the audit contract of RVR
+• It is questionable that the managing partner is demonstrating
+strong moral principles in their instruction to Michaela to
+spare no efforts in securing this client
+1
+½ ½ ½
+1
+1
+12. Designing Internal Controls
+12.1 The CAI audit team will have to assess the efficacy of internal
+controls, which the CAI firm designed and implemented.
+12.2 This creates a self-interest threat to independence/objectivity and
+integrity since
+• CAI might overlook certain errors in the financial statements
+that were caused by their design of the internal controls.
+• the design of internal controls could be regarded as assuming
+management responsibilities on behalf of CAI since the
+request is to assist with the implementation of the controls as
+well, which is prohibited by the SAICA CoPC
+1
+½ ½ ½
+1
+1
+13. Selecting Accounting Software
+13.1 CAI will be assisting with the selection of an integrated accounting
+software 1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 Part II 7 © SAICA 2024
+(ET606).
+This creates a self-review threat to objectivity/independence since
+as the auditor’s professional judgment will be compromised due to him being
+biased as they assisted with the selection of the integrated accounting
+software
+½ ½
+1
+14. Tax planning and restructuring advice
+14.1 CAI will be assisting DentOut with provision of tax planning and
+structuring advice.
+14.2 This creates a self-review and/or advocacy threat to
+objectivity/independence since
+• CAI will be biased when auditing the financial statements and
+specifically the tax treatment as they assisted with the tax
+treatment, which compromise their professional judgment.
+1
+½ ½ ½
+1
+15. Relationship between engagement partner and Michaela
+Michaela is the audit manager at CAI and Jack Hammer is the engagement
+partner at CAI that will audit Dentout for whom Michaela performs financial
+functions.
+This creates a familiarity threat to Independence/Objectivity
+Since Jack may be biased when auditing the work performed by Michaela as
+he may not want to do something that may reflect negatively on her.
+1
+½ ½
+1
+16. Based on the above, CIA might compromise professional behaviour as the
+actions compromising their independence/objectivity regarding the audit
+client might discredit the profession.
+1
+Auditor resources, competence and skills considerations
+17. CAI is one of the largest audit firms in South Africa, hence it is expected that
+it would have sufficient staff to execute the audit of DentOut, which is a small
+to medium sized company.
+1
+18. The panel-beating industry is not too complex; hence it can be assumed that
+the audit staff of CAI would be able to obtain relevant knowledge and
+information about how the industry functions without having to get an
+expert on board.
+1
+19. The company will be moving from an off-the-shelf accounting package to an
+advanced integrated accounting system. Hence CAI needs to consider
+whether CAI will have an expert available to assist with the assessment
+of the integrity of the IT system and the completeness of the transfer.
+1
+20. Machinery and equipment that are in use and has no carrying amount as
+useful lives need to be reconsidered. Hence CAI needs to consider whether
+it has an expert available to assist with reconsidering the useful lives.
+1
+21. It needs to be considered whether the audit team will be able to apply
+professional judgement and professional scepticism during the audit of
+DentOut given that the CAI management partner is adamant that it wants the
+contract for the audit of the RVR group.
+They would also need to consider if they have sufficient resources to audit
+the group as ultimately RVR wants the same auditors for the entire group of
+companies.
+1
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 Part II 8 © SAICA 2024
+They would further have to consider if they have sufficient time to perform the
+audit as they may not be able to do interim audit work (due diligence report
+1/10/2023 whereas year end is 30/9/2023.
+The audit fee of CAI will be reduced based on the additional services to be
+performed by them, which could impact on their ability to perform a proper
+audit.
+1
+1
+Consideration of whether the preconditions of the audit are present
+(ISA210.6) and potential limitation of scope
+22. It appears that DentOut has not adopted any formal financial reporting
+framework for the majority of the 2023 financial year (evident in non-adoption
+of IFRS 16 and IAS 16).
+1
+23. There might be a limitation of scope since opening balances and
+comparative figures might be difficult to obtain for sufficient related
+audit evidence due to the prior financial statements only being reviewed and
+not audited.
+Or
+More time would also need to be spent on opening balances as they were not
+audited in the past, but merely reviewed.
+Due to the questionable integrity of management, there is a risk opening
+balances are are manipulated due to fraud and CAI might not be able to pick
+up on this leading to an incorrect opinion.
+1
+1
+Agreeing to the terms of engagement
+24. Terms and Conditions of the letter
+Michaela is desperate for CAI to be awarded the audit contract, hence there
+is no indication that as a director she would not be willing to accept the terms
+of engagement (she might also persuade Marcello).
+Or
+Discussing TCs, eg the roles and responsibilities of management and the
+auditor as management want the auditors to assist with management
+functions (tax planning and restricting advice).
+1
+25. CAI should consider whether they will be able to contact the current
+independent reviewer to enquire whether there are professional reasons to
+not accept the appointment as auditor.
+1
+Available 43.5
+Maximum 22
+Communication skills – clarity of expression 1
+Total for part (f) 23
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 Part II 9 © SAICA 2024
+Part (g) Discuss, with reference to the extract of the trial balance provided in
+section 1, the substantive procedures on the opening balances that
+can be performed to confirm the existence of DentOut’s assets as at 1
+October 2022.
+Marks
+1. In terms of ISA 510, with respect to opening balances, sufficient appropriate
+audit evidence needs to be obtained about whether the opening balances
+contain material misstatements and whether accounting policies have been
+consistently applied.
+In relation to existence of DentOut assets at 1 October 2022
+Based on the due diligence report assets comprise machinery and equipment,
+inventory, debtors and bank and cash.
+2. Compare the opening balances disclosed in the comparative financial statements
+and reviewers report to the opening balances in the general ledger accounts of
+asset accounts to confirm that the balances have been brought forward correctly.
+Read the reviewer’s report and determine if there are any modifications in
+the report that would materially effect these balances
+1
+1
+3. Analytical procedures need to be conducted on opening balances, whereby at the
+very least 2023 balances, liquidity and solvency ratios are compared to 2022
+balances and ratios to assess the reasonability of the opening balances.
+1
+4. Physically inspect the assets as at 30 September 2023, or shortly after year end
+and
+reconstruct the balance as at the beginning of the year by inspecting supporting
+documentation for assets disposed of or acquired in FY2023
+1
+1
+5. Inspect insurance contracts as at 1 October 2022 to identify the machinery and
+equipment insured at this date. (External confirmation with the insurer.) 1
+6. Obtain the working papers from the independent reviewers regarding the
+attendance of the stock count and assess whether any reliance can be placed on
+the stocktake work performed by the independent reviewers to obtain sufficient
+audit evidence regarding the existence of stock by –
+- Inspecting CV/certificates of independent reviewer to determine whether they
+are competent
+- Inspect the independent reviewer’s membership to a recognised professional
+body. (1 mark)
+- Enquire from the independent reviewer and management regarding any
+matters that could affect the independent reviewer’s independence. (1 mark)
+- Obtain evidence regarding the independent reviewer’s experience by
+enquiring from the independent reviewer about other clients and other review
+engagements previously performed. (1 mark)
+- inspecting the working papers to determine whether the stock count was
+properly organised;
+- inspecting whether sample counts were selected from both the stock records
+and the stock room to test existence and completeness; and
+- verifying that sufficient coverage of all the stock items were obtained.
+- Inspect the inventory count working papers to determine whether each item
+included as part of the count was counted twice, by different counters.
+- Inspect the inventory count working papers to determine whether any count
+discrepancies were recounted, and theoretical inventory adjusted where
+applicable.
+1
+1
+1
+1
+7. Perform roll-back procedures by verifying the sales and purchases of parts in
+October 2022 and compare it to the theoretical stock balances at the beginning
+of the financial year – compare the roll-back balances to the opening balances of
+inventory.
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 Part II 10 © SAICA 2024
+8. Perform substantive analytical procedures comparing the sales of parts during
+October 2022 with the opening inventory balances plus purchases – if there are
+unexplained variances with the closing stock balances, investigate the reasons
+for any differences.
+1
+9. It would be difficult to determine the existence and value of inventory at 1 October
+2022 since the stock count was not attended by staff members of CAI, which
+already signals that a qualified / disclaimer of audit opinion would need to be
+provided in this regard.
+1 BP
+10. Debtors’ balances at 1 October 2022 would need to be verified by means of a
+debtors circulation (3rd party confirmation) that needs to be sent out directly to
+customers to verify the amount.
+This should be done using a positive debtors circularisation.
+Obtain permission from management to perform 3rd party confirmation.
+1
+1
+1
+11. Inspect the signed contracts and confirm that debtors’ balances are made up of
+30% of the invoiced amount as per the payment terms and conditions –
+investigate any amounts in excess of 30%.
+1
+12. If the debtors do not respond to the aforementioned circulation, the audit team
+would need to determine if the debtors paid their outstanding balances in FY2023
+through verification in the bank statements / cash receipts register (or journal) by
+performing subsequent receipts testing
+1
+13. If the debtors did not respond to the above confirmation and no payments
+were received after year-end, test the detail of the transactions making up
+the balance of the debtor in question by selecting the invoices making up
+the balance(s) at 1 October 2022 in the debtors’ accounts in the debtors
+ledger and inspecting the corresponding delivery notes for the debtors’
+signatures. (1 or 2 marks)
+14. Inspect the bank statement to confirm if the physical cash on hand was banked
+on 1 October 2022 or soon thereafter and perform roll-back procedures to verify
+its existence.
+1
+15. The bank account balance as at 1 October 2022 could be verified by way of
+executing a bank confirmation (3rd party confirmation) and requesting the bank
+balance directly from the bank.
+1
+16. Obtain a management representation letter specifically addressing the existence
+of assets at the beginning of the year..
+1
+17. Obtain a confirmation from the independent reviewer that approval for access to
+working papers and other information regarding opening balances was given.
+1
+Available 16
+Maximum 9
+Communication skills – clarity of expression 1
+Maximum for part (g) 10
+TOTAL FOR PART II 46

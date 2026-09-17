@@ -1,0 +1,140 @@
+Source: SAICA ITC January 2024 — Paper 3 Part I suggested solution (FutureAfrica).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART I
+Paper 3 part I 1 © SAICA 2024
+Part (a) Prepare, using the indirect method, an extract from the
+consolidated statement of cash flows of the Infinite Structures
+Group for FY2023, in accordance with IAS 7 Statement of Cash
+Flows, in so far as the information allows.
+• Do not prepare notes to the statement of cash flows
+• Round all amounts to the nearest rand.
+• Do not provide comparative figures.
+• Ignore the reconciliation at the bottom of the statement that
+shows the opening balance and the closing balance of cash
+and cash equivalents as well as the net increase (decrease)
+in cash and cash equivalents.
+Marks
+Infinite Structures Group
+Consolidated statement of cash flows for the year ended
+31 December 2023
+R
+Cash flows from operating activities
+Profit before tax 328 700 000 ½
+Adjusted for:
+Add interest expense on bonds (W1) (AMRT1, INT) 899 426 1C
+Deduct profit on sale of land (given) (220 000) 1
+Add depreciation on right-of-use asset (W2)
+(R3 702 098 / 3 (½) x 10/12 (½)) 1 028 361 1C
+Add finance costs on lease liability (W2)
+[(R3 228 061 – R1 200 000) x 12% (½) x 10/12 (½)]
+or (AMRT2, INT (½) x 10/12 (½))
+202 806 1C
+Add finance costs on dismantling provision (W2)
+(R334 537 x 12% (½) x 10/12 (½)) or (AMRT1, INT (½) x 10/12
+(½))
+33 454 1C
+Add depreciation on distribution warehouse (W3)
+[(R7 827 106 – R2 000 000 (½)) / 30 (½) x 6/12 (½)] 97 118 1½
+Add interest on foreign loan
+[(£500 000 x 6,75% (½) x 6/12 (½)) x R22,89 (½)] 386 269 1½
+Add forex loss on foreign interest
+[(£500 000 x 6,75% (½) x 6/12 (½)) x (R24,40 – R20,49) (1)] +
+[(£500 000 x 6,75% x 6/12) (1C) x (R24,40 – R22,89) (1)]
+91 462 4
+Add forex loss on foreign loan
+[£500 000 (½) x (R24,40 - R20,49) (1)] 1 955 000 1½
+Refer W5 for alternative calculation of the above two items
+Add IFRS 5 impairment loss (W4) 206 856
+Deduct dividends received (given) (600 000) 1
+Operating profit before changes in working capital 332 780 743
+Changes in working capital (given) (176 450 000) 1
+Cash generated from operations 156 330 743
+Interest paid
+[R800 000 (1) bonds + ((£500 000 x 6,75%) (½) x R24,40 (½))
+foreign loan]
+(1 623 500) 2
+Taxation paid
+(R8 750 000 (½) + R95 670 550 (½) – R11 120 000 (½)) (93 300 550) 1½
+Dividends paid
+(R1 210 000 (½) + R1 000 000 (½) + R252 500 (1) – R1 995 000
+(½))
+(467 500) 2½
+Dividends received 600 000 1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART I
+Paper 3 part I 2 © SAICA 2024
+Cash flows from investing activities
+Acquisition of subsidiary
+(R10 000 000 (½) + R7 500 000 (½)
+– R2 700 000 (1))
+(14 800 000) 2
+Purchase of land (given) (1 500 000) 1
+Proceeds from sale of land
+[(R2 200 000 (½) + R4 100 000 (½) + R1 500 000 (½)
++ R500 000 (½) + R120 000 (½) – R3 350 000 (½)
+– R3 100 000 (1)) + R220 000 (½)]
+2 190 000 4½
+Installation costs on right of use asset (73 500) 1
+Cash flows from financing activities
+Proceeds from issue of bonds
+[(10 000 x R1 000) (½) – R96 000 (½)] (W1) 9 904 000 1
+Costs of the lease (R102 000 (½) – R36 000 (1)) (66 000) 1½
+Lease instalment (advance on commencement) (1 200 000) 1
+Repayment of foreign loan [£500 000 x R24,40] (12 200 000) 1
+WORKINGS
+W1: Bonds issued
+n = 5 (½)
+PV = 9 904 000 (1) (10 000 000 – 96 000)
+FV = 10 500 000 (1) (10 000 000 x 1,05)
+Pmt = 800 000 (1) (R10 000 000 x 8%)
+Comp i = 9,081438273%
+3½
+W2: Right-of-use asset and lease liability
+Lease liability (BGN (½); n = 3 (½); i = 12% (½);
+Pmt = 1 200 000 (½); Comp PV = 3 228 061)
+or (n = 2 (½); i = 12% (½); Pmt = 1 200 000 (½); Comp PV
+= 2 028 061; R2 028 061 + R1 200 000 (½) = R3 228 061
+3 228 061 2
+Dismantling provision
+[FV = 470 000 (½); n = 3 (½); i = 12% (1) (8.76%/73%)] 334 537 2
+Initial direct costs (R102 000 (½) – R36 000 (½) + R73 500 (½)) 139 500 1½
+Right-of-use asset 3 702 098
+W3: Distribution warehouse
+Construction costs [£500 000 (½) x R15,07 (½)] 7 535 000 1
+Abnormal wastage - ½
+Opening celebration - ½
+Borrowing costs capitalised
+[(£500 000 x 6,75% (½) x 6/12 (½)) x R15,11 (½)] 254 981 1½
+Forex loss on interest (IAS23.6(e))
+[(£500 000 x 6,75% (½) x 6/12 (½)) x (R17,31 – R15,11) (1)] 37 125 2B
+Cost of distribution warehouse 7 827 106
+W4: IFRS 5 impairment losses
+Land 3 100 000 1
+Carrying amount of building
+Cost (W3) 7 827 106 ½C
+Accumulated depreciation
+[(R7 827 106 – R2 000 000) / 30 (½C) x 9.5 (1)] (1 845 250) 1½
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART I
+Paper 3 part I 3 © SAICA 2024
+Total carrying amount 9 081 856
+Impairment loss – 1/7/2023 (R9 000 000 – R9 081 856) 81 856 ½
+Impairment loss – 31/12/2023 (R8 875 000 – R9 000 000) 125 000 ½
+or (R8 875 000 – R9 081 856) 206 856
+W5: Forex difference on foreign loan (capital and interest)
+(alternative calculation)
+£ Rate R
+Loan balance (½) 500 000 (1) 20,49 10 245 000 1½
+Interest
+(£500 000 x 6.75% (½) x 6/12 (½)) 16 875 (½) 20,49 345 769 1½
+Interest (£500 000 x 6.75% x 6/12) (1C) 16 875 (½) 22,89 386 269 1½
+533 750 10 977 038
+Paid (533 750) (1) 24,40 (13 023 500) 1
+Forex loss 2 046 462
+Available 52½
+Bonus 2
+Maximum 48
+Communication skills – presentation; layout and structure 2
+Total for part I 50

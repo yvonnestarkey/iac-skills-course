@@ -1,0 +1,337 @@
+Source: SAICA ITC January 2024 — Paper 2 Question 1 suggested solution (XS Gaming).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 1 © SAICA 2024
+Part (a) Criticise the free cash flow valuation of Metaverse for the proposed
+80% share purchase.
+• Do not reperform the valuation.
+• Assume all amounts are correctly calculated.
+Marks
+1 The forecasted revenue growth does not seem to be in line with global
+expectations of industry growth of 7.9% (acceptable to make reference to
+CAGR of 9%) up to 2027 before tapering off to 2%.
+The revenue growth should be a combination of industry anticipated growth,
+and the market share gains the company anticipates it can achieve.
+1
+1
+2 The revenue forecast appears to be based off the 2023 year, which was
+affected by non-recurring load shedding. which is not representative of future
+revenue expectations.
+The increase then appears to be at a rate of 5% for two years which is not
+justified adequately as an assumption (and it is not in line with the anticipated
+30% growth).
+The forecast period is therefore too short and should be extended to include
+all years until stability in cash flows is achieved, in other words 2027 at the
+earliest.
+The anticipated revenues from new developments have not been estimated
+and included, and risk relating to new revenues not adjusted for.
+The revenues should be adjusted to reflect the anticipated 30% growth for the
+next three years, with a perpetuity growth thereafter of 5%.
+1
+1
+1
+1
+1
+3 The anticipated revenue from the new developments have not been included.
+Was the intention to value the new developments separately from the existing
+business?
+The growth of mobile gaming also does not appear to be factored into the
+revenue forecasts, this should be estimated and incorporated.
+1
+1
+4 As the cost of sales are predominantly fixed costs, the forecasts should not
+have reduced to the extent that they did.
+It seems that the forecast has incorrectly treated these costs as being variable,
+the growth from 2024 to 2025 being 5% (same as the growth in revenue).
+The cost of sales should be included as fixed costs or analysed and split into
+fixed and variable components for the forecasting.
+1
+1
+1
+5 The depreciation is non-cash and would normally be removed from the cash
+flows as a non-cash item.
+The depreciation on server infrastructure and software however approximates
+replacement, and therefore it is appropriate not to remove as it estimates the
+replacement of the capital cost of these assets.
+The depreciation on the solar installation is however non-cash, and therefore
+should be removed as non-cash. The solar installation will need replacing after
+10 years, as such the estimated capital expenditure that will then be likely will
+need to be forecasted.
+1
+1
+1
+6 There is no justification or calculation for the foreign currency gain/loss
+forecast. This is a volatile item and should be considered more carefully, as it
+is not possible to forecast these cash flows. As such this item should be
+removed from the free-cash flow forecasts. 1
+7 The dividends from the exchange traded fund (ETF) included in other income
+should be removed from the cash flows as they are exposed to different risks.
+The ETF shares should be valued separately at R10.25 mil and added to the
+value of the enterprise.
+1
+1
+8 Finance costs should not be included in the forecast as they would have been
+included in the weighted average cost of capital (WACC). There is no overdraft
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 2 © SAICA 2024
+facility, therefore none of this interest is operational and therefore not in
+WACC.
+The short–term loan relates to the interest-bearing borrowings and is
+considered part of the financing, therefore should not be included as part of
+the working capital base.
+1
+1
+9 The interest on permanent cash surplus should not have been included in the
+free-cash flow forecasts. The permanent cash surplus on valuation date
+should have been added as additional value to the value of the enterprise.
+As such it is incorrect to include the entire cash and cash equivalents in the
+calculation of the movement in working capital; only the portion of the cash
+surplus relating to the operations of Metaverse should be included in the
+calculation of the movement in working capital.
+1
+1
+10 It is evident that no cash tax has been calculated and included in the
+calculation of the free-cash flows.
+It would be more correct to adjust the cash tax amounts forecasted for the tax
+payable at the beginning and the end of each year, than it is to include the
+movements in the tax payable as part of the movement in the working capital.
+1
+1
+11 The working capital base being the movement is correct (excluding the short–
+term loan portion, tax payable and permanent cash surplus noted above), the
+forecast should however continue for each of these items, and the movement
+should be used as the cash flow. To address this, the respective items for part
+of working capital should be expressed as a percentage of revenue (for a
+normal year) and applied to the forecast revenue for each year of the forecasts
+in order to forecast the working capital needs and consequently the movement
+therein. 1
+12 The value of the perpetuity (terminal value) has not been discounted back to
+the start of 2024, being the valuation date. The free-cash flow should be
+adjusted for the growth into perpetuity (5% p.a.) before capitalising it. 1
+13 The WACC of XS Gaming will not reflect the same risks as Metaverse; the
+WACC of Metaverse should be calculated. 1
+14 The cost of equity (its derived beta-factor) has not been adjusted appropriately
+for the specific risks that the company faces:
+• The company only has one product, although there are others in
+development, the rate should be increased for the dependency risk
+associated with having a single product, and not having diversified revenue
+streams.
+• The company has unique skills and technologies / potential new products,
+therefore revenue potential; rate should be decreased.
+1
+1
+15 As Metaverse is unlisted, the value of its equity should have been adjusted for
+a discount to reflect the fact that its shares are not marketable and funding not
+being as accessible as is the case for a listed company. 1
+16 As a controlling stake is being valued, the value of the equity should have
+been adjusted for a control premium. 1
+17 The intangibles should not be added at cost, instead a fair value should be
+determined by forecasting the revenues and costs which they would generate. 1
+18 The valuation does not calculate the amount for the transaction by multiplying
+by 80%, as only a part of the company is being purchases. 1
+19 Are the interest-bearing borrowings deducted at fair value? As they were on
+average sourced at fixed rates, the fair value of the borrowings will need to be
+determined. 1
+Available 34
+Maximum 19
+Communication skills – logical argument 1
+Total for part (a) 20
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 3 © SAICA 2024
+Part (b) Calculate and advise the management of XS how the acquisition
+should be financed, considering the related funding needs of the
+company.
+• Include an analysis of the characteristics of each financing
+option and conclude with a recommendation.
+• Fur purposes of the calculation do not offset any amounts of the
+cash balance.
+Marks
+Loan and equity calculations
+Origin Bank Loan 0 1 2 3 4
+Loan receipt 500.00 ½
+Transaction cost -5.00 ½
+Loan repayment -815.24 1
+Tax shield (S24O) 17.55 19.83 22.41 25.32 1P
+Net cash flow 495.00 17.55 19.83 22.41 -789.91
+Rate after tax (IRR) 9.75% 1P
+Interest calculation 65.00 73.45 83.00 93.79 1P
+Genesis Bank loan 0 1 2 3 4 5
+Loan receipt 500.00 ½
+Transaction cost -5.00 ½
+Interest -70.00 -70.00 -70.00 -70.00 -70.00 ½
+Tax shield (S24O) 18.90 18.90 18.90 18.90 18.90 ½
+Loan repayment -500.00 ½
+Net cash flow 495.00 -51.10 -51.10 -51.10 -51.10 -551.10
+Rate after tax (IRR) 10.49% 1P
+Rights issue
+Number of rights 100mil/10 10 mil 1
+Issue price (30.4*80%) 24.32 1
+Amount raised R243.2 mil 1P
+Calculation marks 11½
+Strategic considerations
+Cash balance
+The cash balance of R382 million is not sufficient to finance the full value of the
+R500 million required, although it is sufficient for the equity investment per the
+valuation of R70.85 million x 80%, assuming this is the agreed transaction value.
+The remaining funding required for integrating the operations may be required over a
+period, and as such the company may be able to accumulate the cash over that period
+from trading activities.
+One would however need to consider the cash utilised by the existing operations so
+as not to expose XS Gaming Limited to undue liquidity risk. It is important to consider
+the impact that the boom in the gaming industry due to the COVID-19 pandemic; with
+the world returning to some form of “normality”, the era of “super-profits” has passed,
+and it would be advisable for to retain its free cash flow.
+1
+1
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 4 © SAICA 2024
+Origin Bank Loan
+As South Africa has likely reached the peak of the interest rate cycle, interest rates
+are likely to drop in the interest rate market in the near term; the Origin Bank loan
+having a variable interest rate would impact positively on the finance charges incurred
+on said loan (alt: the Genesis Bank loan would expose XS Gaming Limited to interest
+rate risk given that the interest rate on the loan is fixed, resulting in no benefit for the
+company when interest rates start dropping).
+Repayment of the loan by means of one bullet repayment at end of four-year term is
+beneficial from a cash flow perspective; no cash outflows until the end of the loan
+term, resulting in a positive cash saving annually.
+The flip-side is that it also creates a risk of not being able to afford the single bullet
+repayment – should it not match cash inflows with outflows.
+A S24O tax shield on interest incurred will arise; this tax benefit will not arise should
+the cash surplus or rights issue be used to finance the investment and integration
+costs.
+The security which encumbers inventory and receivables will reduce the cost of the
+loan, but does reduce debt capacity going forward, which is not the case with the
+Genesis loan.
+The covenants on interest cover and debt equity may become a constraint in future;
+the company is however performing well at present and therefore the loan covenants
+would not be an issue at this stage.
+1
+1
+1
+1
+1
+1
+Genesis Loan
+Longer term of the loan being five years is favourable, as XS Gaming Limited has an
+additional year to settle the capital outstanding on the loan. 1
+Rights issue
+The benefit from a cash flow perspective of neither having an interest commitment
+(although dividends may be a softer commitment as it won’t want to reduce these) nor
+needing to return capital over the 4-/5-year term respectively, needs to be considered.
+While it is a rights issue, it will not necessarily dilute the existing shareholders’ stakes
+in unless they are unable to take up the rights. Assess whether shareholders would
+have the capacity to exercise the rights.
+The potential dilution is on a 10: 1 basis, therefore it would not be a significant dilution
+if existing shareholders are not in a position to exercise the rights.
+The XS Gaming Limited shares are viewed as being undervalued at present; the
+timing of the issue is not favourable and as such issuing equity at present would not
+be advisable until the share price picks up, resulting in the higher proceeds from an
+equity issue in future (or fewer shares having to be issued in future to raise the same
+amount of funding).
+The amount likely to be raised is not sufficient for the R500 mil required.
+1
+1
+1
+1
+1
+Conclusion
+Recommendation is to use up some of the cash resources, as these would not be
+yielding sufficient return equalling at least the WACC of XS.
+Fund the remainder with debt, which is cheaper (the after-tax cost of the Origin Bank
+loan of 9.75% p.a. is less than the cost of equity of 22%) and creates a more efficient
+capital structure as XS’ gearing levels are currently low, and it would avoid a dilution
+resulting from the issuing of shares while the share price is low.
+The Origin Bank loan would be favoured as it is cheaper and more flexible, and the
+covenants and encumbrances are not necessarily qualitatively material based on the
+profitability and financial status of XS Gaming Limited at present.
+1
+1
+1
+Discussion 18
+Available 28½
+Maximum 19
+Communication skills – appropriate style 1
+Total for part (b) 20
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 5 © SAICA 2024
+Part (c) Discuss any concerns you may have with respect to the
+conversation that Jessica overheard about the new game launch.
+• Ignore the SAICA Code of Professional Conduct in your
+discussion.
+Marks
+Good for Self and Others
+1 In the short-term, going ahead with the release tomorrow will be good for XS
+Gaming Limited as this conduct will ultimately increase its revenue and
+uphold its reputation as a Company that adheres to its commitment to the
+public.
+1
+1
+2 It will also be good for the company's marketing staff in the short-term whose
+incentive bonus will increase because of the game's launch. 1
+3 However, in the long-term there will be negative consequences for XS
+Gaming Limited as those who have purchased the game experience issues
+such as losses of data, viruses etc. and this will result in reputational damage
+and losses in future sales.
+1
+1
+4 If any customers are adversely affected by security breaches (i.e., they could
+have confidential information breached), legal action could be taken, and
+this could result in future litigation and legal fees, and financial compensation
+having to be paid. 1
+5 Since XS Gaming Limited is listed on the Johannesburg Stock Exchange
+(JSE), the above governance challenges have the potential to affect its
+listing. 1
+6 All the above repercussions may ultimately negatively affect XS Gaming
+Limited's shareholders as the company value will potentially decline. 1
+Companies Act
+7 The CEO and COO are not acting in the best interest of the company as is
+required and may thus be in breach of Section 76, as they could be seen to
+not be acting honestly and with the degree of care, skill and diligence, having
+failed to properly test the new game before launching it. 1
+8 The CEO and COO are not acting in the best interest of the company as is
+required and may thus also be in breach of Section 22, if it can be proven
+that they acted with gross negligence in launching a product that could have
+major security issues or resulting in a loss of personal information for the
+Metaverse customers. 1
+9 As a result, the CEO and COO can be held personally liable for losses
+suffered by XS Gaming Limited in terms of Section 77, for not having acted
+in the best interests of the company. 1
+King IV
+10 Should the launch go ahead tomorrow, XS Gaming Limited's governing body
+will be in breach of Principle 1 'Ethical and effective leadership' - due to their
+actions of not being honest and transparent. 1
+11 Should the launch go ahead tomorrow, XS Gaming Limited's governing body
+will be in breach of Principle 3: 'The governing body should ensure that the
+organisation is, and is seen to be, a responsible corporate citizen' - due to
+not having properly tested the new game and going ahead and launching it,
+this would not be the case. 1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 1
+Paper 2 question 1 6 © SAICA 2024
+12 Should the launch go ahead tomorrow, XS Gaming Limited's governing body
+will be in breach of Principle 12.13d: 'The governing body should exercise
+ongoing oversight of technology and information management and in
+particular see that it results in the following: proactive monitoring of
+intelligence to identify and respond to incidents, including cyberattacks and
+adverse social media events' - given that the new game could result in
+security weaknesses on the customers' devices.
+1
+13 Furthermore, the company's governing body may be in breach of Principle
+13, as they are required to ensure compliance with all Laws and Regulations,
+yet they will have breached Section 76 of the Companies Act and POPIA. 1
+14 In terms of the Triple Context / Six Capitals, XS Gaming Limited's governing
+body will not be considering all their stakeholders / not be following a
+stakeholder inclusive approach, with various stakeholders ultimately losing
+out as a result of the launch. 1
+Available 16
+Maximum 10
+Total for part (c) 10
+TOTAL FOR QUESTION 1 50

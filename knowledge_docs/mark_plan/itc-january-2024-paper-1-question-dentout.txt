@@ -1,0 +1,372 @@
+Source: SAICA ITC January 2024 — Paper 1 question (Dentout).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Paper 1 1 (of 7) © SAICA 2024
+QUESTION 100 marks
+Ignore value-added tax
+1 Background
+DentOut (Pty) Ltd (‘DentOut’) is a panel-beating business owned by the 32-year-old twin
+siblings, Michaela and Marcello Panelli. They are the only directors of the company. Michaela
+Panelli is a CA(SA) and full-time audit manager at a large audit firm named Confidence
+Assurance Inc. (‘CAI’). Marcello is a qualified panel beater who takes care of the day-to-day
+operations of DentOut on a full-time basis.
+Each sibling is entitled to an equal share of the after-tax profits of the business, and they re-
+invest at least 25% of these profits each year. In addition, Marcello draws a market-related
+monthly salary for the management of the business. The Panelli siblings work well together
+and decisions regarding the business are made after conversations at family gatherings. They
+are proud of the steady growth of the business which they started from scratch in Marcello’s
+home garage.
+DentOut now employs 30 operational and administrative staff and has a loyal customer base.
+The company has shown a steady increase in growth since incorporation in 2016 and is
+attracting the attention of larger companies who wish to share in the success of DentOut.
+One such group is Regal Vehicle Rentals (Pty) Ltd (‘RVR’), a large car rental group that was
+established in 2001 and has operations throughout South Africa. RVR would like to acquire a
+controlling interest in DentOut.
+Following preliminary engagements between DentOut and RVR, RVR appointed a local
+corporate finance specialist company, CorpTru Inc. (‘CorpTru’) to perform a high-level due
+diligence of DentOut prior to deciding whether it wanted to purchase a stake in DentOut.
+The following is an extract of the summary of the findings of CorpTru:
+Due diligence report (extract)
+DentOut (Pty) Ltd
+Regal Vehicle Rentals (Pty) Ltd Executive Team
+Compiled by CorpTru Inc.
+1 October 2023
+Background of company
+DentOut rents premises in an industrial park in Johannesburg for use as a workshop and
+storeroom. DentOut currently does not have an ISO accreditation1 and therefore does not
+attract business from any of the major insurers or motor manufacturers. Customers are
+typically individuals and businesses who do not have insurance cover, or prefer not to involve
+insurers. The Panellis are of the view that the King IV Report on Corporate Governance is
+only applicable to listed companies and that would not really be of benefit to a small
+company.
+1 ISO accreditation refers to compliance with quality and safety benchmarks set by the International Organisation
+for Standardisation.
+Paper 1 2 (of 7) © SAICA 2024
+The current reporting period is for the financial year ended 30 September 2023 (FY2023).
+Michaela stated that, in her opinion, DentOut complies with International Financial Reporting
+Standards (IFRS) and is currently only required to have an independent review of its financial
+statements.
+Operating and financial information systems
+DentOut operates a very basic off-the-shelf financial record-keeping system supported by
+Microsoft Excel spreadsheets, with limited internal controls.
+The finance team currently consists of –
+• a bookkeeper who oversees the data-capturing process and basic reconciliations;
+• a debtors clerk who deals with all sales-related matters, follows up on outstanding
+debt, and keeps related accounting registers and files in order; and
+• a creditors clerk who assists Marcello with ordering parts, keeping track of debt owed
+to suppliers, and keeps related accounting registers and files in order.
+Michaela prepares DentOut’s annual financial statements, tax calculations and all tax
+returns. She submits the annual returns to the Companies and Intellectual Property
+Commission. Marcello manages all operations and staff-related matters.
+The majority of transactions at DentOut are cash based. No accurate inventory movement
+records are kept. There are two types of inventories – new inventory and reconditioned /
+used inventory. The reconditioned spares and parts (inventory) are not accounted for in the
+accounting records since these are either obtained at a Rnil cost or a marginal cost. The fair
+value of these reconditioned / used spares and parts was estimated to be R1,83 million as
+at 30 September 2023. Stock counts are carried out at the end of each month for all new
+spares and parts kept in the DentOut storeroom, which is located at the same premises as
+the workshop. The appointed independent reviewer attends the stock count at year end and
+its working papers are available for audit purposes.
+Extract from the trial balance as at 30 September 2023
+Notes R
+Machinery and equipment 1 11 130 000
+Inventory: New spares and parts 5 950 000
+Inventory: Reconditioned / used spares and parts 2 20 000
+Debtors 3 3 000 000
+Bank and cash 3 500 000
+Suppliers: 15-day credit terms (6 500 000)
+Accruals 4 (950 000)
+Notes
+1 This includes a significant number of items that have been fully depreciated, but which
+are still in use. Management has not re-assessed the useful lives of these items since
+acquisition.
+2 Most of the items were obtained at a marginal / Rnil cost price as they were obtained
+from scrapyards or tow-truck companies.
+3 Payment terms: 70% cash deposit and the remaining 30% of the contract price
+payable within 30 days.
+4 Accruals include insurance and one month’s rent outstanding. Management
+recognises rental expenses as invoices are received and has not considered IFRS 16
+Leases.
+Paper 1 3 (of 7) © SAICA 2024
+Additional material findings
+1 Faulty reconditioned spares
+The due diligence team identified instances where DentOut may have been using
+reconditioned or used parts in repairs but charged customers for new parts. One such
+instance relates to Ms Mandy Mondi, a driver who died in a car accident in August 2023.
+According to the Mondi family, DentOut replaced the brakes, steering system and the
+accelerator pedal of Mandy’s vehicle during the first week of July 2023. A mechanic friend
+of the Mondi family assessed Mandy’s wrecked vehicle and cited the cause of the accident
+as driving with worn-out brakes that had reached the end of their useful life.
+The Mondi family further informed CorpTru that Mandy’s father had spoken to Marcello
+Panelli on 4 August 2023 about the accident and reprimanded him for allowing DentOut
+employees to replace Mandy’s brakes with old worn-out brakes. Marcello allegedly insisted
+that DentOut would not take responsibility for Mandy’s reckless driving and insinuated that
+Mandy must have been under the influence of alcohol. The Mondi family showed CorpTru
+legal documents about a lawsuit they had filed against DentOut for loss of life. The lawsuit
+was filed on 25 August 2023 and DentOut received notification of the lawsuit on
+27 August 2023. The Mondi family has also taken the matter to Blanche Carte, a popular
+South African investigative journalism television programme, which aired an episode on the
+matter in October 2023.
+CorpTru conducted a background search on DentOut on the internet and identified reviews
+on Google and Hellopeter2 that stated that several previous DentOut clients had claimed that
+DentOut fit reconditioned parts to vehicles and charged the customers for new parts. These
+reviews state that Marcello refused to acknowledge their claims and they are therefore going
+‘to follow a legal route’. No lawsuits have arisen from these allegations at the date of this
+report.
+CorpTru met with the RVR inhouse legal team to discuss these allegations and the claim
+from the Mondi family. They informed CorpTru that after a detailed internal review of vehicle
+repair and job card records it appears more likely than not that some instances exist where
+reconditioned parts were used by the repair technicians.
+The legal team however regard the possibility of legal action against DentOut being
+successful to be remote. The onus is on the claimants to prove their allegations beyond a
+reasonable doubt, which will be difficult.
+The legal team estimates that total successful claims that could possibly arise from the
+allegations (including the Mondi family’s claim) would amount to no more than R2,5 million.
+In addition, legal fees are expected to amount to R900 000.
+These cost estimates were reflected in the final determination of the purchase price offered
+by RVR.
+2 Intangible asset treatment
+The due diligence team identified that DentOut purchased four digital dent pullers
+(‘machinery’) at a cost of R825 000 each for the first time on 1 October 2021. DentOut also
+incurred total costs of R2 555 000 on software that enables the digital dent pullers to connect
+2 Hellopeter is an internet-based platform on which consumers can complement or complain about services or
+products that they purchase from businesses.
+Paper 1 4 (of 7) © SAICA 2024
+to the main car body repair system of the shop. Inspection of the fixed asset register showed
+that the software costs were capitalised to the digital dent pullers. The software installed is
+not integral to the digital dent pullers.
+DentOut considered the digital dent pullers to have a total useful life of five years with a
+residual value of R100 000 each.
+3 Income tax
+CorpTru noted that the company aggressively attempts to keep income tax payable as low
+as possible.
+2 Proposed Regal Vehicle Rental transaction
+RVR representatives discussed its intention to buy a controlling interest in DentOut with
+Michaela and Marcello. Subsequently, the parties entered into a non-disclosure agreement
+regarding all aspects of the negotiations. RVR then provided the two with a summary of the
+due diligence findings and indicated that before the deal can go through, it would like Michaela
+and Marcello’s response to the findings.
+RVR also had the following requirements that DentOut needed to fulfil:
+1 DentOut must ensure that it is fully compliant with IFRS as this will simplify the
+consolidation process for the RVR Group financial statements because RVR is fully
+compliant with IFRS.
+2 To enhance the credibility of its financial information, DentOut must adopt the
+recommended practices of the KING IV Report on Corporate Governance.
+3 DentOut must implement a strong internal controls system.
+4 DentOut must adopt a technology-based integrated information system to manage its
+operations and finances.
+5 Although DentOut will remain a separate legal entity after the take-over, its
+Memorandum of Incorporation (MoI) must be amended to include a provision that
+DentOut’s financial statements are subject to an external audit. An audit will be required
+for the FY2023 financial statements.
+RVR is due to rotate auditing firms soon in terms of the MoI of the parent company and would
+prefer the audit firm that audits DentOut to also become the auditors of RVR and the RVR
+Group. For this reason, RVR requested that a large audit firm be considered.
+Both Michaela and Marcello were open to the idea of a buy-out, as it would create further
+growth potential for DentOut. Michaela shared RVR’s intention and requests with the
+managing partner at Confidence Assurance Inc. The managing partner suggested that
+Michaela do as much as possible to ensure that CAI was awarded the contract for the audit
+and other services of DentOut; he also indicated that Michaela would be well rewarded if she
+could bring in work from the RVR Group.
+Michaela then recommended that CAI be awarded the DentOut audit contract to the RVR
+representatives, should the two parties go ahead with the deal. She noted that CAI was one
+of the largest auditing and advisory firms in South Africa and had offices in seven provinces.
+Its head office is located in Johannesburg. Mr Jack Hammer would be nominated as the audit
+partner.
+Paper 1 5 (of 7) © SAICA 2024
+In addition, she recommended that to reduce the DentOut separate financial statement audit
+fee, CAI be awarded the contract for the following services:
+• Design of a new internal control and information system for DentOut;
+• Assistance with the selection or design of an integrated information technology system;
+• Formalisation of board structures and committees; and
+• Provision of tax planning and structuring advice.
+The representatives of RVR agreed to Michaela’s recommendations since they were keen for
+the deal to go ahead.
+3 Offer to purchase a controlling stake in the business
+As part of RVR’s strategic ambitions, the RVR Board of directors contemplates creating value
+for shareholders by investing in a company that aligns with the growth of the group through its
+car rental companies. RVR believes that the proposed transaction to acquire a controlling
+interest in DentOut would align with the group strategy as DentOut will become the preferred
+repairer of car rental vehicles within the RVR Group.
+The Panelli twins received a non-binding offer from RVR on 10 October 2023. In terms of the
+offer, RVR would acquire a controlling interest of 51% in DentOut by subscribing for new
+shares for a total cash consideration of R11 million. In addition to the information provided in
+section 2, the following conditions were stipulated in the offer letter:
+1 Michaela and Marcello must continue to be involved in the day-to-day operations of
+DentOut.
+2 The R11 million purchase consideration will be invested in the business specifically to
+obtain ISO quality accreditation.
+3 Michaela and Marcello must oversee the ISO quality accreditation process and
+upgrades to equipment.
+4 Should the ISO quality accreditation not be achieved, the investment in DentOut will be
+converted into a loan, which will have to be repaid to RVR.
+5 All branding related to DentOut must be removed and replaced with RVR branding.
+4 Valuation of DentOut
+Michaela wanted to get her own estimates for the upcoming negotiations with representatives
+from RVR. She therefore asked a trusted friend and colleague from the corporate finance
+division of CAI to perform an initial valuation of DentOut. Michaela’s colleague analysed the
+historic financial results of the company and discussed trends in the motor and panel-beating
+industry with Michaela and Marcello.
+Marcello explained that plant and equipment incorporating artificial intelligence technologies
+are now being used more widely in the automotive industry. However, given Marcello’s view
+that ‘nothing can replace the good old machinery at DentOut’, only maintenance capital
+expenditure was incorporated into the valuation.
+Michaela paid R25 000 directly to her colleague for the valuation services that the colleague
+rendered in his free time. An extract of the valuation workings, which are arithmetically
+accurate, is presented in table 1.
+Paper 1 6 (of 7) © SAICA 2024
+Table 1: Extract of valuation workings
+Valuation: DentOut (Pty) Ltd
+Prepared for: Michaela and Marcello Panelli
+Valuation as at 30 September 2023
+Present value of free cash flows to the company R'000
+Forecast period 5 841
+Terminal value 20 120
+Value of operations 25 961
+Add: Excess cash 22
+Less: Debt (352)
+25 631
+Control premium (25%) 6 408
+Value of equity 32 039
+Notes
+• No additional costs relating to RVR’s conditions as stipulated in the offer letter were
+incorporated in the valuation.
+• No implications of the potential settlement of claims from disgruntled customers were
+included in the valuation.
+5 Vehicle refurbishment project from RVR
+RVR recently reached an agreement with a financial services company, Ride Finance (Pty)
+Ltd (‘RideFin’), which provides finance to Uber drivers for four-seater sedan vehicles. Due to
+poor economic conditions, many RideFin clients have been defaulting on their loan
+repayments. As a result, RideFin has had to repossess an increasing number of vehicles that
+were offered as security for loans.
+In terms of the agreement between RVR and RideFin, RideFin will sell the vehicles to RVR at
+a discounted rate for the next year because these vehicles are in a good condition and would
+have recorded mileage of less than 10 000 km. RVR plans to use the vehicles for rentals. RVR
+has approached DentOut to refurbish the vehicles so that they will be appealing as rental
+vehicles. Marcello believes that if DentOut impresses RVR with the quality of its work on this
+project, Michaela would be able to justify a greater valuation for DentOut in the ongoing
+purchase negotiations.
+The contract for refurbishments between RVR and DentOut would be for a period of one year
+from the date of the agreement. It is estimated that 26 vehicles will need to be refurbished by
+DentOut at a fee of R25 500 per vehicle.
+A recent inventory count revealed that DentOut already has many items required for the
+vehicle refurbishments on hand. However, other items would need to be purchased from
+DentOut’s suppliers.
+1 Spray paint
+Spray paint for the refurbishments is available in several colours in DentOut’s inventory
+warehouse. The spray-paint cylinders (1 litre each) were purchased for R400 per cylinder as
+the paint is used for day-to-day repairs by DentOut. The current retail price of the paint is R500
+per cylinder. Each vehicle will require half a cylinder of paint.
+Paper 1 7 (of 7) © SAICA 2024
+2 Leather
+The refurbishment would involve re-upholstering the seats with soft leather and 20 m2 of
+leather will be required for each vehicle. The leather would need to be purchased from a
+supplier in Cape Town at a cost of R650 per m2. In addition, a fixed delivery charge of R6 250
+would be payable for a consignment of 300 m2 of leather. Thereafter there would be an
+additional delivery cost of R1 800 for every 100 m2 of leather (or part thereof) purchased.
+3 Generator
+Marcello is concerned that loadshedding could cause delays in completing the vehicle
+refurbishments. A neighbouring business has recently begun leasing industrial generators.
+Marcello asked one of its salespersons to conduct an evaluation of the back-up power
+requirements for the refurbishment project. The cost of the evaluation service was R1 500.
+The salesperson established that the PowerUP900 portable generator would be most suitable.
+If DentOut accepts the refurbishment project, Marcello plans to lease the portable generator
+at a fixed cost of R7 000 per month, including fuel.
+4 Labour
+Semi-skilled workers will carry out the work required for the refurbishments. These workers
+can be hired as required at a rate of R300 per day. Each vehicle refurbishment will require
+12 days of labour from one worker in total.
+6 Additional information
+• Software is measured on the cost model in terms of IAS 38 Intangible Assets over a
+useful life of three years with no residual value.
+• Computer equipment is measured on the cost model in terms of IAS 16 Property, Plant
+and Equipment.
+• The South African Revenue Service grants a wear-and-tear allowance on the digital dent
+pullers on a straight-line basis over five years and three years for the related software.
+• A tax rate of 27% applies to all applicable years of assessment.
+• All amounts are regarded as material.
+Paper 1 part I required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JANUARY 2024
+PROFESSIONAL PAPER 1
+This paper consists of two parts.
+Answer each part in a separate answer book.
+PAPER 1 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Discuss the key matters that the Panelli siblings should consider prior
+to accepting the buy-out offer from RVR, with regard to –
+(i) the impact for DentOut on its operations and growth; and
+(ii) considerations for the siblings as the existing shareholders.
+• Ignore taxation.
+• Do not discuss any ethical matters.
+• Calculations are not required.
+Communication skills for part (a)(i) – logical argument
+14
+8
+1 23
+(b) Determine, with reference to the percentage margin of safety,
+whether DentOut should accept the vehicle refurbishment project
+from RVR in section 5.
+• Ignore taxation.
+12
+12
+(c) Discuss the appropriate accounting treatment arising from the faulty
+reconditioned spares in note 1 of the ‘additional material findings’ in
+the due diligence report in the –
+o separate financial statements of DentOut for FY2023; and
+o at acquisition consolidated financial statements of RVR, on the
+assumption that RVR acquired a controlling interest in DentOut
+on 1 October 2023.
+• Do not discuss presentation and disclosure.
+• Do not discuss any implications of IAS 2 Inventories.
+• Do not discuss any implications of IAS 7 Statement of Cash
+Flows.
+8
+8
+(d) Prepare the prior-period error note in the separate financial
+statements of DentOut for FY2023 relating to the software described
+in the due diligence report.
+• Assume that the tax was correctly treated in the income tax
+return.
+• Assume all amounts are material.
+Communication skills – presentation
+10
+1 11
+Total for part I 54
+Paper 1 part II required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JANUARY 2024
+PROFESSIONAL PAPER 1
+This paper consists of two parts.
+Answer each part in a separate answer book.
+PAPER 1 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(e) Discuss, with reference to the information provided in sections 1 and
+2, any ethical threats and concerns you may have regarding the
+behaviour and actions of Michaela.
+• Do not discuss the significance of any threat.
+• Do not provide any safeguards.
+Communication skills – logical argument
+12
+1 13
+(f) Discuss, with reference to the information provided in sections 1 and
+2, factors that Jack Hammer needs to consider in deciding whether
+to accept the audit engagement of DentOut.
+• Exclude any discussion related to the ethical conduct of
+Marcello and Michaela.
+• Do not discuss the significance of threats.
+• Do not provide any safeguards.
+Communication skills – clarity of expression
+22
+1 23
+(g) Discuss, with reference to the extract of the trial balance provided
+in section 1, the substantive procedures on the opening balances
+that can be performed to confirm the existence of DentOut’s assets
+as at 1 October 2022.
+Communication skills – clarity of expression
+9
+1 10
+Total for part II 46
+TOTAL FOR PAPER 1 100

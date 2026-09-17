@@ -1,0 +1,221 @@
+Source: SAICA ITC June 2024 — Paper 2 Question 1 (Ultra Canin).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Paper 2 question 1 1 (of 8) © SAICA 2024
+QUESTION 1 50 marks
+1 Background
+Ultra Canin (Pty) Ltd (‘Ultra Canin’) is a South African tax resident company that manufactures
+and sells premium pet food in the South African and Australian markets. The company has a
+31 December year end.
+Two university friends, Ms Sihle Ndlovu and Ms Penny Brand, have a shared passion for
+animals and organic nutrition for pets and therefore decided to create an organic pet food
+company, Ultra Canin.
+Penny designed the product offering, and Sihle created a business plan which they presented
+to a group of angel investors. Mr Petrus Mahlangu, founder of a chain of health food stores,
+offered to provide the start-up capital as well as share business links he had with the logistics
+side of the business. Sihle, Penny and Petrus agreed to each take an equal share of the
+business.
+The company was immediately successful and started breaking even after only two years,
+experiencing incredible growth and gaining a reputation for excellence. The Covid-19
+pandemic raised awareness around the benefits of healthy eating for everyone, pets included.
+As a result, during the last three years, growth in revenue and gross profit has averaged 20%
+per annum but is expected to decrease to a rate of 10% as the market stabilises.
+Recognising this shift in pet ownership dynamics, the company seized the opportunity to
+expand its business. This expansion included additional production capacity and an entrance
+into the Australian market in the 2020 financial year (FY2020). The Australian expansion was
+primarily driven by Petrus, who was entering the same market with his health store chain. The
+products in the health shop and pet food market required the same infrastructure and similar
+supply chains, resulting in shared overhead costs.
+2 Investment exit
+During a recent shareholders’ meeting, Petrus announced that he wanted to retire and sell his
+shares. The Ultra Canin shareholders’ agreement includes a clause that the shares had to be
+offered to existing shareholders first.
+The shareholders agreed that a valuation should be prepared, and Sihle suggested they use
+a market-based valuation approach using an EBITDA multiple.
+Paper 2 question 1 2 (of 8) © SAICA 2024
+The following are extracts from the group annual financial statements of Ultra Canin for the
+past three years:
+Ultra Canin (Pty) Ltd
+Statement of financial position as at 31 December
+Note
+Audited Audited
+Draft
+management
+accounts
+2021 2022 2023
+R'000 R'000 R'000
+Assets
+Non-current assets 88 226 95 459 110 050
+Property, plant and equipment 1 84 248 83 152 96 230
+Investment in marketable securities 2 – 10 000 10 000
+Deferred tax asset 3 978 2 307 3 820
+Current assets 221 572 316 923 410 907
+Inventory 45 266 87 145 110 878
+Trade and other receivables 4 398 1 751 2 102
+Cash and cash equivalents 3 171 908 228 027 297 927
+Total assets 309 798 412 382 520 957
+Equity and liabilities
+Equity 141 744 218 743 306 373
+Share capital and reserves 140 479 217 354 304 335
+Non-controlling interest 4 1 265 1 389 2 038
+Liabilities
+Non-current liabilities 146 094 157 901 170 274
+Shareholder loan 5 142 290 153 673 165 967
+Deferred tax liability 3 804 4 228 4 307
+Current liabilities 21 960 35 738 44 310
+Trade and other payables 19 232 32 851 41 032
+Provisions 906 787 911
+Current tax payable 1 822 2 100 2 367
+Total liabilities 168 054 193 639 214 584
+Total equity and liabilities 309 798 412 382 520 957
+Paper 2 question 1 3 (of 8) © SAICA 2024
+Ultra Canin (Pty) Ltd
+Statement of comprehensive income for the
+year ended 31 December
+Note
+Audited Audited
+Draft
+management
+accounts
+2021 2022 2023
+R’000 R’000 R’000
+Revenue 605 010 726 012 871 214
+Cost of sales (301 700) (363 030) (434 550)
+Gross profit 303 310 362 982 436 664
+Other income 2 0 1 802 507
+Administrative expenses (29 011) (31 167) (36 602)
+Other operating expenses 6 (189 001) (208 546) (241 473)
+Operating profit 85 298 125 071 159 096
+Finance income 7 8 054 12 015 14 546
+Finance costs 5 (10 540) (11 383) (12 294)
+Profit before taxation 82 812 125 703 161 348
+Taxation (26 470) (33 365) (39 078)
+Profit and total comprehensive
+income for the year 56 342 92 338 122 270
+Notes
+1 Depreciation on property, plant and equipment of R17 645 000 for 2021, R16 630 000
+for 2022, and R19 246 000 for 2023 is included in the other operating expenses and
+cost of sales line items.
+2 The investment in marketable securities relates to shares purchased in SunSolar Ltd,
+a listed company that manufactures solar panels and inverters, as a growth investment
+for the company. The market value of these shares is currently R15,2 million. Other
+income relates only to this investment.
+3 The company requires cash and cash equivalents to support the operations of the
+company, amounting to approximately 10% of the relevant year’s revenue.
+4 The non-controlling interest relates to an investment in a small subsidiary that
+manufactures vitamins and minerals that are used in the production of the pet food.
+The company owns 90% of this subsidiary, and the original founder owns the remaining
+10%. The market value of this subsidiary was estimated to be R31 million at
+31 December 2023. This value has not yet been adjusted in the draft management
+accounts.
+5 The shareholder loan is the original loan provided to the company by Petrus. The loan
+bears interest at a rate of 8% per annum and interest is capitalised to the loan balance
+annually.
+6 Petrus is employed as a strategic director, and normally receives a salary of R4 million
+per annum. If his shares are sold, he will resign from his position as strategic director,
+and a new strategic manager will be employed at an expected cost of R1 million per
+annum.
+7 Finance income relates to interest earned on cash and cash equivalents. The company
+has on average earned interest of approximately 6% per annum on these cash
+balances.
+Paper 2 question 1 4 (of 8) © SAICA 2024
+Additional information
+• All three shareholders are directors of the company. The shareholders had agreed that
+they would take reduced bonuses in the FY2023, and rather pay out a dividend in lieu
+of bonuses. This created an overall tax saving between the company and the directors,
+as the sum of the income tax paid by the company and the dividends tax levied on the
+dividends is less than the maximum marginal rate. The directors are currently all at the
+maximum marginal tax rate for individuals. A dividend of R6 million was agreed to by
+the directors and each shareholder therefore received a dividend of R2 million.
+• The Ultra Canin operations in Australia are housed, rent free, in the factory and office
+space of Petrus’ health store chain. This arrangement will only be in effect for as long
+as Petrus is a shareholder of Ultra Canin. Ultra Canin would incur a once-off moving
+cost for all machinery and office equipment of R3 million if it moved to its own premises.
+It is expected that rental of the office space would amount to R5 million per annum.
+• The following information was sourced from listed competitors currently trading on
+public markets:
+Company Description P/E
+ratio
+EBITDA
+multiple
+Organica International
+Inc.
+An American organics company that
+manufactures and sells organic pet
+foods on a global basis, including in
+South Africa, as an import product. 13 6
+Pets R Us Ltd A pet food and related products
+company that manufactures and sells a
+diversified range of pet products in the
+South African market. 12 5
+Eureka Pet Ltd A South African company that operates
+in the South African market,
+manufacturing and selling organic pet
+food. The company had revenue of
+R230 million in the current year. 15 8
+Retail sector,
+Johannesburg Stock
+Exchange (JSE)
+The average ratios for the South
+African retail sector for companies
+listed on the JSE. 10 6
+• In the last few years following the growth in the industry, the market has become fiercely
+competitive, and this trend is expected to continue as new companies enter the market.
+This is an anticipated new trend and has not been priced into the market as yet.
+• The expansion into the Australian market has been regarded as a great success and
+was seen by the directors as a test of the product in the global market. Ultra Canin is
+planning to expand to other countries soon.
+3 Performance incentive scheme
+In the last two years several staff members had left Ultra Canin to join competitors, where they
+were offered lucrative positions. The directors are considering the introduction of a
+performance incentive scheme to incentivise younger managers within the company. The
+following two options are currently being considered:
+Paper 2 question 1 5 (of 8) © SAICA 2024
+3.1 Share option scheme
+The staff would be granted share options, with the exercise price being the market value of a
+share on date of grant. This is not a broad-based employee share scheme. The share options
+can be exercised in the fourth year after being granted. The holders are expected to exercise
+their options and buy their shares if the share price increases. The staff would need to remain
+in the employ of the firm until they exercise their options as a vesting condition, and the options
+would lapse if the company earned an accounting return on investment of less than 10% in
+any of the years during the holding period prior to vesting.
+3.2 Bonus bank
+The alternative would be cash remuneration, based on a balanced scorecard metric. This
+scorecard would have the following core criteria:
+• The job description of the employee; and
+• The importance of the employee’s role to the overall strategy of the company.
+Any bonus earned on the balanced scorecard metric would be placed into a bonus bank. The
+employee would be entitled to 25% of that bonus in the year in which it is awarded, and then
+25% in each of the following three years. This would be subject to them still meeting the
+requirements of the balanced scorecard metric in the following years. If not met, the remaining
+amount in the bonus bank for all years would fall away.
+Paper 2 question 1 required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JUNE 2024
+PROFESSIONAL PAPER 2
+This paper consists of two questions.
+Answer each question in a separate answer book.
+PAPER 2 QUESTION 1 – REQUIRED
+Marks
+Sub-
+total Total
+(a) Perform, outlining key assumptions, an EBITDA multiple earnings-
+based valuation for Petrus’ shareholding as at 31 December 2023.
+Communication skills – layout and structure
+17
+1 18
+(b) Identify and explain the key strategic considerations for Ultra Canin
+resulting from Petrus leaving the company. 7 7
+(c) Critically evaluate the two performance incentive options and
+advise the directors which of the two you would recommend.
+• Do not consider the tax consequences for either the
+employees or Ultra Canin.
+10
+10
+(d) Discuss the normal tax and employees’ tax consequences of –
+• the share option scheme; and
+• the bonus bank scheme
+for Ultra Canin and for its employees.
+Communication skills – clarity of expression
+14
+1 15
+Total for question 1 50

@@ -1,0 +1,952 @@
+Source: SAICA IAC June 2025 — Paper 1 suggested solution (Ubud).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART I
+1 © SAICA 2025
+Part (a) With reference to the development of the CargoPlat™ app –
+(i) explain, with reasons, from which date an intangible asset
+should have been recognised given that the CargoPlat™ app
+meets the definition of an intangible asset in terms of IAS 38;
+Marks
+1 An intangible asset arising from development (or from the development
+phase of an internal project) shall be recognised if, and only if, an entity
+can demonstrate all of the following:
+(a) The technical feasibility of completing the intangible asset so that it will
+be available for use or sale.
+(b) Its intention to complete the intangible asset and use or sell it.
+(c) Its ability to use or sell the intangible asset.
+(d) How the intangible asset will generate probable future economic
+benefits. Among other things, the entity can demonstrate the existence of
+a market for the output of the intangible asset or the intangible asset itself
+or, if it is to be used internally, the usefulness of the intangible asset.
+(e) The availability of adequate technical, financial and other resources to
+complete the development and to use or sell the intangible asset.
+(f) Its ability to measure reliably the expenditure attributable to the
+intangible asset during its development (IAS 38.57).
+1.1 UC demonstrated the technical feasibility of completing the CargoPlat
+app on 2 May 2022, when the board approved the technical details of the
+app.
+The IT team demonstrates that the technical feasibility was met on
+2 May 2022 as the board instructed the IT team to design an outline
+framework for a concept version of the design of the app.
+1
+1.2 UC demonstrated its intention to complete the app and use it on
+10 January 2022, as all the directors pledged their commitment to make
+the stated dream a reality.
+1
+1.3 UC demonstrated its ability to use the app on 5 March 2022, where the
+market research report indicated that there was a market (significant
+number of users are likely to use such an app and services) for the app
+after Trokkie’s detailed report was approved, which emphasised that UC
+has all the technology and resources to develop such an app and use it
+effectively in its operations.
+1
+1.4 UC demonstrated how the app would generate probable future
+economic benefits on 11 June 2022 by approving the formal budget of
+future expected profits from using the app and forecast of the development
+costs of the CargoPlat app and the expected (probable) profits.
+By that date, market research had also indicated that a significant
+number of companies would probably use such an app and UC’s services.
+1
+1.5 UC demonstrated the availability of adequate technical and other
+resources to complete the development and to use the app on
+10 January 2022, based on Trokkie’s detailed report that UC has all the
+technology and resources to develop such an app and use it effectively in
+its operations.
+However, UC demonstrated the availability of adequate financial
+resources to complete the development and to use the app on
+17 June 2022, when it received confirmation from its local bank for a loan.
+(Before then, UC did not have the financial resources and the company
+was facing funding pressures.)
+1
+1
+1.6 UC demonstrated its ability to measure reliably the expenditure
+attributable to the development of the app on 11 June 2022, with the
+board’s approval of the formal budget of future expected profits from using
+1
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART I
+2 © SAICA 2025
+the app and forecast of the development costs and seeing that they have
+an accounting system.
+2 Conclusion
+It seems that all the criteria for the capitalisation of development cost as
+an intangible (under IAS 38.57) were met on 17 June 2022 (the latest
+dates indicated in applying the individual criterion above).
+1C
+Available 8
+Maximum 7
+X1: Communication skill – logical argument 1
+Total for part (a)(i) 8
+Part (a) With reference to the development of the CargoPlat™ app –
+(ii) prepare an extract of the prior period error note in the
+financial statements of UC for FY2024.
+• Only present any correction for each individual
+financial statement line affected and do not present any
+subtotal or total of any statement.
+• Do not present the totals of the closing balance of
+equity items at the end of the year.
+• Narrative information is not required.
+• Ignore all forms of taxation.
+Marks
+Extract from prior error note
+31/12/2023 31/12/2022
+R R
+Effect on the statement of profit or loss and
+other comprehensive income
+(Increase) in cost of sales/amortisation/operating
+expenses (½)
+(amortisation: R5 010 000 / six years’ useful life)
+(835 000) ½
+(Decrease) in revaluation surplus (OCI) (½) (120 000) 1
+Effect on the statement of financial position
+(Decrease) in intangible assets (1) (2 325 000) (1 370 000) 1C
+(Decrease) in the revaluation surplus (½) (120 000) ½
+(Decrease) in opening retained earnings (½)
+(could also be presented as an effect on the
+statement of changes in equity)
+(1 370 000) ½C
+Calculations
+C1: Calculation impact on the financial
+statements
+(Research costs should have been expensed in
+2022 (1))
+(1 200 000) (1 200 000) 1
+(Launch event costs should have been expensed
+in 2022 (1))
+(170 000) (170 000) 1
+(Revaluation model could not be applied as there
+is no active market and the accounting policy of
+UC is to measure intangible assets under the cost
+model in 2023 (1))
+(120 000) 1C
+(Accumulated amortisation: R5 010 000 / 6) (1) (835 000) 1C
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART I
+3 © SAICA 2025
+Decrease in intangible assets 2 325 000 1 370 000
+(Research costs should have been expensed in
+2022 (½))
+(1 200 000) ½C
+(Launch event costs should have been expensed
+in 2022 (½))
+(170 000) ½C
+Decrease in opening retained earnings 1 370 000
+Incorrect
+treatment
+Correct
+treatment
+C2: Calculation of the app recognised as an
+intangible asset R’000 R’000
+Research phase 1 200 –
+Development phase 5 010 5 010
+Launch event during IT convention 170 –
+Initial cost – December 2022 6 380 5 010
+Revaluation during FY2023 120
+Amortisation for FY2023 (5 010 000 / 6) (835)
+Closing balance 6 500 4 175
+Correction needed (4 175 – 6 500) (2 325)
+Available 8.5
+Maximum 8
+Total for part (a)(ii) 8
+Total for part (a) 16
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART I
+4 © SAICA 2025
+Part (b) With reference to the lease agreement with ITT –
+(i) discuss whether you agree that UC may have elected the
+recognition exemption at the commencement of the lease;
+Marks
+1 An underlying asset can be of low value only if –
+(a) the lessee can benefit from use of the underlying asset on its own or
+together with other resources that are readily available to the lessee;
+and
+(b) the underlying asset is not highly dependent on, or highly interrelated with,
+other assets (IFRS 16.B5).
+1.1
+UC needed to consider the guidance of what is regarded as of low value, as
+noted below:
+UC cannot use each individual component of the server on its own because
+the server acts as one uniform device OR
+UC can only use the individual components together with the other
+components, which are all part of the lease agreement and are readily
+available to UC as the lessee.
+1
+1.2 Therefore, the second criterion is not met as the individual components are
+highly dependent on, and highly interrelated with, the other components of
+the servers as the components need to be connected and working in sync
+in order for the server to act as one uniform device.
+1
+1
+2 Conclusion
+As the criteria for a low-value asset has not been met, UC should not have
+elected the recognition exemption based on the low value of the individual
+components but should have treated the whole server as a single lease,
+because the aggregate value of components (each valued at between
+R30 000 and R75 000) exceeded the low value accounting policy threshold of
+R80 000.
+1C
+Available 4
+Maximum 4
+Total for part (b)(i) 4
+Part (b) With reference to the lease agreement with ITT –
+(ii) prepare the journal entries to correct all aspects of the lease on
+1 January 2024.
+• Irrespective of your answer in part (b)(i), assume that UC
+has not elected the recognition exemption.
+• Assume that journal entries that relate to any previous
+financial year cannot be posted to the previous year, and
+that any correction should be made to the opening balance
+of the items as at the beginning of the current year.
+• Assume that all corrections are material.
+• Ignore all form of taxation.
+Marks
+Journal entries
+Dr. Cr.
+Right-of-use asset (server) (SFP) C1 720 508
+Lease liability (SFP) (amort 12) 543 052 1
+Retained earnings: opening balance (SCE) C2 29 380
+Accumulated depreciation: Right-of-use asset (SFP) 240 169 1
+Correcting the recognition of the lease of the server
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART I
+5 © SAICA 2025
+Calculations
+Amount
+C1: Measurement of lease R’000
+Initial measurement of lease liability:
+PV = ?
+12 pmt/year (½); n = 36 (½); PMT = 25 500 (½);
+I = 11.75(½)
+770 508
+2
+Initial measurement of right-of-use asset (same as lease liability (IFRS
+16.24(a))
+770 508
+Less: Lease incentive received (IFRS 16.24(b)) (50 000) 1
+Total 720 508
+C2: Retained earnings – opening balance (xx) = cr
+Lease expense incorrectly recognised in FY2023, to be corrected (alt
+C3):
+[(36 x 25 500 (1) – 50 000) (½) ] x 12/36 (½)
+(289 333) 2
+Depreciation on right-of-use asset for FY2023
+(720 508 / 3) (1)
+240 169 1C
+Finance costs on lease liability for FY2023
+(amort 1-12) (1)
+78 544 1C
+Total 29 380
+C3: Net straight-lined lease expense (correct to the opening
+balance of retained earnings), and balance of lease accrual
+Total lease payments (36 x 25 500) (½) 918 000 ½
+Less: lease incentive received (½) (50 000) ½
+Net lease payments 868 000
+Recognised for first year (868 000 / 3) (½) 289 333 ½
+Cash flow during the first year [(25 500 x 12)(1/2) – 50 000] (½) 256 000 1
+Balance of accrued lease 33 333
+Part (b) ALTERNATIVE Marks
+Journal entries
+Dr. Cr.
+Right-of-use asset (server) (SFP) C1 720 508
+Lease liability (SFP) (amort 12) 543 052 1C
+Retained earnings (SCE) 240 169 1
+Accumulated depreciation (SFP) 240 169
+Retained earnings (SCE) 78 544 1
+Lease liability (SFP) 78 544
+Calculations
+Amount
+C1: Measurement of lease R’000
+Initial measurement of lease liability:
+PV = ?
+12 pmt/year (½); n = 36 (½); PMT = 25 500 (½);
+I = 11.75(½)
+770 508
+2
+Initial measurement of right-of-use asset (same as lease liability (IFRS
+16.24(a))
+770 508
+Less: Lease incentive received (IFRS 16.24(b)) (50 000) 1
+Total 720 508
+C2: Retained earnings – opening balance
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART I
+6 © SAICA 2025
+Depreciation on right-of-use asset for FY2023
+(720 508 / 3) (1)
+240 169 1C
+Finance costs on lease liability for FY2023
+(amort 1-12) (1)
+78 544 1C
+Available 12.5
+Maximum 12
+Total for part (b)(ii) 12
+Total for part (b) 16
+TOTAL FOR PART 1 32
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART II
+7 © SAICA 2025
+Part (c) Discuss whether or not UC’s financial statements for FY2024 are
+required to be audited or if an independent review would be
+sufficient.
+Marks
+1 In terms of s30 (2a & b) and s30(7) of the Companies Act read with
+Companies Regulation 28 and 26, the annual financial statements must
+be audited in the following circumstances:
+1.1 If it is a public company – as UC is a private company ((Pty) Ltd), this
+requirement is not met.
+1
+1.2 If it has elected to be audited in terms of the company’s Memorandum of
+Incorporation (MOI) or if a shareholders resolution requires it or if the
+company’s board has so determined – as the board is reconsidering the
+audit of the financial statements.
+• UC’s MOI does not contain a voluntarily audit clause and
+• an audit is also not required by the shareholders.
+1
+1
+1.3 A company that holds assets in a fiduciary capacity for persons who are
+not related to the company and such assets exceeds R5 million or if it is a
+non-profit company meeting certain requirements (for example a state-
+owned entity).
+• UC is a technology company in the trucking industry and, evident
+from the financial statements, it appears that no such assets are
+being held for 3rd parties in a fiduciary capacity.
+1
+1.4 UC is not a subsidiary of a company listed on the JSE, and hence not
+required to be audited in terms of the JSE Listing Requirements.
+1
+2 If it is any other profit or non-profit company, the public interest score of the
+entity may indicate that it is required to be audited or reviewed by the
+regulations.
+Thus, taking into account whether it is desirable in the public interest with
+respect to its annual turnover, the size of the workforce or the nature and
+extent of its activities by determining the public interest score of the entity.
+UC’s public interest score for FY2024 will be calculated as follows
+(regulation 26(2)):
+2.1 One point for the average number of employees during the year
+employees (including executive directors): 40
+1
+2.2 One point for every R1 million in third-party liability (or part
+thereof): (R73 725 000 (0.5) (total equity and liabilities) – R6
+991 000 (0.5) (equity) – R65 000 (0.5) (deferred tax
+liabilities))/1 000 000 (0.5)
+Alternatively, candidates can add all third-party liabilities
+Do not penalise the candidate if they include correcting journal
+entries. 67
+2
+2.3 One point for every R1 million turnover (or part thereof) -
+turnover = R124,8 million 125
+1
+2.4 One point for every individual who directly or indirectly has a
+beneficial interest in the company’s securities (i.e. a
+shareholder) – five shareholders 5
+1
+2.5 Based on the FY2024 financial statements UC has a public
+interest score of: 237
+1C
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART II
+8 © SAICA 2025
+Part (c) Discuss whether or not UC’s financial statements for FY2024 are
+required to be audited or if an independent review would be
+sufficient.
+Marks
+3. If an entity’s public interest score is between 100 and 350 and its financial
+statements are internally compiled, its financial statements will be subject
+to an audit.
+• Up to FY2023 and a portion of the FY2024 financial statements were
+prepared by ‘Mr TAcc’ and since his resignation the CFO appears to
+have taken over this function and therefore it is internally compiled. 1
+4 Conclusion
+As UC’s public interest score is between 100 and 350 and its financial
+statements are internally compiled, it will be subject to an audit. 1C
+Note – there is no evidence in the scenario suggesting that the financial
+statements had been externally compiled
+Available 13
+Maximum 10
+Communication skill – logical argument 1
+Total for part (c) 11
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART II
+9 © SAICA 2025
+Part (d) Discuss the ethical requirements that Ingxelo will have to consider
+as part of the pre-engagement activities of the audit of UC’s
+financial statements for FY2024.
+• Do not discuss the significance considerations of the
+SAICA or IRBA Codes of Professional Conduct or provide
+safeguards.
+Marks
+In terms of the SAICA (and IRBA) Code of Professional Conduct, it is in
+the best interest of the public and required by the Code that a professional
+accountant be independent when performing an audit engagement.
+Inxgwelo is an assurance firm and all professional accountants in public
+practice, as defined by the Codes of Professional Conduct, need to comply
+with the Code.
+1. Maxwell Jones is a registered auditor, performing professional services to
+the public and therefore is a professional accountant in public practice and
+must comply with parts 1, 2, 3, and 4A of the SAICA/IRBA Code of
+Professional Conduct.
+1
+2. Issue: The directors are of the view that paying an audit fee for FY2024
+would be a waste of money (might not be willing to pay audit fee).
+OR
+UC is facing financial difficulty (low cash flow, current liabilities exceeding
+current assets, and funding difficulties), hence the company might not be
+able to pay the audit fee upon completion of the audit.
+½
+2.1 This could create and intimidation threat/self-interest threat to
+independence (in particular objectivity).
+½
+½
+2.2 Maxwell might feel pressured to perform additional non-assurance
+services as a value add, which may not be allowed in terms of the codes,
+to influence the director's opinion about whether an audit would be worth
+spending the money, leading to a breach of the codes.
+1
+2.3 Maxwell might overlook misstatements in the financial statements/non-
+compliance of laws and regulations in an attempt to remain in good
+standing with management to receive the audit fees.
+1
+4. Issue: Maxwell was requested to assist Bongani with the correction of the
+errors made by Mr TAcc. ½
+4.1 UbudCargo (Pty) Ltd is not a public interest entity in terms of the codes’
+definition because it is not a listed company and is not defined by the
+Companies Act (Companies Regulation) as being a public interest
+entity that meets the PIS Score. 1
+4.2 This could result in Maxwell advising on certain accounting standards,
+which entails the provision of non-assurance services to an audit client.
+1
+4.3 The provision of accounting and bookkeeping services is prohibited by the
+codes, but he is not recording or calculating the entries and therefore
+rather providing advice and recommendations. (SAICA CoPC 600.11, 601
+and Companies Act s90(2)).
+1
+4.4 By assisting with the correction of the errors, Maxwell is not assuming
+management’s responsibility. 1
+4.5 Advising on the treatment of accounting errors could result in management
+adopting the recommendations; hence the auditor would have played a
+role in the accounting treatment and is thus providing accounting services.
+1
+4.6 Providing accounting services to an entity that is not a PIE, is prohibited
+unless the service is routine or mechanical in nature, and providing advice
+on correction of accounting errors is not routine or and requires significant
+judgement.
+1
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART II
+10 © SAICA 2025
+4.7.1 This may create a self-review threat/self-interest threat because
+Maxwell will not appropriately evaluate the results of a previous judgement
+made on which the audit team may relied (600.13 A1).
+½
+4.7.2 Independence (objectivity/integrity) is threatened because his
+professional judgement might be compromised as a result of his
+involvement in the correction of the errors and might be biased (accepting)
+towards the calculations when auditing the corrections with which he
+assisted.
+½
+1
+4.7.3 Professional behaviour is also threatened since Maxwell would need to
+consider whether UC would be is complying with the requirements of
+s90(2) of the Companies Act and whether he would be associated with any
+non-compliance.
+Ingxelo Auditors Inc. cannot provide services related to the maintenance
+of any of the audit client’s financial records or the preparation of any of its
+financial statements or habitually or regularly perform the duties of
+accountant or bookkeeper of the audit client.
+This service is also not regularly or habitually provided by Maxwell.
+Assisting the audit client by advising on the correction of errors without
+processing the corrections or preparing the financial statements would not
+necessarily result in non-compliance with the Companies Act. However, if
+Maxwell does engage in such activities in preparing the financial
+statements, he would be contravening the Act.
+½
+1
+1
+5. Issue: The directors might refuse to grant permission to Maxwell to
+communicate with the predecessor auditor due to the professional
+relationship that ended abruptly and badly.
+½
+5.1 This may create a self-interest threat to the following: ½
+5.2 Professional competence and due care might be compromised if the
+auditor accepts the engagement before knowing all the relevant facts
+surrounding the relationship between management and the previous
+auditor. (CoPC 320.4)
+½
+1
+5.3 Confidentiality might be compromised if the auditor communicates with
+the previous auditor without obtaining the necessary permission from the
+client.
+½
+1
+5.4 Professional behaviour might be breached if management refuses to
+grant Maxwell permission to communicate with predecessor auditors,
+without a valid reason/exceptional circumstances, and Maxwell accepts
+the audit, in which case it would be prohibited by the Code. (CoPC 320.6)
+½
+1
+6. Issue: Several potential non-compliance with laws by UC is evident in the
+scenario:
+• Ss28 and 29 of the Companies Act of South Africa have not been
+adhered to when the financial statements included significant errors
+made/questionable reporting practices by the previous accountant
+and not identified timeously by the CFO and the previous auditors.
+• There may have been data breaches and regulatory compliance
+issues signaling a potential breach in key laws relevant to the
+industry within which UC trades.
+These trigger NOCLAR considerations under CoPC 360.
+1
+1
+5.1 A self-interest threat/intimidation threat arises since Maxwell could fear
+association with the NOCLAR and potentially not follow the due processes
+prescribed by the Code.
+½
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART II
+11 © SAICA 2025
+5.2 The fundamental principle of professional behaviour /integrity is
+threatened due to potential association with non-compliance with laws and
+regulations.
+½
+1
+6. Issue: Maxwell is the only registered auditor in Ingxelo, and the firm might
+not have resources (in particular staff) to perform the audit.
+½
+6.1 This creates a self-interest threat to the following: ½
+6.2 • Professional competence and due care since as the only
+registered auditor, of a small auditing firm, Maxwell and the team
+might not have sufficient time to obtain any relevant training where
+they require additional technical competencies to apply and audit
+complex IFRS principles within the complex industry. (CoPC
+320.3A3); and
+• The firm might not have sufficient staff to perform the first-time audit
+that involves an increased scope due to prior period errors and
+opening balance testing, placing Maxwell under pressure to perform
+a significant amount of work himself, which could result in
+misstatements not being detected or compromise the engagement
+performance.
+½
+1
+1
+Available 28.5
+Maximum 11
+Y6: Ethical reasoning 1
+Total for part (d) 12
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART II
+12 © SAICA 2025
+Part (e) Describe the substantive tests of detail procedures you would
+perform to obtain sufficient appropriate audit evidence regarding
+the initial recognition and measurement as well as the subsequent
+measurement of the individual lease liability relating to the office
+building and the warehouse for FY2023 and FY2024
+• Assume that the present auditors are not relying on the work
+of the previous auditor.
+Marks
+Initial recognition
+1 Inspect the minutes of directors’ meetings and capital expenditure
+committee’s meetings authorising the lease agreement with EmbiP
+(occurrence).
+1
+2 Inspect the Memorandum of Incorporation (MOI) of UC to confirm it has been
+complied with, in particular that the borrowing powers/conditions have not
+been breached (occurrence).
+1
+3 Inspect the lease agreement to determine if –
+• it conveys the right to control the use of the building in order to be
+capitalised in terms of IFRS16 (rights and obligations);
+• the parties to the contract are UC and EmbiP (rights and obligations);
+and
+• it was signed by the relevant authorised officials of UC and EmbiP
+(occurrence).
+1
+1
+1
+Initial measurement
+4 Obtain the lease liability amortisation schedule from management showing
+the initial recognition and measurement of the liability for both years, cast and
+cross cast the listing to ensure it is mathematically accurate.
+1
+5 Through inspection, agree the closing balance (current and non-current
+portion) of the lease liability as at 31 December 2023 and 2024 on the
+schedule to the general ledger, trial balance and financial statements to
+ensure that the listing is complete.
+1
+6 Obtain a management representation letter regarding the accuracy, valuation
+and allocation of the lease liability.
+1
+7 Agree through inspection of the financial statements, the opening balance for
+FY2024 with the corresponding closing balance for FY2023 to ensure
+accurate transfer of closing balances.
+1
+8 Inspect the accounting policy for lease liabilities to ensure it is consistent year
+on year and in line with IFRS.
+1
+9 Obtain and inspect the rental agreement between UC and EmbiP for the
+following:
+• The floor area (300m2 and 900m2) and rental per m2 (R450)
+(accuracy).
+• The commencement date (1 January 2023) and the lease period (five
+years) (accuracy).
+• Payment terms (in advance) and any increases in the annual rental (6%
+per annum) (accuracy).
+• Refundable deposit of R100 000 (accuracy).
+1
+1
+1
+1
+10 Assess the reasonableness of the interest rate used in the lease calculation
+(incremental borrowing rate) through inspection of the interest rate on other
+UC long-term liability contracts/correspondence with financial institutions,
+over a similar term and with similar security to borrow the funds to obtain an
+asset of a similar value in a similar economic environment (IFRS16)
+(accuracy).
+1
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART II
+13 © SAICA 2025
+11 Recalculate the accuracy (AVA) of the initial measurement of the lease liability
+on 1 January 2023 through –
+• recalculating the initial rental payment per the lease agreement (square
+meters x rate);
+• recalculating the escalated rental payments per annum (payment x
+1,06) for the duration of the lease; and
+• recalculating the PV of the cashflows above using the incremental
+borrowing rate.
+1
+1
+1
+12 Inspect UC’s bank statement and cash payment journal on 1 January 2023
+for the payment of the deposit and the first year’s annual rent and on 1
+January 2024 for the second annual rental payment (occurrence).
+1
+Subsequent measurement
+13 Recalculate the accuracy (AVA) of the subsequent measurement of the lease
+liability on 31 December 2023 and 2024 through a –
+• recalculation of the closing balance of the lease liability using the rental
+cashflows, including the rental payment made and the accrued finance
+cost; and
+• a recalculation of the split between the current and non-current portion
+of the lease. (AVA, classification)
+1
+1
+14 Inspect the lease agreement (or minutes of directors’ meetings/
+communication with legal counsel) for any addendum modifying any of the
+lease stipulations, for example an increase/decrease in the term or annual
+lease payments, that might require an adjustment to the value of the lease
+liability. (AVA)
+1
+15 Through discussion with management, assess the necessity of any
+adjustments required based on any modification per the procedure above and
+recalculate of any adjustments that were made.
+1
+Available 23
+Maximum 14
+X1: Communication skill – clarity of expression 1
+Total for part (e) 15
+Total for part II 38
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART III
+14 © SAICA 2025
+Part (f) Perform an analysis of the financial information, based on the extracts
+from the management accounts prepared by Bongani by –
+(i) calculating profitability and liquidity ratios;
+● Your calculations should include unit economic ratios.
+● Do not perform an analysis on the free cash flow valuation
+performed by Bongani.
+Marks
+Ratio calculation
+FY2023 FY2024 FY2025 FY2026
+Profitability and unit economics
+(Decrease) / increase in revenue
+(provided)
+-21,2% 20,0% 15,0%
+Cost of purchased transport as % of
+revenue
+77,2% 82,1% 71,8% 65,6% 1.5
+Gross profit 36 180 22 390 42 229 59 316 1
+Gross profit margin (%) 22,8% 17,9% 28,2% 34,4% 1.5C
+Operating cost 19 069 18 370 19 280 20 337 1
+Operating cost as % of revenue 12,0% 14,7% 12,9% 11,8% 1.5C
+Operating profit margin (%) 10,8% 3,2% 15,3% 22,6% 1.5
+Net profit margin (%) 5,6% -0,6% 8,5% 13,0% 1.5
+Return on assets 11,4% -1.0% 1.5
+Return on equity 83,5% -11,0% 1.5
+Revenue per customer 1 779,78 1 313,68 1 426,29 1 565,67 1
+Cost per customer 1 373,26 1 078,00 1 024,10 1 026,44 1
+Gross profit per customer 406,52 235,68 402,18 539,24 1C
+Personnel cost per employee 234 889 218 750 168 636 163 867 1
+Liquidity ratios
+Current ratio 0,78 0,61 1
+Debtors' days 60,00 65,00 1.5
+Creditors' days 70,00 81,82 1.5
+Cash cycle (10,00) (16,82) 1
+Cash ratio (cash and cash/current
+liabilities)
+4,3% 2,6% 1
+Available 22.5
+Maximum 19
+Total for part (f)(i) 19
+Part (f) Perform an analysis of the financial information, based on the
+extracts from the management accounts prepared by Bongani by –
+(ii) commenting on the outcome of the calculations you
+performed in part (f)(i).
+● Your calculations should include unit economic ratios.
+● Do not perform an analysis on the free cash flow valuation
+performed by Bongani.
+Marks
+1 Revenue
+1.1 A 21% decline in 2024 indicates significant challenges, possibly reflecting a
+loss of market share because of the competition from traditional logistics
+companies, other technology-based service companies and trucking
+companies.
+1
+1.2 Lower revenue could also be attributed to customers and suppliers facing
+demand pressure due to higher interest rates and inflation.
+1
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART III
+15 © SAICA 2025
+1.3 The tough economic conditions that have placed pressure on customers as
+well as the competition could also have forced UC to lower its prices to stay
+competitive as evidenced by the fact that customers increased by 6 000 and
+yet the revenue still declined.
+1
+1.4 A 20% revenue growth projection for 2025 and 15% for 2026 seems optimistic
+given the sharp decline in 2024.
+1
+1.5 Improved advertising alone might not be sufficient to increase the revenues
+by that much and revenue growth might be too aggressive.
+1
+1.6 The increase in advertising costs is not reflected in the operating costs. 1
+1.7 It could be argued though that since customers increased by 6 000 in 2024,
+and are projected to increase by 10 000 in 2025, and another 5 000 in 2026,
+if revenue per customer could increase as well, the revenue projection may
+not be too highly overestimated.
+1
+2 Gross profit
+2.1 The gross profit margin decreased from 22,8% in 2024 to 17,9% in 2025.
+This could be because selling prices were lowered to cope with increased
+competition in the market or it could be because of rising costs due to tough
+economic conditions.
+1
+2.2 The gross profit margin is projected to increase by 10,26% in 2025 and 6% in
+2026, which is quite significant and not supported by current information.
+1
+2.3
+The increase in gross profit is because the cost of purchased transport is
+forecast to increase only with inflation of 5% for both years.
+1
+2.4 This may be unreasonable considering revenues are projected to increase by
+20% and 15%. As most of the purchased transport costs are incurred on a
+shipment-by-shipment basis and not contracted for on a medium-term basis,
+this annual 5% increase does not make sense.
+1
+2.5 The cost of fuel in South Africa is likely to increase by more than 5%, which
+is a further indication that the 5% increase in the cost of purchased transport
+might be unreasonable.
+1
+3 Operating cost and operating profit
+3.1 Operating cost as a percentage of revenue increased from 12% in 2023 to
+14,7% in 2024. The slight increase in operating cost seems unreasonably low
+given the decrease in the revenue.
+1
+3.2
+The cost as a percentage of revenue is forecast to be 12,9% in 2025 and
+11,8%, in 2026 due to the cost increase being kept between 4% and 6%.
+1
+3.3 This may be unreasonable considering that the number of employees is
+expected to increase in the forecast years. The small increase in cost
+suggests that the cost per employee will drop, which is either unrealistic or
+could cause operational inefficiency or low morale.
+1
+4 Return on assets and return on equity
+4.1 The return on assets dropped significantly by 12,4% in 2024, mainly due to
+the decrease in profitability as a result of the decrease in revenue.
+1
+4.2 The return on equity has decreased materially (2023: 83,5%, 2024: -11%)
+indicating a deterioration in shareholder value.
+1
+5 Net profit percentage
+5.1 The net profit margin is also projected to increase by 9,1 percentage points
+in the 2025 forecast and by 4,5 percentage points in 2026. This is not
+supported by past performance and is relying on the projected increase in
+revenue.
+1
+5.2 The decrease in the net profit percentage of 6,2 percentage points in 2024
+was mainly due to a significant decrease in revenue as well as a smaller
+decrease in the cost of transport and related services.
+1
+6 Liquidity ratios
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART III
+16 © SAICA 2025
+6.1 The current ratio worsened to 61 cents in current assets for every R1 current
+liability in 2024 from an already poor 78 cents in 2023. This could be due to
+the lower revenue and resultant lower receivables.
+1
+6.2 Debtors' days worsened by five days in 2024 with customers taking longer to
+pay. This could be due to the demand pressures faced by their customers
+due to higher interest rates and inflation.
+1
+6.3 The creditors’ days increased by 11,82 days to 81,82 days, which may
+indicate that UC may be struggling to make payments to creditors on time.
+1
+6.4 The negative cash cycle could be an indication that the company is facing
+liquidity problems and may not be able to meet its short-term liabilities when
+due based on the current working capital figures.
+Alternatively, UC might be getting cheaper credit from their suppliers which
+could be a positive from a funding perspective .
+1
+1
+6.5 The negative working capital/cash cycle could also be the result of UC having
+to make prompt payments to suppliers, whereas customers only have to pay
+when delivery is made.
+1
+6.6 A negative working capital/cash cycle could be indicative of a structural
+financing problem which puts the business at risk of cashflow constraints
+1
+7 Available cash
+7.1 UC's cash ratio is very poor at 2,62% in 2024 compared to 4,29% in 2023.
+This means that it does not have sufficient cash to cover its current liabilities
+1
+7.2 It seems that the owners may have historically extracted dividends when the
+company is unlikely to have met liquidity tests. This is not conducive to
+liquidity and planned growth plans.
+1
+8 Customers
+8.1 Revenue per customer decreased significantly by (466 / 26%) in 2024. The
+increase of 6 000 customers in 2024 could indicate that, in 2024, UC may
+have gone for an increase in volume at the expense of a drop in price.
+1
+8.2 Stiff competition also played a role towards the significant decrease of
+revenue per customer.
+1
+8.3 The profit per customer decreased to R235 in FY2024 from R406 in 2023,
+which represents a 42% drop. This is mainly due to the decrease in revenue.
+1
+9 Employees
+9.1 The cost per employee has decreased by 6,9% in 2024. This should be
+investigated as it could lead to lower staff morale or possible inefficiency.
+1
+9.2 Cost per employee is forecast to reduce even more in 2025 which, again,
+could possibly lead to inefficiency or low staff morale.
+1
+Available 33
+Maximum 10
+Y1: Critical thinking 1
+Total for part (f)(ii) 11
+Total for part (f) 30
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART III
+17 © SAICA 2025
+Part (g) Criticise the free cash flow valuation performed by Bongani.
+• Do not re-perform the valuation
+• Assume that calculations are arithmetically correct
+Marks
+1 The number of years in the forecast may be too short. If relevant information
+was available, it would have been appropriate to increase the planning period. 1
+2 It seems most items are estimated to grow by 5%, even working capital, which
+raises the question of whether the CFO really applied his mind in estimating
+future cash flows. The figures appear to be inflated to artificially increase the
+value of the company.
+1
+3 The growth of 7% into perpetuity is questionable in view of the decline in
+revenue in 2024 and that the industry is only expected to grow by 5% over
+the next three years and at 5,9% thereafter.
+1
+4 Synergy benefits should not be included in a fair value calculation but only be
+included in a maximum price calculation. 1
+5 The revenue included should be that of UC only and not the gross revenue. 1
+6 No adjustment was made for the depreciation of right-of-use of assets. This
+should have been added back as these are non-cash items. 1
+7 It is in incorrect to deduct both the lease instalments in the free cash and the
+lease liability at the end of the valuation.
+In a free cash flow to firm valuation, financing activities are excluded from the
+free cash flow analysis, and debts are deducted from the firm value instead.
+Thus the lease payments should not be deducted in the free cash flow
+analysis, and the total market value of the leases on the valuation date should
+be deducted from the enterprise value.
+1
+1
+8 It is incorrect to include revenues and costs associated with the intangible
+assets in the free cash as well as add the value of intangible assets at the
+end of the valuation, since this will be double counting.
+1
+9 The app (included in intangible assets) is the main driver of revenue for UC,
+and therefore it does not warrant a separate valuation as its risk profile is that
+of the business.
+For all other intangible assets it could be argued that these could have a
+different risk profile and could therefore warrant a separate valuation.
+1
+1
+10 The amount included for intangible assets to be acquired in future is also not
+correctly calculated. The CFO should estimate what UC will spend on
+intangible assets and not merely add inflation to the movement in intangible
+assets.
+1
+11 The 5% on capital expenditure to be acquired seems arbitrary and does not
+seem to support the massive increases projected for revenue and customer
+numbers. There should be a proper estimate of PPE to be acquired.
+1
+12 The working capital included should be the movement between the estimates
+of future years and not just the net working capital on 2024, increased by 5%. 1
+13 Bad debts should not be included, as its impact would be accounted for in the
+movement in accounts receivables. 1
+14 Amounts are included in the net working capital that should be excluded, such
+as the short-term portion of the lease liability and interest-bearing borrowings. 1
+15 A share of the profit of the associate should be removed from the free cash
+flow as it carries a different risk profile from the business of UC. 1
+16 The investment in the associate should be valued separately and added to
+the valuation. 1
+17 The acquisition of shares in an investment in an associate should not be
+deducted from the valuation. 1
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 1 PART III
+18 © SAICA 2025
+18 The market value of the interest-bearing debt was not deducted from the
+valuation. 1
+19 The taxation calculated does not take into account the movement in tax on
+the statement in financial position, as it was not properly accounted for in the
+movement in working capital (5% increase used instead of movement).
+1
+20 The movement in deferred tax should be removed from the income tax
+expense. 1
+21 No adjustment was made for tax on finance costs.
+For the lease, the s11(a) deduction for the lease payments should be adjusted
+for.
+1
+1
+22 Dividends received are exempt in terms of s10(1)(k). Thus no adjustment is
+needed for tax. 1
+WACC
+23 The equity beta of Roberts should be un-levered, using the Hamada formula
+to remove the effects of its financial leverage. 1
+24 The beta should be re-levered using the Hamada formula with UC's debt to
+equity ratio. 1
+25 An adjustment should probably be made for the country risk premium 1
+26 The following adjustments could also be made:
+26.1 Small stock premium (increase the discount rate, thus reducing the value of
+the firm (and thus the equity). 1
+26.2 Specific risks (e.g. adjustment for marketability and lack of liquidity being
+unlisted) 1
+27 UC’s business risk is increased by reliance on a customer. One customer
+accounts for 10% of revenue vs less than 2% for Roberts. 1
+28 Roberts is diversified, as it offers air and sea transport, which UC does not. 1
+29 The two companies are operating in two very different markets that have
+varying competitive dynamics, regulatory requirements, etc. 1
+30 The risk-free rate should be the long-term yield on ten-year bonds or for a
+longer period and not for a shorter period of two years. 1
+31 The capital structure weight should be based on the debt ratio (debt over
+enterprise) and not the debt to equity ratio. 1
+32 The cost of debt was incorrectly not calculated after tax. 1
+33 The minority discount was inappropriate to apply. The DCF method is a
+majority valuation and a majority stake is being valued. 1
+34 The use of the target debt to equity ratio may be questionable as the current
+interest-bearing debt to equity ratio of UC is 3,55 ((21 595 + 3 205) / 6 991). 2
+Available 39
+Maximum 19
+Y2: Integrative thinking 1
+Total for part (g) 20
+Total for part III 50

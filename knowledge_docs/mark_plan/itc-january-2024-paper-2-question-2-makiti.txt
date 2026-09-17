@@ -1,0 +1,221 @@
+Source: SAICA ITC January 2024 — Paper 2 Question 2 (Makiti).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Paper 2 question 2 8 (of 10) © SAICA 2024
+QUESTION 2 50 marks
+Ignore value added tax
+1 Background
+Ms Sarah Maldash, a 46-year-old South African resident, worked as an associate director in
+the audit division of Makiti Inc. (‘Makiti’). Makiti is an audit and advisory company based in
+Sandton with a February year end.
+Sarah’s remuneration package included the following:
+• Gross monthly salary of R100 000.
+• A monthly entertainment allowance of R5 000.
+• 20 working days of paid annual leave.
+Sarah’s terms of employment included a restraint of trade (RoT) agreement, an extract of
+which is provided below. Makiti used the services of Le Roux Attorneys to prepare the RoT
+agreement at a cost of R13 000 when Sarah joined the firm as an associate director in
+January 2019. This RoT agreement does not form part of Makiti’s standard employment
+contract.
+Annexure A to the employment contract
+Restraint of trade (extract)
+1. In the event of the termination of my employment with the COMPANY for any reason
+whatsoever, I shall not be entitled, for a period of 12 (twelve) months after the date of
+termination of my employment with the COMPANY, to be or become –
+1.1. the proprietor or partner or member or director in any business or company; or
+1.2. connected in any way with any business, firm, company or other organisation
+(other than as an employee);
+which competes in any way with the COMPANY or which carries on the practice of
+audit or advisory services within a radius of 100 (one hundred) kilometres from any
+place of business of the COMPANY for the period of 3 (three) years that immediately
+preceded the termination of my employment with the COMPANY.
+2. Neither shall I, for a period of 12 (twelve) months following the date of termination of
+such employment, be entitled to conduct any business of the nature conducted by the
+COMPANY, either on my own or as an employee of another business, with any person
+who was a client of the COMPANY during the period of 3 (three) years immediately
+preceding the termination of my employment with the COMPANY. This shall include
+being employed by such client.
+3. The COMPANY undertakes to pay me the amount of R700 000 as full and final
+compensation for compliance with clauses 1 and 2 above on the last day of my
+employment.
+2 First CCMA case
+During an out-of-town audit in Richards Bay on 2 September 2022, Mr Simon Lemper, the
+audit partner, suggested to Sarah that they share a hotel room to save costs and comply with
+Makiti’s policy on cost-cutting measures. This proposition made Sarah extremely
+uncomfortable, especially coming from someone to whom she reported directly. She refused
+to share a room with Simon, and immediately sent an email to the human resources manager
+Paper 2 question 2 9 (of 10) © SAICA 2024
+laying a complaint of sexual harassment. Simon retaliated by giving her a written warning and
+a poor performance review.
+Simon failed to attend both an internal disciplinary hearing and subsequently a conciliation
+meeting of the Commission for Conciliation, Mediation and Arbitration (CCMA) during
+December 2022. Because of this failure to attend the Commissioner referred the matter for
+arbitration at the CCMA. On 15 March 2023, the CCMA ruled in Sarah’s favour. The ruling
+stated that the warning issued to Sarah was substantively unfair and that Makiti failed to take
+necessary steps to deal with her complaint. An extract from the ruling is set out below:
+RULING
+1. The respondent [Makiti Incorporated] is ordered to pay the applicant [Ms Sarah
+Maldash] damages of R800 000, based on the violation of her constitutional rights.
+2. The respondent is further ordered to pay the applicant’s full legal costs related to this
+matter.
+Sarah and Makiti submitted the following schedules indicating the legal costs they incurred for
+legal practitioners to appear on their behalf at the CCMA in relation to this matter:
+Date incurred Description Sarah’s legal
+costs
+Makiti’s legal
+costs
+R R
+14 December 2022 Lodgement of a case 5 000 –
+15 – 29 December 2022 Preparation of evidence 15 000 18 000
+3 January 2023 Submission of evidence 2 500 3 000
+30 January 2023 Appearance in CCMA 15 000 18 000
+37 500 39 000
+3 Second CCMA case
+Sarah’s performance at work deteriorated after the sexual harassment incident and she was
+placed on a performance improvement plan. Subsequent to this, her employment was
+terminated on 29 March 2023. On that date, Makiti paid Sarah the following severance
+package:
+• Monthly salary for March 2023.
+• Entertainment allowance for March 2023. However, she did not spend this allowance
+at all.
+• R23 000 for leave accrued to her but not yet taken.
+• R700 000 in fulfilment of the RoT agreement.
+Sarah firmly believed the dismissal was directly connected to the sexual harassment case and
+was therefore unfair. After consulting a labour lawyer, she requested the intervention of the
+CCMA. The CCMA conducted a conciliation hearing but when an agreement acceptable to
+both parties could not be reached, the matter was referred for arbitration.
+After considering the arguments and evidence of both parties, the CCMA arbitrator found in
+favour of Sarah and issued an award for reinstatement with compensation on 8 February 2024.
+Paper 2 question 2 10 (of 10) © SAICA 2024
+An extract from the CCMA arbitrator’s award is reproduced below:
+RULING
+57. The dismissal of the applicant (Sarah Maldash) was both procedurally and
+substantively unfair.
+58. The respondent (Makiti Incorporated) is hereby ordered to reinstate the applicant into
+its employ on terms and conditions no less favourable to her than those that governed
+the employment relationship immediately prior to the dismissal dated 29 March 2023.
+59. The applicant must report for duty at the respondent by 1 March 2024.
+60. The respondent is ordered to pay the applicant back pay in the amount of R1 155 000.
+This amount is based on the applicant’s monthly salary of R100 000 plus an
+entertainment allowance of R5 000 from the date of her dismissal multiplied by the
+period she was unemployed until the resumption of her duties as ordered; thus
+R105 000 x 11 months.
+61. The respondent is ordered to pay this amount to the applicant by no later than
+29 February 2024.
+62. The applicant is ordered to repay to the respondent the leave pay of R23 000, which
+was incorrectly paid in March 2023. The applicant must pay this amount to the
+respondent by no later than 1 March 2024.
+63. Annual leave will accrue to the applicant in accordance with the employment contract
+which has been reinstated and continues to have full force and effect.
+64. The restraint of trade payment is not required to be repaid by the applicant as all
+conditions of the restraint of trade agreement were complied with, despite the
+reinstatement of the applicant.
+4 Employees’ tax
+Mr Lionel Shezi CA(SA) is one of the partners at Makiti and the chairperson of the board of
+directors of Makiti. He discovered that no employees’ tax had been withheld from the back
+pay paid to Sarah because the chief financial officer (who is also a qualified CA(SA)) did not
+believe that Makiti was required to withhold employees’ tax on CCMA awards.
+Paper 2 question 2 required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JANUARY 2024
+PROFESSIONAL PAPER 2
+This paper consists of two questions.
+Answer each question in a separate answer book.
+PAPER 2 QUESTION 2 – REQUIRED
+Marks
+Sub-
+total Total
+(a) Discuss the income tax implications of the following legal costs:
+(i) Whether the legal costs paid by Makiti to Le Roux Attorneys for
+the drafting of the restraint of trade agreement may be deducted
+by Makiti;
+(ii) Whether Makiti may deduct the legal costs relating to the sexual
+harassment case; and
+(iii) Whether Sarah may deduct her legal costs relating to the sexual
+harassment case.
+Assume the current tax legislation applies for all relevant years of
+assessment.
+Communication skills – logical argument
+4
+5
+4
+1 14
+(b) Calculate the employees’ tax that Makiti should have withheld from the
+severance package paid to Sarah in March 2023.
+• Provide a brief reason for your treatment of each item.
+• Where applicable, assume the current tax legislation and tax rates
+apply for all relevant years of assessment.
+Communication skills – presentation
+13
+1 14
+(c) Discuss, with supporting calculations, the employees’ tax that Makiti
+should have withheld from the second CCMA arbitration award paid to
+Sarah in February 2024.
+• Where applicable, assume the current tax legislation and tax rates
+apply for all relevant years of assessment.
+10
+10
+(d) Discuss whether Lionel has any professional obligations relating to the
+information that he discovered with regard to the employees’ tax
+situation.
+Communication skills – appropriate style
+11
+1 12
+Total for question 2 50
+TOTAL FOR PAPER 2 100
+Paper 2 question 2 tax information 1 (of 1) © SAICA 2024
+Extracts from Act No. 19 of 2022: Rates and Monetary Amounts and Amendment of
+Revenue Laws Act, 2022
+Section 6(2)
+In the case of a natural person there shall, subject to the provisions of subsection (4), be
+allowed by way of –
+(a) a primary rebate, an amount of R16 425;
+(b) a secondary rebate, if the taxpayer was or, had he or she lived, would have been 65
+years of age or older on the last day of the year of assessment, an amount of R9
+000; and
+(c) a tertiary rebate if the taxpayer was or, had he or she lived, would have been 75
+years of age or older on the last day of the year of assessment, an amount of R2
+997.
+Section 6A(2)(b)
+The amount of the medical scheme fees tax credit must be –
+(i) (aa) R347, in respect of benefits to the person, or if the person is not a member
+of a medical scheme or fund in respect of benefits to a dependant who is a
+member of a medical scheme or fund or a dependant of a member of a medical
+scheme or fund;
+(bb) R694, in respect of benefits to the person, and one dependant; or
+(cc) R694, in respect of benefits to two dependants; and
+(ii) R234, in respect of benefits to each additional dependant,
+for each month in that year of assessment in respect of which those fees are paid.
+The following table must be used for the calculation of the employees’ tax for all years
+of assessment:
+Schedule I
+(Section 1)
+RATES OF NORMAL TAX
+1. The rate of tax referred to in section 1(1) to be levied in respect of the taxable income
+(excluding any retirement fund lump sum benefit, retirement fund lump sum withdrawal
+benefit or severance benefit) of any natural person, deceased estate, insolvent estate or
+special trust in respect of any year of assessment commencing on or after 1 March 2022 is
+set out in the table below:
+Taxable income Rate of tax
+Not exceeding R226 000 18 per cent of taxable income
+Exceeding R226 000 but not exceeding
+R353 100
+R40 680 plus 26 per cent of amount by which
+taxable income exceeds R226 000
+Exceeding R353 100 but not exceeding
+R488 700
+R73 726 plus 31 per cent of amount by which
+taxable income exceeds R353 100
+Exceeding R488 700 but not exceeding
+R641 400
+R115 762 plus 36 per cent of amount by which
+taxable income exceeds R488 700
+Exceeding R641 400 but not exceeding
+R817 600
+R170 734 plus 39 per cent of amount by which
+taxable income exceeds R641 400
+Exceeding R817 600 but not exceeding
+R1 731 600
+R239 452 plus 41 per cent of amount by which
+taxable income exceeds R817 600
+Exceeding R1 731 600 R614 192 plus 45 per cent of amount by which
+taxable income exceeds R1 731 600

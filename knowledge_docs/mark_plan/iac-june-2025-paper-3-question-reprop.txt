@@ -1,0 +1,478 @@
+Source: SAICA IAC June 2025 — Paper 3 question (Reprop).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC June 2025 1 (of 9) © SAICA 2025
+Paper 3
+PAPER 3 120 marks
+Ignore taxation.
+1 REPROP
+1.1 Reprop: Background
+Remmie Properties Ltd (‘Reprop’) is a company that develops new properties in suburban
+areas across South Africa. It is listed on the Johannesburg Stock Exchange and focuses on
+large metropolitan areas such as Tshwane, Cape Town and Nelson Mandela Bay. Reprop
+does not retain ownership of the properties but transfers ownership to a new homeowner as
+each property is completed. The land in the estate which is not developed as housing and
+sold to homeowners is community land which contains all the communal facilities.
+With the increase in crime rates, challenges with municipal service delivery and issues with
+electricity, Reprop decided to take advantage of the surge in the demand for gated community
+estates with sustainable water and electricity solutions by developing an estate on a piece of
+land it owns in Tshwane. Through this venture, Reprop can enter a new market of buyers
+looking for this type of lifestyle.
+1.2 Development of Spark-of-Afrika
+In 2021, Reprop commenced development of Spark-of-Afrika, an estate built to accommodate
+100 homes, with erfs (stands) ranging from 800 to 1 800 m2 per property. Homeowners receive
+full ownership title in the homes that they purchase within the estate. The Spark-of-Afrika
+estate includes a clubhouse with a gym, a restaurant and a communal swimming pool as well
+as a park. The clubhouse, gym and restaurant have state-of-the-art equipment requiring
+competent staff to operate and maintain it. The estate also has 24-hour security guards at the
+entrance to the estate, in addition to patrols to enhance residents’ security and limit
+unauthorised entry into the estate.
+As Reprop will not retain ownership of Spark-of-Afrika, it registered the Spark-of-Afrika
+Homeowners Association NPC (‘the Spark-HOA’) as a non-profit company. On
+1 January 2023, by which time 25 homes had been purchased in the estate, Reprop
+transferred ownership of the common areas to the Spark-HOA.
+All common areas and improvements, such as roads, streetlights and gardens on the exterior
+of each stand, including the clubhouse, gym, swimming pool, restaurant and park, are the
+property of the Spark-HOA and not the homeowners. Upon the transfer of assets from Reprop
+to the Spark-HOA, a valuation of the common property was performed, and it was valued at
+R26,15 million.
+1.3 Reprop: Auditors
+Reprop has a 31 December financial year end and prepares its financial statements in
+accordance with IFRS® Accounting Standards (IFRS). At the annual general meeting (AGM)
+held in June 2024, the chief executive officer (CEO) announced that he had appointed JEM
+Inc. as the registered auditors for the financial year ending 31 December 2024 (FY2024). JEM
+IAC June 2025 2 (of 9) © SAICA 2025
+Paper 3
+Inc. is a small established firm with two registered audit partners, two audit managers and ten
+trainee accountants, all operating from an office in Durban. The CEO decided that a change
+in auditors, from one of the biggest audit firms in South Africa, was necessary after a dispute
+with the prior engagement partner. JEM Inc. presented its engagement letter to Reprop, which
+it signed without any amendments or restrictions, on 2 July 2024.
+1.4 Reprop: Municipal billings
+The financial statements of Reprop for FY2024 includes a material disclosure note of a
+R1 million contingent liability with a very vague description. When the audit manager of
+JEM Inc. requested further details on this amount, the chief financial officer responded as
+follows:
+This amount is due to historic municipal underbilling for the Spark-of-Afrika water and
+electricity usage during the development phase in 2021 and 2022. Since the
+commencement of the development of Spark-of-Afrika, the municipal accounts have not
+reflected any water or electricity usage. We have not performed any estimates /
+calculations in the past but feel it should be disclosed now and therefore we did a
+calculation for the water and the electricity to support our disclosure amount. In
+performing this calculation, we multiplied the water and electricity usage according to
+the bulk meters we could identify by the rate for 2021 and 2022. As the Spark-HOA
+obtained ownership of the common property on 1 January 2023, Reprop did not need
+an estimate for FY2023 or FY2024. The municipality is so inefficient that we have
+decided not to report this issue – it is unlikely we will find anyone helpful to assist
+anyway. I am sure they will decide to issue a backdated account to Reprop at some
+stage. If so, we know someone who can help make this problem disappear. We have
+just estimated the amount payable for the period from commencement of construction
+until the common property was handed over to the Spark-HOA.
+2 THE SPARK-HOA
+2.1 The Spark-HOA: Background
+Homeowners who purchase a home within Spark-of-Afrika automatically become members of
+the Spark-HOA and can access all amenities. They participate in its governance and have the
+right to nominate and vote for the appointment of the directors of the Spark-HOA.
+Reprop established a memorandum of incorporation (MOI) and membership rules for the
+Spark-HOA, which are enforced upon all members. The provisions of the MOI stipulate that
+the Spark-HOA should have a functioning audit committee and that the Spark-HOA is subject
+to an audit. In addition, the Spark-HOA exercises control over the provision of services, such
+as maintenance of common areas, hiring clubhouse and security staff, appointing contractors
+to carry out services within the estate, and collecting the monthly levies that each homeowner
+is obligated to pay. The monthly levies from members of the Spark-HOA are used to finance
+common property expenses such as salaries, security, garden upkeep, facility improvements
+and payments for water and electricity usage on common property. Homeowners are
+responsible for the water and electricity payments related to their own properties.
+IAC June 2025 3 (of 9) © SAICA 2025
+Paper 3
+2.2 The Spark-HOA: Strategy and governance
+The members of the Spark-HOA appointed the following individuals to serve on the board of
+directors:
+Name Portfolio Occupation
+Mr Joe Budden Chairman of the board Entrepreneur
+Mr Archie Fernando Audit and finance Accounting teacher
+Ms Ashley Adams Human resources Insurance agent
+Ms Lebo Sekoto Properties Supply chain manager
+Mr Francois de Kok Legal Lawyer
+Mr Simon Carter Facilities management Film director
+The directors are not remunerated for their work in this capacity.
+The Spark-HOA is governed by the Companies Act and the Community Schemes Ombud
+Service Act. While adherence to the King IV Report on Corporate Governance is not
+mandatory for homeowners’ associations, the Spark-HOA applies its principles and
+recommended practices as it provides guidelines on good governance, ethical leadership, risk
+management, financial management, and owner engagement.
+The MOI contains the following provisions:
+• The directors cannot approve contracts exceeding R250 000 without the approval of the
+majority of the Spark-HOA members;
+• All improvements to the clubhouse and common areas can only be made following
+approval at an AGM;
+• A stringent process must be followed for the appointment of new contractors, and this is
+to be enforced by the facilities management portfolio owner in consultation with the
+board and members of the Spark-HOA;
+• The directors are accountable to the Spark-HOA members; and
+• Details of emergency expenditure must be circulated to the members for approval by
+means of a resolution.
+The Spark-HOA's strategic goals are focused on maintaining property values, fostering a
+community spirit and ensuring that Spark-of-Afrika remains a desirable place to live. The goals
+are as follows:
+1 Maintaining and enhancing property values: Enforcing rules and regulations regarding
+property upkeep, landscaping and exterior modifications to ensure a uniform and
+attractive appearance of homes and common areas. Proper maintenance and
+improvement of the clubhouse and other common areas to enhance community appeal
+and functionality.
+2 Financial stability and transparency: Establishing and managing the annual budget,
+ensuring sufficient reserve funds for future repairs and improvements, and conducting
+regular audits of annual financial statements. Implementing effective systems for
+collecting levies to ensure that financial resources are available for ongoing and future
+projects.
+3 Community engagement and communication: Maintaining open lines of communication
+with members through newsletters, a website, social media and regular meetings to
+keep them informed about the Spark-HOA activities, decisions and community events.
+IAC June 2025 4 (of 9) © SAICA 2025
+Paper 3
+4 Safety and security: Ensuring a safe living environment by implementing and
+maintaining safety measures such as security patrols and proper lighting in common
+areas. Developing and promoting preparedness plans for natural disasters and other
+emergencies.
+5 Regulatory compliance and governance: Ensuring adherence to the Spark-HOA's
+covenants, conditions and restrictions, as well as national and municipal laws. Providing
+ongoing training and resources for board members to ensure effective governance and
+decision making.
+6 Sustainability and environmental stewardship: Promoting environmentally friendly
+practices such as recycling programmes, water conservation and using sustainable
+materials in community projects. Encouraging energy-efficient upgrades and practices
+among homeowners and in common areas to reduce the community's environmental
+footprint.
+The following is an extract of the minutes of the AGM:
+MINUTES OF THE SPARK-HOA AGM
+HELD ON 4 JUNE 2024
+Present
+93 units in person or by proxy (as per the signed attendance register)
+By invitation
+Ms Sarah Lessing (external auditor)
+1 Welcome
+2 Election of chairperson
+Mr Joe Budden was elected as the chairperson of the meeting.
+3 Minutes of previous meeting
+4 Auditors
+The Spark-HOA has a 31 December financial year end and prepares its financial
+statements in accordance with IFRS. The Spark-HOA was audited by L&P
+Registered Auditors Inc. (‘L&P RA’) in 2023. Mr Budden emphasised that the audit
+engagement partner, Ms Sarah Lessing CA(SA), RA, is familiar with the operations
+of the Spark-HOA since she was the designated auditor on the engagement in the
+previous year. Mr Budden feels that the Spark-HOA audit is not mandatory because
+the company is a non-profit company, and the audit is only undertaken because of
+the MOI. Mr Budden accordingly believes there would not be an issue with the re-
+appointment of L&P RA. The members approved the re-appointment of L&P RA to
+audit the Spark-HOA for FY2024.
+5 Finance portfolio
+The chairman of the board raised concerns about the late payment of levies and
+annual financial statements not being approved on time due to late preparation. In
+addition, some members complained that they were not receiving levy statements
+and correspondence on time. Consequently, the members at the meeting resolved
+that a new director be appointed for the finance portfolio as it appears that Mr
+Fernando, who was not present at the meeting, is disinterested in his role. All
+members voted in favour of appointing Ms Carol Senande, a newly qualified CA(SA),
+as the director in charge of the finance portfolio.
+IAC June 2025 5 (of 9) © SAICA 2025
+Paper 3
+The board appointed L&P Prop (Pty) Ltd (‘L&P Prop’), a property management
+company and a subsidiary of L&P RA., to prepare the annual financial statements on
+time on behalf of the Spark-HOA. Mr Budden assured the members that although
+L&P Prop is a subsidiary of L&P RA, the audit company is totally separate from L&P
+Prop.
+6 Contract services
+The chairman informed members that he approved a new garden service contractor
+and appointed a new security company as of 1 January 2024. He believes they both
+have thus far been offering far better services than the previous contractors.
+7 Closing
+After the AGM Carol established that her role would include the timely collection of levies from
+members as well as review of annual financial statements, preparation of annual budgets, and
+approval of expenses. Carol discovered that the board of directors has been making
+questionable decisions. Carol fears that the role of the board chairperson has not been
+executed with the necessary diligence and care. Joe was the first to purchase a home in the
+estate and ensures that he is involved in all decision making so that all portfolios are
+coordinated and that the Spark-HOA complies with the MOI and membership rules as per his
+interpretation. Joe takes pride in his influence on the board.
+In addition, the appointment of the new contractors posed the following concerns to Carol:
+1 The contractor responsible for gardening services and upkeep of common areas, Joey
+Budden, is the first-born son of Joe. Joey and his father are both involved in the
+operations of the garden services company.
+2 Joe insisted on a change in the security company without providing reasons. The new
+security company quoted the Spark-HOA an annual fee of R1,5 million, which is 13%
+higher than the fee charged by the previous security company.
+3 The facilities management director also told her that neither one of the contractors meets
+the minimum B-BBEE requirements, despite this being stipulated in the Spark-HOA’s
+contractor appointment protocols.
+The properties director noted that she had a problem with some improvements that had been
+made on the common areas that were not necessary. Some of the contractors appointed for
+these improvements had not been approved in terms of the contractor appointment processes
+and the directors (apart from Joe) were also of the opinion that these had been wasteful
+expenditures. The appointment of these contractors was not included in the minutes of the
+directors' meetings. However, for fear of challenging Joe, these contractors were accepted,
+and the related expenses were incurred. Carol discovered that these contractors had been
+approved via a message in the board of directors' WhatsApp chat group.
+2.3 The Spark-HOA: Solar and water backup solutions
+At the time of the 4 June 2024 AGM, none of the homes in the Spark-of-Afrika estate had solar
+or water backup solutions. The board of the Spark-HOA was tasked by the homeowners with
+performing a viability assessment of solar and water backup solutions for individual home use.
+Critical considerations would be whether these solutions should be procured under the Spark-
+HOA or procured independently by the homeowners. All solutions are to be purchased and
+ready for use on 1 July 2025.
+IAC June 2025 6 (of 9) © SAICA 2025
+Paper 3
+The properties director approached a trusted supplier of solar and water backup solutions,
+who provided the following quotations for different solar and water packages for individual
+home use:
+Package Notes
+Price per
+package
+R
+Solar solution
+Mini-solution 1 93 500
+Grow-solution 1 155 000
+Plus-solution 1 245 000
+Water solution
+Starter 5 000 litre 2 33 920
+Combo 10 000 litre 2 56 800
+Notes
+1 The solar packages all include solar panels, lithium batteries and hybrid inverters, but
+differ in quantity and type of product. The price also includes the installation of these
+solutions at individual homes. Homeowners will be able to add solar panels to the
+packages at their own cost at any time, should they wish to do so.
+2 The water packages all include water tanks, pumps, UV lights and water filters but differ
+in size and type of product. The price of water packages includes the installation at
+individual homes. These are connected in such a way that homeowners can make 100%
+use of rainwater while the water tanks are full but can also fill tanks with municipal water
+from the main water lines if necessary.
+2.3.1 Procurement of solar and water solutions under the Spark-HOA
+The supplier offered a discount of 15% on each solution package if the Spark-HOA procures
+water and solar solutions for use by homeowners who elect to participate (all quoted prices
+provided are before the 15% discount). All installations will be completed by 30 June 2025.
+On completion of the installations on 1 July 2025, the Spark-HOA will pay for the water and
+solar solutions. An additional special monthly levy, which will be over and above the standard
+ordinary monthly levy, will be payable by homeowners who elect to participate in the
+procurement under the Spark-HOA option. The special monthly levy will cover the installation,
+insurance and maintenance of the package chosen and will be introduced for a period of three
+years, starting on 1 July 2025. The special monthly levy will be based on the type of solar and
+water solution package that is installed at each of the owner’s homes:
+Package
+Special
+monthly
+levy
+R
+Solar solution
+Mini-solution 3 500
+Grow-solution 4 800
+Plus-solution 7 200
+Water solution
+Starter 5 000 litre 960
+Combo 10 000 litre 1 500
+IAC June 2025 7 (of 9) © SAICA 2025
+Paper 3
+A survey was carried out on the types of solar and water solution packages homeowners
+would consider. From the survey it was estimated that 20 homeowners would prefer the Plus-
+solution solar package, 60 the Grow-solution and 18 the Mini-solution. The remaining two
+homeowners indicated that they did not want a solar solution. In the case of the water
+solutions, there is an 80% probability that 60 homeowners would opt for the Combo 10 000
+litre, while 40 homeowners would opt for the Starter 5 000 litre. However, there is a 20%
+probability that only 35 homeowners would opt for the Combo 10 000 litre and 65 for the Starter
+5 000 litre.
+The Spark-HOA will take out insurance for the water and solar solution packages for a period
+of three years, commencing on 1 July 2025. After this period these costs will be for each
+homeowner’s own account. The insurance company offered a special quotation that would
+cover all the water and solar solutions purchased by the Spark-HOA. This entailed a monthly
+premium of R750 for each solar solution package and R350 for each water solution package,
+irrespective of the type of water or solar package procured. The quotation stipulated an annual
+increase of 8% in the insurance premiums.
+A maintenance company will be contracted to perform annual services and maintenance on
+the installed water and solar solutions for the three-year period starting 1 July 2025. After this
+period these costs will be for each homeowner’s own account. The maintenance company will
+charge the Spark-HOA a standard base fee per annum for servicing all the solutions, while a
+variable tariff will be charged per maintenance hour for general repairs. The variable per hour
+tariff will be at a certain rate for the first 100 maintenance hours worked, after which it will
+decrease to a lower variable per hour tariff for any hours in excess of 100 maintenance hours
+worked for the remainder of the three-year contract (i.e., variable hours are considered on a
+cumulative basis over three years).
+The average total annual service and maintenance fees payable by the Spark-HOA per the
+contract based on different estimated maintenance hours used in the first year starting on
+1 July 2025 are as follows:
+Total annual service
+and maintenance bill
+Estimated
+maintenance hours
+usedR
+275 000 50
+290 000 80
+322 500 150
+367 500 250
+It is estimated that homeowners will use 25 maintenance hours in total in the first contractual
+year, 55 maintenance hours in the second and 85 maintenance hours in the third. An
+inflationary annual increase of 4% is expected for both the fixed and variable portion of the
+maintenance cost.
+2.3.2 Independent procurement of solar and water solutions by the homeowners
+If the Spark-HOA does not procure water and solar solutions for the homeowners, the
+homeowners will have the option to procure these solutions independently.
+The second part of the survey, on independent procurement, showed that between 70% and
+90% of the current homeowners will indeed be interested in procuring solutions independently.
+However, not all will procure solutions right away, predominantly due to individual cash flow
+constraints, and installations will be done over the next five years.
+IAC June 2025 8 (of 9) © SAICA 2025
+Paper 3
+2.4 The Spark-HOA: Sustainability and environmental performance forecast
+The Spark-HOA expects a sharp decrease in the purchase of both electricity and water from
+the municipality if it procures electricity and water solutions for the homeowners to be installed
+on 1 July 2025 for two reasons: (1) because of the self-generation and storage by
+homeowners, and (2) because homeowners will become more environmentally conscious.
+This sharp decrease is expected to reduce and normalise to a steady trend over a longer term
+of usage as homeowners reach optimal levels of self-generation and storage.
+The following annual information forecast was based on expected homeowner behaviour and
+the assumption that the Spark-HOA will procure solar and water solutions from 1 July 2025:
+FY2025
+Actual
+FY2026
+Forecast
+FY2027
+Forecast
+FY2028
+Forecast
+Average electricity consumption
+per home per month 1 200 kWh 1 150 kWh 850 kWh 750 kWh
+Average electricity purchased
+(from the municipality) per home
+per month 1 200 kWh 935 kWh 400 kWh 290 kWh
+Average water consumption per
+home per month 25 kilolitres 25 kilolitres 20 kilolitres 18 kilolitres
+Average water purchased (from
+the municipality) per home per
+month 25 kilolitres 10 kilolitres 8 kilolitres 6 kilolitres
+Homes using recycling
+programmes 60 65 75 80
+2.5 The Spark-HOA: Financing
+If the Spark-HOA decides to fund the solar and water backup solutions, the board of directors,
+including Carol, have proposed the following options to raise funds for this acquisition:
+Option 1
+Arrange a secured loan using the clubhouse as collateral to source additional funds from
+financial institutions. The loan will have the following terms:
+Principal amount R17,4 million
+Effective annual interest rate Prime less 1%
+Term 3 years
+The principal amount together with interest will be repaid in three equal annual instalments,
+with the first repayment due on 30 June 2026.
+Attorney and upfront loan fees will amount to 4% of the total loan amount.
+Option 2
+Source a sustainability-linked loan from SusBank. SusBank is willing to extend a loan of
+R17,4 million for a three-year term. The principal will be repayable at the end of the loan term
+at a premium of 10%. Interest is payable annually, with a year 1 interest rate of 9,5%. For
+years 2 and 3, the year 1 interest rate will decrease by 15% for each year in which all the
+following conditions are met:
+IAC June 2025 9 (of 9) © SAICA 2025
+Paper 3
+Average electricity consumption per home 15% annual decrease
+Average water consumption per home 20% annual decrease
+Homes using recycling programmes 15% annual increase
+Attorney and upfront loan fees will amount to 2% of the total loan amount.
+Option 3
+Use the cash reserve balance which is intended to be used by the Spark-HOA on future
+repairs, maintenance and improvements on common areas property, to fund the balance
+required for the initial investment in the solar and water backup solutions. The cash reserve
+balance is currently earning interest of 6% per annum.
+2.6 The Spark-HOA: Additional information
+1 The weighted average cost of capital of the Spark-HOA is 15%.
+2 The South African prime rate is 11,75%.
+IAC June 2025 1 (of 1) © SAICA 2025
+Paper 3 required part I
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2025
+PROFESSIONAL PAPER 3
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 3 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Discuss, with reference to section 1.3 (Reprop: Auditors), the matters
+JEM Inc. should consider regarding its appointment as the auditors
+of Reprop for FY2024.
+X1: Communication skill – logical argument
+12
+1 13
+(b) With reference to section 1.4 (Reprop: Municipal billings) –
+(i) discuss the risks of material misstatement at the assertion level
+for the contingent liability of Reprop in FY2024; and
+(ii) formulate substantive tests of detail procedures to verify the
+existence, accuracy, valuation and allocation, and
+presentation, of the contingent liability of Reprop for FY2024.
+6
+13 19
+(c) Discuss, with reference to section 1.4 (Reprop: Municipal billings),
+the ethical concerns related to Reprop’s decision on the municipal
+underbilling.
+• Do not discuss any aspects related to the SAICA or IRBA Codes
+of Professional Conduct.
+6
+6
+(d) Discuss any concerns you may have with regard to the Spark-HOA’s
+compliance with the Companies Act.
+• Do not discuss any concerns related to section 45 of the
+Companies Act.
+• Do not discuss any concerns related to the composition of the
+audit committee.
+X1: Communication skill – clarity of expression
+13
+1 14
+(e) Discuss Carol’s professional responsibility relating to the information
+that she discovered at and after the AGM of the Spark-HOA.
+Y6: Ethical reasoning
+11
+1 12
+Total for part I 64
+IAC June 2025 1 (of 1) © SAICA 2025
+Paper 3 required part II
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2025
+PROFESSIONAL PAPER 3
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 3 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(f) Critically evaluate whether the decisions of the board of directors of
+the Spark-HOA align with its strategic objectives.
+• Do not discuss sustainability and environmental strategic goals.
+• Do not discuss regulatory compliance and governance issues.
+9
+9
+(g) Perform a net present value analysis and conclude on whether the
+Spark-HOA should undertake to procure solar and water solutions
+under the Spark-HOA based on the information in the scenario.
+• Assume for calculation purposes that all cash flows occur at the
+end of the year.
+• Do not consider the impact on the homeowners of savings in
+electricity and water costs.
+• Do not include the effect of the financing of the project.
+Y4: Decision making
+20
+1 21
+(h) Evaluate the performance forecast of the Spark-HOA in line with its
+sustainability, environmental stewardship and strategic goals.
+• Assume that the water and solar solutions are procured under
+the Spark-HOA.
+• Base your evaluation on relevant non-financial performance
+indicators.
+X1: Communication skill – logical argument
+9
+1 10
+(i) Write a report to the board of directors of the Spark-HOA, in which you
+advise it on the best option for financing the solar and water backup
+solutions.
+• Assume that the sustainability-linked loan conditions in option 2
+of section 2.5 (The Spark-HOA: Financing) are met.
+• Assume that the water and solar solutions are procured under
+the Spark-HOA.
+X1: Communication skill – layout and structure
+15
+1 16
+Total for part II 56
+TOTAL FOR THE PAPER 120
+IAC June 2025 2 (of 1) © SAICA 2025
+Paper 3 required part II

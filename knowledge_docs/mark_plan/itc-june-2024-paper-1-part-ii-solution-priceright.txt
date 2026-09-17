@@ -1,0 +1,545 @@
+Source: SAICA ITC June 2024 — Paper 1 Part II suggested solution (PriceRight).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 part II 1 © SAICA 2024
+Part (c) Discuss whether the auditors will be permitted, in terms of the
+Companies Act and the SAICA Code of Professional Conduct, to
+prepare journal entries related to the sale of the shares in
+Pharmcon.
+Marks
+1 Sec 84(1)(a) states that chapter 3 of the Companies Act applies to all public
+companies. As PriceRight is a listed public company (and therefore, a
+public company in terms of the Companies Act), sec 90 to 94 will be
+applicable.
+1
+2 Sec 90 considerations
+In terms of sec 90(2), the auditor may not perform the duties of an
+accountant or bookkeeper habitually and regularly (s90)(2)(b)(iv).
+2.1 Preparing the journal entries for the sale of the shares in Pharmcon will be
+necessary to prepare the financial statements and thus constitute taking
+on the duties of an accountant. 1
+2.2 ‘Habitually’ or ‘regularly’ is not defined, but as the sale of the shares in
+Pharmcon is likely to be a once-off event/not repeated annually, it is
+unlikely that this would be defined as ‘regularly’ or ‘habitually’. 1
+3 Sec 93 considerations
+3.1 In terms of sec 93(3) ‘An auditor appointed by a company may not perform
+any services for that company that would place the auditor in a conflict of
+interest as prescribed or determined by IRBA in terms of section 44(6) of the
+APA or as may be determined by the company’s audit committee in terms of
+sect 94(7)(d)’.
+The auditors will face a conflict of interest if they prepare journal entries
+for the same company for which an audit opinion will be expressed. 1
+4 Sec 94 considerations
+4.1 The audit committee must consider whether the auditor’s independence
+may have been prejudiced, having regard for the extent of any work
+undertaken by the auditor for the company (s94(8)(b)(ii)). In considering
+independence, the audit committee must consider any criteria relating to
+independence prescribed by the IRBA ((s94(8)(c)) of which preparation of
+journal entries may jeopardise independence.
+1
+4.2 The audit committee must pre-approve any non-assurance services
+performed by the auditor (s94(7)(e)). The audit committee should, however,
+consider whether the provision of the non-assurance service by the auditor
+should be approved, given the independence concerns created in terms
+of the SAICA Code of Professional Conduct (CoPC).
+1
+SAICA Code of professional conduct
+5 The auditors are professional accountants in public practice; therefore parts
+1, 3 & 4 of the SAICA/IRBA CoPC applies.
+1
+6. In terms of the SAICA CoPC, PriceRight is a public interest entity as it is a
+listed entity. 1
+7 Preparing journal entries for a client while expressing an opinion on the
+financial statements that the auditor assisted in preparing creates a self-
+review threat to independence.
+1
+½
+½
+8 Option 1 – specific prohibition from s601
+8.1 Preparing journal entries constitutes an accounting and bookkeeping
+service and falls within the scope of s601 of part 4 of the CoPC.
+1
+8.2 A firm or a network shall not provide accounting and bookkeeping
+services to an audit client that is a public interest entity (s601.6).
+1
+9 Option 2 – general prohibition for audit clients that are public interest
+entities
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 part II 2 © SAICA 2024
+9.1 Where the provision of a non-assurance service to an audit client that is a
+public interest entity creates a self-review threat to independence, that threat
+cannot be eliminated, and safeguards cannot be applied to reduce the
+threat to an acceptable level (s600.15 A2).
+1
+10 Conclusion
+10.
+1
+The preparation of the journal entries related to the sale of shares in
+Pharmcon will not be permitted either in terms of the Companies Act or the
+SAICA CoPC.
+NOTE: The mark is awarded for concluding, regardless of whether the
+conclusion reached is correct (but it must agree with the discussion).
+1C
+Available 14
+Maximum 8
+Communication skills – logical argument 1
+Total for part (c) 9
+Part (d) Describe, with reference to the information contained in section 7,
+the tests of detail the auditor should perform to obtain sufficient and
+appropriate audit evidence –
+(i) about the fair value loss recognised in the separate financial
+statements of FoodGood; and
+Ignore any tests of detail related to the following:
+• Taxation;
+• Assessing the competence of the accounting staff;
+• Transferring any unadjusted audit differences to the schedule
+of unadjusted audit differences; and
+• Obtaining a schedule and tracing it to the trial balance and
+general ledger.
+Marks
+1. Obtain a signed management representation letter addressing all relevant
+assertions over the fair value loss. 1
+2. Obtain the calculation of the fair value loss on the investment in Phoenix and
+recalculate for mathematical accuracy to ensure that it is accurate. 1
+3. Through inspection, agree the previous year’s fair value with the audited
+financial statements / work papers to ensure that the values used in the
+calculations are accurate.
+1
+4 Regarding the work of management’s expert
+4.1 Inspect the agreement between management and Jessica to ensure that a
+valid agreement exists by assessing the contract's validity and/or inspecting
+signatures.
+1
+Evaluate the competence, objectivity and appropriateness of the work
+performed by the expert by performing the procedures below:
+4.2 Inspect proof of membership to professional bodies, CV and qualifications
+to assess her relevant experience and competence, etc.
+1
+4.3 Through enquiry with the expert, ascertain any potential conflict of interest
+that could result in concerns around the objectivity of the expert.
+1
+5 Inspect the minutes of the board meeting where the fair value loss and the
+valuation performed by the expert have been approved.
+1
+6 Accounting estimates
+6.1 Through inspection of calculation/discussion assess the appropriateness of
+the assumptions and estimates used concerning market data and the
+results of audit work performed on FoodGood.
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 part II 3 © SAICA 2024
+6.2 Compare the assumptions (rate of return or risk-free rate) used in the
+company, to those rates used by similar clients/available in the market.
+1
+6.3 Assess the reasonability of the valuation performed against the requirements
+for determining fair value per IFRS 13.
+1
+6.4 The auditor should determine its own point estimate/its own range of
+estimates (for example, performing retrospective reviews of past fair value
+adjustments, scenario analysis of various fair values, and associated
+probabilities) and compare it to Jessica's calculations.
+1
+6.5 The auditor should perform the 'stand back' test and evaluate whether the
+audit evidence obtained supports the assessment and calculations
+performed by Jessica.
+1
+6.6 Obtain audit evidence from events occurring up to the date of the
+auditor’s report to assess whether it provides additional information about
+the fairness of the estimates made at year-end.
+1
+7 Discuss with management the need to appoint an auditor’s expert to
+perform an independent valuation. 1
+Available 14
+Maximum 6
+Total for Part (d)(i) 6
+Journals that will be written from the analysis (for completeness)
+Description Dr.
+R
+Cr.
+R
+Journal 1
+Investment in associate (SoFP) 8 000 000
+Retained earnings (SoCE) 2 000 000
+Retained earnings (SoCE) 6 000 000
+Recognition of share since acquisition reserves and gain
+from bargain purchase
+Journal 2
+Investment in associate (SoFP) 2 260 000
+Share in other comprehensive income of associate (OCI) 140 000
+Profit share in associate (SoCE) 2 400 000
+Recognition of share in current year profit and other
+reserves movements
+Journal 3
+Other income (P/L) 40 000
+Investment in associate (SoFP) 40 000
+Elimination of dividend received
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 part II 4 © SAICA 2024
+Part (d) Describe, with reference to the information contained in section 7,
+the tests of detail the auditor should perform to obtain sufficient and
+appropriate audit evidence –
+(ii) in auditing the investment in the associate included in the
+consolidated financial statements of PriceRight.
+Ignore any tests of detail related to the following:
+• Taxation;
+• Assessing the competence of the accounting staff;
+• Transferring any unadjusted audit differences to the schedule
+of unadjusted audit differences; and
+• Obtaining a schedule and tracing it to the trial balance and
+general ledger.
+Mark
+s
+General
+1.1 Obtain a signed management representation letter addressing all relevant
+assertions over the equity accounted profits of FoodGood.
+1
+1.2 Recalculate the analysis of owner’s interest to verify the mathematical
+accuracy of all the amounts listed.
+1
+1.3 Agree the amounts listed in the analysis with the journals processed to
+account for the investment in associate in the consolidated financial
+statement; and
+1
+1.4 Assess the logic of the journal entries processed, by inspecting that the
+journal entries were correctly debited and credited (i.e., the dividend
+received was reversed).
+1
+1.5 Agree the journal entries processed since the acquisition to equity account
+for FoodGood, excluding movements in the current year, to the journal
+entries processed in the prior years.
+1
+1.6 Inspect the consolidated financial statements of the PriceRight group for the
+presentation (and disclosure) of a separate line item for –
+• a share of profit in associate in the consolidated statement of profit or
+loss and the share of other comprehensive income of associate; and
+• investment in associate presented under non-current assets in the
+statement of financial position.
+1
+1
+2 The percentage share used in the calculation
+2.1 Agree the 40% to the original purchase contract to verify the percentage
+used in the calculation. 1
+2.2 Inspect minutes of the management/board meetings for any indication that
+PriceRight has sold/purchased shares in FoodGood to ensure that the 40%
+did not change in the current year.
+1
+2.3 Inspect the share certificates held by PriceRight and divide by the number
+of shares in issue by FoodGood (you have access to all information of the
+group).
+1
+2.4 Recalculate the investment in FoodGood as 40% of the net equity as
+reflected in the separate financial statements of FoodGood and as adjusted
+for the bargain purchase.
+1
+3 Profit for the year and mark-to-market reserve
+3.1 Agree the amount of the profit to the signed separate annual financial
+statements of FoodGood to verify that this amount is correct.
+1
+3.2 Agree the amount of the movement in the mark-to-market reserve to the
+signed separate financial statements of FoodGood to verify that this amount
+is correct.
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 part II 5 © SAICA 2024
+4 Dividends paid / received
+4.1 Inspect the FoodGood workpaper/statement of changes in equity for the
+value of the dividend paid by FoodGood to ensure that a dividend of
+R100 000 was paid.
+1
+4.2 Agree the dividend paid to the amount recognised by PriceRight (40%
+thereof).
+1
+4.3 Inspect the workpaper for FoodGood for evidence that a resolution for the
+dividend was passed and there was a cash outflow.
+Note: Given the nature of the dividend, audit work would presumably have
+been performed on the dividend in the separate financial statements of
+FoodGood.
+1
+4.4 Inspect the bank statements of FoodGood that dividends to the value of
+R100 000 was paid (alternatively, inspect the bank statements of PriceRight
+for the receipt of R40 000 from FoodGood as a dividend payment).
+1
+Available 17
+Maximum 8
+Total for Part (d)(ii) 8
+Communication skills – clarity of expression 1
+TOTAL FOR PART (d) 15
+Part (e) Describe the agreed-upon procedures you would advise
+management to request the auditors to perform to identify any
+fictitious customers on the list of non-performing customer
+accounts.
+• Do not deal with the classification of a customer as a non-
+performing account.
+Marks
+1 Obtain and inspect the list of underperforming customer accounts for any
+abnormalities (using CAATS), such as –
+• duplicates of customers names, ID numbers, cell phone numbers,
+home addresses, etc.
+• blank fields, such as names and surnames, ID numbers, cell phone
+numbers, home address and monthly income.
+1
+1
+2 Agree on a sample of customers from the list of underperforming
+customer accounts, and for each customer selected, obtain the related
+application form and inspect that: 1
+2.1 • all required details have been provided (missing details may indicate
+an application for a fictitious person);
+1
+2.2 • the details on the application form match the supporting
+documentation provided; and
+1
+2.3 • the supporting documentation provided appears authentic and
+relates to the customer.
+1
+2.4 Perform an online verification check of the validity of the ID number. 1
+2.5 Inspect the application form for the customer's signature as evidence of
+agreeing to the terms and conditions and that it is not a fictitious customer.
+1
+2.6 Inspect the application form for evidence of approval by the financial
+services division.
+1
+3 For each customer selected, perform the following procedures:
+3.1 Request the outstanding invoices, making up the balance owing, and
+inspect the invoices to ascertain that the customer made purchases.
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 part II 6 © SAICA 2024
+4 Using the cell phone number provided on the application form,
+confirm, via positive circularisation, the customer’s name and that the
+customers owes PriceRight money.
+1
+5 Inspect bank statements for the payment of any amounts the customer
+owes (subsequent receipts testing).
+1
+Available 12
+Maximum 8
+Communication skills – clarity of expression 1
+Total for part (e) 9
+Part (f) Discuss the following aspects that PriceRight should have
+considered before changing from diesel generators to solar
+systems:
+(i) Governance and business ethics; and
+Marks
+Governance/ethical considerations
+4.1 King IV principle 1 provides that the governing body should lead
+effectively and ethically. The characteristics state that they should act
+responsibly by considering the effect of diesel fumes on the health of
+clients and workers, the consequences of noise pollution, and the long-term
+sustainability and ethical extraction of diesel.
+1
+4.2 The company might not be seen as a good corporate citizen in
+accordance with King IV principle 3 if it chooses to continue using diesel
+generators that are not environmentally friendly.
+1
+4.3 There is a potential breach of fiduciary duties by the directors (sec 76)
+of the Companies Act, considering how the solar system installer was
+recommended.
+• Due care or diligence should be taken given the large amounts
+involved and the potential financial impact on the business.
+• The sustainability director has used her position to gain an
+advantage/did not act in the company's best interest by advising the
+company to use a friend who is not accredited rather than
+considering what is in the best interest of PriceRight.
+NOTE: Max 2 for breach of fiduciary duty.
+1
+1
+4.4 Knowingly breaking the law (fiduciary duties) and acting unethically
+demonstrates a lack of integrity by the directors involved in the decision
+to use Botes Solutions.
+1
+King IV Principle 16 provides that a stakeholder-inclusive approach
+should be adopted
+4.5 There could be potential losses for the shareholders due to not properly
+vetting the supplier to be used to install the systems (stakeholder inclusive).
+1
+4.6 The decision could be considered not inclusive for all stakeholders as it
+defeats the spirit of fair business dealings, and other suppliers were not
+assessed on their merits.
+1
+4.7 Was a proper supply chain or procurement process followed in
+appointing the installer of the solar systems, as it does not seem qualified
+based on the accredited list? This could lead to reputational damage and
+financial losses for the company.
+1
+4.8 Poor application of the ‘good for self, good for others’ principle. The
+decision to use Botes Solutions is in the best interest of the sustainability
+director only and adversely affects the company, shareholders and other
+suppliers.
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 part II 7 © SAICA 2024
+4.9 Nepotism: Botes Solutions, which has a long-standing relationship with the
+sustainability director, may be seen to be favoured because of its
+relationship and, as a result, benefiting unduly from it.
+1
+4.10 Being associated with Botes Solutions could harm PriceRight’s
+reputation if Bakkie is incompetent.
+1
+Explanation:
+The director's involvement does not trigger a personal financial interest
+within the scope of s75 of the Companies Act. Not within the scope (1) as
+a friend is not a related person (1) as defined in s2 of the Companies Act.
+Available 11
+Maximum 5
+Total for part (f)(i) 5
+Part (f) Discuss the following aspects that PriceRight should have
+considered before changing from diesel generators to solar
+systems:
+(ii) Strategic and other qualitative factors.
+Marks
+STRATEGIC CONSIDERATIONS
+1 Diesel generators
+Positive considerations
+1.1 Generators are an instant backup power supply which can be established
+for the retail stores without the time-consuming installations as the solar
+panels are imported, could lead to delays in installation
+1
+1.2 Generators can easily be moved to/shared with other retail outlets. 1
+1.3 Generators have cheaper upfront costs and set-up costs. 1
+Negative considerations
+1.4 Risk associated with the constant diesel running costs of operating
+generators and the volatile nature of these costs in the long run.
+1
+1.5 Generators are not environmentally friendly (greenhouse gasses are
+released during operation) and are noisy (noise pollution).
+1
+1.6 Generators have substantial maintenance requirements. Scheduled
+maintenance is required, which can be costly and time-consuming for the
+stores.
+1
+1.7 Storage conditions – diesel is a flammable substance, and the company
+needs to ensure that the storage conditions of the substance are
+considered.
+1
+1.8 Would diesel stock be kept on hand and how would it be kept; how would
+the substance be safeguarded?
+1
+2 Solar system technologies
+Positive considerations
+2.1 Solar systems are an environmentally friendly alternative, which will result
+in the company's carbon footprint being reduced.
+Reducing the company’s carbon footprint could have other positive benefits
+e.g. company’s reputation, cheaper financing, positive information to
+include in integrated reports/sustainability reports.
+1
+1
+2.2 Cost savings on the current electricity bill as a result of the solar system
+implementation. Other potential cost savings from lower running and
+maintenance costs
+1
+Negative considerations
+2.3 Exchange rate exposure as the solar systems are generally imported from
+international suppliers. The cost of the solar systems/project could change
+because of exchange rate fluctuations.
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 part II 8 © SAICA 2024
+2.4 Weather dependent and requires areas with good sun exposure to
+generate the required levels of power.
+The company would need to plan around the seasons, e.g. less solar
+energy is available in winter and diesel generators may still need to be
+used as back up.
+1
+1
+2.5 Solar systems require vast spaces of land/area to install/set up the solar
+panels. The company needs to consider how much space it currently has
+to set up the system.
+1
+2.6 Batteries to store the harvested power for use during loadshedding are
+expensive and have a shorter useful life than the panels. Thus
+replacement costs need to be understood and factored into the plan.
+1
+2.7 The impact associated with the non-recyclability of solar batteries remains
+a concern.
+1
+2.8 It will be difficult to transfer the solar systems to another premise if the
+company decides to move operations – 20 years is a very long time. The
+dismantling and refitting of solar systems are a highly complex process.
+1
+2.9 Consider the reliability of the contractors that have been awarded the
+installation of the solar system in view of the fact that it is not on the
+accredited list.
+1
+3. Other strategic considerations
+3.1 Funding – the company does not seem to have the total required initial
+outlay. The company requires R250 000 000 and only R202 945 563
+(202 000 000 + 945 563) can be raised from the strategies specified for the
+solar systems project (phase 1).
+1
+3.2 Other funding alternatives must be considered to inform how the solar
+systems will be paid for (e.g., potentially selling more Pharmcon shares).
+1
+3.3 An NPV calculation should be considered as this is a long-term
+investment.
+1
+3.4 The option to rent the solar system should also be considered/evaluated,
+and the relevant NPV should be calculated to conclude whether the
+company should consider renting or buying the solar system in the long run.
+1
+3.5 Working capital requirements need to be factored and considered when
+investigating the funding available for the solar project. Some of the cash
+on hand could be operational in nature and not available for use on the
+project.
+1
+3.6 Consider selling the existing generators to raise additional capital for the
+funding of the solar system project.
+1
+3.7 Consider how the subsequent phases will be funded, in view of the large
+capital investment that will be required.
+1
+3.8 Other options that could be available to the company outside of the current
+alternatives being considered (e.g., gas turbines).
+1
+3.9 The government’s future investment plans towards resolving the
+loadshedding issues might result in the solar system option not being the
+most cost-effective solution in the long run.
+1
+3.10 The company should consider if the solar installation complies with
+regulations and insurance requirements.
+1
+3.11 The tax consequences and impact associated with the solar project and
+funding models need to be considered.
+1
+3.12 Considerations if the store premises are leased:
+• Will the landlord allow the company to install rooftop solar panels?
+• The company needs to consider the correlation of the lease period
+and the useful lives of the solar system components.
+1
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART II
+Paper 1 part II 9 © SAICA 2024
+3.13 Consider using a smaller city: the pilot city chosen is Johannesburg, which
+will have many stores.
+1
+3.14 Pilot to be run in a smaller city, reducing the initial capital outlay. 1
+3.15 Consider scenario analysis for planning and identifying operational risks
+that will impact the potential outcomes associated with the project. e.g theft
+of these panels and safeguarding them should also be considered.
+1
+3.16 Consider obtaining quotes from various suppliers and compare the quotes
+per solar system component, including the specs and price of each.
+1
+3.17 The solar systems are imported. Consider whether local suppliers can
+provide the necessary maintenance service and if spare parts will be
+readily available in South Africa, or will the foreign suppliers be able to
+provide maintenance and spare parts at a fair price?
+1
+3.18 There is a potential to earn money from selling excess power back to the
+grid.
+1
+Available 38
+Maximum 20
+Communication skills – logical argument 1
+Total for part (f)(ii) 20
+Total for part (f) 26
+TOTAL FOR PART II 59

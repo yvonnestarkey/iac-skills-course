@@ -1,8 +1,25 @@
-Mark plan shape (sample)
+Mark plan shape (for the diagnostic engine)
 
 A typical IAC discussion / application part is weighted toward using the facts:
 - Identify the issue from the required (small).
 - State the relevant principle or rule (Tier 1 / knowledge).
 - Apply that principle to the specific facts, with a consequence or conclusion (Tier 2 / application).
 
+Calculation parts still split the same way: method and principle are knowledge; using the scenario numbers, labelling workings, and concluding in the required format are application.
+
 If a student earns most of the knowledge line items but little of the "apply to X" line items, the script is a conversion problem, not a syllabus gap.
+
+How suggested solutions award marks
+- One mark is usually one applied point: principle + this entity's facts + effect/assertion/conclusion.
+- Communication / layout marks sit on the required format (memo, report, journal, SOFP extract).
+- Workings marks need a visible, cross-referenced computation in ink. A correct total with no working often scores nothing.
+- Shopping-list theory, unapplied definitions, and restated scenario facts do not convert.
+
+Papers in this knowledge base (match on sitting, paper, and entity name)
+IAC January 2026: Paper 1 Mzansi / MT; Paper 2 Lexi; Paper 3 IR.
+IAC June 2025: Paper 1 Ubud; Paper 2 SSC; Paper 3 Reprop.
+IAC January 2025: Paper 1 Marchant; Paper 2 FreschKart; Paper 3 TransT.
+ITC January 2024: Paper 1 Dentout; Paper 2 Q1 XS Gaming, Q2 Makiti; Paper 3 FutureAfrica / Infinite Structures; Paper 4 Q1 Shop-it, Q2 GLS.
+ITC June 2024: Paper 1 PriceRight / Pharmcon; Paper 2 Q1 Ultra Canin, Q2 Itumeleng & Grace; Paper 3 Valuevest; Paper 4 Q1 Soda-XP, Q2 FutureWise.
+
+When a student names one of these papers, use that sitting's suggested solution and the matching markers' comments, not a generic syllabus dump.

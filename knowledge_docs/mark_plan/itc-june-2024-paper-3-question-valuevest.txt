@@ -1,0 +1,391 @@
+Source: SAICA ITC June 2024 — Paper 3 question (Valuevest).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Paper 3 1 (of 8) © SAICA 2024
+QUESTION 100 marks
+This question has been written with the assistance of OpenAI ChatGPT-4
+1 Background
+Valuevest (Pty) Ltd ('Valuevest') was founded in 2010. It is a private equity company based in
+South Africa, specialising in investments in various sectors. The company strives to comply
+with sound corporate governance principles and accordingly has adopted the King IV Report
+on Corporate Governance, which it applies as far as practically possible. The Board of
+Directors consists of three independent directors as well as a chief executive officer (CEO),
+chief financial officer (CFO) (a CA(SA)) and chief investment officer (CIO). The board has also
+established an Investment and Audit Committee.
+Valuevest typically aims for a high rate of return on its investments that significantly exceeds
+its cost of capital. The specific return expectations for each company may vary depending on
+various factors such as the risk profile, sector or industry and stage of the investment (early-
+stage, growth, or buyout). Valuevest also employs various strategies to enhance the value of
+its investments, such as operational improvements, strategic initiatives and financial
+restructuring.
+The company follows a structured investment process to identify, evaluate and execute
+investment opportunities. This includes the following:
+• Deal sourcing: Valuevest has a dedicated investment team that actively researches
+sectors and considers investment proposals from companies seeking capital.
+• Initial screening: Upon finding a potential investment opportunity, Valuevest’s
+investment analysts conduct an initial screening process in which they assess the
+company's sector, business model, financial performance, management team and
+growth prospects. If the opportunity aligns with Valuevest's investment criteria, the
+analysts will complete an investment proposal, which is presented to the CIO, who
+reviews it and, if it is considered viable, will move it to the next stage.
+• Due diligence: Valuevest’s investment team will then conduct a thorough due diligence
+on the target company. This process involves a comprehensive assessment of the
+company's financial statements, operations, and legal, regulatory and competitive
+landscape. In the due diligence process, Valuevest makes use of external experts such
+as legal advisors, consultants and industry specialists. The goal is to identify risks,
+opportunities and potential areas for value creation.
+• Investment proposal and valuation: Based on the findings from the due diligence
+process, the investment team will then develop an investment case and perform a
+valuation. In the valuation the team considers factors such as financial performance,
+growth prospects, industry benchmarks and comparable transactions.
+• Structuring the deal: Once the valuation has been determined and the investment
+proposal finalised, the investment team will negotiate the terms of the investment,
+including any equity stake, funding, governance rights and exit mechanisms.
+• Final approval and execution: Once all details of the transaction have been agreed
+upon, the investment case will be presented to the Investment Committee for
+consideration and approval. Transactions which exceed the Investment Committee
+approval mandate must go to the Board, based on the recommendation of the
+Investment Committee. After approval of the transaction, Valuevest will proceed with the
+execution of the investment, which involves finalising the legal documentation,
+coordinating with the target company’s management team and securing any required
+regulatory approvals.
+Paper 3 2 (of 8) © SAICA 2024
+• Post-investment value creation and monitoring: After the investment agreement has
+been completed, Valuevest will use its industry expertise, operational know-how, and
+network of contacts to help the investee company achieve its growth objectives. The
+Valuevest team also regularly monitors the performance of its portfolio of companies,
+participates in board meetings of the investee, and maintains open communication with
+the investee’s management team.
+Throughout the investment process, Valuevest aims to generate attractive risk-adjusted
+returns for its investors while actively supporting the growth and success of the companies in
+its portfolio.
+2 Artificial intelligence technology
+At a recent investment strategy session, the Investment Committee discussed the possibility
+of using artificial intelligence (AI) for the entire investment process. The information technology
+(IT) manager explained that AI would enable Valuevest to evaluate and execute investment
+opportunities more accurately and efficiently. He suggested that Valuevest should consider
+fully automating the whole investment decision-making process. Bank statements, financial
+statements and management accounts could be uploaded, and the system would then
+automatically value the business. The IT manager believes that, by using AI, Valuevest could
+gain a competitive edge in evaluating investment opportunities in a more data-driven and
+efficient manner.
+The IT manager has identified an advanced AI model, ChatGPT, for this purpose. ChatGPT
+uses historical financial data, market trends and industry benchmarks and works as follows:
+One enters a question or request and ChatGPT will attempt to understand the prompt and
+provide a response based on the data. Some of the features of ChatGPT include that it
+remembers what you have asked previously and can continue interacting. Furthermore, it can
+be asked to re-generate an answer, perform recalculations and corrections and it will refer to
+information that was presented earlier in the interaction.
+ChatGPT provides full, written responses in a conversational way based on the enormous
+amount of data with which it has been programmed. The version of ChatGPT that Valuevest
+is considering does not have access to real-time data or specific company data later than
+September 2021. ChatGPT does not always fully understand context in the same way a
+human does. At times it lacks the ability to understand nuances, intentions or the strategic
+implications behind certain numbers or trends.
+Valuevest's IT team and a team of financial specialists tested ChatGPT by prompting it to
+perform earnings-based valuations on existing companies in Valuevest’s portfolio. The results
+of the valuations performed by ChatGPT were compared to manual valuations performed by
+the team of financial experts. The team reported that most of the valuations were up to 90%
+accurate after a process of providing information and requesting recalculations and
+corrections. The team concluded that ChatGPT could be used to perform earnings-based
+valuations and research potential events affecting a company’s valuation.
+Some of Valuevest’s executives were very excited by the possible use of ChatGPT and were
+of the opinion that this could give Valuevest a competitive advantage in the market. In view of
+this, they discussed the possibility of retrenching a large component of the team of financial
+analysts and investment specialists.
+One of the concerns raised by the CFO on the use of ChatGPT related to cyber security and
+the risk it holds for Valuevest’s business. The IT manager responded that the company
+continuously invests in systems and technology but that the risk is always prevalent and real.
+Paper 3 3 (of 8) © SAICA 2024
+3 Investment in ACL
+Valuevest is evaluating a potential investment opportunity in a frozen food warehouse logistics
+operator, Arctic Cold Logistics (Pty) Ltd ('ACL'). ACL is an emerging company that specialises
+in multi-temperature wholesale, warehousing and distribution services for food. It has a strong
+presence in South Africa and neighbouring countries.
+JGL Inc. (‘JGL’), a medium-size firm of registered auditors, have been the auditors of ACL
+since inception. JGL is currently planning the audit for FY2023.
+Valuevest sees significant growth potential in the company due to the expanding market for
+frozen food products in view of improvements in technology. Temperature-controlled logistics
+infrastructure is imperative for improving food security in Africa, to enable fresh food suppliers
+to deliver food of quality. As a result, investments in cold-chain retail, logistics and
+warehousing have been gaining momentum in Africa.
+Based on the discussion of using AI in the investment process at the strategy session,
+Valuevest decided to test the process by using ChatGPT for the valuation of an 80%
+shareholding in ACL.
+Information to be used in ChatGPT
+The financial team consists of experienced and inexperienced staff members and prepared
+the following information to copy into ChatGPT:
+Arctic Cold Logistics: Management report
+Income statement for the year ended / ending 31 December
+Notes
+Actual Forecast
+2022 2023 2024 2025 2026
+R'000 R'000 R'000 R'000 R'000
+Operating revenue 1 473 808 522 081 576 900 640 358 697 991
+Operating expenses 2 (450 904) (502 572) (553 824) (610 902) (668 675)
+Operating profit 22 904 19 509 23 076 29 456 29 316
+Finance cost (15 111) (13 768) (12 927) (11 691) (11 043)
+Finance income 3 321 432 375 401 424
+Profit before tax 8 114 6 173 10 524 18 166 18 697
+Income tax expense (1 597) (1 682) (2 887) (4 841) (4 983)
+Profit for the year 6 517 4 491 7 637 13 325 13 714
+Paper 3 4 (of 8) © SAICA 2024
+Arctic Cold Logistics: Management report
+Balance sheet as at 31 December
+Notes
+Actual Forecast
+2022 2023 2024 2025 2026
+R'000 R'000 R'000 R'000 R'000
+ASSETS
+Non-current assets 182 519 141 563 139 914 135 695 127 606
+Right-of-use assets 4 37 650 33 137 26 922 23 358 18 689
+Property, plant and
+equipment 139 349 103 670 109 490 108 463 104 926
+Deferred tax asset 2 801 1 384 0 0 0
+Investments and other
+financial assets 2 719 3 372 3 502 3 874 3 991
+Current assets 136 415 163 458 171 587 176 967 198 471
+Inventories 26 761 29 731 32 532 35 521 38 263
+Taxation receivable 1 114 893 0 0 0
+Trade and other receivables 73 696 78 533 84 365 92 650 99 502
+Cash and cash equivalents 5 34 844 54 301 54 690 48 796 60 706
+Total assets 318 934 305 021 311 501 312 662 326 077
+EQUITY AND LIABILITIES
+Shareholders' equity 64 123 67 806 74 068 84 995 96 240
+Ordinary share capital 7 300 7 300 7 300 7 300 7 300
+Retained earnings 6 56 823 60 506 66 768 77 695 88 940
+Non-current liabilities 149 649 129 758 109 428 89 445 76 978
+Long-term borrowings 109 529 92 553 87 287 61 917 53 348
+Lease liability 40 120 37 205 20 789 25 445 19 987
+Deferred tax liabilities 0 0 1 352 2 083 3 643
+Current liabilities 105 162 107 457 128 005 138 222 152 859
+Provisions and other liabilities 9 039 7 032 7 000 6 235 6 521
+Trade and other payables 70 682 75 624 82 025 88 650 98 210
+Current tax liabilities 3 759 1 168 582 1 231 1 952
+Current portion of long-term
+borrowings 21 682 23 633 38 398 42 106 46 176
+Total equity and liabilities 318 934 305 021 311 501 312 662 326 077
+Notes
+1 Revenue for the financial year ended 31 December 2023 (FY2023) includes revenue of
+R5 million (FY2022: R10 million) received by ACL from a contract with Phisor (Pty) Ltd
+for cold storage of vaccines. This contract was not renewed due to the decrease in
+demand for the vaccines and thus not included in the forecast revenue. The profit before
+tax on the contract amounted to R3,2 million in FY2023 (FY2022: R4 million).
+Paper 3 5 (of 8) © SAICA 2024
+ACL is in the process of signing a contract with a well-known food manufacturing
+company, Brand Tiger (Pty) Ltd, for four years. The contract will commence in FY2024
+and the revenue from the contract for FY2024 is forecast to be R12 million. The annual
+revenue is expected to increase by 5% per annum and the net profit margin from the
+contract is expected to be 18%. The contract has not been incorporated in the forecast
+figures.
+2 The operating expenses include the following item:
+2022 2023 2024 2025 2026
+R'000 R'000 R'000 R'000 R'000
+Depreciation (26 392) (24 942) (25 759) (25 699) (27 697)
+ACL's cash flow position was negatively affected during the periods of lockdown caused
+by the Covid-19 pandemic. As a result, it decided to suspend the payment of bonuses
+to management as from FY2020. The management team of ACL is however confident
+that business has returned to normal and will even surpass expectations in future and
+the decision was therefore taken to resume bonus payments from FY2024. Annual
+bonus payments of R3 million for the investment team will be paid in FY2024 and will
+not be increased in the foreseeable future.
+At a recent Board meeting, at which all the directors were present, the directors
+unanimously agreed to reinstate the executive management share option scheme. In
+terms of this scheme the CEO, CFO and chief operating officer of ACL will receive share
+options as incentives amounting to 20% of the profit after tax, if the profit grows year on
+year by the Consumer Price Index plus three percentage points (3%). This decision has
+not yet been incorporated into the forecast figures.
+3 Finance income represents interest income on cash and investments.
+4 Right-of-use assets as at 31 December 2023 were as follows:
+Land and
+buildings
+Equipment
+and
+machinery
+Vehicles Total
+R'000 R'000 R'000 R'000
+Carrying value at the
+beginning of the year 22 118 9 721 5 811 37 650
+New leases entered into 5 173 1 076 853 7 102
+Derecognition on lease
+termination (2 057) - - (2 057)
+Depreciation (3 042) (1 981) (1 171) (6 194)
+Impairment charge (3 364) - - (3 364)
+Carrying value at end of year 18 828 8 816 5 493 33 137
+At inception, ACL assesses whether a contract contains a lease. ACL recognises a right-
+of-use asset and a corresponding lease obligation with respect to all lease arrangements
+in which it is the lessee, except for short-term leases and leases of low-value assets
+(less than R100 000). The lease obligation is initially measured at the present value of
+the lease payments outstanding at the commencement date, discounted by using the
+rate implicit in the lease.
+Paper 3 6 (of 8) © SAICA 2024
+The right-of-use assets comprise the initial measurement of the corresponding lease
+obligation, lease payments made at or before the commencement date, any initial direct
+costs incurred by the lessee, less any lease incentives received. They are subsequently
+measured at cost less accumulated depreciation and impairment losses. All right-of-use
+assets are encumbered as security for the respective lease obligations.
+The impairment charge was recognised on the land and buildings as the carrying
+amounts exceeded the recoverable amounts.
+The right-of-use assets are located throughout South Africa.
+5 The entire cash balance is considered to be excess cash.
+6 ACL has a constant dividend pay-out ratio of 18% and this dividend policy is not
+expected to change in the foreseeable future.
+7 Details of similar listed companies in the same industry as ACL are as follows:
+Company PE ratio Description
+FoodC 11,2 Leading South African food manufacturer, producing
+a wide range of branded and private-label food
+products.
+VLogistics 7,5 African-focused provider of integrated market access
+and logistics solutions focusing on the healthcare,
+consumer, automotive, chemicals and food industries.
+DittoT 9,8 International company that provides and manages
+supply chain solutions for companies across the
+globe.
+The corporate tax rate in South Africa is 27%.
+All the above information was loaded into ChatGPT. ChatGPT responded with a price/earnings
+(P/E) valuation of ACL. However, one of the members of the financial team noted that the AI
+did not take the non-recurring items as indicated in the information above into account. He
+reminded the AI of this and the following response with an adjusted valuation was provided by
+ChatGPT:
+You’re correct. The valuation should take into account significant changes in business
+contract and employee compensation.
+First, let’s adjust the 2023 net profit:
+1. We subtract the non-renewed contract profit of R3.2 million.
+2. The resumption of bonus payments will reduce the net profit starting 2024. However,
+since it does not affect the 2023 profits, we don’t need to make adjustments for this in
+the current calculation.
+Adjusted 2023 Net Profit = Actual 2023 net profit – profit from Phisor contract
+= R4 491 000 – R3 200 000
+= R1 291 000
+Next, let’s use the average P/E ratio of comparable companies to estimate ACL’s value.
+Paper 3 7 (of 8) © SAICA 2024
+The P/E ratio for FoodC, VLogistics, and DittoT are 11,2, 7,5 and 9,8 respectively. The average of
+these gives us a P/E ratio of 9,5 ((11,2 + 7,5 + 9,5)/3).
+Now we can estimate the company’s value:
+Company value: Adjusted net profit * average P/E ratio
+Company value: R1 291 000 * 9,5 = R12 265 500
+So, the estimated value of ACL as of 31 December 2023, based on an earnings-based valuation
+method and considering the non-renewed contracts and management bonuses, is
+approximately R12,27 million.
+Keep in mind that this is a simplified calculation and actual valuation methods may consider
+various other factors and future prospects. Also, note that P/E ratios can vary widely between
+industries and companies, and an average of three companies may not be a comprehensive
+indicator. We would advise further in-depth analysis or consultation with a financial advisor.
+As part of performing valuations of companies that are potential investment opportunities,
+Valuevest usually performs an analysis on the financial statements and the forecast financial
+information that is provided to it. As a further test of the AI's abilities, it requested ChatGPT to
+analyse the forecast income statement provided by ACL as part of its management reports.
+ChatGPT gave the following response:
+Certainly, I’ll take a look at the forecast income statement of ACL provided. The goal of this
+analysis is to understand the predicted future performance of the company based on the
+provided financial forecasts.
+Here is a high-level analysis:
+1. Revenue growth: ACL’s revenue is forecast to consistently grow each year from 2023
+to 2026. This is a positive sign as it indicates the company anticipates increasing its
+sales. However, one needs to understand the source of this growth – is it due to
+increasing market share, expansion into new markets, or process increases?
+2. Operating expenses: The company’s operating expenses are also expected to increase
+in the forecast period. This is not surprising considering the revenue growth.
+However, it’s crucial to assess whether these costs are scaling proportionally with
+revenues or whether there might be inefficiencies.
+3. Profit before finance cost: Profit before finance cost is also expected to increase over
+the forecast period, suggesting improvements in operational efficiency or perhaps
+benefits from economies of scale.
+4. Finance costs: Finance costs are projected to decrease. This could mean the company
+plans to pay down its debt or has refinanced to a lower interest rate. However, if
+finance costs are decreasing and the company still has a considerable debt burden,
+this could indicate an optimistic assumption about interest rates or repayments that
+might not be realistic.
+5. Net profit: The net profit is projected to grow significantly, almost tripling from 2023
+to 2026. This is a positive indication of the company’s future profitability but should be
+assessed in conjunction with other financial statements to check for balance and
+consistency.
+Paper 3 8 (of 8) © SAICA 2024
+The financial team was happy with the valuation and proposed that Valuevest go ahead with
+making a bid for the shares of ACL, based on the valuation provided by ChatGPT. Some
+members of the management team were however hesitant and requested that a free cash flow
+valuation be performed as a reasonability test. It was decided that a risk premium of 3% should
+be added to the normal required rate of return of Valuevest, which is currently at 14%. The
+continuous annual growth rate of ACL after 2026 is expected to be 6%.
+Paper 3 part I required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JUNE 2024
+PROFESSIONAL PAPER 3
+This paper consists of two parts. Answer each part in a separate answer book.
+PAPER 3 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Critically evaluate the tasks performed by ChatGPT as part of
+Valuevest’s process of identifying and evaluating the suitability of the
+potential investment in ACL, based on –
+(i) the earnings-based valuation of ACL performed by ChatGPT;
+and
+(ii) the additional work required to assess the reasonability of the
+forecast income statements (apart from the work already
+performed by ChatGPT).
+• Do not perform any calculations or re-perform any of the
+calculations provided by ChatGPT.
+Communication skills – clarity of expression
+8
+4
+1 13
+(b) Perform a valuation of ACL using the free cash flow valuation
+methodology.
+• Start with the movement in cash.
+20
+20
+(c) Discuss the risks and other relevant strategic factors that Valuevest
+should consider regarding the decision to make use of an AI such as
+ChatGPT in performing the valuation of companies that are potential
+investment opportunities.
+Communication skills – logical argument
+13
+1 14
+Total for part I 47
+Paper 3 part II required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JUNE 2024
+PROFESSIONAL PAPER 3
+This paper consists of two parts. Answer each part in a separate answer book.
+PAPER 3 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(d) Discuss and conclude on the ethical considerations surrounding the
+proposal by Valuevest executives to use ChatGPT to replace the
+team of financial analysts and investment specialists. 4 4
+(e) Describe the controls that Valuevest’s management should have
+implemented with regard to –
+(i) the investment process as described in section 1, excluding
+the payment process and human resources department
+controls, in addition to those already described in the scenario.
+• Limit your answer to four additional controls; and
+(ii) protecting the company against cyber attacks.
+Communication skills – appropriate style
+8
+6
+1 15
+(f) Discuss the governance concerns surrounding the bonus and share
+option schemes in note 2 of section 3.
+• Include appropriate and applicable considerations in terms of
+the SAICA Code of Professional Conduct.
+• Do not include aspects to be considered in evaluating or
+addressing the threats identified.
+Communication skills – layout and structure
+8
+1 9
+(g) Describe the procedures that Valuevest’s consultants should
+perform as part of their due diligence to identify possible unrecorded
+liabilities and contingent liabilities not accounted for in the financial
+statements of target companies. 6 6
+(h) Describe, with reference to the external audit of ACL for FY2023 –
+(i) the risk of material misstatement related to the right-of-use
+assets; and
+(ii) the substantive procedures to verify the right-of-use assets
+that JGL should perform.
+• Do not address presentation and disclosure in your answer.
+Communication skills – appropriate style
+8
+10
+1 19
+Total for part II 53
+TOTAL FOR THE QUESTION 100

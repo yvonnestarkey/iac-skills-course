@@ -1,0 +1,419 @@
+Source: SAICA IAC January 2025 — Paper 3 question (TransT).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC January 2025 1 (of 7) © SAICA 2025
+Paper 3
+PAPER 3 120 marks
+Ignore value-added tax (VAT), unless otherwise stated.
+1 Background
+TransT Ltd (‘TT’) is a transport and logistics company that is listed on the Johannesburg Stock
+Exchange (JSE). TT began business in 1962 in South Africa and has since grown to one of
+Southern Africa’s most recognised brands in the industry. TT is focused on providing
+innovative, safe, efficient and cost-effective logistics services to their customers, including
+farmers. They have specialised and tailored offerings for logistics services that cover their
+customers’ entire value chain.
+TT prepares its annual financial statements in accordance with IFRS® Accounting Standards
+(IFRS) and has a 30 June financial year end.
+The TT business model is based on tailoring machinery to various industries such as
+agriculture, mining, fuel, chemicals, and fast-moving consumer goods. These types of
+machinery require significant capital outlay and are subject to rapid technological
+enhancements, which means that customers, in particular farmers, must continually invest to
+remain up to date on new technological developments. TT removes this burden by providing
+the most recent transport technologies as a service. One of its product offerings is a lease
+service, in which it provides the necessary equipment and expertise to deliver the service
+required by its customers.
+2 Farming and agricultural support services
+One of the biggest sectors and most lucrative industries that TT serves is the agriculture
+industry. TT has a comprehensive offering that includes machinery for preparation of soil,
+planting of crops, watering and applying insecticides and plant nutrients, harvesting, and
+delivery to market. The crop-spraying division, called ‘SprayT’, which uses planes for large-
+scale crop spraying, has been trading for years and been doing well due to a large demand
+for this service from farmers over the last few years.
+Most farmers do not have the capital or expertise to own crop-spraying planes and hire pilots
+to operate the planes. They also lack the resources to keep these planes updated with new
+technologies and rely on TT to perform this function.
+TT has an exclusive, on-going contract with AgriValSpec (Pty) Ltd (‘AgriValSpec’), a valuation
+specialist company. Determining accurate valuations is crucial when selling or procuring
+assets in the agricultural industry, including risk management and tax planning. AgriValSpec’s
+services include the following:
+• Estimates of fair values of all TT’s agricultural and related assets to assist with –
+o implicit interest rate calculations surrounding leases,
+o residual values, and
+o fair values of assets TT intends to sell, or whenever the need for fair value
+estimation arises.
+• Annual year-end fair value estimates of planes owned by the SprayT division.
+IAC January 2025 2 (of 7) © SAICA 2025
+Paper 3
+3 Agricultural drone fleet proposal – Project Drone
+TT’s operations director, Denzil Arumugam, has long been interested in the use of drone
+technology in the agricultural sector. Until now, the limits of batteries and load size have meant
+that drone crop spraying has not been viable for large farms. However, the larger drones, with
+fewer limitations on batteries and larger payload1 size, that are now available could be used
+effectively in crop spraying. He therefore suggested that SprayT invest in drone technology as
+the use of agricultural drones is essential for the division’s overall sustainability and relevance.
+If TT decided to purchase drones, it would have to employ registered drone pilots. Agricultural
+drones have amongst others, the following advantages over planes:
+• They use batteries instead of fuel and can spray at night, thus allowing for 24/7 spraying
+operations.
+• Drones achieve greater penetration through the crop canopy2. This is a significant
+improvement compared to aerial spraying, as it consumes less water and ensures that
+chemicals go precisely where they are needed, rather than uniformly across an entire
+field.
+• Drones achieve significant crop yield benefits for customers. Research indicates
+noticeable improvements in crop growth speed and yield of crops, based on the drones’
+ability to collect vast amounts of data, which enables farmers to boost productivity while
+reducing costs, human error and environmental damage.
+• They collect real-time data. Thus, action can immediately be taken when environmental
+problems such as pest outbreaks occur, limiting crop losses.
+• Costs are saved because the licencing and skills required for drone pilots are
+significantly lower than for plane pilots.
+• Each drone pilot can operate two drones at a time.
+• Drones offer economic empowerment as local personnel can be upskilled to become
+drone pilots.
+• Drone pilots have a commercial remote pilot licence and are also registered as a pest
+control operator.
+• Drones can be used to survey and map all potential spray routes based on crop health,
+creating intelligent optimal applications.
+Denzil proposed a test project to use drones on the large farm of one of TT’s customers in the
+Free State. For this, TT would need to purchase a fleet of eight model XJI-S30 Agra drones
+(‘Agra drones’) from a Chinese supplier, ZAGG Advanced Agri Solutions (‘ZAGG’). ZAGG
+developed this drone model at a cost of over R40 million and it is set to become a game-
+changer for the agricultural industry. The test project would serve to assess the viability of
+using drones in SprayT.
+The Agra drones are the best option because they are environmentally friendly and have a
+relatively low operating cost. They have a proven track record of reliability and precision in the
+Chinese market, where they exceeded expectations in spraying precision as well as optimal
+chemical utilisation. Denzil noted that they would reduce operating costs and in addition it
+would be possible to tailor each drone to the specific needs of each type of crop.
+TT commenced discussions with ZAGG during August 2023, the aim being to purchase the
+drones in January 2024 should the board decide to go ahead with the investment.
+1 Payload means the amount of chemicals that can be carried at a time.
+2 A crop canopy is a layer of branches, stems or leaves that spread out at the top of trees or plants.
+IAC January 2025 3 (of 7) © SAICA 2025
+Paper 3
+The details relating to the purchase would be as follows:
+Drones
+(excluding
+batteries)
+Cost price of each drone R220 000
+Depreciation period 5 years
+Wear and tear allowance in terms of the Income Tax
+Act 4 years
+Period of operation 5 years
+Replacement At the end of 5
+years
+Resale value at the end of the 5 years R72 000
+Batteries Number of batteries 3 per drone
+Cost price per battery R40 000
+Drone batteries can power the drone for
+approximately 12 minutes on average before having
+to be changed, and it takes approximately 20
+minutes to recharge a battery. Each drone will
+therefore require two spare batteries to ensure
+continuous flying time. This will ensure that the two
+spare batteries are charged while the drone flies and
+are available for replacement to keep the drone in
+operation. Exchanging of batteries does not take
+much time and need not be taken into consideration.
+Depreciation of batteries, based on the expected
+useful life of each battery 5 years
+Resale value: sold for recycling 70% of their
+original cost
+Solar charging
+station for
+charging
+batteries
+Cost price per station
+One station is required for every drone
+R50 000
+These will be used in the production of renewable
+energy and qualify for a deduction of 125% in terms
+of the Income Tax Act
+It should not require replacement and thus will not be
+sold
+Resale value of
+solar charging
+station if it were
+sold
+Estimated market value, per station after five years R40 000
+The operating details are as follows:
+Spray surface per drone 125 hectares per hour
+Operating period per drone 20 hours per day
+48 weeks per annum (drones will not be
+used during weekends and holiday periods)
+Downtime due to adverse weather
+conditions during the 48-week operating
+period per annum 8 weeks
+Drone pilots Each pilot can operate 2 drones at the same
+time
+Shift length (operating hours) 10 hours
+Variable cost of a drone for maintenance
+and spares, and pesticides R150 per hectare
+Market-related salary for a drone pilot R168 000 per annum
+IAC January 2025 4 (of 7) © SAICA 2025
+Paper 3
+All drones will be used and operated at maximum capacity. The drone operation will need four
+specialised aviation ground vehicles to carry all the equipment and needs to be able to travel
+over rugged territory. TT has four such vehicles, which are used for the deployment of crop-
+spraying planes. These were originally intended for disposal but if the drones are brought into
+operation, it would be possible to repurpose the vehicles for the drone operation.
+The vehicles were originally purchased for R780 000 each and have a current tax value of
+R390 000 each. The replacement cost of a new vehicle is R825 000, and each vehicle can be
+sold for its fair value of R450 000. The vehicles qualified for a four-year wear and tear tax
+allowance and will have a residual value of R300 000 each at the end of the five-year project.
+The vehicles were damaged recently in a hailstorm, and if repaired they can be sold for a
+revised fair value of R475 000 each. The repair cost would be R12 000 per vehicle.
+TT has determined that it can charge R170 per hectare for pesticide spraying.
+All the operating costs and revenues provided would be the expected amounts for the first
+year of running the drones. The company anticipates that all costs and revenues will escalate
+at an inflation rate of 6% per annum from the second year of the forecast period.
+To fund the investment in the new drones, the company intends to sell some of its planes,
+which will no longer be required due to decreased demand for crop spraying by plane. The
+fair value of similar planes in a similar condition is R3,2 million each. The planes in aggregate
+currently have a tax value of R4 million. These planes would have attracted a wear and tear
+allowance of R2 million in each of the next two years. TT’s lawyers charge a standard fee of
+R1 500 per sales contract it draws up.
+The company evaluates new projects using the IRR3 measure. This will be compared to the
+discount rate of the company of 13,5%, plus a 5% premium. The additional 5% premium is a
+historical practice for the company.
+3.1 WACC4 considerations for Project Drone
+The board of directors wanted to evaluate the project before the financing decision, using the
+existing capital structure. It requested that the management accounts for November 2023,
+which are stated at book value, be used to calculate an appropriate WACC. The company
+generally considers the market value of the funding instruments to be a good proxy for its
+optimal capital structure.
+Extract from the management accounts for 30 November 2023 Notes Amount
+R’000
+Ordinary share capital and premium 3.1.1 12 000
+Distributable reserves 26 326
+Interest-bearing loans 3.1.2 50 000
+Deferred taxation 8 624
+Minority interest 3.1.3 3 528
+Notes
+3.1.1 The company has ten million shares in issue. The shares are currently trading at R8,45
+per share. The company has a levered beta of 1,4.
+3 IRR = internal rate of return.
+4 WACC = weighted average cost of capital.
+IAC January 2025 5 (of 7) © SAICA 2025
+Paper 3
+3.1.2 Interest-bearing loans have a weighted average fixed interest rate of 9% per annum.
+The current weighted average market interest rate for these loans is 11,5%. The loans
+are redeemable at par in five years’ time.
+3.1.3 The minority interest relates to a company in which TT holds an interest. This company’s
+risk profile is similar to that of TT. The company has not been valued separately.
+3.2 Purchase and funding of the drones
+The board of directors approved Project Drone and planned to fund the project with the cash
+on hand and proceeds from the sale of old planes. However, it needed to raise a further
+R14 million in debt. In December 2023, an agreement for a loan was concluded with BuzzFin
+Ltd (‘BuzzFin’), a specialist business financier.
+The terms of the loan were as follows:
+• A R14 million secured loan, advanced on 1 January 2024.
+• An initial 0,25% transaction fee on the loan principal was paid upfront.
+• The loan is repayable in instalments of R995 000, payable every six months in arrears
+over a period of eight years, with the first instalment payable on 30 June 2024.
+• At the end of the eight-year period 30% of the loan principal will be outstanding. BuzzFin
+has the option to convert the outstanding balance to a variable number of shares in TT,
+to allow BuzzFin to obtain a 2% shareholding in TT.
+• The nominal interest rate of a similar business loan with a conversion option is quoted
+at 11,67% per annum (compounded every six months), which is a prime rate of 8,75%
+plus 2,92% per annum adjusted for the company risk.
+The accountant processed the following journal entries to account for the loan:
+Dr. Cr.
+R R
+1 January 2024
+Bank (SoFP) 13 965 000
+Loan liability (SoFP) 11 865 335
+Equity (SCE) 2 099 665
+Pmt = R995 000; n = 16; FV = R4 200 000;
+i = 11,67 Comp PV
+Recognition of a compound financial instrument
+30 June 2024
+Interest on loan (P/L) (1 AMRT INT) 692 342
+Loan liability (SoFP) 302 658
+Bank (SoFP) 995 000
+Allocation of payment to interest and the loan
+IAC January 2025 6 (of 7) © SAICA 2025
+Paper 3
+4 Latest developments
+The TT board decided on a phased roll-out investment in drones. Thus, the company would
+initially only invest in 30 drones: ten each to be used in the North-West, Free State and Eastern
+Cape provinces. On 23 January 2024, TT entered into an agreement with ZAGG for the
+purchase of Agra drones. The purchase agreement included the following terms:
+Terms Amount
+Conversion at
+spot rate on
+12/02/2024
+CNY5 ZAR
+Cost per drone 85 600 220 200
+Standard shipment and delivery (14 days shipped,
+cost insurance freight) 500 1 285
+Two-year warranty on drone hardware
+100% fee payable before shipment
+The cost per drone includes assembly costs. On 26 January 2024, TT paid a total amount of
+R6 686 800 for the drones, excluding shipment and delivery. The drones were shipped on
+29 January 2024 and arrived at the Durban port on 12 February 2024. Customs (import) duty
+of 20% was levied on the market value of each drone. The drones arrived at the main TT
+warehouse in Johannesburg on 15 February 2024. ZAGG sent out South African specialist
+contractors to assemble the drones at the TT warehouse on 15 February 2024. The drones
+were then distributed to the respective TT warehouses located in the three provinces at a total
+cost of R45 000 (including VAT).
+All the drones were brought into use on 1 March 2024 at the agricultural land of farmers who
+entered into two-year rental contracts with TT. The rental fee is variable and depends on the
+total hectares of crop sprayed and monitored by the Agra drones. The amount includes the
+drone pilot fee. The rental transactions have been accounted for as an operating lease in
+terms of IFRS 16 Leases.
+The Free State was hit by a severe storm on 3 May 2024. During the storm, the roof of the
+Bethlehem warehouse was ripped off and the crop-spraying drones were significantly
+damaged. ZAGG has the necessary expertise to repair the drones. All TT assets are
+appropriately insured.
+Management had two options, namely either to repair the damaged drones or purchase new
+drones. They contacted ZAGG early in June 2024 for a repair quote, but ZAGG advised TT
+against the repair work on the Agra drones. The cost of repair of CNY30 000 (roughly
+R90 000) per drone would outweigh the benefit, since ZAGG would be introducing an Agra
+2.0 drone model late in June 2024. This new drone would include the latest and most
+advanced agricultural drone software. The market value of the original Agra drone would drop
+by an estimated 45% once the new model was introduced.
+At the last board meeting of the year, management intensely discussed the matter to select
+the most appropriate option and requested (and subsequently received) the following:
+• An estimate for the fair values of all the drones from AgriValSpec; and
+• An estimated value-in-use of the drones at 30 June 2024 from management.
+5 CNY = Chinese Yuan.
+IAC January 2025 7 (of 7) © SAICA 2025
+Paper 3
+5 Senior management incentive scheme
+On 1 December 2023, TT granted 10 000 share options each to 16 of its senior managers to
+purchase shares at R6,50 each. These share options are to be exercised on or after
+30 November 2026, on condition that the senior manager is still employed and that the share
+price is trading at more than R10 per share over the vesting period. At grant date, TT did not
+expect any director to leave employment and expected the share price to be above R10 over
+the vesting period.
+On 30 June 2024, two of the 16 senior managers had resigned while another senior manager
+had been medically boarded6. TT expected that one more senior manager would resign by
+30 November 2026.
+The following information regarding the fair value of the share options is available:
+Date Fair value per option adjusted
+for the market performance
+condition only
+Fair value per option adjusted
+for the market performance
+condition and service
+condition
+1 December 2023 R4,50 R4,40
+30 June 2024 R4,10 R3,98
+The accountant has not yet processed any journal entries relating to the share option scheme
+for FY2024, but provided the following draft journal entry:
+Dr. Cr.
+R R
+Interest expense (P/L) 159 200
+Cash settled share-based payment liability (SoFP) 159 200
+(12 x 10 000 x R3,98 x 12 / 36)
+Recognising the share-based payment liability
+6 Additional information
+1 The JSE yielded an annual return of 14,5%.
+2 The South African Reserve Bank’s central bank rate is 8,25%, while ten-year
+government bonds are yielding 10,7% currently.
+3 An actuarial consultant in the insurance industry was contacted regarding the risk of
+adding drones to the business. The analyst indicated that drones are complex and could
+potentially harm property and people. They are also vulnerable to theft, which in turn
+poses a cyber security risk due to the data they carry. Drones are susceptible to human
+pilot error, as well as ethical and social risks. He indicated that after looking at the
+calculations provided, an adjustment to the unlevered beta of the company of 0,24 would
+be appropriate to adjust for the project-specific risk of Project Drone for TT.
+4 The corporate tax rate in South Africa is 27%.
+5 Hamada formula: Beta (levered) = Beta (unlevered) x [1 + [(1 – tax rate) x (debt / equity)]]
+6 TT uses the cost model to account for all property, plant and equipment and depreciates
+its assets on a straight-line basis.
+6 Medical boarding is the inability of an employee to work due to ill health or injury. This is not seen as a
+resignation and the employee is therefore not disqualified from participation in the share option scheme.
+IAC January 2025 1 (of 1) © SAICA 2025
+Paper 3 required part I
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2025
+PROFESSIONAL PAPER 3
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 3 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Calculate the WACC as at 30 November 2023 that TT could use in
+evaluating whether to invest in Project Drone.
+• Ignore VAT.
+12
+12
+(b) Using the forecast information for Project Drone provided by Denzil,
+calculate the IRR and conclude on whether it was the correct decision
+for TT to go ahead with the drone fleet purchase.
+• Use the WACC rate provided by the director as the benchmark
+rate.
+• Provide brief explanations for any irrelevant amounts.
+• Ignore the information relating to the sale of the planes.
+• Ignore VAT.
+Y4: Judgement and decision making
+Y3: Problem solving
+34
+1
+1 36
+(c) Discuss the key strategic risks and benefits in the decision to invest
+in drones that may affect the overall sustainability of SprayT and
+provide overall mitigating actions for the strategic risks identified.
+• Ignore VAT.
+Discussion on risks and benefits: 8 marks; discussion on mitigating
+actions: 3 marks
+Z1: Business internal environment
+Z2: Business external environment
+11
+1
+1 13
+Total for part I 61
+IAC January 2025 1 (of 1) © SAICA 2025
+Paper 3 required part II
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2025
+PROFESSIONAL PAPER 3
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 3 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(d) Provide the correcting journal entries relating to the loan from
+BuzzFin, for the year ended 30 June 2024.
+• Provide brief explanations for your correcting journal entries.
+• Ignore all forms of taxation.
+11
+11
+(e) Discuss any concerns you may have about the draft journal entry
+prepared by the accountant relating to the share option scheme for
+the year ended 30 June 2024, and advise the accountant on the
+correct accounting treatment of the share option scheme.
+• Support your discussion with calculations where necessary.
+• Do not provide correcting journal entries.
+• Do not discuss any presentation and disclosure requirements.
+• Ignore all forms of taxation.
+Y1: Critical thinking
+13
+1 14
+(f) Recommend substantive tests of details that the auditors of TT
+should perform to obtain sufficient and appropriate audit evidence
+related to the classification; rights; and accuracy, valuation and
+allocation assertions pertaining to the agricultural drones of TT for the
+financial year ended 30 June 2024.
+• The following procedures have already been performed and
+should not be included in your recommendations:
+o Obtained all relevant schedules from management.
+o Cast and cross-cast all relevant schedules.
+o Obtained a management representation letter regarding
+all assertions.
+o Agreed all totals to the general ledger and trial balance.
+o Stratified all fixed asset registers.
+o Selected a sample for testing.
+o Auditing of the notes to the financial statements.
+o Scanning for and following up on abnormal / unusual
+items.
+• Consider VAT.
+Y2: Integrative thinking
+33
+1 34
+Total for part II 59
+TOTAL FOR PAPER 3 120
+IAC January 2025 1 (of 1) © SAICA 2025
+Paper 3 required part II

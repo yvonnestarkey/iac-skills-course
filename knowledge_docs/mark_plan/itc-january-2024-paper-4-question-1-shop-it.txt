@@ -1,0 +1,215 @@
+Source: SAICA ITC January 2024 — Paper 4 Question 1 (Shop-it).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Paper 4 question 1 1 (of 8) © SAICA 2024
+QUESTION 1 50 marks
+1 Background
+Shop-for-IT Holdings Ltd (‘Shop-4-iT’) is a South African multinational premium food and
+beverage retailer. The company services a niche market with its quality mix of local house-
+brand products as well as imported products from Europe and America. The company is
+focused on creating sustainable value for its stakeholders through growth in its operations
+within markets across Africa. Shop-4-iT is also committed to good governance in accordance
+with the King IV Report on Corporate Governance for South Africa. The company has a
+31 December financial year end.
+In 2016, Shop-4-iT instituted a Pan-African growth strategy, aiming to create more value for
+its shareholders. In pursuit of this strategy Shop-4-iT targeted retail companies across the
+African continent for acquisition. The aim was to rebrand them to become Shop-4-iT retailers
+and then stock them with its house-brand products. They would be embedded with Shop-4-
+iT’s standards of quality and efficient customer service.
+Shop-4-iT acquired its first retail company outside South Africa in Namibia and found great
+success in the Namibian market. Despite this success, Shop-4-iT has struggled to achieve a
+similar level of success with its acquisition strategy in other African countries.
+2 Acquisition of Stay-Fresh (Pty) Ltd
+In January 2018, Shop-4-iT acquired 80% of the shares in Stay-Fresh (Pty) Ltd (‘Stay-Fresh’),
+a well-known Nigerian food retail chain which is headquartered in Lagos, Nigeria. The
+remaining 20% of the shares in the company are held by a small number of individual investors
+from Europe. The investment in Stay-Fresh represented Shop-4-iT’s first and thus far only
+venture into the West African market.
+Nigeria was chosen as Shop-4-iT’s entry point to the West African market because it is Africa’s
+largest economy with a fast-growing and young population. Although Shop-4-iT considered
+acquiring various other retailers in Nigeria, Stay-Fresh was regarded to be the most suitable
+target company because of its relatively low asking price.
+At the time of its acquisition, Stay-Fresh had 18 retail stores situated in small shopping centres
+throughout the country. Its target market was middle- to low-income households, and the
+company marketed itself as a budget-friendly retailer of locally grown fruits and vegetables.
+These products were purchased from local farmers as this helped the company to ensure that
+it retained its loyal customer base.
+In June 2018, Shop-4-iT appointed Mr Dereck Frazer as Stay-Fresh’s new chief executive
+officer (CEO). Dereck worked for one of Shop-4-iT’s competitors in South Africa as the human
+resources manager for 15 years before joining Shop-4-iT in 2017.
+Upon his appointment as CEO in 2018, Dereck immediately rebranded Stay-Fresh to Shop-
+4-iT Nigeria (‘S4N’) and moved all the company’s existing retail stores to large shopping malls
+in affluent areas in Nigeria’s three largest cities. The new S4N shops were larger, and they
+offered a mix of imported products and locally produced goods. As part of the rebranding,
+Dereck also cancelled several distribution contracts that the company had with local suppliers
+and signed new contracts with some of Shop-4-iT’s existing European, American and South
+African suppliers.
+Paper 4 question 1 2 (of 8) © SAICA 2024
+At present S4N employs 1 500 people in all its retail stores and distribution warehouses and
+the company has 22 retail stores in Nigeria.
+3 Extract of the minutes of shareholders’ meeting
+At a shareholders’ meeting held on 5 January 2024, the shareholders of Shop-4-iT expressed
+several concerns to the newly elected board of directors about Shop-4-iT’s continued
+investment in Nigeria. The most pressing concerns were the following:
+• Nigeria has proven to be a difficult economic trading environment since Shop-4-iT first
+entered the market in 2018, due to the country’s growing list of structural and economic
+problems. Furthermore, several other South African retailers had already disinvested
+from the country because of similar concerns.
+• S4N’s growing debt burden is believed to have negatively impacted the value of Shop-
+4-iT and the shareholders believe that this increase in gearing is likely to continue to be
+problematic.
+• Due to the ongoing issues in Nigeria and the impact on management’s time, Shop-4-iT
+has lost valuable market share in South Africa. Consequently, the shareholders would
+like the board to focus more on its South African operations.
+In view of the concerns of its shareholders, the directors of Shop-4-iT instructed an
+independent company to draft a report on the current operating environment of S4N as well
+as a report on the performance of the company. The aim of the reports is to help the board to
+decide on the best course of action regarding the investment in Nigeria.
+4 Extracts of the information supplied by the independent company
+4.1 Extracts from the management accounts of S4N
+S4N’s functional currency is the Nigerian naira (NGN).
+Extract of profit and loss for the year ended 31 December
+Notes 2023 2022
+NGN million NGN million
+Sales revenue 43 573 33 020
+Cost of sales (13 072) (8 255)
+Gross profit 30 501 24 765
+Administration and general expenses (6 268) (3 020)
+Earnings before interest, tax,
+depreciation and amortisation (EBITDA) 24 233 21 745
+Depreciation (6 790) (6 940)
+Earnings before interest and tax (EBIT) 17 443 14 805
+Finance costs (9 000) (5 000)
+Income tax expense at 30% (2 533) (2 942)
+Profit for the year 5 910 6 863
+Paper 4 question 1 3 (of 8) © SAICA 2024
+Extract of financial position as at 31 December
+Notes 2023 2022
+NGN million NGN million
+Total assets 279 550 279 890
+Equity
+Ordinary share capital 12 000 12 000
+Retained earnings 170 310 181 350
+Non-current liabilities
+Interest-bearing borrowings 1 52 500 35 000
+Deferred taxation – 3 950
+Current liabilities
+Current portion of interest-bearing
+borrowings 1 10 170 11 670
+Bank overdraft 2 510 –
+Trade and other payables 29 430 30 790
+Provisions 4 630 5 130
+Total equity and liabilities 279 550 279 890
+Notes
+1 Most of S4N’s debt arose in 2019 from the violent attacks on South African businesses
+in Nigeria. The attacks were the result of retaliation against similar attacks on Nigerian-
+owned businesses in South Africa. The debt arose as Shop-4-iT’s group insurance cover
+did not cover the company against damage caused by riots or civil unrest in a foreign
+country. S4N also had to take out loans to pay for its move from the company’s original
+retail store locations to the new locations in shopping malls. These loans were
+refinanced in 2022.
+2 The bank overdraft is considered to be a long-term source of finance.
+4.2 Extract of the report on the state of the Nigerian economy and S4N
+State of the Nigerian economy
+Economic conditions in Nigeria have worsened over the past few years due to several
+structural and economic problems. The major driver of these problems is the country’s high
+inflation rate, which now stands at over 20%. Furthermore, inflation in the country has
+caused the Central Bank of Nigeria to increase interest rates to their highest levels in nearly
+two decades. The rise in inflation is driven by numerous factors, most significantly by the
+increase in the price of imported food products, poor economic growth, and the weakening
+of the NGN.
+Moreover, the unemployment rate in the country is now over 30%.
+There has also been a significant delay in the repatriation of funds1 from Nigeria, due to a
+United States dollar (USD) shortage in the country.
+1 The repatriation of funds is the process of transferring money or earnings from a foreign country back to the
+home country.
+Paper 4 question 1 4 (of 8) © SAICA 2024
+Government spending on debt over the past year has risen to 12% of its gross domestic
+product (GDP) and the GDP growth rate has been recorded at 3,6%. The country currently
+has a shrinking middle class, and the population growth rate is now 2,4% per year.
+Nigeria has also begun to experience an increase in financial crimes, such as fraud, bribery
+and non-payment of taxes.
+There is a significant threat of continued political instability due in part to the election of a
+new president who faced several legal challenges over the election results.
+Nigeria’s sea ports are known to be slow to clear consignment goods. The cost of clearing
+these consignment goods has increased significantly due in part to an introduction of a
+private security company which has been tasked with securing the country’s sea ports.
+Payments to this company are denominated in USD and the Nigerian government is known
+to pass these costs on to users of the ports.
+State of S4N
+Regardless of the external challenges in Nigeria, S4N has also not been without its own
+internal issues. Most of these internal issues have arisen due to the company’s failure to
+properly understand the Nigerian retail market. This market is characterised as highly
+competitive, and consumers are starting to favour the use of e-commerce services for their
+purchases, which S4N currently does not offer.
+S4N’s market share in Nigeria has declined due to a preference by consumers for more
+affordable local goods. Rental agreements in the country are also denominated in USD and
+the weaker NGN exchange rate coupled with the move to larger, more expensive retail
+spaces has severely impacted company profitability.
+S4N currently contributes 8% to the total profit of Shop-4-iT, in part because of the
+weakening of the NGN.
+5 Extract of the minutes from the special meeting of the board of directors of
+Shop-4-iT held on 22 January 2024
+The board of directors of Shop-4-iT deliberated on the reports on the state of S4N and the
+Nigerian economy. Based on the findings in the reports, the board is considering two potential
+plans of action.
+Option 1: Completely disinvest from S4N. This would mean Shop-4-iT would sell its majority
+holding in S4N. The board believes that the current maximum price that Shop-4-iT
+is likely to receive for S4N is NGN80 billion.
+Option 2: Shop-4-iT should sell all its current physical retail S4N stores in Nigeria and launch
+a new e-commerce platform in the country that allows consumers to purchase
+Shop-4-iT goods online. The company would in such a case retain the use of one
+of its warehouses and the goods sold would be similar to the ones that the company
+currently offers.
+Paper 4 question 1 5 (of 8) © SAICA 2024
+6 Media release
+The Premier Times, Nigeria’s largest newspaper, recently published an article about rumoured
+job cuts at S4N. The article blamed Shop-4-iT for its poor handling of its investment in Nigeria,
+stating that Shop-4-iT had never truly invested in the Nigerian people. The article noted that
+Shop-4-iT’s decision to introduce more plastic into the country, because most of its house-
+branded beverages are packaged in plastic, has had a negative effect on the environment.
+The article accused the company of not participating in any notable socio-economic measures
+to improve the state of the country. The article laid most of the blame on the current CEO,
+accusing him of focussing only on monetary growth instead of nation building.
+The article was a concern to Shop-4-iT’s board of directors, given that the decision on the
+strategic direction on its investment in S4N had not been taken yet. The directors noted that,
+although the article did not paint the company in a good light, they believe that the best course
+of action would be not to respond. The directors further decided not to inform the company’s
+shareholders of the article until it finalised its decision on the way forward.
+7 Additional information
+• Exchange rates as at 31 December
+2022 2023
+USD : NGN 1 : 450 1 : 900
+ZAR : NGN 1 : 26 1 : 50
+• The company tax rate in Nigeria is 30%.
+Paper 4 question 1 required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JANUARY 2024
+PROFESSIONAL PAPER 4
+This paper consists of two questions.
+Answer each question in a separate answer book.
+PAPER 4 QUESTION 1 – REQUIRED
+Marks
+Sub-
+total Total
+(a) Evaluate, with reference to sections 3 and 4, the financial risk of S4N
+by –
+(i) calculating five relevant financial risk ratios for both years
+• Round all final amounts to one decimal; and
+(ii) analysing the capital structure based on the ratios calculated and
+concluding on the level of financial risk to which S4N is exposed.
+10
+4 14
+(b) Critically evaluate the acquisition and subsequent rebranding of Stay-
+Fresh to S4N.
+Communication skills – appropriate style
+9
+1 10
+(c) Discuss the merits and pitfalls of the two potential plans of action
+suggested for S4N by the board of directors of Shop-4-iT.
+Communication skills – logical argument
+18
+1 19
+(d) Discuss, with regard to the board’s responsibility for good governance,
+the decision by the board of directors of Shop-4-iT to not respond to
+the news article. 7 7
+Total for question 1 50

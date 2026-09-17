@@ -1,0 +1,303 @@
+Source: SAICA IAC January 2026 — Paper 3 Part II suggested solution (IR).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Initial Assessment of Competence
+Professional Paper 3
+January 2026
+Copyright, proprietary rights and permitted use
+© The South African Institute of Chartered Accountants (SAICA). All rights reserved.
+The SAICA Initial Assessment of Competence (IAC) questions, solutions and examiners comments
+(‘these documents’) constitutes proprietary intellectual property and professional know-how of SAICA.
+It has been developed and is maintained as part of SAICA’s mandate to uphold the quality, integrity,
+and high professional standards of the Chartered Accountant profession, which underpin public
+confidence and the value and attractiveness of SAICA membership and designation.
+Access to, or use of, these documents does not confer any right, licence, or interest in the intellectual
+property contained herein. Except where expressly permitted by SAICA in writing, no part of these
+documents may be copied, reproduced, adapted, published, distributed, or used for commercial,
+quasi-commercial, or third-party standard-setting purposes.
+These documents may be used solely for legitimate educational, regulatory, or professional purposes,
+in a manner that preserves their integrity, acknowledges SAICA as the owner and source, and does not
+undermine SAICA’s role as custodian of professional standards or dilute the value associated with
+SAICA’s membership and designation.
+Any authorised access to or use of these documents is subject to, and must be exercised in accordance
+with, SAICA’s Intellectual Property Management Policy, as amended from time to time.
+Disclaimer clause: All names of persons, places and business entities mentioned in these
+documents are fictitious and any resemblance to real persons, living or dead, places and business
+entities are purely coincidental.
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART II
+
+Part (e)(i) Discuss how the customer loyalty programme of IR (in section
+4.1 only), should be accounted for in the financial statements of
+IR for FY2025.
+• Do not discuss any disclosure requirements.
+• Support your discussion with calculations.
+• Round all calculations to the nearest rand.
+• Ignore all forms of taxation.
+Marks
+General
+IR’s customer loyalty programme (CLP) provides registered customers with a
+material right that they would not otherwise have received without entering in
+the sales transaction with IR (IFRS15.B40).
+1
+The transaction price allocated to the material right relating to the loyalty points
+granted is not recognised as revenue at the time of the sales transaction but
+is recognised as a contract liability until the loyalty points have been redeemed or
+forfeited. 1
+Therefore, the CLP of IR must be accounted for as a separate performance
+obligation.
+1
+The revenue from the CLP must be recognised when the loyalty points are
+redeemed in future or when the loyalty points expire.
+1
+The transaction price must be allocated between the obligation to deliver the
+goods and the obligation to provide a discount on future purchases in terms of
+the CLP on a relative stand-alone selling price basis.
+1
+Because the stand-alone selling price of the CLP points is not directly
+observable, IR must estimate the stand-alone selling price reflecting the
+discount that the customer would obtain when redeeming the points and
+considering the 80% likelihood that the points will be redeemed.
+1
+1
+Calculations
+Amount
+Revenue transaction value R240 000 000 Given
+Future discount: R240 000 000 / R100 (½) = 2 400 000 points /
+R10 per point (½) R240 000 1
+X 80% R192 000 1
+Total Deferred revenue recognised based on stand-alone
+selling prices
+R192 000 / (R192 000+ R240 000 000) x R240 000 000 R191 847 1p
+As at the end of FY2025 the outstanding CLP Points amounted to R67 200
+reflecting –
+• the deferred revenue relating to the loyalty points earned relating to the first
+half of FY2025 would have been redeemed or forfeited given that the loyalty
+points are only valid for 6 months.
+• Therefore, R95 924 (R191 847 x 50%) of the deferred revenue should have
+been recognised as revenue during H1 FY2025.
+1
+1p
+• 30% of the points earned during the last six months of FY2025 have been
+redeemed. Therefore, R28 777 (R191 847 x 50% x 30%) of the deferred
+revenue should have been recognised as revenue during H2 FY2025.
+1p
+• For FY2025, the contract liability balance is R67 146 (R191 847 x 50% x
+70%) or R67 146 (R191 847 x 50% - R28 777) as these are the outstanding
+point awaiting redemption in future.
+1
+• The contract liability will be presented as a current liability because it is
+expected to be settled within the following 6-month period.
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART II
+
+Available 15
+Maximum 11
+Total for part (e)(i) 11
+Part (e)(ii) Discuss how the financial accounting implications in respect of
+IR’s customer loyalty programmes (in sections 4.1 and 4.2) would
+change if the Group C stores were closed by the end of FY2025.
+• Address the implications for both programmes.
+• Show calculations where applicable.
+• Round all calculations to the nearest rand.
+• Ignore all forms of taxation.
+Marks
+IR customer loyalty programme
+The discontinuation of the LC stores does not absolve IR from its obligation to
+redeem the points, as customers can still redeem their points at existing IR stores.
+1
+However, the liability (deferred revenue) estimated has changed, and this
+change should be accounted for.
+1
+A decrease of R12 590 (R67 146 – R54 556 (½) (R67 146 / 80 (1) * 65(½)) must
+be recognised in deferred revenue with a corresponding increase in revenue (1). 3
+Partnership with FabBank
+The partnership with FabBank is not a CLP as IR has no obligation to
+customers in terms of this rewards programme as it is not responsible for issuing,
+tracking or redeeming the points.
+If the LCs stores are discontinued, IR has no obligation to the customer, and thus,
+there are no financial implications for IR.
+1
+Available 6
+Maximum 5
+Total for part (e)(ii) 5
+Y1: Critical thinking – logic and reasoning
+(Mark awarded if candidates provided a logical reason why the partnership with
+FabBank has no financial implications for IR)
+1
+Total for part (e) 17
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART II
+
+Part (f) Critically evaluate, with reasons, the accuracy of the inventory
+journal entry processed by the financial accountant in respect of
+the inventory write-down for FY2025.
+• Provide correcting journal entries where relevant.
+• Do not provide dates of journal entries or journal narrations.
+• Show calculations where applicable.
+• Ignore all forms of taxation.
+• Round calculated amounts to the nearest rand
+Marks
+General
+The financial accountant is correct to value the inventory (½) at the lower of cost
+and net realisable value (NRV)In terms of IAS 2.
+½
+However, journal entries are correct (½) but the amount to which the inventory
+is written down is incorrect (1) as the cost should have been used as opposed to
+the inventory count value when comparing to NRV. 1 ½
+The incorrect goods that were delivered to Group B stores must be excluded
+from the inventory count value. 1
+The loss of inventory due to the civil unrest has been correctly included in the
+inventory count value at year end. The event took place after the end of the
+financial year and is a non-adjustment event 1
+Inventories are usually written down to net realisable value on an item-by-item
+basis. It may be inappropriate to consider impairment on a totality basis but may
+be beneficial to do so based on the product lines, geographical areas etc. 1
+Correcting journal entry – ALT 1
+Dr. Cr.
+Inventory write-down / Cost of Sales (P/L) 21 005 1P
+Inventory (SoFP) (64 980 – 43 975 (given)) 21 005 1
+Calculations
+C1 Total A B C
+R’000 R’000 R’000 R’000
+Opening balance inventory - - - -
+Purchases 650 000 300 000 250 000 100 000 1
+Less: Cost of sales (363 900) (195 000) (108 000) (60 900) 1
+Balance at 30 September 2025 286 100 105 000 142 000 39 100
+Lower of 219 100 98 000 96 500 26 500 1P
+Cost 285 980 105 000 141 8801 39 100
+Net realisable value 221 000 98 000 96 500 26 500
+Inventory write-down 64 980 7 000 45 380 12 600 1
+1 142 000 – 120 1
+Note: The cost of sales are carried over from the costing required.
+Available 12
+Maximum 10
+Total for part (f) 10
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART II
+
+Part (g) Describe the additional substantive procedures that should be
+performed at year end by the AudSA audit team to obtain sufficient
+and appropriate audit evidence about the valuation, allocation, and
+accuracy of the contract liability resulting from the customer
+loyalty programme.
+• Assume that an IT expert already verified all controls over the
+central IT systems, sales and loyalty integration system.
+• You can rely on all reports produced by these systems.
+• Ignore all forms of taxation.
+• All audit procedures to place reliance on the system and the
+work performed by the IT expert have already been
+performed by the audit team.
+Marks
+General
+1.1 Obtain the contract liability calculation from management and the
+consolidated sales and loyalty system report and recalculate for
+mathematical accuracy. 1
+1.2 Agree through inspection / ATTs the consolidated sales and loyalty system
+report balances (closing points) with management’s contract liability
+calculations’ points used to ensure they agree and therefore are
+accurate. 1
+1.3 Agree through inspection / ATTs the contract liability calculation
+amount to the general ledger (GL), trial balance (TB), and the annual
+financial statements (AFS) to ensure they agree and are therefore
+accurate. 1
+1.4 Obtained a signed management representation letter and inspect for the
+inclusion of the valuation, allocation and accuracy of the contract liability
+at year-end. 1
+Verification of the points / inputs to the calculation
+2.1 Through inspection, agree the following inputs used in the calculation to the
+terms and conditions published as well as the internal authorised policy
+document (and / or minutes of director’s meetings) related to the customer
+loyalty programme (CLP) being to confirm the accuracy of the inputs used in
+the calculation:
+• Earn rate: Every R100 spend would earn one point.
+• Redemption value: Points can be redeemed on future purchases
+at a rate of R1 for every ten points.
+• Expiry date: The points expire after six months.
+1
+½
+½
+½
+2.2 Verify whether the loyalty points granted constitute a “material right” to
+the customer that it would not receive without entering into that contract
+(i.e. a separate performance obligation through the terms and
+conditions of the contract) through consideration of whether the
+recognition is consistent with IFRS 15 / the applicable revenue standard. 1
+2.3 In order to verify the transaction price and that management has
+allocated the transaction price between the goods sold and the loyalty-
+points benefit/obligation to provide a discount perform the following
+procedures:
+• Gross sales: Trace the transaction price back to the loyalty sales
+transactions for the period (R240 million);
+• CLP: Recalculate the stand-alone selling price of the CLP through
+taking into account the inputs (earn rate, redemption value,
+redemption rate) (R192 000); and
+• Recalculate the allocation of the transaction price between the
+goods sold and loyalty points benefit (R191 847).
+1
+1
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART II
+
+Reasonableness of management’s estimated redemption rate (80%)
+3.1 Enquire from management / inspect relevant documentation like minutes
+of director’s meeting on the methods and assumptions used in
+calculating the liability in order to obtain an understanding of the
+reasoning for the 80% redemption rate (including whether steps were
+taken to understand estimation uncertainty); 1
+3.2 Through these discussions and enquiries, evaluate management’s
+estimates to determine whether there are any indicators of management
+bias in the estimation due to the overly optimistic assumptions Jordan
+used and the comments made by the CEO that there is flexibility in the
+interpretation of revenue recognitions and the apparent CFO ‘pessimism
+bias’. 1
+3.3 Enquire and inspect management’s documentation and calculations
+that support the 80% redemption estimate and recalculate / evaluate the
+80% against the following for reasonableness. 1
+3.3.1 • Actual historical trends: Obtain the consolidated output report and
+calculate the accumulated quantity of redeemed points as a
+percentage of the accumulated total points earned to the 80% (or
+65%) used in total; (from month-to-month / cumulative average). 1
+3.3.2 • Industry averages: Inspect documentation available on the industry
+averages and market trends and whether any changes in customer
+behaviour were noted after launching the LC stores to assess whether
+an expected redemption rate is reasonable. 1
+3.3.3 • Subsequent events: Review redemption activity in the post-year-
+end period (e.g., October to December 2025) to assess whether the
+estimated redemption rate appears reasonable in hindsight. 1
+3.4 Assess the sensitivity of the contract liability to changes in the
+estimated redemption rate by performing a sensitivity analysis (e.g.,
+calculating the liability using for example the 65% and 80% redemption
+rates or any other rate). 1
+3.5 Enquire whether any stores were closed or are expected to be
+discontinued shortly after year end (possibly group C) and discussing with
+management whether any adjustments were made / should be made
+based on expected business closures or other events / Inspect minutes
+of director’s meetings after year-end or forecasts. 1
+Independent calculation using the inputs verified / own inputs
+4.1 The audit team should independently calculate a year-end contract
+liability (auditor’s calculation / range) for unredeemed loyalty points by
+recalculating the contract liability by applying his/her own inputs based
+on knowledge obtained. 1
+4.2 Compare the auditor’s independently recalculated amount with the
+amount recorded by IR in the general ledger/financial statements to
+identify any difference outside of the point estimate/ranges calculated. 1
+Data analytics
+5.1 Perform ATTs / CAATs / software for analytics to identify anomalies in the
+calculations or accounting records (relevant examples). 1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART II
+
+Follow-up procedures
+6.1 For any anomalies / differences identified / differences outside the point
+estimate (e.g. in reconciling or in data), follow up with management
+through enquiries. 1
+6.2 For any differences or anomalies identified, obtain and inspect
+corroborative evidence. 1
+Available 23.5
+Maximum 12
+Total for part (g) 12
+Total for part II 39
+TOTAL FOR THE QUESTION 120

@@ -1,0 +1,537 @@
+Source: SAICA ITC June 2024 — Paper 3 Part II suggested solution (Valuevest).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 1 © SAICA 2024
+Part (d) Discuss and conclude on the ethical considerations surrounding
+the proposal by Valuevest executives to use ChatGPT to replace
+the team of financial analysts and investment specialists.
+Marks
+1. Consideration should be given whether the use of ChatGPT is legal:
+• this should not be a problem as the information that is used by the AI
+is publicly available (OpenAI) and not considered confidential or
+protected by law;
+OR
+• by uploading sensitive information (bank statements, financial
+statements, management accounts) without the permission of the
+client, this information in on public domain and accessible which will then
+be illegal;
+OR
+• the legality of retrenching a large component of the team of financial
+analysts and investment specialists should be in line with the Labour
+Relations act etc.
+1
+2. Consideration should be given whether the use of ChatGPT is good for the
+company (the self):
+• The use of ChatGPT will be beneficial for the company as it will save
+the cost of the financial analysts and accordingly will maximise profits,
+which is good for ValueVest.
+• The purpose of a business is to make money and accordingly its success
+and that of its management is measured on the profits it makes.
+Therefore, increasing the profits will be good for the management and
+other stakeholders through the payment of taxation and increased
+salaries and dividends as well (This only focuses on the financial
+component).
+• The use of ChatCPT may have negative consequences for ValueVest
+as the valuations provided by ChatGPT may be inaccurate (only 90%
+accurate) and based on old data resulting in inappropriate decisions and
+customer dissatisfaction.
+• The retrenchment of such a large component of the team of financial
+analysts and investment specialists might negatively impact
+ValueVest’s reputation if not handled appropriately and/or negatively
+impact the staff morale of the remaining analysts/investment team
+leading to decreased productivity.
+1
+1
+1
+1
+4. Consideration should be given whether the use of ChatGPT is good for the
+financial analysts who will get retrenched (the other):
+• The analysts will be retrenched and will lose their income and
+accordingly the use of ChatGPT will result in the loss of their livelihood
+which will be bad for them and the South African economy. 1
+3. In terms of principle 1 of King IV:
+The board should act ethically (beyond mere legal compliance) and set
+the tone for an ethical culture. However, retrenching such a large
+component of the team of financial analysts and investment specialists in
+favour or AI is unlikely to be viewed as ethical by ValueVest employees.
+1
+5. In terms of other relevant ethical theories (uBuntu/deontological/
+utilitarian/egalitarianism):
+• By retrenching such a large component of the team of financial analysts
+and investment specialists in favour of IA will not be good for society
+nor be seen as a universally accepted practice for all those employees
+losing their income and livelihood. 1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 2 © SAICA 2024
+6. Conclusion: An organisation should be a responsible corporate citizen,
+and while its goal will be the maximisation of profits, it should also look after
+its staff and their wellbeing and given the uncertainty and shortcomings of
+ChatGPT it will be irresponsible of management to retrench the analysts at
+will. 1
+Available 9
+Maximum 4
+Total for part (d) 4
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 3 © SAICA 2024
+Part (e) Describe the controls that Valuevest’s management should have
+implemented with regard to –
+(i) the investment process as described in section 1, excluding
+the payment process and human resources department
+controls, in addition to those already described in the
+scenario;
+• Limit your answer to four additional controls; and
+Marks
+1. Documentation of the investment policy and procedures
+The policies and procedures that outline the investment process,
+including roles and responsibilities, decision-making criteria, risk
+management guidelines, and compliance requirements should be
+documented and easily accessible and all parties in the investment
+process must be familiar with it.
+1
+1
+2. Segregation of duties
+Proper segregation of duties should exist between the different
+individuals or teams involved in the investment process so that no person
+has the authority to initiate, approve and settle a transaction. For example,
+the person responsible for making investment decisions should be
+separate from the person responsible for executing trades.
+1
+1
+3. Compliance and regulatory oversight
+Procedures should be in place to ensure investment decisions comply with
+the relevant laws and regulatory requirements. The company should
+adhere with relevant laws, regulations, and internal compliance policies. This
+should be done by a compliance function properly staffed with persons with
+the necessary legal and regulation knowledge.
+1
+1
+4. Risk management function
+A risk management framework should exist that identifies, assesses and
+mitigates investment risks. This includes establishing risk tolerance levels,
+conducting risk assessments for different investments, implementing risk
+monitoring systems, and maintaining contingency plans for adverse events.
+1
+1
+5. Regular audit and review
+Independent audits or reviews (internal or external audit) of the
+investment process should regularly be undertaken to ensure compliance,
+to identify control weaknesses and evaluate the effectiveness of risk
+management measures. External auditors or internal audit teams can
+assess the adequacy of controls and provide recommendations for
+improvement (to management who needs to assess and respond to these
+recommendations).
+1
+1
+6. Ongoing education and training
+There should be continuous education and training programmes for
+investment professionals and stakeholders involved in the investment
+process. (This will help enhance their knowledge of investment principles,
+risk management techniques, regulatory requirements and ethical
+considerations).
+1
+1
+7. IT security and continuity (system controls)
+There should be a sound IT system with adequate security and business
+continuity controls to support the investment process and maintain data
+integrity. Security measures should be in place to protect sensitive
+information and prevent unauthorised access. Software and systems should
+be updated regularly to address potential vulnerabilities and ensure proper
+functionality.
+1
+1
+8. General environment controls
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 4 © SAICA 2024
+There should be appropriate use of documentation, stationery (such as pre-
+numbered documentation), signatures to prove review and appraisals and
+appropriate safeguard of confidential information.
+1
+1
+Available 16
+Maximum 8
+Total for part (e)(i) 8
+Part (e) Describe the controls that Valuevest’s management should have
+implemented with regard to –
+(ii) protecting the company against cyber attacks.
+Marks
+1. Proper firewalls and anti-spam software should exist that restrict the
+inflow and outflow of the information from the IT system.
+1
+2. Antivirus and malware software should be used to block virus and
+phishing malware (also latest antivirus for firewalls).
+1
+3. Data on the system should be encrypted (or data privacy protection) to
+ensure the privacy/confidentiality thereof in case of cyber attack.
+1
+4. Access to terminals and devices should be restricted to specific
+functionalities and access rights on the system.
+1
+5. Authorised users should be identified by the system through unique user
+identification numbers (access rights on the system - least privilege
+basis).
+1
+6. Access to the systems (including database and network) should be
+controlled through passwords allowing users access to the system.
+• These passwords should be unique, not too short, not be easily
+guessed, contain numeric and alphanumeric numbers, etc (password
+controls).
+• A two-factor authorisation should be in place.
+• The system must force the user to change his password from time to
+time and not be able to use the same password multiple times.
+• The system should automatically log out after a period of non-activity
+(say 10 minutes).
+• The system should block access after three unsuccessful login
+attempts.
+• There should be a formal password policy and procedures to adhere to
+in terms of passwords.
+• Logs/reports of all unauthorised access or unsuccessful attempts must
+be created and monitored so immediate action can be taken when cyber
+attack is detected.
+1
+1
+1
+Max 2
+7. Users should be educated through training in the risks of cyber security
+(emails from unknown sources/spelling errors/random links to access/etc)
+and awareness programmes should regularly be run for all staff.
+1
+8. Regular penetration testing (ethical hacking), backups and disaster
+recovery plans should be enforced. 1
+Available 10
+Maximum 6
+Total for part (e)(ii) 6
+Communication skills – appropriate style 1
+Total for part (e) 15
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 5 © SAICA 2024
+Part (f) Discuss the governance concerns surrounding the bonus and share
+option schemes in note 2 of section 3.
+• Include appropriate and applicable considerations in terms of
+the SAICA Code of Professional Conduct.
+• Do not include aspects to be considered in evaluating or
+addressing the threats identified.
+Marks
+Companies Act concerns
+1. The decision to approve the share option scheme for the executive directors
+were taken at a board meeting where all the executive directors were present.
+However, directors are not allowed to take such a decision (section 41) and
+a special resolution from the shareholders is needed to approve this
+decision.
+1
+2. All the directors can further incur personal liability (section 77) for any
+losses that arise from the above because they were part of the
+decision/meeting.
+1
+3. The directors also did not comply with their duty of exercising with care,
+skill and diligence as required in terms of section 76 of the Companies Act
+because they are not aware of the necessary requirements for this decision. 1
+King IV report concerns
+4. P8 recommends that the board should ensure its arrangements for
+delegations are in place to ensure independent judgement. As the board of
+directors, which include the executive directors, are deciding on bonusses, it
+is clear that the board did not delegate the decision of performance bonuses
+to an independent remuneration committee or adhoc committee (thus non-
+existent or not effective).
+1
+5. P14 recommends that the board should ensure that the company
+remunerates fairly, responsibly and transparently so as to promote the
+achievement of strategic objectives and positive outcomes in the short,
+medium and long term:
+• 20% of after-tax profits appears to be excessive and only focused on the
+short-term outcomes (profits) without non-financial measures being in
+place;
+• One could consider the fact that the bonus is not increasing (or
+decreasing) to be against the spirit of a bonus which should be
+performance linked.
+As a result, it is not balancing the needs of the various stakeholders (P16)
+– as the investment team will be getting the bonus regardless and it is not in
+the best interest of the investment team if it outperforms with no increase.
+1
+1
+1
+6. P1 recommends that the board should act in good faith/best interest of the
+company, however the share options are approved for themselves and
+appear excessive considering that ACL is recovering post pandemic which is
+not acting with integrity or in good faith and not in the best interest of ACL.
+1
+7. P13 recommends that the board should govern compliance with applicable
+laws but currently the board of directors are part of the non-compliance with
+the Companies Act and are not leading ethically. 1
+SAICA's Code of Professional Conduct (CoPC) concerns
+8. The CFO is a Professional accountant (CA(SA)) in business and should
+accordingly comply with part 1 and 2 of the SAICA CoPC.
+1
+9. There might be a breach in the CoPC due to the CFO who approved a decision
+which should have been referred to the shareholders.
+• Consequently, there is a self-interest threat to his professional
+competence and due care, as he should have known the requirements
+1
+0.5
+0.5
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 6 © SAICA 2024
+of the Companies Act and if he did not know, he should have obtained
+the knowledge (either through self-directed learning or CPD or consulting
+with a specialist).
+• There is also a conflict of interest leading to a self-interest threat to his
+objectivity because he may have been biased and influenced by making
+the decision/approval on his own salary structures.
+• There is a self-interest threat to his professional behaviour since there
+was a breach to laws and regulation by not adhering to the Companies
+Act (specific requirements not followed) and this will discredit the
+profession.
+• Lastly, there is also a self-interest threat to his integrity since he may be
+dishonest/not straightforward if he was aware of the requirements but
+still did not adhere to them and follow the correct procedures when
+deciding on his salary structures.
+1
+0.5
+0.5
+1
+0.5
+0.5
+1
+0.5
+0.5
+1
+Available 19
+Maximum 8
+Communication skils –layout and structure) 1
+Total for part (f) 9
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 7 © SAICA 2024
+Part (g) Describe the procedures that Valuevest’s consultants should
+perform as part of their due diligence to identify possible
+unrecorded liabilities and contingent liabilities not accounted for
+in the financial statements of target companies.
+Marks
+1. Discussions with management / internal legal house to identify possible
+litigation and claims, including legal costs incurred. 1
+2. Obtaining a signed management representation letter from
+management regarding completeness of all unrecorded liabilities,
+contingencies and claims.
+1
+3. Inspecting minutes of directors, management or shareholders meetings
+for possible contingencies and claims. 1
+4. Performing media searches for any indication of litigations against the
+target Company. 1
+5. With permission of management, enquire with legal advisors and
+attorneys regarding possible pending legal matters that could give rise to
+contingencies and claims or any correspondence between Valuevest and
+the legal advisors.
+1
+6. Inspecting documentation / correspondence with external parties such
+as:
+• Contracts,
+• loan agreements,
+• leases,
+• insurance correspondence,
+• SARS documentation, such as statements of accounts,
+• Invoices from lawyers
+for possible sureties, contingencies and claims.
+1
+0.5
+0.5
+0.5
+0.5
+0.5
+0.5
+Max 1
+7. Obtaining confirmations from banks and other financial institutions
+regarding possible sureties, contingencies and claims. 1
+8. Reviewing the legal costs or interest expense in the general ledger –
+and link the cost to the relevant liability or provision. 1
+9. Inspecting subsequent bank statements for payments made
+subsequent to the financial reporting date and/or the previous year’s
+‘events after reporting date note’ to ensure the appropriate provision /
+liability was recorded in the correct period. 1
+10 Inspect supplier reconciliations/bank reconciliations and assess if
+there are reconciling items linked to unrecorded liabilities as per supplier
+statements or bank statements.
+1
+11. Perform analytical review of prior year liabilities compared to current
+year liabilities by comparing supplier and loan schedules. 1
+Available 12
+Maximum 6
+Total for part (g) 6
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 8 © SAICA 2024
+Part (h) Describe. with reference to the external audit of ACL for FY2023 –
+(i) the risk of material misstatement related to the right-of-use
+assets;
+• Do not address presentation and disclosure in your answer.
+Marks
+Note: risks are stated by assertion for clarity purposes although not asked for per
+assertion.
+Existence
+1. The risk that assets may be recorded as a right-of-use asset that does not
+meet the accounting requirements for capitalisation (i.e., contract does not
+contain a lease) or the incorrect assessment of a contract by the group
+due to inexperienced staff members and complexity.
+1
+2. The risk that certain equipment, machinery and vehicles may not exist or
+may have been stolen given the widespread location throughout South
+Africa.
+1
+3. The risk that a lease that is terminated is still recognised as a right-of-use
+asset as some of the team members are inexperienced. 1
+Rights
+4. The risk exists that right-of-use assets are recognised that ACL does not
+have the right of use, as some of the team members are inexperienced. 1
+5. The risk that some lease contracts are capitalised despite not meeting the
+accounting criteria for recognition as a right-of-use asset, some of the team
+members are inexperienced.
+1
+Completeness
+6. The risk exists that not all assets and costs that meet the requirement for
+capitalisation as a right-of-use asset are accounted for as such, as some
+of the team members are inexperienced.
+1
+Classification
+7. The risk that short-term or low-value leases for less than R100 000, may
+be classified incorrectly as a right-of-use asset and vice versa due to
+inexperienced staff members.
+1
+Accuracy, valuation, and allocation
+9. The risk of incorrect accounting treatment of capitalisation, derecognition
+and depreciation of the right-of-use assets, as it involves complex
+accounting treatment, and calculations. 1
+10. The risk that all right-of-use assts are not correctly identified and tested for
+impairment, as some of the team members are inexperienced 1
+11. The risk of incorrect accounting treatment and calculations of the cost of the
+derecognition of the right-of-use assets, as it involves complex accounting
+treatment and calculations. 1
+12. Initial measurement of the right of use is also complex as it refers to the
+measurement of the lease liability. Aspects such as the discount rate(s)
+used to discount the future cash flows may not be correct or the rate implicit
+in the different leases may not be used to discount these (other inputs such
+as period, payments or residual value might also not be correct in the
+calculation).
+1
+13. The complexity of the impairment calculation, given the nature of the right-
+of-use assets, being land, buildings, equipment and vehicles, could lead to
+accounting errors.
+• There is a risk that the recoverable amount calculation (fair value and
+value in use) is incorrect because of the subjectivity and complexity of
+various inputs into the calculation.
+1
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 9 © SAICA 2024
+14. The complexity in calculating depreciation on aspects such as the use
+of lease term or useful life for the different categories of land, buildings,
+equipment and vehicles could lead to accounting errors and misstatement. 1
+15. Further the determination of the depreciation method and useful lives of the
+different categories of right-of-use assets are complex and could lead to
+accounting errors and misstatements. 1
+Available 15
+Maximum 8
+Total for part (h)(i) 8
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 10 © SAICA 2024
+Part (h) Describe. with reference to the external audit of ACL for FY2023 –
+(ii) the substantive procedures to verify the right-of-use assets
+that JGL should perform.
+• Do not address presentation and disclosure in your answer.
+Marks
+Note: the procedures below should be followed for every category of right-of-use
+asset, namely land and buildings, equipment and machinery and vehicles.
+General procedures
+1. Agree the right-of-use assets’ balances in the trial balance to those in
+the general ledger accounts and fixed assets register. 1
+2. Obtain a signed management representation letter in which management
+specifically deals with all the assertions of right-of-use assets and the
+accounting treatment thereof.
+1
+3. Using CAATs (or inspection) to run data analytics, inspect the general
+ledger for exceptions such as negative depreciation and carrying
+amounts or duplicates/missing values.
+1
+4. Perform stratification on assets in the fixed assets register per location to
+identify high value leases (assist with sampling). 1
+5. Cast and cross cast the fixed asset register and agree the amounts to the
+general ledger and financial statement. 1
+6. Agree the carrying values at the beginning of the year for each o the right-
+of-use asset categories to the amounts in the prior year working papers. 1
+Existence and ownership
+7. Select right-of-use assets in the fixed asset register and physically inspect
+a sample of the assets for existence. 1
+8. Agree the assets selected for physical inspection with the
+• lease contracts,
+• registration documentation,
+• insurance documentation, etc.,
+and confirm ACL as the registered lessee of the assets (name).
+1
+Completeness / classification
+9. Select assets physically when undertaking the above asset verification, and
+follow the assets through to the fixed asset register and to the lease contract. 1
+10. Select lease contracts and follow the assets through to the fixed asset
+register. 1
+11. Inspect for lease payments in the general ledger accounts / bank statements
+and follow up with contracts and assess that the assets are recognised in the
+fixed asset register.
+1
+Accuracy, valuation and allocation and classification
+12. Using CAATs, run data analytics / recalculate the castings and calculations
+of depreciation; and
+recalculate the castings and calculations of carrying values of the different
+right-of-use assets in the fixed asset register.
+1
+1
+13. Select new lease contracts entered into the year and test the following:
+• Whether the lease contract meets the accounting treatment for
+capitalisation as a right-of-use asset and confirm Valuevest has both:
+o the right to obtain substantially all of the economic benefits from
+the use of the assets; and
+o the right to directly use the asset.
+• Agree the interest rate applicable to the right-of-use assets by referring
+to the lease contract.
+1
+1
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 11 © SAICA 2024
+• Asses the appropriateness of the costs included in the calculation for the
+initial costs to capitalise the asset, by agreeing them to the lease contract.
+• Recalculating the capitalisation amount using the present value of the
+lease payments using the rate confirmed in the lease contract and
+comparing it to the amount recorded in the fixed asset register.
+1
+1
+14. Select the derecognition lease of the land and buildings and test that the
+accounting treatment and calculations for derecognition were met and assets
+appropriately removed from the records.
+1
+15. Select the lease assets (land and buildings) on which the impairment
+charge was recognised and consider the correctness of the accounting
+treatment thereof as well as the calculation of the impairment amount by:
+Obtaining the VIU calculation and inspect the inputs used to ensure the
+inputs are considered with IAS 36 and is reasonable.
+Obtain and inspect that the fair value approximates selling prices of similar
+buildings.
+Reperform the VIU calculation and compare to management to ensure it is
+reasonable.
+1
+1
+1
+16. Consider, based on the income generated by the different categories of right-
+of-use assets as well as discussion with management, whether any further
+indicators exist that will require impairment of the assets. 1
+Available 23
+Maximum 10
+Total for part (h)(ii) 10
+Communication skills – appropriate style 1
+Total for part (h) 19
+TOTAL FOR PART II 53

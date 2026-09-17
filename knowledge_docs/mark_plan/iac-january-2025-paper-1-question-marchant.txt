@@ -1,0 +1,462 @@
+Source: SAICA IAC January 2025 — Paper 1 question (Marchant).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC January 2025 1 (of 9) © SAICA 2025
+Paper 1
+PAPER 1 120 marks
+All amounts exclude value-added tax (VAT) unless the context indicates otherwise.
+1 Background
+On 2 January 2023, Marchant Peddlar started as a trainee accountant at Hustle & Co (‘Hustle’),
+a small audit firm in Tshwane.
+From 2019, during his university days, Marchant showed entrepreneurial spirit by acquiring
+vending machines, which were installed at student accommodation complexes near his university.
+Marchant started this business venture, trading as a sole proprietor, during his first year of studies.
+He acquired three second-hand vending machines on 1 September 2019, for a total purchase
+price of R93 000, which were brought into use on that date. These vending machines accept cash
+and cards as payment and sell cool drinks, energy drinks, chocolates, chips and microwavable
+foods such as noodles. Since the vending machines provide 24-hour, quick access to products,
+Marchant can charge higher prices than retailers. Marchant’s knowledge of students’ preferences
+enabled him to choose products in high demand.
+The machines were financed entirely with a loan from Marchant’s father. After acquiring the
+vending machines, Marchant, with the help of his brother, Johnny Peddlar (when Marchant was
+not available), took full responsibility for stocking the machines, tracking sales, maintaining
+inventory levels in the machines, and ensuring that they were in working order. The high sales
+volumes and excellent gross profit margins allowed Marchant to repay the loan from his father in
+full shortly after starting the business. Marchant did not register as a VAT vendor with the South
+African Revenue Service (SARS).
+Marchant’s business grew at a steady pace during his time as a student. Thereafter, despite his
+commitment to his training contract at Hustle, Marchant diligently maintained his vending
+business.
+IAC January 2025 2 (of 9) © SAICA 2025
+Paper 1
+The detailed income statement of Marchant’s current operations (with the three vending
+machines) for the year of assessment ended 29 February 2024 is as follows:
+Description Notes R
+Revenue 83 496
+Cash 1.2 71 348
+Cards 12 148
+Cost of sales (34 539)
+Opening stock 1.3 9 300
+Purchases 45 700
+Closing stock (20 461)
+Refunds 1.4 (862)
+Gross profit 48 095
+Expenses (60 709)
+Maintenance: Vending machines 1.5 (11 754)
+Depreciation: Vending machines 1.6 (9 300)
+Vehicle expenses 1.7
+Fuel (26 325)
+Maintenance (4 320)
+Insurance (5 984)
+Bank charges
+Cash deposits (1 035)
+Card fees (607)
+Cleaning materials (862)
+Data costs 1.8 (522)
+Rental 1.9 –
+Loss for the year (12 614)
+Notes
+1.1 As Marchant is not a registered VAT vendor, the amounts in the table are inclusive of VAT
+where relevant.
+1.2 Each vending machine accepts cash or card payments. Marchant removes cash sale
+proceeds from the machines daily to avoid theft losses. He only leaves the minimum amount
+of cash in the machine to issue change when customers purchase with cash.
+1.3 Trading stock is mainly purchased from wholesalers or major retailers.
+1.4 Customers can seek assistance from Marchant to request a refund if the goods did not
+‘drop’ from the machine. The customer can provide details of the unsuccessful transaction,
+and Marchant will then manually process the refund or credit the amount back to the
+customer.
+1.5 The vending machines require regular maintenance, irrespective of the level of sales. The
+maintenance is important as the lack of maintenance does not only result in the malfunction
+of machines (in terms of temperature) but also of the note readers (the component that
+verifies that only valid cash notes are accepted for transactions). A new card reader, with a
+cost of R7 500, was installed in one of the vending machines on 29 February 2024. This
+was included in the maintenance amount.
+IAC January 2025 3 (of 9) © SAICA 2025
+Paper 1
+1.6 Depreciation on the machines and their components is calculated at 10% per annum on the
+straight-line basis.
+1.7 The vehicle expenses include the total expenses incurred by Marchant. Only 15% of the
+various cost items (fuel, maintenance and insurance) relate to the business. Vehicle
+maintenance is regarded as fixed for costing purposes. The tax value of the vehicle was
+Rnil on 1 March 2023.
+1.8 Data costs relate in full to the operation of the vending machines.
+1.9 Expenditure does not include any rental payments. The machines operate without formal
+contracts with the property owners, and the landlords provide electricity connections at no
+cost.
+2 Extract of employment information with Hustle
+Marchant’s remuneration package for the 2024 year of assessment included the following:
+1 Basic cash salary of R21 900 per month.
+2 As a condition of employment, Marchant is a member of the Chartered Accountants (SA)
+Medical Aid Fund, a medical aid scheme registered under the Medical Schemes Act.
+Marchant does not have a disability as defined in section 6B(1) of the Income Tax Act.
+Monthly contributions amounted to R2 840, and Hustle makes no contributions to its
+employees’ medical aid. Marchant is unmarried and does not make any contributions in
+respect of any dependant registered with any medical aid fund. Marchant had no out-of-
+pocket medical expenses during his 2024 year of assessment.
+3 All Hustle employees are granted the use of a cell phone. Marchant was granted the right
+of use of an iPhone 13 with a cost (equal to the market value) of R13 999. The monthly
+subscription for the voice and data plan paid by Hustle amounts to R769. The private use
+of the cell phone is incidental.
+4 Marchant spent 30 days away from home while on out-of-town audit engagements and
+received an allowance of R190 per day to cover incidental costs. Marchant did not keep any
+receipts for costs incurred. Hustle does not recover the allowance for incidental costs from
+its clients.
+5 Hustle re-imburses its employees at R5,20 per km travelled for business purposes.
+Marchant owns a VW Polo Caddy, purchased on 1 February 2023, with a retail market value
+of R269 900 on that date. Marchant bears all the costs relating to this vehicle, but did not
+keep accurate data of the expenditure. The Caddy is used only for personal use or for travel
+related to Marchant’s employment with Hustle.
+The distance travelled for the 2024 year of assessment, as substantiated by a travel logbook
+acceptable to SARS, was as follows:
+• Private – 5 600 km
+• Business – 8 400 km
+• Total – 14 000 km
+IAC January 2025 4 (of 9) © SAICA 2025
+Paper 1
+Marchant was contacted by Jackie Oldman, another vendor involved in the vending machine
+business. Jackie wanted to dispose of her vending machine business. Jackie operates her
+business through OldManVendi (Pty) Ltd (‘OMV’) and owns 100% of the ordinary shares in OMV.
+OMV is not a registered VAT vendor.
+OMV focuses mainly on hotels (primarily staff restrooms), big corporate office buildings and other
+businesses that have 24-hour operations, such as logistics and courier businesses. OMV owns
+32 vending machines operating from 20 sites around the Tshwane and Midrand areas. Jackie
+expanded OMV’s business over many years, and some of her vending machines are more than
+ten years old.
+Marchant is keen to acquire the business as he is of the opinion that the sales can be significantly
+increased through better management of the machines.
+Jackie offered Marchant two options:
+Option 1: Buy all the shares in OMV for R692 925 in cash.
+Option 2: Buy the assets of the business for a total of R692 925 in cash. The assets comprised
+the following:
+Assets Value
+R
+Vending machines (open market value: R600 000) 547 975
+Inventory 42 849
+Coins 11 251
+Panel van – 2010 model. Value as per ‘Cars4Everyone’, a well-known
+online second-hand car dealer (open market value: R100 000) 90 850
+Total 692 925
+The following relates to the incorporation and establishment of VendiBoys and subsequent
+transactions:
+Transaction 1
+• After careful consideration, Marchant decided to first incorporate a new company,
+VendiBoys (Pty) Ltd (‘VendiBoys’), on 1 March 2024. VendiBoys was registered as a
+category B VAT vendor with SARS.
+• On 1 March 2024, Marchant transferred the three second-hand vending machines that he
+had purchased on 1 September 2019 to VendiBoys in exchange for a 100% shareholding.
+The total tax value of all the second-hand vending machines of R23 250 was also reflective
+of the market value on 1 March 2024.
+Transaction 2
+• VendiBoys decided to pursue option 2 and to buy the assets from OMV. The effective date
+of the transaction was 2 March 2024. VendiBoys’ first financial year end was
+30 September 2024 (FY2024), which is also the end of its year of assessment.
+3 New business opportunity
+IAC January 2025 5 (of 9) © SAICA 2025
+Paper 1
+Transaction 3
+• VendiBoys’ acquisition of the assets of OMV was funded by two loans:
+o A loan of R450 000 from Marchant’s father; and
+o A loan from Marchant, who increased his personal loan at a bank for this purpose.
+• Both loans to VendiBoys earn interest at a rate of prime plus 3,5% per annum and are
+repayable in equal monthly instalments over three years.
+Marchant decided to involve his brother, Johnny, in the vending business, as Johnny has previous
+logistics experience. Johnny passed his matric exam a few years ago but did not qualify for tertiary
+studies. He lives with his parents and previously made deliveries for a delivery company. Marchant
+and Johnny are the only directors of VendiBoys.
+Marchant is responsible for compiling the annual financial statements. While the Companies Act
+does not mandate audited financial statements for VendiBoys, Marchant realised that banks
+would require it for loan advances in the future and thus opted to have audited financial
+statements. The directors decided to appoint Qotho Inc. as VendiBoys' auditors.
+Both Marchant and Johnny play integral roles in the business' daily operations. To ensure they do
+not complicate their tax situation, the brothers allocate some private expenses incurred by them,
+such as all their personal vehicle fuel expenses, as expenses to VendiBoys.
+IAC January 2025 6 (of 9) © SAICA 2025
+Paper 1
+Marchant prepared the following management accounts of VendiBoys for the two months ended
+30 April 2024. The amounts in this table are inclusive of VAT, where applicable:
+Description Notes R
+Revenue 3.1, 3,2, 3.3 181 428
+Cash 178 627
+Cards 2 801
+Cost of sales 3.4, 3.5 (99 878)
+Refunds (3 778)
+Gross profit 3.6 77 772
+Expenses (129 428)
+Employee costs 3.7 (65 000)
+Maintenance: Machines 3.8 (8 043)
+Depreciation: Vending machines 3.8 (11 550)
+Rental payments to property owners 3.9 (6 400)
+Subscription to OpKonnect platform 3.10 (1 000)
+Vehicle expenses 3.11
+Fuel (5 587)
+Maintenance (11 832)
+Insurance (2 650)
+Bank charges 3.12
+Cash deposits (1 235)
+Card fees (120)
+Interest (16 011)
+Loss for the two-month period (51 656)
+Notes
+3.1 The management accounts reflect the sales for the two months.
+3.2 From time to time, the selling prices of slow-moving products are adjusted downward to
+stimulate the sales of these products.
+3.3 To ensure that the vending machines offer products that are in demand, Marchant and
+Johnny recently added vapes and vape juices to the vending machines. VendiBoys will
+soon apply for the necessary retail tobacco and e-cigarette trading licence. The addition of
+these products has already contributed to a sizeable increase in sales. Marchant
+successfully negotiated with a supplier to purchase bulk vapes and vape juices at
+significantly reduced prices. However, in view of recent media reports alleging that this
+supplier sells counterfeit products, Marchant is actively exploring alternative supplier
+options.
+3.4 Customers do not want to buy products that have passed their expiry dates, resulting in
+write-offs on products stocked in the vending machines. Removing expiry dates can extend
+the shelf life of products and reduce write-offs. Johnny discovered that the best way to
+remove the expiry dates is to use colourless nail polish remover as that dissolves certain
+types of ink.
+IAC January 2025 7 (of 9) © SAICA 2025
+Paper 1
+3.5 Cost of sales includes costs of purchases at wholesalers and inventory purchased from
+OMV.
+3.6 Marchant enjoys the business' marketing side and is constantly looking for new expansion
+opportunities and venues at which to install vending machines. VendiBoys occasionally
+experiences theft from vending machines at university hostels and, in the long run, wants
+to focus on expanding into the corporate environment. Marchant frequently promotes the
+vending business with clients during audit engagements to identify possible future sites
+and uncover new opportunities. He also discusses potential new locations for vending
+machine installations and has successfully persuaded several audit clients to proceed with
+installations. He even asked Hustle’s staff planner to book him on clients who may have
+suitable locations for his vending business.
+3.7 Soon after acquiring the vending machines, Marchant realised that VendiBoys needed to
+scale up the human resources further to accommodate the expansion of operations and
+Marchant’s limited availability because of his work at the audit firm. VendiBoys accordingly
+hired one part-time admin staff member to assist with the daily business administration.
+Johnny is responsible for inventory and restocking of machines, but VendiBoys also hired
+two vending machine technicians who assist with restocking and repairing the machines.
+The two vending machine technicians and admin assistant are paid fixed monthly salaries.
+3.8 Marchant decided that using a standardised depreciation period of ten years for all vending
+machines and their components would simplify asset management and the accounting
+entries for depreciation. Regular maintenance is performed on all machines, and a fixed
+maintenance fee is incurred for each period. Marchant's experience shows that vending
+machines that are seven years and older need significantly more maintenance to resolve
+issues and maintain optimal performance.
+3.9 VendiBoys is required to pay a fixed monthly rental to the owners of the properties where
+the machines acquired from OMV are located. This rental allows VendiBoys to install
+vending machines at each location, for use of the electricity in the building and for general
+security around the machines.
+3.10 As the business expanded, VendiBoys recognised the need for more efficient management
+of its growing number of vending machines. To address this, VendiBoys invested in the
+first week of March 2024 in a software application called OpKonnect. This system provides
+real-time monitoring and management capabilities, allowing VendiBoys to remotely track
+inventory levels, machine performance and sales data.
+By utilising OpKonnect, VendiBoys can optimise restocking schedules, reduce downtime
+and improve overall operational efficiency. The advanced analytics and reporting features
+also enable the company to make data-driven decisions, which enhances profitability and
+customer satisfaction. Further details on the system are provided in the section titled
+‘OpKonnect application system’. VendiBoys pays a monthly subscription fee for the use of
+the OpKonnect system.
+3.11 Vehicle expenses relate to the panel van that is used by the technicians. This van can
+carry a large quantity of inventory items, which helps to optimise route planning and avoid
+the technicians running out of stock while restocking the vending machines. The brothers
+have not yet charged their personal fuel expenses to the company.
+IAC January 2025 8 (of 9) © SAICA 2025
+Paper 1
+3.12 One of the managers working with Marchant at Hustle overheard the following
+conversation: Marchant was complaining about the extremely high bank deposit fees,
+although he accepted it as one of the unavoidable costs of running his vending machine
+business. Marchant agreed to assist his friend, who has a small bakery business, by
+including the cash from the bakery’s sales in VendiBoys' weekly cash deposits, so that his
+friend would save the cash deposit fees. Vendiboys would transfer the monies to the
+bakery’s account as soon as it is available in Vendiboys’ account. In exchange, VendiBoys
+would buy inventory from one of the large wholesalers on the bakery’s account, and
+VendiBoys would benefit from volume discounts, but paying for it in cash. VendiBoys is
+not acting as an agent on behalf of his friend.
+3.13 VendiBoys has not insured the vending machines or its inventory against theft or damage.
+4 Further information relating to the OpKonnect application system
+The OpKonnect application (‘app’) manages sales transactions and inventory levels. The app
+provides wireless connectivity for vending machines, by means of a small device installed inside
+each machine. This device communicates with nearby cellular towers to transmit data securely to
+the cloud. This includes data on sales transactions, inventory levels and machine health. Data
+transmission between the devices and the cloud platform, hosted by a third-party provider, is
+encrypted to ensure the confidentiality and integrity of the data. There have been isolated
+instances that resulted in a loss of connectivity of devices to the cellular network, but the third-
+party provider is continuously working to reduce this.
+The app includes modules for sales transactions, inventory management, and machine health
+monitoring needs. Data is continuously monitored, and notifications are sent as mobile app
+notifications. Both Marchant and Johnny receive notifications, which are then routed to the
+vending machine technicians for action.
+The device records cash sale transactions and updates the sales data in real time. The vending
+machine technicians take the cash from the machine and hand it over to Marchant. Marchant
+reconciles the cash sales daily to the cash sales data on the app to ensure all the cash has been
+received. Cash is banked every second day. This process ensures accurate accounting.
+The app also supports credit card payments. Those vending machines with credit card readers
+are connected to a device that processes transactions securely over the cellular network. The
+credit card sales are recorded alongside cash sales, allowing for comprehensive sales reports.
+The platform receives the data transmitted by devices from multiple vending machines. It provides
+a centralised dashboard where owners can remotely monitor the status and performance of their
+vending machines in real time. The monitoring includes determining inventory levels, analysing
+sales data, and troubleshooting technical issues. Johnny uses the inventory module within the
+app to monitor product levels and ensure timeous ordering of inventory. Marchant believes that,
+as the app is reliable and accurate, there is no need for regular inventory counts.
+IAC January 2025 9 (of 9) © SAICA 2025
+Paper 1
+Marchant regularly downloads the data from the app, captures it in the accounting records, and
+analyses data for decision making regarding product choices. The following data fields are
+available:
+Sales transactions data Machine health and operational efficiency
+metrics
+Transaction ID Temperature and humidity levels
+Transaction date Status of device connectivity
+Transaction time Power supply status
+Product ID Location (geographic information; coordinates)
+Product name Low stock alert threshold
+Quantity sold
+Unit price Alerts and notifications
+Total sales amount Low stock levels alert
+Customer receipt (yes/no) Machine malfunction alert
+Cash collection alert
+Inventory management data
+Product ID Cash collection
+Product name Collection date
+Quantity on hand Collection time
+Expiry date (for perishable products) Amount of cash collected
+Product selling price adjustment (yes/no) Credentials of cash collector
+Discounted price
+5 Additional information
+1 VendiBoys only buys from registered VAT vendors.
+2 VendiBoys keeps valid tax invoices on file in compliance with the VAT Act.
+3 All taxpayers will elect the most beneficial tax relief in terms of the Income Tax Act.
+4 All persons are South African residents for tax purposes.
+5 You may assume that the information provided in the 2023/2024 SAICA Tax Legislation
+Handbook is applicable to all years of assessment.
+6 None of the taxpayers has an assessed loss or an assessed capital loss brought forward
+from the previous year of assessment.
+7 In terms of Binding General Ruling 07 the write-off period for the second-hand vending
+machines is five years.
+IAC January 2025 1 (of 1) © SAICA 2025
+Paper 1 required part I
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2025
+PROFESSIONAL PAPER 1
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 1 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Calculate Marchant’s normal tax payable for his 2024 year of
+assessment.
+• Start your calculation of the vending machine trade with gross
+profit of R48 095.
+• Provide brief reasons for amounts that do not affect the taxable
+income calculation.
+20
+20
+(b) Discuss, from income tax and VAT perspectives, whether it would
+have been more advantageous for VendiBoys to acquire the shares in
+OMV, or to have purchased the assets of the business.
+• Calculations are not required.
+Y2: Integrative thinking
+12
+1 13
+(c) Discuss the income tax implications for VendiBoys for its 2024 year of
+assessment in relation to the second-hand vending machines
+acquired in exchange for the 100% equity shares in Vendiboys issued
+to Marchant.
+X1: Communication skill – clarity of expression
+7
+1 8
+(d) Calculate the VAT payable or refundable for the March / April 2024 tax
+period for VendiBoys.
+• Provide brief reasons for amounts that do not affect the VAT
+payable or refundable calculation.
+• The amounts in the management accounts are inclusive of VAT.
+18
+18
+Total for part I 59
+IAC January 2025 1 (of 1) © SAICA 2025
+Paper 1 required part II
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2025
+PROFESSIONAL PAPER 1
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 1 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(e) Discuss VendiBoys’ business and financial risks arising from the
+purchase and operation of the assets from OMV.
+X1: Communication skill – logical argument
+18
+1 19
+(f) Identify and discuss, with reference to VendiBoys, the risks of material
+misstatement at the assertion level for FY2024 for the following
+account balances:
+• Inventory: existence, completeness and valuation; and
+• Property, plant and equipment: valuation.
+X1: Communication skill – clarity of expression
+13
+1 14
+(g) Based on the data fields available from the OpKonnect app, describe
+how the audit team could use automated tools and techniques to
+obtain sufficient and appropriate evidence that VendiBoys’ revenue is
+fairly presented in the financial statements for FY2024.
+Y1: Critical thinking
+12
+1 13
+(h) Discuss ethical concerns regarding how the VendiBoys business is
+run by the Peddlar brothers.
+• Exclude the Companies Act and King IV Report on Corporate
+Governance from your answer.
+• Exclude any threats to fundamental principles from your answer.
+Y5: Professional scepticism
+14
+1 15
+Total for part II 61
+TOTAL FOR PAPER 1 120
+IAC January 2025 1 (of 1) © SAICA 2025
+Paper 1 tax information
+Natural person income tax rates: 2024 tax year
+(1 March 2023 to 29 February 2024)
+RATES OF NORMAL TAX
+Natural persons and deceased estates
+(in respect of the taxable income (excluding any retirement fund lump sum benefit,
+retirement fund lump sum withdrawal benefit or severance benefit))
+Taxable income (R) Rate of tax
+0 – 237 100 18% of taxable income
+237 101 – 370 500 42 678 + 26% of taxable income above 237 100
+370 501 – 512 800 77 362 + 31% of taxable income above 370 500
+512 801 – 673 000 121 475 + 36% of taxable income above 512 800
+673 001 – 857 900 179 147 + 39% of taxable income above 673 000
+857 901 – 1 817 000 251 258 + 41% of taxable income above 857 900
+1 817 001 and above 644 489 + 45% of taxable income above1 817 000
+NORMAL TAX REBATES (s6(2)) 2024 2023
+Primary rebate R17 235 R16 425
+Secondary rebate (65 years and older) R9 444 R9 000
+Tertiary rebate (75 years and older) R 3145 R2 997
+MEDICAL SCHEME FEES TAX CREDIT (s6A) 2024 2023
+Benefits to the taxpayer R364 R347
+Benefits to the taxpayer and one dependant R728 R694
+Benefits to each additional dependant R246 R234
+FIXING OF RATE PER KILOMETER IN RESPECT OF MOTOR VEHICLES
+Value of the vehicle (R) Fixed cost
+(R p.a.)
+Fuel cost
+(c/km)
+Maintenance
+cost (c/km)
+0 – 100 000 33 760 141.5 43.8
+100 001 – 200 000 60 329 158.0 54.8
+200 001 – 300 000 86 958 171.7 60.4
+300 001 – 400 000 110 554 184.6 65.9
+400 001 – 500 000 134 150 197.6 77.5
+500 001 – 600 000 158 856 226.6 91.0
+600 001 – 700 000 183 611 230.5 102.1
+700 001 – 800 000 209 685 234.3 113.1
+Exceeding 800 000 209 685 234.3 113.1
+TRAVEL ALLOWANCE (s8(1)) 2024
+Cost limitation of vehicle (section 8(1)(b)(iiiA)(bb) R800 000
+ALTERNATIVE FIXED RATE FOR CERTAIN
+REIMBURSIVE TRAVEL ALLOWANCES
+2024
+(c/km)
+Simplified method 464

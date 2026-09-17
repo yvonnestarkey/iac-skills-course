@@ -1,0 +1,450 @@
+Source: SAICA ITC June 2024 — Paper 4 Question 1 suggested solution (Soda-XP).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 1 © SAICA 2024
+Part (a) Calculate the consolidated profit of the Soda-XP Group from
+continuing operations for FY2023 after consolidating LightOn.
+• Ignore taxation.
+• Show any fair value adjustment or remeasurement separately
+in your calculations.
+• Ignore all adjustments relating to Glass-It.
+Marks
+Amount Amount
+R R
+Soda-XP and other subsidiaries (stated) 50 000 000
+Add: LightOn profit until 30 September 2023 850 000 1
+Reversal of parent’s entries in its separate
+financial statements:
+Profit on the sale of shares (stated) (4 250 000) 1
+Remeasurement gain on measuring the
+retained investment to fair value # 850 000 (850 000)
+Fair value (10 000 shares x R90) 900 000 1
+Portion of cost (10 000/60 000 x R300 000) (50 000) 1
+Group gain on the loss of control (IFRS 10.B98):
+Profit on tlhe sale of the subsidiary 583 333 583 333
+Proceeds at fair value (50 000 shares x R90)
+(para. (b)(i)) 4 500 000 1
+Pro rata carrying amount of parent’s interest in
+subsidiary sold (50/60 x R4 700 000) (3 916 667) 1
+Remeasurement gain on measuring the
+retained interest to fair value #
+(disclosable under IFRS 12.19(a))
+116 667 116 667
+Fair value (10 000 shares x R90) (para. (b)(iii)) 900 000 1
+Pro rata carrying amount of parent’s interest in
+subsidiary sold (10/60 x R4 700 000) (783 333) 1
+Alternative calculation
+Total gain or loss on the sale of the subsidiary 700 000
+Proceeds at fair value (50 000 shares x R90) 4 500 000 1
+Fair value of retained investment
+(10 000 shares x R90) 900 000 1
+Carrying amount of investment (given) (4 700 000) ½
+Gain on disposal of shares 583 333 583 333
+Proceeds at fair value 4 500 000
+Carrying amount of investment disposed of
+(50/60 x R4 700 000) (3 916 667) 1
+Remeasurement gain on measuring the
+retained investment to fair value # (R700 000
+– R583 333)
+116 667 ½C
+Alternative calculation
+Total gain or loss on the sale of the subsidiary 583 333 583 333
+Gain on disposal of shares in separate
+financial statements (given)
+4 250 000
+1
+Share of post-acquisition reserve sold
+[50/60 x (R4 700 000 – R300 000)] (3 666 667) 1
+Remeasurement gain on measuring the
+retained investment to fair value # 116 667 116 667
+Fair value of retained investment
+(10 000 shares x R90) 900 000 1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 2 © SAICA 2024
+Carrying amount of retained investment
+(10/60 x R4 700 000) (783 333) 1
+# The question required candidates to indicate
+any fair value remeasurement separately
+Consolidated profit from continuing
+operations 46 450 000
+Available 8
+Maximum 8
+Total for part (a) 8
+Part (b) Discuss five concerns that you may have about the calculation of
+the value in use for Glass-It and for each concern, provide the
+appropriate treatment.
+• Limit your discussion to issues for which there is
+evidence of inaccuracies, inconsistencies, errors in
+application and/or non-compliance with IFRS in the
+scenario.
+Marks
+1 Disposal of the assets at the end of the useful life
+1.1 The composition of the expected future cash flow is incorrect as the net
+cash flows to be received from the disposal of the manufacturing plant
+at the end of its useful life were incorrectly omitted (IAS 36.39(c)).
+(This is evident from the fact that cash flows for the last year have merely
+increased by the expected percentage increase due to growth.)
+1
+1.2 The estimate of net cash flows to be received from the disposal of the
+manufacturing plant at the end of its useful life of R16 million should be
+included in the value in use calculation (IAS 36.52).
+1
+2 Replacement cost of glass-cutting machine
+2.1 Furthermore, the composition of the expected future cash flow is incorrect
+as the cash flows incorrectly exclude any capital expenditure (for
+replacing the glass-cutting machine) (the scenario states that the expected
+cash flows exclude any capital expenditures).
+1
+2.2 The estimated useful life of the glass-cutting machine is shorter (stated as
+two years) than the rest of the manufacturing plant (stated as five years).
+The replacement of assets with shorter lives is considered to be part of the
+day-to-day servicing of the unit when estimating the future cash flows
+associated with the unit, and the replacement cost of R7 million should
+be included in the value in use calculation (IAS 36.49).
+1
+3 Adjustments for inflation
+3.1 The treatment of inflation in the expected cash flows and the discount rate
+is inconsistent. The discount rate (as stated in the scenario) includes the
+effect of price increases attributable to general inflation. In contrast, the
+cash flows are expressed in real terms (i.e., without adjusting for inflation).
+1
+3.2 Estimates of future cash flows and the discount rate should reflect
+consistent assumptions about price increases attributable to general
+inflation. Therefore, as the discount rate includes the effect of general
+inflation (as stated in the scenario), future cash flows should be
+estimated in nominal terms / as the cash flows are expressed in real
+terms, the discount rate should be adjusted to not include the the effect
+of price increases attributable to general inflation (IAS 36.40).
+1
+4 Adjustments for risks
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 3 © SAICA 2024
+4.1 The risk of increased load shedding in future has been incorrectly double-
+counted, in both the discount rate and by adjusting the expected future
+cash flows.
+1
+4.2 However, the discount rate used to measure the CGU’s value in use shall
+not reflect the risk for increased load shedding, for which the future cash
+flow estimates have also been adjusted (IAS 36.56).
+(Accordingly, either the discount rate or the expected cash flow should
+exclude such risk adjustment.)
+1
+5 Treatment of cash outflow of termination benefits
+5.1 The expected cash flows incorrectly include the payment of R3 million
+as termination benefits to employees, because a separate liability has
+already been recognised (as stated in the scenario) (double-counted).
+The carrying amount of the CGU and the recoverable amount were
+not determined on a consistent basis (IAS 36.76(b)), as the carrying
+amount of the CGU excludes the recognised termination benefit liability. In
+contrast, it was included (as a deduction) in the value in use calculation.
+1
+1
+5.2 The carrying amount of the CGU does not include the recognised liability.
+Accordingly, the payment of R3 million for the retrenchment should not
+be deducted from the expected cash flows in determining the value in use.
+1
+Available 11
+Maximum 10
+Communication skills – logical argument 1
+Total for part (b) 11
+Part (c) Prepare, on the assumption that Soda-XP decided to adopt option 2
+in section 4, the analysis of the single amount in respect of the
+discontinued operation in profit or loss in terms of IFRS 5.33b for
+inclusion in the notes to the consolidated financial statements of the
+Soda-XP Group for FY2023.
+• Indicate the allocation of the impairment loss to the respective
+assets in your calculations.
+• Round and present all amounts in R’000.
+• Do not split any income tax expense between current tax and
+deferred tax.
+• Do not provide a disclosure of information relating to any
+allocation to the owners of the parent or the non-controlling
+interests
+• Do not provide comparative amounts.
+Marks
+SODA-XP GROUP
+NOTES TO THE CONSOLIDATED FINANCIAL STATEMENTS FOR FY2023
+Discontinued operations: The analysis of the single amount in profit or loss
+(IFRS 5.33(b))
+Amount
+(Narrative information not required) R’000
+Revenue 93 000 ½
+Expenses [(75 000 + 10 000) (1) + 3 000 termination (1)
++ 14 380 impairment loss (6 marks calc 1 below)] (102 380) 2
+Profit before tax (9 380)
+Tax expense
+[(-9 380 + 3 000 termination (1) + 2 880 goodwill (1C)) x 27% (½P)] 945 2½
+Profit after tax (8 435)
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 4 © SAICA 2024
+Loss recognised on the measurement of the disposal group
+to fair value less costs of disposal -
+Tax (expense)/income -
+Remeasurement loss after tax -
+Total amount recognised in profit or loss from
+discontinued operations (8 435)
+Calculation 1: Impairment loss and allocation of impairment loss
+Recognised
+in profit or
+loss
+Total
+R’000 R’000
+Carrying amount of CGU / disposal group (stated as
+correct) 105 840
+Fair value less costs of disposal 90 000
+Total impairment loss (105 840 – 90 000) (15 840) 1
+Allocated first to goodwill (3 840) 1P
+Loss limited to the amount of recognised goodwill
+(IAS 36.App C) (3 840 x 75%)
+(2 880) 1
+Remaining loss allocated to other assets on a pro
+rata basis (12 000)
+Loss on land recognised in OCI (not P/L (1P))
+(13 000 - 12 500) (1)
+limited to its individual fair value less costs of
+disposal (IAS 36.105) (also see the alternative
+calculations below)
+0
+(500)
+2
+Loss on manufacturing plant recognised in P/L (11 500) (11 500) 1C
+Total impairment loss recognised in profit or
+loss (to be included in the analysis of the single
+amount disclosed for the discontinued operation)
+14 380
+Total marks to the analysis in the note above 6
+Available 11
+Maximum 11
+Total for part (c) 11
+Alternative calculation of impairment loss
+Carrying
+amount
+Loss
+allocated
+pro rata
+Revised
+carrying
+amount Limit
+Re-allo-
+cation
+New
+carrying
+amount
+Total
+loss
+recog-
+nised
+Land 13 000 (1 529) 11 471 12 500 1 029 12 500 (500)
+Manu-
+facturing
+plant 89 000 (10 471) 78 529 N/A (1 029) 77 500 (11 500)
+Total 102 000 (12 000) 90 000 12 500 0 90 000 (12 000)
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 5 © SAICA 2024
+Part (d) Using the information provided on the performance for FY2023 and
+information in section 5, and on the assumption that the Soda-XP
+Group adopted option 1 –
+(i) calculate the amount by which the current gross profit should
+increase to reach target gross profit of Glass-It in FY2024;
+(ii) calculated the sales value required for Glass-It to achieve the
+target gross profit for both the South African and Botswana
+operation in 2024; and
+(iii) calculate and conclude, taking into account the answer to part
+(a)(ii) above, the impact that the move to Botswana will have
+on Glass-It’s profitability.
+Marks
+Part (d)(i)
+R’000
+Gross profit margin 25/125 *120 000 = 24 000 1
+Increase in profit (24 000 (C) – (93 000 – 75 000) = 6 000 1
+Part (d)(ii)
+Variable cost per unit
+Variable (50 000 -25 000)/ (3000-1000)= R12.50 1
+Total fixed costs (R’000) at highest level of activity
+50 000 - (12.5*3 000)(C) = 12 500 1
+Alternative (candidate can also use lowest level of activity)
+25 000 - (12.5*1 000)(C) = 12 500 1
+Break-even sales value for the South African operation with target gross
+profit (R’000)
+(12 500 + 24 000 (C) ) / 50% = R73 000 1
+Break-even sales value for the Botswana operation with target gross profit
+(R’000)
+((12 500*75%)(C) + 24 000)(C) / 50% = R66 750 1
+Part (d)(iii)
+The move to Botswana results in a lower sales value required to reach the target
+gross profit percentage.
+1
+This will increase gross profit (R’000) (by R73 000 – R66 750)*25/125 = R1 250 1(P)
+Alternative
+This will increase gross profit (R’000) (by (R12 500*25%)/50% *25/125 = R1 250 1
+Additionally, profit will increase as there are less fixed costs to recover. This
+benefit will be realised as long as the production and sales volume stays within the
+relevant range of activity.
+1
+Maximum for part (d)(iii) 2
+Available 8
+Maximum 8
+Total for part (d) 8
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 6 © SAICA 2024
+Part (e) Determine, assuming that Soda-XP Group adoped option 1, based
+on the information provided in sections 4 to 6, the strategies that
+could be used to ensure that Glass-It remained solvent and liquid
+following the move to Botswana.
+Marks
+1 Cash flow management
+1.1 The company should perform a detailed expenditure review to identify
+expenditures that are excessive or that represent a duplication of functions.
+Such expenses and functions should be eliminated or minimised without
+compromising operations and the quality of products.
+1
+1.2 As a related matter, reduce any discretionary spend such as expansionary
+capex given that demand is depressed.
+1
+1.3 A cost benefit analysis should be performed across the board for all activities
+for which the company has an option to either lease or buy or provide service
+internally or outsource. This could result in a significant reduction in
+expenses and liabilities from the outright purchase of assets.
+1
+1.4 Continue to identify and sell non-performing / non-core assets / poorly
+performing divisions
+1
+1.5 Evaluate the impact of the Group’s dividend policy on liquidity and solvency
+of Glas-It. (This is a Companies Act requirement.)
+1
+1.6 Focus on increasing operating profitability to create a cash-generating ability
+and flexibility in responding to competition and strategic positioning by –
+• identifying cheaper sources of raw materials;
+• researching the input mix and determining if a change in the mix can
+reduce the cost of inputs and normal losses; and
+• investigating the drivers of normal losses and implement strategies to
+reduce them.
+1
+1
+1
+1.7
+1.8
+Currently the cash generated by operations appears low in relation to pre-
+tax
+profits, indicating that the profit is not backed by cash. This could be
+alieviated by reducing overreliance on operating effectiveness (which places
+emphasis on being faster, better or using fewer resources and defects than
+the competition).
+The glass manufacturing operation needs to improve its ability to create an
+enduring competitive advantage, to enable it to earn higher margins by –
+• identifying specialised glass and niche markets;
+• differentiating the glass products and their quality;
+• reducing the number of glass products which could lead to simplification
+of production and procurement processes;
+• identifying the most profitable market segments and implement strategies
+to deepen penetration into these market segments; and
+• divesting from unprofitable segments.
+1
+1
+1
+1
+1
+1
+1.9 Given the high exposure to USD fluctuations on ordering, the glass
+manufacturing operation needs to implement strategies to mitigate foreign
+currency risks so that costs and profitability are more predictable and easier
+to plan around.
+1
+2 Supplier management
+2.1 Given that neither Botswana nor Zambia appears to have the long-term
+capacity to supply power reliably, the glass manufacturing operation needs
+to –
+• enter into energy supply agreements with energy suppliers to secure
+energy requirements;
+• identify alternative sources of energy, such as investing in generators,
+solar power and batteries to reduce production interruptions; and
+1
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 7 © SAICA 2024
+• incorporating more quantitative and qualitative factors over and above
+the opportunity to save on electricity when evaluating the decision to
+relocate to Botswana.
+1
+2.2 As a strategy for addressing obsolete stock and related liquidity challenges,
+the glass manufacturing operation needs to develop a better understanding
+of customer needs and align production to client orders and forecasts.
+1
+2.3 Stockout costs might be prevented by holding larger levels of inventory,
+given the large lead times of supply from China and India. This should be
+balanced against the cost of holding large volumes of inventory. In this
+regard, the operation needs to identify additional sources of working capital
+financing.
+Or, instead of increasing inventory, consider reducing inventory by applying
+mathematical techniques like Economic Order Quanitiy (EOQ) to ensure
+that the optimal order quantity is included in each order.
+1
+2.4 Alternative suppliers of both machines and raw materials should be sourced;
+which should preferably be local suppliers to reduce lead times.
+1
+2.5 Customers of customised glass products could be encouraged to place their
+orders in advance to enable planning for both ordering and production.
+1
+3 Debtors management
+3.1 Significant efforts need to be directed at reducing the receivable turnover
+days (which is 20 days higher than the sector median) to increase liquidity.
+This could be achieved by –
+• implementing stronger credit policies to grant credit to credit-worthy
+clients and manage the size of credit extended to them. Consider
+features which encourage advance payments from clients and early
+payments; and
+• obtaining credit insurance on the debtors book to mitigate the cost of
+default. Long overdue accounts should be identified and stronger
+processes to recover these balances should be implemented.
+1
+1
+3.2 Similarly, long-term forecasts of demand could be made, and orders placed
+well in advance of use.
+1
+4 Finance arrangements
+4.1
+4.2
+4.3
+At 85%, the debt levels are currently high compared to sector comparables.
+The glass manufacturing operation should reduce overreliance on debt by
+requesting shareholders to inject more funds into the business and using
+some of the proceeds to reduce debt.
+Alternatively, this could be achieved by renegotiation of debt (i.e. converting
+amortising debt into bullets, increasing the term of debt), sale and leaseback
+arrangements, leasing instead of outright purchase of machines).
+Additionally, the glass manufacturing operation should include reducing
+debt and working capital levels as part of management’s performance
+targets and incentives.
+1
+1
+1
+Additional points
+• Identify export markets to increase volumes.
+• Revise the incentive structures of senior management to ensure that
+there is alignment with the long-term sustainability of the business.
+• Review the effectiveness of marketing strategies and the sales team;
+provide more training to the sales team where required.
+• Implement regular performance reviews to monitor progress with
+production, profitability, liquidity and debt levels.
+• Explore government incentives, grants and other support for glass
+manufacturers in Botswana.
+1
+1
+1
+1
+1
+Available 34
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 8 © SAICA 2024
+Maximum 11
+Communication skills – appropriate style 1
+Total for part (e) 12

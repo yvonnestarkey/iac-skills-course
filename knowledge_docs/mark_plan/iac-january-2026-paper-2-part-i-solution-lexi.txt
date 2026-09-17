@@ -1,0 +1,273 @@
+Source: SAICA IAC January 2026 — Paper 2 Part I suggested solution (Lexi).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Initial Assessment of Competence
+Professional Paper 2
+January 2026
+Copyright, proprietary rights and permitted use
+© The South African Institute of Chartered Accountants (SAICA). All rights reserved.
+The SAICA Initial Assessment of Competence (IAC) questions, solutions and examiners comments
+(‘these documents’) constitutes proprietary intellectual property and professional know-how of SAICA.
+It has been developed and is maintained as part of SAICA’s mandate to uphold the quality, integrity,
+and high professional standards of the Chartered Accountant profession, which underpin public
+confidence and the value and attractiveness of SAICA membership and designation.
+Access to, or use of, these documents does not confer any right, licence, or interest in the intellectual
+property contained herein. Except where expressly permitted by SAICA in writing, no part of these
+documents may be copied, reproduced, adapted, published, distributed, or used for commercial,
+quasi-commercial, or third-party standard-setting purposes.
+These documents may be used solely for legitimate educational, regulatory, or professional purposes,
+in a manner that preserves their integrity, acknowledges SAICA as the owner and source, and does not
+undermine SAICA’s role as custodian of professional standards or dilute the value associated with
+SAICA’s membership and designation.
+Any authorised access to or use of these documents is subject to, and must be exercised in accordance
+with, SAICA’s Intellectual Property Management Policy, as amended from time to time.
+Disclaimer clause: All names of persons, places and business entities mentioned in these
+documents are fictitious and any resemblance to real persons, living or dead, places and business
+entities are purely coincidental.
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART I
+
+Part (a) Discuss, with reference to case law principles, the income tax implications
+for Lexi in respect of the all-expenses-paid trip described in section 3
+(Additional income).
+Marks
+Income tax implications
+Identification of the issue: The issue is if a ‘total amount’ ‘in cash or otherwise’ has been
+received in terms of the gross income definition.
+1
+Case law principle: The word ‘amount’ includes any form of property with an
+ascertainable monetary value, including debt and rights (Lategan, Butcher Bros and
+Brummeria).
+1
+Application: The trip with a market value of R20 000 was used by Lexi by Arno for
+services rendered,
+which equates to something given in return (a quid pro quo or exchange) transaction
+(Brummeria Renaissance)
+1
+1
+Para. (c)(ii) to the gross income definition specifically includes any voluntary award,
+received or accrued in respect of services rendered.
+1
+Application: Lexi will be taxed on the full market value of R20 000 as she rendered the
+services, even though all expenses paid for the trip were for her and her partner. 1
+Section 102(1)(e) of the TAA determines that the taxpayer (i.e. Lexi in this case) bears
+the burden of prove that the value is correctly determined at R20 000.
+1
+Conclusion: Lexi will be taxed on the value of the all-expenses trip valued at R20 000 and
+must thus include the R20 000 in her ‘gross income’ in the 2025 year of assessment.
+1P
+Available 8
+Maximum 7
+Total for part (a) 7
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART I
+
+Part (b) Calculate Lexi’s normal tax payable for her 2025 year of assessment.
+• Provide reasons for amounts which have a nil effect on the
+calculation.
+• For the purposes of answering required (b) assume that –
+o with regard to point 3.2 (Foreign income – book talk fee) the fee
+will be fully taxable in South Africa; and
+o section 6B is nil.
+Marks
+Full-time employment R R
+Salary (par (c) of the gross income definition – s1(1))
+R50 000 x 9 months 450 000 1
+Exemption: Secondment to the UK
+DTA upheld by the UK: not exempt from normal tax as Lexi was
+not outside South Africa for a period exceeding 183 days
+(section 10(1)(o)(ii)
+NIL 1
+Fringe benefit – provident contribution R450 000 x 14,8% 66 600 1P
+Fringe Benefit: Laptop
+nil value as only used for business purposes (para. 6(4)(a) of
+the 7th Schedule)
+OR
+used mainly for Hebony’s business (para. 6(4)(bA) of the 7th
+Schedule)
+NIL 1
+Cell phone allowance (s 8(1)(a)(i) R1000 x 9 months 9 000 1
+Cell phone expenses
+No deduction for the business as Lexi is not a mainly
+commission-earning employee (s 23(m))
+OR
+No deduction for private cell phone costs as incurred for
+domestic purposes (s 23(b)) or no deduction for this allowance
+NIL 1
+Leave pay (s7B(2) read with para. (d) of the gross income
+definition 35 000 1
+Free meal credits
+No inclusion as represents an advance, and Lexi spends the
+amount on business premises (s8(1)(a)(ii))
+OR
+constitutes a voucher (fringe benefit), value of nil as the canteen
+is exclusively used by the employees of Hebony (para. 8(3) of
+7th Schedule).
+NIL 1
+Interest-free loan (7th Schedule – para 2(f) read with para.
+11(4)(b))
+nil value as it was given to Lexi to enable her to further her
+studies
+NIL 1
+Settlement of loan
+No deduction for the settlement of the loan from Hebony as it is
+capital in nature
+OR
+not in the production of income (s11(a))
+OR
+Section 23(m) prohibits any deduction.
+NIL 1
+UIF
+UIF contributions paid are not deductible, as it relate to
+amounts that do not constitute income under section 1. Any
+UIF benefits received are specifically exempt in terms of
+s10(1)(mB)/ s23(f)
+NIL 1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART I
+
+R R
+Savings component (para (eD) to the gross income definition -
+s1(1))
+RUMENARATION
+39 596
+600 196
+1
+Endorsements (para (eD) to the gross income definition - s1(1)) 10 000 1
+Home expenditure
+No deduction is allowed for the portion of the apartment, as Lexi
+cannot provide supporting documents. (unable to meet the
+burden of proof required under s 102 of the TAA. OR
+Deduction disallowed as relates to domestic in nature (s23(b))
+NIL 1
+MC event (follow through from part (a) - par (c) of the gross
+income definition 20 000 1P
+Book talk fee (s1(1) gross income definition read with s 25D(3))
+£3 000 x 23,43
+TI before s 11F
+70 290
+700 486
+1
+Section 11F(2) deduction (66 600) 1P
+Contribution 66 600
+Limited to the lesser of:
+- R350 000; or 1
+- The higher of 27.5% of:
+Remuneration (R450 000 + R66 600 + R9 000 + R35 000 +
+R39596) = R600 196 1P
+Taxable income (R600 196 + R10 000 + R20 000 + R70 290)
+= R700 486 1P
+Higher of 27.5% of R700 486 or R560 600 = R192 633 1
+- Taxable income = R700 486
+The applicable limit amount is R192 633, however the limit is
+more than the amount contributed of R66 600.
+Taxable income 633 886
+Normal tax calculation
+R121 475 + 36% (R633 886 - R512 800) 165 066 1P
+Primary rebate: (section 6(2)(a)) (17 235) 1
+Section 6A rebate (s 6A(2)(b)(i)(bb))
+R728 x 12 (8 736) 1
+Section 6quat rebate
+The UK did not apply any withholding tax and there were
+therefore no foreign taxes paid by Lexi.
+NIL 1
+Income Tax payable 139 095
+Retirement amounts
+Withdrawal from vested pot (s 1(1) special inclusion (e) to the
+gross income definition): subject to the tax tables under the
+Second Schedule
+331 036 1
+Transfer to preservation fund (qualifying transfer in terms of
+para. 4(b) of the Second Schedule) NIL 1
+Normal tax payable from withdrawal
+(R331 036 - R27 500) x 18% 54 636 54 636 1P
+Normal tax payable (R139 095 + 54 636) 193 731
+Available 28
+Maximum 27
+Total for part (b) 27
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART I
+
+Part (c) Discuss whether Hebony should withhold employees’ tax on the
+R121 500 payable to CreativeLexi for January 2025.
+Marks
+In terms of the Fourth Schedule Hebony (a resident employer) needs to withhold
+employee’s tax if CreativeLexi is a personal service provider (PSP), thus and employee.
+To test the requirements of a PSP:
+1
+CreativeLexi (Pty) Ltd is a private company; 1
+Lexis is the sole shareholder of CreativeLexi; (she thus holds more than 20% equity
+interest), thus a connected person to CreativeLexi:
+1
+Lexi renders the services personally by promoting brands through content creation
+and
+1
+CreativeLexi receives > 80% of income from Hebony (R121 500/R150 000 = 81%) in
+January 2025.
+1
+CreativeLexi also do not meet the requirement to exclude it from a personal service
+provider as:
+CreativeLexi only employs Arno as a part-time CFO, thus not three or > full-time
+employees who are unconnected persons to CreativeLexi throughout the year of
+assessment.
+1
+Conclusion: Therefore, CreativeLexi is a personal services provider and Hebony must
+withhold employee’s tax (PAYE) on the fees payable to CreativeLexi at 27%.
+1P
+Employees’ tax should have been paid to SARS by 7 February 2025. 1B
+Available 8
+Maximum 6
+Y1: Critical thinking
+(Mark awarded for recognition of PSP in the Fourth Schedule and application to the
+scenario – not merely repetition of theory)
+1
+Total for part (c) 7
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART I
+
+Part (d) Discuss the income tax implications for Holdings in respect of the
+R68,1 million interest paid to Africa Holdings (Pty) Ltd in its 2025 tax return.
+Marks
+Holdings pays interest of R68,1 million to Africa Holdings (Pty) Ltd on loans provided by
+Africa Holdings (Pty). This loan is an instrument in terms of section 24J(1) and
+Holdings is the issuer of an instrument (loan) in terms of section 24J of the Income Tax
+Act.
+1
+1
+For interest to be deductible under section 24J(2), the interest must be incurred in the
+production of income and for purposes of trade.
+For expenses to be deductible in the production of income, it must be an inevitable
+concomitant or closely connected to that expense (PE Tramways)
+1
+The interest income from loans to subsidiaries (R34.tim) were lower than the interest paid
+by Holdings on borrowed funds (68.1m), indicating that the purpose of the company was
+to benefit the subsidiaries rather than to generate ‘income’. In addition Holdings is not
+involved in the management of its subsidiaries.
+1
+As Holdings received both interest and dividend income, the interest expenses are also
+linked to the production of exempt dividend income (s 23(f)), which does not qualify for
+a deduction under s24J(2) and apportionment of the interest expense may be needed.
+1
+Trade is given a wide meaning (Burgess).
+Passive income from interest earned from lending at below market terms with no real
+return is not considered a trade.
+1
+1
+SARS practice is to allow a deduction of interest to the extent that interest has been
+earned in respect of companies that do not carry on any trade. (SARS Practice Note 31)
+or
+The principles contained in PN31 is legislated in section 11G. Section 11G came into effect
+for years of assessment ending on or after 1 January 2025/2026.
+1
+Conclusion: Holdings deduction of the interest incurred of R68.1 million is limited to the
+interest of income earned of R34.9 thus a limited interest deduction of R34,9 million is
+allowed by SARS.
+1P
+Available 9
+Maximum 8
+Y1: Critical thinking
+(Mark awarded for application of complex sections (s24J), thus an analysis and
+application of s24J considering court case principles and other legislation)
+1
+Total for part (d) 9
+TOTAL FOR PART I 50

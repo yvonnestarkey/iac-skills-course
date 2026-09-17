@@ -1,0 +1,1016 @@
+Source: SAICA IAC June 2025 — Paper 3 suggested solution (Reprop).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+1 © SAICA 2025
+Part (a) Discuss, with reference to section 1.3 (Reprop: Auditors), the matters
+JEM Inc. should consider regarding its appointment as the auditors of
+Reprop for FY2024.
+Marks
+Client considerations – management integrity
+1.1 Management integrity concerns arise from the non-compliance with laws and
+regulations that increase the concern of integrity of management and should
+have been considered by JEM Inc. when deciding whether to accept Reprop as
+an audit client.
+The following specific instances of non-compliances with laws and regulations
+increase the concern about the integrity of management:
+a. Removal: In terms s91(6) (read with s89(2)) of the Companies Act,
+auditors can only be removed from office by the board (with a majority
+vote). The CEO cannot make the decision to remove the auditors
+alone without the majority vote from the board of directors.
+b. Appointment: The CEO appears to have appointed the auditors himself
+(appointment), and –
+o it seems as if the audit committee was not involved in the process
+and/or recommendation of appointing JEM Inc. (s94) and did not
+review the independence of JEM Inc.; and
+o the shareholders should have appointed the audit firm at the AGM
+in terms of s61(7)(c) of the Companies act. (The board can only
+appoint if a vacancy arises but then the whole board and not just one
+director must make this decision.)
+1
+1
+1
+1
+1.2 The fact that management terminated the previous auditor’s services based
+on a disagreement could also be indicative that management’s integrity is
+questionable. 1
+Client considerations – vacancy
+2 The change in auditors appears to have taken place without following the
+necessary processes in terms of the Companies Act and therefore JEM Inc.
+would have had to consider whether a valid vacancy exists in terms of s90. 1
+Auditor’s consideration – ethical requirements / independence
+3.1 The audit partner is a CA(SA) and a RA in Public Practice providing assurance
+services and should therefore comply with the SAICA and IRBA Codes of
+Professional Conduct, specifically Parts 1, 3 and 4A for an assurance
+engagement. 1
+3.2 In terms of the CoPC, s320, JEM Inc. is required to contact the predecessor
+auditor and also obtain (written) permission to comply with this professional
+requirement.
+• However, because the change in auditors was due to a dispute with the
+previous designated auditor, JEM Inc. would need to consider whether it
+will be able to receive permission from Reprop to contact the previous
+auditor or should have declined the appointment in accordance with
+ET320.6a; and
+• Consider whether, since there was a dispute with the CEO, there might
+be reasons given by the previous auditor that would cause us to not
+accept the audit.
+1
+1
+3.3 The CEO has stated that he decided to change audit firms based on a dispute
+with the prior engagement partner.
+This could indicate a possible intimidation threat (½) to independence (½)
+because –
+• in the future if the auditors disagree with management, they will threaten
+the auditors with dismissal.
+1
+1
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+2 © SAICA 2025
+3.4 JEM Inc. being a much smaller audit firm than the previous auditor, could
+create a self-interest or intimidation threat (½) to independence (½)
+because Reprop could possibly now compromise a significant portion of JEM
+Inc’s Revenue, and therefore
+• they might be worried about losing the client (self-interest) / the client
+might use this to threaten the auditors in the future if the auditors disagree
+with management (intimidation).
+1
+1
+Auditor’s consideration – financial and reputational risk
+4 With no other information available to conclude otherwise, it appears that as it
+is a large, listed entity with significant operations, it should be able to pay
+the audit fee. 1
+5 Reputational Risk: Reprop’s business is the development of new properties
+in suburban areas across South Africa. This appears to indicate a good
+reputation in the market and an industry that JEM Inc. would possibly want to
+be associated with. / Although, the risk of association increases as Reprop is a
+listed company and therefore a high-profile client with a lot of public interest. 1
+Auditor’s considerations – resources and competence
+6. Reprop will be a new client and if the necessary access to work papers cannot
+be obtained, JEM Inc. will need to assess whether it will have enough
+additional resources to also perform additional procedures to verify the
+opening balances of Reprop. 1
+7. JEM Inc. is a small firm with two registered audit partners, two audit managers
+and ten trainee accountants, while the previous auditor firm was one of the
+biggest in SA. Due to the size of the firm, JEM Inc. should consider whether it
+has the necessary resources of staff and time to allocate to the audit of
+Reprop. 1
+8. JEM Inc. is based in Durban while Reprop’s main developments are in the
+metropolitan areas of Tshwane, Cape Town and Nelson Mandela Bay. This
+raises a concern on whether JEM Inc. has the resources in the relevant areas
+to complete the audit effectively. 1
+9. Reprop is listed and JEM Inc. might not have experience of a listed entity or
+staff that have the necessary knowledge to perform an appropriate audit for a
+listed entity and within this industry / complex property company. It might
+need to consult an expert. 1
+10. JEM Inc. has two audit partners and therefore it must ensure that it has internal
+quality control processes in place and an engagement quality reviewer (EQR)
+available who are sufficiently competent and independent (eligible to be
+performing the work) because Reprop is listed. 1
+11. As Reprop’s financial statements are prepared in accordance with IFRS®
+Accounting Standards, JEM Inc. should have the necessary knowledge or
+consider obtaining the knowledge should it not be familiar with these standards
+(if it has only knowledge of IFRS for SME). 1
+Engagement terms and pre-conditions
+12. As a listed entity Reprop is required to comply with IFRS® Accounting
+Standards and it appears that an acceptable financial reporting framework
+is used by the entity. (ISA210.6(a)) 1
+13. Reprop has signed the standard engagement letter without any amendments
+or restrictions and thus management acknowledged its responsibilities with
+no limitation of scope. (ISA210.6(b)) 1
+Available 23
+Maximum 12
+X1: Communication skill – logical argument 1
+Total for part (a) 13
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+3 © SAICA 2025
+Part (b) With reference to section 1.4 (Reprop: Municipal billings) –
+(i) discuss the risks of material misstatement at the assertion level
+for the contingent liability of Reprop in FY2024;
+Marks
+1.1
+1.2
+Management lacks integrity as they have not reported the error to the
+municipality and ‘know someone who can make the problem disappear’. This
+increases the risk of fraudulent financial reporting related to the
+understatement of the contingent liability. (all assertions)
+Due to this overall risk, there is a risk that because this disclosure relates to a
+present liability, it will be more susceptible to understatement of the amount
+and disclosure due to the overall integrity of management and having a vague
+disclosure (completeness, accuracy, valuation and allocation).
+1
+1
+2. This is the first time that management have made an estimate of this nature.
+Their inexperience and unfamiliarity increase the risk of error associated
+with the appropriate treatment and valuation of the contingent liability.
+Management’s estimate of R1 million exactly does not appear to be based on
+any actual water and electricity readings or municipal tariffs. The ‘round
+amount’ might be rounded up/off and thus may not be correctly calculated.
+1
+1
+3.
+3.1
+3.2
+The communal areas consist of the security guardhouse, streetlights, gym,
+restaurant, swimming pool, clubhouse and park (various areas).
+There is a risk that not all electricity and water usage have been included in
+the estimate because the communal property includes meters that Reprop is
+not aware of (the calculation only includes those they could identify)
+(completeness) or
+The reading of the meters is done incorrectly. (accuracy, valuation and
+allocation).
+1
+1
+4. In performing the calculation, the usage according to the bulk meters was
+multiplied with the 2021 rate and the 2022 rate and there is a risk that the
+wrong rates might be used as these are not the same. 1
+5.
+5.1
+5.2
+The uncertainty in whether there is a provision, contingent liability or none of
+the two can be manipulated through interpretation of the definitions due to
+subjectivity:
+There is a risk that the contingent liability (present obligation) is not correctly
+classified but should instead be recorded as a provision / liability in terms of
+the definitions in IAS37 as there is an actual obligation which is certain
+(classification) with uncertain timing and amount.
+Although the event (water and electricity usage) giving rise to the present
+obligation has occurred, it has not yet been confirmed whether this will result in
+an outflow of resources embodying economic benefits as the municipality.
+Therefore, there is a risk that the ‘possibility of any outflow in settlement is
+uncertain and might be remote’.
+1
+1
+6. It appears that the entity is not charged for water and electricity and therefore
+there is a risk that property taxes are also not charged and should also be
+included in the liability. The contingent liability may also be understated as it is
+calculated using only the meter readings and does not include any penalties
+for non/late payment or possible interest. (completeness of the amount) 1
+7. There is a risk that the amount due could in fact have been transferred to the
+Spark-HOA on the transfer of the communal property. Therefore, the correct
+legal position should be considered; whether the obligation is that of Reprop
+or rather the Spark-HOA (obligation). 1
+8. Debt due is extinguished after the lapse of time (three years) and therefore the
+2021 debt may have prescribed in 2024 (three-year prescription rule applies to
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+4 © SAICA 2025
+water and electricity charges) and may therefore no longer be owed by
+Reprop and be incorrectly included in the closing balance. (obligation) 1
+9. The vague description increases the risk that the contingent liability may not
+be properly presented or disclosed in the financial statements (presentation). 1
+Available 13
+Maximum 6
+Total for part (b)(i) 6
+Part (b) With reference to section 1.4 (Reprop: Municipal billings) –
+(ii) formulate substantive test of details procedures to verify the
+existence, accuracy, valuation and allocation, and
+presentation, of the contingent liability of Reprop for FY2024.
+Marks
+Existence
+1.
+1.1
+With the permission of the client,
+obtain a legal opinion / confirmation letter (direct external third party) to
+determine the extent of probability / confirming any other details like fines or
+penalties for late/non-payment and
+a. inspect the expert’s CV / affiliation with professional body to confirm his/her
+competence; and
+b. enquire about any conflict of interest that might exist to assess his/her
+independence.
+1
+1
+1
+1
+2. Inspect minutes of the board of directors’ meetings to confirm that the directors
+accepted the existence of the contingent liability and/or approved the
+recording of the obligation as a contingent liability. 1
+Accuracy, valuation and allocation
+3.
+3.1
+Obtain the schedule of management’s calculation of the contingent liability
+and reperform the client’s calculation of the R1 million (usage x tariffs for 24
+months) obligation for mathematical accuracy.
+Through inspection agree the amount recalculated (R1 million) to the amount
+disclosed in the note to the financial statements to confirm the accuracy of
+this amount.
+1
+1
+4.
+4.1
+4.2
+4.3
+4.4
+4.5
+4.6
+4.7
+Perform the following procedures to evaluate the basis on which the amount
+was determined to decide whether a reliable estimate could be made:
+Enquire from management about the process/method followed for the
+calculation of the contingent liability and the acceptability of the method in terms
+of the IFRS requirements.
+Enquire from management, who performed the calculation and through
+inspection verify the qualifications, objectivity and based on past calculations
+whether reliance can be placed on the person’s work.
+Through inspection ensure that the calculation includes the full period from the
+commencement date until the communal property was handed over to the
+Spark-HOA (2021-2022 being 24 months, excluding from 1 January 2023
+onwards).
+Inspect the purchase agreement / title deeds to verify the transfer dates of
+ownership in order to verify that they need to include all months of 2021-2022
+in the calculation.
+Inspect the purchase/sales agreement with Spark-HOA to identify any terms
+and conditions relating to possible outstanding municipal amounts (would
+these amounts transfer) / obligation transfers.
+Agree through inspection the municipal tariffs to the prescribed / approved
+rates as published on the Tshwane municipality website.
+Inspect management’s contingent liability calculation to ensure that different
+municipal rates were used for the different financial periods of the municipality
+1
+1
+1
+1
+1
+1
+1
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+5 © SAICA 2025
+(2021-2022).
+Inspect water / electricity readings to confirm the water and electricity usage. 1
+5..1
+5.2
+5.2
+Based on all the above verified inputs, calculate your own estimate
+(auditor’s own calculation / estimation range) by using the tariffs and usage and
+months verified for electricity and water.
+Compare this with management’s calculation (recalculated) to assess the
+reasonability of the calculation (and discuss any difference with management).
+For any differences noted, enquire from management on the reasons and obtain
+corroborative evidence to support management’s explanations.
+1
+1
+1
+Presentation (and disclosure)
+6. Inspect that disclosure has only been made in the notes and that there is no
+recognition within the AFS (no journal adjustment). 1
+7.
+7.1
+7.2
+7.3
+7.4
+7.5
+Through inspection of the notes to the annual financial statements at
+31 December 2024, verify that the following has been disclosed in terms of
+IAS37. Specifically inspect for the following:
+The description of the nature of the contingent liability (updated and not being
+vague anymore);
+An estimate of the financial effect of R1 million or agree the amount with the
+amount in the disclosure and ensure they agree;
+Uncertainties relating to the amount of timing of outflows;
+Material assumptions used by directors; and
+Explanations for any possibility of any reimbursements.
+1
+½
+½
+½
+½
+½
+All assertions
+8. Obtain a signed management representation letter with regard to the
+existence, accuracy, valuation and allocation and presentation of the contingent
+liability for FY2024. 1
+9. Subsequent events testing – enquire from management or inspect minutes of
+meetings, legal letters, or any municipal invoice that may have been received
+after year end to verify the amount disclosed / assumptions. (all assertions) 1
+10. Consider engaging the services of an auditor’s expert should the auditor not
+be able to obtain sufficient, appropriate audit evidence to verify the contingent
+liability. 1
+Note:
+The verification of all these assertions are to evaluate whether there is a legal or
+constructive present obligation arising out of a past event that actually occurred;
+evaluate the probability that an outflow of resources will be required to settle the
+obligation; and evaluate whether the possible obligation will only be confirmed by the
+occurrence of non-occurrence of an uncertain future event not wholly in the control of
+the entity in terms of IAS37; or rather a provision which is a ‘liability of uncertain timing
+or amount’
+The uncertain future event could be argued to be the fact that the municipality will issue
+a backdated invoice to Reprop; or the usage could be argued to be the event that has
+already taken place and thus creates the possibility of recognising a provision instead.
+Available 25½
+Maximum 13
+Total for part (b)(ii) 13
+Total for part (b) 19
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+6 © SAICA 2025
+Part (c) Discuss, with reference to section 1.4 (Reprop: Municipal billings), the
+ethical concerns related to Reprop’s decision not to report the
+municipal underbilling.
+• Do not discuss any aspects related to the SAICA or IRBA Codes
+of Professional Conduct.
+Marks
+1 Good for self and for others
+Self
+1.1 Not paying municipal bills might provide short-term financial relief but
+damages long-term reputation and credibility. (Short term) 1
+1.2 Ethical conduct ensures sustainable success and respect in the community.
+By not paying its municipal bill, Reprop may hamper the respect it has gained in
+the community, and furthermore, this may impact Reprop’s ability to operate its
+business because future buyers will be worried that they will inherit unpaid
+municipal bills. (Long term) 1
+1.3 Non-payment of municipal bills is a breach of legal obligations (the
+management signed a legal contract with the municipality). (Non-compliance
+with laws and regulations) 1
+1.4 It does not appear as if Reprop obtained a clearance certificate when it
+transferred ownership of the common areas to the Spark-HOA. (Non-compliance
+with laws and regulations) 1
+Others
+1.5 Not paying municipal bills compromises the local government’s ability to
+provide essential services such as water, electricity, sanitation and
+infrastructure maintenance. (Ubuntu) 1
+1.6 This can lead to a decline in the quality of life for the entire community,
+especially affecting vulnerable groups who rely heavily on these services. 1
+2 Ethical frameworks
+2.1 Virtue ethics
+‘Doing the right thing even when nobody is watching’, the CFO should go to the
+municipality and declare the amount that was not billed during construction as
+this is the right thing to do. 1
+2.2 Deontological theory
+‘Acting based on duty’ required the directors in their role to disclose the material
+information honestly (directors’ duties), and the omission of the contingent
+liability breaches their duty. 1
+2.3 Utilitarianism
+‘Acting based on what maximises well-being of greater majority’, which means
+that the non-disclosure of underbilling may affect public service delivery
+(majority) and may lead to long-term negative consequences for the well-being
+of the society. 1
+3 Companies Act
+3.1 All of the above matters are not in the best interest of Reprop and the Spark-
+HOA (not good for the companies), and this can have legal implications as the
+municipal account may be handed over to attorneys, and the companies may be
+liable for the underbilling as well as the legal fees. (S76) 1
+3.2 In addition, the municipality may impose fines or penalties that would have
+additional financial implication for Reprop. 1
+3.3 The directors may face consequences as a result of their failure to execute their
+fiduciary duties and the directors will be held liable (S77). 1
+3.4 Management's willingness to work with someone who will ‘make the problem
+disappear’ are likely to be fraudulent in nature and be unlawful. (Illegal) 1
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+7 © SAICA 2025
+4. King IV
+4.1 Through being aware of the underbilling and doing nothing about it / not
+accounting for it properly in the financial statements, the governing body will be
+in breach of King IV Principle 1 'Ethical and effective leadership' (ethical
+culture) - due to their actions of not being honest and transparent. (P1-3) 1
+4.2 This will have a severe impact on the credibility of Reprop because the company
+will not be viewed as a responsible corporate citizen. (P16) 1
+Available 15
+Maximum 6
+Total for part (c) 6
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+8 © SAICA 2025
+Part (d) Discuss any concerns you may have with regard to the Spark-HOA’s
+compliance with the Companies Act.
+• Do not discuss any concerns related to section 45 of the
+Companies Act.
+• Do not discuss any concerns related to the composition of the
+audit committee.
+Marks
+Removal of a director – Mr Archie Fernando (s71)
+1
+1.1
+1.2
+A director may be removed by an ordinary resolution, but before the members
+may consider such a resolution the director must be given notice of the meeting
+and the resolution:
+However, it appears that the removal was spontaneous and was because of
+the complaints from the members about the finance portfolio.
+The resolution was not communicated to Archie as no such resolution was
+noted in the agenda of the meeting. The removal of Archie was initiated during
+the AGM.
+1
+1
+2 The director must be afforded a reasonable opportunity to make a
+presentation, in person or through a representative, to the meeting before the
+resolution is put to a vote – the minutes of meetings do not indicate that
+Archie was given an opportunity to make a presentation or to respond to the
+concerns of members regarding the finance portfolio. 1
+Contract services approval (s73)
+3. The chairman of the board dismissed and approved a new garden service and
+appointed a new security company as of 1 January 2024, but s73(5)(b) and (d)
+require a majority of directors to be present at any vote and there needs to be
+a majority of the votes cast on a resolution to approve that resolution. It appears
+that the chairman is making decisions alone without a majority vote being
+cast. 1
+4. Carol noted that contractors had been approved via a message in the board of
+directors' WhatsApp chat group and it is unlikely that proper records were
+kept about these discussions and resolutions. This is a concern, as resolutions
+adopted by the board must be dated and sequentially numbered (and kept
+for seven years) and it would not have been signed by the chair if it was only
+on a WhatsApp chat group. 1
+Appointment of L&P Registered Auditors (s90)
+5.
+5.1
+5.2
+Joe assured the members that the audit company, L&P Registered Auditors
+Inc., is separate from L&P Prop that assists the Spark-HOA with the preparation
+of the annual financial statements:
+Appointment: Therefore, it appears that the audit committee (required by the
+MOI) was not involved in evaluating the non-assurance services and the
+approval for the appointment (s94(a)) after evaluating the firm’s independence.
+Independence: It is questionable whether L&P Registered Auditors Inc. is
+independent given that its subsidiary company (L&P Prop) has been
+appointed as the preparers of Spark-HOA’s AFS. This should have been
+evaluated first.
+1
+1
+6. Joe (chairman) feels that the Spark-HOA audit is not mandatory because the
+company is a non-profit company and this indicates that as a director, he might
+not have the necessary skills and competence to be party to a decision that
+he does not understand. 1
+Directors’ personal financial interests – garden services contract (s75)
+7. Joe, the chairperson of the board, is a related party to Joey Budden within the
+second degree of affinity, because Joey is his first-born son. 1
+8. The garden services contract therefore qualifies as a contract in which the
+chairperson of the board knows of a related person who holds a personal
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+9 © SAICA 2025
+financial interest in terms of s75 of the Companies Act. 1
+9.
+9.1
+9.2
+9.3
+As the chairman of the board, Joe should have –
+disclosed the interest and general nature to the rest of the board – it does
+not appear as if Joe disclosed that the garden services company belongs to
+his son;
+disclosed any material information relating to the matter. Joe should have
+disclosed that he has a vested interest in the company as both himself and his
+son are involved in the operations of the garden services company; and
+left the meeting after making any disclosure and not have taken part in
+consideration of the matter except in terms of making above-mentioned
+disclosures. Joe should not have participated in the decision to grant the
+supply contract to the garden services company.
+1
+1
+1
+10 However, this decision, although made without complying with s75(5), can still
+be valid if an ordinary resolution of the members of the Spark-HOA ratified it. 1
+Standards of directors’ conduct (s76)
+11
+11.1
+11.2
+11.3
+11.4
+A director of a company must –
+not use the position of director or any information obtained while acting in the
+capacity of a director to gain an advantage for the director – it appears that Joe
+used his position as the chairperson of the board to obtain a garden services
+contract that he runs together with his son;
+not knowingly cause harm to the company – he may have caused financial
+harm to the company by approving a contract that may be above the mandate
+of R250 000 without the approval of the members, or he approved contracts
+that other directors deemed unnecessary and wasteful (financial impact).
+when acting in that capacity, exercise the powers and perform the functions
+of a director in the best interests of the company – he approved a contract
+that was not B-BBEE compliant, and insisted on the approval of contracts
+without providing other directors with sufficient reasons; and
+act with the degree of care, skill and diligence that may reasonably be
+expected – Joe also did not follow the correct procedures as the contract was
+approved via a WhatsApp communication with no proper board resolutions
+being passed.
+1
+1
+1
+1
+Other concerns
+12 Due to the non-adherence to s75 and 76, the director of a company can be held
+liable in terms of s77. 1
+13 The MOI is a binding agreement, and certain provisions of the MOI were
+breached (e.g. improvements to the clubhouse and common areas were
+seemingly not approved of at the AGM, given that the directors felt that some of
+the improvements were unnecessary), thereby breaching s15(6) of the
+Companies Act.
+1
+Available 20
+Maximum 13
+X1: Communication skill – clarity of expression 1
+Total for part (d) 14
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+10 © SAICA 2025
+Part (e) Discuss Carol’s professional responsibility relating to the information
+that she discovered at and after the AGM of the Spark-HOA. Marks
+SAICA Code of Professional Conduct (CoPC)
+1. Carol is a CA(SA) in business and has been appointed as a director of the
+Spark-HOA. She is therefore required to adhere to parts 1 and 2 of the SAICA
+Code of Professional Conduct (CoPC).
+1
+2. Based on the information discovered during and after the AGM, Carol fears that
+the role of the board chairperson has not been executed as it should, and the
+board has been making decisions without informing the Spark-HOA
+members. This is contrary to the MOI which states that –
+• directors cannot approve contracts exceeding R250 000 without the
+approval of the majority of all Spark-HOA members;
+• all improvements to the clubhouse and common areas can only be made
+following approval at an AGM;
+• a stringent process to appoint new contractors with consultation of the
+board and the members of Spark-HOA should be followed, but new garden
+and security companies were appointed with 13% higher fees; and
+• emergency expenditure must be circulated to the members for approval by
+means of a resolution. 2
+3. 3.1 Carol has also identified that Joe has a conflict of interest with the
+gardening services contract, which does not appear to have been declared
+in terms of s75 of the Companies Act.
+3.2 All these actions contravene s76 of the Companies Act on the conduct
+of the directors.
+1
+1
+4. The non-compliance with the Companies Act by Joe represents non-compliance
+with laws and regulations in terms of s260 of the CoPC and requires Carol to
+respond appropriately.
+A self-interest (½) or intimidation threat (½) to the principles of integrity (½)
+and professional behaviour (½) is created when a professional accountant
+becomes aware of non-compliance or suspected non-compliance with laws and
+regulations.
+4.1 Integrity: If Carol does nothing, she would not be acting with integrity as
+required by the CoPC. She has a responsibility to act and respond
+honestly after identifying the non-compliance.
+4.2 Professional behaviour: The non-compliance would discredit the
+profession if the public became aware that Carol did not act appropriately
+in response to her discovery / Carol will not be complying with the
+Companies Act if she does not take action as a director in the best
+interest of the company.
+2
+1
+1
+5. Carol must evaluate the impact of these threats:
+5.1 The additional expenses incurred by the Spark-HOA by appointing
+contractors that are more expensive, e.g. a security company which
+charges 13% more than the previous company, appear significant.
+5.2 Non-compliance with the MOI and Companies Act may result in the
+directors being held personally liable (s77).
+1
+1
+6. Therefore, the threat is not at an acceptable level and she should respond
+in terms of the CoPC to address the threat. 1
+NOCLAR response
+7. Carol is the newly qualified CA(SA) and the finance member of the board and
+therefore as the senior professional accountant, Carol must address the
+above threats by taking appropriate action in terms of s260 of the CoPC.
+Obtain an understanding (260.12)
+7.1. Carol must ensure she has obtained a full understanding of the
+circumstances surrounding the appointment of the contractors.
+1
+IAC JUNE 2025
+PAPER 3 PART I SUGGESTED SOLUTION
+11 © SAICA 2025
+7.2. She must consider whether she needs to report the matter to any
+appropriate authority, such as the Community Schemes (CSOS)
+ombudsman, while maintaining her responsibility of confidentiality.
+7.3. She should also consider if she needs external legal advice or should
+consult with a professional body if she is unsure on the action to follow.
+7.4. Carol should assess the potential consequences to the company and its
+members.
+1
+1
+1
+8. Address the NOCLAR (260.14)
+8.1. Carol should bring the non-compliance to the attention of the board of
+directors (those charged with governance of the Spark-HOA).
+8.2. Carol should have the consequences of the non-compliance rectified,
+remediated or mitigated by the Board.
+8.3. Carol should consider withdrawing from her directorship of the HOA.
+1
+1
+1
+9. Carol should consider informing the auditor, as this would most probably also
+constitute a reportable irregularity. Carol needs to ensure that Reprop will
+discuss this with L&P Registered Auditors Inc. and ensure that this matter (Joe’s
+conflict of interest) is reported to all the members of the Spark-HOA. (CoPC
+260.18 A2). 1
+10. Determining whether further action is needed
+Carol should assess the appropriateness of the board’s response to the
+NOCLAR and determine whether further action is required. (CoPC 260.16-17) 1
+11. Determining whether further action is needed (CoPC 260.16) and further
+disclosures:
+11.1 Carol should obtain proof that the matter of all contractors in excess of
+R250 000 has been communicated to all the Spark-HOA members.
+11.2 The board should reassess the appointment of all contractors and
+ratify the current contracts if deemed suitable for the Spark-HOA or be
+cancelled if a more suitable contractor is identified.
+1
+1
+12. Documentation (260.23)
+Carol should document the substance of the issue, the details of any
+discussions, the decisions made and the rationale for those decisions. 1
+Other
+13. As a member of the board (director), Carol also has a fiduciary duty to act in
+the best interest of the company in terms of s76 of the Companies Act and to
+thus act to rectify and prevent future re-occurrence of such events (contract
+approvals). 1
+Available 25
+Maximum 11
+Y6: Ethical reasoning 1
+Total for part (e) 12
+Total for part I 64
+IIAC JUNE 2025
+PAPER 3 PART II SUGGESTED SOLUTION
+12 © SAICA 2025
+Part (f) Critically evaluate whether the decisions of the board of directors of
+Spark-HOA align with its strategic objectives.
+• Do not discuss sustainability and environmental strategic
+goals.
+• Do not discuss regulatory compliance and governance issues.
+Marks
+Maintaining and enhancing property values
+1 The board of directors have a new contract for gardening services to ensure
+the upkeep of the property and landscaping.
+As a result of family relationship relating to the garden services, the upkeep
+standard may not be what it ought to be.
+1
+1
+2 To ensure the uniform appearance of homes and common areas, the same
+solar and water backup solutions are proposed for all the homes, and this will
+ensure that the uniform appearance is maintained.
+1
+3 Although Carol has questioned the necessity of some expenses, it appears that
+improvements have been made to the estate and this will enhance the value of
+the properties in the estate.
+1
+Financial stability and transparency
+4 At the recent AGM, the members of Spark-HOA appointed a new person to fill
+the finance portfolio to ensure that the review of annual budgets and financial
+statements is done timeously.
+1
+5 In addition, L&P Prop has been appointed to prepare annual financial
+statements on behalf of Spark-HOA and this will help ensure that members
+receive accurate financial statements, as the annual financial statements will
+be prepared on time and reviewed by a qualified CA(SA) for approval in good
+time by the board of directors.
+1
+6 L&P RPA has been reappointed to audit the annual financial statements,
+although the validity of this reappointment is questionable given that a
+subsidiary of L&P RPA has been appointed to prepare the financial statements
+1
+7 The chairman of the board has raised concerns about the late payment of levies
+by homeowners and financial statements not being approved on time. This can
+hamper the Spark-HOA’s ability to maintain sufficient reserves.
+1
+8 Entering into a contract that is more costly that the current contract (e.g., the
+garden service), could result in a wasteful expenditure should the new
+contract not result in a benefit for the Spark-HOA.
+1
+9 In addition, the financial ability to maintain the common properties could be
+negatively impacted by aspects such as Joe approving two new contracts of
+over R1,5 million, which will result in more cash reserves being required to
+cover these contracts.
+1
+10 It is worth noting, however, that despite the late collection of levies, it appears
+that the Spark-HOA has enough cash reserves as the board has proposed that
+the cash reserves be used to finance a project that requires over R17,4 million.
+1
+Community engagement and communication
+11 It appears there is communication with members, although there are
+complaints that the communications are late.
+1
+12 There is no indication of any social media or website for the Spark-HOA. 1
+13 However, there seems to be a regular AGM where all members are kept up to
+date with all the necessary information relating to the HOA.
+1
+14 The communication relating to the appointment of contractors is not in
+accordance with the rules of the Spark-HOA and this may indicate that the
+directors are not maintaining open lines of communication with the members.
+1
+IIAC JUNE 2025
+PAPER 3 PART II SUGGESTED SOLUTION
+13 © SAICA 2025
+Safety and security
+15 A 24-hour guard ensures that the residents of the Spark-HOA live in a safe
+environment, and this includes state-of-the-art security gates that limit
+unauthorised entry into the estate.
+1
+16 A new security company has also been appointed, which charges 13% more
+than the previous security firm. This may indicate that this is an experienced
+firm that will ensure the safety of the residents.
+OR it may indicate that the new security firm is in collusion with the chairperson
+of the board and this decision may not be to the benefit of the homeowners.
+1
+17 On the other hand, since there was no indication that sufficient due diligence
+on the security company was carried out, and this may compromise the security
+of the estate as a whole, if the security company is not up to standard with the
+current security demands of the estate.
+1
+Available 18
+Maximum 9
+Total for part (f) 9
+IIAC JUNE 2025
+PAPER 3 PART II SUGGESTED SOLUTION
+14 © SAICA 2025
+Part (g) Perform a net present value analysis and conclude on whether the Spark-
+HOA should undertake to procure solar and water solutions under the
+Spark-HOA based on the information in the scenario.
+• Assume for calculation purposes that all cash flows occur at the
+end of the year.
+• Do not consider the impact on the homeowners of savings in
+electricity and water costs.
+• Do not include the effect of the financing of the project.
+Marks
+Year Calc. 0 1 2 3
+R’000 R’000 R’000 R’000
+Procure under the Spark-HOA
+Solar special levies 1 5 940,0 5 940,0 5 940,0 0.5
+Water special levies 1 1 508,4 1 508,4 1 508,4 0.5
+Solar solutions purchased 2 (13 500,6) 0.5
+Water solutions purchased 2 (3 952,8) 0.5
+Insurance premiums 3 (1 302,0) (1 406,2) (1 518,7) 0.5
+Annual service fees (fixed) 4 (250,0) (260,0) (270,4) 0.5
+Annual service fees (variable) 4 (12,5) (28,6) (42,5) 0.5
+(17 453,4) 5 883,9 5 753,6 5 616,8 0.5
+Discount rate 15%
+Net present value (4 293,18) 1P
+Calculation 1:
+((20 x 7200)+(60 x 4800)+(18 x 3500)) x 12 = 5 940 000 2
+{[(60 x 1500)+(40 x 960)] x 0,8} + {[(35 x 1500)+(65x960)] x 0,2} x 12 = 1 508 400 2
+Calculation 2:
+((20 x 245000)+(60 x 155000)+(18 x 93500)) x 85% = 13 500 550 1
+{[((60 x 56800)+(40 x 33920)) x 0,8] + [((35 x 56800)+(65 x 33920)) x 0,2]} x 0,85 =
+3 952 840
+2
+Calculation 3:
+(750 x 98 x 12) + (350 x 100 x 12) = 1 302 000 (adjusted by 1,08) 1,5
+Calculation 4:
+(290 000 – 275 000) / (80 – 50) = R500 variable tariff 1
+(290 000 – [80 x R500]) OR (275 000 – [50 x R500]) = R250 000 fixed fee (adjusted by
+1,04)
+1
+First year (variable): 25 x R500 = R12 500 0.5
+Second year (variable): 55 x R500 x 1.04 = R28 600 1
+Third year (variable):
+{[367 500 - (100 x R500)] - [322 500 - (100 x R500)]} / (250 - 150) = R450 variable tariff
+above 100 maintenance hours
+Alt: (367 500 – 322 500) / (250 – 150) = R450 variable tariff where hours > 100 hours
+2
+100 – 25 – 55 = 20 hours at original tariff of R500, rest at R450 1
+(20 x R500 x 1.04 x 1.04) + (65 x R450 x 1.04 x 1.04) = R42 453 1
+Conclusion:
+The net present value of the project is negative, which indicates that the special levy is
+not sufficient to cover the cash flows of the project and as such, unless the special levy
+were to increase sufficiently, the project is not financially viable.
+1
+Available 22
+Maximum 20
+Y4: Decision making 1
+Total for part (g) 21
+IIAC JUNE 2025
+PAPER 3 PART II SUGGESTED SOLUTION
+15 © SAICA 2025
+Part (h) Evaluate the performance forecast of the Spark-HOA in line with its
+sustainability, environmental stewardship and strategic goals.
+• Assume that the water and solar solutions are procured
+under the Spark-HOA.
+• Base your evaluation on relevant non-financial
+performance indicators.
+Marks
+FY2026 FY2027 FY2028
+% % %
+Decrease in average electricity consumption per
+home per month – more energy efficient
+Alt: CAGR = -14,50%
+(4,17%) (26,09) (11,76) 1
+Increase in the average electricity production (self-
+generating) per home per month since solar
+installation – more self-sustainable
+FY2026: (1 150 – 935) = 215 kWh self-generated
+per month from 1 July 2025 (only producing own
+power for 6 months in FY2026, thus on average 430
+per month since solar panels were installed)
+FY2027: 850 – 400 = 450 kWh
+FY2028: 750 – 290 = 460 kWh
+Alt: % electricity consumed self-generated
+NC
+18,70%
+4,65
+52,94%
+2,22
+61,33%
+0.5
+0.5
+0.5
+0.5
+Decrease in water consumption
+Alt: CAGR = -10,37%
+- (20) (10) 1
+Increase/(decrease) in self-storage of water
+[(25 – 10) – (20 – 8)] / (25 – 10) = 20%
+[(18 – 6) – (20 – 8)] / (18 – 6) = 0%
+CAGR cannot be measured for this indicator
+Alt: % of water consumed provided from storage
+tanks
+NC
+60%
+(20)
+60%
+0
+66,67%
+1
+Increase in utilisation of recycling programmes.
+Alt: CAGR = 10,06%
+8,33% 15,38 6,67 1
+1 The installation of solar solutions is expected to create awareness of electricity
+consumption in general by homeowners over the longer term, as evidenced by
+the expected decrease in the average consumption per home per month of
+26,09% in FY2027 and 11,76% in FY2028, leading to more energy-efficient
+behaviour and improved environmental performance for the estate. 1
+2 An increase in the expected electricity self-generated per home per month of
+4,65% in FY2027 and 2,22% in FY2028 shows a clear improvement in the
+utilisation of environmentally friendly energy (solar) in FY2027 and in FY2028,
+with the further improvement in self-generating electricity. There is an expectation
+that homeowners may gradually install more solar panels at their own cost,
+increasing the self-sustainability of the homes in the estate.
+1
+3 The gradual expected decrease in the average water consumption per home per
+month of 20% and 10% in FY2027 and FY2028 respectively, also shows that the
+water solutions are creating awareness for using water more sparingly. 1
+4 The average expected self-storage of water per home decreases by 20% in
+FY2027 and remains constant in FY2028, which shows that there is in fact an
+expectation that homeowners will initially be very aware of using water more
+sparingly, but that a lack of commitment in the self-storage of water is expected,
+which indicates an area in which awareness needs to be a constant focus.
+1
+IIAC JUNE 2025
+PAPER 3 PART II SUGGESTED SOLUTION
+16 © SAICA 2025
+5 Although there is an increase in homeowners making use of the recycling
+programmes (15,38% in FY2027 and 6,67% in FY2028), there are still about 20
+homes that are expected to not use this service, which indicates an area on
+which the Spark-HOA should try to improve. 1
+General
+6 This shows that Spark-HOA could be expected to perform better on reducing
+their community’s environmental footprint when the Spark-HOA procures the
+solutions as more homeowners will likely install environmentally friendly
+solutions than had there not been a collective effort. 1
+7 Further to this, individual homeowners will procure solar and water solutions at
+a much slower rate than when Spark-HOA does the procurement, indicating
+that the Spark-HOA will perform better by reducing the community’s
+environmental footprint at a faster rate if procurement is done collectively under
+the Spark-HOA.
+1
+8 The Spark-HOA’s non-financial performance on sustainability and
+environmental strategic goals is estimated to be better when the Spark-HOA
+procures the solutions. This highlights an important financial trade-off that
+Spark-HOA might need to consider when deciding on which option to choose
+for the procurement of water and solar solutions. 1
+Conclusion
+9 Overall, the expected performance of Spark-HOA in line with its sustainability and
+environmental strategic goals to promote water conservation and to be more
+energy efficient is positive, although it could perform better on promoting
+recycling programmes.
+No mention is made of using sustainable materials in community projects, which
+signals an area for improvement.
+1
+1
+Available 16
+Maximum 9
+X1: Communication skill – logical argument 1
+Total for part (h) 10
+IIAC JUNE 2025
+PAPER 3 PART II SUGGESTED SOLUTION
+17 © SAICA 2025
+Part (i) Write a report to the board of directors of the Spark-HOA in which you advise
+it on the best option for financing the solar and water backup solutions.
+• Assume that the sustainability-linked loan conditions in option 2 of
+section 2.5 (The Spark-HOA: Financing), are met.
+• Assume that the water and solar solutions are procured under the
+Spark-HOA.
+Marks
+Report to the directors of Spark-HOA
+Date: June 2025
+To: Directors of Spark-HOA
+Subject: Financing of solar and water backup solutions
+The financing options that you have considered are different, depending on the terms, and
+will also result in differing IRRs. Please see below the IRR based on the conditions of the
+loans and the recommendation that follows.
+Secured loan
+A
+Calculation of repayment:
+PV: R17 400,0
+N: 3
+I/YR: 11,75% - 1% = 10,75%
+PMT = R7 089,4
+0.5
+0.5
+1
+0.5
+1 Jul 25 30 Jun 26 30 Jun 27 30 Jun 28
+R’000 R’000 R’000 R’000
+Loan received 17 400,0 0.5
+Attorney and upfront loan fees [17,4
+million * 4%]
+(696,0) 1
+Repayment (7 089,4) (7 089,4) (7 089,4) 1P
+16 704,0 (7 089,4) (7 089,4) (7 089,4)
+Alt for marking purposes:
+Capital repayment 5 218,9 5 779,9 6 401,3
+Interest paid 1 870,5 1 309,5 688,1
+IRR = 13.12 % 1P
+Sustainability linked loan principle
+Effective interest year 1 9,5% 1
+Effective interest year 2 9,5% *85% = 8,075% 1P
+Effective interest year 3 9,5% *85% = 8,075% 1P
+1 Jul 25 30 Jun 26 30 Jun 27 30 Jun 28
+R’000 R’000 R’000 R’000
+Loan received 17 400 0.5
+Attorney and upfront loan fees [17,4
+million * 2%] (348)
+1
+Interest paid 2026 [17,4 million * 9,5%] (1 653,0) 0.5P
+Interest paid 2027 [17,4 million *
+8,075%]
+(1 405,05) 0.5P
+IIAC JUNE 2025
+PAPER 3 PART II SUGGESTED SOLUTION
+18 © SAICA 2025
+Interest paid 2028 [17,4 million *
+[8,075%] (1 405,05)
+0.5P
+Capital repayment (at 10% premium) (19 140) 1
+17 052,0 (1 653,0) (1 405,05) (20 545,05)
+IRR 12,39% 1P
+Cash reserves
+Using this financing option may result in insufficient cash reserves for Spark-HOA to pay future
+repairs, maintenance and improvements on common areas property. In addition to this there
+is an opportunity cost on interest earned of 6% per annum that will be lost if the cash reserves
+are spent.
+Although this option may be the cheapest option from a financing cost point of view, it is not
+a viable option as the Spark-HOA will not have sufficient cash resources for the day-to-day
+operations.
+1
+1
+Conclusion
+The sustainability linked loan is the cheaper option because it has a lower IRR when
+compared to the secured loan. Two additional benefits apply to this facility, which need to be
+considered:
+No collateral is required, whereas in the case of option 1, the clubhouse will be used as
+collateral for the loan, reducing the Spark-HOA’s ability to raise funding in future; and
+With a bullet repayment applying, Spark-HOA will be able to manage its liquidity better
+However, since the coupon is based on the prime rate, should the prime rate change, this will
+have an impact on the IRR; as such, the board will have to monitor changes in the prime rate.
+OR In addition, if there is a significant change in the South African economy with favourable
+interest rate changes and projections, the secured loan may be more cost effective.
+1
+1
+1
+1
+Report end.
+Available 20
+Maximum 15
+X1: Communication skill – layout and structure 1
+Total for part (i) 16
+TOTAL FOR PART II 56

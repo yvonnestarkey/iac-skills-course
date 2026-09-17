@@ -1,0 +1,620 @@
+Source: SAICA IAC January 2026 — Paper 2 Part II suggested solution (Lexi).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Initial Assessment of Competence
+Professional Paper 2
+January 2026
+Copyright, proprietary rights and permitted use
+© The South African Institute of Chartered Accountants (SAICA). All rights reserved.
+The SAICA Initial Assessment of Competence (IAC) questions, solutions and examiners comments
+(‘these documents’) constitutes proprietary intellectual property and professional know-how of SAICA.
+It has been developed and is maintained as part of SAICA’s mandate to uphold the quality, integrity,
+and high professional standards of the Chartered Accountant profession, which underpin public
+confidence and the value and attractiveness of SAICA membership and designation.
+Access to, or use of, these documents does not confer any right, licence, or interest in the intellectual
+property contained herein. Except where expressly permitted by SAICA in writing, no part of these
+documents may be copied, reproduced, adapted, published, distributed, or used for commercial,
+quasi-commercial, or third-party standard-setting purposes.
+These documents may be used solely for legitimate educational, regulatory, or professional purposes,
+in a manner that preserves their integrity, acknowledges SAICA as the owner and source, and does not
+undermine SAICA’s role as custodian of professional standards or dilute the value associated with
+SAICA’s membership and designation.
+Any authorised access to or use of these documents is subject to, and must be exercised in accordance
+with, SAICA’s Intellectual Property Management Policy, as amended from time to time.
+Disclaimer clause: All names of persons, places and business entities mentioned in these
+documents are fictitious and any resemblance to real persons, living or dead, places and business
+entities are purely coincidental.
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+Part (e) Calculate, based on the internal rate of return method, which of the two loan offers
+received for the acquisition of CreativeLexi would be most cost effective.
+For this required only, assume that –
+• SARS will allow a deduction of the interest on each loan in terms of S24J of
+the Income Tax Act;
+• MGT will not default on payments; and
+• the returns from CreativeLexi will be above the 30% requirement for loan
+option 1 for the duration of the loan.
+Marks
+Loan 1
+FV Calculation
+N=5
+PV=2 500000
+I=14%
+FV= R4 813 536 1r/w
+01 March February
+2027
+February
+2028
+February
+2029
+February
+2030
+February
+2031
+Capital cash inflow 2 500 000 1
+Tax 27% 94 500 107 730 122 812 140 006 159 607 1C
+24J accrual
+amount
+350 000 399 000 454 860 518 540 591 136 2
+Capital cash
+outflow
+(4 813 536) 0.5C
+Net cash flow 2 500 000 94 500 107 730 122 812 140 006 (4 653 929)
+COMP IRR 10,22% 1C
+Loan 2
+Interest calculation
+01 March 2026/27 01 March 2028/29 01 March 2030
+Premium / margin 3% 3% 3%
+Prime rate 10,75% 11,25% 11,75%
+Total Interest rate 13,75% 14,25% 14,75% 2r/w
+PMT calculation
+2026/27
+n=5
+i=13,75%
+PV=2 500 000
+Pmt=723 838,36
+1r/w
+PMT calculation
+2028/29
+n=3
+i=14,25%
+PV=1 687 561
+Pmt=729 936,85
+1.5C
+2030
+n=1
+i=14,75%
+PV=638 894
+Pmt = 733 131,32 – final period of payment -pay balance
+1.5C
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+01-Mar Feb-27 Feb-28 Feb-29 Feb-30 Feb-31
+Capital cash inflow 2 500
+000
+1
+Initiation fee (50 000) 1.5
+Annual cash payment (723 838) (723 838)
+(729 937) (729 937)
+(733 131) 1C
+Tax 27% - s24J
+deduction
+92 813 78 702 64 929 46 097 25 444 1C
+24J accrual amount 343 750 291 488 240 477 170 729 94 237 3
+Pre-tax yield 13,75% 13,75% 14,25% 14,25% 14.75%
+Net cash flow 2 450
+000
+(617 525) (645 137) (665 008) (683 840) (707 687) 1C
+COMP IRR 10,98% 1C
+Tax on initiation fees are not deductible under s11a as the loan would be taken to acquire a
+business which is a capital asset. Furthermore, the initiation fee on the loan would not be classified
+as interest under 24J due to the nature of the fees. Therefore, the tax from the fees is not
+deductible.
+1
+Loan offer 1 is the most cost-effective option. 1C
+Available 24
+Maximum 24
+Y3: Problem solving
+(Mark awarded if candidates demonstrated depth in their response by using their calculations to
+compare the two financial results)
+1
+Total for part (e) 25
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+Part (f) Advise MGT on which loan offer it should accept.
+• Consider both quantitative and qualitative factors.
+• Do not provide calculations.
+Marks
+Affordability
+Before making a funding decision, MGT should consider the following factors:
+1 Loan 1 requires one single payment at the end of the five years. Although this gives
+MGT some relief during the loan term i.e. more cash efficient, MGT needs to consider
+whether it will generate sufficient returns from the investment in CreativeLexi to pay
+this when it becomes due or be able to refinance the loan. (cost vs benefit)
+The company will also be able to receive tax deductions without a cash outflow
+each year which would help to reduce the company’s tax payable.
+1
+1
+2 Loan 2 requires annual repayments of capital plus interest. This will increase the
+liquidity requirements to service the loan for MGT on an annual basis. However, the
+constant payments will also help reduce the final payment due at the end of the 5-
+year loan term.
+1
+3 MGT must consider the penalties & interest on missed instalments; the risk of
+these penalties will make loan 1 more attractive as potential unforeseen cashflow
+problems can lead to greater costs. The timing of the costs and their overall liquidity
+vs the returns from CreativeLexi. This may strain cash flows.
+1
+4 For loan 2, the initiation fee is payable/due immediately and annual interest and
+capital repayments on the loan. It is unlikely that the investment in CreativeLexi would
+have generated sufficient returns to cover such large payments in a short time period.
+1
+5 A further matter to consider is that the nature of the income from CreativeLexi is not
+recurring, and therefore repayment of annual instalments may be more difficult,
+potentially causing a mismatch between cash inflows and outflows for obligations.
+The bullet repayment profile enables the management of obligations.
+1
+Cost of debt
+6 Loan 1 is a fixed-rate loan while loan 2 is a variable-rate loan (based on prime). If
+MGT wants to minimise its exposure to interest rate fluctuations, it should choose
+loan 1.
+1
+7 In addition to the calculated IRR, MGT must consider the risks associated with the
+prime interest rates. These might increase by more than anticipated.
+1
+8 With the recent downward movements of the prime interest rate, there is a scenario
+where it may not increase in the near future by the projected amounts, and thus the
+cost of loan 2 could be even lower.
+1
+Loan conditions
+9 While loan 1 mandates a single payment at the conclusion of the term, the 30% return
+requirement clause is a concern, as non-compliance by CreativeLexi would result in
+the loan becoming due immediately.
+It should be considered how the company will finance such a payment if this
+requirement is not met. This would further strain cash flows.
+1
+1
+10 Furthermore, the 30% return is based on the performance of the investee, which is
+not within the control of MGT. Is MGT willing to take such a risk? A sensitivity
+analysis on the proposed acquisition will have to be done before committing to such
+terms.
+In addition, from the scenario, it is not clear how this 30% return will be calculated.
+What metrics will be considered / used?
+1
+1
+1
+11 With the recent scandals around CreativeLexi and Arno's involvement, CreativeLexi
+might actually not provide such returns.
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+12 The conditions of loan 2 seem more reasonable as the company would already be
+preparing financial statements as a private company, MGT could provide a guarantee.
+However, the guarantees required to be provided by the owner as security are not
+clearly defined and could therefore expose MGT to additional risk.
+1
+1
+13 The management of MGT must consider whether they are willing to take on the
+increased risk of settling a R2,5 million loan should there be a default under the loan
+terms and the guarantee is called.
+1
+Funder
+14 Since Holdings is the holding company of MGT, it may be more flexible in its loan
+agreement conditions and be more supportive of MGT.
+1
+15 Conclusion: In addition to the lower IRR of loan 1, the qualitative risk factors seem
+to be less onerous than those of loan 2 (other than the 30% return requirement on
+investment). Loan 1 should be taken as it relieves financial pressure in the short term
+and has a more agreeable funder than loan 2.
+1
+1C
+Available 21
+Maximum 10
+Y4: Judgement and decision making
+(Mark awarded if candidates reached a conclusion based on both their qualitative
+considerations and quantitative results)
+1
+Z2: Business external environment
+(Mark awarded if candidates referred to a relevant current economic event and linked its
+likely impact on the prime rate and consequently the cost of the loan)
+1
+Total for part (f) 12
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+Part (g) Based only on the information and data included in the extract from the
+report on the social media performance indicators, discuss the factors that
+MGT should consider before proceeding with the acquisition of
+CreativeLexi.
+• Do not provide calculations.
+Marks
+1 Scope of the report
+1.1 Period of assessment: At the point where the report is evaluated, the scope of the
+report is limited to two months only, which would be insufficient to determine if the
+growth rate is sustainable over time or once-off.
+1
+1.2 Historical data: The scope only focused on the company, but Lexi has a long track
+record of engagements, which could include her personal social media campaigns,
+which will not be included in the CreativeLexi projections.
+1
+1.3 The report indicates that Lexi only referred to five of CreativeLexi’s social media
+accounts and there may be more, as well as other personal social media accounts,
+which may indicate the data is not complete in assessing growth.
+Furthermore, no mention is made of prior marketing campaigns only current ones
+were included. This would most likely eliminate successful campaigns that assisted
+in Lexi building such a well-known brand for herself and the company.
+1
+1.4 The report does not consider where CreativeLexi’s social media accounts are no
+longer followed, which can also impact growth rates since fewer people may react to
+her site.
+1
+1.5 Additionally, the scope is not disaggregated based on the different marketing
+campaigns across CreativeLexi’s social media accounts, which makes it challenging
+to determine the consistency or success of the marketing campaigns and how these
+campaigns have enhanced social media engagement.
+1
+1.6 While the data was obtained from social media platforms through authorised access,
+the methods used to collect it may be in contravention of the platforms’ policies
+and may not be sufficiently accurate, valid, or complete to support MGT's decision-
+making.
+1
+1.7 The report is limited to the social media platforms listed and does not include others,
+such as Threads, Pinterest, or BlueSky. However, it should be noted that these
+additional platforms are unlikely to be material, as only the major platforms were
+provided.
+1
+1.8 The report lacks additional analysis of follower groups in terms of location, age,
+gender, etc., to gain an understanding of the target market and what kind of brands it
+would be best for CreativeLexi to target.
+1
+2 Data analysis
+2.1 The report does not explain the process used to clean up the data gathered and data
+excluded from the analysis of the results, making it difficult to determine the accuracy
+of the findings.
+1
+2.2 It is not clear if the New Followers quantitative data includes or excludes followers
+that may possibly be automated bots on social media platforms. The data has not
+been explained well, and cryptic information are provided at times.
+1
+3 Unrealistic engagement-to-purchase ratios
+3.1 There is no analysis of the comments to determine positive, neutral or negative
+comments, which would not make it possible to determine the success of marketing
+campaigns or how the marketing has impacted users’ perceptions of CreativeLexi
+clients. (Reputation is a driver over time for revenue generation.)
+1
+3.2 Management should consider the fickle nature of social media, and that the
+attractiveness, perceptions, and followings can change very quickly and
+unexpectedly, and that this risk should be built into the valuation.
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+4 Presence of non-authentic accounts
+4.1 The average purchase amount across all the platforms has remained the same,
+even though the engagement across the sites varies, raising concerns whether or not
+the purchases occurred, or the profiles exist/are an actual person. This is not
+impossible if it is only a single product with a price of R300 being promoted by
+CreativeLexi.
+1
+5 IP address linkage
+5.1 Multiple suspicious accounts were traced back to a single IP address, which might
+be associated with Arno / Lexi, who potentially committed fraudulent manipulation of
+interactions to support their projections.
+1
+5.2 A significant number of followers lacked profile pictures, bios, or any activity, and the
+consulting firm found that 3 600 to 4 500 new accounts from the same IP address
+began to follow CreativeLexi across YouTube, TikTok and X and were actively
+engaging with the content, suggesting the possible use of automated bot accounts or
+AI agents. This was only reported on and Mzanzi got talent will need to further
+investigate this before moving forward with the acquisition.
+1
+5.3 As many of the user profiles have new followers, the likelihood of posts going ‘viral’
+is limited which may negatively impact future growth rates and growth potential.
+1
+5.4 This will further increase the concern of overpaying for this investment as they are
+trying to drive up the valuations of shares of the company.
+1
+6 Other
+6.1 It does not seem as if the report provides a sound basis (sufficient evidence) to
+support the purchase of the equity stake in CreativeLexi given all of the concerns
+expressed above about the main purpose of the business / possible updated report
+is needed.
+1
+6.2 The report does not address the trend often found on social media for popular
+trends/profiles to die down and become less relevant which may impact the valuation
+of the CreativeLexi brand.
+1
+6.3 MGT should consider whether they want to be associated with a management team
+that engages in questionable actions such as allegedly using bots to create followers,
+etc., as it could negatively impact its reputation and impact its financial performance.
+1
+6.4 MGT should consider how closely Lexi’s personal brand is related to CreativeLexi
+as a negative impact on one will directly influence the performance of the other.
+1
+6.5 The absence of benchmarking against industry standards or comparable influencer
+conversion rates limits MGT’s ability to assess whether the performance is
+commercially reasonable. The analysis could be strengthened by explicitly linking the
+reliance on Lexi’s personal brand to issues of scalability and key-person risk within
+the valuation.
+1
+Available 22
+Maximum 10
+Y5: Professional scepticism
+(Mark awarded where candidates demonstrated an ability to evaluate / interrogate the
+information presented in the report)
+1
+Total for part (g) 11
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+Part (h) Discuss any ethical concerns you may have with regard to Arno’s conduct
+in terms of the SAICA Code of Professional Conduct.
+• Do not discuss any safeguards to address any possible breach or threat.
+• Do not discuss the level of the threat.
+Marks
+1 Arno’s dual roles and application of the CoPC
+1.1 Arno is the CFO of CreativeLexi, and as a professional accountant in business, he
+will have to comply with the SAICA CoPC, Part 1 and 2. 1
+1.2 As Arno is an associate director at an auditing firm and is responsible for several
+audits, he is also a professional accountant in public practice and will have to
+comply with the SAICA CoPC, Parts 1, 2 (in his capacity as an employer at his firm),
+3 and 4A.
+1
+The following circumstances create threats to compliance with the fundamental
+principles:
+In his capacity as a professional accountant in practice:
+2 Issue 1: Dual role as CFO and associate director at an audit firm - Conflict of
+interest
+2.1 A self-interest threat to professional competence and due care exists:
+• He may not be able to manage the workload of both positions in a manner
+that meets his fiduciary duty (as CFO) to CreativeLexi or his responsibilities
+to his audit clients from his main employer (the audit firm), which could
+compromise the quality of his work.
+½ ½
+1
+2.2 A self-interest threat to objectivity exists:
+• Due to the continued conflict of interest, Arno’s professional judgement
+may be compromised when he undertakes an audit of a client in
+competition with CreativeLexi/potential investor of CreativeLexi,
+especially when providing advice where there is a competing interest with
+CreativeLexi.
+½ ½
+1
+2.3 • His professional judgement could also be compromised,
+and/professional scepticism decreases when he audits potential
+investors, and this might affect the quality of his audit work, as he might be
+biased and not point out material misstatements and non-compliance
+with laws in order not to compromise his relationship with the potential
+investors of CreativeLexi.
+1
+2.4 A self-interest threat to confidentiality is created:
+• He used his dual role to his own advantage, which could pose further threats
+of him accessing confidential information for personal gain as CFO of
+CreativeLexi/benefit of Lexi/enhance the competitive positioning of
+CreativeLexi, since his audit portfolio or clients of the firm could include
+potential investors for the company.
+½ ½
+1
+In his capacity as a professional accountant in business:
+3 Issue 2: Arno’s role as CFO of CreativeLexi
+3.1 A self-interest/advocacy threat to integrity/objectivity exists
+• As Arno may be aggressive in his attempt to get additional clients, where he
+might promote CreativeLexi by not being truthful in all aspects or
+withholding important information to a point that his professional
+judgement is compromised, since business growth could lead to an
+increased salary.
+½ ½
+1
+4 Issue 3: NOCLAR considerations
+4.1 A self-interest threat to professional behaviour / integrity exists:
+• By using automated bots, Arno may be creating fictitious user profiles to
+enhance the social media engagement metrics of CreativeLexi, resulting in
+½ ½
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+reporting fraudulent information (which is a common law offence) to
+potential investors.
+4.2 • By using automated bots to create fictitious social media engagement, and
+thereby manipulating key metrics, Arno might be contravening cyber laws
+in South Africa (for example, the Cybercrimes Act No 19 of 2020), which
+would bring the profession into disrepute.
+1
+4.3 • Engaging in conduct that results in the misrepresentation of
+CreativeLexi’s value would not constitute acting in good faith (in
+accordance with his fiduciary duty in terms of s76 of the Companies
+Act), and if such information were to become public, it could deter
+investors.
+1
+5 Issue 4: Arno’s personal relationship with Lexi
+5.1 A familiarity threat/self-interest threat to confidentiality exists:
+• As Arno might want to maintain his personal relationship with Lexi by
+providing more confidential information from audit clients of the firm that
+would assist Lexi in her career, and subsequently help her to obtain more
+clients and investors for CreativeLexi.
+½ ½
+1
+5.2 An advocacy threat to professional behaviour/integrity exists:
+• As all the equity instruments of CreativeLexi are owned by Lexi, Arno could
+use his role of CFO to manipulate financial information shared with MGT
+to increase the valuation of the 70% equity interest, which would benefit
+Lexi (with whom he has a personal relationship), and if he engages in such
+actions, it would discredit the profession.
+½ ½
+1
+6 The following circumstances constitute contraventions of the fundamental
+principles:
+In the capacity as a professional accountant in public practice
+6.1 Arno breached the principle of confidentiality:
+• As he accessed confidential information from audit files and leaked
+sensitive information to Lexi about the firm’s audit clients, including MGT,
+using this confidential information for his private gain as the CFO of
+CreativeLexi, and for Lexi’s (the CEO of CreativeLexi) gain.
+• Anro did not obtain permission from the audit client to share confidential
+information he obtained in his capacity as an associate director at the firm
+with third parties.
+½
+1
+1
+6.2 Arno did not adhere to the principle of professional behaviour/integrity:
+• Since he did not disclose to the audit firm that he was the CFO of
+CreativeLexi, a potential investee for MGT, and that a conflict of interest
+exists, he did not adhere to the quality control processes of the firm
+(ISQM1), and this could open the firm up to reputational damage or
+regulatory fines.
+½
+1
+6.3 Anro did not act with integrity:
+• Arno was dishonest as his timesheets revealed he booked fictitious hours
+to an audit client when he was not doing audit work.
+½
+1
+6.4 Arno also did not act in accordance with professional behaviour:
+• By charging booking fictitious hours to the client, which the client will have
+to pay, Arno is also committing fraud (a common law offence), and his
+behaviour could bring the profession into disrepute.
+½
+1
+In the capacity as professional accountant in business
+6.5 Arno did not act in accordance with professional behaviour at a fundraising event:
+• Arno’s arrest for drug-related charges and taking into consideration the
+media coverage of Arno’s conduct, the profession may be viewed in a
+negative light, bringing the profession into disrepute.
+½
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+6.6 Arno could be in breach of professional behaviour:
+• Some of the actions of Arno pertaining to his role as CFO, (engaging in
+actions that could lead to the false representation of the value of
+CreativeLexi or using confidential information to his own advantage) could
+scare potential investors/clients away if these actions become public
+knowledge; and it could be argued that Arno is not acting in the best interest
+of CreativeLexi (s76 of the Companies Act).
+½
+1
+Available 29
+Maximum 14
+Total for part (h) 14
+Note to markers:
+• Candidates are not required to pertinently differentiate between discussions of
+Arno’s capacity as a professional accountant in business versus a professional
+accountant in practice. These have merely been included to enhance future
+candidates’ learning process.
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+Part (i) Discuss the ethical conduct of Lexi as the CEO of CreativeLexi in view of
+how she responded to the allegations in the video.
+• Do not discuss the Companies Act and King IV Report on Corporate
+Governance.
+Marks
+1 General
+1.1 Lexi, as the CEO and public face of CreativeLexi (Pty) Ltd, has a legal and ethical
+duty to uphold the values of integrity, accountability, and ethical leadership and
+her conduct does not uphold these.
+1
+1.2 Labelling the video as a deepfake rather than seeking expert assistance to prove
+it might have been deep faked, undermines her integrity/brings her integrity
+into question, and she might not be honest about the events that occurred.
+1
+2 Ethics triangle
+Ethical behaviour must strike a balance between self-preservation and community
+responsibility.
+Good for self
+2.1 Lexi's aggressive defence may have been intended to protect her personal and
+professional reputation, particularly as a brand-driven public figure whose business
+depends on credibility (good for self).
+1
+2.2 By indicating that she will share the personal information (data) of the person who
+shared the video, Lexi will be in breach of the Protection of Personal Information
+Act, and if she is found guilty, she will have to pay a fine to the Information
+Regulator or could face jail time (bad for self)
+1
+2.3 Even if her response helped protect her brand in the short term, the medium and
+long-term impact could be negative due to the following:
+• Her response undermines the ethical tone of her leadership;
+• Her response damages the business’s legitimacy, which could possibly result
+in regulatory scrutiny, revenue loss by losing existing clients, loss of potential
+clients, and defamation lawsuits.
+(bad for self)
+1
+1
+2.4 Threatening to harm an alleged whistleblower would dissuade others from
+becoming whistleblowers, and does not serve the interests of others, especially
+not her clients, followers, or the public, and she would lose clients and potential
+investors who deem such behaviour inappropriate. (bad for self)
+1
+Good for others
+2.5 While it is natural for Lexi to want to defend herself, her aggressive response could
+potentially endanger another individual's safety (and perhaps even those close
+to them), compromising public trust, and;
+This creates a hostile online environment, especially given her influence, which
+could lead the public to adopt similar behaviours.
+(bad for others)
+1
+1
+2.6 Lexi does not appear to consider the adverse consequences of her actions for key
+stakeholders, including prospective investors (particularly MGT) and existing clients,
+whose reputations may be harmed by association with her and who may
+consequently withdraw their affiliation with the brand due to her approach to
+addressing the issue. (bad for others)
+1
+2.7 Requiring others to harm another person online can be regarded as cyberbullying.
+(bad for others) 1
+Worldview and personal moral stance
+3 Lexi’s response exhibits characteristics of a Western worldview/egoism, as
+evidenced by her emphasis on individualism and her focus on her own 1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 2 PART II
+
+reputation and rights, to the point of being willing to compromise another
+individual's rights.
+4 Virtue ethics
+4.1 Lexi did not make the decision from a rationally controlled disposition, as
+evidenced by the fact that, instead of calmly refuting the claim or launching an internal
+investigation, she responded with hostility and vengeance.
+1
+4.2 Her threat to sort out the alleged whistleblower undermines the virtue of justice,
+targeting an individual for potential exposure rather than engaging in lawful, ethical
+recourse.
+1
+4.3 Sharing others' personal information without their consent demonstrates a lack of
+prudence, is disrespectful, and reflects a lack of concern for the long-term well-
+being of her followers and other stakeholders.
+1
+4.4 Lexi’s actions deviate from the character of a virtuous leader since her emotionally
+charged, retaliatory behaviour is inconsistent with the qualities expected of an ethical
+public figure and business leader. OR
+Lexi’s approach to morality did not emphasise the cultivation of virtuous habits
+such as compassion, as her immediate response was vengeance.
+1
+5 Ubuntu / common good
+5.1 Lexi’s threat to dox an individual does not exhibit characteristics of social
+harmony, as she aims to violate their dignity and safety. 1
+5.2 Her failure to demonstrate compassion undermines the communal values of
+care, interdependence, and reconciliation. 1
+5.3 Lexi did not engage constructively or seek restoration; instead, she opted for
+retaliation. 1
+6. Deontological ethics
+6.1 Lexi failed to consider whether she would endorse a society in which individuals
+are legally permitted to disseminate her sensitive personal information online
+to cause harm whenever they disagree with her (universalisability principle), and
+1
+6.2 Moreover, her reaction to the video indicates that she would not accept being
+subject to such treatment herself (reversibility principle). 1
+Available 21
+Maximum 7
+I1: Personal ethics –
+(Mark awarded where candidates demonstrated the ability to consider personal ethics,
+such as values, worldview or personal ethical theories
+in relation to Lexi and her decision making)
+1
+Total for part (i) 8
+TOTAL FOR PART II 70

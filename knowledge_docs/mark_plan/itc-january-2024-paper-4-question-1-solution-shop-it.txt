@@ -1,0 +1,467 @@
+Source: SAICA ITC January 2024 — Paper 4 Question 1 suggested solution (Shop-it).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 1 © SAICA 2024
+Part (a) Evaluate, with reference to sections 3 and 4, the financial risk of
+S4N by –
+(i) calculating five relevant financial risk ratios for both years.
+• Round all final amounts to one decimal; and
+Marks
+Description 2023 2022
+Ratios
+Debt ratio (%) (Total debt) 34,8% 30,9% 2
+Debt to equity (%) 34,7% 24,1% 2
+Interest bearing debt as a % of total debt (%) 65,0% 53,9% 2
+Gearing ratio 25,7% 19,4% 2
+Short term debt as a % of total debt (%) 46,0% 55,0% 2
+Debt to EBITDA (x) 2,6 2,1 2
+EBIT interest cover (x) 1,9 3,0 2
+EBITDA interest cover (x) 2,7 4,4 2
+Degree of financial leverage (x) 2,1 1,5 2
+Change in interest bearing debt
+Change in interest
+Or: Effective interest rate
+35,4%
+80%
+14,2% 10,7%
+1
+1
+Available (limited to five risks) 20
+Maximum 10
+Total for part (a)(i) 10
+Part (a) Evaluate, with reference to sections 3 and 4, the financial risk of
+S4N by –
+(ii) analysing the capital structure based on the ratios
+calculated and concluding on the level of financial risk to
+which S4N is exposed.
+Marks
+• Interest-bearing borrowings have increased from 2022 to 2023, causing an
+increase in the debt ratio which therefore increases the financial risk of S4N.
+1
+• Additionally, about 57% of S4N’s total debt is interest bearing. This
+increases the financial risk that the company is exposed to, since the
+company will have to honour its interest commitments even when it makes
+a loss.
+1
+• S4N’s debt to EBITDA rose from 2022 to 2023, increasing the likelihood
+that the company could possibly default on its debt commitments.
+1
+• Performance of the company has deteriorated over the past years, and this
+has probably increased the threat of default on debt commitments.
+1
+• There is a significant deterioration in the EBIT interest cover from 2022
+until 2023, indicating that the company may not be able to cover its interest
+payments in the future. This is further supported by the EBITDA interest
+cover.
+1
+• The ratios have also deteriorated due to a decrease in equity and not only
+because of an increase in debt.
+1
+• Although there is a profit for the year, there is a decrease in retained
+earnings which could possibly be due to dividends being paid. If so then
+this would reflect negatively on the shareholders, taking a dividend at a
+difficult time for the company and on management who declared a dividend
+in this time. It could also be as a result of an accounting restatement (in
+which case the FY2022 figures may not be comparable).
+1
+• The company relies on bank overdraft as a long-term source of finance.
+This increases the interest expense and might indicate that lenders are not
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 2 © SAICA 2024
+willing to extend additional loans to the company, indicating an increase in
+financial risk.
+• The interest charge has increased with 80%, whereas the interest-bearing
+debt only increased with 35%. This seems to indicate that the suppliers of
+debt and credit consider S4N to be more financially risky than in the past,
+as the cost of debt has risen steeply.
+1
+• S4N has a high financial risk which increased from 2022, as shown by the
+DFL, and the shareholders should be worried that the increased debt of the
+company may not necessarily be creating value for their investment.
+1
+Available 10
+Maximum 4
+Total for part (a)(ii) 4
+Total for part (a) 14
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 3 © SAICA 2024
+Part (b) Critically evaluate the acquisition and subsequent rebranding of
+Stay-Fresh to S4N. Marks
+1 Alignment with strategy
+1.1 The new market offered opportunities for Shop-4-iT to grow its presence
+on the continent in accordance with its objectives.
+1
+1.2 Stay-Fresh’s product offering did not align with those of Shop-4-iT, as
+Stay-Fresh focuses on local produce whilst Shop-4-iT prefers imported
+products. This would have impacted on the Shop-4-iTs ability to
+understand the business model of the newly acquired company and could
+be seen as a poor strategic fit.
+1
+1.3 Furthermore, Stay-Fresh’s strategy of targeting middle- to low-income
+households did not align the Shop-4-iTs niche market philosophy. This
+would have negatively impacted the company’s ability to reshape the
+Stay-Fresh’s strategy to align with its own.
+1
+1.4 The Stay-Fresh brand and product offering did not align with the ethos of
+Shop-4-iT as Stay-Fresh focused on the resale of locally produced goods,
+whereas Shop-4-iT believed in imported products (product-market fit).
+This ultimately could have caused confusion for loyal customers of Stay-
+Fresh who probably stopped shopping at the company (brand-customer
+fit).
+1
+1.5 Shop-4-iT lacks expertise and experience in the West African market
+which could explain why it was difficult to penetrate this new market.
+Shop-4-iT would have been better served investing in a Southern African
+company where it had more expertise and already some measure of
+success.
+1
+1.6 The company’s unwillingness to adapt to changes in its operating
+environment affected the performance of the company.
+1
+1.7 Stay-Fresh’s retail store locations are vastly different from Shop-4-iT’s
+traditional retail store locations – this meant that the company needed to
+increase its borrowings to help fund its move to locations more in line with
+its brand. This ultimately led to an erosion of shareholder returns.
+1
+1.8 Shop-4-iT focused more of its time on the newly acquired entity which
+resulted in Shop-4-iT losing valuable market share in South Africa. This
+shows that the company may not yet have the required resources to
+pursue external growth opportunities outside Southern Africa.
+1
+1.9 The company’s shareholders are also unlikely to have been pleased with
+the company investing in counties where there is a systematic increase in
+financial crimes and political instability as this may further erode S4N’s
+profitability, and increase its riskiness, thus reducing the value of the
+investment.
+1
+1.10 The relocation of the stores, market positioning and targeting of more
+affluent customers would have led to the loss of the exiting loyal customer
+base.
+1
+1.11 The cancelling of the contracts with local farming suppliers would have
+negatively reflected on their CSR policies and negatively impacted their
+reputation. This would have contributed to the loss of the existing
+customer base.
+1
+1.12 The risk of the acquisition appears not to have been evaluated in full as
+there was very little indication of an assessment having been performed
+evaluating the impact of possible retaliation for the violent attacks on
+Nigerian businesses in South Africa. Furthermore, by changing the name
+of the company to the same name of the South African operations, the
+company was more easily identified as being South African and hence
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 4 © SAICA 2024
+was more likely to be targeted for looting than if it had retained its original
+name.
+2 Product demand, pricing and distribution
+2.1 Shop-4-iT does not appear to have performed any form of research on
+the demand for its products in the country. Most consumers would
+probably be price conscious given the increased unemployment rate and
+competition. Undertaking such research would have protected the
+company’s shareholder value.
+1
+2.2 Shop-4-iTs products would probably have been priced higher than its
+competitors given that most of its retail products would have been
+imported. Given the state of the economy, this was unlikely to have
+attracted customers from the onset. Given the devaluation of the Naira
+against the US dollar, product prices were always going to be unlikely to
+attract many consumers in the country.
+1
+2.3 Given the decision to change to imports, the slowness of the ports to clear
+goods, would affect the ability to have goods available on time in order to
+generate sales. Furthermore the cost of clearing goods is high which could
+affect profitability.
+1
+3 Management
+3.1 The CEO of Stay-Fresh had no experience in the West African region and
+no experience outside South Africa. This negatively affected the
+company’s ability to understand the Nigerian market.
+1
+3.2 The CEO also lacked experience in management at a senior leadership
+level. His previous experience was in HR and the new role required him
+to head portfolios for which he may not have had sufficient experience.
+1
+4 General
+4.1 Given the perception of South African business in Nigeria (i.e., the 2019
+attacks) it would have been wise for the company to seek alternative
+countries for investment.
+1
+4.2 The current strategy was also not a good fit for the country, as it was
+beginning to focus more on ecommerce, whereas Shop-4-iT focuses on
+traditional retail stores.
+1
+4.3 Shop-4-iT should have considered that the low initial asking price was an
+indication of financial and operational challenges within the company and
+country. Thus Shop-4-iT should have been better prepared for these
+challenges.
+1
+4.4 Not including a local partner as part of the investment strategy in Nigeria
+ultimately affected Shop-4-iT’s ability to understand and make an impact
+in the country.
+1
+5 Conclusion
+5.1 The strategy was ultimately flawed and did not create value for
+shareholders of the company.
+1
+Available 22
+Maximum 9
+Communication skill s– appropriate style 1
+Total for part (b) 10
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 5 © SAICA 2024
+Part (c) Discuss the merits and pitfalls of the two potential plans of action
+suggested by S4N by the board of directors for Shop-4-iT. Marks
+Option 1 – Disinvesting completely
+Merits
+• Disinvesting seems feasible as profit for the company has dropped from the prior
+year and the situation may continue to worsen considering the declining
+economic growth of the country.
+1
+• Disinvesting completely would align with the request of shareholders. 1
+• Exiting the Nigerian market would afford the company more time to focus on its
+core operations in South Africa, which may positively affect its market share
+there.
+1
+• Disinvesting would allow Shop-4-iT to pursue other areas for growth and the
+company may use the funds to invest in other more profitable countries in
+Southern Africa.
+1
+• Nigeria’s declining middle class and increasing unemployment rate are
+indicators that the country may not be ready for a niche product offering. Thus
+Shop-4-iT would be making the correct decision in leaving the country.
+1
+• High inflation decreases the possible purchasing power of consumers, also
+reducing the opportunity for growth of the company as consumers would be
+less likely to purchase niche products at such a time.
+1
+• The Naira has devalued considerably over the past year, which increases the
+likelihood that profits from the country would continue to represent a small
+portion of total group company profit. Thus, disinvesting in the country would
+not cost the company a considerable sum.
+1
+• The continued declining value of the Naira would likely drive up the cost of
+imported products in the country. As Shop-4-iT depends heavily on its imported
+goods, this may erode its ability to generate sufficient profits from its operations
+given the increasing costs.
+1
+• The increase in government spending on debt would further decrease the ability
+of government to spend on key areas of the economy needed for Shop-4-iT to
+operate efficiently e.g., road infrastructure, for deliveries of goods from ports.
+1
+• Moreover, poor infrastructure in the country would likely increase company
+spending on auxiliary costs such as transport, which would cause a decline in
+shareholder value. This would continue increase if government spending on
+services dwindle due to its increased debt servicing costs.
+1
+• GDP growth only marginally exceeds population growth; this is a further
+indicator that government may not have the necessary finances to support
+infrastructure – it will be too busy servicing debt and a growing consumer
+population.
+1
+• The company tax rate in Nigeria, which is higher than the rate in South Africa
+is not particularly beneficial to Shop-4-iT. Given Nigeria’s structural problems,
+this is a further indicator that the country is not open to investment.
+1
+• Opportunities for growth in large retail stores seems limited as the consumers
+appear to favour smaller retail outlets. However, selling in smaller stores does
+not fit in with the Shop-4-iT brand.
+1
+• Rentals in Nigeria are all USD denominated, which means that exiting the
+country would help to reduce the company’s foreign exchange risk.
+1
+Pitfalls
+• The sale of S4N would not align with the company’s strategy for achieving
+growth on the African continent, as the company only has a presence in
+Southern Africa.
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 6 © SAICA 2024
+• Nigeria is Africa’s largest economy. Therefore, disinvesting in the country may
+hamper further growth opportunities for the company in the region and on the
+continent.
+1
+• Shop-4-iT currently employs 1 500 people in Nigeria, therefore exiting could
+increase the already high unemployment rate in the country, as there is no
+guarantee that the new owners would retain the existing employees.
+1
+• The proposed offer of NGN80 billion is lower than the current net asset value
+of the company based on book values. This may be a further indication of the
+deterioration of its investment in Nigeria. Thus, it would seem as though it is the
+correct decision to sell shares in the company.
+1
+• Although disinvesting would enable the company to reduce its foreign
+exchange risk, Shop-4-iT may incur costs such as penalties for early
+termination of rental agreements with shopping centre landlords. These costs
+may be significant given that the company would likely have signed long-term
+agreements.
+1
+• Completely disinvesting may prove difficult given that S4N’s loans were
+recently refinanced, and creditors may have included additional conditions
+which prevent the resale of assets.
+1
+• There is a significant delay in the repatriation of funds from Nigeria and
+therefore there is a risk that S4N will not be able to repatriate any funds
+generated by the closure to South Africa.
+Or, disinvestment could provide immediate cash for the company.
+1
+Option 2 – Develop the online system
+Merits
+• Remaining partially invested would allow the company to benefit from access to
+a wider marketplace for its products given Nigeria’s large population.
+1
+• Given the growth of the ecommerce industry in the country, investing in this type
+of operation would enable Shop-4-iT to diversify its operations, which would in
+turn increase shareholder value.
+1
+• Staying invested would allow the company to take advantage of any further
+opportunities that may become available over the years without the need to
+invest too heavily.
+1
+• Developing an online system could bring about cost savings (in terms of the
+physical infrastructure), ultimately increasing company profitability
+1
+Pitfalls
+• High financial crimes in the country may point to risk that the company may fall
+prey to cyber attacks on its infrastructure in the country.
+1
+• The lack of USD in the country increases the risk that Shop-4-iT would struggle
+to repatriate funds to South Africa.
+1
+• A further devaluation of the Naira could further translate to lower profits to Shop-
+4-iT in South Africa.
+1
+• S4N might not have the necessary skills to establish and manage an e-
+commerce platform. There is a risk that the lack of expertise in this field will
+lead to failure and losses.
+1
+• Operating online as an ecommerce platform would also require an established
+delivery network. It is unclear given the issues in the country whether this is
+viable.
+1
+• Capital investment would be needed in technology in order to facilitate the on-
+line sales. There is a risk that this investment will not yield the required return
+and will be another failure, just as the acquisition and rebranding of Stay-Fresh
+1
+• Even if S4N does sell online, the type of products they sell might still not be in
+demand (luxury products). Therefore, the primary issue is still not addressed.
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 7 © SAICA 2024
+Unless they foresee that they will gain access to the higher income market
+through their online offering.
+• The media news release may create negative customer sentiment towards
+Shop-4-iT which may impact negatively on future operations in Nigeria, in which
+case pursuing the online strategy may not be advisable.
+1
+Other pitfalls
+Operational risk
+• Increasing cost of clearing products at the ports increases the risk that the
+company would struggle to generate appropriate returns for its products given
+that high product costs are likely to be high.
+1
+• Political instability in the country provided the legal cases around the election
+of the president may create a difficult macro environment to operate it.
+1
+• Shop-4-iT may have a limited ability to pass on increased costs (imports,
+inflation) to customers through price increases given the weak macro backdrop
+and consumer demand.
+1
+Interest rate risk
+• Fluctuations in the interest rates due to inflation may cause debt servicing costs
+to increase significantly, which would increase the risk of default.
+1
+Political risk
+• Given the political instability in the country, there is a risk that the Nigerian
+government may revise repatriation rules for funds to South Africa
+1
+• The risk of damage to property due to the threat of the attacks on South African
+owned business in the country
+1
+Available 39
+Maximum 18
+Communication skills – logical argument 1
+Total for part (c) 19
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 8 © SAICA 2024
+Part d) Discuss, with regard to the board’s responsibility for good
+governance, the decision by the board of directors of Shop-4-iT
+to not respond to the news article.
+Marks
+• Part of King IV requires the board to proactively engage with stakeholders, thus
+the board should communicate with shareholders about the matter.
+1
+• Given that Shop-4-iT is committed to good corporate governance in accordance
+with King IV, the accusations in the article may cause stakeholders not to view
+the company as such given that the article accuses the company of focusing
+solely on profits and not considering the environment in its decision making.
+1
+• The news article negatively affects Shop-4-iT’s public reputation. Not
+responding to the article may negatively affect the company’s reputation. It
+does not seem to be in the best interest of the company to ignore the
+disclosures.
+1
+• Moreover, the duty to demonstrate ethical leadership would require the board
+to inform its employees of the matter under consideration as this could impact
+the staff morale.
+1
+• Given the high unemployment rate of 30%, the public would also need to be
+informed of the board’s view on the situation.
+1
+• The board should consider developing an effective ESG strategy (including
+a monitoring system like assurance) which drives better governance and
+innovation and helps the organisation to navigate through this tough economic
+climate. Such a strategy would assist in appropriately responding to the
+concerns raised about the company in the article (Lack of national building/lack
+of national investment i.e. in the Nigerian nation).
+1
+• The article places the blame for the lack of investment on the CEO, but as part
+of ethical leadership, the board would need to act with integrity. Thus, the board
+should acknowledge its shortcomings regarding the lack of investment in the
+country.
+1
+• The board should inform the public that the decisions taken by the company
+are done with the approval of the board.
+1
+• Should the board not respond to the article, the negative publicity may cause
+the company share price to fall, given that the company would no longer be
+seen as a good corporate citizen. This would impact shareholder value and
+therefore the company may need to prioritise managing the impact on its
+reputation.
+1
+• Potential investors may begin to question their investment in the company as a
+result of a loss of trust.
+1
+• The company may need to consider obtaining legal and public relation advice
+about the statements made in the article.
+1
+• P1 of KING IV states that the governing body should lead ethically & effectively
+which includes being transparent in the manner they exercise their
+responsibilities. By not responding to the newspaper article, it appears that the
+board of directors are not transparent and have something to hide.
+1
+• P11 of KING IV states that the governing body should govern risk. It appears
+that the directors are unsure of the way forward and do not have
+appropriate risk management policies and procedures in place.
+1
+• Good and right for self and others - the directors may be criticized for
+choosing action (ignoring the article) because it is good for them and not for
+employees’ public/Nigeria/stakeholders.
+1
+Available 14
+Maximum 7
+Total for part (d) 7
+TOTAL FOR QUESTION 1 50
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 1
+Paper 4 question 1 9 © SAICA 2024

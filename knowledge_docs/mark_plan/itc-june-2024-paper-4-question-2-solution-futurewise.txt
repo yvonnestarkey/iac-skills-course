@@ -1,0 +1,405 @@
+Source: SAICA ITC June 2024 — Paper 4 Question 2 suggested solution (FutureWise).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 1 © SAICA 2024
+Part (a) Prepare the pro forma consolidation journal entries to account for
+all intragroup transactions in the consolidated financial statements
+of the FutureWyze Group for FY2024.
+Marks
+Dr Cr
+1
+R R
+1. Retained earnings (SCE) 238 606
+Income tax expense (P/L) (C1) 88 252 ½
+Cost of sales (P/L) (C2) 326 858 ½
+Unrealised profit in opening inventories and its tax effect
+2. Sales (P/L) 132 000 000
+1Cost of sales (P/L) 132 000 000
+Intragroup sales for the year
+3. Cost of sales (P/L) (C3) 502 858
+1Inventories (SFP) 502 858
+Unrealised profit in closing inventories
+4. Deferred tax (SFP) (C4) 135 772
+½Income tax expense (P/L) 135 772
+Tax effect of unrealised profit in closing inventories
+5. Non-controlling interest (SFP) (C5) 25 696
+1Non-controlling interest (P/L) 25 696
+Recognising non-controlling interests’ share of unrealised profits
+6. Transport income / revenue (P/L) 11 200 000
+1Transport costs / cost of sales (P/L) 11 200 000
+Intragroup transport costs for the year
+Workings:
+C1 R326 858 x 27% ½
+C2 R6 864 000 / 87,5% = R7 844 571 ½
+R7 844 571 x 20/120 = R1 307 429 ½
+R1 307 429 – (R7 844 571 x 12,5%) = R326 858 ½
+Alternative C2:
+Discount to group company: 12.5% x 120 = 15
+Selling price within group: 120 – 15 = 105
+Unrealised profit: R6 864 000 x 5/105 = R326 857
+½
+½
+½
+C3 R10 560 000 / 87,5% = R12 068 571
+R12 068 571 x 20/120 = R2 011 429
+R2 011 429 – (R12 068 571 x 12,5%) = R502 858
+Alternative C3:
+Unrealised profit: R10 560 000 x 5/105 = R502 857
+1P
+C4 R502 858 x 27% = R135 772 ½P
+C5 R326 858 (J1) – R88 252 (J1) – R502 858 (J3) + R135 772 (J4)
+= (R128 480) 1C
+x 20% = R25 696 ½
+Available 11½
+Maximum 9
+Communication skills – presentation 1
+Total for part (a) 10
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 2 © SAICA 2024
+Part (b) Discuss whether you agree with Louisa’s decision to buy the
+shipping containers from TCC, with reference to the good for self
+and good for others approach and the utilitarian ethical theory.
+Marks
+Good/bad for self (FutureWyze)
+1
+2
+3
+4
+5
+6.
+7
+8
+9
+10
+By buying the Shipping containers at this reduced price, it will drastically
+reduce inventory costs and will increase profits. As a result, it will have a
+positive impact on the business.
+By helping Vuka Mzansi with a lower price for its order, FutureWyze’s
+reputation will be positively affected as it will add to its social footprint and add
+to it being a good corporate citizen.
+However, this transaction is highly likely to be regarded as the purchase of
+stolen goods because the following makes this suspicious:
+• The price is 60% lower than what it would normally be and even Louisa
+noted that this seemed too good to be true.
+• Although TCC claims it is because it is being liquidated, there is no
+evidence of a notice of liquidation.
+• There is no indication of past trading activities with a clear registered
+address.
+• TCC would further not give the address where the shipping containers are
+kept in advance.
+• TCC asked specifically for payment in cash and also asked that the
+shipping containers be removed immediately.
+This would therefore be regarded as an unlawful transaction (the purchase of
+stolen goods) with a risk of Louisa and/or everyone involved being arrested.
+By buying these products at a reduced cost, it will result in increased profits
+for the company and improve Louisa’s performance resulting in bonuses,
+promotion, etc.
+It may also lead to significant fines and penalties and/or losses due to
+confiscation if the police/law enforcement agency identifies that Louisa had
+suspected the trade was unlawful and did not do anything.
+This will negatively affect the reputation of the company, especially
+considering that it was aware of the issue and were suspicious.
+FutureWyze is known for its ethical conduct and social impact thus this type
+of incident would have a much greater impact for their stakeholders such as
+customers, employees, etc.
+This may result in retrenchments (if FutureWyze has to pay fines and
+penalties, loss of business due to reputational damage, etc.) as well as
+difficulty in paying creditors.
+It will also have a negative impact on FutureWyze’s donations to social
+programmes if it comes to light that they may be struggling financially and
+thus have to scale down on donations. This will have a negative impact on the
+general society. The integrity and genuineness of its donations may also be
+questionable as this could be perceived as cover for illegal activities.
+1
+1
+1
+½
+½
+½
+½
+½
+1
+1
+1
+1
+1
+1
+1
+Good/bad for others
+1
+2
+This will reduce the price that Vuka Mzansi has to pay, which will benefit the
+social activities that Vuka Mzansi can undertake as it could use the funds
+saved on other activities which will benefit the youth significantly.
+However, if the shipping containers are in fact stolen and this comes to light,
+this will have a significant negative impact on the whole value chain. The
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 3 © SAICA 2024
+3.
+4
+5
+shipping containers would likely be seized and ownership of the containers
+would be in question. Both FutureWyze and Vuka Mzansi are likely to lose in
+trying to establish ownership. This could lead to court costs (to recover money
+paid) and would further delay its initiatives if the containers are seized and it
+has to restart the project. This could have a negative impact on the youth as
+well.
+The companies from which the shipping containers were probably stolen
+would be negatively affected as they legally purchased the containers and
+can no longer rent them out or sell them. The article that Louisa read stated
+that millions have been lost by these companies. This in turn negatively
+affects all their stakeholders (shareholders, staff, insurance companies etc.).
+The company from which the shipping containers are bought is unlikely to
+declare the revenue to SARS (if it stole the goods and could disappear and
+not want to be traced), which causes SARS to lose taxes, which further
+impacts the SA economy negatively (fraudulent transaction) and the welfare
+of the general public.
+This can affect the donations that Vuka Mzansi’s NPO receives if the NPOs
+reputation is tainted, which could affect the long-term sustainability and
+continued operations of the NPO / this can also affect the reputation of Vuka
+Mzansi if the containers are stolen and seized, as the social activities
+undertaken could then be tainted with stolen goods.
+1
+1
+1
+1
+Utilitarian ethics
+1
+2
+3
+4
+This theory conforms to the opinion that some good and some bad will
+necessarily result from the actions and that the best action will be that which
+provides the most good or does the least harm. A decision or action will
+therefore be just if it promotes or advocates happiness (or pleasure) for the
+greatest number of individuals in society (or in a group, entity, or country, if it
+promotes overall societal welfare). In summary, the theory can conclude that
+Utilitarianism is more concerned with the outcomes and not the actions/the
+action can be justified as ethical if outcome is to the benefit of the greater
+good.
+In this instance, the primary beneficiaries of the transaction are FutureWyze,
+Vuka Mzansi, the seller and the youth who will use the innovation stations.
+However broader stakeholder constituents may suffer including –
+• the existing approved suppliers whose businesses have lost potential
+revenue;
+• the general public, who bears the general burden of crime and moral
+decay in society; and
+• the US funder, who risks reputational damage if it transpires that the
+shipping containers were obtained under suspicious circumstances.
+Part-taking in the purchase of containers that may have potentially be gotten
+through theft would worsen the matter, downgrade the country’s economic
+outlook, and in turn negatively impact economic growth
+On this basis, it is unlikely that the majority would benefit from this transaction.
+If this transaction comes to light. More people are likely to be hurt than benefit.
+Louisa did not consider all the possible effects that this might have, focusing
+only on the short-term reduction in costs with no consideration of the long-
+term effects. She was therefore incorrect in stating that there will be little
+negative consequences.
+1
+1
+1
+1
+1
+1
+1
+Conclusion: I therefore do not agree with Louisa’s decision to enter into the
+transaction with TCC as this transaction would not be regarded as ethical. 1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 4 © SAICA 2024
+Available 25.5
+Maximum 13
+Communication skills – logical argument 1
+Total for part (b) 14
+Part (c) Calculate the revenue that FutureWyze should recognise in
+accordance with IFRS 15 Revenue from Contracts with Customers,
+from the contract with Vuka Mzansi for FY2024.
+Marks
+Transaction price (TP) (given)
+R
+25 000 000 ½
+Standalone-alone selling prices (SASPs)
+Innovation stations (110 000 x 250) 27 500 000 1
+Service-type warranty (36 000 x 250) 9 000 000 1
+Custodial services = 320 000 (given)
+Total SASPs
+320 000
+36 820 000
+½
+Allocation of TP to POs resulting in revenue using SASPs
+Innovation stations [(27 500 000 / 36 820 000) x 25 000 000] 18 671 918 1 P
+Custodial services [(320 000 / 36 820 000) x 25 000 000]
+Note: No revenue recognised for service-type warranty, i.e., no
+allocation performed (irrelevant to FY2024 recognised revenue).
+217 273 1 P
+Total revenue for FY2024:
+18 671 918
+18 780 555
+1C
++ (217 273 x 1/2) 1P
+Available 7
+Maximum 7
+Total for part (c) 7
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 5 © SAICA 2024
+Part (d) Briefly discuss matters that should be considered during the
+brainstorming session that Sisa asked Tumelo to organise
+regarding –
+• the fact that Vuka Mzansi can obtain financing or generate
+income from the solar-powered innovation stations in the
+Eastern Cape;
+• the significant challenges that Vuka Mzansi will face while
+operating innovation stations in the Eastern Cape; and
+• the environmental impact of the innovation stations,
+particularly in rural areas.
+Marks
+Financing / income generation
+Apply for grant funding / other source of funding.
+0.5
+Mr Ntlabo should research government funding opportunities to determine if there
+are any initiatives by the government aimed at supporting technological innovation.
+• Consider approaching other companies both multinational and local who
+may be able to provide donated funding for the social projects.
+• Consider approaching the lotto for funding grants for social projects.
+• If the company is able to generate revenues from the innovation stations,
+they could approach banks for debt funding to be covered by the earnings.
+The innovation stations could be used as security for funding applications.
+1
+1
+1
+1
+New products/revenue streams
+Explore other revenue streams.
+0.5
+Vuka Mzansi could introduce a membership fee structure that allows each package
+type a certain amount of access to equipment / services provided by the solar-
+powered innovation stations (SPIS).
+1
+If consumers in SA generate more solar-powered electricity than they use, they will
+be able to ‘sell’ the excess back into the electrical grid through transacting with
+Eskom.
+The company could encourage entrepreneurs to use the stations for new
+businesses to create new products which it could partner with in selling, either
+through an equity share in the entrepreneur business, or a joint venture where they
+could share costs and revenues.
+Sell opportunities, for example, companies can sponsor a container that will be
+branded with the company’s logo or hire these out to businesses for example,
+schools.
+1
+1
+1
+Vuka Mzansi could include in its terms of use that it should earn a percentage of
+any innovations (intellectual property rights) which were created in their SPISs that
+became financially viable and sold on a commercial scale.
+1
+Significant challenges
+1. The industry is mostly occupied by social entrepreneurs aiming to make a
+difference in local and rural communities. This is a niche type of investment and
+requires a not-for-profit strategy and approach.
+1
+2. Stakeholders include non-profit organisations and other government entities,
+the latter of which are notoriously inefficient in South Africa. This may cause
+disruptions in operations or lost opportunities.
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 6 © SAICA 2024
+3. The SPISs are located in geographical areas which are not easily accessible
+and may not have access to basic services (water, sanitation, etc.), which could
+lead to additional investment capital needed to make them functional.
+1
+4. The containers need to be wi-fi enabled. Given the limited infrastructure in the
+Eastern cape, there may be challenges accessing reliable fibre providers and
+ISPs close to Vuka Mzanzi.
+1
+5. The Eastern Cape, specifically, is one of the ‘poorest’ provinces, with high levels
+of unemployment and poor basic municipal service delivery. The geographical
+location of Vuka Mzansi may lead to the SPISs being looted / vandalised if the
+physical access to them is not adequately managed and protected (secured). It
+may also disrupt farming and tourism.
+1
+6. The equipment is high value and would potentially be at risk of theft. 1
+7. The skills to operate the advanced equipment, and the skills to support
+entrepreneurs are scarce and can also be expensive if charged for. They would
+need to consider those support services and how they are going to provide them.
+1
+8. The 3D printers require materials in order to print which can be expensive and
+will need to be funded. Increased insurance costs also needs to be considered. It
+is not clear whether there is ongoing funding for these ongoing costs.
+1
+9. Are there sufficient people interested and able to use the innovation stations in
+remote rural areas? Are there minimum requirements and capabilities needed to
+access successfully?
+1
+Environmental considerations
+Pollution (noise/other) generated by the SPISs might need to be managed
+carefully.
+1
+Maintenance of the SPISs might be difficult due to their geographical location.
+Furthermore, the trucks / heavy vehicles involved in maintenance might erode the
+gravel roads to and from the sites where they are located.
+1
+Safely disposing of byproducts (batteries included in solar innovation stations) and
+dismantling of plant in rural areas could be difficult as recycling facilities may not
+regularly be available and batteries may end up being dumped in the rural areas
+therefore damaging the environment with hazardous chemical waste.
+1
+The weather might negatively affect the operation of solar systems. 1
+Available 23
+Maximum 9
+Communication skills – clarity of expression 1
+Total for part (d) 10
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 7 © SAICA 2024
+Part (e) Prepare the pro forma consolidation journal entries to account for
+the effects of the civil unrest in the consolidated financial
+statements of the FutureWyze group for FY2024.
+● Ignore taxation.
+● Pro forma journal entries to account for non-controlling interest are
+not required.
+Marks
+Debit Credit
+½
+R R
+Impairment loss (P/L) 25 000 000
+Accumulated depreciation and impairment
+losses: Manufacturing plant (SFP) 8 481 928 ½
+Accumulated depreciation and impairment
+losses: Delivery trucks and motor vehicles
+(SFP)
+7 518 072 ½
+Goodwill (SFP) 9 000 000 ½
+Workings:
+1
+Goodwill:
+320 000 000 x 80% = 256 000 000
+R
+– 265 000 000 = 9 000 000 ½
+/ 80% 11 250 000 1
+Net asset value (given) 366 000 000 ½
+Carrying amount of CGU 377 250 000
+Recoverable amount (given) 350 000 000 ½
+Impairment loss 27 250 000
+Allocated to goodwill: (11 250 000) 1 P
+Recognised: 11 250 000 x 80% = 9 000 000 1 P
+Allocate remaining impairment loss to other assets: 16 000 000
+Manufacturing plant
+110 / 207.5 (110 + 97.5)
+(8 481 928)
+½
+x 16 000 000) ½ P
+Delivery trucks and motor vehicles
+97.5 / 207.5 x R16 000 000)
+or (16 000 000 –8 481 928)
+(7 518 072) ½ P
+Available 9
+Maximum 9
+Total for part (e) 9
+Total for the question 50

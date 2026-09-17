@@ -1,0 +1,291 @@
+Source: SAICA ITC June 2024 — Paper 1 Part I suggested solution (PriceRight).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART I
+Paper 1 part I 1 © SAICA 2024
+Part (a): Prepare the consolidation journal entries to be processed by the
+PriceRight Group to account for Pharmcon in its consolidated financial
+statements for FY2023.
+• Show any re-measurement gain or loss separately.
+• Ignore taxation.
+• Round all amounts to the nearest rand.
+Marks
+Debit Credit
+R R
+31 December 2023
+Cost of sales (p/l) 49 500 000 1
+Operating costs (p/l) 30 492 000 1
+Income tax expense (p/l) 7 151 100 1
+Gain on disposal (p/l) [W1] 85 360 000 1P
+Remeasurement gain (p/l) [W2] 9 344 617 1P
+Group remeasurement loss (p/l) [W4] 1 838 918 1P
+Retained earnings (SoCE) [W3] 14 850 000 1P
+Mark-to-market (SoCE) [W3] 17 325 000 1P
+Sales (p/l) 99 000 000 1
+Mark-to-market (OCI) 19 800 000 1
+Group gain on disposal (p/l) [W4] 40 625 860 1P
+Non-controlling interest (p/l) [W3] 2 964 225 1P
+Non-controlling interest (OCI) [W3] 4 950 000 1P
+Non-controlling interest (SoFP) 55 489 225 1P
+Non-controlling interest (SoFP) [W3] 47 575 000
+Non-controlling interest (SoFP) [W3] 7 914 225
+Accounting of Pharmcon up to the date of loss of
+control
+Mark-to-market reserve (SCE)
+(R17 325 000 + R14 850 000) 32 175 000 2P
+Retained earnings (SCE) 32 175 000 1
+Reserve realised on sale of subsidiary
+Workings R R
+W1. Gain on disposal
+Proceeds 198 000 000 1
+Carrying amount of disposed investment
+(R140 800 000 x 60%/75%) (112 640 000) 1
+85 640 000
+W2. Remeasurement gain
+Fair value of retained investment 37 504 617 1
+Carrying amount of retained investment
+(R140 800 000 x 15%/75%) (28 160 000) 1
+9 334 617
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART I
+Paper 1 part I 2 © SAICA 2024
+W3. Share in net assets Total PriceRight
+@ 75%
+NCI
+@ 25%
+R R R
+At acquisition (R143 000 000 x 75%)
+(200 000 shares x 25% x R737) 107 250 000 36 850 000 1
+143 000 000
+Share capital 11 000 000 1
+Retained earnings 121 000 000 1
+Mark-to-market reserve 11 000 000 1
+Since until beginning of current year
+42 900 000
+Retained earnings
+(R140 800 000 - R121 000 000) 19 800 000 14 850 000 4 950 000 1
+Mark-to-market reserve
+(R34 100 000 - R11 000 000) 23 100 000 17 325 000 5 775 000 1
+185 900 000 32 175 000 47 575 000
+Current year
+Profit for the year 11 856 900 8 892 675 2 964 225 1
+Mark-to-market reserve 19 800 000 14 850 000 4 950 000 1
+217 556 900 55 917 675 55 489 225
+W4. Group gain and group remeasurement loss
+Alternative 1:
+Group gain (excluding the remeasurement loss)
+Proceeds 198 000 000 ½
+Net assets disposed (excl. goodwill)
+(R217 556 900 x 60%) (130 534 140) 1P
+Goodwill relinquished
+(R33 550 000 x 60%/75%) (26 840 000) 1P
+- Consideration transferred 140 800 000 ½
+- Share in net assets on acquisition date (107 250 000) ½
+33 550 000
+40 625 860
+Remeasurement loss
+Fair value of retained investment 37 504 617 ½
+Carrying amount of retained investment
+(R140 800 000 x 15%/75%) (28 160 000) 1
+Carrying amount of retained reserves
+(R55 917 675 x 15%/75%) (11 183 535) 1P
+(1 838 918)
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART I
+Paper 1 part I 3 © SAICA 2024
+Alternative 2:
+Group gain (including the remeasurement loss)
+Proceeds 198 000 000 ½
+Fair value of retained investment 37 504 617 ½
+CA of investment on date control is lost (196 717 675)
+- Total net assets on date control is lost 217 556 900 ½ P
+- Goodwill 34 650 000
+Consideration transferred 140 800 000 ½
+NCI on acquisition date 36 850 000 ½
+Net assets on acquisition date (143 000 000) ½
+34 650 000
+- NCI derecognised on date control is lost (55 489 225) 1P
+38 786 942
+Group gain (excluding the remeasurement loss)
+Proceeds 198 000 000
+Carrying amount of investment disposed of
+(R196 717 675 x 60%/75%) (157 374 140) 1P
+40 625 860
+Remeasurement (loss)
+(R38 786 942 - R40 625 860 ) (1 838 918) 1P
+ALT: Remeasurement (loss)
+Fair value of retained investment 37 504 617
+Carrying amount of retained investment
+(R196 717 675 x 15%/75%) (39 343 535) Or
+1P
+(1 838 918)
+ALT: Remeasurement (loss)
+Proceeds 198 000 000
+Net assets disposed (excl. goodwill)
+(R217 556 900 x 60%) (130 534 140) Or
+½ P
+Goodwill relinquished
+(R33 550 000 x 60%/75%) (26 840 000) Or
+½ P
+Group gain (including remeasurement loss) (38 786 942)
+1 838 918
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART I
+Paper 1 part I 4 © SAICA 2024
+Alternative 3:
+Group gain (excluding the remeasurement loss)
+Proceeds 198 000 000 1
+Carrying amount of investment disposed of
+(R140 800 000 x 60%/75%) (112 640 000) 1
+Company profit 85 360 000
+Carrying amount of since reserves
+disposed of (R55 917 675 x 60%/75%) (44 734 140) 1P
+40 625 860
+Remeasurement loss
+Fair value of retained investment 37 504 617 1
+Carrying amount of retained investment
+(R140 800 000 x 15%/75%) (28 160 000) 1
+Share in since reserves retained
+(R55 917 675 x 15%/75%) (11 183 535) 1P
+(1 838 918)
+Available 35
+Maximum 35
+Communication skills – presentation 1
+Total for part (a) 36
+ITC JUNE 2024 SUGGESTED
+SOLUTION
+PAPER 1 PART I
+Paper 1 part I 5 © SAICA 2024
+Analysis of equity of Pharmcon (for completeness)
+Total PriceRight (75% - 15%) NCI
+At Since (25%)
+RE MTM
+R R R R R
+At acquisition
+(1/1/2018)
+Ordinary share capital 11 000 000
+Retained earnings 121 000 000
+Mark-to-market reserve 11 000 000
+Total net asset value 143 000 000 107 250 000 35 750 000
+Goodwill 33 550 000 1 100 000
+Consideration + NCI 140 800 000 36 850 000
+Since acquisition to
+beginning of the year
+Retained earnings
+[R140 800’ – R121 000’] 19 800 000 14 850 000 4 950 000
+Mark-to-market reserve
+[R34 100’ – R11 000’] 23 100 000 17 325 000 5 775 000
+Current year
+Profit for the year 11 856 900 8 892 675 2 964 225
+Mark-to-market reserve 19 800 000 14 850 000 4 950 000
+217 556 900 23 742 675 32 175 000 55 489 225
+Sale of shares
+Consideration 198 000 000
+FV of retained
+investment
+37 504 618
+Less: Carrying amount (196 717 675)
+Net asset value 217 556 900
+Goodwill 34 650 000
+Non-controlling
+interest
+(55 489 225)
+Group gain 38 786 943
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART I
+Paper 1 part I 6 © SAICA 2024
+Analysis of equity of Pharmcon (for completeness)
+Details Share
+capital
+Retained
+earnings
+(RE)
+MTM
+reserve
+TOTAL Non-
+controlling
+interest
+(NCI) 25%
+Investment Goodwill Since
+Retained
+earnings
+Since MTM
+reserve
+R R R R R R R R R
+At acquisition 11 000 000 121 000 000 11 000 000 143 000 000 36 850 000
+[50 000
+(200 000x
+25%) shares
+x 737]
+140 800 000 34 650 000
+P (33 550)
+NCI (1 100)
+[(143 000 x
+25%) -
+36 850]
+Since RE
+(140 800 –
+121 000)
+Since MTM
+reserve
+(34 100 - 11 000)
+19 800 000
+23 100 000
+19 800 000
+23 100 000
+4 950 000
+5 775 000
+14 850 000
+17 325 000
+Current year
+Profit
+Fair value
+adjustment
+11 856 900
+19 800 000
+11 856 900
+19 800 000
+2 964 225
+4 950 000
+8 892 675
+14 850 000
+217 556 900 55 489 225 140 800 000 34 650 000 23 742 675 32 175 000
+Sold (60/75) (112 640 000) (27 720 000) (18 994 140) (25 740 000)
+28 160 000 4 748 535 6 435 000
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 1 PART I
+Paper 1 part I 6 © SAICA 2024
+Part (b) On the assumption that FinAll’s offer to purchase the non-
+performing customer accounts is accepted –
+(i) calculate the amount that can be recovered from the sale
+of non-performing customers; and
+(ii) briefly explain the reasoning for the recognition of the
+amounts of the loss allowance in accordance with IFRS 9.
+Marks
+(i) Calculation
+Allowance calculation:
+1 - 30 days past due = R1 150 000 x 45,5% R523 250 1
+More than 30 days past due = R2 000 000 x 68,3% R1 366 000 1
+R1 889 250
+Expected amount to be recovered by sale of non-
+performing customers
+[(R1 150 000 + R2 000 000) - R1 889 250) x 75%]
+R945 563 1
+Available 3
+Maximum 3
+(ii) Recognition of credit loss allowance
+1 The trade receivables of PriceRight fall within the scope for impairment
+provisions of IFRS 9, and the loss allowance must be recognised in
+accordance with IFRS 9.
+1
+2 The trade receivables of PriceRight do not contain a significant financing
+component based on the nature of its contracts. 1
+3 Therefore, the simplified approach is mandatory and PriceRight will always
+measure such credit losses at an amount equal to the lifetime credit losses
+[IFRS 9 para. 5.5.15(a)(i)].
+1
+Available 3
+Maximum 2
+Total for part (b) 5
+TOTAL FOR PART I 41

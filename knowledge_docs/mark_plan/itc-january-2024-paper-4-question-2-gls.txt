@@ -1,0 +1,138 @@
+Source: SAICA ITC January 2024 — Paper 4 Question 2 (GLS).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Paper 4 question 2 6 (of 8) © SAICA 2024
+QUESTION 2 50 marks
+1 Introduction
+Industrial Generator Solutions (Pty) Ltd (‘IGS’) is a company based in South Africa that
+manufactures and supplies industrial generators, inverters and more recently photovoltaic
+systems (solar systems) to a variety of customers across South Africa. IGS recognised the
+rising costs of diesel in South Africa and accordingly expanded its product offerings during its
+2021 financial year to include solar systems.
+IGS is a ‘small business corporation’ as defined in section 12E(4)(a) of the Income Tax Act. It
+is registered as a category B value-added tax (VAT) vendor, is registered for e-filing and
+makes 96% taxable supplies as determined in terms of the turnover-based method in Binding
+General Ruling No. 16. All suppliers of IGS are registered VAT vendors, except where
+specifically stated otherwise. All relevant and valid documentation as required in terms of the
+VAT Act has been obtained.
+IGS is the holding company in the Industrial Generator Solutions (Pty) Ltd Group (‘IGS
+Group’). The IGS Group is in the process of finalising its separate and consolidated financial
+statements for the financial year ended 31 December 2023 (FY2023). All the companies in
+the IGS Group have the same financial year end.
+During FY2021, IGS acquired an 80% controlling interest in Lithium Efficient Batteries (Pty)
+Ltd (‘LE Batteries’), a company specialising in the manufacture of lithium batteries and silicon
+cells used within solar system solutions. The acquisition of this interest met the definition of a
+business combination in accordance with IFRS 3 Business Combinations.
+2 Transaction with LE Batteries
+During FY2021, IGS was approached by LE Batteries with a proposal to install an industrial
+specialised machine that manufactures silicon cells. The machine would be installed at the
+production plant of LE Batteries and help LE Batteries to meet the demand for silicon cells in
+view of the continued increase in fuel prices and the energy crisis experienced in South Africa.
+Initially, LE Batteries leased the industrial specialised machine for two months from an
+unrelated third party, Energy for Living (Pty) Ltd (‘EfL’). EfL went into liquidation and could no
+longer continue to lease the machine to LE Batteries but proposed that it sell the machine to
+LE Batteries for a market-related price of R10 million (including VAT).
+LE Batteries made the proposal to IGS because it did not have the cash to finance the
+acquisition and installation of the machine.
+IGS agreed and on 1 January 2022 IGS purchased the industrial specialised machine that
+manufactures silicon cells from EfL. The machine was available for use as intended by
+management at the production plant of LE Batteries on 1 January 2022.
+IGS also entered into an agreement related to the specialised machine with LE Batteries. The
+agreement is an ‘instalment credit agreement’ as contemplated in para. (b) of the definition of
+‘instalment credit agreement’ of section 1 of the VAT Act and contains the following terms and
+conditions:
+1.1 LE Batteries has the right to use the machine for a period of ten years, effective from
+1 January 2022, in exchange for market-related monthly payments of R140 000
+(including VAT), payable in arrears.
+Paper 4 question 2 7 (of 8) © SAICA 2024
+1.2 LE Batteries is to use WeService (Pty) Ltd (‘WeService’) for any service, repairs and
+maintenance of the industrial specialised machine for the duration of the ten-year period.
+WeService is an unrelated third-party service provider.
+1.3 IGS is not allowed to exchange or substitute any of the components (e.g., laser cutter,
+gears, fasteners) of the machine during the period of use unless these components
+become faulty or malfunction for whatever reason during the duration of the ten-year
+period. If the parts become faulty or malfunction, IGS must source the replacements
+from or substitute the components with components from WeService.
+1.4 LE Batteries is only allowed to use the machine for its primary business activities at the
+production plant to manufacture silicon cells and neither IGS nor LE Batteries has the
+right to change the purpose for which the machine is used during the ten-year period.
+1.5 Ownership of the industrial specialised machine will not transfer to LE Batteries at the
+end of the lease term.
+The total invoice received by IGS for the purchase of this machine amounted to R10 million
+(including VAT). This was equal to the fair market value of this machine. The ‘cash value’ of
+the machine equates to the fair market value and the open market value. The machine is
+regarded to have a useful life of 12 years with an insignificant residual value.
+On 1 January 2022, IGS and LE Batteries settled the legal fees related to this lease
+agreement, which amounted to a total of R25 000 (including VAT), on a 50 : 50 basis.
+3 Solar systems service technicians
+To assist with the increasing demand for installation of solar systems, IGS entered into
+registered learnership agreements with two of its employees (who are not VAT vendors) on
+1 October 2023. The learnership agreements are for a period of five years. One of the two
+employees is a person with a disability as defined in section 6B(1) of the Income Tax Act. Both
+employees are in possession of a solar system service technician NQF Level 5 qualification.
+The total salary paid to these employees for the year of assessment ended 31 December 2023
+amounted to R95 000 per employee.
+Given the high industry requirements that technicians should stay up to date with their
+continuing professional development, IGS entered into a 24-month subscription contract with
+an independent third party, GlobalTech Training (Pty) Ltd (‘GlobalTech’), to provide monthly
+training and industry update sessions to these two employees and other employees of IGS.
+On 1 October 2023, IGS paid an amount of R350 000 (excluding VAT) to GlobalTech for
+monthly training and industry update services to be provided during the period 1 October 2023
+to 30 September 2024.
+4 Additional information
+• All property, plant and equipment items are accounted for on the cost model in
+accordance with IAS 16 Property, Plant and Equipment by all the companies in the IGS
+Group.
+• All initial useful life and other estimates remain unchanged unless otherwise stated.
+• None of the companies in the IGS Group has elected any of the recognition exemptions
+in IFRS 16 Leases, para. 5, to account for any lease agreements.
+• Any right-of-use assets are presented separately in the statement of financial position.
+• IGS will make use of all possible tax benefits and will therefore elect any option available
+to it in terms of the Income Tax Act that will minimise or defer its normal tax liability.
+Paper 4 question 2 8 (of 8) © SAICA 2024
+• IGS submitted an application to the South African Revenue Service to apply for a write-
+off period on the industrial specialised machine as the machine does not appear in the
+annexure to Binding General Ruling No. 7 in Interpretation Note 47. The Commissioner
+accepted the application with the supporting documents and motivation and agreed to
+allow a ten-year period on the straight-line method, in terms of section 11(e) of the
+Income Tax Act.
+Paper 4 question 2 required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JANUARY 2024
+PROFESSIONAL PAPER 4
+This paper consists of two questions.
+Answer each question in a separate answer book.
+PAPER 4 QUESTION 2 – REQUIRED
+Marks
+Sub-
+total Total
+(a) Briefly discuss whether the agreement between IGS and LE Batteries
+contains a lease as defined in accordance with IFRS 16.
+Communication skills – clarity of expression
+10
+1 11
+(b) Prepare the pro forma consolidation journal entry(entries) required to
+account for the intragroup lease transaction between IGS and LE
+Batteries in the consolidated financial statements of the IGS Group for
+FY2023.
+• Ignore all forms of taxation, including VAT.
+• Ignore any non-controlling interest(s).
+• Journal narrations are not required.
+• Assume that the agreement between IGS and LE Batteries
+contains a lease, and that it should be classified as a finance
+lease, as defined in accordance with IFRS 16, in the separate
+financial statements of IGS.
+Communication skills – presentation
+18
+1 19
+(c) Discuss, supported with calculations, the normal tax consequences for
+IGS of the letting of the industrial specialised machine to LE Batteries
+for the year of assessment ended 31 December 2023.
+• Do not discuss the related legal fees.
+Communication skills – layout and structure
+11
+1 12
+(d) Calculate, supported with brief reasons, the impact of part 3 of the
+scenario (the solar systems service technicians) on the taxable income
+of IGS for the year of assessment ended 31 December 2023. 8 8
+Total for question 2 50
+TOTAL FOR PAPER 4 100

@@ -1,0 +1,661 @@
+Source: SAICA ITC January 2024 — Paper 3 Part II suggested solution (FutureAfrica).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 1 © SAICA 2024
+Part (b) Discuss, with reference to the Imagination Beyond purchase price
+allocation, whether AE has adequately performed its duties in
+accordance with ISA 620 Using the Work of an Auditor’s Expert
+with regard to the work carried out by Stephen.
+For each matter that has not been performed adequately,
+recommend one procedure to be performed by AE to obtain
+sufficient appropriate audit evidence with regard to Stephen and
+the work carried out by him.
+Marks
+1. AE should not have limited its procedures to telephonic discussions but
+should have agreed in writing (written agreement). (ISA 620.11)
+1
+AE should have agreed all necessary matters:
+• by concluding a written agreement with Stephen, which should have
+taken into consideration amongst others the following:
+o the nature, scope, and objectives of Stephen’s work;
+o the respective roles and responsibilities of AE and Stephen; and
+o the nature, timing, and extent of communication between AE and
+Stephen, including the form of any reports to be provided by
+Stephen.
+Max 1
+2. There was only a virtual call on the approach and therefore AE did not
+evaluate the competence (adequacy) of Stephen as they hired him solely
+on the recommendation of Infinite Structures’ financial director. (ISA620.9)
+1
+AE should have evaluated Stephen’s competency by:
+• inspecting copies of Stephen’s qualifications, or membership of a
+professional body or industry association, license to practice, or other
+forms of external recognition.
+• reviewing published papers or books authored (written) or co-authored
+by Stephen.
+Max 1
+3. There was only a virtual call on the approach and therefore AE did not
+evaluate the capability of Stephen as they hired him solely on the
+recommendation of Infinite Structures’ financial director. (ISA620.9)
+1
+AE should have evaluated Stephen’s capability by:
+• enquiring from / discussing with other auditors or others who are familiar
+with Stephen’s work to determine if Stephen has been conducting
+purchase price allocations (PPAs), or if this is the first PPA in which he
+is involved.
+Max 1
+4. The fact that Stephen was recommended by Infinite Structures’ financial
+director, may possibly indicate that there could be objectivity concerns
+(bias, independence, conflict of interest or influence of others) that may
+influence Stephen's professional or business judgment that was not
+considered by AE. (ISA620.9)
+1
+AE should have evaluated Stephen’s objectivity, including his
+independence, by:
+• enquiring from the management of Infinite Structures regarding any
+known interests or relationships with Stephen.
+• enquiring from / discussing with Stephen regarding any possible interests
+and/or relationships that may create threats to Stephen’s objectivity.
+• obtaining / inspecting a written representation from Stephen about any
+interests or relationships with Infinite Structures of which he is aware.
+• discussing with Stephen any relevant safeguards, including any
+professional requirements that apply to Stephen.
+• evaluating whether the relevant safeguards are adequate to reduce any
+possible threats to an acceptable level.
+Max 1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 2 © SAICA 2024
+5. There was only a virtual call on the approach and therefore AE did not
+consider whether Stephen will observe confidentiality as they hired him
+solely on the recommendation of Infinite Structures’ financial director.
+(ISA620.11(b))
+1
+AE should have agreed all necessary matters:
+• by concluding a written agreement with Stephen which should have
+included the responsibility of Stephen to respect the confidentiality of
+information about Infinite Structures:
+• by concluding a written agreement with Stephen which should have
+included the expectations with regard to compliance to the Code of
+Professional Conduct.
+Max 1
+6. No further audit procedures were conducted by AE, apart from an email
+received from Stephen in which he listed how the purchase price was to be
+allocated to the various identifiable assets and liabilities. It therefore appears
+that AE did not evaluate the work performed by Stephan as is required
+by ISA620.12 before one can rely on it. (ISA620.12)
+1
+AE should have evaluated the work performed by Stephen, including his
+findings, assumptions, methods, and source data, by performing the
+following procedures, for example:
+• inspecting Stephen’s working papers to verify the relevance and
+reasonableness of the findings and its consistency with other audit
+evidence.
+• inspecting Stephen’s working papers to verify the relevance and
+reasonableness of the assumptions and methods used.
+• inspecting Stephen’s working papers to verify the completeness,
+relevance and accuracy of the source data used.
+• agreeing any calculation with the source data included in the
+consolidation calculations to verify the accuracy, completeness, and
+relevance of the work.
+• comparing the amounts included in the Stephen’s workings to Infinite
+Structures’ schedule of calculation of the allocation of the purchase price
+and following up on differences through enquiry from management.
+• inspecting the formal documentation Stephen used to document his
+inputs and which reference where the inputs were derived as well as
+other supporting documents (to verify the origin of data used) from for
+the auditor to consider the reasonability of the outcomes.
+• re-performing the calculation using the inputs used by Stephen to verify
+the accuracy thereof.
+• assessing whether the method employed by Stephen to perform the
+calculation is in line with the acceptable methods in terms of IFRS.
+Max 1
+7. Based on the matters described above, AE did not adequately perform
+its duties.
+1
+Available 13
+Maximum 8
+Total for part (b) 8
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 3 © SAICA 2024
+Part (c) Discuss, with reference to the information in section 3, whether
+John’s response on the audit of the Infinite Structures’
+consolidation reporting pack is appropriate with respect to
+Letsopa.
+• Do not provide any details that should be included in the
+communication with the component auditor.
+Marks
+1. AE wants to only rely on the unqualified audit opinion expressed in respect
+of the Letsopa separate annual financial statements and the completion of a
+checklist, which is not appropriate. The group auditor is responsible for
+the group audit and cannot only rely on the unqualified audit opinion
+issued by GM, but needs to be involved in the audit process:
+• In terms of ISA 600R, AE as the group auditor, is responsible for planning
+the audit of the group by establishing the audit strategy (while applying
+ISA 300) to determine what specific audit procedures must be performed
+for the component, coordination and planning of the work, timetable for
+completion of the work, specific group audit requirements. (This also
+includes selecting which further audit procedures must be performed.)
+(ISA 600R.37)
+• For the group auditor to be in a position to select the relevant components
+and identify the risk of material misstatement for the consolidated financial
+statements and respond appropriately, it should have obtained an
+understanding of the group and its environment, the applicable
+financial reporting framework and the group’s internal controls. (ISA
+600R.30)
+• AE did not identify high and significant risk items as well as items
+where significant judgment will be required for which further audit
+procedures to be performed, which means AE also did not evaluate the
+appropriateness of the design and performance of those further audit
+procedures.
+• No work was done on GM’s work performed and their findings by way
+of discussions and reviewing of their working papers as they only
+completed the required checklist (which includes supervising the
+component auditors and reviewing their work). Consequently, AE’s
+response is not appropriate as it is possible the component auditors did
+not gather sufficient appropriate audit evidence to reduce audit risk to
+an acceptably low level.
+• This will result in the audit risk in the consolidated annual financial
+statements also not being reduced to an acceptably low level.
+1
+1
+1
+1
+1
+1
+2. For AE to be in a position to obtain the necessary understanding of the group
+(including the components), the group auditor did not perform the following:
+• AE did not confirm with GM that the group auditors will be able to
+participate in the work of the component auditor to the extent required
+to obtain sufficient and appropriate audit evidence for purposes of the
+audit of the consolidated reporting pack of Infinite Structures.
+1
+3. Reliance on the component auditors (GM)
+• Ethical requirements: AE did not obtain an understanding of whether the
+component auditor understands and will comply with the ethical
+requirements that are relevant to the group audit engagement (including
+objectivity / independence).
+• Engagement resources: AE should have determined whether GM has
+the appropriate competence and capabilities (including sufficient time)
+(examples include considering aspects such as membership of
+professional organizations and professional bodies, their systems of
+1
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 4 © SAICA 2024
+quality management and controls and any IRBA inspection report
+findings, etc.).
+4. AE failed to interact with the component auditor in the manner prescribed
+by ISA 600R – specifically the following:
+• AE was not involved in the component auditor’s risk assessment
+process to identify significant risks of material misstatement in relation to
+the consolidated financial statements.
+• AE was not involved in determining the component materiality figures
+used in performing the audit and concluding on the audit evidence
+gathered in relation to the consolidated financial statements. AE was also
+not involved in determining the threshold above which misstatements
+cannot be regarded as clearly trivial to the group.
+• AE did not communicate its requirements to the component auditor on a
+timely basis – covering the work to be performed, the use to be made of
+that work, and the form and content of the component auditor’s
+communication with the consolidated engagement team.
+[Mark awarded for reference to communication and not what communication
+shall include as listed in ISA 600R on the basis of the marks].
+1
+1
+1
+5. Based on the matters described above, John’s response is not
+appropriate.
+1
+Available 13
+Maximum 6
+Total for part (c) 6
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 5 © SAICA 2024
+Part (d) Compile, with reference to section 9, a report to the management of
+Imagination Beyond in which you –
+• discuss the weaknesses; and
+• provide recommendations
+with regard to the preparation of the consolidation reporting pack and
+reporting process followed by Imagination Beyond to Infinite Structures
+Report to Management of Imagination Beyond
+Regarding: Consolidated Reporting
+Good Day
+The following is a report on the weaknesses and recommendations identified in the
+preparation of your consolidation reporting pack and group reporting process.
+Yours sincerely
+ITC candidate
+xx January 2024
+Weakness Recommendation
+1. There is no segregation of duties
+as the financial manager prepares
+and reviews the financial
+information included in the
+consolidation reporting packs which
+may lead to errors and fraud.
+1 There should be adequate segregation
+of duties as the financial manager
+should not be preparing and reviewing
+the financial information included in the
+consolidation reporting pack. OR
+The financial information should be
+prepared by the financial manager and
+then reviewed by the CFO or should be
+prepared by a financial accountant and
+reviewed by the financial manager.
+1
+The financial manager does not
+work directly on the system as
+he/she exports the information from
+the accounting system to Microsoft
+Excel and these amounts can be
+adjusted by hand before being
+printed and captured, which could
+result in unauthorised, invalid or
+inaccurate changes being made to
+the financial information.
+1 The trial balance must be printed
+directly from the accounting system to
+limit manual intervention and changes
+to any trial balance accounts.
+1
+The financial information is
+manually captured in the
+consolidation reporting packs,
+which could lead to the information
+being incorrect, invalid or
+incomplete.
+1 To limit the risk of the financial
+manager making an error, data should
+be digitally extracted from the trial
+balance and mapped into the
+consolidation reporting pack (through
+an interface).
+1
+No one reviews the data in the
+consolidation reporting packs that
+that the financial manager has
+captured, as the information might
+be incorrect, invalid or incomplete.
+1 A second person should review the
+data captured for accuracy,
+completeness and validity.
+1
+2. The trial balance is mapped to the
+consolidation reporting packs /
+1 The financial manager should consider
+any changes from the prior year before
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 6 © SAICA 2024
+financial statements based on the
+prior-year mapping and the financial
+manager did not consider the
+mapping for the 2023 current year-
+end (the appropriateness of the
+prior year mapping or whether any
+changes were necessary / how to
+map the new accounts after the
+various acquisitions), which may
+lead to inaccurate financial
+reporting or the misclassification of
+accounts.
+mapping or there should be guidance
+for the mapping of the general ledger
+accounts that did not exist in the prior
+year.
+The financial manager should verify
+that all items in the trial balance have
+been mapped (completeness) and
+mapped to the correct financial
+statement line item in the consolidation
+reporting pack (accuracy), to ensure
+that all changes from the prior year
+mapping have been incorporated.
+1
+The trial balance is mapped
+manually without the system, which
+may result in errors in the
+presentation and disclosures in the
+consolidation reporting pack.
+1 The system should be updated so that
+the trial balance is mapped
+automatically through a set
+configuration to minimise error in
+presentation and disclosure.
+1
+The financial manager does not
+sign off on the consolidation
+mapping after done, which may lead
+to no one being accountable for the
+work performed or the content in the
+consolidation reporting pack.
+1 The financial manager should sign off
+that the mapping was done according
+to company policy and accepting
+responsibility for the work done.
+1
+No one reviews the mapping
+performed by the financial manager
+to ensure that it has been mapped
+correctly, which may lead to
+inaccurate financial reporting or the
+misclassification of accounts.
+1 A second person should review and
+verify that all items in the trial balance
+have been mapped and that it has
+been mapped to the correct financial
+statement line item in the consolidation
+reporting pack.
+1
+3. All outstanding balances and
+transactions with other subsidiaries
+are confirmed telephonically which
+means there is no reliable evidence
+of confirmation in terms of ISA500.
+1 A confirmation template should be
+completed between the entities
+confirming the transactions and
+outstanding balances in order to have
+sufficient and appropriate evidence in
+terms of ISA500.
+Internal controls should be put in place
+to identify other subsidiary transactions
+and balances (e.g., by flagging them in
+the system), to ensure that
+transactions with other subsidiaries are
+identified and accounted for purposes
+of elimination on consolidation.
+1
+1
+The financial manager does not
+follow up on differences in amounts
+after confirming the outstanding
+balances and transactions, result in
+errors in the presentation and
+disclosures in the consolidation
+reporting pack.
+1 The financial manager must
+investigate and follow up any
+differences identified in the
+outstanding balances and transactions
+to ensure the consolidation reporting
+pack is valid, accurate and complete.
+1
+The financial manager assumes he
+is correct without performing
+reconciliations and follow-ups to
+1 The financial manager must reconcile
+all errors with the other entities rather
+than assuming his amount is correct.
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 7 © SAICA 2024
+identify and correct the errors
+between the subsidiaries, which the
+consolidation reporting pack might
+include inaccurate amounts.
+The financial manager authorises
+the reversal of intercompany
+balances and transactions and does
+not treat it as consolidation entries,
+which may lead to amounts not
+appropriately eliminated, as such
+reversal might be recognised in
+another type of account, such as a
+suspense account.
+1 Intercompany transactions and
+balances should be eliminated at
+consolidation level in Infinite Structure
+and not in the financial statements of
+Imagination Beyond.
+At group level there needs to be clear
+communications / training must be
+provided on the procedures on what
+must be eliminated / not eliminated,
+before the information is sent.
+1
+1
+There is no segregation of duties as
+the financial manager confirms the
+accuracy of the transactions and
+outstanding balances and he/she
+also authorises the outstanding
+balances, which may lead to errors
+and fraud.
+1 There should be adequate segregation
+of duties as the financial manager
+should not be confirming and
+authorising the transactions and
+outstanding balances included in the
+consolidation reporting pack. OR
+The transactions and outstanding
+balances should be prepared by the
+financial manager and then authorised
+by the CFO or should be confirmed by
+a financial accountant and authorised
+by the financial manager.
+1
+4. The consolidation reporting pack
+is sent via email, and it is not
+encrypted, or password protected
+which may lead to the email being
+be altered or intercepted.
+1 The consolidation reporting pack
+should be encrypted, sent via a
+secured server and should be
+password protected.
+1
+5. No checks regarding the
+completeness of all data fields, are
+performed to ensure that totals
+transfers accurately from notes to
+the primary statements and/or
+balance sheet balances, which may
+result in errors in the presentation
+and disclosures in the consolidation
+reporting pack.
+1 Checks need to be incorporated that
+validates that all required fields are
+filled / data elements are present and
+populated (e.g. mandatory field /
+missing data check).
+Any incomplete datasets that are
+flagged by the checks, should be
+followed up with the finance team.
+1
+1
+6. There are no formal documented
+company policies and procedures
+that should be followed regarding
+the consolidation process to
+minimise the risk of inaccurate,
+incomplete or invalid information.
+1 There should be a company policy
+setting out the consolidation
+procedures and these should be
+regularly reviewed and updated as
+necessarily.
+1
+Available 36
+Maximum 14
+Communication skills – appropriate style; layout and structure 2
+Total for part (d) 16
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 8 © SAICA 2024
+Part (e) Discuss, supported by calculations, the normal tax
+consequences for Imagination Beyond arising from the loan
+received from HBCS Bank and the interest paid to HBCS Bank for
+the year of assessment ended 31 December 2023.
+• Ignore withholding tax.
+• Ignore the provisions of the double tax agreements between
+South Africa and China and South Africa and the United
+Kingdom.
+MARKS
+Normal tax
+In terms of s 24J(2), the issuer of an instrument will be allowed a deduction for
+interest if the interest is incurred in the carrying on of a trade and is in the
+production of the income. Instrument means any interest-bearing arrangement
+or debt. Issuer, in relation to any instrument, means any person who has incurred
+any interest or has any obligation to repay any amount in terms of such
+instrument.
+Imagination Beyond’s loan from HBCS Bank is an interest-bearing
+arrangement and is therefore an instrument as defined.
+Imagination Beyond incurred interest on the loan and has an obligation to
+repay the loan to HBCS Bank on 30 June 2023. Therefore, Imagination Beyond
+is the issuer of an instrument.
+1
+1
+Imagination Beyond is carrying on a trade in the construction industry and
+used the loan to finance the construction of its warehouse to be used in its trade.
+The warehouse is used for storage and distribution, which is part of its
+process for earning income. The interest is therefore incurred in the production
+of the income.
+1
+1
+Therefore, the interest incurred on the loan is deductible in terms of s24J(2). 1P
+In terms of s24J, the interest will be apportioned for the accrual period (1 January
+2023 – 30 June 2023) during the 2023 year of assessment:
+GBP500 000 x 6,75% x 181/365 = GBP16 736
+It is assumed that the market-related interest rate of 6,75% is the same as the
+yield to maturity rate.
+1
+1
+As Imagination Beyond is a company, the interest is translated at the spot
+rate on the day it was incurred in terms of s25D(1).
+Alternative: s24J deems interest to be incurred on a daily basis, therefore
+the average exchange rate is used to translate the interest as a proxy for the
+daily exchange rate.
+1
+Therefore, the interest deductible in terms of s24J(2) is GBP16 736 x R24,40 =
+R408 366 based on the spot rate on 30 June 2023.
+Alternative: Therefore, the interest deductible in terms of s24J(2) is GBP16 736
+x R22,89 = R383 087 based on the average exchange rate for 1 January 2023
+– 30 June 2023.
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 9 © SAICA 2024
+In terms of s24I(1), exchange item means an amount in a foreign currency owing
+by that person in respect of a debt incurred by such person
+Imagination Beyond holds debt (loan and interest payable) denominated in
+GBP, which are exchange items.
+In terms of s24I(2), because Imagination Beyond is a company, s24I will apply
+to all its exchange items.
+1
+1
+No exchange difference arises in FY2023 in respect of the interest incurred
+from 1 January 2023 – 30 June 2023 because the spot rate on the date it was
+incurred (30 June 2023) is the same as the spot rate on the realisation date.
+Alternative: An exchange loss of R25 271 [GBP16 736 x (R24,40 - R22,89)]
+arises in FY2023 on realisation date in respect of the interest incurred from 1
+January 2023 – 30 June 2023, which is deductible [P].
+1
+FY2022 interest payable would have been translated at the spot rate of R20.49
+on 31 December 2022 (year-end) for the accrual period 1 July 2022 – 31
+December 2022 and a further exchange difference arises when the interest
+is settled on 30 June 2023.
+An exchange loss of R66 524 (GBP500 000 x 6,75% x 184/365 = GBP17 014
+x (R24,40 – R20,49 = R3,91) is deducted from income
+1
+1P
+On 31 December 2022 (year-end) the loan would have been translated at the
+sport rate of R20.49 and a further exchange difference arises when the loan
+is settled on 30 June 2023.
+An exchange loss of R1 955 000 [GBP500 000 x (R24,40 – R20,49)] is
+deducted from income.
+1
+1P
+Available 16
+Maximum 11
+Communication skills – logical argument 1
+Total for part (e) 12
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 10 © SAICA 2024
+Part (f) Discuss, with reference to relevant case law, whether Imagination
+Beyond may deduct the management fee and local shareholder
+contribution fee in terms of section 11(a) of the Income Tax Act
+for the year of assessment ended 31 December 2023.
+Marks
+All the requirements of s11(a) read together with s23(g) must be met for an
+amount to be deductible. The issues to specifically address here are whether the
+management fees and local shareholder contribution fees are incurred ‘in the
+production of the income’ for Imagination Beyond and ‘not of a capital
+nature’. As the terms ‘in the production of income’ a‘d 'capi’al' are not defined in
+the Income Tax Act, case law should be referred to for guidance.
+½
+½
+In Port Elizabeth Electric Tramway Co Ltd v CIR it was held that expenditure is
+incurred ‘in the production of the income’ where the expense is closely
+connected to the income-earning activities of the business. 1
+In New State Areas Ltd v CIR, it was held that expenditure relating to the
+income-earning structure is of a capital in nature and not deductible.
+Whereas expenditure relating to the income-earning operations (activities) is
+not of a capital nature and is deductible.
+Alternative:
+In BP Southern Africa (Pty) Ltd v CSARS it was held that where an expenditure
+does not create an enduring benefit, it is not capital in nature and is
+deductible.
+1
+In the production of the income
+It is submitted that the services provided by Future Afrika (technical and
+management services) and the local shareholder contribution fee are closely
+related to Imagination Beyond’s income-earning activities, as it relates to
+the construction industry (building materials, restoration of historical
+buildings and government infrastructure tenders) and Imagination Beyond
+operates in the construction industry.
+½
+½
+Regarding the local shareholder contribution fees, the principle from the Warner
+Lambert SA (Pty) Ltd v CSARS applies because the fees are incurred to ensure
+that Imagination Beyond does not lose out on possible earnings from
+government contracts. The fees are therefore incurred in the production of
+income.
+1B
+Not of a capital nature
+The management fees and local shareholder contribution fee are incurred as
+part of normal operations, not to create, improve or add to the income
+earning structure of Imagination Beyond.
+Alternative:
+The management fees and local shareholder contribution fee are incurred on
+an annual basis to enable Imagination Beyond to earn income from its
+construction and infrastructure development activities and therefore do not
+create an enduring benefit.
+½
+½
+Management fees
+As Imagination Beyond is a company, the CNY1 million will be translated to ZAR
+by applying the spot rate in terms of s25D(1) on 15 December 2023. Therefore,
+the total expense amounts to ZAR2 742 200 (CNY1 million x R2,7422).
+Note to markers: the mark is awarded for the application of s25D(1).
+1B
+The invoice relates to the services rendered to the entire Infinite Structures
+group. However, Imagination Beyond may only deduct R1 645 320
+(R2 742 200 x 60%) of the management fees for the 2023 year of assessment
+in terms of s23(g), as that is the portion relating to Imagination Beyond’s trade.
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 3 PART II
+Paper 3 part II 11 © SAICA 2024
+Local shareholder contribution fee
+As the local shareholder contribution fee only relates to Imagination Beyond,
+Imagination Beyond may deduct the R3 500 000 (100%) of the local
+shareholder contribution fee in terms of s11(a) during the 2023 year of
+assessment.
+1
+The burden of proof rests with Imagination Beyond (the taxpayer) to prove
+that the management fee and local shareholder contribution fee are deductible
+for normal tax purposes in terms of s102 of the Tax Administration Act. 1
+Available 10
+Maximum 8
+Total for part (f) 8
+TOTAL FOR PART II 50

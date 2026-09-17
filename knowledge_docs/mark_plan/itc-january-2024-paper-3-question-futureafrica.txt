@@ -1,0 +1,363 @@
+Source: SAICA ITC January 2024 — Paper 3 question (FutureAfrica).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Paper 3 1 (of 8) © SAICA 2024
+QUESTION 100 marks
+Ignore valued-added tax
+1 Background
+The Future Afrika Group is structured as follows:
+51% 49%
+100% 100% 65%
+Future Afrika is a Chinese company and exclusively a tax resident of China. Future Afrika
+holds a controlling interest in Infinite Structures. Xelerate is the Broad-Based Black Economic
+Empowerment (B-BBEE) partner of Infinite Structures.
+Infinite Structures is a South African investment holding company with controlling interests in
+construction and infrastructural development companies operating on the African continent.
+Infinite Structures does not trade. All trading activities are undertaken by its subsidiaries.
+Infinite Structures has the South African rand (ZAR) as its functional and presentation
+currency.
+New Heights is a Nigerian company. Infinite Structures obtained its controlling interest in New
+Heights in 2018. New Heights presents its financial information in the Nigerian naira (NGN),
+which is its functional and presentation currency. New Heights is exclusively a tax resident of
+Nigeria.
+The remainder of the companies within the group are South African resident companies.
+All entities have a 31 December financial year end and prepare their financial statements in
+accordance with International Financial Reporting Standards (IFRS).
+2 Investment in Imagination Beyond
+On 1 January 2023, Infinite Structures acquired a 100% controlling interest in Imagination
+Beyond (Pty) Ltd (‘Imagination Beyond’), a South African-based company in the construction
+industry. Imagination Beyond has the ZAR as its functional and presentation currency.
+The acquisition of Imagination Beyond was financed as follows:
+● Issue of 10 000 8% ZAR1 000 bonds to third parties for cash.
+Future Afrika Xelerate
+Infinite Structures
+New HeightsImagination BeyondLetsopa
+Paper 3 2 (of 8) © SAICA 2024
+o The bonds were issued on 1 January 2023 at their nominal value, which is equal
+to their fair value.
+o Interest is payable annually on 31 December.
+o The bonds will be settled at a premium of 5% of the nominal value on 31 December
+2027.
+● Own available cash reserves of ZAR7,5 million.
+Infinite Structures paid legal, consultancy and broker fees of ZAR170 000 to third parties for
+the acquisition of Imagination Beyond and ZAR96 000 to third parties for the issue of the
+bonds. These payments were made from available cash reserves.
+On 1 January 2023, the cash balance of Imagination Beyond amounted to ZAR2,7 million and
+the carrying amount of Imagination Beyond’s land amounted to ZAR4,1 million. On the
+acquisition date, all the assets and liabilities of Imagination Beyond were fairly valued, except
+for land that was considered to be ZAR500 000 more than the carrying amount. Imagination
+Beyond did not process any adjustments in respect of the land on 1 January 2023. Imagination
+Beyond subsequently revalued the land on 31 December 2023 by ZAR620 000. During the
+financial year ended 31 December 2023 (FY2023), Imagination Beyond purchased a section
+of land amounting to ZAR1,5 million for cash.
+The auditors of Infinite Structures are Auditors Extreme Inc. (‘AE’), who have been the auditors
+since 2021. AE hired Mr Stephen Stew as the auditor’s expert, on the recommendation of
+Infinite Structures’ financial director, to assist AE in auditing the purchase price allocation of
+the identifiable assets acquired and liabilities assumed at their acquisition-date fair values in
+accordance with IFRS 3 Business Combinations. This included any goodwill arising from the
+acquisition of Imagination Beyond.
+AE only had a virtual call with Stephen to discuss what approach he would follow. No further
+audit procedures were conducted by AE, apart from an email received from Stephen in which
+he listed how the purchase price was to be allocated to the various identifiable assets and
+liabilities.
+3 Investment in Letsopa (Pty) Ltd
+On 30 November 2023, Infinite Structures acquired a 100% controlling interest in a cement-
+producing company, Letsopa (Pty) Ltd (‘Letsopa’). Letsopa is a South African-based company
+with the ZAR as its functional and presentation currency.
+GM & Partners Inc. (‘GM’) are the auditors of Letsopa and have served as the auditors since
+2018. GM has finalised the audit of Letsopa for FY2023.
+Ms Selma Williams is one of AE’s first-year audit trainees. Mr John Donald, an audit senior of
+AE, sent Selma the following email regarding the audit GM performed in respect of Letsopa:
+Paper 3 3 (of 8) © SAICA 2024
+To: SelmaW@AE.com
+Date: 05 January 2024 8:45 AM
+From: JohnD@AE.com
+Subject: Re: Audit of Letsopa
+Hi Selma
+Thank you for your question as to whether we would be able to rely on the work performed
+by Letsopa’s auditors regarding the latest Infinite Structures acquisition. Based on our group
+audit strategy Letsopa is considered to be a significant component of the group.
+With respect to the audit of the consolidated reporting pack (which includes the consolidated
+financial statements) of Infinite Structures, we may rely on the unqualified audit opinion
+issued by GM without conducting any further audit work on the results of Letsopa that have
+been consolidated. We have already contacted GM’s audit partner in charge of the Letsopa
+audit, and he has completed the required checklist we have sent him and has stated that
+GM adheres to the International Standards on Auditing. Therefore, we can rely on the audit
+of Letsopa’s separate financial statements which have been used in the preparation of
+Infinite Structures’ consolidated reporting pack.
+If you have any further questions, please feel free to email them to me.
+Kind regards
+John Donald
+Third-year audit senior
+4 Contract with PlantHire to lease specialised machinery
+On 1 March 2023, Imagination Beyond entered into a contract with PlantHire, an unrelated
+third party, in terms of which Imagination Beyond leased specialised, expensive and high-
+demand cranes.
+Imagination Beyond incurred and paid the following costs with regard to the lease:
+Notes ZAR
+Legal fees, commission, and lease documentation preparation
+costs for the execution of the lease 1 102 000
+Installation of the cranes and fixing them to the ground at
+designated construction sites 73 500
+Notes
+1 An amount of ZAR36 000 relating to the fixed salary of Imagination Beyond’s full-time
+internal legal counsel is included in the amount of ZAR102 000. This amount would be
+payable to the legal counsel irrespective of whether the contract is successfully signed
+or not.
+The terms of the lease contract included the following conditions:
+● Imagination Beyond is required to pay annual lease instalments of ZAR1,2 million in
+advance, starting on 1 March 2023.
+Paper 3 4 (of 8) © SAICA 2024
+● Imagination Beyond is required to remove the cranes, return them to PlantHire, and to
+restore the land surrounding the construction site to an environmentally friendly
+landscape at the end of the lease on 28 February 2026. On 1 March 2023, it was
+estimated that the removal and restoration costs would amount to ZAR470 000.
+The rate implicit in the lease is 12% per annum.
+At the commencement date of the lease, the average remaining useful life of the leased items
+was estimated to be ten years.
+5 Distribution warehouse
+Imagination Beyond owns a distribution warehouse in the Coega Industrial Development Zone
+in Gqeberha, which has been used as a storage and distribution channel for its construction
+material around Southern Africa. The construction of the distribution warehouse commenced
+on 1 July 2013, the same day that the funds from HBCS Bank were paid into the bank account
+of Imagination Beyond (see details below about the loan). The construction was completed in
+December 2013.
+To finance the construction of the distribution warehouse for its own use, Imagination Beyond
+took out a foreign loan of British pounds (GBP) 500 000 from HBCS Bank in the United
+Kingdom. All the loan funds raised were earmarked and used specifically for the construction
+of this distribution warehouse. The distribution warehouse is a qualifying asset in terms of IAS
+23 Borrowing Costs. The loan bears interest at a market-related interest rate of 6,75% per
+annum, payable annually in arrears. The loan capital is repayable after ten years, on 30 June
+2023.
+The construction of the distribution warehouse took place on land owned by Imagination
+Beyond, acquired in 2011 for ZAR2 million. Until 1 July 2013 it was held for undetermined
+future use. The fair value of the land was ZAR3,1 million on 1 July 2013 and it had not changed
+by FY2023.
+All the relevant costs for the construction were financed from the HBCS Bank loan and the full
+loan amount was used for this construction. In addition, abnormal wastage costs resulting from
+construction delays amounting to ZAR200 000 were incurred and paid in December 2013.
+Following the completion of the construction of the distribution warehouse, ZAR80 000 was
+incurred and paid for an opening celebration of this new facility. Various relevant government
+officials and industry and business experts were invited to the celebration. These additional
+costs were financed from Imagination Beyond’s cash reserves and not from the funds obtained
+from HBCS Bank.
+On completion of the construction of the distribution warehouse in December 2013,
+Imagination Beyond estimated that the distribution warehouse would have a useful life of
+30 years and a residual value of ZAR2 million. The distribution warehouse was available for
+use as intended by management on 31 December 2013. However, it was only brought into
+use on 1 February 2014 when business had returned to normal after the summer holidays.
+Management of Imagination Beyond decided to sell the distribution warehouse, and all the
+requirements of IFRS 5 Non-current Assets Held for Sale and Discontinued Operations were
+met on 1 July 2023. The fair value less costs to sell of the distribution warehouse, including
+the value of land on 1 July 2023 and 31 December 2023, amounted to ZAR9 million and
+ZAR8 875 000 respectively. The distribution warehouse is expected to be sold by March 2024.
+Paper 3 5 (of 8) © SAICA 2024
+The following exchange rates were obtained from a reputable financial institution:
+Date GBP1 : ZAR
+1 July 2013 15,07
+31 December 2013 17,31
+31 December 2022 20,49
+30 June 2023 24,40
+Average rate 1 July 2013 – 31 December 2013 15,11
+Average rate 1 January 2014 – 31 December 2022 19,12
+Average rate 1 January 2023 – 30 June 2023 22,89
+6 Management fees and local shareholder contribution fee
+Future Afrika charges Imagination Beyond an annual management fee for technical and
+management services for the benefit of the entire Infinite Structures Group. Future Afrika is
+regarded as an expert in the Chinese building industry and provides the Infinite Structures
+Group with advice relating to environmentally friendly building materials and the preservation
+and restoration of historical buildings.
+Future Afrika charged Imagination Beyond an amount of Chinese yuan (CNY) 1 million on
+15 December 2023 for the FY2023 management fee. Imagination Beyond settled the invoice
+on 15 December 2023. It is reliably estimated that 60% of the management fee relates to
+advice provided for the benefit of Imagination Beyond, and the remaining 40% relates to New
+Heights. Imagination Beyond does not receive any reimbursement from New Heights in
+respect of the management fees. The Commissioner for the South African Revenue Service
+accepted that the fee charged by Future Afrika is at arm’s length.
+Xelerate charges Imagination Beyond an annual local shareholder contribution fee, which
+benefits Imagination Beyond exclusively. This fee, among others, improves Imagination
+Beyond’s black ownership score for B-BBEE certification purposes, thereby enabling
+Imagination Beyond to compete for government infrastructure development contracts.
+Xelerate charged Imagination Beyond ZAR3,5 million on 30 November 2023 for the FY2023
+local shareholder contribution fee. The invoice was settled on 7 December 2023.
+The following exchange rates were obtained from a reputable financial institution:
+Date CNY1 : ZAR
+15 December 2023 2,7422
+31 December 2023 2,7714
+Average rate 1 January 2023 – 31 December 2023 2,6850
+Paper 3 6 (of 8) © SAICA 2024
+7 Extract of the consolidated financial statements of the Infinite Structures Group
+The following is an extract of the consolidated statement of profit or loss and other
+comprehensive income for FY2023:
+ZAR
+Profit before tax 328 700 000
+Taxation (87 105 500)
+Current (95 670 550)
+Deferred 8 565 050
+Profit for the period 241 594 500
+The consolidated profit before tax of ZAR328,7 million was calculated correctly after taking
+into account the effects of all the above transactions and the following items:
+ZAR
+Profit on sale of land 220 000
+Dividends received, from non-related parties 600 000
+The following is an extract from the consolidated statement of financial position:
+FY2023 FY2022
+ZAR ZAR
+ASSETS
+Non-current assets
+Land 3 350 000 2 200 000
+Current liabilities
+Shareholders for dividends 1 995 000 1 210 000
+Income tax payable 11 120 000 8 750 000
+The working capital for the Infinite Structures group increased by ZAR176,45 million during
+FY2023.
+8 Dividends
+Dividends amounting to ZAR1 million and ZAR252 500 have been taken into account in
+computing the consolidated retained earnings and non-controlling interest respectively.
+9 Procedures followed by Imagination Beyond in the preparation of its
+consolidation reporting pack
+In order to prepare its consolidated financial statements, Infinite Structures has to obtain the
+financial results from each of the subsidiaries it controls. Each subsidiary is required to
+complete and submit a ‘consolidation reporting pack’ to Infinite Structures, which comprises
+the following:
+● Separate statement of financial position;
+● Separate statement of profit or loss and other comprehensive income;
+● Separate statement of changes in equity; and
+● Certain detailed notes / disclosures.
+Paper 3 7 (of 8) © SAICA 2024
+The consolidation reporting pack is prepared from the detailed trial balance of each subsidiary
+and each of the general ledger accounts in the trial balance is mapped to a specific financial
+statement line item. For example, all the general ledger accounts relating to revenue are
+aggregated and mapped to the revenue financial statement line item in the statement of profit
+or loss and other comprehensive income.
+The purpose of the consolidation reporting pack is to ensure that all subsidiaries are aligned
+with the format which is used to prepare the consolidated financial statements of Infinite
+Structures. Infinite Structures then aggregates the information in the consolidation reporting
+packs it receives from each subsidiary and processes the necessary consolidation journal
+entries in order to prepare its consolidated financial statements.
+Process followed by the management of Imagination Beyond for the preparation of the
+consolidation reporting pack that is sent to Infinite Structures:
+1 The financial manager of the subsidiary exports the trial balance into Microsoft Excel
+from the accounting system and then prints out the trial balance and reviews the financial
+information. He/she then manually captures (inputs) the information into the
+consolidation reporting pack.
+2 The financial manager maps each general ledger account in the trial balance to the
+consolidation reporting pack based on prior-year mapping.
+3 Because they need to be eliminated, all intercompany receivables and payables as well
+as the total of various types of transactions with other subsidiaries in the Infinite
+Structures Group are identified and listed in the detailed note relating to intercompany
+balances and transactions.
+3.1 The note must include the name of the counterparty subsidiary, balance
+outstanding and total transaction values.
+3.2 The financial manager confirms the accuracy of the amounts of transactions and
+outstanding balances with such subsidiaries by means of telephonic
+conversations.
+3.3 Where there is a difference, the financial manager accepts that his/her amount is
+correct and leaves it at that.
+3.4 The financial manager then authorises the intercompany outstanding balances
+and transaction values (as confirmed) to be reversed in the consolidation reporting
+pack.
+4 Once completed, the consolidation reporting pack is sent via email to the group financial
+manager and the chief financial officer of Infinite Structures, to ensure that they both
+receive the financial information timeously.
+5 The packs only include the following validation checks:
+5.1 Verification that the numeric data adheres to specific formats and that any data
+entries that do not meet the specific format criteria (e.g., brackets for negative
+amounts and decimal places) are flagged.
+5.2 Automatic population of the total from the statement of profit or loss and other
+comprehensive income into the statement of financial position and the statement
+of changes in equity. The statement of changes in equity totals are automatically
+used to populate the statement of financial position. All sub-totals and totals in the
+consolidation reporting pack are automatically cast.
+10 Additional information
+● The only investments that were made during the year were the investments in
+Imagination Beyond and Letsopa.
+● For all financial years under consideration, assume a normal tax rate of 27%.
+Paper 3 8 (of 8) © SAICA 2024
+● Investment property is measured using the fair value model in accordance with
+IAS 40 Investment Property.
+● All property, plant and equipment except for land is measured using the cost model in
+accordance with IAS 16 Property, Plant and Equipment. Land is measured using the
+revaluation model.
+● Where applicable, assume an after-tax discount rate of 8,76% per annum (compounded
+annually).
+● It is the policy of Infinite Structures to measure the non-controlling interest at the
+proportionate share of the acquiree’s identifiable net assets at the acquisition date.
+● It is the policy of Future Afrika to present cash flows related to dividends and interest in
+operating activities.
+● Ignore any effects of the interest income on the GBP500 000 loan.
+● All payments due were made on dates stipulated in the contract or agreement.
+● All transactions and amounts are material.
+Paper 3 part I required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JANUARY 2024
+PROFESSIONAL PAPER 3
+This paper consists of two parts. Answer each part in a separate answer book.
+PAPER 3 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Prepare, using the indirect method, an extract from the consolidated
+statement of cash flows of the Infinite Structures Group for FY2023
+in accordance with IAS 7 Statement of Cash Flows, in so far as the
+given information allows.
+• Do not prepare notes to the statement of cash flows.
+• Round all amounts to the nearest rand.
+• Do not provide comparative figures.
+• Ignore the reconciliation at the bottom of the statement that
+shows the opening balance and the closing balance of cash
+and cash equivalents as well as the net increase (decrease) in
+cash and cash equivalents.
+Communication skills – presentation; layout and structure
+48
+2 50
+Total for part I 50
+Paper 3 part II required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JANUARY 2024
+PROFESSIONAL PAPER 3
+This paper consists of two parts. Answer each part in a separate answer book.
+PAPER 3 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(b) Discuss, with reference to the Imagination Beyond purchase price
+allocation, whether AE has adequately performed its duties in
+accordance with ISA 620 Using the Work of an Auditor’s Expert with
+regard to the work carried out by Stephen.
+For each matter that has not been performed adequately,
+recommend one procedure to be performed by AE to obtain sufficient
+appropriate audit evidence with regard to Stephen and the work
+carried out by him. 8 8
+(c) Discuss, with reference to the information in section 3, whether
+John’s response on the audit of the Infinite Structures’ consolidation
+reporting pack is appropriate with respect to Letsopa.
+• Do not provide any details that should be included in the
+communication with the component auditor.
+6
+6
+(d) Compile, with reference to section 9, a report to the management of
+Imagination Beyond in which you –
+• discuss the weaknesses; and
+• provide recommendations
+with regard to the preparation of the consolidation reporting pack and
+reporting process followed by Imagination Beyond to Infinite
+Structures.
+Communication skills – appropriate style; layout and structure
+14
+2 16
+(e) Discuss, supported by calculations, the normal tax consequences for
+Imagination Beyond arising from the loan received from HBCS Bank,
+and the interest paid to HBCS Bank for the year of assessment ended
+31 December 2023.
+• Ignore withholding tax.
+• Ignore the provisions of the double tax agreements between
+South Africa and China and South Africa and the United Kingdom.
+Communication skills – logical argument
+11
+1 12
+(f) Discuss, with reference to relevant case law, whether Imagination
+Beyond may deduct the management fee and local shareholder
+contribution fee in terms of section 11(a) of the Income Tax Act for
+the year of assessment ended 31 December 2023. 8 8
+Total for part II 50
+TOTAL FOR PAPER 3 100
+Paper 3 part II required 2 (of 1) © SAICA 2024

@@ -1,0 +1,305 @@
+Source: SAICA ITC January 2024 — Paper 2 Question 2 suggested solution (Makiti).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 question 2 1 © SAICA 2024
+Part (a) Discuss the income tax implications of the following legal costs:
+(i) Whether the legal costs paid by Makiti to Le Roux Attorneys for the
+drafting of the restraint of trade agreement may be deducted by
+Makiti. Assume the current tax legislation applies for all relevant
+years of assessment.
+Assume the current tax legislation applies for all relevant years of
+assessment.
+Marks
+Special deductions take precedence over the general deduction (section 11(a) in
+terms of s23B. The R13 000 incurred by Makiti to prepare the restraint of trade
+agreement (RoT), Makiti would not be allowed a deduction under s11(c) as the
+drafting of the RoT agreement is not incurred ‘in respect of any claim, dispute or
+action at law’. 1
+Therefore, the general deduction in terms of section 11(a) of the Income Tax
+Act must be considered. 1
+While the RoT expense was incurred for purposes of trade, no close connection
+/ no necessary concomitant exists between the cost to draft a RoT agreement 1P
+and Makiti’s income-earning business activities to operate as an auditing and
+advisory company. (PE Electric Tramway case) 1P
+Essentially the RoT agreement will protect Makiti’s income-earning structure
+as it will ensure that the technical know-how and possibility of
+competition/competitors. (New State Areas case). 1P
+Therefore, the R13 000 legal costs would also not qualify for a deduction under
+s11(a) because it was not incurred in the production of income and is capital in
+nature. 1P
+Available 6
+Maximum for part (a)(i) 4
+Part (a) Discuss the income tax implications of the following legal costs:
+(ii) Whether Makiti may deduct the legal costs relating to the
+sexual harassment labour court case; and
+• Assume the current tax legislation applies for all relevant years of
+assessment.
+Marks
+Legal fees paid by Makiti
+Makiti has paid/incurred R39 000 in legal fees to defend against a claim of
+damages the CCMA. This action falls under the provision of s11(c). 1
+The legal expenses of R39 000 were actually incurred in respect of a claim that
+arose during an out of town audit in the course of, or during the ordinary
+operations undertaken by Makiti as an employer. 1
+The R39 000 is not of a capital nature because it was incurred in relation to a
+claim more closely related to Makiti’s income-producing operations, not its
+income-producing structure, due to the prevalence of labour-related issues in any
+work environment. 1P
+In terms of proviso (ii) to section 11(c) the nature of the legal cost must be
+investigated. As an employer, Makiti has an obligation to ensure the safety and
+well-being of its employees, as well as to have a statutory obligation to maintain
+a discrimination-free workplace. The expenses are thus incurred for purposes of
+trade and in the production of income and closely linked to the business
+operations. 1P
+In conclusion, the legal costs of R39 000 would be deductible under s11(c) as
+they were incurred to defend a claim in a court of law arising in the course of or
+by reason of the ordinary operations undertaken by Makiti in the carrying on of the
+audit and consulting trade. 1P
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 question 2 2 © SAICA 2024
+Damages and legal fees of Sarah
+The R800 000 for damages and R37 500 for Sarah’s legal costs are both
+expenses that resulted from the claim. 1
+Both expenses are part of the income-producing structure and not capital in
+nature, thus may qualify for a deduction under s11(a). 1P
+The resultant expenses (damages and legal cost) would be deductible under
+s11(a). 1P
+Available 8
+Maximum for part (a)(ii) 5
+Part (a) Discuss the income tax implications of the following legal costs:
+(iii) Whether Sarah may deduct her legal costs relating to the
+sexual harassment case.
+• Assume the current tax legislation applies for all relevant
+years of assessment.
+Marks
+Sarah is a non-commission earning employee, earning remuneration, therefore
+the deductibility of any expenses she incurs is subject to the limitation in s23(m),
+1
+Section 23(m) limits expenses to be deducted by employees except for certain
+specified deduction that includes the deduction of legal expenses under s11(c).
+1
+Sarah incurred the legal costs to protect her constitutional rights to human dignity
+and equality. Such rights are intrinsically attached to her ability to work
+productively, that is, her income earning structure, and therefore the legal costs
+to protect these rights would be capital in nature. – see proviso (i) to section
+11(c). 1
+As the compensation amount received by Sarah would not constitute income
+as required by proviso (iii) of s11(c), 1P
+Sarah would not qualify for the s11(c) deduction in relation to the R37 500 legal
+costs – proviso (iii). 1P
+in terms of section 102 of the Tax Administration Act the burden to proof that
+an amount is deductible rests upon the taxpayer. 1
+Available 6
+Maximum for part (a)(iii) 4
+Communication skills – logical argument 1
+Total for part (a) 14
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 question 2 3 © SAICA 2024
+Part (b) Calculate the employees’ tax that Makiti should have withheld from
+the severance package paid to Sarah in March 2023.
+• Provide a brief reason for your treatment of each item.
+• Where applicable, assume the current tax legislation and tax
+rates apply for all relevant years of assessment.
+Marks
+R
+Salary – specifically included in her gross income in terms of para. (c)
+(or d)of the definition, and in the definition of ‘remuneration’ in para. 1
+of the Fourth Schedule, in March 2023 100 000 1
+Entertainment allowance – included in taxable income as an
+allowance under section 8(1) and in the definition of ‘remuneration’ in
+para. 1 of the Fourth Schedule in March 2023 5 000 1
+Leave pay is an amount paid in terms of her contract of employment,
+which is therefore included in her gross income under para. (c), (d) or
+(f) of the definition in s1, and in the definition of ‘remuneration’ in para.
+1 of the Fourth Schedule. 23 000 1
+The leave pay is 'variable remuneration' as defined in s7B read with
+par 2(1B) of the Fourth Schedule, deemed to accrue when it is paid 1
+RoT payment – included in gross income under para. (cB) 700 000 1
+The employees' tax for March 2023 is determined as follows:
+Salary 100 000
+Entertainment allowance 5 000
+Total remuneration, excluding annual payment 105 000 1P
+Plus: Annual payment (leave pay + RoT) 723 000 1P
+Total remuneration including annual payment 828 000
+Annual equivalent (AE) of total remuneration excluding annual payment
+= R105 000 x 12 1 260 000 1P
+Normal tax liability on AE of total remuneration excluding annual
+payment: 2023 tables
+Schedule tax payable on R1 260 000
+– On R817 600 239 452
+– On R442 400 (R1 260 000 – 817 600) at 41% 181 384
+Normal tax payable (s5) 420 836 1P
+Less: Primary rebate (s6): under 65 (16 425) 1
+Normal tax liability on AE of total remuneration excluding annual
+payment 404 411
+PAYE for 1 month on remuneration excluding annual payment =
+R404 411 x 1/12 33 701 1P
+PAYE on annual payment (AE including the annual payment):
+Schedule tax payable on R1 983 000 (R1 260 000 + R723 000) 1
+- On R1 731 600 = R614 192 614 192
+- On R251 400 (R1 983 000 - R1 731 600) x 45% = R113 130 113 130
+Normal tax payable (s5) 727 322 1P
+Less: Primary rebate (s6): under 65 (16 425) 0.5
+Normal tax liability on AE of total remuneration including annual
+payment
+710 897
+PAYE withheld in March 2023 (R710 897 – R404 411 + R33 701)) 340 187 0.5P
+Available 14
+Maximum 13
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 question 2 4 © SAICA 2024
+Communication skills – presentation 1
+Total for part (b) 14
+Part (c) Discuss, with supporting calculations, the employees’ tax that
+Makiti should have withheld from the CCMA arbitration award paid
+to Sarah in February 2024
+• Where applicable, assume the current tax legislation and tax
+rates apply for all relevant years of assessment.
+Marks
+1. Employees’ tax on CCMA arbitration award: back pay 1 155 000
+2. The back pay is included in Sarah's gross income in terms of para.
+(c) of the definition in s1 as it is compensation for remuneration
+lost (WJ Fourie Beleggings v C:SARS) 1
+3. It is not a payment for termination or variation of employment
+and therefore does not come into para. (d) of the definition of gross
+income in s 1, and neither a severance benefit as defined. 1
+4. The date on which Sarah becomes unconditionally entitled to the
+amount is the date of the award: 8 February 2024. The payment is
+due and payable on 29 February 2024. 1
+5. The back pay therefore accrues to Sarah on 8 February 2024 and
+will be taxed in the 2024 tax year under the normal accrual rule. 1
+6. The back pay is taxed according to the normal tax tables and not
+the severance benefit table. 1
+7. As the back pay is ‘remuneration’ as defined in para. 1 of the Fourth
+Schedule, the employer is obliged to withhold the correct amount
+of employees' tax from the award 1
+8. The employees’ tax payable on the back pay for February 2024
+would be determined as follows:
+9. Total remuneration year to date (March remuneration including
+leave pay – as determined above) 828 000 0.5C/F
+10. February remuneration: annual payment (back pay) 1 155 000 0.5
+11. Total remuneration including annual payment 1 983 000
+12. Schedule tax payable on R1 983 000
+13. – On R1 731 600 614 192
+14. – On R251 500 (R1 983 000 – 1 731 600) at 45% 113 130
+15. Normal tax payable (s5) 727 322 1P
+16. Less: Primary rebate (s6): under 65 (16 425) 1
+17. Normal tax liability on R1 983 000 710 897
+18. Less: PAYE withheld in March 2023 (340 187) 1C/F
+19. PAYE to be withheld from the back pay in February 2024 370 710
+Available 10
+Maximum 10
+Total for part (c) 10
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 question 2 5 © SAICA 2024
+Part (d) Discuss whether Lionel has any professional obligations relating
+to the information that he discovered with regard to the employees’
+tax situation.
+Marks
+1. Code of Professional Conduct (CPC)
+2. From the perspective of a CA(SA) also being the chairperson of the board and
+a director at the company, Lionel is a senior professional accountant in
+business (para. 120.10 A2, read with CoPC 260.11) and is required to comply
+with SAICA's CoPC (Part 1 & 2). 1
+3. Lionel must identify the threat to the fundamental principles present:
+Lionel will have a self-interest threat (being a director of the company) and an
+intimidation threat to (CoPC260.2) –
+o professional behaviour because of the failure of the employer to
+withhold PAYE is non-compliance with the Income Tax Act, para. 2
+(breach of the CoPC) and non-compliance will discredit the profession; and
+o integrity because he now must act and respond appropriately and
+honestly from here on, based on the discovery of the non-compliance.
+Note to markers: the ½ marks for threats and/or fundamental principles will only
+be awarded where the threats and/or the fundamental principles are applied.
+0.5
+0.5
+0.5
+1
+0.5
+1
+4. Lionel must evaluate the impact of the threat.
+The failure to withhold PAYE presents a contravention of the Income Tax Act
+which is non-compliance with the relevant laws and is, therefore significant as:
+• This will also result in an undisclosed liability for the PAYE owing to SARS
+and additional liabilities in the form of penalties and interest which could
+be a significant amount (CoPC 260.5); and
+• Possible criminal prosecution if the matter is not properly resolved with
+SARS.
+1
+1
+5. Therefore, it is concluded that the threat is not at an acceptable level. 1
+6. Overall responsibility in complying with the CoPC
+In all his actions Lionel is required to exercise professional judgement and care
+in determining his actions and reactions and rather refer important decisions
+to the board of directors to address personal bias. 1
+7. NOCLAR
+8. Lionel must address the threat by taking appropriate action in terms of CoPC 260.
+Obtaining an understanding (CoPC 260.12)
+Lionel must obtain an understanding of the matter, as it relates to the
+circumstances that led to the employees’ tax not being withheld. If the Lionel is
+not up to date to the newest tax legislation and the course of action that must
+be followed, Lionel must consider if he needs external advice on the tax legislation
+and the impact thereof in order to respond appropriately. 1
+9. Addressing the NOCLAR (CoPC 260)
+CoPC 260.14: Lionel should then bring the non-compliance to the attention of the
+board (as he is a senior professional accountant and director) and to the person
+responsible for PAYE compliance. 1
+10. CoPC 260.14.16: Lionel should assess the appropriateness of the response to
+the NOCLAR. 1
+11. CoPC 260.17: Lionel should determine whether further action is needed such as
+reporting the Issue to the Commissioner of Revenue or SAICA. 1
+12. CoPC 260.18 A2: Lionel could consider informing the auditor or resigning from
+the employing organisation, or as this would most probably also constitute a
+reportable irregularity, Lionel needs to ensure that Makiti will discuss this with 1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 question 2 6 © SAICA 2024
+its external auditor and submit proof that it is not ongoing and ensure that it is
+reported to the shareholders in the annual financial statements.
+13. CoPC 260.19: Lionel might also seek advice on the matter. As this is an auditing
+and consulting firm, Lionel could discuss the matter with the tax experts
+employed by the firm or obtain legal advice from a tax expert. 1
+14. Determining whether further action is needed (CoPC 260.16) and further
+disclosures
+• Lionel should obtain proof that the matter has been corrected and the
+necessary PAYE have been recovered and paid over to SARS and the
+necessary documentation completed and the penalties and interest paid
+over to SARS.
+• In completion of the updated documentation and correcting the mistake on
+the EMP201, Lionel needs to ensure that the company would have
+communicated the mistake to SARS.
+1
+1
+15. Documentation (CoPC 260.23)
+Lionel should document the substance of the issue, the details of any
+discussions, the decisions made and the rationale for those decisions. 1
+16. Director’s responsibilities
+17. As chairperson and a member of the board (director), Lionel has a fiduciary duty
+to act in the best interest of the company in terms of s76 of the Companies Act.
+1
+18. This matter indicates a significant control weakness whereby the employee’ tax
+of an abnormal payment to an employee was not reviewed by someone with the
+necessary expertise. Preventative controls to ensure this matter does not occur
+again should be implemented.
+1
+19. As Makiti is an auditing and advisory company, it might result in major reputational
+damage should this matter become known to the public. The chairperson should,
+therefore, launch an investigation to determine similar situations where laws
+and regulations were not complied with. 1
+20. Further action with regard to the CFO
+It appears that someone who is employed at the company (and who is a CA(SA))
+does not have the necessary professional competence and due care for the
+position and title he holds. Lionel should recommend through HR policies and
+performance evaluations that the CFO obtain the necessary training to
+complete his work. 1
+Available 22
+Maximum 11
+Communication skills – appropriate style 1
+Total for part (d) 12
+TOTAL FOR QUESTION 2 50

@@ -1,0 +1,203 @@
+Source: SAICA ITC June 2024 — Paper 4 Question 2 (FutureWise).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Paper 4 question 2 6 (of 9) © SAICA 2024
+QUESTION 2 50 marks
+Ignore value-added tax
+1 Background
+The FutureWyze Group is a group of companies whose ethos is ‘science for social good’. The
+group was founded in 2015 by scientific researcher and social entrepreneur, Dr Tumelo
+Makgange, to support grassroots innovation and digitisation in townships and rural areas
+across South Africa. Her vision was to find local innovations that could be commercialised and
+sold across the African continent, while providing the youth with access to opportunities
+created by the Fourth Industrial Revolution (4IR). The group prides itself on its ethical decision
+making, responsible social footprint, and various donations to social upliftment programmes.
+The group’s head office is in Johannesburg. All companies in the group have a 31 March year
+end.
+2 Overview of group companies
+2.1 FutureWyze (Pty) Ltd (‘FutureWyze’)
+FutureWyze manufactures, services and sells scientific labs known as ‘innovation stations’.
+Innovation stations are solar-powered digital labs made from shipping containers. The labs
+are designed to promote scientific research and technological innovation. The containers are
+fitted with solar panels, are wi-fi enabled and contain high-value equipment. The fitted
+equipment includes 3D printers and digital animation equipment.
+FutureWyze manufactures and services the innovation stations. It buys and refurbishes
+redundant shipping containers, uses recyclable materials and supports the use of renewable
+energy as evidenced by fitted solar panels on its innovation stations. FutureWyze’s average
+lead time varies from 2–10 weeks, depending on the size of the order.
+2.2 TransportWyze (Pty) Ltd (‘TransportWyze’)
+TransportWyze, a wholly-owned subsidiary of FutureWyze, is a transport and logistics
+company that specialises in transporting shipping containers, portable accommodation and
+portable cabins. TransportWyze transports all of FutureWyze’s shipping containers and
+distributes the innovation stations across the country.
+2.3 EnerWyze (Pty) Ltd (‘EnerWyze’)
+FutureWyze owns an 80% interest in EnerWyze, a solar-panel manufacturing company, which
+gives FutureWyze control over the relevant activities of EnerWyze. This shareholding was
+acquired in a single transaction on 1 April 2020 for R265 million when the net asset value of
+EnerWyze amounted to R320 million. On acquisition, all the assets and liabilities of EnerWyze
+were considered fairly valued. This subsidiary is viewed as a single cash-generating unit.
+Since acquisition, FutureWyze has purchased all its solar panels from EnerWyze at its retail
+selling price, less a 12,5% discount. EnerWyze applies a standard mark-up of 20% on its cost
+price.
+Paper 4 question 2 7 (of 9) © SAICA 2024
+2.4 FutureWyze’s inventory balance
+A summary of the solar panels inventory account of FutureWyze is provided below. This
+provides the value of the solar panels transferred (inventory materials) into manufacturing
+(work-in-progress and finished goods innovation stations) during the financial year ended
+31 March 2024 (FY2024). FutureWyze accounts for all its inventory, including parts and
+materials, using the weighted average valuation method, and the periodic inventory counting
+method.
+R
+Opening inventory – 1 April 2023 6 864 000
+Purchases from EnerWyze during the year 132 000 000
+Closing inventory – 31 March 2024 (10 560 000)
+Transfers into manufacturing of innovation stations 128 304 000
+3 Contract with Vuka Mzansi
+During FY2024, Vuka Mzansi, a newly established and registered non-profit organisation
+based in the Eastern Cape, approached FutureWyze to supply them with 250 customised
+innovation stations with Vuka Mzansi branding. The chief executive officer of Vuka Mzansi, Mr
+Sisa Ntlabo, is a longstanding friend of Tumelo. They share a passion for social upliftment and
+have worked together on many successful projects in the past. Vuka Mzansi is sponsored by
+a large multinational corporation in the United States of America (USA) and focuses on youth
+development and empowerment.
+Just before supplying Vuka Mzansi with a quote for the 250 customised innovation stations,
+FutureWyze was approached by an unrelated company, The Container Company (Pty) Ltd
+(‘TCC’), which sells redundant shipping containers. TCC offered 300 shipping containers to
+FutureWyze at a price that is almost 60% lower than what FutureWyze would normally pay for
+shipping containers from its usual, approved suppliers.
+The deal seemed too good to be true, so Ms Louisa Melroux, FutureWyze’s inventory manager
+(not a director), investigated the deal to avoid being scammed. TCC claimed that it was being
+liquidated and was selling all its assets for less than carrying values to pay back creditors.
+Louisa was unable to find any evidence of previous trading activities or a registered address
+of the company or any notice that the company was being liquidated. The company explained
+that it had sold all its trading premises and would supply a temporary address, where the
+shipping containers were kept, once FutureWyze agreed to view them. It further asked
+FutureWyze to pay in cash upon collection of the shipping containers and to remove them
+immediately.
+However, Louisa remembered reading an article about a syndicate operating in Johannesburg
+that had pulled off the theft of shipping containers, causing shipping container companies to
+lose millions. In the article, the police warned the public to be cautious of companies selling
+containers at low prices as anyone that purchases goods that were later found to be stolen
+could be arrested for possession of stolen goods. The police further requested that all
+suspicious transactions should be reported.
+Louisa was conflicted about whether she should make the purchase, as this was a very good
+deal and would help FutureWyze to increase profits on these innovation stations. It would also
+enable FutureWyze to help Vuka Mzansi by offering them a lower price on their order.
+After careful consideration she decided that, since the majority would benefit (FutureWyze,
+Vuka Mzansi and the youth) with very little negative impact on anyone, she could not, in good
+conscience, turn down the deal. She further reasoned that she had done her part in
+Paper 4 question 2 8 (of 9) © SAICA 2024
+investigating the matter to make sure that the supplier existed and felt that its reason for
+offering liquidation prices seemed valid. Therefore, there was no reason to suspect them of
+wrongdoing. Louisa met with the suppliers, purchased the shipping containers and
+TransportWyze collected the shipping containers immediately.
+FutureWyze then entered into a contract with Vuka Mzansi to supply them with the 250
+customised innovation stations and a three-year service contract for each innovation station,
+at a total contract price of R25 million. The service contracts are sold separately for R36 000
+per three-year service contract and the branded innovation stations typically retail for
+R110 000 each. Vuka Mzansi paid a 50% deposit on 10 December 2023, following the signing
+of the contract by the designated representatives from both parties. The balance was payable
+on delivery of the innovation stations to Vuka Mzansi.
+During February 2023, FutureWyze was informed that some of the sites, mostly in remote
+rural areas, were not ready to receive the innovation stations. Accordingly, Vuka Mzansi
+requested that FutureWyze keep 40 innovation stations at no charge until the sites were ready.
+Ordinarily, FutureWyze would have charged a total of R320 000 for this storage arrangement,
+but it agreed to do so at no cost. The site-readiness process was expected to take two months
+(March and April 2024). Vuka Mzansi had all 250 customised and branded innovation stations
+inspected for quality compliance and confirmed that they were all in good working condition
+and ready for physical transfer to the customer on 29 February 2024. 210 innovation stations
+were delivered to Vuka Mzansi on this date while the remaining 40 innovation stations were
+placed in FutureWyze’s storage area and clearly marked as belonging to Vuka Mzansi.
+FutureWyze did not service any innovation stations during FY2024.
+4 Vuka Mzansi sustainability and financing model
+In a conversation with Tumelo over lunch, Sisa raised some concerns regarding the
+sponsorship that his organisation received from the USA corporation. Sisa asked whether
+Tumelo could reach out to her networks and organise a think-tank with him to come up with
+alternative models to ensure that Vuka Mzansi remained a financially viable and sustainable
+entity if Vuka Mzansi lost its USA sponsorship. He was considering aspects such as how to
+obtain financing or generate income from the solar-powered innovation stations in the Eastern
+Cape.
+He hoped that the brainstorming session would also highlight significant challenges that Vuka
+Mzansi would face while operating in the innovation station industry in the Eastern Cape and
+that Tumelo would come up with ideas to improve Vuka Mzansi’s environmental impact,
+particularly in rural areas.
+5 Civil unrest
+In January 2024, there was a series of unprecedented riots across South Africa. In one
+incident of vandalism, rioters set fire to EnerWyze’s manufacturing plant and some of the
+assets in the plant, excluding inventory, were damaged. The company continued to operate,
+despite the significant losses and disruptions.
+Paper 4 question 2 9 (of 9) © SAICA 2024
+The following is a summary of the net assets owned by EnerWyze on 31 January 2024:
+Carrying amount
+on 31 January
+20241
+R’000
+Inventories 66 500
+Trade receivables 6 000
+Cash and cash equivalents 8 000
+Building leased out under an operating lease 185 000
+Solar-panel manufacturing plant 110 000
+Delivery trucks and motor vehicles 97 500
+Trade payables and other liabilities (107 000)
+Total 366 000
+1 These amounts have not yet been adjusted for the impact of the riots.
+On 31 January 2024 the recoverable amount of EnerWyze was R350 million. The inventory
+carrying amount on 31 January 2024 is measured at the lower of cost or net realisable value.
+6 Additional information
+● TransportWyze’s related-party disclosure note reflected transport income of
+R11,2 million (2023: R9,8 million).
+● FutureWyze measures all its investment property at fair value in terms of IAS 40
+Investment Property and all its property, plant and equipment using the cost model in
+terms of IAS 16 Property, Plant and Equipment.
+● FutureWyze measures non-controlling interests initially at a proportionate share of the
+net identifiable assets.
+● FutureWyze measures progress towards complete satisfaction of performance
+obligations as follows:
+o Service contracts: Costs incurred over the total expected costs.
+o Storage services: Time elapsed over the total expected time.
+● A 27% corporate income tax rate and 80% capital gains inclusion rate applied to all the
+periods under review.
+Paper 4 question 2 required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JUNE 2024
+PROFESSIONAL PAPER 4
+This paper consists of two questions.
+Answer each question in a separate answer book.
+PAPER 4 QUESTION 2 – REQUIRED
+Marks
+Sub-
+total Total
+(a) Prepare the pro forma consolidation journal entries to account for all
+intragroup transactions in the consolidated financial statements of the
+FutureWyze Group for FY2024.
+Communication skills – presentation
+9
+1 10
+(b) Discuss whether you agree with Louisa’s decision to buy the shipping
+containers from TCC, with reference to the good for self and good for
+others approach and the utilitarian ethical theory.
+Communication skills – logical argument
+13
+1 14
+(c) Calculate the revenue that FutureWyze should recognise in accordance
+with IFRS 15 Revenue from Contracts with Customers, from the
+contract with Vuka Mzansi for FY2024. 7 7
+(d) Briefly discuss matters that should be considered during the
+brainstorming session that Sisa asked Tumelo to organise regarding –
+• the fact that Vuka Mzansi can obtain financing or generate income
+from the solar-powered innovation stations in the Eastern Cape;
+• the significant challenges that Vuka Mzansi will face while
+operating innovation stations in the Eastern Cape; and
+• the environmental impact of the innovation stations, particularly in
+rural areas.
+Communication skills – clarity of expression
+9
+1 10
+(e) Prepare the pro forma consolidation journal entries to account for the
+effects of the civil unrest in the consolidated financial statements of the
+FutureWyze Group for FY2024.
+• Ignore taxation.
+• Pro forma journal entries to account for non-controlling interest
+are not required.
+9
+9
+Total for the question 50

@@ -1,0 +1,533 @@
+Source: SAICA IAC June 2025 — Paper 2 question (SSC).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC June 2025 1 (of 11) © SAICA 2025
+Paper 2
+PAPER 2 120 marks
+Ignore value-added tax (VAT).
+1 Background
+The Springbucks Snacks Company Ltd (‘SSC’) is an unlisted company that was founded in
+1994. The company manufactures and markets a variety of beverages and snacks and has
+grown into a leading South African beverage and convenience food company with a large
+portfolio of popular brands. The company also exports its products to the rest of Africa.
+2 Digital strategy
+The management of SSC developed a digital strategy to accelerate its growth. The aim is to
+digitally transform, with effect from the financial year ended 31 December 2024 (FY2024), the
+company’s decision making; marketing and communications; manufacturing processes; and
+accounting and reporting functions. To this end, the company has collaborated with the School
+for Human-Centred Artificial Intelligence (‘SHAI’). SHAI is an academic institution focused on
+the development and application of artificial intelligence (AI) technologies. SHAI has proposed
+the following initiatives:
+• Automating the company’s data and digital infrastructure to access real-time data as it
+relates to consumer preferences.
+• Using robots (‘bots’) to scan its biscuits as they go through the baking process to ensure
+product quality.
+• Developing an AI tool that analyses social media to assess how SSC is perceived as well
+as what is being discussed on social media platforms.
+• Developing an AI tool to analyse consumer eating trends by observing online recipes and
+cooking shows.
+• Using robotic process automation (RPA)1 to initially perform repetitive tasks and then
+more complex and non-routine tasks, within the company’s accounting and compliance
+functions.
+According to SHAI, SSC would be able to decrease its current staff headcount by as much as
+50% if it implemented these proposals. The cost saving would justify the investment required.
+SHAI stated that it has the capacity and competencies to provide and implement the digital
+solutions for SSC and, given their long-standing relationship, its pricing for these services will
+be highly competitive.
+3 Robotic process automation
+The management of SSC believed that RPA could be used to make the accounting function
+more efficient if repetitive but time-consuming tasks are streamlined.
+After negotiations, SSC agreed to first test the RPA functionality on less routine and more
+complex transactions relating to financial reporting and taxation, as the processing of these
+transactions are generally ring-fenced and performed by a smaller team. If this was successful,
+it would work with SHAI on the full implementation of its proposals. SSC accordingly acquired
+1 RPA is a form of business process automation that allows anyone to define a set of instructions that a
+bot has to perform.
+IAC June 2025 2 (of 11) © SAICA 2025
+Paper 2
+a bot for R1,5 million on 1 January 2024. The bot was automated and integrated into SSC’s
+system at a total cost of R350 000.
+4 Tax management
+The bot extracted relevant data from SSC’s separate company trial balance and fixed asset
+register, both as at 31 December 2024. It then converted the data to a statement of profit and
+loss and a tax return workbook that will be used for SSC’s ITR 14 income tax return.
+While the bot allows for a deep level of automation of processes, a review of the tax calculations
+and the tax return was necessary to ensure that the bot had processed the data and information
+in accordance with tax legislation, before being submitted to the South African Revenue
+Service (SARS). SSC’s finance team has started its review and added commentary where
+necessary. The finance team has confirmed that the profit before tax was correctly calculated
+in terms of IFRS® Accounting Standards (IFRS), except where the team added supplementary
+notes.
+Tax return workbook / ITR 14 income tax return – 31/12/2024
+Notes R'000
+Profit before tax 29 310
+Amounts not credited to the income statement
+Credit adjustments (increase net profit / decrease net loss)
+Amounts received in advance 4.1 5 750
+Control total 35 060
+Debit adjustments (decrease net profit / increase net loss)
+Non-taxable amounts credited to the income statement
+Exempt local dividends 4.2 (300)
+Exempt foreign dividends 4.2 (960)
+Control total 33 800
+Credit adjustments (increase net profit / decrease net loss)
+Legal fees capital expenditure and / or losses 4.1 100
+Cost of sales 4.3 –
+Provisions not deductible for the current year 4.5.1 3 300
+Expenses not actually incurred in the production of income, no
+s11(a) 4.5.2 1 000
+Depreciation and amortisation according to financial statements 4.6 13 000
+Accounting loss on disposal of fixed and / or other assets 4.6.1 845
+Control total 52 045
+Debit adjustments (decrease net profit / increase net loss)
+Other donations 4.3.4 (600)
+Control total 51 445
+Debit adjustments (decrease net profit / increase net loss)
+Special allowances not claimed in the income statement
+Prepaid expenditure not limited 4.4 (900)
+Commercial building deduction 4.6.1 (412)
+Wear and tear allowance – s11(e) 4.6.1 (200)
+Manufacturers deduction – s12C 4.6.1 (770)
+Control total (carried forward) 49 163
+IAC June 2025 3 (of 11) © SAICA 2025
+Paper 2
+Control total (brought forward) 49 163
+Allowances / deductions granted in previous years of
+assessment and now reversed
+Recoupment of wear and tear 4.6.1(c) –
+Control total 49 163
+Credit adjustments (increase net profit / decrease net loss)
+Taxable capital gains / losses 4.6.1(c) –
+Control total 49 163
+Debit adjustments (decrease net profit / increase net loss)
+S18A donations 4.3.3 (5 000)
+TAXABLE INCOME 44 163
+Notes
+4.1 Amounts received in advance
+On 1 November 2024, SSC was approached by a South African retailer, Onze (Pty) Ltd (‘Onze’),
+to manufacture a limited-edition private label brand beverage named ‘Onze Revived’ for
+exclusive sale in Onze’s retail stores in March 2025. SSC charged Onze a total selling price of
+R5,75 million. Onze paid R3,5 million of the selling price on 31 December 2024 and the balance
+on the invoice date of 28 February 2025, after the Onze Revived units had been delivered to
+Onze.
+In December 2024, SSC incurred costs of R100 000 in registering the Onze Revived trademark,
+which is owned by SSC. SSC plans to manufacture the Onze Revived units in February 2025
+and expects to incur R2,5 million in production costs to manufacture Onze Revived.
+4.2 Exempt dividends
+SSC holds equity shares and voting rights in a number of companies. The following gross cash
+distributions made to SSC, correctly converted to rand where applicable, are included in
+revenue:
+Company name Country of
+residence
+Equity shares
+and voting
+rights
+Gross
+dividend
+R’000
+Lyon Sweet Manufacturers PLC
+(‘LSM’)# United Kingdom 5% 720
+Protea Energy Drinks Ltd (‘PED’) South Africa 100% 300
+Reft Valley PLC (‘RV’)# Kenya 25%* 240
+# These companies are not controlled foreign companies.
+* No other shareholder holds a majority of the equity shares or voting rights in RV.
+IAC June 2025 4 (of 11) © SAICA 2025
+Paper 2
+4.3 Cost of sales and inventory
+An inventory management bot calculated the cost of sales for FY2024, as included in profit
+before tax, as follows:
+Notes R’000
+Balance: 1 January 2024 9 900
+Capitalised overheads and salaries* 10 500
+Raw materials purchased 4.3.1 75 000
+Balance: 31 December 2024 4.3.2 –
+4.3.4 (13 500)
+Cost of sales 81 900
+* These expenses are the conversion costs incurred during the manufacturing process
+4.3.1 Raw materials purchased include wheat to be used in the manufacture of various
+biscuits. The figure includes an amount for materials ordered from an Australian
+company on 1 December 2024 for AUD250 0002. The wheat was purchased free on
+board, with the departure date from Australia of 5 December 2024. The goods arrived
+at the Durban Port on 15 December 2024 but were only released by SARS for home
+consumption on 2 January 2025. The bot only processed the following journal entries
+for this transaction:
+Account description Dr. Cr.
+R’000 R’000
+Inventory (SoFP) 2 750
+Bank (SoFP) 2 750
+Purchase of raw material trading stock on
+5 December 2024. Translated at the correct spot rate
+Inventory (SoFP) 30
+Bank (SoFP) 30
+Paid directly into the bank accounts of some of the Durban
+Port customs officials on 31 December 2024 to expedite the
+release of the raw materials
+4.3.2 The balances as at 1 January 2024 and 31 December 2024 include raw materials, work
+in progress and finished goods. This was based on inventory counts of goods on hand
+at the SSC factory only, thus excluding the wheat at the Durban Port. During FY2024,
+SSC recognised a general inventory obsolescence provision equal to R1,5 million,
+which was equal to 10% of the closing inventory balances for expected obsolete
+inventory in 2025.
+4.3.3 During FY2024, SSC donated inventory with a total cost of R4 million to the SSC
+Foundation. The donated inventory had a selling price of R8 million and was
+manufactured during FY2024. The objective of the SSC Foundation, which is an
+approved public benefit organisation in terms section 30 of the Income Tax Act, is to
+improve school nutrition. SSC received a valid section 18A receipt in respect of this
+donation.
+2 AUD = Australian dollars.
+IAC June 2025 5 (of 11) © SAICA 2025
+Paper 2
+4.3.4 Beverages and snacks with a cost of R300 000 and a selling price of R600 000 were
+transferred to the SSC sales and marketing team and used in various ‘paid
+partnerships’3 on social media platforms.
+4.4 Insurance
+SSC’s insurance premium is payable annually on 1 July and covers the period 1 July to
+30 June. On 1 July 2024, R1,8 million was paid to an insurance company, while R1,5 million
+had been paid on 1 July 2023. The SSC trial balance reflects an insurance premium expense
+of R1,65 million for FY2024 and an insurance premium prepayment balance of R900 000 at
+31 December 2024.
+4.5 Salaries and wages
+The following relate to employee costs in determining the profit before tax amount:
+Account description Notes Dr. Cr.
+R’000 R’000
+Bonus provision (SoFP) 2 100
+Bank (SoFP) 2 100
+Bonus payments made on 31 March 2024 relating to FY2023 4.5.1
+Employee costs (P/L) 3 300
+Bonus provision (SoFP) 3 300
+Bonus accrual relating to FY2024 4.5.1
+Employee costs (P/L) 1 000
+Bank (SoFP) 1 000
+Restraint of trade payment to Musi Thou on 30 June 2024 4.5.2
+4.5.1 Bonuses are determined based on the year-end results and are only payable to
+employees who are still employed on 31 March, the date of payment, each year.
+4.5.2 Musi Thou was employed as a senior executive manager at SSC until 30 June 2024.
+On that date Musi and SSC entered into a four-year restraint of trade agreement to
+safeguard against the potential disclosure of confidential SSC information.
+3 A ‘paid partnership’ is a collaboration where a brand pays an influencer to promote its products or
+services.
+IAC June 2025 6 (of 11) © SAICA 2025
+Paper 2
+4.6 Depreciation and amortisation
+4.6.1 The following extract of the SSC fixed asset register as at 31 December 2024 is relevant
+for the tax calculation. It reflected the following assets and related capital allowances.
+All other assets, except those mentioned below, have been fully written off for tax
+purposes in the prior tax year:
+Type Notes Class Date
+acquired
+Cost Useful
+life*
+Depreciation Capital
+allowances
+R’000 R’000 R’000
+Corporate
+head office (a) Buildings 1/9/2012 10 300 25 412 412
+Personal
+computers (b) Equipment 1/2/2024 600 3 183 200
+Bottling
+machine (c) Machinery 1/7/2024 1 300 10 65 260
+* Determined in accordance with IAS 16 Property, Plant and Equipment. The residual value
+of each asset is nil. Where applicable, these estimates have been confirmed at the reporting
+date and no changes were required.
+(a) SSC owns three floors in an eight-story sectional title building located in Polokwane. This
+building was new on the date the floors were acquired.
+(b) As part of its automation processes SSC acquired 100 new personal computers during
+FY2024.
+(c) On 1 June 2024, SSC sold one of its filler machines to RV for its market value on that date.
+SSC had purchased the filler machine, new, for R2,55 million on 1 June 2023. SSC used
+the proceeds on the sale of this filler machine to purchase a new bottling machine on 1 July
+2024. Both were used in a process of manufacture, which was accepted as such by SARS.
+The bot processed the following journal entries on the sale of the asset:
+Account description Dr. Cr.
+R’000 R’000
+Loss on sale of asset (P/L) 2 550
+Property, plant and equipment (SoFP) 2 550
+Derecognition of the filler machine
+Accumulated depreciation (SoFP) 225
+Loss on sale of asset (P/L) 225
+Derecognition of the accumulated depreciation on the filler
+machine
+Bank (SoFP) 1 480
+Loss on sale of asset (P/L) 1 480
+Recognition of proceeds on sale
+4.6.2 An amortisation expense of R185 000 was recognised during FY2024 relating to the
+bot acquired on 1 January 2024 (see ‘robotic process automation’).
+IAC June 2025 7 (of 11) © SAICA 2025
+Paper 2
+5 Protea Energy Drinks Ltd (‘PED’)
+5.1 Background on PED
+PED is an energy drinks company that uses local South African products such as rooibos as
+flavours in its energy drinks. PED’s market share is about 20% of the South African energy
+drinks market.
+On 31 December 2023, PED had the following shareholders:
+nVestor Ltd, a private equity firm 60%
+Three executive directors of PED, each owning 10% 30%
+SSC (see point 5.2) 10%
+PED’s annual general shareholders meeting is held each year on 30 June. The Memorandum
+of Incorporation states that each shareholder shall exercise its voting rights and powers relative
+to its shareholding in PED.
+5.2 Initial investment in PED
+SSC acquired a 10% shareholding in PED on 1 January 2020 for R5,5 million as a strategic
+long-term investment. It consequently elected to present the changes in the fair value thereof
+in other comprehensive income.
+The fair value of SSC’s investment in PED was as follows:
+Date Fair value
+R’000
+31 December 2020 6 350
+31 December 2021 7 000
+31 December 2022 7 640
+31 December 2023 8 200
+1 February 2024 8 650
+1 April 2024 9 000
+1 May 2024 9 350
+1 June 2024 10 000
+5.3 Purchase of option to acquire remaining shares in PED
+On 1 February 2024, SSC paid R500 000 to acquire the option to purchase nVestor Ltd’s 60%
+controlling interest in PED any time after 1 April 2024 as follows:
+• Cash of R50 million, to be settled on the date that SSC exercises its option.
+• On the second anniversary of the date on which SSC exercises its option:
+o Cash of R25 million; and
+o Annual interest of R1,2 million, to be settled on this date.
+• 250 000 shares in SSC, to be issued within three months of the date on which SSC
+exercises its option.
+This option was neither deeply in the money nor out the money for the period 1 February 2024
+to 1 June 2024.
+IAC June 2025 8 (of 11) © SAICA 2025
+Paper 2
+5.4 Purchase of 90% of the shares of PED
+On 1 May 2024, the board of SSC approved the exercise of its option to acquire 60% of PED.
+SSC exercised its option on 1 June 2024 subject to the conditions in section 5.3.
+On 1 June 2024, SSC also acquired the remaining 30% of the shares of PED from PED’s
+executives for R30 million, which was settled in cash immediately. Each of the three executives
+would also receive a cash payment of R2 million. This would be conditional on PED’s operating
+profit for the period to 31 May 2025 being at least 10% higher than for the comparative period
+(i.e., the year to 31 May 2024). The total fair value of these additional payments was
+R3,2 million on 1 June 2024.
+On 31 December 2024, based on how PED had performed after acquisition, the total fair value
+of these additional payments increased to R4,85 million.
+5.5 Recording of the transactions relating to purchase of 90% of the shares of PED
+The financial reporting team responsible for the SSC group accounts used the bot to record
+the transactions relating to the purchase of 90% of the shares of PED. The bot proposed the
+journal entries below to record the purchase in the company accounts of SSC as well as the
+consolidation entry relating to the acquisition of PED. The group financial accountant of SSC
+is not convinced that these journal entries are correct and has asked for a review of the work
+done by the bot.
+Journal entries in separate company accounts of SSC
+Account description Notes Dr. Cr.
+R’000 R’000
+Investment in subsidiary (SoFP) 113 200
+Bank (SoFP) 80 000
+Liability to nVestor Ltd (SoFP) 25 000
+Investment in PED (SoFP) 8 200
+Acquisition of PED on 1 June 2024
+Investment in subsidiary (SoFP) 12 500
+Share capital (SoCE) 12 500
+Issue of shares to nVestor Ltd at R50 per share
+on 30 June 2024 5.5.1
+Investment in subsidiary (SoFP) 600
+Bank (SoFP) 600
+Capitalisation of acquisition-related costs 5.5.2
+Investment in subsidiary (SoFP) 700
+Liability to nVestor Ltd (SoFP) 700
+Capitalisation of interest for seven months
+IAC June 2025 9 (of 11) © SAICA 2025
+Paper 2
+Consolidation entry relating to the acquisition of PED
+Account description Notes Dr. Cr.
+R R
+Share capital (SoFP) 5.5.3 17 500 000
+Retained earnings (SoCE) 5.5.3 55 900 000
+Reclassification from mark-to-market reserve
+(OCI) 5.5.4 2 700 000
+Property, plant and equipment (SoFP) 5.5.5 7 500 000
+Intangible assets: Brand name (SoFP) 5.5.6 20 000 000
+Non-current assets held for sale (SoFP) 5.5.7 500 000
+Right-of-use asset (SoFP) 5.5.8 1 771 590
+Goodwill (balancing figure) (SoFP) 24 978 539
+Contingent liability: Court case (SoFP) 5.5.9 1 660 000
+Deferred tax liability (SoFP) 5.5.10 2 190 129
+Investment in subsidiary (SoFP) 5.5.11 127 000 000
+Acquisition of PED
+Notes
+5.5.1 The fair value of an SSC share was as follows on the specified dates:
+Date Fair value
+1 June 2024 R48,50 per share
+30 June 2024 R50,00 per share
+5.5.2 Acquisition-related costs:
+R’000
+Legal fees to draft the purchase agreement 400
+Share issue costs 200
+5.5.3 These amounts are the equity balances per the financial statements of PED on the
+acquisition date. The retained earnings balance includes the year-to-date profit of PED
+appropriately.
+5.5.4 The reclassification adjustment relates to the cumulative gains (to 31 December 2023)
+relating to SSC’s original 10% investment in PED that were reclassified from other
+comprehensive income as part of the acquisition.
+5.5.5 The carrying amounts of PED’s property, plant and equipment reflected their respective
+fair values on the acquisition date except for one of its owner-occupied properties. On
+the acquisition date, the carrying amount of this property amounted to R12,5 million, of
+which R5 million was allocated to the land and R7,5 million to the factory situated on it.
+The land is used as an industrial site for PED’s factory. A similar vacant site in the area
+had recently been re-developed into a retail site (shopping mall). PED’s owner-occupied
+land had no restrictions preventing it from being re-developed for use as a shopping mall.
+IAC June 2025 10 (of 11) © SAICA 2025
+Paper 2
+On the acquisition date, the following applied:
+Land Factory Total
+R’000 R’000 R’000
+Fair value of property as an industrial site 15 000 9 000 24 000
+Fair value of vacant plot of land re-
+developed as a retail site 20 000 – 20 000
+5.5.6 PED’s internally generated brand name had a provisional fair value of R20 million on
+the acquisition date. A final fair value of R25,4 million was determined on 31 December
+2024, on which date the initial accounting of SSC’s acquisition of PED was considered
+complete.
+5.5.7 The non-current asset held for sale comprised machinery that PED had previously
+determined was surplus to its requirements. It met the criteria to be classified as held
+for sale in accordance with IFRS 5 Non-Current Assets Held for Sale and Discontinued
+Operations on the acquisition date.
+On the acquisition date, the following applied:
+R’000
+Fair value 3 000
+Original cost to PED 2 500
+Carrying amount and tax value in PED’s financial statements 2 200
+Costs to sell 100
+5.5.8 The right-of-use asset arose from a lease arrangement for machinery between PED and
+an unrelated third party. The adjustment to the right-of-use asset proposed in the
+consolidation entry above is the difference between the fair value of a similar machine
+of R10 million owned at the acquisition date and the carrying amount of the right-of-use
+asset.
+On the acquisition date, the following applied:
+Carrying amount of the right-of-use asset R8 228 410
+Carrying amount of the lease liability R9 549 210
+Remaining lease term 5 years
+Annual lease payment R2 600 000
+Market-related annual lease payment R2 450 000
+Present value of the annual lease payments for the remaining
+lease term, calculated using the incremental borrowing rate R9 372 418
+5.5.9 An amount of R1,66 million was correctly disclosed as a contingent liability in terms of
+IAS 37 Provisions, Contingent Liabilities and Contingent Assets. The contingent liability
+relates to a claim from a customer who is suing PED on the basis that its drinks are
+harmful as they have an addictive effect. The contingent liability is based on a possible
+obligation that exists on the acquisition date, as the court case has not yet been heard.
+The fair value of the contingent liability at the acquisition date was R1,4 million.
+5.5.10 The deferred tax liability was calculated by multiplying the adjustments on the
+acquisition date by the net assets of PED, excluding the brand name, using the
+company income tax rate of 27%. No deferred tax liability was recognised on the
+acquisition date relating to PED’s internally generated brand name.
+IAC June 2025 11 (of 11) © SAICA 2025
+Paper 2
+5.5.11 This amount is per the entries proposed by the bot in SSC’s separate accounts.
+5.5.12 A review of the financial statements of PED on the acquisition date revealed the
+following:
+• A gross trade receivables balance of R3,5 million and a related expected credit
+loss allowance balance of R160 000. The fair value of the trade receivables was
+R3,9 million.
+• A goodwill balance of R4 million relating to a previous acquisition of a business
+by PED.
+Additional information
+1 Each company in the group –
+o has a financial year end of 31 December;
+o has a functional currency of rand;
+o prepares financial statements in accordance with IFRS; and
+o has correctly accounted for all transactions in their respective individual accounts
+unless otherwise evident.
+2 SSC accounts for subsidiaries and associates at cost in its separate company financial
+statements.
+3 All property, plant and equipment and intangible assets are accounted for using the cost
+model.
+4 Financial liabilities are measured at amortised cost, unless otherwise stated or evident
+from the scenario.
+5 All amounts are correctly calculated, unless otherwise stated or evident from the
+scenario.
+6 All amounts are material.
+7 All cash flows occurred on the contractual due dates, unless otherwise stated.
+8 Assume a market-related pre-tax annual interest rate of 12% applied during FY2024,
+unless otherwise evident from the scenario.
+IAC June 2025 1 (of 1) © SAICA 2025
+Paper 2 required part I
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2025
+PROFESSIONAL PAPER 2
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 2 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Discuss and conclude whether the amounts noted under ‘robotic
+process automation’ (in part 3 of the scenario) are capital in nature or
+not in terms of section 11(a) of the Income Tax Act for the year of
+assessment ended 31 December 2024.
+X1: Communication skill – clarity of expression
+6
+1 7
+(b) Calculate SSC’s corrected taxable income for the year of assessment
+ended 31 December 2024.
+• Start with the profit before tax of R29 310 000 used by the bot in
+the tax workbook / ITR 14 income tax return – 31/12/2024.
+• For each adjustment, provide brief reasons to support
+calculations.
+• Provide brief reasons where you consider no adjustment is
+required or where an item has no effect on the taxable income
+calculation.
+• Ignore the impact that the acquisition of PED may have on the
+profit before tax and the taxable income of SSC.
+• Present all amounts in R’000.
+• Include each adjustment in a separate line.
+X1: Communication skill – layout and presentation
+Y1: Critical thinking
+43
+1
+1 45
+Total for part I 52
+IAC June 2025 1 (of 1) © SAICA 2025
+Paper 2 required part II
+INITIAL ASSESSMENT OF COMPETENCE, JUNE 2025
+PROFESSIONAL PAPER 2
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 2 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(c) Draft a report to the management of SSC, with reference only to the
+information under ‘digital strategy’ (in part 2 of the scenario), in which
+you –
+(i) describe nine key business risks that SSC may be exposed to
+relating to its digital strategy; and
+(ii) for each risk identified, provide a mitigating measure that could
+be implemented by SSC.
+• Ignore ethical considerations.
+• Exclude controls related to journal entries generated by the bot.
+X1: Communication skill – layout and presentation
+Z2: Business external environment
+9
+9
+1
+1 20
+(d) Describe the controls that should be put in place by SSC over the
+journal entries recorded by the bot. 6 6
+(e) Briefly explain whether or not you agree with the conclusion of the bot
+that 1 June 2024 is the acquisition date of PED by SSC (in accordance
+with IFRS).
+• State what the acquisition date should be, if you do not agree
+with the bot’s conclusion.
+• Give reasons for your answer.
+X1: Communication skill – logical argument
+6
+1 7
+(f) Assume for part (f), irrespective of your answer to part (e), that the
+acquisition date of PED by SSC is 1 June 2024.
+Calculate the goodwill or gain on bargain purchase that should be
+recognised on 31 December 2024 by the SSC group relating to the
+acquisition of PED.
+• Start with the goodwill balance of R24 978 539 as calculated by
+the bot in the consolidation entry.
+• While tax is applicable, ignore the tax effect only on the fair value
+adjustments on the initial investment of 10% in PED.
+• Provide each adjustment in a separate line.
+• Do not re-process any journal entries.
+35
+35
+Total for part II 68
+TOTAL FOR THE PAPER 120

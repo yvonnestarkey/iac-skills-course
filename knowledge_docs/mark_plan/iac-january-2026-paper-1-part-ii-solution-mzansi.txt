@@ -1,0 +1,271 @@
+Source: SAICA IAC January 2026 — Paper 1 Part II suggested solution (Mzansi).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Initial Assessment of Competence
+Professional Paper 1
+January 2026
+Copyright, proprietary rights and permitted use
+© The South African Institute of Chartered Accountants (SAICA). All rights reserved.
+The SAICA Initial Assessment of Competence (IAC) questions, solutions and examiners comments
+(‘these documents’) constitutes proprietary intellectual property and professional know-how of SAICA.
+It has been developed and is maintained as part of SAICA’s mandate to uphold the quality, integrity,
+and high professional standards of the Chartered Accountant profession, which underpin public
+confidence and the value and attractiveness of SAICA membership and designation.
+Access to, or use of, these documents does not confer any right, licence, or interest in the intellectual
+property contained herein. Except where expressly permitted by SAICA in writing, no part of these
+documents may be copied, reproduced, adapted, published, distributed, or used for commercial,
+quasi-commercial, or third-party standard-setting purposes.
+These documents may be used solely for legitimate educational, regulatory, or professional purposes,
+in a manner that preserves their integrity, acknowledges SAICA as the owner and source, and does not
+undermine SAICA’s role as custodian of professional standards or dilute the value associated with
+SAICA’s membership and designation.
+Any authorised access to or use of these documents is subject to, and must be exercised in accordance
+with, SAICA’s Intellectual Property Management Policy, as amended from time to time.
+Disclaimer clause: All names of persons, places and business entities mentioned in these
+documents are fictitious and any resemblance to real persons, living or dead, places and business
+entities are purely coincidental.
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART II
+
+Part (e) Based on IFRS® Accounting Standards, evaluate, with reasons,
+Sarah’s statement regarding the treatment of pledged inventory and
+the loan from XYZ bank.
+Marks
+Inventory considerations
+MT will control the inventory items if it has the ability to direct the use of and
+obtain substantially all of the remaining benefits from the inventory items
+which includes having the ability to prevent other entities from directing the use of
+and obtaining the benefits from the inventory.
+1
+MT has the ability to direct the use of the inventory items because MT can
+decide how to use the inventory items and to sell or not to sell the inventory
+items.
+1
+MT has the ability to prevent other entities to obtain substantially all of the
+remaining benefits (i.e. rewards) from the inventory items as MT will sell the
+inventory items and receive the benefits (i.e. cash flows) upon sale of the
+inventory items.
+1
+MT does not have a present right to payment of the goods. It still needs to sell
+the inventory and the proceeds must be used to pay the loan in terms of the loan
+terms with XYZ Bank.
+1
+MT still has legal title of the inventory and has the ability to direct the use of
+goods as they continue to trade the inventory. 1
+MT has not transferred physical possession of the inventory as it still remains
+in the Johannesburg warehouse and XYZ has agreed to have the inventory
+remain on the premises.
+1
+The risks linked to ownership remains with MT such as risk of theft or
+damage, price risk (including selling at a discount), risk of non-sale and MT
+remains fully obligated for the loan capital and interest repayment irrespective
+of the collateral pledged to XYZ Bank irrespective of the sales proceeds generated
+from disposal or the inventory.
+1
+The customers has yet to accept the asset because the inventory items has
+not been sold as yet. 1
+Consideration should however be given to a possible write-down to net
+realisable value, since the inventory will have to be sold at a significant
+discount.
+1
+Financial liability considerations
+The loan is a financial liability, being a contractual obligation to deliver cash,
+which should be accounted for in terms of IFRS 9 Financial Instruments. 1
+IFRS 9 requires that a financial liability be derecognised only when, it is
+extinguished, that is, when the obligation specified in the contract is discharged
+or cancelled or expires.
+1
+The extinguishment of the debt will occur when the inventory is sold and the
+proceeds are used to pay off the loan and only when the full capital and interest
+on the loan is repaid to XYZ Bank. 1
+On sale of the inventory, the inventory will be derecognised along with the
+corresponding financial liability. 1
+There may be a gain or loss on settlement on the difference between the loan
+amount and proceeds received which will still accrue to MT as it remains obligated
+to repay and settle the capital and accrued interest on the loan to XYZ Bank. 1
+Presentation and disclosure considerations
+It is incorrect to state that the loan can be offset with the carrying amount of the
+inventory as at year end as MT does not have a legally enforceable right to
+offset the inventory against the loan balance because the loan remains the
+obligation of MT and XYZ has an enforceable right to demand settlement of
+the loan.
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART II
+
+IAS 1 determines that assets and liabilities may not be offset unless another
+standard or interpretation permits or requires otherwise such as IAS 32 only
+permits financial assets to be offset against financial liabilities and inventory
+is not a financial asset.
+1
+Furthermore, IAS 32.49 determines that it is generally inappropriate to offset
+assets that are pledged as collateral against financial liabilities. 1
+As none of the pledged inventory was sold, the total balance of inventory it will
+be presented as MT financial statement as a current asset. 1
+Inventory pledged as security should be disclosed and the R50 million will need
+to be disclosed in the inventory note with details of the collateral provided. 1
+The loan should be classified as a current liability at year end because the
+loan covenants were breached and the loan is therefore repayable on
+demand.
+1
+Conclusion: Sarah is therefore incorrect in her assertion because from the above
+one can conclude that the MT has control of the inventory and the substantial
+risks and rewards of ownership and therefore it still remains an asset of MT and
+should continue to be recognised and not offset against the financial liability
+1
+Available 21
+Maximum 11
+X1 – Communication skill – logical argument
+(Mark awarded for effective communication using logical arguments backed with
+relevant facts from the scenario)
+1
+Total for part (e) 12
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART II
+
+Part (f) Describe the steps that AID’s accounting authority should take
+following the criticism expressed in the media with regard to the
+agreement AID concluded with Inala.
+Marks
+Before the investigation
+Since this is a public entity, inform the relevant minister/ state organ in writing
+about:
+- the issue at hand;
+- the planned approach and scope to deal with this matter; and/or
+- Seek confirmation to continue with the plans.
+1
+Seek legal advice on the matter. 1
+Fully cooperate with any external investigations or inquiries launched by relevant
+government agencies or regulatory bodies. 1
+Inform all other stakeholders about the matter and reassure them of the plans to
+address it. 1
+The accounting authority could also engage directly with the PDP to explain why
+this is a good idea and to obtain their insights and ways forward, in hopes that they
+retract the statement.
+1
+Obtain the assistance of a public relations officer and/or compliance officer to
+assist with managing reputational risks. 1
+Investigation of the matter
+Initiate a comprehensive investigation of the entire matter, as follows: 1
+Set the scope of the investigation to be undertaken, in writing, and cover: 1
+the entire process leading up to the agreement so that all the facts can be
+gathered; and 1
+an evaluation of compliance with AID’s internal policies and procedures. 1
+Abiding by the appropriate governance over investments policies and procedures,
+appoint a competent external firm (to maintain objectivity and credibility) to
+undertake the investigation based on the scope in the engagement letter.
+1
+Press release before the investigation is concluded
+Prepare a clear and concise public statement addressing the concerns raised
+in the media; the steps being taken to investigate the matter and reaffirm AID's
+commitment to transparency and accountability.
+1
+Based on the outcome of the investigation
+Determine the merits of the allegations, i.e. is there a sound rationale for the
+investment and are the terms fair. 1
+Determine whether there is a need to make improvements to AID’s policies and
+procedures to prevent a recurrence of this incident related to conflict of interest and
+ethical conduct, and on investment appraisal and decision-making.
+1
+Consider if the PFMA requirements were not complied with. 1
+Take disciplinary action, if any wrongdoing is discovered, against individuals
+involved. 1
+If it becomes evident that the terms of the agreement were prejudicial to AID, consider
+potential legal action against Inala Investments / Jim to recover any losses. 1
+If the terms were biased and thus unfair, the accounting authority should consider
+backing out of the agreement. 1
+Report the findings to the minister/ state organ. 1
+Report findings and plan of action to the public (i.e. press release). 1
+Available 20
+Maximum 9
+Z2 – Business external environment
+(Mark awarded if candidate demonstrated an understanding of the public sector
+and the environment in which it operates)
+1
+Total for part (f) 10
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART II
+
+Part (g) Prepare the journal entries that MT should process in its FY2025
+separate financial statements to account for the Louw Investments
+bond.
+• Ignore tax.
+• Do not provide journal narrations.
+• Round all calculations to the nearest rand.
+Marks
+R R
+Dr. Cr.
+Bank (SFP) 896 000
+1Investment in the bond (SFP) C2 197 795
+Interest income (P/L) C2 1 093 795
+Recognition of interest income based on the effective interest rate method
+Expected credit losses (P/L) C3 368 000 1
+Fair value adjustment (OCI) C3 368 000
+Recognition of movement in expected credit losses relating to the bond
+Investment in the bond (SFP) C4 302 205 1
+Fair value adjustment (OCI) C4 302 205
+Fair value adjustment to debt instrument subsequently measured at FV through OCI
+Calculations
+C1. Effective interest rate
+FV = 10 500 000 1
+N = 5 1
+PV = (9 500 000) 1
+PMT = 896 000 1
+Comp I = 11.12%
+C2. Coupon payment receipt
+Principle amount on investment (3 Amrt
+Princ) 197 795 1P
+Interest income (3 Amrt Int) or (Amrt 2 Bal x
+11.12%) 1 093 795 1P
+C3. ECL allowance
+31 December 2025 980 000 1
+31 December 2024 (612 000)
+368 000
+C4. Fair value adjustment
+Fair value on 31 December 2025 8 900 000 1
+Balance on 31 December 2025
+(8 400 000 + 197 795) (8 597 795) 1P
+302 205
+Available 12
+Maximum 12
+Total for part (g) 12
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART II
+
+Part (h) Calculate the group profit or loss, if any, that Inala should recognise in
+its consolidated financial statements relating to its disposal of the MT
+shares on 1 January 2026.
+• Ignore all tax with regard to the Louw Investments bond only.
+• Ignore the time value of money with regard to the payment
+tranches that AID will pay over to Inala.
+• Round all calculations to the nearest rand.
+Marks
+Consideration received 90 000 000 2
+Carrying amount of investment disposed (301 140 006 x 45%) (135 513 003) 2
+301 140 006
+Total net assets
+- Share capital 100 000 000 1
+- Retained earnings 178 000 000 1
+- Fair value OCI reserve (155 994)
+Balance on 31 December 2025
+(3 Amrt Bal) 10 035 994 2
+Fair value on 31 December 2025 (8 900 000) 2
+1 135 994
+Allowance for credit losses (980 000) 2
+155 994
+Goodwill 23 296 000
+- Consideration paid 300 000 000 2
+- Net asset value (257 704 000)
+Given 253 000 000 2
+Undervalued land
+(46 000 000 - 40 000 000) 6 000 000 2
+Tax on undervalued land
+(6 000 000 x 21.6%) (1 296 000) 2
+42 296 000
+Impairment on goodwill (19 000 000) 2
+23 296 000
+Group gain / (loss) on disposal 45 513 003
+Available 22
+Maximum 22
+Total for part (h) 22
+TOTAL FOR PART II 56

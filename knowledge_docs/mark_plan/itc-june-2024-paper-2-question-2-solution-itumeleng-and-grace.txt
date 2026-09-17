@@ -1,0 +1,286 @@
+Source: SAICA ITC June 2024 — Paper 2 Question 2 suggested solution (Itumeleng & Grace).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 Question 2 1 © SAICA 2024
+Part (a) Calculate the accrual claim and state why the claim belongs to
+Grace.
+Marks
+Accrual claim Amount
+R
+Accrual in Itumeleng’s estate 9 800 000
+Accrual in Grace’s estate 50 000
+Difference in the accruals 9 750 000 1
+Accrual claim (50%)
+Alt: (R9,8 mil plus R50 000) / 2 = R4 925 000 - R50 000
+= R4 875 000
+4 875 000 1
+Because Grace’s accrual is smaller, she has an accrual claim against
+Itumeleng
+Alt: As the accrual claim belongs to Grace (as given in the required) this claim
+needs to be added/included as deemed property in Grace’s deceased
+estate’s estate duty calculation in terms of section 3(3)(cA) of the Estate Duty
+Act.
+1
+Available 3
+Maximum 3
+Total for part (a) 3
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 Question 2 2 © SAICA 2024
+Part (b) Discuss the estate duty implications (including liability for payment)
+of the life policy taken out by Grace on Itumeleng’s life, in the event
+of his death. Marks
+1 The life policy would constitute a domestic policy, and as it is upon a
+deceased person’s life (Itumeleng). Grace, as the owner of the policy, will
+be able to recover an amount in terms of the policy issued in the Republic
+of South Africa.
+1
+2 The amount due and recoverable by Grace in terms of the policy will be
+deemed to be property of Itumeleng for estate duty purposes in terms of
+s3(3)(a)).
+1
+3 None of the exclusion provisos to s3(3)(a) applies, specifically:
+Although the policy was not taken out by Itumeleng and no premium was
+borne by him, the amount due will be paid to Grace who is wholly or
+partly dependent on Itumeleng, for maintenance) (proviso (ii) to
+s3(3)(a)). The exclusion therefore does not apply.
+1
+3.2 The value of the proceeds will be the amount of the proceeds
+less/reduced by the sum of the premiums paid by Grace plus interest
+at 6% per annum on such premiums paid
+1
+4 Because the policy proceeds do not accrue to a surviving spouse (Grace is
+no longer a spouse), it will not qualify for a s4(q) deduction. 1
+5 In the case of a domestic policy of insurance on the life of the deceased
+person, the proceeds of which are paid to a person other than the executor,
+Grace is entitled to the proceeds becomes liable for payment of the
+attributable estate duty (s11(b)(i)).
+1
+6 The executor, in terms of s13, has the right to recover any estate duty
+attributable to this amount from Grace.
+1
+Available 7
+Maximum 4
+Communication skills – clarity of expression 1
+Total for part (b) 5
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 Question 2 3 © SAICA 2024
+Part (c) Calculate the normal tax payable (if any) by Itumeleng and Grace in
+respect of the lump sums awarded to Grace in terms of section
+37D(4)(b)(ii) of the Pension Funds Act from Itumeleng’s ABASA
+Pension Fund.
+Marks
+Tax payable by Itumeleng R R
+There is no tax payable by Itumeleng because the
+non-member spouse who receives the amount
+after the reduction of the minimum individual
+reserve of the member spouse must be taxed in
+terms of para. 2(1)(b)(iA) of the Second Schedule.
+Nil 1
+Tax payable by Grace
+Lump sum amount in terms of a divorce order
+(retirement fund lump sum withdrawal benefit
+(para. 2(1)(b)(iA) of the Second Schedule) (R2 200
+000/2 = R1 100 000)
+1 100 000 1
+Less: Para. 6(1)(a) – Second Schedule: Deductible
+transfer from a pension fund to a pension
+preservation fund
+(850 000) 1
+Less: Itumeleng’s previous contributions of R50 000
+to the ABASA Pension Fund not allowed as a
+deduction – not deductible in terms of para. 6(1)(a)
+of the Second Schedule
+(0) 1
+Gross income (par (e)) - Retirement fund lump
+sum withdrawal benefit
+Add: Previous lump sums (R120 000 + R150 000)
+250 000
+270 000
+520 000
+2
+Tax thereon per withdrawal lump sum table
+(R520 000 less R25 000) x 18% 89 100 1P
+All lump sums received excluding current lump
+sum (R120 000 + R150 000)
+Tax thereon per withdrawal lump sum table
+(R270 000 less R25 000) x 18%
+Tax payable by Grace on lump sum received
+270 000
+(44 100)
+45 000
+1P
+Available 8
+Maximum 8
+Total for part (c) 8
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 Question 2 4 © SAICA 2024
+Part (d) Calculate the effects of the divorce agreement (only in respect of notes
+2.1 and 2.2, and sections 3 and 5 of the scenario) on the taxable income
+of Itumeleng for his 2023 year of assessment.
+• Provide reasons for nil effects.
+Marks
+Maintenance payments and Legal costs
+2.1,
+2.2
+and 5
+Maintenance, medical aid contributions and legal costs are not
+deductible in terms of s11(a) or s11(c) because it is a
+domestic or private expense and is not allowed as a deduction
+from income in terms of s23(a)/(b). nil 1
+3.1 Accrual claim
+stiHB(2)(b) applies to all assets transferred to Grace in terms of the
+divorce order (rolled over):
+Share portfolio (Itumeleng is a share dealer)
+Opening stock s 22(2) @ cost
+(200*R180 + 160*R200 + 140*R140 + 4 000*R40) (247 600) 2
+Astra shares
+Deemed disposed of at the amount previously allowed as
+deduction (stiHB(3)) – include in gross income, the amount
+claimed as opening stock
+(200 * R180) + (160 * R200) + (140 * R140) 87 600 1P
+Bailey shares
+Held for at least three years – proceeds deemed to be capital in
+nature in terms of stiC
+Section 9C(5) recoupment (4 000 * R40) 160 000 1
+Proceeds R0
+Base Cost (R160 000)
+Capital loss (R160 000) 1
+3.2 Private residence
+Proceeds R0
+Base Cost (R2 594 000)
+Capital loss (R2 594 000) 1
+The capital loss on disposals of Bailey Shares and Private
+Residence to Grace must be disregarded in terms of stiHB(1)
+and base cost is rolled over to Grace.
+1
+3.3 Accrual amount in cash (no roll-over as not an asset in terms of
+the Eighth Schedule – no capital gain) or the expense is not
+incurred in carrying on a trade and therefore no s11(a)
+deduction.
+nil 1
+Net effect on taxable income Rnil
+Available 8
+Maximum 7
+Total for part (d) 7
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 Question 2 5 © SAICA 2024
+Part (e) Calculate the normal tax payable by or refundable to Grace for the
+2023 year of assessment.
+• Provide reasons for nil effects.
+• Where an amount is fully exempt, include a reference to the
+legislation for both the gross income inclusion and the
+subsequent exemption.
+• Exclude all amounts calculated in part (d).
+Marks
+Tax payable by Grace
+Maintenance allowances
+Maintenance para. (b) of gross income definition 0.5
+Gross income Grace’s maintenance of R15 000 per
+month x 6 months) , Lerato’s maintenance of R5 000 per
+month x 6 months) and Medical aid contributions paid for
+Grace as part of maintenance required by divorce
+agreement of R3 000 per month x 6 months
+R90 000 + R30 000 + R18 000 138 000 0.5
+Less: S10(1)(u): 0.5
+Exemption for maintenance paid by former spouse from
+after-taxed income (138 000) nil 0.5P
+Accrual claim
+stiHB(2)(b) applies to all assets share portfolio and
+private residence transferred to Grace in terms of the
+divorce order (rolled over) and deemed to be acquired
+@ Itumeleng’s base cost.
+0.5
+3.1 Share portfolio: Astra shares deemed acquired at the
+amount previously allowed as a deduction for Itumeleng
+(stiHB(4)) .
+Thus deduct opening stock (s22(2)) @ cost)
+(200*R180 + 160*R200 + 140*R140) (87 600) 0.5P
+4. Pension interest inclusion in terms of para (e) of the gross
+income definition 250 000 1
+Not subject to normal tax tables but subject to withdrawal
+lump sum tables (250 000) 1P
+Proceeds from disposal of share portfolio
+Sale of Astra shares – include in gross income (500*R200)
+(although Grace is not a share dealer, it is deemed in terms
+of stiHB that she used the shares in the same way as
+Itumeleng)
+100 000 1
+Commission earned as estate agent (gross income) 225 000 1
+Less: General deductions
+Lerato’s after-school care
+Not deductible as it is not incurred in carrying on the
+trade of an estate agent. It is therefore not deductible in
+terms of s11(a). Furthermore, because it is a domestic or
+private expense it is also not allowed as a deduction from
+income in terms of s23(b) or maintenance cost of family in
+terms of s23(a).
+1
+Legal costs
+Not deductible as it is not incurred in carrying on the
+trade of an estate agent. It is therefore not deductible in
+terms of s11(c). Furthermore, because it is a domestic or
+1
+ITC JUNE 2024 SUGGESTED SOLUTION
+PAPER 2 QUESTION 2
+Paper 2 Question 2 6 © SAICA 2024
+private expense it is also not allowed as a deduction from
+income in terms of s23(b) or maintenance cost of family in
+terms of s23(a).
+Premiums on life policy
+Not deductible as it is not incurred in carrying on the
+trade of an estate agent. It is therefore not deductible in
+terms of s11(w). Furthermore, because it is a domestic or
+private expense it is also not allowed as a deduction from
+income in terms of s23(b) or maintenance cost of family in
+terms of s23(a).
+1
+Capital gains tax
+Sale of Bailey shares
+Proceeds (4 000 x R70 per share)
+Less: Base cost (4 000 x R40 per share) (deemed to
+have been acquired at same cost as Itumeleng in
+terms of stiHB(1)(b)(ii)).
+280 000
+(160 000)
+1
+1P
+Capital gain
+Less: Annual exclusion
+120 000
+(40 000) 1
+Net capital gain
+Included @ 40% in taxable income
+Taxable income
+80 000
+32 000
+269 400
+1P
+Normal tax on progressive rate table
+Per table (R40 680 + 26% (R269 400 – R226 000)) 51 964 1P
+Less: Primary rebate (16 425) 35 539 1
+Normal tax per withdrawal lump sum table (part (c)) 45 000 1P
+No s6A credit as the contributions are paid by
+Itumeleng and not Grace
+1
+Less s 6B credit
+Qualifying medical expenditure 30 000
+1
+Less: 7.5% x taxable income of R269 400 (20 205) (20 205)
+9 795
+1P
+25% of R9 795 (2 449) 1P
+Less: Employees’ tax (R40 000 + R42 500)
+78 090
+(82 500) 2
+Normal tax refundable to Grace (4 410)
+Available 23
+Maximum 23
+Communication skills – layout and structure; logical argument 2
+Total for part (e) 25
+TOTAL FOR THE QUESTION 48

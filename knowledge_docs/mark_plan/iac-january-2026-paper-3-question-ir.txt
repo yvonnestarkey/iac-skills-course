@@ -1,0 +1,491 @@
+Source: SAICA IAC January 2026 — Paper 3 question (IR).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Initial Assessment of Competence
+Professional Paper 3
+January 2026
+Copyright, proprietary rights and permitted use
+© The South African Institute of Chartered Accountants (SAICA). All rights reserved.
+The SAICA Initial Assessment of Competence (IAC) questions, solutions and examiners comments
+(‘these documents’) constitutes proprietary intellectual property and professional know-how of SAICA.
+It has been developed and is maintained as part of SAICA’s mandate to uphold the quality, integrity,
+and high professional standards of the Chartered Accountant profession, which underpin public
+confidence and the value and attractiveness of SAICA membership and designation.
+Access to, or use of, these documents does not confer any right, licence, or interest in the intellectual
+property contained herein. Except where expressly permitted by SAICA in writing, no part of these
+documents may be copied, reproduced, adapted, published, distributed, or used for commercial,
+quasi-commercial, or third-party standard-setting purposes.
+These documents may be used solely for legitimate educational, regulatory, or professional purposes,
+in a manner that preserves their integrity, acknowledges SAICA as the owner and source, and does not
+undermine SAICA’s role as custodian of professional standards or dilute the value associated with
+SAICA’s membership and designation.
+Any authorised access to or use of these documents is subject to, and must be exercised in accordance
+with, SAICA’s Intellectual Property Management Policy, as amended from time to time.
+Disclaimer clause: All names of persons, places and business entities mentioned in these
+documents are fictitious and any resemblance to real persons, living or dead, places and business
+entities are purely coincidental.
+IAC January 2026 1 (of 8 pages) © SAICA 2026
+Paper 3
+PAPER 3 120 marks
+Ignore all forms of taxation.
+1 Background information
+Instore ReaFetsa Ltd (‘IR’) is a large South African discount retailer listed on the Johannesburg
+Stock Exchange. IR was established in 2002 by Calvin Mazibuko and Alvin Henderson, who
+identified an opportunity to offer essential goods at the lowest possible prices. Alvin serves as
+the chair of the board of directors. Jordan Henderson, the son of Alvin Henderson, is the chief
+executive officer (CEO) of the company. Michaela Dumisa is the chief financial officer (CFO).
+Both Jordan and Michaela are members of the board of directors.
+IR has a strong national footprint and is known for affordability and accessibility. IR has a
+30 September financial year end, its functional and presentation currency is the South African
+rand and it prepares its financial statements in accordance with IFRS® Accounting Standards.
+AudSA Auditors (‘AudSA’) are IR’s auditors and are currently busy with the 30 September
+2025 (FY2025) year-end audit.
+IR retails high-volume, low-margin food and clothing to customers, aiming to drive profitability
+through scale rather than premium pricing. A key strategic focus is on private label1 products
+to assist in protecting margins by reducing reliance on external brands. IR also has a strong
+relationship with external suppliers and uses its size and scale to negotiate favourable
+discounts and rebates. To drive efficiency and reduce operational costs, the business makes
+use of regional distribution hubs. Generally, the cost savings achieved are passed on to
+customers. IR also uses standardised low-cost store formats located in high footfall2 areas to
+ensure optimum customer access and streamlined operations.
+IR’s strategy and business model are informed by its understanding of the lower living
+standards measure (LSM) market. Customers in this segment often shop more frequently,
+buying smaller baskets with a focus on household essentials. While margins in this segment
+are tight, the growth potential is significant.
+At IR, the executive team has embraced a results-orientated culture. Performance-based
+bonuses, linked to the company’s overall profit before tax, is a key incentive for Jordan and
+the other executive directors. The pressure to achieve profit targets has created a culture that
+prioritises short-term financial gains, sometimes at the expense of long-term strategic
+objectives and sound financial reporting principles.
+IR directly owns and operates the individual stores across the country. This results in store
+managers having no autonomy over key operational decisions, such as pricing and cost
+structures.
+1 Products made by other companies but sold under the Instore ReaFetsa Ltd brand name.
+2 Footfall refers to the number of people physically entering or passing through a location, such as a retail store,
+shopping mall or event space, within a specific period of time.
+IAC January 2026 2 (of 8 pages) © SAICA 2026
+Paper 3
+2 Introduction of new lifestyle concept stores (‘LC stores’)
+Early in 2024, Jordan proposed a bold strategic shift at a board meeting: the launch of a new
+LC store aimed at middle-LSM customers. Jordan was inspired by innovative retail formats he
+had encountered during a visit to China. He believed the initiative could unlock value and
+reposition IR beyond its traditional discount retail model.
+Some board members expressed reservations, as this was a significant departure from IR’s
+core strategy. However, Jordan remained confident about the long-term potential of the
+opportunity and despite the board members’ reservations, proceeded with the rollout, and 17
+LC stores were opened across the country on 1 October 2024. To fund the rollout, Jordan
+secured a R300 million capital injection from local development finance institutions and retail
+investment funds.
+Although the middle-LSM segment in South Africa generally represents customers who value
+brand image, convenience and loyalty points, they remain price conscious. They are drawn to
+modern retail environments that offer a blend of affordability and lifestyle appeal, including
+premium private labels and organic food. This segment is fiercely contested by large players
+such as Spozena Retailers, a premium discount chain, and Kingsworth, a high-end food and
+fashion retailer, both of whom have well-established operations.
+In preparing for the launch, IR engaged new small-scale and emerging suppliers who needed
+to adapt their offerings to meet the new LC stores’ needs. IR introduced a customer loyalty
+programme for the LC stores in terms of which customers would earn loyalty points (see
+section 4) when shopping at the LC stores.
+In 2024 and 2025, the South African economy struggled due to various factors, including high
+interest rates and rising electricity and medical costs, which significantly reduced consumers’
+disposable income.
+Most of the products that are retailed in the middle-LSM segment are sourced from top-quality,
+well-established local suppliers or are imported. However, the weakening rand has increased
+the costs of such imports.
+Jordan has been under significant pressure from the board of directors to deliver results on
+this new strategy. He was surprised at the monthly losses incurred by the new LC stores,
+given that his projections had shown a budgeted net profit of R25 million for FY2025. While
+Jordan acknowledged a loss was a possibility in the first year, he had not anticipated the extent
+of the underperformance.
+In an attempt to replicate the success of the core discount chain, Jordan reassigned top-
+performing staff to the new LC stores. However, these employees were experienced in price-
+focused, high-volume retail rather than the personalised service and brand-driven marketing
+required by the LC stores. As a result, expected performance improvements did not
+materialise.
+Furthermore, performance varies widely across the LC stores. Differences in location, store
+size, rental costs and product mix have made it difficult to standardise operations. Jordan
+believes these inconsistencies could be addressed by ‘right-sizing’ stores, by tailoring layouts,
+product selections and formats to suit local demographics and demand, and by increasing
+revenue per m2 and reducing fixed costs.
+During the first year of operations, management identified several concerning trends. To
+increase footfall and brand visibility, the stores relied heavily on promotional pricing, often on
+low-margin products, which reduced profitability. Inefficiencies in distribution and warehousing
+further contributed to stores operating at a net loss. IR’s existing supply chain, geared to high-
+IAC January 2026 3 (of 8 pages) © SAICA 2026
+Paper 3
+volume, standardised goods, was not suited to the smaller-batch, more flexible inventory
+needs of the lifestyle stores. This mismatch led to increased re-labelling, and a notable
+increase in stock losses compared to normal group levels.
+Despite these operational challenges and financial losses, Jordan has consistently presented
+interim results in a positive light. In quarterly updates and investor presentations, he
+highlighted favourable metrics such as rising revenue and growing customer engagement,
+placing particular emphasis on the stronger-performing LC stores. He personally oversaw the
+drafting of these presentations. Jordan’s incentive structure, which ties his bonus to the
+company’s share price and profitability, appears to have motivated this optimistic portrayal of
+performance. In addition, as a relatively young CEO his aim is to build a reputation as an
+innovative leader in the retail sector. Investor confidence and perceived success are also
+critical to his career.
+With the full-year results being finalised and an audit in progress, internal tensions have
+surfaced. Jordan leads board meetings, and leaves little space for dissenting voices. At a
+recent board meeting, Michaela raised concerns about the overly optimistic assumptions
+Jordan used in investor briefings. Jordan dismissed her concerns.
+The finance team has also identified concerns that do not support the impression of sustained
+revenue growth previously communicated to investors. A significant portion of revenue
+reported to investors in the latest quarter is from once-off transactions, such as bulk and
+corporate sales, rather than from ongoing customer activity. The LC stores accept large
+prepaid online orders, generally with a delivery date after the end of the quarter. Jordan
+insisted that Michaela recognise the revenue at the point the order is confirmed to ‘reflect
+demand strength’. Micheala also voiced her concerns about other inconsistencies in the
+application of revenue recognition policies and the pressure to meet quarterly targets. These
+concerns, however, have largely gone unaddressed even though she highlighted them to
+Jordan before his communication to investors.
+In a private strategy session, Jordan commented: ‘Michaela is responsible for the financials,
+but I have to present the narrative to the investors during the quarterly updates to ensure I
+influence investor perceptions and secure consistent investment. With specific reference to
+revenue recognition, there is always flexibility in the interpretation of revenue recognition
+policies that is not only permissible but sometimes necessary in periods of change.’
+Jordan, who has a background in marketing and no formal accounting training, has grown
+increasingly frustrated with what he refers to as the CFO’s ‘pessimism bias’. He continues to
+advocate for a more ‘commercially minded’ approach to financial reporting that reinforces
+investor confidence and supports the company’s long-term vision.
+IAC January 2026 4 (of 8 pages) © SAICA 2026
+Paper 3
+The following is an extract of the financial results of the new LC stores for FY2025:
+STATEMENT OF PROFIT OR LOSS: LC STORES
+Notes Group A Group B Group C TOTAL
+Food Clothing Total Food Clothing Total Food Clothing Total
+R’000 R’000 R’000 R’000 R’000 R’000 R’000 R’000 R’000 R’000
+Revenue 2.1 120 000 180 000 300 000 105 000 45 000 150 000 59 500 10 500 70 000 520 000
+Cost of sales 2.2 (90 000) (105 000) (195 000) (78 750) (29 250) (108 000) (53 550) (7 350) (60 900) (363 900)
+Gross profit 30 000 75 000 105 000 26 250 15 750 42 000 5 950 3 150 9 100 156 100
+Store operating costs 2.2 (36 992) (55 488) (92 480) (32 368) (13 872) (46 240) (18 343) (3 237) (21 580) (160 300)
+Marketing and brand investment (9 240) (13 860) (23 100) (8 085) (3 465) (11 550) (4 581) (808) (5 390) (40 040)
+Logistics and distributions (13 800) (20 700) (34 500) (12 075) (5 175) (17 250) (6 843) (1 207) (8 050) (59 800)
+Head office allocations (5 760) (8 640) (14 400) (5 040) (2 160) (7 200) (2 856) (504) (3 360) (24 960)
+Earnings before interest and tax (35 792) (23 688) (59 480) (31 318) (8 922) (40 240) (26 674) (2 606) (29 280) (129 000)
+Finance cost (2 000) (3 000) (5 000)
+Profit/(loss) before tax (35 792) (23 688) (59 480) (31 318) (8 922) (42 240) (26 674) (2 606) (32 280) (134 000)
+Tax expense – – – – – – – – – –
+Net profit/(loss) (35 792) (23 688) (59 480) (31 318) (8 922) (42 240) (26 674) (2 606) (32 280) (134 000)
+ADDITIONAL MANAGEMENT INFORMATION: LC STORES
+Notes Group A Group B Group C TOTAL
+Food Clothing Total Food Clothing Total Food Clothing Total
+Number of stores 5 3 9 17
+Provinces 2.3 Gauteng, Western Cape KwaZulu-Natal, Eastern Cape Limpopo, Free State, North West,
+Northern Cape
+Average store size (m2) 1 000 1 800 2 400
+Revenue per m2 (R per m2) 300 000 ? 29 167
+Cost per m2 (R per m2) 287 480 ? 34 367
+Break-even revenue (R’000) 256 580 ? 252 609
+Budgeted sales mix 2.4 30% 70% 50% 50% 40% 60%
+Budgeted gross profit 25% 49% 30% 46% 23% 43%
+Budgeted market size
+(R’million) 1 500 1 000 500
+Actual market size (R’million) 1 400 800 300
+Budgeted market share 20% 20% 20%
+Sales mix variance (R‘000) 2.4 7 500 (14 700) (7 200) ? ? ? 7 245 (13 545) (6 300)
+Market size variance (R‘000) 2.4 (8 360) ? (14 000)
+Market share variance (R‘000) 2.4 8 360 ? 3 500
+IAC January 2026 5 (of 8 pages) © SAICA 2026
+Paper 3
+Notes
+2.1 Stores across all regions had high logistics costs and low sales volumes. The clothing
+stores had a difficult year, suffering from the rapid increase in competition from low-cost
+online retailers in the South African market.
+2.2 IR accounts for all its inventory using the first-in, first-out valuation method and uses the
+perpetual inventory system (see section 5 below for further details). Cost of sales
+consists predominantly of variable costs.
+Store operating costs consist of employee salaries, rental and other store-related costs.
+IR struggled to negotiate with new suppliers in these markets due to a lack of strong
+relationships and had to settle for quoted prices, with 20% of store operating costs
+variable in nature and the remaining 80% fixed.
+2.3 There are three types of stores:
+• Group A stores: These are located in urban areas and economically active hubs
+with a higher population density and a larger middle-class presence. The
+customers in these areas are generally more brand-conscious and expect modern
+shopping experiences.
+• Group B stores: These stores have a moderate population density and a mixed
+urban-rural spread. Most of the customers in this group form part of the emerging
+middle class but are more economically constrained. The marketing campaigns to
+this group were not successful as they failed to meet customer expectations.
+• Group C stores: Their customers are mostly part of the lower- to middle-LSM
+segment of the market in the rural or peri-urban areas.3
+2.4 Food and clothing products are sold within the same store environment, supported by
+shared sales teams, marketing campaigns and store infrastructure. The company had a
+clearly defined budgeted sales mix per product category.
+Jordan had already initiated a performance review. Preliminary calculations have been
+correctly computed for selected regions and product segments, covering variances in sales
+mix, market size, market share and break-even revenue4. However, the analysis remains
+incomplete.
+3 Shutdown decision
+More than a year into the project, IR had invested over R300 million in the LC stores, with no
+tangible improvement in the performance of the business unit.
+With mounting pressure from the board of directors to improve the financial result, Jordan has
+now decided to re-evaluate the viability of the LC stores. He has put together a proposal to
+reduce the number of stores to lower the total operating costs of the LC stores.
+As part of this reassessment, Jordan engaged with an external marketing company, at a cost
+of R50 000, to assess closing all nine LC stores in Group C to minimise losses. For example,
+some customers from affected towns could migrate their purchases to other IR stores in
+nearby locations.
+3 Peri-urban areas are transitional zones between fully urban and rural areas, characterised by a mix of urban and
+rural land uses and activities. They are located on the outskirts of cities and towns.
+4 Fixed costs for purposes of break-even revenue include only store operating costs.
+IAC January 2026 6 (of 8 pages) © SAICA 2026
+Paper 3
+Jordan also emphasised that even after closing the nine LC stores, IR would retain a presence
+(through its other discount retail stores) in all major provinces. This would enable IR to scale
+operations in the future should the performance of the remaining LC stores improve.
+Jordan has put together the following report on the impact on costs if the nine LC stores were
+to be closed in FY2026. In his report Jordan assumes that the FY2025 actual results are likely
+to be typical of the performance of the LC stores in FY2026.
+LC store operating costs
+Report by the CEO, Jordan Henderson
+The following costs are included in the store operating costs set out in the statement of profit
+or loss on page 4:
+3.1 Labour
+The closure of the nine stores in Group C will result in the retrenchment of 70 staff members.
+This includes cashiers, shop assistants, and security personnel for the stores in locations
+where the complex does not provide its own security. According to the employment
+contracts of these employees, they are entitled to retrenchment costs equal to three months’
+salary only, with no payments for part months. In addition, the employee should have been
+employed by IR for more than five months,
+All the employees that would be retrenched were employed on 1 October 2024 when the
+concept stores were first launched. Thus, all would have been in IR’s employ for one year
+at the end of FY2025. The current average cost to the company per employee to be
+retrenched is as follows:
+Position Number of
+staff Annual salary
+Cashiers 32 R114 000
+Shop assistants 28 R120 000
+Security personnel 10 R180 000
+3.2 Rental
+All stores currently located in the Group C areas have active lease agreements with an
+average remaining lease term of one year. The stores have an average rental cost of
+R50 000 per month per store. If IR were to cancel these lease contracts, the company would
+incur a penalty of R500 000 per store. Alternatively, IR could sublet these stores to external
+parties for an expected rental income of R8 000 per month per store.
+All other fixed costs that relate to store operating costs would be unavoidable as these
+contracts cannot be cancelled.
+3.3 Logistics and distribution
+All logistics and distribution costs related to the stores that will be closed will be saved.
+However, because IR has only recently entered into agreements with different logistics
+companies in these areas, IR would need to pay a total penalty of R900 000 for the early
+termination of all these agreements.
+IAC January 2026 7 (of 8 pages) © SAICA 2026
+Paper 3
+3.4 Marketing and brand investment
+1 All marketing and brand investment costs are incurred by the head office and are allocated
+to the stores based on store revenue. I anticipate that this cost will decrease by 15% should
+these stores be closed.
+4 Customer loyalty programmes
+4.1 IR customer loyalty programme
+IR customers can register on the IR Loyalty Mobile App to become members of the loyalty
+programme. The app is designed to display each customer’s real-time loyalty points balance
+and points transaction history, but it does not store underlying sales or transactional data.
+Rather, it connects to the central IT system to access the relevant information, in this case,
+the number of loyalty points earned, redeemed or available.
+When a customer makes a purchase in-store using their loyalty membership number, the
+transaction is processed through the sales and loyalty integration system. Each in-store
+terminal is linked to this centralised sales system, which records transaction data and
+automatically calculates loyalty points earned per transaction based on predefined terms and
+conditions. These terms and conditions allow customers to earn one point for every R100
+spent. Points can be redeemed on future purchases at a rate of R1 for every ten points earned.
+Loyalty points are only valid for six months from the date they are earned, after which they
+automatically expire if not redeemed.
+The following loyalty points details are available in the sales and loyalty integration system for
+each customer:
+• The opening and closing points balances;
+• The loyalty points awarded, expired and redeemed; and
+• The total loyalty points value.
+During FY2025, gross sales to customers who registered for the IR loyalty programme
+amounted to R240 million. These sales occurred evenly throughout the year. Of the loyalty
+points earned during the last six months of FY2025, 30% had already been redeemed by the
+end of FY2025.
+The contract liability at the end of each month and financial year end is calculated with
+reference to the output report of closing balances and points value per customer.
+The balance in the output report at the end of FY2025 has been adjusted for the 30% already
+redeemed, but not the estimated redemption rate. The estimated redemption rates are
+reviewed regularly. An adjustment to the contract liability is made by processing a journal entry
+to adjust for the difference in the balance according to the system and the estimate made.
+IR’s management expected that an estimated 80% of unredeemed points earned by
+customers would be redeemed and used this estimate to calculate the contract liability for
+FY2025.
+Should the Group C stores be discontinued in FY2026, customers would still be able to
+redeem their loyalty points at existing IR stores. However IR has indicated that, under such a
+scenario, the redemption estimate would decrease from 80% to 65%.
+IAC January 2026 8 (of 8 pages) © SAICA 2026
+Paper 3
+4.2 Partnership with FabBank
+IR partnered with FabBank during FY2025. This partnership was spurred by the opportunity
+to tap into the bank’s customer base and consequently generate additional sales when the LC
+stores were opened. In terms of the partnership, FabBank’s customers earn rewards on the
+bank’s loyalty programme when shopping at the LC stores. To earn rewards, FabBank’s
+customers simply swipe their debit or credit cards when making payments at any LC store.
+FabBank’s customers can earn up to 18% in cash back. To determine how rewards can be
+earned or redeemed as well as what their rewards balances are, FabBank customers are
+required to log onto the bank’s website or its banking app.
+The partnership with FabBank does not extend to the existing IR stores and, should all LC
+stores be discontinued, the partnership with the bank will come to an end.
+5 Inventory
+Due to the impending decision to discontinue the Group C stores, the accountant determined
+the expected selling prices less costs to sell the inventory at year end. In addition, IR
+conducted inventory counts on 30 September 2025 at all 17 LC stores. The information can
+be summarised as follows:
+Selling price
+less costs to
+sell
+Inventory count
+value Total purchases
+R’000 R’000 R’000
+Group A 98 000 96 100 300 000
+Group B 96 500 132 150 250 000
+Group C 26 500 36 725 100 000
+Total 221 000 264 975 650 000
+5.1 The accountant indicated that one of the suppliers delivered incorrect goods amounting
+to R120 000 to Group B stores. These are included in the inventory count value at year
+end but are excluded from the selling price less cost to sell value.
+5.2 A service delivery unrest took place on 1 October 2025 during which inventory valued
+at R64 000 was stolen from some of the Group C stores.
+5.3 The financial accountant stated that inventory was written down to its net realisable
+value at year end in line with the measurement requirements of IAS 2 Inventories. The
+following journal entry was processed at year end to meet these requirements.
+Account descriptions and calculations Dr. Cr.
+R’000 R’000
+Inventory write down (P/L) 43 975
+Inventory (SoFP)
+Calculation: R264 975 000 – R221 000 000
+43 975
+Write down of inventory to net realisable value
+IAC January 2026 1 (of 2 pages) © SAICA 2026
+Paper 3 part I required
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2026
+PROFESSIONAL PAPER 3
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 3 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Discuss the governance issues and ethical leadership concerns, with
+reference to the principles and recommended practices of the
+King IV Report on Corporate Governance, arising from the CEO’s
+actions and behaviour in connection with the opening of the new LC
+stores.
+• Do not discuss the SAICA Code of Professional Conduct.
+• Do not discuss compliance with the Companies Act.
+12
+12
+(b) Critically evaluate the strategic considerations that influenced IR’s
+decision to invest in the LC stores.
+• Ignore the governance-related matters that may have affected
+the decision to invest in the LC stores.
+Z1: Business internal environment
+Z2: Business external environment
+14
+1
+1 16
+Continued on page 2
+IAC January 2026 2 (of 2 pages) © SAICA 2026
+Paper 3 part I required
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2026
+PROFESSIONAL PAPER 3
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 3 PART I – REQUIRED (cont.)
+Marks
+Sub-
+total Total
+(c) Prepare a memorandum addressed to the board of directors. In the
+memorandum, incorporate insights across all LC stores but only
+include calculations for Group B stores. The memorandum should
+cover the following:
+(i) An evaluation of why the actual net profit of the LC stores
+differs significantly from the budgeted profit.
+• Focus only on the sales mix, market size and market
+share variances. (calculations: 9; discussion: 11)
+(ii) An assessment of the CEO’s theory that the store profitability
+could be improved by ‘right-sizing’ store formats to better align
+with local market conditions.
+• Use break-even analysis, contribution margin and unit
+economics (revenue and cost per m2) to support your
+answer. (calculations: 5; discussion: 9)
+X1: Communication skill – presentation and layout
+Y4: Judgement and decision making
+20
+14
+1
+1 36
+(d) Evaluate the CEO’s proposal to close all stores in Group C by –
+(i) using relevant costing principles to calculate the impact on the
+performance of IR in FY2026; and
+(ii) critically discussing the impact on the company and its internal
+stakeholders.
+• Assume that the FY2025 results are likely to be typical of the
+future performance in FY2026.
+12
+5
+17
+Total for part I 81
+IAC January 2026 1 (of 2 pages) © SAICA 2026
+Paper 3 Part II required
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2026
+PROFESSIONAL PAPER 3
+This paper consists of two parts. Answer each part in a separate answer book.
+PAPER 3 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(e) (i) Discuss how the customer loyalty programme of IR (in section 4.1
+only), should be accounted for in the financial statements of IR for
+FY2025.
+• Do not discuss any disclosure requirements.
+• Support your discussion with calculations.
+• Round all calculations to the nearest rand.
+• Ignore all forms of taxation.
+(ii) Discuss how the financial accounting implications in respect of IR’s
+customer loyalty programmes (in sections 4.1 and 4.2) would
+change if the Group C stores were closed by the end of FY2025.
+• Address the implications for both programmes.
+• Show calculations where applicable.
+• Round all calculations to the nearest rand.
+• Ignore all forms of taxation.
+Y1: Critical thinking – logic and reasoning
+11
+5
+1 17
+(f) Critically evaluate, with reasons, the accuracy of the inventory journal
+entry processed by the financial accountant in respect of the inventory
+write-down for FY2025.
+• Provide correcting journal entries where relevant.
+• Do not provide dates of journal entries or journal narrations.
+• Show calculations where applicable.
+• Ignore all forms of taxation.
+• Round all calculations to the nearest rand.
+10
+10
+Continued on page 2
+IAC January 2026 2 (of 2 pages) © SAICA 2026
+Paper 3 Part II required
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2026
+PROFESSIONAL PAPER 3
+This paper consists of two parts. Answer each part in a separate answer book.
+PAPER 3 PART II – REQUIRED (cont.)
+Marks
+Sub-
+total Total
+(g) Describe the additional substantive procedures that should be
+performed at year end by the AudSA audit team to obtain sufficient and
+appropriate audit evidence about the valuation, allocation, and
+accuracy of the contract liability resulting from the customer loyalty
+programme.
+• Assume that an IT expert already verified all controls over the
+central IT systems, sales and loyalty integration systems.
+• You can rely on all reports produced by these systems.
+• Ignore all forms of taxation.
+• All audit procedures to place reliance on the systems and the
+work performed by the IT expert have already been performed by
+the audit team.
+12
+12
+Total for part II 39
+TOTAL FOR PAPER 3 120

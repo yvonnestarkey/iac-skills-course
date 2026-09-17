@@ -1,0 +1,694 @@
+Source: SAICA IAC January 2026 — Paper 1 Part I suggested solution (Mzansi).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Initial Assessment of Competence
+Professional Paper 1
+January 2026
+Copyright, proprietary rights and permitted use
+© The South African Institute of Chartered Accountants (SAICA). All rights reserved.
+The SAICA Initial Assessment of Competence (IAC) questions, solutions and examiners comments
+(‘these documents’) constitutes proprietary intellectual property and professional know-how of SAICA.
+It has been developed and is maintained as part of SAICA’s mandate to uphold the quality, integrity,
+and high professional standards of the Chartered Accountant profession, which underpin public
+confidence and the value and attractiveness of SAICA membership and designation.
+Access to, or use of, these documents does not confer any right, licence, or interest in the intellectual
+property contained herein. Except where expressly permitted by SAICA in writing, no part of these
+documents may be copied, reproduced, adapted, published, distributed, or used for commercial,
+quasi-commercial, or third-party standard-setting purposes.
+These documents may be used solely for legitimate educational, regulatory, or professional purposes,
+in a manner that preserves their integrity, acknowledges SAICA as the owner and source, and does not
+undermine SAICA’s role as custodian of professional standards or dilute the value associated with
+SAICA’s membership and designation.
+Any authorised access to or use of these documents is subject to, and must be exercised in accordance
+with, SAICA’s Intellectual Property Management Policy, as amended from time to time.
+Disclaimer clause: All names of persons, places and business entities mentioned in these
+documents are fictitious and any resemblance to real persons, living or dead, places and business
+entities are purely coincidental.
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+Part (a) Discuss the effect of the information provided in section 2
+(Understanding the inventory account balance) on the auditor’s
+assessment of the risk of material misstatement for the inventory
+account balance in the FY2025 annual financial statements of MT.
+Marks
+Inventory is MT’ largest asset and the risk of material misstatement for all
+inventory-related assertions is increased because of the magnitude of this
+account balance – which means that misstatements relating to this account
+balance could translate into a material misstatement in the financial statements.
+1
+The risk of material misstatement for multiple inventory-related assertions:
+A demotivated staff working long hours may also make more errors when
+capturing and processing inventory transactions, as well as counting inventory
+(existence, completeness, valuation).
+1
+The use of a computerised perpetual inventory system could decrease risk at
+assertion level due to the real time tracking of inventory and real time access to
+selling prices, therefore quick responses to changes (valuation, existence).
+1
+MT’s operations are decentralised, with its central distribution centre in
+Johannesburg and several other stores. This may result in inconsistent controls
+and handling of inventory across the 75 stores, which could cause multiple
+misstatements in the inventory balance (existence, completeness, valuation, etc).
+1
+All returns might not be recorded, recorded correctly (valuation), or might not be
+recorded in the correct accounting period (completeness, cut-off), due to
+increases from prior years.
+1
+The risk of material misstatement relating to the existence assertion is further
+increased due to the following –
+the fact that the inventory balance increased by 11% compared to the prior year’s
+balance, coupled with a decline in the inventory turnover rate, could point to an
+overstatement of inventory – which may be due to (fictitious) inventory not on hand
+being reflected as part of the inventory balance (existence)
+1
+The ongoing transfers of inventory between the Johannesburg DC and stores,
+there is a risk that inventory transferred to stores around year end is double-
+counted (i.e. taken into inventory both at the DC upon dispatch and at the store
+upon receipt) (existence)
+1
+Assuming that the inventory count was undertaken properly, the risk pertaining to
+this assertion will, however, be reduced by the relatively small inventory
+adjustment that had to be made (existence)
+1
+There is an increased risk of theft, due to inventory being in high demand
+(fashionable), and easy to conceal (small and light) (existence)
+1
+Inventory at sea, which is included in inventory balance, does not exist i.e. was
+stolen resulting in overstatement of inventory (existence)
+1
+If staff are demotivated due to a lack of salary increases and bonuses over time,
+there is an increased risk of fraud occurring (e.g. misappropriation of assets,
+including inventory) due to staff rationalising such conduct (existence)
+1
+The risk of material misstatement relating to the rights assertion is further
+increased due to the following:
+MT has to account for consignment inventory, therefore there is a risk that such
+inventory is erroneously counted and recorded as inventory belonging to MT (e.g.,
+due to an inadequate system of tracking consignment inventory) (Rights)
+1
+The risk of material misstatement relating to the accuracy, valuation and allocation
+assertion is further increased due to the following:
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+For inventory on hand acquired from foreign suppliers – the cost of the
+merchandise invoiced in foreign currency may not be translated correctly using
+• the appropriate spot rate at the transaction date (FOB date); or
+• the transaction date (FOB date) is not correct.
+the cost price of the merchandise may not include all costs incurred to get
+inventory in the location and condition as intended by management (shipping and
+freight charges, import costs, customs duty, excluding costs to transfer from
+distribution centre to stores, VAT, storage)
+1
+Material misstatements may arise due to the inventory not being stated at the
+lower of cost and net realisable value (NRV), for the following reasons:
+Complexities in determining NRV and estimates used in the determination of the
+allowance, both influenced by management bias, can cause misstatements in the
+valuation of inventory.
+1
+Due to the fast-changing nature of fashion, there is a risk of there being inventory
+that is only saleable at amounts that are below its unit cost.
+1
+It is possible that merchandise that is damaged may be accepted back into
+inventory – which may not be saleable at amounts above the cost thereof.
+1
+The decline in the gross margin from 2024 to 2025 increases the likelihood that
+markdowns will result in the NRV being below cost.
+1
+The risk that the inventory write down is materially misstated is increased due to
+the following:
+Management’s approval of the inventory adjustment without deeper analysis and
+on the basis of “inevitable” inventory shortages highlights an inappropriate
+estimate of inventory obsolescence, likely increasing the risk of incorrect inventory
+valuation.
+1
+There is a decrease in sales, and slow moving stock is causing inventory balances
+to increase
+(the inventory turnover rate has therefore declined markedly from the prior year
+(2025: 0.75*501,000/150,209 = 2.5;
+2024: 0.67*554,000/132,023 = 2.8)
+1
+1
+Counterintuitively, the inventory obsolescence allowance has decreased in both
+an absolute amount and as a percentage of the inventory balance
+(2025: 11/150 = 7%; 2024: 13/132 = 10%) and is therefore not in line with the
+increase in inventory balance.
+1
+1
+Inventory at sea could be water damaged while being shipped and is thus valued
+incorrectly (overvalued) – this can be evident in the number of returns of defective
+goods.
+1
+Inventory could be of poor quality and can therefore be overvalued, given the high
+rate (20/150 = 13%) of returns, resulting in overstatement of inventory.
+1
+The risk of material misstatement relating to the completeness assertion is
+increased due to the following:
+As the company imports from international suppliers (FOB), it is possible that the
+risks and rewards of ownership of other imported inventory have transferred to
+MT at year end but is not accounted for, increasing the risk for the completeness
+assertion.
+1
+With ongoing transfers of inventory between the Johannesburg DC and stores,
+there is a risk that inventory transferred to stores around year end is not accounted
+for (i.e. derecognised in inventory at the DC upon dispatch and not yet recognised
+at the store).
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+The risk of material misstatement relating to the presentation and disclosure
+assertion is increased due to the following:
+Due to the potential liquidity/going concern problems, there is a risk that inventory
+may be pledged as collateral for loans and is inaccurately classified as free from
+encumbrances.
+1
+Due to the various factors raised above regarding complexity and management
+bias, there is an increased risk that the disclosure of inventory is not aligned with
+IAS 2 (policies are not appropriate or consistently applied).
+1
+Conclusion:
+Based on the risks identified above, the risk of material misstatement for inventory
+at assertion level is considered to be high (at the higher end of the risk spectrum)
+1
+Available 30
+Total for part (a) 15
+Y4: Judgement and decision making
+(Mark awarded unless candidates contradicted themselves on a specific trigger)
+1
+Total for part (a) 16
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+Part (b) Describe the key controls that MT should have implemented to
+ensure –
+(i) the accuracy and completeness of data captured by Paul that
+influence clearance sales; and
+Marks
+GRN’s received by Paul should be sequentially numbered and
+the sequence should be reviewed to ensure that no GRN’s are missed.
+1
+For each merchandise item code, Paul Potgieter (merchandise manager) should
+complete a standardised template for the input of data relating to markup
+percentage, budgeted sales and start date of the final clearance sale.
+1
+The data captured by Paul for each merchandise item should be logged and the
+logs should be reviewed online by the merchandise director, Sarah Smith against
+the approved supporting documentation (eg the sales budget from sales director)
+before being processed. It should be enforced by her having to give online approval
+before the processing of the data commences.
+1
+Screen layout should facilitate the accurate and complete capturing of the data,
+therefore the following edit checks should be used for capturing to the standardised
+template:
+Descriptive data echo test/drop down menu (when unique merchandise item
+number is captured descriptive information of the item should be displayed so that
+Paul can verify that he has entered the correct number when compared to GRN).
+1
+Alphanumeric checks on the merchandise item code, markup percentage,
+budgeted quantities, entered (to ensure that only numeric characters are
+input/captured);
+1
+Limit/Range checks on the markup percentage and budgeted sales quantities
+entered (i.e. markup percentage should be in line with company policy and the
+quantity input/captured cannot exceed the quantity of merchandise received); and
+1
+Sign checks on the markup percentage and budgeted quantity entered as they
+should not be negative.
+1
+Validation check on start date of final clearance sale to ensure it is in the future /
+a minimum amount of time must pass before clearance sale date can commence
+based on company policy.
+1
+Calendar pop-ups/format check on date should allow the administrator to select
+the date from a visual calendar, eliminating the need for manual entry and reducing
+the risk of errors.
+1
+On-screen warning/error/’are you sure’ messages when values inputted do not
+meet the edit check standards, preventing Paul from continuing without first
+correcting incorrect/incomplete data.
+1
+Mandatory field checks should be implemented with error messages if all fields
+are not completed.
+1
+Exception reports should be generated of instances where:
+Exception reports where the total budgeted sale volumes as captured on the
+systems description are more/less than the quantity of merchandise received per
+the GRN; and
+1
+Exception reports where there are merchandise item codes on the inventory
+system for which no budgeted unit sales have been recorded.
+1
+Exception reports where the final clearance sales start dates more than a season
+from GRN date.
+1
+These exception reports should be reviewed by Sarah, and in the event of errors
+being detected, the necessary remedial action to correct this should be taken.
+1
+Once Paul reviews and deems it fit to make amendments to a merchandise item,
+he should complete the pre-numbered amendment form for the markup
+percentage and/or clearance start date.
+1
+Each amendment form must be logged on the system, and logs must reviewed by
+an independent person.
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+An independent person should extract an exception report where the pre-
+numbering of the Masterfile amendment forms has missing sequence to
+ensure that all changes are all recorded and complete.
+1
+Available 18
+Maximum 10
+Total for part (b)(i) 10
+Part (b) Describe the key controls that MT should have implemented to
+ensure –
+(ii) the accuracy and completeness of the promotional discount
+details captured by Debra on the inventory management
+system.
+Marks
+Screen layout should facilitate the accurate and complete capturing of the data,
+therefore the following edit checks should be implemented:
+Descriptive data echo test/Dropdown menu (when unique merchandise item
+number is captured descriptive information of the item should be displayed so that
+Debra can verify that he has entered the correct number by comparing to the Exco
+data)
+1
+Alphanumeric checks merchandise item code and promotional discount
+percentage (to ensure that only numeric characters are input/captured);
+1
+Sign checks on the promotional discount entered as it should not be negative. 1
+Range checks/reasonability checks on promotional discount percentage (should
+not be below 0% and not more than 50% in line with company policy – should be
+lower than 50% which is final clearance
+1
+Validation check on the date - the ‘last date for discount’ cannot be before the ‘start
+date for discount’/ end date should be before final clearance / start date should be
+in future.
+1
+Calendar pop-ups / drop down box should allow the administrator to select the
+date from a visual calendar, eliminating the need for manual entry and reducing the
+risk of errors.
+1
+On-screen warning/error/’are you sure’ messages when values inputted do not
+meet the edit check standards, preventing Debra from continuing without first
+correcting incorrect/incomplete data.
+1
+Mandatory field checks should be implemented with error messages if all fields
+are not completed.
+1
+Grey out/Shade out of fields: Fields that are not intended to be amended by the
+user should be disabled or made read-only to prevent unauthorised changes.
+1
+System-generated logs of any processing interruptions should be produced and
+reviewed to confirm that no information was lost or compromised, thereby
+supporting the accuracy and completeness of data captured.
+1
+All discount details captured should be automatically logged by the system. An
+independent staff member (from the merchandise discount process) should –
+review the logs and compare these on a line-by-line basis to the approved
+discounts per the minutes / records of the applicable executive management
+committee meeting / a reconciliation can be performed between the log and the
+Exco information; and
+1
+ensure that the log reviewed follows on the most recent log previously reviewed
+(i.e. that there are no changes made that were not reviewed) / all logs should be
+signed as evidence of review and all logs not signed should be followed up on.
+1
+Exception reports for missing data, errors in discount percentages etc should be
+extracted and reviewed by management for follow up.
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+Once the logs are reviewed, the system should lock the record so that no further
+changes can be made by Debra
+1
+Available 14
+Maximum 8
+Total for part (b)(ii) 8
+X1: Communication skill: Clarity of expression
+(Mark awarded if candidates communicated clearly
+and their answers were understandable)
+1
+Total for part (b) 19
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+Part (c) Formulate the additional substantive audit procedures that should be
+performed by Sentinal to obtain sufficient appropriate audit evidence
+about the inventory obsolescence allowance balance as at
+31 December 2025.
+Marks
+Using GAS extract a report of all inventory items at 31 December 2025 where the
+final date of clearance has been reached and which were marked down in December
+2025, and through inspection agree this listing to the working obtained from
+management (completeness).
+1
+Obtain INV-106 and reperform the calculation of the inventory obsolescence
+allowance for mathematical accuracy
+1
+Use the GAS to compare the cost price to the NRV (i.e. either 50% of normal selling
+price or the adjusted selling allowing for the approved discount %) to identify items
+for which NRV write down should be recorded (Cost>NRV) and inspect whether a
+write down was recorded (accuracy)
+1
+Using GAS confirm that the correct mark down percentages were used for the
+correct category of stock items by:
+Comparing promotional items on the listing to those on the approved Exco schedule
+(occurrence)
+Ensuring through use of exception report or filtering, that all final clearance items
+have reached the final clearance start date (occurrence)
+1
+1
+Inspect the minutes of the management / board meeting for the approval of the
+obsolescence allowance policy as well as the evaluation of the allowance amount
+(occurrence, accuracy).
+1
+Inspect exco minutes of meetings for the approval of the promotional discounts
+(occurrence, accuracy).
+1
+Using GAS extract a report that compares budgeted vs actual sales quantities to
+ensure that all slow-moving items have been considered for promotional discounts
+(completeness).
+1
+Compare, through inspection, the write-down made on FY2024 to the actual write-
+downs of this inventory during FY2025 to ascertain the appropriateness of the
+method used to compute the allowance (accuracy)
+1
+Using GAS, compute the average selling prices of inventory items on hand on 31
+December 2025 in January and February 2026 (accuracy) / Agree through inspection
+the selling price per the inventory schedule to the most recent price list to confirm the
+correct amount is being used (accuracy).
+1
+Using GAS, compare these average selling prices to the unit cost and NRV as
+per the December 2025 report used to compute the inventory obsolescence
+allowance for all inventory items where the SP is less than cost (accuracy).
+1
+Using GAS, extract reports where there were no sales of inventory items on hand
+at 31 December 2025 in January and February 2026 in order to identify slow moving
+inventory that should have been written down in 2025 (completeness).
+1
+Discuss the items on the reports obtained in points 9, 10 and 11 with the
+merchandise director (Sarah) to determine to what extent adjustments need to be
+made to the allowance to include these items if not yet included (completeness).
+1
+Enquire from management the process of handling of returns: how merchandise
+returned by customers as being defective are dealt with – to ensure that such items
+are not reflected in inventory at cost (which might be higher than their NRV)
+(accuracy).
+1
+Observe that during the inventory count, any defective inventory or slow moving
+inventory (excluding consignment stock) identified should be traced to records to see
+if included in the allowance (completeness).
+1
+Perform the following analytical procedures
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+Ageing of inventory on hand: Using GAS, reperform the ageing of the inventory on
+hand at year end and compare to that at the end of FY2024, (or inspect invoices and
+payments made to verify age of inventory) to determine if there has been an increase
+in the average age of inventory/slow moving inventory, as this would indicate an
+increase in allowance (completeness).
+1
+Inventory turnover ratio: Calculate the inventory turnover ratio for the past financial
+years to determine if there has been a decrease in the ratio, indicating the allowance
+should increase (completeness).
+1
+Inventory allowance percentage: Calculate the allowance as a percentage of gross
+inventory for the current and the prior year as a similar ratio would be expected
+(completeness) or compare to industry norms (accuracy).
+1
+Follow up on exceptions in the above ratio analysis: Enquire from management
+the reasons for any fluctuations that differ from your expectations and corroborate
+the explanations given by management with further audit procedures.
+1
+Extract the following exception reports: Perform a duplicate field test to ensure
+a NRV write down is not calculated twice for the same inventory code (occurrence).
+1
+Extract the following exception reports: Perform a data integrity test to identify
+any negative numbers, or blank or nil fields for further inspection and investigation
+i.e. missing inventory number, missing dates, missing discount percentage.
+(occurrence).
+1
+Perform subsequent events testing, such as enquiries of management, inspecting
+minutes post year end, inspecting high product returns after year end, to identify any
+events that may result in an increase in the allowance (completeness).
+1
+General procedures
+Evaluate the competence, objectivity and experience of management who
+prepared the inventory obsolescence allowance through inspection of CV’s (all
+assertions).
+1
+Inspect disclosure in the AFS and ensure that it is in line with IFRS (presentation
+and disclosure)
+1
+Available 24
+Maximum 9
+W1: Data analysis – appropriate use of GAS
+(Mark awarded if candidates incorporated GAS procedures in their answers)
+1
+Total for part (c) 10
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+Part (d) With regard to MT’s liquidity and profitability challenges (under
+section 6: Going concern assessment) –
+(i) describe the additional audit procedures that should be
+performed by Sentinal on the action plan formulated by the
+management team of MT; and
+Marks
+Inspect the minutes of the board meeting of MT where this action plan (and these
+three specific actions) was discussed/approved (occurrence) to verify the following
+details:
+Specific stores to be closed
+The date of closure
+Reduction in marketing expenses (1 mil per month)
+Loan financing to be obtained from Inala.
+2
+Assess the reasonability of the action plan and the impact on the going
+concern assessment by:
+Discussing the logic used by management (rationale) in the preparation of the
+action plan and the revised cash flows and perform reasonability tests (sensitivity
+and scenario analysis, comparison to market and industry data) on the assumptions
+used to determine the impact on the going concern issues (as below).
+1
+Obtain the cashflow forecast and cast and cross cast the revised cash flow
+forecast where the 3 actions have been taken into account (accuracy).
+1
+Compare, through inspection, previous budgets or forecasts made my
+management (eg FY2025) to actual results to assess whether management
+forecasts have been previously reasonable (occurrence, accuracy).
+1
+Obtain a written representation letter, to be signed by the CEO, for the
+company’s plans for future action and the feasibility of these plans, including the
+reference to the appropriateness of the key assumptions used.
+1
+Closure of stores
+Inspect the financial results of the stores suggested for closure to ensure that they
+were indeed unprofitable and that there is reduced activity post year end
+(occurrence).
+1
+Inspect any post year‑end evidence such as notices issued to lessors or
+employees, to assess whether store closures are being actively implemented /
+management accounts to ensure no sales have taken place in closed stores
+(occurrence).
+1
+Compare, by inspection, the revenue losses projected by management for each
+store to the revenues earned by these stores in FY2025, as extracted from the trial
+balance / the store’s sales reports for FY2025, for reasonability (accuracy).
+1
+Compare, by inspection, the projected reduction in expenses for each store to the
+expenses incurred by each of these stores in FY2025, as extracted from the trial
+balance, for reasonability (accuracy).
+1
+Inspect the workings to ensure that the closure costs (such as early termination of
+lease, staff retrenchment costs for any salary savings) have been taken into account
+(completeness).
+1
+Inspect the relevant agreements (e.g., with employees and staff members, lease
+agreements) to ensure that the closure costs have been correctly identified for eg.
+the period / number of years that an employee has been employed at MT, the
+number of months salary offered as retrenchment package, lease cancellation fees
+(accuracy).
+1
+Once determined that the inputs are correct, a recalculation of these amounts
+included in the action plan for the relevant employees and lease cancellations, etc,
+will also need to be performed(accuracy).
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+Enquire from management and inspect correspondence with legal advisors
+regarding labour law implications of retrenchments/unions – legal fees
+included in forecast (completeness).
+1
+Reduction in marketing
+Compare, through inspection, the FY2025 actual marketing spend to the proposed
+reduced budget for FY2026 to assess whether the planned cost reductions are
+realistic based on historical spending patterns. / Calculate what percentage of the
+total marketing cost the R1m per month is to ensure the reduction is reasonable
+(occurrence).
+1
+Inspect the impact previous changes in marketing expenditure had on sales, and
+determine if this was been taken into account in the revised cash flow budget
+(occurrence, accuracy).
+1
+Inspect marketing contracts for terms and nature of costs to determine if these costs
+can be reduced and not fixed in nature/cancellations (occurrence).
+1
+Inspect marketing contracts to determine if there are any penalties that will need to
+be paid for early termination, and confirm that these costs have been taken into
+account by management in the cash flow forecast (completeness).
+1
+Inspect actual marketing expenditure in the first few months after year end to
+determine whether marketing expenses did indeed decrease by R1 million when
+compared to actual FY2025 marketing expenses (occurrence).
+1
+Loan from Inala
+Inspect the loan agreement or written confirmation from Inala, for the following:
+Signatures of authorised representatives of Mt and Inala (occurrence).
+Loan mount of R75 million (accuracy of cashflow forecast)
+Interest charge and repayment terms (accuracy of cashflow forecast)
+Date of the agreement (accuracy of cashflow forecast)
+2
+Inspect the financial statements of Inala for the liquidity position of Inala
+Investments at 31 December 2025 (occurrence);
+1
+Inspect the sale of shares agreement between Inala and AID to ensure the
+agreement to sell the shares exists and the timing thereof (occurrence).
+1
+Inspect media reports for developments following the PDP’s criticism of the
+arrangement (occurrence); and
+1
+Inspect the cash book (deposits)/bank statements of MT for any loan financing
+received – and that the timeframes specified in the loan agreement are met
+(occurrence, accuracy).
+1
+Determine whether the timing of the receipt of the funding aligns with the liquidity
+needs of MT through inspection of the revised cash flow forecast and assessing the
+liquidity position of MT (occurrence, accuracy).
+1
+Enquire from management if any regulatory approvals are required for the Inala/AID
+funding and inspect the MOI for any such restrictions on receipt of such funding
+(occurrence).
+1
+Enquire from the CFO whether there are any additional facts/information affecting
+the plan that has become available since the date on which the plan was prepared.
+1
+Available 28
+Maximum 13
+Z1: Business internal environment
+(Mark awarded if candidates provided procedures on the detail on any one of the
+three elements of the action plan)
+1
+Total for part (d)(i) 14
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+Part (d) With regard to MT’s liquidity and profitability challenges (under
+section 6: Going concern assessment) –
+(ii) explain what modifications, if any, should be made to the
+auditor’s report on MT’s FY2025 financial statements.
+The audit team concluded that material uncertainty exists that may cast significant
+doubt on MT’s ability to continue as a going concern. Therefore the auditors need
+to establish the impact on the audit report:
+NB (it was noted that the auditors did not identify any material uncorrected
+misstatements)
+The nature of the modifications that must be made to the auditor’s report will
+therefore depend on whether the client made adequate disclosure of the
+material uncertainty in the financial statements.
+The disclosures required include the principal events or conditions that may cast
+doubt on the entity’s ability to continue as a going concern and management’s plans
+to deal with this as well a statement that there is a material uncertainty that may
+render the company unable to realise its assets and discharge its liabilities in the
+ordinary course of business (ISA 570.19).
+1
+Is there disclosure?
+There has been no indication in the scenario as to what management has disclosed
+in this regard, other than the comment made by Sarah that the inventory should be
+net off against the XYZ bank loan – indicating that management integrity could be
+an issue and therefore it can be assumed that adequate disclosure will not be made.
+1
+It was only stated that management confirmed that MT could trade profitably and
+that the liquidity challenges could be overcome. And it was stated that the financial
+statements are prepared on the going concern basis. Therefore it can be assumed
+that disclosure will be made.
+1
+The extent of disclosure to be made is judgemental therefore the non-disclosure (or
+partial disclosure) would lead to a judgemental misstatement that would have to be
+discussed with management.
+1
+Is it material?
+The misstatement would be considered qualitatively material as it relates to
+disclosures which could influence the decision making of the users.
+Or
+when considering the impact of the plan (closing stores, significant reduction in
+marketing expenditure (12 million), 75 million loan, 50 million in pledged inventory
+on a 24 million loan – this could further be considered as quantitatively material.
+1
+Is it pervasive?
+It could be considered to not be pervasive as the financials are prepared using the
+going concern assumption appropriately and the only impact on the financials is the
+disclosure of the conditions and management plans therefore the misstatement is
+regarding the going concern disclosure only and is therefore not considered
+pervasive.
+1
+It could be considered to be pervasive as it could affect the basis of preparing the
+AFS including each line item presented and would impact the users understanding
+of the full set of financial statements, and can therefore be considered pervasive
+1
+Impact on audit opinion
+If adequate disclosure has not been made of the events or conditions, such as the
+breach of loan covenants, appropriate disclosure of the pledged inventory, the
+amount of pledged inventory sold at year end, management’s plans to deal with the
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 1 PART I
+
+liquidity issues (closure of stores, reduction of marketing expenses, and obtaining
+funding from Inala)
+and it is not pervasive the audit opinion must be modified with an except for
+opinion
+In the ‘Basis for qualified opinion’ section of the auditor’s report, it will be stated that
+a material uncertainty exists that may cast significant doubt on the company’s ability
+to continue as a going concern and that the financial statements do not adequately
+disclose this.
+1
+If adequate disclosure has not been made of the events or conditions, such as the
+breach of loan covenants, appropriate disclosure of the pledged inventory, the
+amount of pledged inventory sold at year end, management’s plans to deal with the
+liquidity issues (closure of stores, reduction of marketing expenses, and obtaining
+funding from Inala)
+and it is pervasive the audit opinion must be modified with an adverse opinion
+1
+In the ‘Basis for an adverse opinion’ section of the auditor’s report, it will be stated
+that a material uncertainty exists that may cast significant doubt on the company’s
+ability to continue as a going concern and that the financial statements do not
+adequately disclose this and it is pervasive.
+1
+Alternatively:
+If assumed that adequate disclosure has been made,
+the auditor’s report should include a separate section under the heading ‘Material
+uncertainty related to going concern’ which draws attention to the note in the
+financial statements that discloses the material uncertainty (ISA 570.22).
+1
+The auditor’s opinion on the financial statements will not be modified (i.e. an
+unmodified audit opinion will still be expressed), as there are no other material
+misstatements and the financial statements are fairly presented.
+1
+Going concern uncertainty and the audit of management’ assessment of going
+concern can be deemed to be a Key Audit Matter, as it requires significant auditor
+judgement. Reporting Going concern uncertainty as a KAM will only be applicable
+if the audit opinion is not modified (i.e. the going concern basis is applicable and
+adequate disclosure of the issue was made)
+1
+Available 12
+Maximum 5
+Total for part (d)(ii) 5
+Total for part (d) 19
+TOTAL FOR PART I 64

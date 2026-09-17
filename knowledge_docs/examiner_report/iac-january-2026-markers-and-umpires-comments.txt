@@ -1,0 +1,1605 @@
+Source: SAICA IAC January 2026 — Markers’ and Umpires’ Comments.
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 1
+
+MARKERS’ AND UMPIRES’ COMMENTS
+INITIAL ASSESSMENT OF COMPETENCE
+JANUARY 2026
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 2
+
+Copyright, proprietary rights and permitted use
+© The South African Institute of Chartered Accountants (SAICA). All rights reserved.
+The SAICA Initial Assessment of Competence (IAC) questions, solutions and examiners comments (‘these
+documents’) constitutes proprietary intellectual property and professional know-how of SAICA. It has been
+developed and is maintained as part of SAICA’s mandate to uphold the quality, integrity, and high
+professional standards of the Chartered Accountant profession, which underpin public confidence and the
+value and attractiveness of SAICA membership and designation.
+Access to, or use of, these documents does not confer any right, licence, or interest in the intellectual property
+contained herein. Except where expressly permitted by SAICA in writing, no part of these documents may
+be copied, reproduced, adapted, published, distributed, or used for commercial, quasi-commercial, or
+third-party standard-setting purposes.
+These documents may be used solely for legitimate educational, regulatory, or professional purposes, in a
+manner that preserves their integrity, acknowledges SAICA as the owner and source, and does not
+undermine SAICA’s role as custodian of professional standards or dilute the value associated with SAICA’s
+membership and designation.
+Any authorised access to or use of these documents is subject to, and must be exercised in accordance with,
+SAICA’s Intellectual Property Management Policy, as amended from time to time.
+Disclaimer clause: All names of persons, places and business entities mentioned in these documents are
+fictitious and any resemblance to real persons, living or dead, places and business entities are purely
+coincidental.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 3
+
+TABLE OF CONTENTS
+Objectives of this report ................................................................................................................................................... 4
+Statistics for IAC January 2026 ........................................................................................................................................ 5
+Background information on the setting, marking and adjudication of SAICA examinations ............................................. 6
+General comments on the IAC January 2026 .................................................................................................................. 9
+Detailed comments on each of the three professional papers ....................................................................................... 14
+Professional paper 1 ................................................................................................................................................. 14
+Paper 1 part I ........................................................................................................................................................ 15
+Paper 1 part II ....................................................................................................................................................... 17
+Professional paper 2 ................................................................................................................................................. 21
+Paper 2 part I ........................................................................................................................................................ 22
+Paper 2 part II ....................................................................................................................................................... 29
+Professional paper 3 ................................................................................................................................................. 32
+Paper 3 part I ........................................................................................................................................................ 33
+Paper 3 part II ....................................................................................................................................................... 36
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 4
+
+OBJECTIVES OF THIS REPORT
+This report has been compiled from the analysis of examiners on candidates’ performance in the Initial Assessment of
+Competence (IAC), which was written in January 2026. Its objectives are to –
+▪ assist unsuccessful candidates in identifying those areas in which they lost marks and need to improve their
+knowledge and/or presentation; and
+▪ assist future exam candidates, by providing a commentary for them to use when working through past papers.
+To accomplish these objectives, the report provides background information on how the examination questions are set,
+marked and adjudicated; comments on general shortcomings in answers; and specific comments on each question of
+the three examination papers.
+The purpose of the IAC is to test the integrated application of technical competence, preferably as soon as possible after
+the prescribed academic requirements have been met.
+The remainder of this report is discussed under the following headings:
+▪ Statistics for the IAC January 2026;
+▪ Background information on the setting, marking and adjudication of SAICA examinations;
+▪ General comments on the IAC January 2026;
+▪ Assessment of Enabling Competencies in the IAC January 2026; and
+▪ Detailed comments on each of the three professional papers.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 5
+
+STATISTICS FOR IAC JANUARY 2026
+Pass % Passed Failed Total
+All candidates 65% 2 055 1 116 3 171
+Average marks per question (all candidates)
+Paper 1 Part I Part II Total
+Total marks 64 56 120
+Average marks 32,93 31,71 64,64
+Paper 2 Part I Part II Total
+Total marks 50 70 120
+Average marks 26,15 35,81 61,95
+Paper 3 Part I Part II Total
+Total marks 81 39 120
+Average marks 41,96 20,39 62,35
+More detailed statistics can be found on the SAICA website at www.saica.org.za
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 6
+
+BACKGROUND INFORMATION ON THE SETTING, MARKING AND ADJUDICATION OF
+SAICA EXAMINATIONS
+The IAC Examinations Committee (IAC Examco) constantly strives to improve its ability to determine whether candidates
+demonstrate a readiness to continue with their accounting education and training. This is done by means of an ongoing
+process of evaluation of and improvement in the way in which it selects questions for inclusion in the examination and
+decides on the final mark plans.
+1 Source of the questions
+The IAC Examco is a sub-committee of the SAICA Chartered Accountant Professional Development Committee (CAPD
+Committee) and takes overall responsibility for the setting of the examination papers.
+The IAC Examco prepares question briefs and then select academics from endorsed professional providers to set
+questions based on the briefs. Because the questions cover a variety of disciplines, a team of setters from various
+providers work together on each of the questions.
+Academics or former academics are also involved in reviewing exam questions in each of the core subject areas.
+However, academics who have any involvement whatsoever in the presentation or otherwise of Board courses may NOT
+act as reviewers. These academics or former academics are appointed by core subject area and their role is to –
+▪ review questions for conceptual problems and consistency in the use of terminology;
+▪ give an indication as to whether the relevant examination questions are set at an appropriate level;
+▪ provide comments on whether the number of marks and time limit are appropriate; and
+▪ provide comments on the validity and reliability of the assessment.
+In addition, the examination questions are also reviewed by a third expert for cultural and language bias.
+Four external examination sitters, who are independent of the exam setting process, are also appointed to review the
+questions selected for both the January and June IAC. These sitters are chosen from the persons who passed the IAC
+the previous year. The examination sitters provide independent comments on the examination papers and suggested
+solutions, and report on these to the IAC Examco.
+SAICA would like to acknowledge and thank all the people involved in the examination setting process.
+Security and confidentiality of examination papers: The examination papers for each year are compiled, printed and
+sent to each examination centre under very stringent conditions of security.
+2 The marking process
+The IAC Examco devotes a great deal of time to the review and refinement of mark plans to ensure that the plans are
+consistent with its expectations for each question.
+Before marking of the scripts commences, copies of the examination papers and suggested solutions are forwarded to
+all endorsed academic programme providers for comment. The markers and umpires prepare suggested solutions and
+mark plans once all these comments have been considered and a test batch of scripts has been marked. The suggested
+solutions, mark plans and test batch results are then reviewed by the IAC Examco, which approves the final solutions
+and the mark plans that will be used in the marking process.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 7
+
+Marking is undertaken by teams, with each team consisting of a number of markers (comprising academics, practitioners
+and representatives from commerce and industry) and an umpire. Markers and umpires are assigned to specific
+questions based on their fields of expertise.
+All markers and umpires sign a declaration of confidentiality regarding the handling of scripts, questions, solutions and
+mark plans. SAICA holds the copyright of the questions and mark plans.
+Consistency marking was introduced in 2012, which entails that a pack of scripts are selected on a random basis by
+SAICA’s Examinations Unit, and the exam numbers removed. These scripts are then re-numbered and photocopied.
+Every person on the mark team has to mark the question to which they have been assigned in the batch of scripts. This
+takes place on the first day of the main marking process and the umpire, together with his/her mark team, then discuss
+point by point how the individual markers awarded the marks for each question. The aim of this process is to identify any
+concerns, differences and discrepancies in interpretation that the marker(s) may have in awarding of marks as per the
+final mark plan before actual marking commences. The main objective is to achieve consistency in the way the different
+markers within a mark team award marks.
+Marking of the IAC January 2026 took place at a central mark centre. An administration hub was set up, from which
+administrative personnel controlled which scripts were signed out, to whom, and when the marked scripts were returned.
+Each script was marked independently by two persons, using an electronic marking tool. The tool records marks per
+subsection, section and question automatically. Only once the double-blind marking of each batch of scripts had been
+completed did the markers confer and jointly decide on the final raw mark (what is referred to as ‘marking reconciliation’)
+to be awarded for a particular answer. This was also recorded on the marking tool. If the markers were unable to agree
+upon the number of marks to be awarded for a particular answer, the script was referred to the umpire, who then reviewed
+the paper and awarded the final mark. After the reconciliation process, the electronic tool captured the final marks of all
+candidates and prepares a report for the IAC Examco.
+3 Adjudication
+Adjudication is a process during which the CAPD Committee considers all relevant evidence, including the following, to
+determine whether the marks to be awarded for each question should be adjusted:
+▪ Whether candidates encountered any time constraints;
+▪ Whether the level of difficulty of each question was appropriate for the IAC;
+▪ Possible ambiguity in the wording; and
+▪ Any other problems that may have been encountered relating to the examination.
+The members of the CAPD Committee do not know the candidate details (including the raw pass mark) at the time the
+adjudication process takes place.
+Adjudication is done by the full CAPD Committee as soon as possible after the marking process has been finalised and
+checked by the SAICA secretariat. During the adjudication three secretaries’ marks (one per paper) are added to each
+candidate’s score. The objective of these secretaries’ marks is to compensate for any errors that may have occurred
+during the marking process.
+It is important to note that no person from academia is allowed to serve on the IAC Examco, and that candidates’
+anonymity is preserved until the final adjudication has been completed.
+In order to ensure that the whole marking and adjudication process remain anonymous, the instructions to candidates
+clearly state that their names should not appear anywhere on their scripts.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 8
+
+4 Borderline review
+In 2013 SAICA introduced a further process to ensure that individual candidates who just fail the exam are not prejudiced
+in any way. Once the adjudication has been complete, the scripts of candidates who just failed (based on a range
+determined by the CAPD Committee) are extracted and a third and final review is undertaken of such candidates’ scripts.
+This review is undertaken by the umpire and assistant umpires, being the most senior and experienced members of a
+mark team. The marks during this process may either go up or down and each script is again assessed on a paper by
+paper basis to ensure that the final result is not contrived. A sub-committee of the CAPD Committee then meets to
+discuss the outcome of the borderline review and thereafter the pass percentages and other detailed statistics for the
+examination are prepared.
+Candidates whose scripts are selected for the borderline review are not awarded the secretaries’ mark because they
+have had the benefit of a further and more detailed review of their papers.
+In view of the above stringent marking process no request for re-marks will be entertained (also refer to the
+Examination Regulations for the IAC in this regard).
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 9
+
+GENERAL COMMENTS ON THE IAC JANUARY 2026
+1 Objective
+In view of the primary objective of the IAC, namely to test the integrated application of technical competence, candidates
+are tested on their ability to –
+▪ apply the knowledge specified in the subject areas set out in the prescribed syllabus;
+▪ identify, define and rank problems and issues;
+▪ analyse information;
+▪ address problems in an integrative manner;
+▪ exercise professional judgement;
+▪ evaluate alternatives and propose practical solutions that respond to the users’ needs; and
+▪ communicate clearly and effectively.
+2 Analysis of topics
+Reporting
+on value
+creation
+Strategy
+and
+governanc
+e to create
+sustainabl
+e value
+Steward-
+ships of
+capitals:
+Business
+processe
+s and risk
+manage-
+ment
+Assuranc
+e and
+related
+services
+Tax
+governanc
+e and
+complianc
+e
+Decision-
+making to
+increase,
+decrease
+or
+transform
+capitals
+Ethics
+(including
+CoPC)
+PVAAs
+(excl.
+Ethics)
+TOTAL
+Paper 1
+Part I 60 4 64
+Paper 1
+Part II 45 9 2 56
+Paper 2
+Part I 48 2 50
+Paper 2
+Part II 10 34 21 5 70
+Paper 3
+Part I 26 51 4 81
+Paper 3
+Part II 26 12 1 39
+Total 71 26 19 72 48 85 21 18 360
+% 19,7 7,2 5,3 20,0 13,3 23,6 5,8 5,0
+3 Overall comments on the papers
+The January 2026 IAC examination was considered to provide a fair assessment of technical competence overall, with
+a mix of easier and more challenging areas. There was a good balance between easy, moderate and difficult sections
+within each paper and the themes and scenarios were topical and relevant.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 10
+
+Paper 1 consisted of a single scenario, with the required sections divided into two parts. The first part dealt with
+assurance and related services and the second part with reporting on value creation and stewardships of capitals:
+business processes and risk management.
+Paper 2 consisted of a single scenario, with the required sections divided into two parts. In part I tax governance and
+compliance and in part II stewardships of capitals: business processes and risk management, decision-making
+to increase, decrease or transform capitals and ethics were examined.
+Paper 3 consisted of a single scenario with two parts. Part I examined stewardships of capitals: business processes
+and risk management and decision-making to increase, decrease or transform capitals. Part II covered reporting
+on value creation and assurance and related services.
+4 General comments
+From a review of candidates’ answers to the IAC January 2026 examination, the general deficiencies set out below were
+identified. These problems affected the overall performance of candidates, and it is a matter of concern that candidates
+make the same mistakes year after year. Although these aspects seem like common sense, candidates who pay attention
+to them are likely to obtain better marks, and it may even turn a low mark into a pass.
+4.1 Application of knowledge
+A serious problem experienced throughout the examination was that candidates were unable to apply their knowledge
+to the scenarios described in the questions, in particular foundational core knowledge. Many responses by candidates
+were a ‘shopping list’ of items in the form of a pure regurgitation of what candidates may have learnt about the theory at
+university, but with no real relevance to the question in hand. Candidates also do not appear to be able to identify the
+correct issues stated in the scenarios. This is a major concern, because by the time candidates qualify for entry to these
+examinations, one would expect them to have assimilated the knowledge, at least to the extent of being able to apply it
+to simplified facts as set out in an examination question. Obviously, candidates who are unable to identify the correct
+issues do not do well in the examination.
+4.2 Workings
+It is essential that candidates show their workings and supply detailed computations to support the figures in their
+answers. Marks are reserved for methodology but can only be awarded for what is shown. Workings should, like the
+rest of the paper, be done in blue or black ink to ensure legibility. In many instances workings were performed by
+candidates but not cross-referenced to the final solution. Markers could not award marks as they were unable to follow
+which working related to which part of the final solution. Candidates must ensure they show their workings and that these
+are properly and clearly cross-referenced to the final solution.
+4.3 Communication
+Candidates fared better in questions requiring calculations than in discursive questions. This is a disturbing trend as the
+IAC is a stepping stone in the qualification process where the final Assessment of Professional Competence requires
+that significantly more focus and attention be given to these important skills. It is important that candidates bear in mind
+that written answers are a large component of the Qualifying Examinations, because written communication is a key
+competency required in the workplace. Candidates should learn to answer discursive questions properly. This can be
+done by practicing exam-type answers under exam conditions in preparation for the examination.
+In addition, markers found that candidates used their own abbreviations (text messaging style) in their answers. Marks
+could not be awarded here as it is not up to the markers to interpret abbreviations that are not commonly used.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 11
+
+Candidates should pay specific attention to the way in which they write their answers, and bear in mind that this
+is a professional examination for which communication and presentation marks are awarded.
+4.4 Journal entries
+A fundamental part of accounting and external reporting is an understanding of debits and credits. A means of assessing
+whether a candidate understands these fundamental principles is to require the candidate to prepare the relevant journal
+entries. Candidates often do not understand what journal entries they need to process. In many instances basic journal
+entries are processed incorrectly. In addition, account descriptions are poor and abbreviations are used.
+This is inexcusable and candidates must ensure that they understand what impact transactions would have on specific
+account balances, by showing that they know which account (and which financial statement) has to be debited or
+credited. It is not sufficient for a candidate with Accounting at the PGDA level to be a technocrat – understanding of the
+fundamental principles of accounting is critical to the success of a candidate at the IAC level.
+4.5 Time management
+Candidates are advised to use their time wisely and budget time for each question. The marks allocated to each question
+are an indication of the relative importance the examiners attach to that question and thus the time that should be spent
+on it. Candidates should beware of the tendency to spend too much time on the first part of the paper attempted and too
+little time on the last. They should never overrun on time on any required but rather return to it after attempting all other
+parts.
+Candidates should address the time management issue by starting with the questions they feel more comfortable with
+or can consider to be ‘easier’ while still feeling fresh in the exam. This ensures two things: confidence is gained by the
+candidate and good marks are earned easily, such that some time is saved – which can then be used a ‘buffer’ to add
+to the time allocated for the more challenging questions. This gives the candidate a fair opportunity to do well. This is
+considered an ‘exam success strategy’.
+4.6 Layout and presentation
+Candidates should allocate time to planning the layout and presentation of their answers before committing thought to
+paper. Very often, candidates start to write without having read the question properly, which invariably leads to, for
+example, parts of the same question being answered in several places or restatement of facts in different parts. Marks
+are awarded for appropriate presentation and candidates should answer questions in the required format, that is, in the
+form of a letter, memorandum or a report, if this is what is required.
+The quality of handwriting is also an ongoing problem and was of particular concern in this year’s examination. The onus
+is on the candidate to produce legible answers.
+Separate books are used to answer each question of the IAC. Each book is clearly marked and colour coded. Candidates
+are given explicit instructions to write the correct answer in the correct book. Despite this some candidates did not write
+the correct answer in the correct book (the secretariat does ensure that candidates who write answers in the incorrect
+book are marked by the correct mark team, but this adds to the marking time).
+4.7 Irrelevancy
+Marks are awarded for quality, not quantity. Verbosity is no substitute for clear, concise, logical thinking and good
+presentation. Candidates should bear in mind that a display of irrelevant knowledge, however sound, will gain no marks.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 12
+
+4.8 Drilling down
+Responses, particularly in the financial management, management decision making and control and the strategy, risk
+management and governance areas are often provided by simply repeating the information given in the question.
+Candidates are unable to drill down to assess what the underlying problem areas are and do not put any effort into going
+beyond what is stated in the question. Candidates need to draw on their entire knowledge base in order to provide in-
+depth and meaningful insight, particularly in analysis-type questions.
+4.9 Recommendations / interpretations
+Responses to these requirements are generally poor, either because candidates are unable to explain principles that
+they can apply numerically or because they are reluctant to commit themselves to one course of action. It is essential to
+make a recommendation when a question calls for it, and to support it with reasons. Not only the direction of the
+recommendation (i.e. to do or not to do something) is important, but particularly the quality of the arguments – in other
+words, whether they are relevant to the actual case and whether the final recommendation is consistent with those
+arguments. Unnecessary time is wasted by stating all the alternatives.
+Candidates should communicate reasons for calculations, if required. A discussion of a case study should always have
+a conclusion. Or if it requires that a decision be made, a conclusion alone is not sufficient; it requires that the conclusion
+be discussed and motivated.
+4.10 Examination technique
+Examination technique remains the key distinguishing feature between candidates who pass and those that fail. Many
+candidates do not address what was required by the questions and, for example, provide a discussion where calculations
+are required or presented financial statements where a discussion of the appropriate disclosure was required.
+4.11 Open-book examination
+Candidates are reminded that they MUST familiarise themselves with SAICA’s open book policy and be aware that this
+may differ from that of their endorsed academic provider university. Candidates are also reminded that only SAICA has
+the authority to interpret its own open-book policy and any contravention of IAC regulations will be considered to be
+misconduct. Candidates are advised to familiarise themselves with SAICA’s Examination Regulations prior to writing
+the examination.
+Another problem relating to the open-book examination is that candidates do not state the relevant theory and/or
+definitions in their answers. One cannot build a logical argument without using the theory as a base and starting point.
+Reference to theory and definitions is essential to create the perspective from which the question is answered and is
+required to enable markers to follow the argument. However, since candidates have this information at hand, marks are
+not awarded for stating detailed definitions only. This type of examination does affect the answer that is expected and
+application and demonstration of insight into the use of the definition have gained in importance.
+Candidates should also remember that one has to be very well prepared for an open-book examination. There is not
+enough time in the examination to look up all information from the texts. With regard to certain aspects one would be
+expected to offer an immediate response based on embedded knowledge. Complex information needs to be fully
+understood before the examination. Candidates who enter the examination hoping to look up data that they have not
+processed in advance will be at a disadvantage as they are unlikely to finish the papers.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 13
+
+4.12 Paying equal attention to all the competency areas
+It is disappointing to note that candidates still appear to be most prepared to respond to reporting on value creation
+questions and fare considerably poorer in some of the other disciplines – most notably decision-making to increase,
+decrease or transform capitals. Candidates are reminded that the accountancy discipline is a broad one and the other
+disciplines are equally important.
+5 Assessment of enabling competencies in the IAC January 2026
+The assessment of enabling competencies, in line with the Competency Framework of SAICA, encompassed a range of
+competencies including judgement and decision-making (Y4), communication (X1), data analytics (W1), business
+environment (Z1 and Z2), critical thinking (Y1), problem solving (Y3), professional scepticism (Y5), and personal ethics
+(I1).
+Overall performance across the enabling competencies was inconsistent, with noticeable variation between questions
+and competency areas. While candidates were generally able to identify relevant issues, a pervasive weakness was the
+lack of sufficient depth and supporting explanations. Responses were often underdeveloped, with limited justification
+provided for conclusions reached.
+Relatively stronger performance was observed in communication (X1) and aspects of the internal business environment
+(Z1), where candidates demonstrated a basic ability to contextualise their responses. However, even in these areas,
+answers frequently lacked depth and did not fully integrate scenario-specific factors.
+In contrast, performance in data analytics (W1) and the external business environment (Z2) was notably weak. External
+factors were often either overlooked or superficially described, with limited linkage to the entity’s specific circumstances
+or decision-making context.
+There was some evidence of higher-order thinking in areas such as judgement and decision-making (Y4), critical thinking
+(Y1), and professional scepticism (Y5), particularly among stronger candidates who were able to evaluate information
+and support their positions. However, this was not consistently demonstrated across the cohort, with many candidates
+needing to further develop their ability to critically assess information, challenge assumptions, and present clear, well-
+reasoned conclusions.
+Although ethical considerations (I1) were generally identified, these were often addressed in a generic manner without
+sufficient application to the scenario.
+Overall, while candidates demonstrate a foundational awareness of enabling competencies, there is a clear need to
+develop deeper analytical responses, supported by robust explanations, stronger use of data, and more effective
+integration of both internal and external business factors into decision-making.
+In conclusion, a message to those who were unfortunately not successful in the examination:
+Please start preparing for the next examination in good time. Don’t give up – sufficient preparation and a review of
+the basics will stand you in good stead for you next exam!
+Best of luck!!
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 14
+
+DETAILED COMMENTS ON EACH OF THE THREE PROFESSIONAL PAPERS
+PROFESSIONAL PAPER 1
+Paper 1 consisted of a 120-mark question, with the required divided into two parts that dealt with the following
+aspects:
+Part I
+(a) Candidates had to discuss the effect of the information provided in section 2 (Understanding the inventory
+account balance) on the auditor’s assessment of the risk of material misstatement for the inventory account
+balance in the FY2025 financial statements of a South African retail company (MT).
+(b) Candidates had to describe the key controls that MT should have implemented to ensure –
+(i) the accuracy and completeness of data captured by the merchandise manager that influence
+clearance sales; and
+(ii) the accuracy and completeness of the promotional discount details captured by the merchandise
+records administrator on the inventory management system.
+(c) A formulation of the additional substantive audit procedures that should be performed by MT’s registered
+auditors to obtain sufficient appropriate audit evidence about the inventory obsolescence allowance balance
+as at 31 December 2025.
+(d) With regard to MT’s liquidity and profitability challenges (under section 6: Going concern assessment),
+candidates had to –
+(i) describe the additional audit procedures that should be performed by the registered auditors on the
+action plan formulated by the management team of MT; and
+(ii) explain what modifications, if any, should be made to the auditor’s report on MT’s FY2025 financial
+statements.
+Part II
+(e) Candidates were required to evaluate, with reasons, based on IFRS® Accounting Standards, the
+merchandise director’s statement regarding the treatment of pledged inventory and the loan from a South
+African bank.
+(f) A description of the steps that the accounting authority of a government-owned bank (AID) should take
+following the criticism expressed in the media with regard to the agreement AID concluded with MT’s
+diversified holding company (Inala).
+(g) Candidates had to prepare the journal entries that MT should process in its FY2025 separate financial
+statements to account for a listed bond.
+Candidates were required to –
+• ignore tax;
+• not provide journal narrations; and
+• round all calculations to the nearest rand.
+(h) A calculation of the group profit or loss, if any, that Inala should recognise in its consolidated financial
+statements relating to the disposal of the MT shares on 1 January 2026.
+Instructions to candidates:
+• Ignore all tax with regard to the listed bond only.
+• Ignore the time value of money with regard to the payment tranches that AID will pay over to Inala.
+• Round all calculations to the nearest rand.
+Six communication skills and professional values, attitudes and acumens were available for this paper.
+These marks were clearly and separately stated in the ‘required’ sections of each part.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 15
+
+PAPER 1 PART I
+Maximum mark
+61
+Average mark
+32,93
+Number of candidates
+who passed
+1 796 (57%)
+Number of candidates
+who wrote
+3 171
+1 General comments on complexity
+Overall, the paper was moderate with some easy to challenging requireds per subsection. Overall the paper was well
+balanced.
+• The scenario and background were familiar to candidates and are regularly assessed in PGDA programmes.
+• The scenario, which centres around a retail business, reflects a model that is likely familiar to candidates and
+that may therefore have reduced perceived complexity.
+• The case study information was fairly basic; the absence of technical concepts and limited integration led to a
+low level of question complexity.
+• The system description was brief and not easy to follow. The flow of information starts well but then becomes
+a little fragmented later on.
+2 Feedback on the candidate responses: General matters
+Exam technique
+• Overall, candidates seemed to be confused in requireds (b), (c) and (d), with the result that they sometimes
+copied and pasted procedures from the ISAs without applying these to the scenario.
+• It also resulted in generic controls being provided that were not applicable to the requireds.
+Time management
+• There was no clear evidence of time management issues in this part of the paper and most candidates seemed
+to have managed their time well.
+Communication
+• Most candidates communicated in an adequate manner.
+Layout, structure and presentation
+• Common mistakes that candidates made were to not always follow sentence structure conventions, such as
+trigger and effect.
+• Candidates often did not state the ISA 500 verb, source and purpose of their procedures.
+Relevance
+• Candidates’ responses were generally relevant.
+• However, in the risk question, candidates discussed risk at a financial statement level instead of an assertion
+level. This would have been considered not relevant to the required.
+Recommendations
+• In general, candidates need to focus on the wording conventions of the different requireds (risks, controls,
+procedures).
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 16
+
+3 Feedback per each required section of the part
+3.1 Areas that candidates handled well
+Part (a)
+• Most candidates were able to identify the majority of the triggers in the scenario and apply these to the risk of
+material misstatement. These included triggers such as incomplete stock due to transfers between the JHB
+BC and the stores and risks due to dealing with stock on a free-on-board basis.
+• Candidates were able to discuss the risk of stock not appropriately accounted that stemmed from dealing with
+foreign supplies.
+Part (b)
+• Some candidates were able to differentiate between the data inputs of the merchandise manager and
+merchandise director successfully.
+• A number of candidates were able to provide appropriate applied controls for each role.
+• In addition, some candidates understood the required and provided relevant application controls for the
+capturing and review of information on the systems.
+Part (c)
+• Candidates were able to earn marks for recalculation of the different aspects of the write down (cost vs NRV).
+• Some candidates were able to appropriately provide other general procedures.
+Part (d)
+• In part (d)(i) candidates were successful in identifying procedures over going concern as a whole, including
+general procedures such as inspecting of minutes for approval and inspecting agreements as per the action
+plan.
+• Part (d)(ii) was well answered. The majority of candidates were able to identify and appropriately discuss the
+different modifications to the audit opinion.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (a)
+• While candidates on the whole performed well in this required, some candidates did not identify sufficient
+triggers from the scenario.
+• A number of candidates also struggled with the discussion of the impact of the triggers and therefore did not
+explain the risk of material misstatement.
+Part (b)
+• Some of the candidates did to some degree struggle to generate sufficient applicable controls.
+• Candidates focused more on controls that should be performed before the data input (receipt of inventory –
+which was out of the scope of the required) than the actual input controls.
+• In addition, candidates struggled to demonstrate different application of controls in part (b)(i) and (b)(ii), which
+required an in-depth analysis of the scenario and information provided.
+Part (c)
+• Candidates often did not use appropriate wording conventions in their responses (ISA 500 verb, source and
+purpose would be required at this level of assessment).
+• Some candidates struggled to incorporate general audit software and analytical procedures, and often then
+only provided manual procedures and not computer assisted auditing techniques.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 17
+
+Part (d)(i)
+• Some candidates struggled to formulate procedures for future activities, and many did not go into the detail of
+the action plan.
+• Many candidates copied generic procedures from the ISA and did not apply them to the scenario.
+• Candidates often did not use appropriate wording conventions in their responses (ISA 500 verb, source and
+purpose would be required at this level of assessment).
+Part (d)(ii)
+• A number of the candidates did not demonstrate judgement and decision making in responding to the required.
+• As a result, they provided a generic response with all alternatives that could have impacted the issue and that
+one could find in an auditors’ report.
+PAPER 1 PART II
+Maximum mark
+51
+Average mark
+31,71
+Number of candidates
+who passed
+2 402 (76%)
+Number of candidates
+who wrote
+3 170
+1 General comments on complexity
+• Overall, all responding providers considered the paper to be moderately balanced.
+• Most providers viewed the paper as neither overly difficult nor unfair, but rather appropriately set at a moderate
+level.
+• Overall, both the providers and mark team concluded that the paper was appropriately balanced in terms of
+complexity and fairness.
+2 Feedback on the candidate responses: General matters
+• The candidates who performed better were those who identified the core accounting issue early and applied the
+relevant principles directly to the scenario, but many lost marks by providing generic theory information or
+repeating scenario facts without linking them to the applicable standards.
+• A recurring weakness was poor application to the facts: many candidates showed some technical knowledge yet
+struggled to connect that knowledge to the specific requirement, resulting in incomplete, misdirected, or partially
+relevant answers.
+• In several sections, stronger candidates demonstrated sound numerical ability and could calculate present values,
+interest, and disposal figures correctly, but these correct calculations were often undermined by weak
+classification, poor presentation, or a failure to carry the numbers through to the final answer.
+• Many candidates struggled with balance and completeness, often focusing on only one side of a transaction or
+one element of a requirement, while better responses addressed all relevant components in an integrated manner
+and reached clear overall conclusions.
+• There was widespread confusion around key technical distinctions, such as control vs derecognition, offsetting vs
+disclosure, FVOCI vs amortised cost mechanics, and the correct treatment of reserves and goodwill, although a
+minority handled these distinctions accurately and scored well.
+• Candidates who answered from the correct perspective and selected the appropriate framework produced
+insightful and relevant responses, while many others forced familiar but irrelevant frameworks onto the scenario,
+especially in sections requiring a public sector focus.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 18
+
+• Exam technique was a major differentiator: good candidates wrote concise, targeted answers with clear workings
+and logical flow, whereas weaker candidates repeated points, included unnecessary calculations, omitted
+conclusions, or answered beyond the years and issues actually required.
+• In journal-based questions, many candidates showed a reasonable understanding of double-entry mechanics, but
+common errors in debit/credit direction, sign conventions, denominating entries, and classification between profit
+or loss, OCI, and the SoFP cost them marks.
+• A consistent positive feature was that a fair number of candidates displayed practical reasoning and could use
+shortcuts effectively when they understood the ‘big picture’, but many others became lost in fragmented workings
+and failed to link calculations to the required journals or final reported figures.
+• Overall, performance was strongest where candidates combined sound technical knowledge with disciplined exam
+technique, and weakest where there was theory dumping, misreading of the requirement, an incorrect perspective,
+or failure to conclude clearly after applying the facts.
+3 Feedback per each required section of the part
+3.1 Areas that candidates handled well
+Part (e)
+• Candidates who identified the core issue (control vs derecognition/offsetting) performed strongly.
+• Some were able to correctly apply relevant IFRS principles to the scenario, rather than relying on generic theory.
+• Better responses focused on the correct entity (MT) and appropriately considered the relevant elements of the
+transaction.
+• A minority demonstrated a sound understanding of the underlying principles, effectively linking facts to the
+appropriate accounting treatment.
+Part (f)
+• Some candidates demonstrated strong practical reasoning, producing relevant and insightful points that were
+focused on the scenario.
+• A minority showed a good understanding of the public sector context, correctly identifying key issues and applying
+appropriate considerations.
+• Better responses were scenario-focused and tailored, avoiding unnecessary frameworks and addressing the
+requirement directly.
+Part (g)
+• Overall performance was generally strong, with many candidates answering the question competently.
+• A large number correctly calculated the present value of the bond.
+• Many candidates were able to prepare journal entries accurately, with correct debit and credit mechanics.
+• Candidates demonstrated good time value of money skills, and time management was generally adequate.
+• A fair proportion of candidates achieved high marks for correctly aligning calculations and journal entries.
+Part (h)
+• Overall performance was strong, with many candidates scoring well on this part.
+• A majority demonstrated a good understanding of IFRS 10, particularly in calculating group profit/loss on disposal.
+• Many candidates were able to correctly derecognise proportionate carrying amounts (including goodwill and post-
+acquisition reserves) against proceeds.
+• Stronger candidates effectively used shortcuts and structured approaches, leading to efficient and accurate
+answers.
+• Those who carried out calculations consistently and linked them to the final answer achieved high marks.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 19
+
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (e)
+• Application to the scenario was weak: many candidates either dumped theory or repeated the scenario without
+linking it to IFRS principles.
+• Core technical misunderstandings were common, particularly with regard to the following:
+o Control vs derecognition vs offsetting;
+o The meaning of a pledge of inventory; and
+o The role of disclosure vs recognition.
+• Incomplete answers: candidates often addressed only one side (asset or liability) instead of both.
+• Misdirected application: Some applied principles to the bank instead of the reporting entity.
+• Theory dumping: excessive, irrelevant discussion (e.g., IAS 2/NRV) without addressing the actual issue.
+• Poor exam technique: lack of structure, missing conclusions, and failure to clearly answer the requirement.
+• Confusion between alternatives (derecognition vs offsetting) led to incorrect or partial answers.
+Part (f)
+• Incorrect perspective was the main issue: many answered from a corporate, ethics or audit viewpoint instead of
+the required public sector perspective.
+• Use of irrelevant frameworks (e.g., King IV, Companies Act, NOCLAR, IFRS standards) led to misdirected
+answers.
+• Forcing pre-prepared knowledge onto the question instead of analysing the specific scenario.
+• Poor application to the requirement: candidates often recited theory or codes rather than applying facts.
+• Repetition and lack of conciseness: the same points were restated, which resulted in candidates being awarded
+a limited number of marks despite providing lengthy answers.
+• Candidates displayed weak exam technique, including irrelevant material, lack of focus, and failure to structure
+answers into clear, distinct points.
+Part (g)
+• Classification errors were common: journal entries were often correct in principle but incorrectly allocated between
+OCI, profit or loss, and SoFP.
+• Confusion between fair value and amortised cost: many incorrectly based interest on fair value movements instead
+of using amortised cost.
+• Fair value adjustment mistakes, particularly failing to adjust for interest and repayments before calculating fair
+value gains/losses.
+• ECL errors, including recognising the full allowance instead of the movement and misclassifying the impact
+between OCI and profit or loss.
+• Incorrect use of data, such as applying the wrong year’s numbers or using fair values instead of amortised cost
+values.
+• Journal and presentation issues, including incorrect debit/credit directions, missing brackets/signs, and a lack of
+proper denomination.
+• Failure to carry through balances, so that correct calculations were not reflected in subsequent journal entries.
+• Misclassification of elements, with some candidates incorrectly identifying assets as liabilities.
+Part (h)
+• FVOCI reserve treatment errors: candidates often used incorrect numbers (e.g., total balance instead of
+movement) and ignored the impact of ECL adjustments.
+• Failure to carry through calculations: correct workings were frequently not applied to the final group profit/loss.
+• Goodwill errors, including failing to recognise impairment correctly or incorrectly incorporating it into the
+consideration.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 20
+
+• Confusion between equity and post-acquisition movements, including incorrect percentages, lack of
+apportionment, and mixing acquisition vs post-acquisition reserves.
+• Poor presentation and referencing, with unclear or disconnected workings, made it difficult for the mark team to
+follow the candidates’ logic.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 21
+
+PROFESSIONAL PAPER 2
+Paper 2 consisted of a 120-mark question, with the required divided into two parts that dealt with the following aspects:
+Part I
+(a) Candidates were required to discuss, with reference to case law principles, the income tax implications for Lexi,
+a South African tax resident, in respect of an all-expenses-paid trip described in section 3 (Additional income).
+(b) A calculation of Lexi’s normal tax payable for her 2025 year of assessment.
+Candidates were given the following instructions:
+• Provide reasons for amounts that have a nil effect on the calculation.
+• For the purposes of answering required (b), assume that –
+o with regard to point 3.2 (Foreign income – book talk fee) the fee will be fully taxable in South
+Africa; and
+o section 6B is nil.
+(c) Candidates were required to discuss whether Hebony (a leading advertising agency and a South African tax
+resident) should withhold employees’ tax on R121 500 payable to CreativeLexi (a registered company) for
+January 2025.
+(d) Candidates had to discuss the income tax implications for Holdings (an investment holding company) in respect
+of the R68,1 million interest paid to Africa Holdings (Pty) Ltd (a shareholder of Holdings) in its 2025 tax return.
+Part II
+(e) Candidates had to calculate, based on the internal rate of return method, which of the two loan offers received
+for the acquisition of CreativeLexi would be most cost effective.
+For this required only, candidates had to assume that –
+• SARS would allow a deduction of the interest on each loan in terms of section 24J of the Income Tax
+Act;
+• MGT would not default on payments; and
+• the returns from CreativeLexi would be above the 30% requirement for loan option 1 for the duration of
+the loan.
+(f) Candidates had to advise MGT (a South African company with a strategic interest in digital talent acquisition)
+on which loan offer it should accept.
+• Candidates had to consider both quantitative and qualitative factors.
+• Candidates did not have to provide calculations.
+(g) Based only on the information and data included in the extract from the report on social media performance
+indicators, a discussion of the factors that MGT should consider before proceeding with the acquisition of
+CreativeLexi.
+• Candidates did not have to provide calculations.
+(h) A discussion of any ethical concerns with regard to the conduct of Arno (Lexi’s boyfriend and a CA(SA)) in terms
+of the SAICA Code of Professional Conduct.
+Candidates were instructed not to –
+• discuss any safeguards to address any possible breach or threat; or
+• discuss the level of the threat.
+(i) Candidates had to discuss the ethical conduct of Lexi as the CEO of CreativeLexi in view of how she responded
+to allegations in a video on TikTok®.
+Candidates did not have to discuss the Companies Act and King IV Report on Corporate Governance.
+Six communication skills and professional values, attitudes and acumens were available for this paper. These
+marks were clearly and separately stated in the ‘required’ sections of each part.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 22
+
+PAPER 2 PART I
+Maximum mark
+44
+Average mark
+26,15
+Number of candidates
+who passed
+1 941 (61%)
+Number of candidates
+who wrote
+3 170
+1 General comments on the degree of difficulty of the question
+Overall
+• The overall standard of this part of the question was generally considered to be easy to moderate, though it
+included some challenging aspects. It was viewed as fair and that it would be achievable by most candidates. It
+was appropriate, fair, and of moderate complexity for the IAC level. The balance between technical demand and
+accessibility was generally regarded as acceptable. The paper provided the following:
+o It assessed standard, syllabus-aligned technical content, contributing to fairness and predictability.
+o Complexity arose mainly from the accurate application of legislation, classification of amounts, and
+correct computational treatment.
+o Integration across topics was present but limited, resulting in moderate rather than high complexity.
+o The structured presentation and clarity of most requirements supported fairness and made the time
+allowed manageable.
+• The paper contained a well-developed scenario and allowed for natural integration of both individual and
+corporate tax considerations. It provided good coverage across various sections of the tax knowledge list, with
+a balanced mix of easier and more challenging areas. Candidates were required to demonstrate critical thinking
+skills, as the questions included both information-rich and information-sparse sections, necessitating evaluation
+of relevant facts and deduction based on the scenario.
+• Although the overall complexity was moderate, the application of the section 24J component in part (d) proved
+more difficult. The suggested solution allocated a substantial number of marks for correctly stating principles,
+drawing conclusions, and similar elements, allowing candidates to leverage their technical competencies.
+• Despite these opportunities, many candidates demonstrated weaknesses in exam technique, particularly in
+applying legal principles to the facts of the scenario. Several candidates merely restated theoretical principles or
+case law without adequately connecting them to the specific facts of the part.
+• Some candidates identified relevant sections of the Income Tax Act but did not apply them appropriately. For
+example, they referred to provisions without explaining how the requirements should be applied in the context
+of the scenario.
+Part (a)
+• Moderate. The scenario clearly required candidates to apply case law principles.
+• Candidates were required to discuss the inclusion in gross income of an all-expenses-paid trip to Cape Town
+awarded to an employee.
+• Overall performance was below expectations. While many candidates referred to elements of the gross income
+definition, they often failed to link the trip to the rendering of services: specifically, that the trip constituted an
+amount received or accrued in return for services rendered (an exchange or quid pro quo transaction).
+Candidates thus missed the crux of the question, focusing on incorrect elements of the gross income definition
+(e.g., capital vs revenue).
+• As a result, most candidates obtained only generic discussion marks. Candidates rarely linked the burden of
+proof to section 102(1)(e) of the Tax Administration Act, and few applied it explicitly within the context of the facts
+provided.
+Part (b)
+• Moderate. The information provided was structured, allowing candidates to obtain most marks if their technical
+knowledge was up to date.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 23
+
+• Candidates generally recognised the effects of the DTA and correctly applied section 10(1)(o)(ii) regarding the
+non-exemption of secondment salary. Most correctly addressed the nil effects of certain amounts, providing valid
+reasoning.
+• However, some candidates incorrectly taxed amounts as withdrawals from a savings pot, applying retirement
+withdrawal tax tables instead of including them in gross income.
+• A few candidates attempted to split rental income for a portion of a flat converted into a recording studio and
+claimed deductions incorrectly.
+• The section 11F deduction and its limitations were not always applied correctly, and some candidates failed to
+treat it as the final deduction in the scenario.
+Part (c)
+• Moderate to easy. The requirements were straightforward and clearly indicated.
+• Candidates were asked to discuss whether Hebony should withhold PAYE on an amount paid to CreativeLexi
+for January 2025. CreativeLexi is wholly owned by Lexi, a former employee.
+• Most candidates correctly identified CreativeLexi as a company and Lexi as a connected person in the context
+of the scenario. They recognised that CreativeLexi constituted a personal service provider under the Fourth
+Schedule and accordingly concluded that Hebony must withhold PAYE. Overall performance was strong.
+• While easier than other sections, this question required candidates to integrate knowledge within a broader
+scenario, prompting critical thinking about the relevance of employees’ tax. Some candidates provided
+incomplete responses, for example merely stating that an individual is a connected person without specifying
+the percentage shareholding or sole shareholder status.
+Part (d)
+• Moderate to difficult. Candidates needed integrated thinking to determine that Holdings was not engaged in a
+trade yet could deduct interest under Practice Note 31 (or the new section 11G), limited to interest income
+received. Holdings received R34,9 million from subsidiaries and incurred R68,1 million in interest payable to its
+shareholder, Africa Holdings. Its only income sources were interest on loans to subsidiaries and dividends.
+Holdings was not a money lender and was not registered with the National Credit Regulator. Candidates were
+required to discuss the tax implications of the R68,1 million interest expense.
+• Several candidates correctly applied section 24J, read with Practice Note 31, to determine deductibility, though
+many addressed the matter under sections 11(a) or 24O. Most were able to reach conclusions consistent with
+their reasoning.
+• To earn the Year 1 critical thinking mark, candidates had to analyse the facts and apply section 24J(2) alongside
+relevant legislation and practice notes, rather than relying solely on general deduction principles.
+2 Feedback on the candidate responses: General matters
+Exam technique
+• Candidates’ exam technique needs to be improved, as many of them lost easy marks by failing to conclude their
+answers in line with the argument or stance taken in their discussions.
+• In addition, candidates often overextended themselves on questions where they believed they could score more
+marks, rather than allocating effort and time according to the mark distribution.
+• It is recommended that candidates create sufficient columns for technical workings and clearly show calculations
+and subtotals (e.g., a section 11F deduction).
+• Many candidates tended to ‘dump’ theory by for example providing the gross income definition without identifying
+the crux of the question.
+• Care must be taken when applying section 102 of the Tax Administration Act, as merely stating ‘burden of proof’
+may not be sufficient to earn marks.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 24
+
+Time management
+• Candidates generally demonstrated effective time management, with most attempting all sub-parts of the
+required sections in detail. However, several issues with time allocation were observed throughout the
+examination.
+• Evidence of poor time management was particularly noticeable in sections (a) and (b), while section (d) often
+received insufficient attention.
+o In section (a), candidates sometimes wrote up to two pages for a discussion of a six-mark gross income
+question, which was unnecessary.
+o In section (b), brief reasons were required for nil amounts, but many candidates submitted lengthy
+discussions, consuming a significant portion of their time.
+o In section (c), time was often spent expanding discussions that did not carry marks. For example, many
+candidates provided detailed commentary on Hebony not supervising CreativeLexi, which was irrelevant
+to the requireds.
+o Time management remained a challenge for several candidates, as part (d) responses were frequently
+incomplete or lacked sufficient depth of analysis.
+Communication
+• Most candidates demonstrated effective and clear communication, particularly in parts (a), (c), and (d), where
+logical arguments reflected their understanding of the subject matter and ability to structure reasoning
+appropriately.
+• A recurring issue was the omission of explicit conclusions, even after completing calculations. When required to
+select either the lower or higher value from calculated amounts, candidates must clearly communicate their
+choice, which would confirm their grasp of the relevant principles and demonstrate thoughtful application.
+• Some candidates used informal or colloquial terms, such as ‘gig’, for ‘services rendered’. No marks can be
+awarded for such language, as candidates are expected to maintain an academic tone and use proper tax
+terminology throughout the assessment.
+• Communication marks in part (c) were readily awarded when candidates successfully identified the relevant
+issue.
+• Part (d) was more challenging, as many candidates failed to identify section 24J, resulting in fewer
+communication marks being awarded.
+• Care must be taken to ensure conclusions align with the discussion.
+• In several instances, candidates merely restated facts from the scenario rather than analysing them. Simply
+repeating facts without connecting them to legal principles does not demonstrate a comprehension of the tax
+implications.
+Layout, structure and presentation
+• Overall, candidates provided well-structured answers; however, there is room for improvement in exam
+technique, particularly in applying scenario information to legislative requirements. Candidates are encouraged
+to explicitly link the details of the scenario to relevant legislation and clearly articulate these connections
+throughout their responses.
+• Many candidates did not present legible scripts. In several cases, the markers found it difficult to read the
+handwriting. Candidates should prioritise clear presentation and structured planning before beginning their
+answers.
+• Candidates experienced difficulties with the structure required for part (b). Despite its straightforward nature,
+many responses did not meet expectations. Some candidates incorrectly deducted rebates from taxable income,
+indicating a misunderstanding of the requirements. In addition, conclusions were sometimes drawn midway
+through the discussion rather than at the end.
+• The three-column method proved beneficial for candidates in part (b). Those who used this approach generally
+performed better and probably saved time compared to candidates who placed all amounts in a single column.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 25
+
+However, the layout of answers was often inconsistent, with discussions, calculations, and conclusions not
+clearly separated.
+• When calculating normal tax payable, several candidates did not show clear workings or failed to label
+calculations appropriately. This lack of clarity made it difficult to follow their reasoning and assess their
+understanding.
+Relevance
+• The content of the scenario and the provisions assessed were both relevant and appropriate for the examination.
+• It was observed that, in more scripts than anticipated, candidates referred to section 11(a) in part (a), even
+though the matter clearly concerned a receipt of a revenue nature. This approach is concerning, as it highlights
+a lack of attentiveness and insufficient comprehension of the scenario.
+• Many candidates also discussed every element of the gross income definition, indicating a failure to correctly
+identify the key issue.
+Recommendations
+• Candidates should focus on applying tax principles directly to the facts presented, rather than merely restating
+theoretical knowledge. This approach fosters critical thinking and the practical application of legislation.
+• When referencing case law or statutory provisions, candidates must clearly demonstrate how the requirements
+of each provision or principle are satisfied by the facts of the scenario. Making this explicit connection is an
+essential element of a robust and credible response.
+• For discussion-based questions, structured answers should be employed, including clear identification of the
+issue, the relevant principle, its application to the facts, and a well-defined conclusion. This method ensures
+clarity and logical progression throughout the response.
+Workings (and references to workings)
+• Candidates generally demonstrated thorough and detailed workings to support their calculations. However,
+some lacked clarity in presenting these workings.
+• Many candidates did not consistently track or reference their workings appropriately. In some cases, calculations
+were performed on separate pages, resulting in an unclear and unstructured presentation. Furthermore, incorrect
+reference numbers were sometimes carried into the main body of the calculation, leading to errors.
+• In several instances, candidates’ handwriting was unclear, further affecting the readability and comprehension
+of their workings.
+3 Feedback per each required section of the part
+3.1 Areas that candidates handled well
+Part (a)
+• Many candidates successfully recognised and addressed the issue regarding the ‘amount’ in the phrase ‘cash
+or otherwise’. There was clear evidence that candidates were able to conclude whether the value of an all-
+expenses-paid trip should be included in gross income, income, or taxable income. Notably, most candidates
+correctly identified that the central issue was the inclusion of an amount that was not provided in cash.
+• Case law principles were generally well identified and appropriately applied to the scenarios presented.
+• Almost all candidates provided a conclusion that aligned with their arguments.
+Part (b)
+• Most candidates excelled in this section of the assessment.
+• This strong performance was anticipated, as candidates generally possess a better understanding of the tax
+implications for natural persons and find individual tax topics more accessible compared to corporate tax.
+• Despite overall success, candidates encountered challenges with the section 11F calculation question. There
+was a noticeable lack of understanding regarding the principles embedded in this section. Many candidates
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 26
+
+demonstrated limited knowledge of what constitutes ‘remuneration’ as defined in the relevant legislation.
+Furthermore, candidates often failed to add a conclusion to their answers, neglecting to explicitly indicate to the
+marker which amount should be used and the rationale behind their choice in assessing the section 11F
+limitation.
+• Notwithstanding the difficulties, most candidates exhibited a strong grasp of individual tax concepts overall.
+Fringe benefits were particularly well addressed, and many candidates correctly applied the Rnil amounts,
+providing appropriate reasoning in accordance with the Income Tax Act.
+• There was a commendable attempt at the relevant question, with most candidates completing it. It was
+encouraging to note that candidates consistently discussed why section 6 quat was not applicable to the
+scenario. In most cases, the calculation of the withdrawal lumpsum benefit tax was performed accurately.
+• Several candidates showed a reasonable understanding of the structure of a normal tax calculation. They
+correctly followed the sequence from gross income to taxable income, and ultimately to normal tax payable.
+Some candidates also accurately applied the assumptions provided in the question, particularly recognising that
+the foreign income would be fully taxable in South Africa and that section 6B would result in a nil amount.
+Part (c)
+• Most candidates demonstrated a strong understanding of the requirements pertaining to personal service
+providers (PSPs). Most candidates accurately considered and applied these requirements in their responses,
+reflecting a solid grasp of the topic.
+• In addition, many candidates provided clear and well-reasoned conclusions regarding whether PAYE should be
+withheld on the payment made. Their ability to arrive at a definitive answer showcased their comprehension of
+employees’ tax (PAYE) withholding obligations that relate to PSPs.
+• Overall, candidates’ performance on this question was above average, with most candidates receiving marks
+higher than the mean for their attempts. The question itself was considered straightforward, and candidates
+generally identified the key issues from the scenario with ease. This facilitated effective application of their
+knowledge, resulting in many candidates achieving the maximum marks available for this section.
+• The critical thinking component was also handled well, with candidates earning marks with relative ease. In
+general, this section was competently addressed, and many candidates correctly recognised that the core issue
+pertained to employees’ tax (PAYE) withholding obligations.
+• Furthermore, a notable number of candidates identified that the definition of a PSP must be satisfied for an entity
+to be regarded as an employee for employees’ tax purposes, and therefore for PAYE to be withheld.
+Part (d)
+• Many candidates were able to provide a clear conclusion regarding whether the interest should be deductible.
+However, there were notable struggles with the overall question, indicating challenges in both understanding
+and application.
+• Only a very small number of candidates demonstrated awareness that certain categories of expenses, such as
+interest, invoke specific sections within the Act. These specific sections, when applicable, take precedence over
+section 11(a). As a result, section 11(a) cannot be used as the charging section or as the basis for the conclusion
+in discussions regarding the deductibility of interest.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (a)
+• This section outlines the recurring mistakes and misunderstandings observed in candidate responses. The focus
+is on the misapplication of case law, incorrect identification of key issues, and failure to thoroughly address the
+requirements stipulated in the question.
+• Many candidates mistakenly identified the primary issue as ‘received by on own behalf and own benefit’, applying
+the Geldenhuys case principle inappropriately. Similarly, others incorrectly considered the issue to be whether
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 27
+
+the amount was ‘revenue or capital in nature’, leading to the misapplication of the Visser case principle. These
+errors reflect a misunderstanding of the scenario and the relevant legal principles.
+• Several candidates incorrectly asserted that the burden of proof regarding the value of the amount rests upon
+SARS, rather than on the taxpayer, Lexi. This demonstrates a lack of clarity about the responsibilities in tax
+disputes.
+• Some candidates erroneously discussed the deductibility of the amount under section 11(a) in Lexi’s hands. The
+description of the item as an ‘all-expenses paid trip’ may have led candidates to believe Lexi had incurred an
+expense or paid an amount, which was a misinterpretation based on the terminology used.
+• Several candidates addressed VAT implications, despite the requirement to focus solely on income tax
+implications. This indicates a failure to read thoroughly and analyse the question’s requirements.
+• There was a tendency among candidates to provide a ‘theory dump’ of the gross income definition, rather than
+identifying and addressing the contentious element: whether the amount was in cash or otherwise. Many also
+discussed all the requirements of gross income, resulting in unnecessary use of time and missing the specific
+issue at hand.
+• Another common mistake was not linking the market value of the trip, R20 000, to the services rendered by Lexi.
+Candidates often repeated information from the scenario without applying it to the facts or providing a clear
+conclusion.
+• Some candidates listed all gross income court cases they were familiar with, including unrelated ones, rather
+than focusing on the relevant cases and principles.
+• Most candidates failed to consider or apply paragraph (c) of the gross income definition in the Income Tax Act.
+Many also missed the application of paragraph (c)(ii), which includes voluntary awards received or accrued for
+services rendered.
+• Some candidates did not carry their analysis through to part (b), missing easy marks.
+• Other candidates discussed all elements of the gross income definition, wasting time and failing to focus on the
+specific issue.
+• Overall, the most prevalent errors included the failure to properly analyse and address the required section, the
+misapplication of case law, and the omission of key legislative provisions.
+• Candidates are advised to carefully read the requirements, identify the core issue, and apply relevant principles
+to the facts.
+Part (b)
+• A significant number of candidates incorrectly treated the cell phone allowance as a fringe benefit rather than as
+a section 8 allowance. Many assumed that because the allowance was primarily used for business purposes, it
+would constitute a no-value fringe benefit. However, the correct approach would have been to recognise its
+treatment under section 8 and not classify it as a taxable fringe benefit.
+• Few candidates correctly identified that UIF contributions are not deductible, given that UIF receipts are exempt
+under section 10(1)(mB). Instead, many incorrectly cited section 23(r) as the reason for non-deductibility,
+demonstrating a misunderstanding of the legislative provisions.
+• Candidates commonly misclassified the savings component, sometimes treating it as a retirement lump sum
+withdrawal benefit, or included the incorrect amount (R30 000) instead of the specific savings component
+stipulated in the scenario.
+• There was widespread difficulty in correctly determining ‘remuneration’ for the purposes of applying the 27,5%
+of the ‘higher of’ rule under section 11F.
+• Several candidates deducted the primary rebate and the section 6A medical tax credit from taxable income
+rather than from the tax liability as required. Furthermore, few candidates recognised that no section 6quat rebate
+was applicable, since the UK had not withheld tax on the payments made to Lexi.
+• There were frequent inaccuracies in section references, with candidates often failing to refer to the correct
+legislative provisions. The open book format necessitates careful verification of section references, as marks are
+not awarded for incorrect references or for nil amounts without valid reasoning.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 28
+
+• Common calculation errors included failing to aggregate figures to arrive at taxable income or remuneration,
+presenting only a single round figure at the end, and incorrectly deducting rebates and credits from taxable
+income. There was also confusion regarding the correct period of employment, with candidates using either 10
+or 12 months instead of the correct 9 months for Lexi's employment.
+• Fringe benefit knowledge was lacking, and candidates often misapplied section 10(1)(o)(ii) in relation to
+remuneration received. Some included amounts as taxable benefits and then deducted them, or calculated
+deductions beyond what was required.
+• Overall, the assessment highlighted several recurring issues, including misunderstanding of legislative
+provisions, incorrect application of tax credits and deductions, and calculation errors.
+• Candidates are advised to refer closely to the legislation during open book assessments and ensure that their
+section references and calculations are complete and accurate. Stating the principle would be sufficient if a
+candidate had been uncertain about the exact section reference.
+Part (c)
+• During the assessment of whether PAYE should be withheld in relation to CreativeLexi, candidates provided a
+range of approaches, some of which resulted in incomplete or incorrect conclusions.
+• A significant number of candidates restricted their analysis to determining whether CreativeLexi met the definition
+of an ‘employee’. Many came to a conclusion on the PAYE withholding requirement solely on this basis, without
+considering the relevance of a PSP classification per the scenario.
+• Other candidates focused exclusively on the definition of ‘remuneration’, using this as the sole criterion for
+determining the PAYE withholding requirement. Again, the potential PSP classification was often overlooked in
+this approach.
+• Some candidates misclassified CreativeLexi either as an independent contractor or as a labour broker. These
+misclassifications demonstrate a misunderstanding of the facts in the scenario and the applicable tax principles.
+• Candidates who did recognise the possible PSP status of CreativeLexi often failed to apply theoretical principles
+to the facts in the scenario. Instead, they either listed general theory without reference to the specific context or
+repeated details from the scenario without connecting them to PSP requirements.
+• There were instances where candidates correctly identified CreativeLexi as a PSP but incorrectly concluded that
+this classification meant PAYE should not be deducted on payments made by Hebony to CreativeLexi. This
+indicates a gap in understanding the tax implications of PSP status, despite an otherwise sound grasp of the
+classification criteria.
+• Some candidates did not adequately identify the relevant taxpayers involved, as required by the scenario. This
+oversight led to incomplete analyses.
+• A recurring issue was the failure to provide a clear conclusion at the end of the discussion. Candidates often
+presented information without synthesising it into a final, reasoned decision.
+• Candidates who omitted the PSP discussion tended to base their analysis on general tax principles rather than
+the specific requirements of the Fourth Schedule. As a result, these candidates earned no marks for their
+discussions.
+Part (d)
+• Many candidates mistakenly applied and discussed the provisions of section 24O, failing to recognise its
+irrelevance to the requirements of the paper. In addition, there was a widespread error in treating the interest as
+a dividend, either in terms of the definition of a dividend, under paragraph 64E, or under section 8F. This led to
+the incorrect conclusion that dividends tax should be paid.
+• Another frequent mistake was the use of section 11(a) to establish the deductibility of interest, without realising
+that the correct treatment should fall under section 24J(2). Some candidates also incorrectly classified Holdings
+as the holder of an income instrument, rather than as the issuer of an instrument.
+• Many candidates limited their responses to quoting theoretical requirements directly from the Act, such as stating
+that expenses must be incurred ‘as part of trade’ and ‘in the production of income’, without applying the scenario
+information to demonstrate whether these requirements had actually been met.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 29
+
+• Few candidates correctly identified or considered the application of section 11G, which replaced Practice Note
+31. This highlighted a limited knowledge of the updates and changes in relevant legislation.
+• A very limited understanding of section 24J was demonstrated overall, both in terms of its scope and in planning
+and structuring a discussion question related to it. Many candidates did not attempt this part, and some were
+justified in discussing dividends due to missing information, but this was not the primary issue.
+• Candidates struggled to identify and apply section 24J, with most discussions ending at section 11(a) or
+dividends, which resulted in them earning fewer marks.
+• This was surprising given that Part II of the paper provided a clue by stating that the interest should be assumed
+to be deductible in terms of section 24J. Despite this, most candidates overlooked the relevance of section 24J.
+Furthermore, the majority did not utilise case law to support or justify their answers.
+PAPER 2 PART II
+Maximum mark
+61
+Average mark
+35,81
+Number of candidates
+who passed
+1 744 (55%)
+Number of candidates
+who wrote
+3 170
+1 General comments on complexity
+Overall the question is rated as being of medium level of difficulty.
+2 Feedback on the candidate responses: General matters
+Exam technique
+• Candidates who performed well demonstrated confidence in their responses and had a good understanding of
+the content (theory).
+• Candidates who did not perform well did not take sufficient time to gain a thorough understanding of the
+requirements of the scenario, or they did not understand the content that was probed (e.g., what an internal rate
+of return on a loan is or how to apply the SAICA Code of Professional Conduct).
+Time management
+• Candidates generally did not struggle to manage their time.
+Communication
+• Candidates’ communication skills were fair.
+Layout, structure and presentation
+• Candidates on the whole did not struggle to structure their responses in the appropriate format.
+• However, in section (e), candidates who limited their responses to the structure of the internal rate of return
+method generally performed better than those who did not.
+Relevance
+• Candidates who did not perform well in the required (h) demonstrated that they lacked knowledge of the content
+generally taught for the SAICA Code.
+• Many candidates also did not consider personal ethics theories in required (i), even though it was prompted.
+Recommendations
+• Candidates need to revise the definitions of the fundamental principles and the threats to the fundamental
+principles in accordance with the SAICA Code.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 30
+
+• Furthermore, candidates also need to revise their notes on personal ethics theories, worldviews, and personal
+values.
+3 Feedback per each required section of the part
+3.1 Areas that candidates handled well
+Part (e)
+• Candidates' performance on the first loan question was strong.
+• Candidates generally demonstrated a solid understanding of the required steps to establish the internal rate of
+return.
+Part (f)
+• Candidates generally performed well on this question
+Part (g)
+• Candidates performed well in identifying the presence of bots or fake user accounts.
+• Candidates also commented effectively on the use of single‑use IP addresses and the implications these might
+have for the reliability of the reported user data.
+• Candidates also considered the impact of Lexi’s and CreativeLexi’s reputations on the validity of the inputs that
+affect the company's value.
+Part (h)
+• Candidates were generally able to easily identify issues from the scenario that triggered considerations of the
+SAICA Code of Professional Conduct.
+Part (i)
+• Candidates performed well in their discussions of the ethics triangle, demonstrating a good understanding of this
+concept of good for self and good for others.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (e)
+• On the second loan, many candidates struggled with determining the payments of the loan.
+• Several candidates also made errors in the direction of cash flows or did not consistently use indicators (such
+as negatives and positives) for cash inflows and outflows.
+• Candidates' conclusions were generally correct; however, some candidates opted for selecting the loan with the
+highest IRR, indicating a lack of understanding of the meaning of IRR in terms of the cost of a loan.
+Part (f)
+• A common issue was that candidates listed points without expanding on them. For example, many correctly
+identified that Loan 1 had a fixed interest rate and Loan 2 had a variable interest rate, but they did not explain
+why this distinction was important when deciding between the two loans.
+• Responses often lacked an analysis of the facts and justification for the choice of loan.
+• Candidates also appeared to struggle with several key concepts. These included understanding what a
+basis‑point increase represents, the purpose of initiation fees, and the role of the prime interest rate in the
+economy. As a result, many were unable to adequately respond to a question.
+• Unfortunately, almost no candidates considered the real economic environment factors in their discussions for
+applying the effect of changes in the economy to the loan.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 31
+
+Part (g)
+• Candidates generally struggled with this question, largely because they did not fully understand what was being
+asked.
+• Many candidates focused their responses on evaluating the report and its implications for the company after the
+acquisition, as well as high-level strategic considerations. For example, some discussed which social media
+accounts the acquiring company should prioritise after the purchase, while others discussed synergies between
+the two companies. These discussions fell outside the scope of the question and did not address the required
+analysis.
+• Very few candidates also evaluated/interrogated the quality and reliability of the information in the report.
+Part (h)
+• Candidates generally struggled with this question.
+• Candidates found it challenging to distinguish clearly between a threat to the fundamental principles and a breach
+of the fundamental principles. Many responses reflected uncertainty about this distinction, which weakened their
+explanations by leading to contradictions.
+• Candidates also found it challenging to identify which sections of the SAICA Code applied to the professional
+accountant. This came as a surprise since the Code is such a well-taught topic at a PGDA level.
+• Candidates were typically able to identify the issues that trigger considerations in terms of the Code, such as
+confidentiality and conflicts of interest issues in the scenario. However, many of them were unable to package
+the responses to the issues identified in terms of the SAICA Code, hence not answering the required. For
+example, candidates would state ‘Arno leaked confidential information’ or ‘Arno has a conflict of interest’ without
+explaining whether the issue posed a threat or breached fundamental principles in terms of the Code.
+• While most candidates were able to identify potential threats and breaches, they often failed to discuss these
+issues by articulating them appropriately. Explanations were brief and lacked depth, indicating a limited
+understanding of why the identified issue constituted a threat or a breach of a fundamental principle under the
+SAICA Code.
+• Some candidates wrote down all fundamental principles and threats before delving into the discussion, and this
+clearly signalled that the candidate did not know which fundamental principle(s) or threat(s) applied to the
+specific issues from the scenario.
+Part (i)
+• Candidates generally did not discuss personal ethics, as required. These would include personal values
+discussions, individual worldview(s) evident, and personal ethics theories that were apparent in Lexi’s response.
+• Many candidates failed to adhere to the required, focussing only on Lexi’s response to a video uploaded to the
+social media platform. Instead of focusing on Lexi’s response, these candidates focused on the contents of the
+video/allegations raised.
+• Several candidates concluded Lexi’s conduct was unethical without substantiating their conclusion with
+discussions on the consequences of her actions.
+• Some candidates did not provide sufficient points to earn the available marks, while the responses of others
+were incomplete.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 32
+
+PROFESSIONAL PAPER 3
+Paper 3 consisted of a 120-mark question, with the required divided into two parts that dealt with the following aspects:
+Part I
+(a) Candidates had to discuss the governance issues and ethical leadership concerns, with reference to the
+principles and recommended practices of the King IV Report on Corporate Governance, arising from the CEO’s
+actions and behaviour in connection with the opening of new lifestyle concept (LC) stores.
+Candidates did not have to discuss –
+• the SAICA Code of Professional Conduct; or
+• compliance with the Companies Act.
+(b) A critical evaluation of the strategic considerations that influenced the decision of IR (a large, listed South African
+discount retailer) to invest in the LC stores.
+• Candidates were instructed to ignore the governance-related matters that may have affected the decision
+to invest in the LC stores.
+(c) Candidates had to prepare a memorandum addressed to the board of directors. In the memorandum, they had
+to incorporate insights across all LC stores but only include calculations for a certain group (Group B) stores.
+The memorandum had to cover the following:
+(i) An evaluation of why the actual net profit of the LC stores differs significantly from the budgeted profit.
+• Candidates had to focus only on the sales mix, market size and market share variances.
+(ii) An assessment of the CEO’s theory that the store profitability could be improved by ‘right-sizing’ store
+formats to better align with local market conditions.
+• Candidates had to use break-even analysis, contribution margin and unit economics (revenue and
+cost per m2) to support their answers.
+(d) An evaluation of the CEO’s proposal to close all stores in Group C by –
+(i) using relevant costing principles to calculate the impact on the performance of IR in FY2026; and
+(ii) critically discussing the impact on the company and its internal stakeholders.
+• Candidates could assume that the FY2025 results were likely to be typical of the future
+performance in FY2026.
+Part II
+(e)(i) A discussion on how the customer loyalty programme of IR (in section 4.1 only), should be accounted for in the
+financial statements of IR for FY2025.
+Candidates were given the following instructions:
+• Do not discuss any disclosure requirements.
+• Support your discussion with calculations.
+• Round all calculations to the nearest rand.
+• Ignore all forms of taxation.
+(e)(ii) A discussion on how the financial accounting implications in respect of the customer loyalty programmes (in
+sections 4.1 and 4.2) of IR would change if a certain group of stores (Group C) were closed by the end of
+FY2025.
+Candidates had to –
+• address the implications for both programmes;
+• show calculations where applicable;
+• round all calculations to the nearest rand; and
+• ignore all forms of taxation.
+(f) Candidates had to critically evaluate, with reasons, the accuracy of an inventory journal entry processed by the
+financial accountant in respect of the inventory write-down for FY2025.
+Candidates were given the following instructions:
+• Provide correcting journal entries where relevant.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 33
+
+• Do not provide dates of journal entries or journal narrations.
+• Show calculations where applicable.
+• Ignore all forms of taxation.
+• Round all calculations to the nearest rand.
+(g) A description of the additional substantive procedures that should be performed at year end by the audit team
+to obtain sufficient and appropriate audit evidence about the valuation, allocation, and accuracy of the contract
+liability resulting from the customer loyalty programme.
+Candidates were given the following instructions:
+• Assume that an IT expert already verified all controls over the central IT systems, sales and loyalty
+integration systems.
+• Rely on all reports produced by these systems.
+• Ignore all forms of taxation.
+• All audit procedures to place reliance on the systems and the work performed by the IT expert had
+already been performed by the audit team.
+Five communication skills and professional values, attitudes and acumens marks were available for this paper.
+These marks were clearly and separately stated in the ‘required’ sections of each part.
+PAPER 3 PART I
+Maximum mark
+72,5
+Average mark
+41,96
+Number of candidates
+who passed
+1 740 (55%)
+Number of candidates
+who wrote
+3 169
+1 General comments on complexity
+The paper was appropriately challenging for an IAC-level assessment, requiring integration across governance,
+strategy, and management accounting, as well as critical thinking and professional judgement.
+However, certain aspects increased complexity beyond what was manageable within the available time. In particular,
+part (c)(i) required implicit assumptions, and the volume and integration of information increased cognitive load,
+potentially limiting candidates’ ability to fully demonstrate competence under time pressure.
+2 Feedback on the candidate responses: General matters
+Exam technique
+• Candidates who performed well were those who were able to structure their responses clearly, identify the key
+requirements early, and apply their knowledge directly to the scenario.
+• Weaker responses often lacked planning and resulted in descriptive or unfocused answers.
+Time management
+• A number of candidates appeared to spend a disproportionate amount of time on calculation-heavy sections,
+particularly section (c), at the expense of discussion marks.
+• Stronger candidates were able to balance calculations with interpretation and ensured that all required sections
+were attempted.
+Communication
+• Clear, concise communication was a distinguishing factor.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 34
+
+• Strong responses demonstrated logical flow and clear articulation of ideas, while weaker responses were often
+vague, repetitive, or lacked clarity.
+Layout, structure and presentation
+• Well-structured answers, particularly in memorandum format where required, enhanced clarity and facilitated
+marking.
+• Some candidates did not follow the required format, which impacted the effectiveness of their responses.
+Relevance
+• A common weakness was the lack of application to the scenario.
+• Many candidates listed generic principles (e.g., governance or strategic considerations) without linking them to
+the specific facts provided.
+Critical evaluation and judgement
+• Candidates often identified relevant points but did not sufficiently evaluate them.
+• Strong answers explained why a factor was important and how it impacted the decision or outcome.
+Recommendations
+• Where required, candidates should provide clear, supported recommendations.
+• Candidates need to present balanced conclusions supported by both quantitative and qualitative analysis where
+this is asked in the required.
+Workings and referencing
+• Candidates who clearly show workings and link them to their discussion are likely to receive higher marks.
+• Candidates should ensure that their calculations are clearly presented or integrated into the narrative.
+3 Feedback per each required section of the part
+3.1 Areas that candidates handled well
+Part (a)
+• Most candidates were able to identify key governance and ethical leadership issues arising from the CEO’s
+actions.
+• Many demonstrated awareness of relevant King IV principles and highlighted concerns such as balance of
+power, conflicts of interest, lack of transparency, and weak oversight.
+Part (b)
+• Candidates generally identified relevant strategic considerations, including misalignment between the existing
+business model and the LC store strategy, as well as market-related challenges.
+Part (c)(i)
+• Some candidates were able to identify the overall drivers of performance, such as declining market conditions
+and failure to achieve expected market share, even where calculations were not fully accurate.
+Part (c)(ii)
+• Many candidates demonstrated reasonable interpretative ability, particularly in discussing revenue per m² and
+cost per m² and were able to comment on relative store efficiency.
+Part (d)(i)
+• Stronger candidates demonstrated a sound understanding of relevant costing principles, correctly distinguishing
+between avoidable and unavoidable costs.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 35
+
+Part (d)(ii)
+• Many candidates were able to discuss the impact of store closures on internal stakeholders and demonstrated
+reasonable commercial awareness in their evaluation.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (a)
+• Candidates often listed King IV principles without adequately applying them to the scenario.
+• In some cases, governance issues were identified but not clearly linked to ethical leadership concerns or board
+responsibilities.
+Part (b)
+• A common weakness was the lack of critical evaluation. Candidates often described strategic factors without
+explaining the implications of these.
+• Some responses focused on reasons why the decision was made rather than evaluating whether it was
+appropriate.
+• Answers were sometimes overly positive or descriptive, lacking consideration of risks and limitations.
+Part (c)(i)
+• Many candidates struggled with the technical execution of variance calculations, particularly sales mix, market
+size, and market share variances.
+• Errors included incorrect formulas, incorrect variance direction, and the inability to reconcile revenue-based data
+with unit-based approaches.
+• Candidates often identified issues conceptually but were then unable to quantify them accurately.
+Part (c)(ii)
+• A significant number of candidates struggled with break-even analysis, including misunderstanding the
+appropriate unit of analysis.
+• Some candidates attempted to calculate break-even in terms of m2 rather than sales volume.
+• Calculations were often incomplete or incorrect, and links between calculations and discussion were weak.
+Part (d)(i)
+• Some candidates did not correctly distinguish between relevant and irrelevant costs.
+• Common errors included including sunk or unavoidable costs, or failing to annualise numbers correctly.
+Part (d)(ii)
+• Candidates who provided weaker responses were those that tended to list stakeholder impacts without
+evaluating their significance.
+• Limited linkage between financial outcomes and broader organisational implications was evident in some scripts.
+• Some candidates included external stakeholders in their discussions.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 36
+
+PAPER 3 PART II
+Maximum mark
+40
+Average mark
+20,39
+Number of candidates
+who passed
+1 846 (58%)
+Number of candidates
+who wrote
+3 169
+1 General comments on complexity
+• The part of the paper is best classified as moderate to difficult overall. Although some components were
+moderate or relatively straightforward in isolation, the overall difficulty increased due to the integration,
+interpretation, and application required across sub-parts.
+• The underlying technical topics (e.g., IFRS 15, IAS 2, and auditing procedures) were not inherently difficult;
+however, difficulty arose from the need to apply knowledge in a scenario rather than simply recalling theory,
+which is appropriate at this level.
+• A major contributor to the difficulty was that candidates misinterpreted the requirements as more open-ended
+than intended, which resulted in –
+o overly broad or irrelevant discussions (e.g. the full IFRS 15 five-step model);
+o an excessive focus on narrow, low-mark areas (e.g. performance obligations); and
+o incorrect or unbalanced answers across sub-parts.
+• The question required integration of concepts across subparts, particularly the application of IFRS 15 in both
+accounting and assurance/auditing contexts. Candidates were expected to link recognition and measurement to
+audit procedures, which increased complexity, although the paper could easily have been passed without the
+detailed knowledge of IFRS 15 for assurance purposes.
+• Overall, the combination of interpretation challenges, integration across topics, application requirements, and
+ambiguity in certain areas resulted in a moderate to difficult rating.
+2 Feedback on the candidate responses: General matters
+• In accounting sections, candidates did not plan well, with the result that they performed calculations with no
+reference or indication of what was calculated to provide context to the markers.
+• Many candidates provided lengthy, detailed responses, particularly in part (e)(i), often extending over several
+pages.
+• Candidates generally demonstrated theoretical understanding, but struggled with practical, scenario-based
+application, often providing generic or textbook responses that were not tailored to the facts.
+• Performance was stronger in calculation-based components, but provided weaker responses to discussion-
+based requirements, with many candidates providing unfocused or insufficiently targeted answers.
+• In audit-related components, many candidates provided generic procedures or system-focused responses,
+rather than procedures aligned to the specific accounting treatment, indicating difficulty in linking financial
+reporting and auditing concepts. This added to time management concerns as the focus was not on the correct
+area, which resulted in time being wasted.
+• Candidates did not provide sufficient audit procedures for a 12-mark question.
+3 Feedback per each required section of the part
+3.1 Areas that candidates handled well
+Part (e)(i)
+• Overall, this section was well attempted, with most candidates demonstrating a sound understanding of IFRS 15
+principles, particularly in identifying the loyalty programme as a separate performance obligation and in
+recognising it as a material right that gives rise to a contract liability.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 37
+
+• Candidates generally showed a strong grasp of key concepts, including the allocation of the transaction price,
+the deferral of revenue, and the use of expected redemption rates (e.g., the 80% expectation), with many
+correctly recognising that only expected future usage should be deferred.
+• The theoretical discussion was often accurate and well-structured, frequently supported by appropriate
+references to IFRS 15, and most candidates were able to identify IFRS 15 as the relevant standard.
+• While many candidates partially applied the theory to the scenario, the application was not always completely
+accurate, indicating that although the conceptual understanding was strong, the detailed application remained
+inconsistent.
+• A common issue was that some candidates over-applied theory, particularly by discussing the full five-step
+revenue model rather than focusing specifically on the customer loyalty programme, resulting in inefficient use
+of time and rushed or weaker responses in the measurement component.
+• Overall, candidate performance reflected a solid conceptual foundation, with generally good identification and
+discussion of relevant principles, although depth and precision in application varied across responses.
+Part (e)(ii)
+• This section was moderately well handled, particularly by candidates who had a clear understanding of the
+preceding part, with most candidates attempting the question despite it being placed quite late in the paper.
+• Many candidates correctly identified that a change in the redemption rate affected the contract liability,
+specifically recognising that a decrease would reduce the contract liability and accordingly increase revenue.
+• There was strong evidence that candidates could incorporate revised estimates into their calculations, with those
+who correctly identified the change generally able to adjust prior workings appropriately and arrive at accurate
+numbers.
+• Candidates also demonstrated an understanding that the FabBank CLP differed from the points component,
+indicating an ability to distinguish between elements within the scenario.
+• Stronger responses reflected an ability to interpret the scenario logically and apply the principles appropriately,
+sometimes supported by relevant accounting guidance, while weaker responses were limited to identification
+without full or accurate application.
+Part (f)
+• This was one of the strongest sections overall, with candidates showing clear confidence in the quantitative
+aspects and generally performing well.
+• Most candidates correctly applied the principle that inventory should be measured at the lower of cost or NRV
+and were able to calculate revised NRV write-downs, often presenting detailed, structured workings.
+• There was strong evidence that candidates understood that NRV should be assessed item by item, and many
+were able to apply this appropriately across different inventory groups.
+• Candidates demonstrated a good understanding of adjustments required in the scenario, including the treatment
+of incorrectly delivered goods and stolen inventory, with many correctly identifying it as an event after the
+reporting date.
+• Most candidates were able to determine the appropriate journal entries for NRV write-downs and related
+adjustments, showing a sound grasp of the accounting treatment.
+• Even where calculations were not fully accurate, responses generally reflected appropriate methods and logical
+reasoning, indicating a solid understanding of IAS 2 principles and application.
+Part (g)
+• Candidates generally performed reasonably well, demonstrating a solid understanding of standard substantive
+audit procedures and the overall audit approach.
+• Most candidates identified the need to test estimates, particularly those underlying the contract liability, and
+commonly referred to procedures such as recalculations, enquiries, and the obtaining of corroborative evidence.
+• There was clear evidence of understanding of general audit techniques, including –
+o tracing balances to supporting documentation;
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 38
+
+o evaluating management assumptions; and
+o verifying inputs used in calculations.
+• Many candidates correctly recognised the importance of recalculating the contract liability and verifying each
+component of the calculation, though responses often lacked specificity about exactly what should be inspected
+or recalculated.
+• Candidates also identified the need to review the terms and conditions of the loyalty programme and to follow
+up where necessary.
+• While responses were sometimes general rather than specific, overall performance reflected a sound grasp of
+core auditing concepts and procedures.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (e)(i)
+• Candidate performance in this section was weakened primarily by poor application and structuring, despite a
+generally reasonable grasp of the underlying theory.
+• A significant number of candidates engaged in theory dumping, reproducing large portions of accounting
+standards (e.g. IFRS 15) without applying these to the scenario, while others spent excessive time discussing
+elements such as contracts and performance obligations without progressing to the required calculations.
+• Calculations were often disorganised and difficult to follow, with many candidates –
+o not presenting workings sequentially;
+o combining multiple steps without clear logic, and
+o providing calculations without context, headings, or cross-referencing.
+• There were recurring issues with the incorrect application of IFRS 15, particularly the following:
+o Misallocation of the transaction price;
+o Incorrect treatment of the 80% redemption rate; and
+o Applying probabilities at the wrong stage of the calculation.
+• Many candidates identified that revenue should be deferred, but struggled to –
+o link this to the allocation of stand-alone selling prices; and
+o apply initial measurement correctly, sometimes resulting in revenue exceeding total sales.
+• A common shortcoming was that candidates did not address both revenue and contract liability holistically, often
+focusing on only one component.
+• Candidates frequently missed the core timing requirement, particularly the distinction between the first and
+second six months, and failed to account for early redemptions.
+• There was also confusion between key elements, including –
+o the number of points vs the value of points; and
+o the correct classification of the transaction, with some incorrectly applying IAS 37 instead of IFRS 15.
+• Very few candidates addressed aspects such as the financial impact of the partnership, indicating gaps in their
+understanding of the requirement.
+• While some candidates demonstrated strong theoretical knowledge, there was a clear disconnect between
+conceptual understanding and practical application, particularly in translating IFRS 15 knowledge into accurate
+calculations and scenario-specific answers.
+Part (e)(ii)
+• Performance in this section was generally weaker and it would seem as if candidates perceived it to be difficult,
+largely due to misinterpretation of the scenario and a poor linkage to part (e)(i), with many candidates carrying
+forward earlier errors into this requirement.
+• A key issue was widespread confusion between IR’s loyalty programme and the FabBank arrangement, with
+many candidates incorrectly treating them as the same or linking the impact of store closures to the FabBank
+component.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 39
+
+• Many candidates identified changes in the contract liability but struggled to explain or justify them, particularly in
+relation to FabBank, resulting in incomplete or unsupported conclusions.
+• There was a significant failure to recognise that the FabBank arrangement had no financial impact on IR, which
+was central to the requirement, leading to incorrect conclusions and inappropriate discussions (e.g., principal–
+agent considerations).
+• Calculations were often affected by errors carried forward from part (e)(i), particularly relating to the redemption
+rate, with some candidates merely repeating earlier incorrect approaches rather than addressing the revised
+scenario.
+• Responses frequently lacked depth: many candidates provided brief or incomplete answers, while others
+overcomplicated a relatively straightforward requirement, suggesting uncertainty about what was being asked.
+• In some cases, candidates performed calculations correctly but misinterpreted the underlying scenario, resulting
+in incorrect overall conclusions.
+• Overall, performance reflected inconsistent understanding and application, with difficulty arising from both
+conceptual confusion and reliance on earlier incorrect interpretations.
+Part (f)
+• Although most candidates attempted this section, performance was weakened by poor critical evaluation and
+incomplete application of IAS 2. Many candidates failed to fully engage with the requirement to assess whether
+the accountant’s treatment was correct or incorrect.
+• A common issue was that candidates reproduced theory or described the accountant’s treatment without stating
+a clear conclusion, indicating a misinterpretation of the requirement and a lack of evaluative judgement.
+• Many candidates struggled to determine the correct cost of inventory, often –
+o ignoring relevant information in the scenario;
+o using purchases as a proxy for cost, or
+o attempting incorrect cost calculations,
+which resulted in inaccurate NRV comparisons and write-downs.
+• While candidates could generally state the principle of lower of cost or NRV, they frequently applied it incorrectly,
+including –
+o recording write-downs when NRV exceeded cost; and
+o failing to assess inventory on an appropriate basis (e.g. per group/item).
+• There were notable difficulties in applying specific adjustments, particularly relating to incorrectly delivered goods
+and stolen inventory, where candidates often contradicted themselves or incorrectly adjusted for what should
+have been treated differently.
+• Many candidates identified relevant concepts (e.g., differences between cost and carrying value, or non-
+adjusting events under IAS 10) but were unable to translate these into correct calculations or journal entries,
+indicating a disconnect between theory and application.
+• Confusion was evident in the accounting treatment of write-downs, with candidates –
+o referring to provisions incorrectly, and
+o struggling to correctly reflect the impact on profit or loss vs the statement of financial position.
+• Calculations were often poorly structured and difficult to follow, with –
+o a lack of clear labels or logical sequencing;
+o a failure to consider individual inventory groups; and
+o computational errors (e.g., incorrect scaling of figures).
+• There were also instances in which journal entries contradicted supporting calculations, reflecting a lack of
+internal consistency in the responses.
+• Overall, while candidates demonstrated a basic theoretical understanding of IAS 2, performance was negatively
+impacted by weak evaluation, inaccurate calculations, and poor structuring, resulting in inconsistent and often
+incomplete answers.
+MARKERS’ AND UMPIRES’ COMMENTS │ IAC JANUARY 2026 40
+
+Part (g)
+• This section was generally poorly performed and perceived as difficult, primarily due to misinterpretation of the
+requirement and an inability to formulate appropriate substantive audit procedures.
+• Many candidates defaulted to generic, irrelevant, or system-based procedures, despite the requirement explicitly
+excluding system testing, indicating confusion between substantive procedures and IT/system controls.
+• Many candidates included audit procedures to assertions such as completeness and occurrence rather than to
+allocation, valuation and accuracy.
+• Many procedures lacked practical applicability or re-performability, and there was inconsistent use of appropriate
+auditing verbs, resulting in responses that were difficult to assess.
+• A common issue was the use of vague or incomplete procedures, with candidates stating actions such as ‘verify’
+without –
+o specifying the audit technique (e.g., inspect, recalculate, inquire); or
+o indicating what documents or evidence should be used; or
+o providing the supporting documentation at all.
+• Even where candidates identified relevant procedures (e.g., recalculations), they often failed to complete the
+procedure, such as comparing results with management’s figures, and following up on differences that resulted
+in incomplete audit responses.
+• Candidates frequently adopted a scatter-gun approach, listing numerous procedures without focusing on the
+contract liability balance, which reduced the relevance and quality of their answers.
+• Listing of audit procedures not relevant to the scenario was also observed, such as comparing the current year
+to the previous year even though this was a new programme.
+• There was limited focus on auditing the year-end estimate balance, with many candidates instead focusing on –
+o transactions (testing a sample);
+o system processes (testing the system); or
+o irrelevant procedures (e.g., observing customers or confirming balances with customers).
+• Candidates also showed difficulty in –
+o distinguishing between data generated from IT systems and information prepared by management; and
+o identifying appropriate sources of evidence (e.g., schedules supporting the estimate).
+• Some responses reflected theory dumping or over-reliance on general audit concepts (e.g., the use of experts
+and assessing management competence) without applying them to the specific context.
+• There was further evidence of conceptual gaps, including –
+o an incorrect focus on opening balances for a new programme;
+o a limited ability to design procedures around key estimates (ISA 540), such as redemption rates; and
+o a failure to consider relevant scenario details (e.g., timing of store closures).
+• Candidates also audited the proposed closure of the stores as if it had already happened rather than considering
+it at year end.
+• Overall, while some candidates demonstrated general audit knowledge, responses were weakened by a lack of
+relevance, poor structure and incomplete procedures.
+• A number of candidates also failed to link procedures to the specific account balance and assertions, resulting
+in low-quality answers despite a high volume of information being provided.

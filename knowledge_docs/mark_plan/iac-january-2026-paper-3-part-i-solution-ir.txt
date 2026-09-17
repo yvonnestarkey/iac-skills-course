@@ -1,0 +1,626 @@
+Source: SAICA IAC January 2026 — Paper 3 Part I suggested solution (IR).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Initial Assessment of Competence
+Professional Paper 3
+January 2026
+Copyright, proprietary rights and permitted use
+© The South African Institute of Chartered Accountants (SAICA). All rights reserved.
+The SAICA Initial Assessment of Competence (IAC) questions, solutions and examiners comments
+(‘these documents’) constitutes proprietary intellectual property and professional know-how of SAICA.
+It has been developed and is maintained as part of SAICA’s mandate to uphold the quality, integrity,
+and high professional standards of the Chartered Accountant profession, which underpin public
+confidence and the value and attractiveness of SAICA membership and designation.
+Access to, or use of, these documents does not confer any right, licence, or interest in the intellectual
+property contained herein. Except where expressly permitted by SAICA in writing, no part of these
+documents may be copied, reproduced, adapted, published, distributed, or used for commercial,
+quasi-commercial, or third-party standard-setting purposes.
+These documents may be used solely for legitimate educational, regulatory, or professional purposes,
+in a manner that preserves their integrity, acknowledges SAICA as the owner and source, and does not
+undermine SAICA’s role as custodian of professional standards or dilute the value associated with
+SAICA’s membership and designation.
+Any authorised access to or use of these documents is subject to, and must be exercised in accordance
+with, SAICA’s Intellectual Property Management Policy, as amended from time to time.
+Disclaimer clause: All names of persons, places and business entities mentioned in these
+documents are fictitious and any resemblance to real persons, living or dead, places and business
+entities are purely coincidental.
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+Part (a) Discuss the governance issues and ethical leadership concerns,
+with reference to the principles and recommended practices of the
+King IV Report on Corporate Governance, arising from the CEO’s
+actions and behaviour in connection with the opening of the new
+LC stores.
+• Do not discuss the SAICA Code of Professional Conduct.
+• Do not discuss compliance with the Companies Act.
+Marks
+Dominance of a single individual in strategic decision making/disregard for
+board dissent (indicator)
+Although the board expressed reservations, the CEO, Jordan Henderson,
+proceeded unilaterally with the strategic shift and roll-out of 17 LC stores. It raises
+concerns about the following principles:
+Principle 8: The governing body should ensure that its arrangements for
+delegation within its own structure promote independent judgment and assist with
+the balance of power; however:
+• Jordan’s unilateral action suggests a lack of collaboration between board
+members. This reflects a potential lack of balance of power between the
+board and executive management. 1
+Principle 6: The governing body should serve as the focal point and custodian of
+corporate governance in the organisation.
+• The governing body should ensure that its composition supports effective
+governance, but board resistance seems to be overridden by the CEO, and
+the decision to proceed with the LC store rollout despite board reservations
+suggests an erosion of board authority and collective decision-making.(also
+evidenced by Jordan leading most board meetings – the role of a chair, which
+he is not).
+1
+Principle 10 states that the governing body should ensure that delegation to
+management contributes to role clarity and effective exercise of authority and
+responsibilities.
+• In this case, the CEO’s decision to act independently, despite board
+resistance, suggests that the delegation framework may not be functioning
+effectively.
+• There appears to be a breakdown in accountability and a lack of clarity
+regarding the limits of executive authority.
+1
+1
+Strategic misalignment and risk management oversight (indicator)
+The launch of a new retail concept targeted at a different market segment is a
+significant strategic risk. The decision appears to have been driven by the CEO’s
+personal vision, rather than a thoroughly vetted and board-approved strategic plan.
+This raises concerns about the following principles:
+Principle 11 states that the governing body should govern risk in a way that
+supports the organisation in setting and achieving its strategic objectives.
+• Risk governance, the risk appetite and tolerance of such a strategic shift
+appear to have been ignored by the CEO, which is concerning, particularly
+as these stores are not profitable and are underperforming. 1
+Principle 4 states that the governing body should appreciate that the
+organisation’s core purpose and its risks and opportunities, strategy, business
+model, performance and sustainable development are all inseparable elements of
+the value creation process.
+• Strategy and performance While IR’s stated strategy is to ‘maintain and
+grow market share among low-income South African customers’, the CEO
+has continued to open new stores aimed at middle-income customers,
+despite reservations from the board. These LC stores mark a significant
+shift from IR’s established discount model, yet there is no indication that
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+the board formally revised the company’s strategy. This principle is
+undermined, which requires the governing body to approve and oversee
+the implementation of the strategy.
+1
+Possible undue influence due to family ties (indicator)
+Jordan is the son of Alvin Henderson (founder and chair of the board), which raises
+concerns about the following principles:
+Principle 7 emphasises the importance of independence for effective governance.
+• As the CEO is the son of the chair and founder, his close personal ties with the
+board’s leadership raise concerns about his objectivity and potential influence
+over board decisions. This may contribute to unbalanced power dynamics and
+reduce the board’s ability to exercise independent oversight.
+1
+Misleading stakeholder communication (indicator)
+The CEO’s selective disclosure to stakeholders, particularly the presentation of
+once-off revenue as if it were indicative of ongoing performance, and portraying
+overly optimistic results, raises serious concerns regarding the ethical and
+effective leadership expected of the board under Principle 1 of King IV. 1
+The following characteristics of ethical and effective leadership are not displayed:
+Integrity requires that directors be straightforward and honest.
+• A significant portion of revenue in the latest quarter came from once-off, non-
+recurring transactions, such as bulk purchases and corporate orders, rather
+than from sustained customer activity. Jordan’s positive portrayal of this
+revenue as evidence of sustainable demand is misleading, especially
+considering pressure from the CEO to ‘prematurely’ recognise revenue. It
+could be perceived that the CEO is not being straightforward and honest. 1
+Integrity requires that board members avoid conflicts of interest.
+• In Jordan’s case, several potential conflicts exist. These include conflicts
+between his bonus, his career progression and the broader sustainability of
+the company, particularly as the new LC stores may continue to operate at a
+loss, placing the business under significant financial strain.
+OR
+• Jordan may face conflict of interest due to his family relationship with the chair
+of the board and company founder, who is also his father.
+1
+Jordan’s desire to establish a reputation as an innovative CEO appears to
+influence how he reports performance. Ethical leadership demands a focus on
+organisational purpose and values, not personal ambition. 1
+Accountability
+• Rather than accepting the failure of the lifestyle store concept or recalibrating
+the strategy, Jordan frames it as a ‘visionary step’ and avoids accountability.
+His view that flexibility in the interpretation of revenue recognition policies is
+not only permissible but sometimes necessary in periods of commercial
+transformation and strategic repositioning, suggests a strategic
+misrepresentation, not accountability and transparency.
+1
+Competence
+• His disregard of the CFO’s concerns about the assumptions and revenue
+recognition practices, reflects poor judgement. His Not asking for expert advice
+• may explain a strong focus on narrative, but ethical leadership requires
+deference to expertise in areas beyond one’s own training/knowledge.
+1
+Responsibility
+• Jordan sidelines concerns from the CFO and imposes a reporting approach
+that lacks nuance and balance, despite internal discomfort. This creates a
+culture where ethical concerns are not escalated, and dissent is discouraged.
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+Principle 16: In the execution of its governance role and responsibilities, the
+governing body should adopt a stakeholder-inclusive approach that balances the
+needs, interests and expectations of material stakeholders in the best interests of
+the organisation over time.
+• Jordan highlighted selective, favourable metrics while failing to disclose key
+operational challenges. This approach compromises the integrity of
+stakeholder communication, which should be transparent, objective and
+provide a fair reflection of the organisation’s performance. 1
+Pressure to manipulate financial reporting and questionable revenue
+recognition practices (indicator)
+The CEO insisted that the CFO recognise the revenue at the point of order
+confirmation to ‘reflect demand strength’ to the shareholders and investors. The
+CFO also voiced her concerns about inconsistencies in the application of revenue
+recognition policies across stores and raised the following concerns:
+Principle 15: Responsible disclosure provides that the governing body should
+ensure that the organisation’s reports and other disclosures enable stakeholders
+to make informed assessments of its performance.
+• The quarterly results and investor presentations emphasised selective positive
+data (revenue growth, engagement in successful stores) while omitting key
+operational failures and continued losses.
+1
+Principle 15 of King IV requires the board to ensure that assurance services and
+financial reporting are performed with competence and integrity, and in
+compliance with applicable standards.
+• Jordan justified the early revenue recognition by citing ‘flexibility’ in applying
+IFRS 15 due to the company’s strategic repositioning. However, this
+reflects a misuse of professional judgement, as it prioritises short-term
+strategic objectives over the faithful application of the accounting standard. 1
+Dismissal of concerns of the CFO (indicator)
+Jordan’s conduct undermines ethical leadership by dismissing concerns raised by
+the CFO. She flagged inconsistent revenue recognition and once-off transactions
+used to boost quarterly results, raising the following concerns:
+Principle 2: Organisational ethics provides that the governing body should
+govern the ethics in a way that supports an ethical culture.
+• Rather than encouraging open discussion, Jordan dismissed the finance
+team and CFO's concerns as overly pessimistic. His control over public
+communications and refusal to acknowledge dissent have fostered a culture
+where ethical concerns are ignored. 1
+The CEO’s reference to their concerns as a ‘pessimism bias’ reflects a leadership
+tone that undermines the importance of employees' and other directors'
+views and silences professional judgment.
+1
+Available 19
+Maximum 12
+Total for part (a) 12
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+Part (b) Critically evaluate the strategic considerations that influenced IR’s
+decision to invest in the LC stores.
+• Ignore the governance-related matters that may have affected
+the decision to invest in the LC stores.
+Marks
+Alignment with current strategy
+IR’s product offering for the new concept stores conflicts with the company’s
+core strategic objective of market share growth in the low-income South African
+customer market.
+1
+Furthermore, the lack of alignment between the two strategies would have
+negatively impacted the company’s ability to reshape the concept store strategy to
+align with its own.
+1
+The decision to enter the middle-LSM market afforded IR the opportunity to grow
+company profits and increase performance incentives for directors.
+1
+There does not appear to have been a clear strategic reason for the investment
+in the concept stores other than it being the CEO’s idea from his trip to China. Thus,
+the concept was not designed to create value for the company as it was not linked
+to any objectives.
+1
+The geographic market entered was similar to the company’s existing
+operations, which would have decreased the time needed for the company to fully
+understand the new market. This should have improved the chances of success of
+the project.
+1
+The market (being a different LSM group) offered IR the opportunity to spread its
+risk through (some) diversification
+1
+IR’s existing market was growing and it may have been better for the company to
+rather place more resources in this part of the business than in the new
+concept stores.
+1
+Management
+Since the CEO made this expansion decision unilaterally, it seems as though the
+rest of the management did not fully buy into this decision, with many concerns
+raised but dismissed, which would decrease their commitment to the project and
+the likelihood of its success
+1
+IR lacked the expertise and experience with the concept stores, which would make
+it difficult for the company to penetrate this new market. IR would have been better
+served expanding on its already serviced market to try to unlock further value for
+shareholders. (Lack of strategic experience)
+1
+IR’s lack of management experience in the higher-LSM markets could impact the
+company’s ability to effectively compete against well-established business in the
+sector like Spozena Retailers and Kingsworth. (Lack of operational experience)
+1
+The impact on existing management bandwidth and the potential that the launch
+of this new project could distract from the core operations of the organisation
+should have been considered.
+1
+Training required for the difference in product line and target customer segment
+of the staff from the discount stores allocated to the new LC stores does not seem
+to have been considered.
+1
+Suppliers, distribution and product demand
+IR would probably not be able to use its strong bargaining power with its
+existing suppliers (economies of scale) as the new concept stores required
+different suppliers. This would increase prices for products in a market where
+customers were becoming more price conscious. This could further have been
+exacerbated by the expanded product ranges which IR was not used to selling.
+(Inadequate supply chains)
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+New suppliers would have to be used and would have needed to adapt their
+product offerings to be able to supply IR, which would increase the likelihood that
+poor quality products could be received by the company, with a resultant impact
+on sales.
+1
+The company’s entire value chain (not just supply chain) seems inadequate
+for the shift to a new market, as evidenced by
+• the inefficiencies in distribution and warehousing’
+• marketing aimed at low margin products (food) when the budget was driven by
+a sales mix weighted towards the higher margin products (clothing)
+1
+The continued devaluation of the rand prior to July 2024, seemed to indicate that
+it was poor decision to shift focus into a market that relied on imported products.
+This would have made the success of the concept more difficult as it would lead to
+products becoming more expensive.
+1
+As a consequence of high interest rates and rising electricity and medical costs,
+which significantly reduced consumers' disposable income, IR may not have had
+much choice but to consider another LSM market as its current market may be very
+heavily influenced by the economic environment in South Africa.
+1
+The suitability of diversifying into a middle-LSM customer profile given the
+tough economic conditions and pressure on disposable income experienced in
+2024, would likely have been considered.
+1
+As the existing customer base was not the target for the new strategy, IR
+would be unable to rely on its existing customers to help support the idea and
+improve demand for its new products.
+1
+The perception of the market when it comes to IR would likely have impacted
+customers’ willingness to purchase premium products from a company known for
+producing discount products. Thus, the company could receive a smaller sales
+market due to customers unwillingness to purchase products from the company.
+(Lack of brand recognition/confusion)
+1
+The implementation of loyalty programs/cards could improve their chances of
+gaining market share in a market that values loyalty points.
+1
+Competitors
+A highly competitive marketplace would have required IR to provide a unique
+offering to try to capture market share from established competitors. However, the
+company provided similar products to that of its competitors with no major strategic
+shift from normal operations. This would have impacted the company’s ability to
+capture market share.
+1
+The possibility of a negative impact on the company as a result of entering into a
+market with a significant number of competitors and a shrinking consumer
+market for these types of products.
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+Other
+The rollout of the LC stores would require a significant capital injection. This
+would have increased financial pressure on IR to demonstrate improved financial
+performance from the new stores. Given the uncertainty surrounding the new
+concept, the decision to undertake such a large capital investment may have
+exposed the company to heightened financial risk if the strategy failed to generate
+the expected returns.
+1
+Available 24
+Maximum 14
+Z1 – Business internal environment
+(Mark awarded if candidates recognised the shift in strategy by the company
+(i.e. lower LSM market and new strategy))
+1
+Z2 – Business external environment
+(Mark awarded if candidates recognised any issue relating to the external
+business environment,
+e,g. competition, devaluation of the rand, state of the SA economy)
+1
+Total for part (b) 16
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+Part (c) Prepare a memorandum addressed to the board of directors. In the
+memorandum, incorporate insights across all LC stores but only
+include calculations for Group B stores. The memorandum should
+cover the following:
+(i) An evaluation of why the actual net profit of the LC stores
+differs significantly from the budgeted profit.
+• Focus only on the sales mix, market size and market
+share variances. (calculations 9; discussion 11)
+Marks
+Memorandum format
+Calculations
+() = adverse and + = favourable Amount
+Group B R’000
+Sales mix variance: Food [ 105 000 (½) -
+(150 000*50%(½))] *30% (½)
+9 000 1½
+Sales mix variance: Clothing [45 000(½) -
+(150 000*50%)](½) *46% (½) (13 800) 1½
+Total mix variance (4 800) 1C
+Weighted budgeted GP (50%*30%) + (50%*46%) 38% 1
+Market size variance
+(800(½) - 1 000(½)) *20% (½) *38% (½ C) (15 200) 2
+Market share variance
+Actual market share (150 000 / 800 000) (1)
+800 000(½)* (18.75%(½ C) - 20%(½)) *38%(½ C)
+18.75%
+(3 800)
+1
+2
+Total 10
+1 Sales mix variance
+One of the drivers of underperformance by the LC stores is the unfavourable sales
+mix variance across the three groups.
+1
+The LC store was launched with a planned focus on clothing, which has a higher
+margin between the categories making up the bulk of sales.
+1
+The food category, which has a lower margin, made up the bulk of actual sales,
+significantly diluting gross profit to deliver the goods.
+1
+In all the regions (Group A (7 200), Group B (4 800) and Group C (6 300), food
+performed better in terms of volume, but it could not compensate for the profit lost
+by underperforming clothing sales.
+This clothing sales variance contributed to reduction in profit by R13 800 000.
+1
+The company misread customer preferences. For concept store customers,
+essential food items are prioritised over lifestyle goods.
+The CEO failed to localise the product mix, assuming uniform middle-LSM demand
+across provinces.
+1
+2 Market size variance
+The actual market shrank across all regions: Group A (R8 360 000) Group B
+(R15 200 000) and Group C (R14 000 000).
+The overall impact of this variance on profit was a reduction (R37 600 000).
+1
+Group B’s decline was quite big, reflecting strategic overestimation of the
+opportunity size and lack of sensitivity to local markets.
+1
+The macro-economic environment in South Africa – higher interest rates, weak
+rand, high electricity costs and health costs – put pressure on middle-income
+customers, resulting in a decline in market size.
+1
+While the economic contraction was uncontrollable,
+it can and should have been monitored and anticipated.
+2
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+3 Market share variance
+The market share performance was inconsistent across regions Group A had a
+positive contribution to profit of R8 360 000, while Group B had negative impact on
+profit (R3 800 000) and Group C positively impacted profit by R3 500 000.
+1
+Group A benefited from brand strength, and location advantage in more
+economically resilient provinces.
+1
+Group B most likely lost market share to better established competitors who have
+a better understanding of the customers.
+1
+Where performance was bad, could be due to increased competition from low-cost
+online retailers.
+1
+Group C’s performance was good in capturing the larger share of a smaller market. 1
+Discussion: Available 15
+Maximum 11
+Calculations: Available 10
+Maximum 9
+Total for part (c)(i) 20
+Part (c) Prepare a memorandum addressed to the board of directors. In the
+memorandum, incorporate insights across all LC stores but only
+include calculations for Group B stores. The memorandum should
+cover the following:
+(ii) An assessment of the CEO’s theory that the store profitability
+could be improved by ‘right-sizing’ store formats to better
+align with local market conditions.
+• Use break-even analysis, contribution margin and unit
+economics (revenue and cost per m2) to support your
+answer. (discussion 9; calculations 5)
+Marks
+Group A stores are highly productive, achieving a very strong revenue of
+R300 000/m2 and a cost per m2 of R287 480. The format is appropriately sized and
+costed for demand.
+1
+Its costs relative to footprint appear under control. 1
+The break-even revenue is below actual revenue of R300 million, and it has a
+healthy contribution margin ratio of 29%.
+1
+Group B – 1800 m2
+The stores are oversized relative to the revenue they make. R27 778 per m2 is
+significantly low and does not cover its costs (R28 563 per m2).
+This indicates inefficiencies in space utilisation and cost structure. Consideration
+should be given to resizing or re-configuring Group B stores.
+1
+1
+The contribution margin of 22% makes it viable but borderline as actual sales
+(R150 million) is below break-even revenue.
+1
+Group C
+This group only contributes 7%, and these stores do not cover even basic costs.
+Without drastic resizing or repositioning, they are unsustainable.
+1
+Their break-even revenue of R252 609 000 far exceeds is actual revenue of
+R70 million.
+1
+Consideration should be given to reconsidering or exiting Group C’s current format. 1
+General
+The analysis somewhat confirms the CEO’s view that store formats must be
+tailored to local conditions, including demographics, spending power and demand
+mix.
+1P
+While resizing may improve cost efficiency, it cannot resolve structural demand
+weaknesses where contribution margins remain insufficient (e.g. Group C).
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+Furthermore, reducing store size may weaken economies of scale and supplier
+bargaining power.
+1
+Performance differences across regions suggest that local demand conditions,
+rather than store footprint alone, are the primary drivers of profitability.
+1
+Calculations
+Variable costs
+108 000 + (46 240*20%) 117 248 1
+Contribution ratio
+(150 000 - 117 248)/150 000 21,83% 1C
+Fixed cost
+(46 240*80%) 36 992 ½
+Break-even revenue
+36 992 / 21,83% 169 455 ½C
+Revenue per m2
+(150 000 000/3)/1 800 27 778 1
+Cost per m2
+((108 000 000+ 46 240 000)/3)/1 800 28 563 1
+Discussion: Available 13
+Maximum 9
+Calculations : Available 5
+Maximum 5
+Total for part (c)(ii) 14
+X1: Communication skill – presentation and layout
+(Mark awarded if candidates presented their answer in a memorandum format)
+1
+Y4: Judgement and decision making
+(Mark awarded if candidates showed clear insight into the causes of
+underperformance and feasible next steps)
+1
+Total for part (c) 36
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+Part (d) Evaluate the CEO’s proposal to close all stores in group C by –
+(i) using relevant costing principles to calculate the impact on
+the performance of IR in FY2026;
+• Assume that the 2025 results are likely to be typical of
+the future performance in 2026.
+Marks
+Incremental
+effect
+R'000
+Gross profit (156 100 - 147 000) (9 100) 0.5
+Store operating cost (W1) 11 822
+Logistics (59 800 - 51 750) 8 050 1
+Logistics penalty (900) 0.5
+Marketing and brand investment
+(0,15*40 040)
+6 006 1
+External marketing cost - sunk cost 0 0.5
+Head office - allocated cost 0 0.5
+Finance cost 0 0.5
+15 878
+Workings 1
+Store operating costs R'000
+Variable cost - avoidable (21 580*20%) 4 316 1
+Total salaries saved 6 606
+Saving on salaries (114*32) + (120*28) + (180*10) 8 808 1.5
+Retrenchment cost (8 808/12) * 3 (2 202) 1
+Saving on rental (50*12*9) 5 400 1
+Rental penalty
+Pay penalty (500 000*9) = 4 500
+Continue rental and sublet (42 000*9*12) = 4 536
+Therefore, choose to cancel the lease contracts because the
+penalty (4500) is less than the cost of continuing the rental and
+subletting (4536).
+(4 500)
+1
+1
+1
+11 822
+Available 12
+Maximum 12
+Total for part (d)(i) 12
+Part (d) Evaluate the CEO’s proposal to close all stores in group C by –
+(ii) critically discussing the impact on the company and its
+internal stakeholders.
+• Assume that the 2025 results are likely to be typical of
+the future performance in 2026.
+Marks
+Company – positive
+The decision to close the nine Group C stores seems to be a sound financial
+choice. This will result in the company being able to generate a greater profit from
+reduced operating expenses.
+Furthermore, some relevant items would be once-off (rental penalty, retrenchment
+cost) which will have an effect on future profits.
+1
+1
+IAC JANUARY 2026 SUGGESTED SOLUTION
+PAPER 3 PART I
+
+The closure of nine Group C stores represents more than half of the total number
+of stores. This would also be expected to result in a cost saving of the head office
+costs at a company level.
+1
+The closure of the stores will afford the company more time to focus on the better
+performing group of stores, which may make the company more competitive in
+these areas.
+1
+Fewer concept stores will likely improve the quality of product and service offerings
+by management as management will then be able to focus on a few stores in a few
+areas. This could result in more sales in areas where the company will still be
+operating.
+1
+Company – negative
+Although Group C is the worst performing segment concept stores group, closure
+of the stores in these areas may affect the company’s ability to come back and
+reopen stores in the area, resulting in a loss of future market share.
+1
+Furthermore, the new concept stores project has only been in operation for one
+year. Thus there is still time for the situation to improve. Closing the stores now in
+specific areas does not seem to make business sense and will lead to a loss of the
+company to take advantage of the market in these areas.
+1
+The steps taken by the company to close all stores in Group C seems to be drastic
+and thus may have a negative reputational effect on the company. It may thus
+result in a loss of market share from customers in other areas.
+1
+Group C earns a positive contribution margin. Because of the positive contribution
+margin, improvement of marketing and distribution (for which inefficiencies have
+been noted) and a focus on control of head office costs might render greater results
+for the company as a whole.
+1
+Internal stakeholders
+The closure of the Group C stores would likely negatively affect existing employees
+at other locations as these employees may leave the employ of the company,
+resulting in operational delays as the company seeks to find replacement
+employees.
+1
+Managers of the outlets might be moved back to other outlets. Having to move
+again might affect their productivity, drive, and motivation.
+1
+The retrenchment of employees may expose the company to potential labour
+disputes or legal action if the retrenchment process is perceived as unfair or
+procedurally flawed. This could result in additional costs or management time
+diversion.
+1
+The retrenchment of the employees in the nine stores could lead to lowered
+employee morale which could affect productivity.
+1
+The executive team will benefit also as they may get performance-based bonuses
+as a result of improved financial results.
+1
+Available 14
+Maximum 5
+Total for part (d)(ii) 5
+Total for part (d) 17
+TOTAL FOR PART I 81

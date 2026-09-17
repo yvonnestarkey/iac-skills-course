@@ -1,0 +1,279 @@
+Source: SAICA ITC January 2024 — Paper 4 Question 2 suggested solution (GLS).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 1 © SAICA 2024
+Part (a) Briefly discuss whether the agreement between IGS and LE
+Batteries contains a lease as defined in accordance with
+IFRS 16.
+Marks
+A contract is, or contains, a lease if the (i) contract (iii) conveys the right to
+control the use of an (ii) identified asset for a (iv) period of time in exchange
+for consideration. (IFRS 16.9) In determining whether the agreement
+between IGS and LE Batteries contains a lease, the following will be
+considered:
+1T
+Does a contract exist?
+An agreement was entered into between IGS and LE Batteries which
+creates enforceable rights and obligations for the use of the industrial
+specialised machine in exchange for consideration, i.e., a contract exists
+between IGS and LE batteries.
+1
+Does the agreement explicitly or implicitly specify an identified asset?
+The agreement explicitly specifies an asset, the industrial specialised
+machine, OR the industrial specialised machine (‘machine’) is implicitly
+identified as IGS has no other available assets with which they can fulfil the
+obligations of the contract.
+1
+Per the agreement, IGS does not have a substantive right to substitute the
+machine during the ten-year period because: 1P
+The machine was installed at LE Batteries’ production plant, and uninstalling
+the machine and installing another would not be a simple process and IGS
+would not benefit economically from this because they would have to incur
+costs in doing so.
+1
+Furthermore, this is a specialised asset (industrial specialised machine) and
+IGS does not have an alternative asset that could be used as a substitute. 1
+IGS can only substitute the components (not the machine as a whole) on
+the occurrence of a specified event, i.e., when the components become
+faulty or if they malfunction for whatever reason. 1
+The agreement therefore contains an identified asset. 1P
+Does the agreement convey the right to control the use of an identified asset
+to LE Batteries?
+The relevant decisions about how and for what purpose the machine is used
+are predetermined and specified in the agreement. LE Batteries will only be
+allowed to use the machine for its primary business activities
+to manufacture silicon cells.
+1
+LE Batteries has the right to operate the machine throughout the period of
+use without IGS or LE Batteries having the right to change the purpose for
+which the machine is used during the ten-year period.
+1
+LE Batteries has the right to obtain substantially all of the economic benefits
+from use of the identified asset because it has exclusive use of the asset
+throughout the period. LE Batteries will manufacture silicon cells which will
+be sold for cash.
+1
+Although LE Batteries is only allowed to use the machine for its primary
+business activities to manufacture silicon cells, this does not mean that LE
+Batteries does not have the right to control the machine as this is only a
+protective right OR the fact that only WeService can be used to service the
+1
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 2 © SAICA 2024
+machine does not mean that LE Batteries does not have the right to control
+the machine as this is only a protective right.
+The agreement therefore does convey the right to control the use of the
+machine to LE Batteries. 1P
+Does the agreement specify a period of time of use in exchange for
+consideration?
+The agreement gives LE Batteries the right to use the machine for a period
+of ten years.
+Consideration is payable in the form of monthly payments of R140 000
+payable in arrears to IGS.
+1
+1
+Conclusion
+The agreement between IGS and LE Batteries contains a lease as defined
+in accordance with IFRS 16. 1P
+Available 16
+Maximum 10
+Communication skills – clarity of expression 1
+Total for part (a) 11
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 3 © SAICA 2024
+Part (b) Prepare the consolidation journal entry(entries) required to
+account for the intragroup lease transaction between IGS and LE
+Batteries in the consolidated financial statements of the IGS
+Group for FY2023.
+• Ignore all forms of taxation, including VAT.
+• Ignore any non-controlling interest(s).
+• Journal narrations are not required.
+• Assume that the agreement between IGS and LE Batteries
+contains a lease, and that it should be classified as a finance
+lease, as defined in accordance with IFRS 16, in the separate
+financial statements of IGS.
+Marks
+Dr. Cr.
+Alt 1: Machine (PPE) – Cost (SoFP) (Note 1) R10 025 000 C1
+Alt 2: Machine (PPE) – Cost (SoFP)
+Retained earnings (SoFP) (Note 1)
+R10 000 000
+R25 000 C1
+Accumulated depreciation – PPE machine
+(SoFP)
+R1 670 833 C4
+Gross investment in the lease (SoFP)
+(R140 000 x 96)
+R13 440 000 1
+Unearned finance income (SoFP)
+(25 – 120 Amrt Int)
+R4 638 326 1P
+Alt: Net investment in the lease (SoFP)
+(24 Amrt balance)
+R8 801 673 Alt 2P
+Finance income (p/l)
+(13 – 24 Amrt Int)
+R1 040 382 1P
+Lease liability (SoFP)
+(24 Amrt balance)
+R8 801 673 1P
+Finance cost (p/l)
+(13 – 24 Amrt Int)
+R1 040 382 1P
+Right-of-use asset (SoFP) R10 025 000 C3
+Accumulated depreciation – RoU asset (SoFP) R2 005 000 C4
+Alt: Right-of-use asset (SoFP)
+(R10 025 000 – R2 005 000)
+R8 020 000 Alt
+C3&C4
+Depreciation (p/l)
+R1 002 500 – R835 417)
+R167 083 1P
+Retained earnings (SoCE) R167 083 1P
+Elimination of intercompany lease transaction
+CALCULATIONS
+C1. Machine (PPE) – Cost
+Initial cost paid R10 000 000 1
+Legal fees paid (Note 1) R25 000 1
+R10 025 000
+Note 1:The cost of an item of property, plant and equipment comprises:…
+(b) any costs directly attributable to bringing the asset to the location and condition
+necessary for it to be capable of operating in the manner intended by management (IAS
+16.16(b).
+Alt 1: IGS acquired the machine to lease to LE Batteries and the legal costs incurred are
+costs attributable to bringing the machine to the location and condition necessary for it to be
+capable of operating in the manner intended by management (i.e., to lease to LE Batteries).
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 4 © SAICA 2024
+Alt 2: The legal costs incurred are costs incurred to draw up the lease agreements and are
+not costs attributable to bringing the machine to the location and condition necessary for it
+to be capable of operating in the manner intended by management.
+C2. Finance lease
+Rate implicit in the lease:
+N (10 x 12) = 120 1
+PMT = R140 000 1
+PV = (R10 000 000 + R12 500 (R25 000 x 50%)) = (R10 012 500) 1+1
+Comp i = 0,95%
+C3. Right-of-use asset and lease liability
+Initial cost of right-of-use asset
+Amount recognised for lease liability C2 R10 012 500 1P
+Legal fees (R25 000 x 50%) R12 500 1P
+R10 025 000
+C4. Adjustment to depreciation and
+accumulated depreciation
+Depreciation Accumulated
+depreciation
+RoU asset: (R10 025 000 (C3) / 10) R1 002 500 x 2 R2 005 000 1P+1P
+PPE (group) (R10 025 000 (C1) / 12) (R835 417) x 2 (R1 670 833) 1P+1P
+R167 083 R334 167
+Available 19
+Maximum 18
+Communication skills – presentation (for logical pro forma entry(ies)) 1
+Total for part (b) 19
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 5 © SAICA 2024
+Part (c) Discuss, supported with calculations, the normal tax
+consequences for IGS of the letting of the industrial specialised
+machine to LE Batteries for the year of assessment ended 31
+December 2023.
+• Do not discuss the related legal fees.
+Marks
+1. Normal tax consequences
+1.1. IGS will include the lease payments excluding VAT in its gross
+income. (Gross income definition in section 1 of the Income Tax Act).
+1
+1.2. The lease payments are included into gross income excluding
+VAT, as the VAT is collected on behalf of SARS and not for the
+taxpayer’s own benefit. 1
+1.3. Total output tax levied upfront: R1 304 348 (R10 million x 15/115). 1
+1.4. The VAT on current year lease payments is R1 304 348 x R1 680 000/
+R16 800 000 (12/120) = R130 435.
+1
+1.5. Current year lease payments to be included in gross income excluding
+VAT: (R140 000 x 12) R1 680 000 - R130 435 = R1 549 565. 2
+1.6. IGS will not include section 24J interest income in its gross income as
+lease agreements are excluded from the definition of an instrument. 1
+1.7. In terms of section 23C of the Income Tax Act, IGS may claim a capital
+allowance on the cost price excluding VAT R10 000 000 x 100/115 x
+100% = R8 695 652. 2
+1.8. IGS is a small business corporation therefore in terms of section 12E(1A)
+IGS can elect the most beneficial capital allowance. IGS can elect either
+s12E(1A) or s11(e). IGS leases the industrial specialised machine to LE
+Batteries and therefore is not used by IGS directly in its process of
+manufacture. Therefore the 100% allowance cannot be claimed.
+1
+1.9. As this is the second year in which allowances can be claimed as 30%
+of the cost will be claimed as a capital allowance R2 608 696 (R8 695
+652 x 30%). 1
+1.9. Section 11(e) allowance: R869 565 (R8 695 652 / 10 years). 1
+1.10. The most beneficial allowance is the section 12E(1A) allowance as
+R2 608 696 is greater than R869 565 and will be elected by IGS in line
+with its goal of electing an option available to minimise its normal tax
+liability or defer its normal tax liability.
+1P
+Notes:
+Section 23A (not examinable) will not apply as the taxpayer claimed a deduction
+in terms of section 12E(1A).
+Section 12C(1)(b) does not apply as LE Batteries did not use the industrial
+specialised machine in its trade for the first time.
+Section 23G does not apply as this is not a sale and leaseback.
+Available 13
+Maximum 11
+Communication skills – layout and structure 1
+Total for part (c) 12
+ITC JANUARY 2024 SUGGESTED SOLUTION
+PAPER 4 QUESTION 2
+Paper 4 question 2 6 © SAICA 2024
+Part (d) Calculate, supported with brief reasons, the impact of part 3
+of the scenario (the solar systems service technicians) on the
+taxable income of IGS for the year of assessment ended
+31 December 2023.
+Marks
+Workings
+(ZAR)
+Taxable
+income
+(ZAR)
+12H(2)(b)/Learnership allowance in respect
+of the employee without a disability. 40 000 x 3/12 (10 000) 1 (reason)
+1 (amount)
+12H(2)(b) read with section 12H(5)/
+Learnership allowance in respect of the
+employee with a disability.
+60 000 x 3/12 (15 000) 1 (reason)
+1 (amount)
+Section 11(a) deduction for salary expense. 95 000 x 2 (190 000) 1 (reason)
+1 (amount)
+Section 11(a) deduction for contract for
+monthly training and industry update
+sessions as the amounts are incurred in the
+production of income.
+1
+Section 11(a) read with section 23H
+The training service will be performed
+during 1 October 2023 and 30 September
+2024, and this is more than six months after
+the end of IGS's 2023 year of assessment
+(i.e. 9 months), therefore the amount will be
+limited by section 23H (para. (aa) of proviso
+to section 23H).
+1
+As no other amounts were paid for in
+advance, it is evident that the total prepaid
+expenditure of R262 500 (R350 000 x 9/12)
+which may have been limited by section
+23H exceeds R100 000, therefore the
+amount will be limited by s23H (para. (bb) of
+proviso to section 23H).
+1
+350 000 x 3/12 (87 500) 1
+Available 10
+Maximum 8
+Total for part (d) 8
+TOTAL FOR PAPER 4 QUESTION 2 50

@@ -1,11 +1,23 @@
-Examiner commentary sample — application vs knowledge
+Examiner commentary — application vs knowledge
 
-Students often believe they failed because they did not know enough theory. Scripts show the opposite pattern: basic knowledge is present, but it is not converted.
+Students often believe they failed because they did not know enough theory. SAICA markers' and umpires' comments for ITC January 2024, ITC June 2024, IAC January 2025 and IAC January 2026 repeat the opposite pattern: basic knowledge is present, but it is not converted. The same deficiencies appear year after year.
 
-Where application marks are lost:
-- Discussion points are headings, not arguments.
-- The required verb (discuss, advise, evaluate) is ignored.
-- Facts from the case are not linked to the principle.
+Where application marks are lost
+- Discussion points are headings or a shopping list of theory, not arguments tied to the scenario.
+- The required verb (discuss, advise, evaluate, prepare, criticise) is ignored; calculations appear where a discussion was asked, or the reverse.
+- Facts from the case are restated instead of drilled down to the underlying issue, assertion, or consequence.
 - Time is used on one sub-part while later required items are blank.
+- Workings exist but are not cross-referenced, so methodology marks cannot be given.
+- Journal entries use poor account names, missing debits/credits, or abbreviations.
+- Recommendations sit on the fence: every alternative is listed, no decision is made, or the conclusion is not motivated.
+- Open-book definitions are copied in full; marks are for using the definition, not reciting it.
+- Communication format (memo, report, letter) and presentation marks are left unclaimed. Text-message abbreviations score nothing.
+- Uneven competency coverage: reporting on value creation is stronger; decision-making / financial management is weaker.
 
-Coaching implication: calculate the BMCR, then practise articulation. Do not default to more revision until the conversion leak is closed.
+Enabling competencies that leak as "I knew it but didn't get the mark"
+- X1 Communication: structure and the required format.
+- Y1–Y5 Critical thinking, integrative thinking, problem-solving, judgement, scepticism: tag facts to issues, weigh, conclude.
+- Z Business acumen: internal and external context of this entity, not a generic industry lecture.
+- W Digital acumen: data and systems only where the required asks.
+
+Coaching implication: calculate the BMCR, then practise articulation. Do not default to more revision until the conversion leak is closed. Show workings, plan the required, write principle-plus-fact-plus-consequence, and finish every part.

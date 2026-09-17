@@ -1,0 +1,369 @@
+Source: SAICA ITC June 2024 — Paper 1 question (PriceRight).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Paper 1 1 (of 7) © SAICA 2024
+PAPER 1 100 marks
+1 Introduction
+You are a trainee completing your SAICA training contract at PriceRight Ltd ('PriceRight').
+PriceRight is a large retailer in the fast-moving consumer goods industry. The company prides
+itself on providing quality products to its customers at affordable prices.
+The company was incorporated in 2002 following the opening of the first store in Gauteng.
+The company has expanded rapidly and now operates multiple stores across all major cities
+in South Africa. To facilitate further expansion, the company listed on the Johannesburg Stock
+Exchange in 2013. At the beginning of the financial year (prior to any disposals or acquisitions),
+the group structure comprised the following key legal entities:
+All entities within the PriceRight Group have a 31 December financial year end.
+PriceRight's primary operations relate to selling various food items ranging from fresh produce
+to canned goods and non-food items such as medication and toiletries. Pharmcon (Pty) Ltd
+(‘Pharmcon’) is a successful pharmacy chain offering customers over-the-counter and
+prescription medication and routine medical examinations and procedures in South Africa.
+FoodGood (Pty) Ltd (‘FoodGood’) is a leading food manufacturing company focusing on the
+manufacture of speciality food products, like chocolates, confectionery products, healthy
+snacks and hard candy.
+While trading conditions have improved following the Covid-19 pandemic, the retail sector still
+faces many challenges caused by a weakening rand, increasing inflation and unstable
+operating conditions due to loadshedding. The PriceRight Group hopes to manage these
+difficult conditions under the guidance of its management team.
+2 Customer payment options
+While most customers pay in cash or by using debit or credit cards, a small portion of the
+PriceRight Group's customer base buys on direct credit from entities within the PriceRight
+Group. These credit facilities have been offered to customers by the PriceRight and Pharmcon
+stores in South Africa since 2019.
+PriceRight Ltd
+Pharmcon (Pty)
+Ltd (75%)
+FoodGood (Pty)
+Ltd (40%)
+Paper 1 2 (of 7) © SAICA 2024
+To qualify for credit, customers have to follow the steps below:
+1 Complete a manual application form at a PriceRight or Pharmcon store in which they
+provide their full names, ID numbers, cellphone numbers, home addresses and monthly
+gross income.
+2 Provide supporting documentation for the information provided as part of the application
+process.
+3 Give consent, by signing the application form, that credit history reports may be
+obtained.
+4 Agree, by signing the application form, to the terms and conditions associated with the
+use and repayment of credit offered.
+The manual application forms and supporting documentation are scanned as PDFs at the
+relevant PriceRight or Pharmcon store and the PDFs are then sent via e-mail to the financial
+services division of the PriceRight Group.
+3 Appointment of auditors
+Iconic Auditors Inc. ('Iconic') have been appointed to audit the PriceRight Group and its
+separate legal entities, PriceRight, Pharmcon and FoodGood, for the financial year ended
+31 December 2023 (FY2023).
+Some of the management team members requested that Iconic assist them with the
+preparation of journal entries to account for the sale of 60% of Pharmcon in the financial
+statements of PriceRight and the PriceRight Group. (See section 6 for details related to this.)
+The Audit Committee is considering the request, but has not yet approved the non-assurance
+service to be rendered by Iconic.
+4 Audit strategy considerations for the FY2023 audits
+One large audit team will be assigned to perform the audits of the PriceRight Group and the
+separate legal entities for FY2023.
+Iconic’s audit team will complete the FY2023 audits of the separate financial statements of
+PriceRight, Pharmcon and FoodGood before performing the audit of the consolidated financial
+statements of the PriceRight Group. This will allow the audited results and audit work of
+PriceRight, Pharmcon and FoodGood to be used for the consolidation of the PriceRight Group
+financial statements.
+The consolidation of the PriceRight Group is a key focus area for the PriceRight Group audit.
+Detailed substantive procedures will be performed, given the high risk of material
+misstatement related to the consolidation process.
+5 PriceRight’s plan to resolve loadshedding
+Mr Greengrass, a non-executive director with specialist knowledge of sustainability,
+challenged the company, through its Social and Ethics Committee, to reconsider the current
+strategy of using diesel generators. He noted several customer complaints at some stores
+which make use of diesel generators. In some cases the generators are placed near the
+Paper 1 3 (of 7) © SAICA 2024
+entrance of the store, and the customers can often smell the fumes being emitted and hear
+the deafening sounds associated with running the generators.
+Mr Greengrass encouraged the company to take advantage of the rapidly falling costs of solar
+and energy storage technologies, which will lessen the company's environmental footprint in
+the long run. Solar technologies convert sunlight into electrical energy through solar
+(photovoltaic) panels or mirrors that concentrate solar radiation. Solar energy systems are
+installed on rooftops, or the company can also build large solar power plants to provide
+electricity to retail stores.
+A typical solar system consists of the following components, all of which are imported:
+• Solar panels: These are the most visible parts as they are mounted on rooftops or on
+the grounds of commercial properties. The panels are estimated to have a useful life of
+15–20 years.
+• Inverter: Solar panels produce electricity that are mostly in the form of direct power (DC).
+While DC can be used for some applications, electricity for homes or commercial
+premises use alternating current (AC). Therefore an inverter is required to convert DC
+into AC. Inverters are estimated to have a useful life of ten years, depending on the
+brand.
+• Utility meters: These record the electricity generated by the panels and how much the
+user, be it a home or commercial property, consumes.
+• Batteries: The excess electricity generated by the panels can be stored in batteries and
+consumed later. Batteries have a useful life of 5–15 years.
+The sustainability director, Ms Sunshine Soltace, recommended using Botes Solutions (Pty)
+Ltd (‘Botes Solutions’) to do the full solar system installation. She had watched a news report
+on the increased occurrence of solar panel installation scams. The report encouraged
+companies and individuals to check the South African Photovoltaic Industry Association's
+extensive list of accredited solar installation companies to ensure that the installer chosen was
+indeed accredited by the Association. The procurement officer checked the Association’s list,
+but could not find Botes Solutions on the list. However, Sunshine nevertheless advised the
+Social and Ethics Committee that further background checks on Botes Solutions were
+unnecessary as she has been friends with the owner of Botes Solutions, Bakkie, since they
+were in high school and his firm can thus be trusted to do a good job.
+Solar systems have large initial capital costs yet very low running costs, primarily relating to
+washing the panels and some standard electrical maintenance. The estimated initial outlay for
+phase 1 of the solar project is R250 million, which will comprise installing the full solar system
+in all stores in Johannesburg. Subsequent phases will relate to the installation of the full solar
+systems in stores in other cities. Phase 1 would be considered the pilot stage, and the
+company will have the ability to learn from the pilot to leverage lessons learnt in subsequent
+phases.
+6 Financing initiatives for phase 1
+The decision to change from diesel generators to solar systems was approved by the board
+in July 2023 for implementation in 2024. It is to be financed by means of the following
+initiatives:
+Initiative 1: Sale of 60% of Pharmcon; and
+Initiative 2: Sale of PriceRight’s non-performing customer accounts.
+Paper 1 4 (of 7) © SAICA 2024
+Further details related to each initiative are provided below.
+Initiative 1: Sale of 60% of Pharmcon
+PriceRight acquired 75% of the ordinary shares of Pharmcon on 1 January 2018 for
+R140,8 million.
+At the acquisition date, the equity of Pharmcon consisted of the following:
+R’000
+Ordinary share capital (issued share capital of 200 000 ordinary shares) 11 000
+Retained earnings 121 000
+Mark-to-market reserve on equity instruments1 11 000
+1 The mark-to-market reserve on equity instruments relates to an investment Pharmcon holds in Index (Pty) Ltd
+(‘Index’), which is measured at fair value through other comprehensive income. It is the policy of the PriceRight
+Group to realise its mark-to-market reserve on equity instruments measured at fair value through other
+comprehensive income to retained earnings upon sale of the investment.
+Pharmcon has not issued (or repurchased) any shares since 1 January 2018. At the
+acquisition date, PriceRight considered the net assets of Pharmcon to be fairly valued. It
+measured the non-controlling interest in Pharmcon at its fair value of R737 per share.
+PriceRight accounts for investments in subsidiaries at cost in the separate financial statements
+in accordance with IAS 27 Separate Financial Statements.
+• To finance the acquisition and installation costs of the solar system, the board of directors
+of PriceRight unanimously approved the resolution to sell 60% of PriceRight's
+shareholding in Pharmcon (i.e., 120 000 shares) to Ubuntu Trading Ltd ('Ubuntu') for a
+cash amount of R198 million. The sale took place on 1 August 2023. After the sale,
+PriceRight was not in a position to exercise significant influence over Pharmcon's financial
+and operating policies. The disposal of the shares in the subsidiary did not comply with
+the requirements of IFRS 5 Non-current Assets Held for Sale and Discontinued
+Operations prior to and up to the date of disposal.
+• The fair value of PriceRight's remaining 15% interest in Pharmcon was R37 504 618 on
+1 August 2023.
+• PriceRight has elected to measure its remaining investment in Pharmcon at fair value
+through other comprehensive income. The fair value of the investment at
+31 December 2023, determined in accordance with IFRS 13 Fair Value Measurement,
+was R40 million.
+Paper 1 5 (of 7) © SAICA 2024
+• The following are extracts from the draft financial statements of Pharmcon for FY2023.
+Profits were earned evenly during the year.
+Pharmcon (Pty) Ltd
+Extract from the statement of profit or loss and other comprehensive income
+for the year ended 31 December 2023
+1 January 2023
+to
+31 July 2023
+1 August 2023
+to
+31 December 2023
+R R
+Revenue 99 000 000 121 000 000
+Cost of sales (49 500 000) (60 500 000)
+Operating costs (30 492 000) (23 038 400)
+Profit before tax 19 008 000 37 461 600
+Income tax expense (7 151 100) (9 795 500)
+Profit for the period 11 856 900 27 666 100
+Pharmcon (Pty) Ltd
+Extract from the statement of changes in equity
+for the year ended 31 December 2023
+Ordinary
+share
+capital
+Retained
+earnings
+Fair value
+reserve
+(Index)
+R R R
+Balance on 1 January 2023 11 000 000 140 800 000 34 100 000
+Total comprehensive income 39 523 000 14 300 000
+Dividends paid on 31 December
+2023 (16 500 000)
+Balance at 31 December 2023 11 000 000 163 823 000 48 400 000
+The fair value of the investment in Index increased by R19,8 million (after tax) between
+1 January and 31 July 2023.
+Initiative 2: Sale of PriceRight’s non-performing customer accounts
+An analysis of PriceRight’s debtors days ratio has shown a significant increase in customers
+who cannot settle the amount they owe from purchasing on credit. This has been an increasing
+cause for concern over the past 18 months.
+The following is an extract of the accounting policy from PriceRight’s notes to the financial
+statements:
+1 Accounting policies
+1.3 Extract from trade receivables policy
+Trade receivables are disclosed at their transaction price less any expected credit
+losses. It is the policy of PriceRight to automatically classify customers as ‘non-
+performing’ should the 12-month expected credit losses exceed 20% of the
+customer’s gross trade receivables amount at the financial year end.
+Paper 1 6 (of 7) © SAICA 2024
+The following default rates have been historically observed and are expected to continue
+under current economic conditions. These related to the expected behavioural life of the total
+customer accounts which are included in the trade receivables balance as at 31 December
+2023:
+12-month expected
+credit losses
+Lifetime expected
+credit losses
+Current 17,9% 35,2%
+1 to 30 days past due 23,8% 45,5%
+More than 30 days past due 33,2% 68,3%
+The following information relates to the customer accounts from PriceRight's accounting
+system regarding all contracts with its customers as at 31 December 2023.
+Trade receivables
+gross carrying
+amount
+R
+Current 350 000
+1 to 30 days past due 1 150 000
+More than 30 days past due 2 000 000
+Total 3 500 000
+The trade receivables of PriceRight do not contain a significant financing component based
+on the nature of its contracts.
+PriceRight applies the relevant approach in accordance with IFRS 9 Financial Instruments
+when recognising expected credit losses on trade receivables within the scope of IFRS 15.
+Recovering the amount owed from the customers will take significant time and effort.
+PriceRight has therefore entered into negotiations with a large reputable financial institution,
+Finance for All (Pty) Ltd (‘FinAll’) to buy all its non-performing customer accounts as at
+31 December 2023. The credit controller of the financial services division of PriceRight has
+prepared a list of all non-performing customer accounts on this date to aid the negotiations.
+In terms of the proposed agreement with FinAll, it will purchase the non-performing customer
+accounts for an amount of 75 cents to the rand of their carrying amounts as at
+31 December 2023.
+However, negotiations with FinAll have stalled as it has expressed the concern that some of
+the customer accounts to be purchased may be fictitious.
+Iconic have been asked to assist with determining if the non-performing customer accounts
+are indeed fictitious. Iconic’s engagement partner for the FY2023 PriceRight audit informed
+PriceRight that the audit team will not be able to report directly on the non-performing customer
+accounts as part of the audit but that Iconic may be able to assist by means of an agreed-
+upon procedures engagement.
+7 Investment in associate
+PriceRight acquired 40% of the ordinary shares of FoodGood on 1 July 2019 for R22 million
+in cash. From this date, PriceRight exercised significant influence over the financial and
+Paper 1 7 (of 7) © SAICA 2024
+operating policy decisions of FoodGood in accordance with IAS 28 Investments in Associates
+and Joint Ventures. From FY2019 Iconic obtained sufficient and appropriate audit evidence
+with regard to the acquisition of the investment in the consolidated financial statements and
+the subsequent transactions.
+PriceRight accounts for investments in associates at cost in the separate financial statements.
+The investment in FoodGood is accounted for by applying the equity method in the
+consolidated financial statements.
+The accountant provided you with the following analysis of owners’ equity as supporting
+calculations for the journal entries she processed to account for the investment in the
+associate in the consolidated financial statements:
+Calculation: Analysis of owner’s
+interest Total
+FoodGood 40%
+At
+acquisition
+Since
+acquisition
+R R
+At acquisition – 1 July 2019
+Share capital 35 000 000
+Retained earnings 25 000 000
+60 000 000 24 000 000
+Consideration paid (22 000 000)
+Goodwill / (Gain from a bargain purchase) (2 000 000)
+Since acquisition – from acquisition
+up to the beginning of the current year
+Retained earnings movement 15 000 000 6 000 000
+Since acquisition – current year
+Profit for the year 6 000 000 2 400 000
+Dividends (100 000) (40 000)
+Mark-to-market reserve1 (350 000) (140 000)
+1 This relates to fair value adjustments on an equity investment in Phoenix (Pty) Ltd accounted for at fair value
+through other comprehensive income. Ms Jessica Jones performed the fair value calculation from acquisition
+date. Iconic also makes use of these valuations performed for obtaining audit evidence.
+8 Additional information
+PriceRight Ltd
+Extract from the company statement of financial position as at 31 December 2023
+Note R
+Current assets
+Inventory 80 000 000
+Cash 202 000 000
+Trade receivables 1 3 500 000
+285 500 000
+Note 1: This represents the gross amount of trade receivables before any adjustments for
+expected credit losses.
+Paper 1 part I required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JUNE 2024
+PROFESSIONAL PAPER 1
+This paper consists of two parts. Answer each part in a separate answer book.
+PAPER 1 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Prepare the pro forma consolidation journal entries to be processed by
+the PriceRight Group to account for Pharmcon in its consolidated financial
+statements for FY2023.
+• Show any re-measurement gain or loss separately.
+• Ignore taxation.
+• Round all amounts to the nearest rand.
+Communication skills – presentation
+35
+1 36
+(b) On the assumption that FinAll’s offer to purchase the non-performing
+customer accounts is accepted –
+(i) calculate the amount that can be recovered from the sale of non-
+performing customers; and
+(ii) briefly explain the reasoning for the recognition of the amount of
+the loss allowance in accordance with IFRS 9.
+3
+2 5
+Total for part I 41
+Paper 1 part II required 1 (of 1) © SAICA 2024
+INITIAL TEST OF COMPETENCE, JUNE 2024
+PROFESSIONAL PAPER 1
+This paper consists of two parts. Answer each part in a separate answer book.
+PAPER 1 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(c) Discuss whether the auditors will be permitted, in terms of the Companies
+Act and the SAICA Code of Professional Conduct, to prepare the journal
+entries related to the sale of the shares in Pharmcon.
+Communication skills – logical argument
+8
+1 9
+(d) Describe, with reference to the information contained in section 7, the
+tests of detail the auditor should perform to obtain sufficient and
+appropriate audit evidence –
+(i) about the fair value loss recognised in the separate financial
+statements of FoodGood; and
+(ii) in auditing the investment in the associate included in the
+consolidated financial statements of PriceRight.
+Ignore any tests of detail related to the following:
+• Taxation;
+• Assessing the competence of the accounting staff;
+• Transferring any unadjusted audit differences to the schedule of
+unadjusted audit differences; and
+• Obtaining a schedule and tracing it to the trial balance and general
+ledger.
+Communication skills – clarity of expression
+6
+8
+1 15
+(e) Describe the agreed-upon procedures you would advise management to
+request the auditors to perform to identify any fictitious customers on the
+list of non-performing customer accounts.
+• Do not deal with the classification of a customer as a non-
+performing account.
+Communication skills – clarity of expression
+8
+1 9
+(f) Discuss the following aspects that PriceRight should have considered
+before changing from diesel generators to solar systems:
+(i) Governance and business ethics; and
+(ii) Strategic and other qualitative factors.
+Communication skills – logical argument
+5
+20
+1 26
+Total for part II 59
+TOTAL FOR PAPER 1 100

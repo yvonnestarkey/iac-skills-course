@@ -1,0 +1,1417 @@
+Source: SAICA ITC June 2024 — Markers’ and Umpires’ Comments.
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+Markers’ and umpires’ comments 1 © SAICA 2024
+ITC June 2024
+MARKERS’ AND UMPIRES’ COMMENTS
+INITIAL TEST OF COMPETENCE
+JUNE 2024
+Markers’ and umpires’ comments 2 © SAICA 2024
+ITC June 2024
+OBJECTIVES OF THIS REPORT
+This report has been compiled from the analysis of examiners on candidates’ performance in the Initial Test of
+Competence (ITC), which was written in June 2024. Its objectives are to –
+▪ assist unsuccessful candidates in identifying those areas in which they lost marks and need to improve their
+knowledge and/or presentation; and
+▪ assist future exam candidates, by providing a commentary for them to use when working through past papers.
+To accomplish these objectives, the report provides background information on how the examination questions are set,
+marked and adjudicated; comments on general shortcomings in answers; and specific comments on each question of
+the four examination papers.
+The purpose of the ITC is to test the integrated application of technical competence, preferably as soon as possible
+after the prescribed academic requirements have been met.
+The remainder of this report is discussed under the following headings:
+▪ Statistics for the ITC June 2024;
+▪ Background information on the setting, marking and adjudication of SAICA examinations;
+▪ General comments on the ITC June 2024; and
+▪ Detailed comments on each of the four professional papers.
+Markers’ and umpires’ comments 3 © SAICA 2024
+ITC June 2024
+STATISTICS FOR ITC JUNE 2024
+Pass % Passed Failed Total
+All candidates 14% 189 1 144 1 333
+Average marks per question (all candidates)
+Paper 1 Part I Part II Total
+Total marks 41 59 100
+Average marks 15,69 25,28 40,97
+Paper 2 Question 1 Question 2 Total
+Total marks 50 48* 98
+Average marks 24,04 23,63 47,68
+Paper 3 Part I Part II Total
+Total marks 47 53 100
+Average marks 17,75 23,93 41,68
+Paper 4 Question 1 Question 2 Total
+Total marks 50 50 100
+Average marks 18,64 22,06 40,70
+* The total for this question was 48 marks instead of 50. This was adjudicated at the SAICA Chartered Accountant
+Professional Development Committee meeting.
+More detailed statistics can be found on the SAICA website at www.saica.org.za
+Markers’ and umpires’ comments 4 © SAICA 2024
+ITC June 2024
+BACKGROUND INFORMATION ON THE SETTING, MARKING AND ADJUDICATION OF SAICA EXAMINATIONS
+The ITC Examinations Committee (ITC Examco) constantly strives to improve its ability to determine whether
+candidates demonstrate a readiness to continue with their accounting education and training. This is done by means of
+an ongoing process of evaluation of and improvement in the way in which it selects questions for inclusion in the
+examination and decides on the final mark plans.
+1 Source of the questions
+The ITC Examco is a sub-committee of the SAICA Chartered Accountant Professional Development Committee
+(CAPD Committee) and takes overall responsibility for the setting of the examination papers. Examination questions
+are commissioned from persons in commerce and industry, public practice or from academics.
+Academics or former academics are also involved in reviewing exam questions in each of the core subject areas.
+However, academics who have any involvement whatsoever in the presentation or otherwise of Board courses may
+NOT act as reviewers. These academics or former academics are appointed by core subject area and their role is to –
+▪ review questions for conceptual problems and consistency in the use of terminology;
+▪ give an indication as to whether the relevant examination questions are set at an appropriate level;
+▪ provide comments on whether the number of marks and time limit are appropriate; and
+▪ provide comments on the validity and reliability of the assessment.
+Four external examination sitters, who are independent of the exam setting process, are also appointed to review the
+entire set of questions. These sitters are chosen from the persons who passed the ITC exam the previous year. The
+examination sitters provide independent comments on the examination paper, suggested solutions or mark plans, and
+report on these to the ITC Examco.
+In addition, the examination questions are also reviewed by a third expert for cultural and language bias.
+SAICA would like to acknowledge and thank all the people involved in the examination setting process.
+Security and confidentiality of examination papers: The examination papers for each year are compiled, printed
+and sent to each examination centre under very stringent conditions of security.
+2 The marking process
+The ITC Examco devotes a great deal of time to the review and refinement of mark plans to ensure that the plans are
+consistent with its expectations for each question.
+Before marking of the scripts commences, copies of the examination papers and suggested solutions are forwarded to
+all accredited programmes for comment. The markers and umpires finalise the suggested solution and mark plan once
+all these comments have been considered and a test batch of scripts has been marked. The suggested solutions, mark
+plans and test batch results are then reviewed by the ITC Examco, which approves the final suggested solutions and
+the mark plans that will be used in the marking process.
+Marking is undertaken by teams, with each team consisting of a number of markers (comprising academics,
+practitioners and representatives from commerce and industry) and an umpire. Markers and umpires are assigned to
+specific questions based on their fields of expertise.
+All markers and umpires sign a declaration of confidentiality regarding the handling of scripts, questions, solutions and
+mark plans. SAICA holds the copyright of the questions and mark plans.
+Markers’ and umpires’ comments 5 © SAICA 2024
+ITC June 2024
+Consistency marking was introduced in 2012, which entails that a pack of scripts are selected on a random basis by
+SAICA’s Examinations Unit, and the exam numbers removed. These scripts are then re-numbered and photocopied.
+Every person on the mark team has to mark the question to which they have been assigned in the batch of scripts.
+This takes place on the first day of the main marking process and the umpire, together with his/her mark team, then
+discuss point by point how the individual markers awarded the marks for each question. The aim of this process is to
+identify any concerns, differences and discrepancies in interpretation that the marker(s) may have in awarding of
+marks as per the final mark plan before actual marking commences. The main objective is to achieve consistency in
+the way the different markers within a mark team award marks.
+Marking of the ITC June 2024 took place at a central mark centre. An administration hub was set up, from which
+administrative personnel controlled which scripts were signed out, to whom, and when the marked scripts were
+returned. Each script was marked independently by two persons, using an electronic marking tool. The tool records
+marks per subsection, section and question automatically. Only once the double-blind marking of each batch of scripts
+had been completed did the markers confer and jointly decide on the final raw mark (what is referred to as ‘marking
+reconciliation’) to be awarded for a particular answer. This was also recorded on the marking tool. If the markers were
+unable to agree upon the number of marks to be awarded for a particular answer, the script was referred to the umpire,
+who then reviewed the paper and awarded the final mark. After the reconciliation process, the electronic tool captures
+the final marks of all candidates and prepares a report for the ITC Examco.
+3 Adjudication
+Adjudication is a process during which the CAPD Committee considers all relevant evidence, including the following, to
+determine whether the marks to be awarded for each question should be adjusted:
+▪ Whether candidates encountered any time constraints;
+▪ Whether the level of difficulty of each question was appropriate for the ITC;
+▪ Possible ambiguity in the wording; and
+▪ Any other problems that may have been encountered relating to the examination.
+The members of the CAPD Committee do not know the candidate details (including the raw pass mark) at the time the
+adjudication process takes place.
+Adjudication is done by the full CAPD Committee as soon as possible after the marking process has been finalised and
+checked by the SAICA secretariat. During the adjudication four secretaries’ marks (one per paper) are added to each
+candidate’s score. The objective of these secretaries’ marks is to compensate for any errors that may have occurred
+during the marking process. In a typical 400 total exam mark, the secretaries’ marks translate to 1%.
+It is important to note that no person from academia is allowed to serve on the ITC Examco, and that candidates’
+anonymity is preserved until the final adjudication has been completed.
+In order to ensure that the whole marking and adjudication process remain anonymous, the instructions to candidates
+clearly state that their names should not appear anywhere on their scripts.
+4 Borderline review
+In 2013 SAICA introduced a further process to ensure that individual candidates who just fail the exam are not
+prejudiced in any way. Once the adjudication has been complete, the scripts of candidates who just failed (based on a
+range determined by the CAPD Committee); who achieved less than 25% for the exam as a whole; or who did not
+achieve the requirement of a 40% minimum per paper (see par. 4.12 of the section on the general comments below)
+are extracted and a third and final review is undertaken of such candidates’ scripts.
+Markers’ and umpires’ comments 6 © SAICA 2024
+ITC June 2024
+This review is undertaken by the umpire and assistant umpires, being the most senior and experienced members of a
+marking team. The marks during this process may either go up or down and each script is again assessed on a
+question by question basis to ensure that the final result is not contrived. A sub-committee of the CAPD Committee
+then meets to discuss the outcome of the borderline review and thereafter the pass percentages and other detailed
+statistics for the examination are prepared.
+Candidates whose scripts are selected for the borderline review are not awarded the secretaries’ mark because they
+have had the benefit of a further and more detailed review of their papers.
+In view of the above stringent marking process no request for re-marks will be entertained (also refer to the
+Examination Regulations for the ITC in this regard).
+Markers’ and umpires’ comments 7 © SAICA 2024
+ITC June 2024
+GENERAL COMMENTS ON THE ITC JUNE 2024
+1 Objective
+In view of the primary objective of the ITC, namely to test the integrated application of technical competence,
+candidates are tested on their ability to –
+▪ apply the knowledge specified in the subject areas set out in the prescribed syllabus;
+▪ identify, define and rank problems and issues;
+▪ analyse information;
+▪ address problems in an integrative manner;
+▪ exercise professional judgement;
+▪ evaluate alternatives and propose practical solutions that respond to the users’ needs; and
+▪ communicate clearly and effectively.
+2 Analysis of topics
+Accounting
+and
+external
+reporting
+Strategy,
+risk
+management
+and
+governance
+Audit and
+assurance Taxation
+Management
+decision
+making and
+control
+Ethics Com-
+munication
+Required ranges
+in terms of the
+SAICA guidelines
+(since 2013)
+60 – 100
+marks
+40 – 60
+marks
+60 – 100
+marks
+60 – 100
+Marks
+60 – 100
+Marks
+20 – 60
+marks
+20 – 30
+Marks
+15 – 25% 10 – 15% 15 – 25% 15 – 25% 15 – 25% 5 – 15% 5 – 7,5%
+Accounting
+and external
+reporting
+Strategy, risk
+management
+and
+governance
+Audit and
+assurance Taxation
+Management
+Accounting
+and Finance
+(MAF)
+Ethics
+(including
+CPC)
+Effective
+and
+efficient
+comm
+TOTAL
+60 – 100
+marks
+40 – 60
+marks
+60 – 100
+marks
+60 – 100
+marks
+60 – 100
+marks
+20 - 60
+marks
+20 – 30
+marks 400
+15 – 25% 10 – 15% 15 – 25% 15 –
+25% 15 – 25% 5 – 15% 5 – 7.5% 100%
+Paper 1
+Part I 40 1 41
+Paper 1
+Part II 25 22 8 4 59
+Paper 2
+Question 1 5 14 29 2 50
+Paper 2
+Question 2 45* 3 48
+Paper 3
+Part I 13 32 2 47
+Paper 3
+Part II 46 4 3 53
+Paper 4
+Question 1 28 20 2 50
+Markers’ and umpires’ comments 8 © SAICA 2024
+ITC June 2024
+Accounting
+and external
+reporting
+Strategy, risk
+management
+and
+governance
+Audit and
+assurance Taxation
+Management
+Accounting
+and Finance
+(MAF)
+Ethics
+(including
+CPC)
+Effective
+and
+efficient
+comm
+TOTAL
+60 – 100
+marks
+40 – 60
+marks
+60 – 100
+marks
+60 – 100
+marks
+60 – 100
+marks
+20 - 60
+marks
+20 – 30
+marks 400
+15 – 25% 10 – 15% 15 – 25% 15 –
+25% 15 – 25% 5 – 15% 5 – 7.5% 100%
+Paper 4
+Question 2 25 10 13 2 50
+93 53 68 59 81 25 19 398
+23% 13% 17% 15% 21% 6% 5%
+* This total for this question was 48 marks instead of 50. This was adjudicated at a CA PD Committee meeting.
+3 Overall comments on the papers
+The June 2024 ITC examination was considered to provide a fair assessment of technical competence overall, with a
+mix of easier and more challenging areas. There was a good balance between easy, moderate and difficult sections
+within each paper and the themes and scenarios were topical and relevant.
+Paper 1 consisted of a single scenario, with the required sections divided into two parts. The first part dealt with
+accounting and external reporting and the second with strategy, risk management and governance and
+management accounting and finance.
+Paper 2 consisted of two separate questions. Question 1 examined strategy, risk management and governance and
+taxation, while the second dealt with taxation.
+Paper 3 consisted of a single scenario with two parts. Part I examined audit and assurance and ethics. Part II
+covered strategy, risk management and governance and management accounting and finance.
+Paper 4 consisted of a two separate questions. Question 1 examined accounting and external reporting and
+management accounting and finance, while the second dealt with accounting and external reporting, strategy,
+risk management and governance and ethics.
+4 General comments
+From a review of candidates’ answers to the ITC June 2024 examination, the general deficiencies set out below were
+identified. These problems affected the overall performance of candidates, and it is a matter of concern that candidates
+make the same mistakes year after year. Although these aspects seem like common sense, candidates who pay
+attention to them are likely to obtain better marks, and it may even turn a low mark into a pass.
+4.1 Application of knowledge
+A serious problem experienced throughout the examination was that candidates were unable to apply their knowledge
+to the scenarios described in the questions, in particular foundational core knowledge. Many responses by
+candidates were a ‘shopping list’ of items in the form of a pure regurgitation of what candidates may have learnt about
+the theory at university, but with no real relevance to the question in hand. Candidates also do not appear to be able to
+identify the correct issues stated in the scenarios. This is a major concern, because by the time candidates qualify for
+Markers’ and umpires’ comments 9 © SAICA 2024
+ITC June 2024
+entry to these examinations, one would expect them to have assimilated the knowledge, at least to the extent of being
+able to apply it to simplified facts as set out in an examination question. Obviously, candidates who are unable to
+identify the correct issues do not do well in the examination.
+4.2 Workings
+It is essential that candidates show their workings and supply detailed computations to support the figures in their
+answers. Marks are reserved for methodology but can only be awarded for what is shown. Workings should, like the
+rest of the paper, be done in blue or black ink to ensure legibility. In many instances workings were performed by
+candidates but not cross-referenced to the final solution. Markers could not award marks as they were unable to follow
+which working related to which part of the final solution. Candidates must ensure they show their workings and that
+these are properly and clearly cross-referenced to the final solution.
+4.3 Communication
+Candidates fared better in questions requiring calculations than in discursive questions. This is a disturbing trend as
+the ITC is a stepping stone in the qualification process where the final Assessment of Professional Competence
+requires that significantly more focus and attention be given to these important skills. It is important that candidates
+bear in mind that written answers are a large component of the Qualifying Examinations, because written
+communication is a key competency required in the workplace. Candidates should learn to answer discursive
+questions properly. This can be done by practicing exam-type answers under exam conditions in preparation for the
+examination.
+In addition, markers found that candidates used their own abbreviations (text messaging style) in their answers. Marks
+could not be awarded here as it is not up to the markers to interpret abbreviations that are not commonly used.
+Candidates should pay specific attention to the way in which they write their answers, and bear in mind that
+this is a professional examination for which communication and presentation marks are awarded.
+4.4 Journal entries
+A fundamental part of accounting and external reporting is an understanding of debits and credits. A means of
+assessing whether a candidate understands these fundamental principles is to require the candidate to prepare the
+relevant journal entries. Candidates often do not understand what journal entries they need to process. In many
+instances basic journal entries are processed incorrectly. In addition, account descriptions are poor and abbreviations
+are used.
+This is inexcusable and candidates must ensure that they understand what impact transactions would have on specific
+account balances, by showing that they know which account (and which financial statement) has to be debited or
+credited. It is not sufficient for a candidate with Accounting at the PGDA level to be a technocrat – understanding of the
+fundamental principles of accounting is critical to the success of a candidate at the ITC level.
+4.5 Time management
+Candidates are advised to use their time wisely and budget time for each question. The marks allocated to each
+question are an indication of the relative importance the examiners attach to that question and thus the time that
+should be spent on it. Candidates should beware of the tendency to spend too much time on the first question
+attempted and too little time on the last. They should never overrun on time on any question, but rather return to it after
+attempting all other questions. It was evident that candidates had not managed time appropriately, for they left out
+many sections, often relating to easier marks, while the difficult sections that were attempted had clearly taken more
+time to address, but resulted in few or no marks.
+Markers’ and umpires’ comments 10 © SAICA 2024
+ITC June 2024
+Candidates should address the time management issue by starting with the questions they feel more comfortable with
+or can consider to be ‘easier’ while still feeling fresh in the exam. This ensures two things: confidence is gained by the
+candidate and good marks are earned easily, such that some time is saved – which can then be used a ‘buffer’ to add
+to the time allocated for the more challenging questions. This gives the candidate a fair opportunity to do well. This is
+considered an ‘exam success strategy’.
+4.6 Layout and presentation
+Candidates should allocate time to planning the layout and presentation of their answers before committing thought to
+paper. Very often, candidates start to write without having read the question properly, which invariably leads to, for
+example, parts of the same question being answered in several places or restatement of facts in different parts. Marks
+are awarded for appropriate presentation and candidates should answer questions in the required format, that is, in the
+form of a letter, memorandum or a report, if this is what is required.
+The quality of handwriting is also an ongoing problem and was of particular concern in this year’s examination. The
+onus is on the candidate to produce legible answers.
+Separate books are used to answer each question of the ITC. Each book is clearly marked and colour coded.
+Candidates are given explicit instructions to write the correct answer in the correct book. Despite this some candidates
+did not write the correct answer in the correct book (the secretariat does ensure that candidates who write answers in
+the incorrect book are marked by the correct mark team, but this adds to the marking time).
+4.7 Irrelevancy
+Marks are awarded for quality, not quantity. Verbosity is no substitute for clear, concise, logical thinking and good
+presentation. Candidates should bear in mind that a display of irrelevant knowledge, however sound, will gain no
+marks.
+4.8 Drilling down
+Responses, particularly in the financial management, management decision making and control and the strategy, risk
+management and governance areas are often provided by simply repeating the information given in the question.
+Candidates are unable to drill down to assess what the underlying problem areas are and do not put any effort into
+going beyond what is stated in the question. Candidates need to draw on their entire knowledge base in order to
+provide in-depth and meaningful insight, particularly in analysis-type questions.
+4.9 Recommendations / interpretations
+Responses to these requirements are generally poor, either because candidates are unable to explain principles that
+they can apply numerically or because they are reluctant to commit themselves to one course of action. It is essential
+to make a recommendation when a question calls for it, and to support it with reasons. Not only the direction of the
+recommendation (i.e. to do or not to do something) is important, but particularly the quality of the arguments – in other
+words, whether they are relevant to the actual case and whether the final recommendation is consistent with those
+arguments. Unnecessary time is wasted by stating all the alternatives.
+Candidates should communicate reasons for calculations, if required. A discussion of a case study should always have
+a conclusion. Or if it requires that a decision be made, a conclusion alone is not sufficient; it requires that the
+conclusion be discussed and motivated.
+Markers’ and umpires’ comments 11 © SAICA 2024
+ITC June 2024
+4.10 Examination technique
+Examination technique remains the key distinguishing feature between candidates who pass and those that fail. Many
+candidates do not address what was required by the questions and, for example, provide a discussion where
+calculations are required or presented financial statements where a discussion of the appropriate disclosure was
+required.
+4.11 Open-book examination
+Candidates are reminded that they MUST familiarise themselves with SAICA’s open book policy and be aware that this
+may differ from that of their accredited university. Candidates are also reminded that only SAICA has the authority to
+interpret its own open-book policy. To this end, candidates are advised of the following:
+▪ No loose pages (of any kind) may be brought into the exam.; and
+▪ Writing on flags – as per section 4.4 of the SAICA examination regulations:
+Candidates are only allowed to highlight, underline, sideline and flag in the permitted texts. Writing on flags is
+permitted for reference and cross-referencing purposes only, that is, writing may only refer to the name or
+number of the relevant discipline, standard, statement or section in the legislation.
+Any contravention of regulation 4 will be considered to be misconduct.
+▪ Candidates are advised to familiarise themselves with SAICA’s Examination Regulations prior to writing the
+examination.
+Another problem relating to the open-book examination is that candidates do not state the relevant theory and/or
+definitions in their answers. One cannot build a logical argument without using the theory as a base and starting point.
+Reference to theory and definitions is essential to create the perspective from which the question is answered and is
+required to enable markers to follow the argument. However, since candidates have this information at hand, marks
+are not awarded for stating detailed definitions only. This type of examination does affect the answer that is expected
+and application and demonstration of insight into the use of the definition have gained in importance.
+Candidates should also remember that one has to be very well prepared for an open-book examination. There is not
+enough time in the examination to look up all information from the texts. With regard to certain aspects one would be
+expected to offer an immediate response based on embedded knowledge. Complex information needs to be fully
+understood before the examination. Candidates who enter the examination hoping to look up data that they have not
+processed in advance will be at a disadvantage as they are unlikely to finish the papers.
+4.12 Paying equal attention to all the competency areas
+It is disappointing to note that candidates still appear to be most prepared to respond to accounting and external
+reporting questions and fare considerably poorer in some of the other disciplines – most notably management
+accounting and finance. Candidates are reminded that the accountancy discipline is a broad one and the other
+disciplines are equally important.
+We draw your attention to the following ITC Examination Regulations:
+4.2 A minimum of 200 marks (thus 50%) are required to pass the ITC.
+4.3 Candidates need to demonstrate an appropriate level of competence in ALL areas and disciplines, and
+therefore the overall pass mark of 50% shall be subject to the candidate achieving a sub-minimum of 40%
+in at least three of the four professional papers.
+We have been in the position, in the past, where we unfortunately had to fail a candidate because that candidate did
+not achieve the 40% subminimum in two of the four papers. This is really unfortunate, and candidates are advised to
+pay equal attention to all the competency areas in order to obtain an overall pass in the ITC.
+Markers’ and umpires’ comments 12 © SAICA 2024
+ITC June 2024
+In conclusion, a message to those who were unfortunately not successful in the examination:
+Please start preparing for the next examination in good time. Don’t give up – sufficient preparation and a review of
+the basics will stand you in good stead for you next exam!
+Best of luck!!
+Markers’ and umpires’ comments 13 © SAICA 2024
+ITC June 2024
+DETAILED COMMENTS ON EACH OF THE FOUR PROFESSIONAL PAPERS
+PROFESSIONAL PAPER 1
+Paper 1 consisted of a 100-mark question, consisting of two parts that dealt with the following aspects:
+Part I
+(a) Candidates had to prepare the pro forma consolidation journal entries to be processed by a group to account
+for one of the companies in the group in its consolidated financial statements for FY2023.
+Candidates were required to –
+• show any re-measurement gain or loss separately;
+• ignore taxation; and
+• round all amounts to the nearest rand.
+(b) On the assumption that a financial institution’s offer to purchase non-performing customer accounts is
+accepted, candidates had to –
+(i) calculate the amount that can be recovered from the sale of non-performing customers; and
+(ii) briefly explain the reasoning for the recognition of the amount of the loss allowance in accordance
+with IFRS 9.
+Part II
+(c) A discussion on whether the auditors will be permitted, in terms of the Companies Act and the SAICA Code
+of Professional Conduct, to prepare the journal entries related to the sale of the shares in one of the
+subsidiaries.
+(d) Candidates had to describe, with reference to the information contained in section 7, the tests of detail the
+auditor should perform to obtain sufficient and appropriate audit evidence –
+(i) about the fair value loss recognised in the separate financial statements of a company in the group;
+and
+(ii) in auditing the investment in the associate included in the consolidated financial statements of the
+group.
+Candidates had to ignore any tests of detail related to the following:
+• Taxation;
+• Assessing the competence of the accounting staff;
+• Transferring any unadjusted audit differences to the schedule of unadjusted audit differences; and
+• Obtaining a schedule and tracing it to the trial balance and general ledger.
+(e) A description of the agreed-upon procedures you (as a trainee) would advise management to request the
+auditors to perform to identify any fictitious customers on the list of non-performing customer accounts.
+• Candidates were not required to deal with the classification of a customer as a non-performing
+account.
+(f) A discussion of the following aspects that the group should have considered before changing from diesel
+generators to solar systems:
+(i) Governance and business ethics; and
+(ii) Strategic and other qualitative factors.
+Five communication skills marks were available for this paper. These marks were clearly and separately
+stated in the ‘required’ sections of each question.
+Markers’ and umpires’ comments 14 © SAICA 2024
+ITC June 2024
+PAPER 1 PART I
+Maximum mark
+41
+Average mark
+15,69
+Number of candidates
+who passed
+250 (18,75%)
+Number of candidates
+who wrote
+1 333
+1 General comments on the degree of difficulty of the question
+On an overall basis the question was assessed as moderate by an overwhelming majority of the providers. The overall view
+was that this part of the paper was fair although it tested principles that candidates generally find more challenging. Some
+providers indicated that it was easy and referred to it as being a ‘textbook example’ for a loss of control pro forma journal
+entry. This is something that is assessed frequently by providers. The IFRS 9 principles assessed were easy and straight
+forward within the context of how it was assessed.
+Overall, the accounting principes that were tested were not technically that difficult, but candidates tend to find the concept
+and the accounting for a loss of control more challenging than other consolidation principles.
+2 Feedback on the candidate responses
+Overall, candidates that followed a structured approach in doing their calculations and presenting the pro forma journal
+entries performed fairly well in this question.
+Common mistakes included the following:
+• Candidates missed the fact that control was lost during the year and therefore did not account for the profit or loss and
+other comprehensive income line items in their pro forma journal entries.
+• Candidates often had journal direction issues when providing the pro forma journal entries.
+• Some candidates equity accounted the investment after control was lost although the question clearly stated that the
+retained investment did not result in significant influence or joint control.
+• Candidate who followed the deconsolidation approach in their pro forma journal entries commonly became confused
+and got the direction of the pro forma journal entries incorrect.
+• Candidates did not identify that lifetime expected credit losses should be calculated due to the fact that the trade and
+other receivables does not contain a significant financing component.
+3 Feedback per each required section of the part
+3.1 Areas that candidates handled well
+Part (a)
+• Analysis and reserves: The majority of candidates effectively analysed and calculated marks for showing at acquisition
+and since acquisition reserves.
+• Workings shown: Candidates provided their workings, aiding transparency in calculations and methods used.
+• Despite the challenging nature of the question, candidates with a strong grasp of group accounting principles
+performed better.
+Part (b)(i) and (ii)
+• Theory application: Some candidates showed good understanding and application of IFRS 9 theory.
+Markers’ and umpires’ comments 15 © SAICA 2024
+ITC June 2024
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (a)
+• NCI journal entries: Entries for non-controlling interest (NCI) were attempted, although some candidates had
+directional confusion.
+• Remeasurement gains: Candidates generally calculated remeasurement gains both in individual statements and at the
+group level, despite the complexity in methods. However, candidates did not clearly indicate whether they were
+calculating the gain in the separate AFS or in the consolidated AFS.
+• Alternative confusion: There was confusion among candidates regarding the type of alternative (6-month consolidation
+vs. 100 consolidation and then deconsolidate).
+• NCI treatment: Many candidates were uncertain about how to handle NCI, often recalculating fair value gains and
+incorrectly attributing them to NCI.
+• Calculation issues: Candidates struggled with accurate calculation of gains on disposal and remeasurement gains.
+• Communication and narration: Candidates frequently failed to communicate effectively, omitting explanations or
+narrations that would have clarified their entries.
+• Missed easy marks: Many candidates overlooked straightforward marks such as recognising income and expenses
+separately or providing correct journal descriptions. Very few candidates raised journals for the profit or loss and other
+comprehensive income items.
+• Consolidation entries: There was a general weakness in consolidation journal entries, including derecognition of
+subsidiaries and incorrect handling of current year profits and expenses.
+Part (b)(i)
+• Overall, candidates often were not able to calculate the amount to be recovered, namely be the amount net of the
+allowance for the credit losses.
+Part (b)(ii)
+• In general, candidates did not consider lifetime expected credit losses as the allowance although it was clear that there
+was no significant financing component.
+• A lack of this technical knowledge resulted in candidates not being able to explain why lifetime expected credit losses
+should have been used to measure the allowance.
+PAPER 1 PART II
+Maximum mark
+59
+Average mark
+25,28
+Number of candidates
+who passed
+237 (17,78%)
+Number of candidates
+who wrote
+1 333
+1 General comments on the degree of difficulty of the question
+• Overall, this question was rated easy, or moderate to difficult depending on a subsection, leaning towards moderate.
+Candidates in general struggle with applied discussion questions.
+• The scenario was unambiguous and manageable in terms of length; the presentation thereof was also in a very well-
+organised manner.
+• The scenario was also quite relevant to the current environment, as it covered large retailers in the fast-moving
+consumer goods industry; this allowed for candidates to provide practical applications in their responses.
+2 Feedback on the candidate responses
+Most candidates struggled to give meaningful answers on all required parts of this question.
+Markers’ and umpires’ comments 16 © SAICA 2024
+ITC June 2024
+The general concern noted was the lack of application in most parts of the question; candidates understand the theory on
+most topics, but when such theory must be applied, there are shortcomings that show through.
+3 Feedback per each required section of the part
+3.1 Areas that candidates handled well
+Part (c)
+• Candidates did well in this section.
+• The required directed the candidates to the Companies Act and the SAICA Code of Professional Conduct, which
+assisted the candidates with answering the question.
+• Many candidates correctly identified that assistance with the journal entries is considered bookkeeping services and
+that the client is a listed entity; therefore, these services are not allowed.
+Part (d)(i)
+Candidates managed to obtain the easy marks, such as recalculation and obtaining a management representation letter.
+Part (d)(ii)
+Candidates managed to obtain the relatively easy marks, such as recalculation, inspection of bank statement and
+management representation letter.
+Part (e)
+Candidates identified the following two procedures to be performed to address the risk of fictitious customers (debtors):
+• Inspection of the bank statement (for receipts from customers).
+• Sending out debtors' confirmation/directly confirming with the debtor (through various methods).
+Part (f)(i)
+Candidates identified that the use of supplier, not on the approved supplier list, without following the procurement processes,
+is an area of concern (governance; not acting in best interest).
+Part (f)(ii)
+Candidates managed to identify the relatively ‘straightforward’ considerations such as –
+• solar panels being environmentally friendly (as opposed to generators which are not);
+• high running cost of generators (diesel costs); and
+• the unreliability of the supplier that will be used for the supply of the solar, which may not provide quality service (not
+on approved supplier list).
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (c)
+• Candidates focused primarily on the CoPC. The candidates focussed less on the Companies Act for this part.
+• There were several candidates who contradicted themselves (e.g., by concluding that auditors may perform journals in
+terms of the Companies Act but not the CoPC, or vice versa).
+Part (d)(i)
+• Candidates struggled to link the required to Jessica being an expert, and therefore lost out on all the marks relating to
+management’s expert procedures. Also, because candidates missed out on this important element, they also missed
+out on procedures around appointing an auditor’s expert.
+• Candidates also missed out on marks relating to the estimate, i.e., assumptions, developing a point estimate etc.
+Markers’ and umpires’ comments 17 © SAICA 2024
+ITC June 2024
+Part (d)(ii)
+• The substantive procedures that required the candidates to understand and ‘think’ about the entries in the
+consolidated financial statements, were not addressed by the candidates.
+Part (e)
+• Many of the candidates seems to have misread the required here and ended up producing pure substantive
+procedures instead of agreed-upon procedures that they would advise management to request the auditors to perform.
+As such, there was an evident challenge with how candidates phrased their responses to this required.
+• Also, the majority of candidates just focused on substantive procedures around debtors’ confirmations, which is not
+what the required asked. Candidates’ responses focussed on discussion of the whole process around sending out the
+confirmations, that it must be under control of ‘auditor’, etc.
+Part (f)(i)
+• This section was not well answered as it required deep thinking and critical thinking with an application on governance
+and business ethics from candidates. The main issue here was candidates did not apply the scenario to governance or
+business ethics and just wrote down the theory.
+Part (f)(ii)
+• Candidates’ responses to the last question were sometimes short and not really aimed at determining the key strategic
+issues.
+• Candidates also struggled with providing sufficient strategic considerations and qualitative factors for a 20-mark
+question.
+• The cost aspects of this project were not discussed in detail (i.e., working capital requirements; funding alternatives
+etc).
+• Candidates either focused on generators or solar and not both, which contributed to the poor responses.
+PROFESSIONAL PAPER 2
+Paper 2 This paper consisted of two separate questions that dealt with the following aspects:
+Question 1
+(a) Candidates were required to perform, outlining key assumptions, an EBITDA multiple earnings-based
+valuation of the shareholding of one of the partners (Petrus) as at 31 December 2023.
+(b) An identification and explanation of the key strategic considerations for the company resulting from Petrus
+leaving the company.
+(c) A critical evaluation of the two performance incentive options and candidates had to advise the directors
+which of the two the candidate would recommend.
+• Candidates did not have to consider the tax consequences for either the employees or the company.
+(d) Candidates had to discuss the normal tax and employees’ tax consequences of –
+• a share option scheme; and
+• a bonus bank scheme
+for the company and for its employees.
+.
+Question 2
+(a) Candidates had to calculate an accrual claim and also had to state why the claim belongs to the wife
+(Grace).
+(b) Candidates had to discuss the estate duty implications (including liability for payment) of the life policy taken
+out by Grace on the life of her ex-husband (Itumeleng) in the event of his death.
+Markers’ and umpires’ comments 18 © SAICA 2024
+ITC June 2024
+(c) A calculation of the normal tax payable (if any) by Itumeleng and Grace in respect of the lump sums awarded
+to Grace in terms of section 37D(4)(b)(ii) of the Pension Funds Act from Itumeleng’s pension fund.
+(d) A calculation of the effects of the divorce agreement (only in respect of maintenance payments and medical
+aid contributions, accrual claims and legal costs relating to the divorce) on the taxable income of Itumeleng
+for his 2023 year of assessment.
+• Candidates had to provide reasons for nil effects.
+(e) A calculation of the normal tax payable by or refundable to Grace for the 2023 year of assessment.
+Candidates had to –
+• provide reasons for nil effects;
+• where an amount is fully exempt, include a reference to the legislation for both the gross income
+inclusion and the subsequent exemption; and
+• exclude all amounts calculated in part (d).
+Five communication skills marks were available for this paper. These marks were clearly and separately
+stated in the ‘required’ sections of each part.
+PAPER 2 QUESTION 1
+Maximum mark
+50
+Average mark
+24,04
+Number of candidates
+who passed
+709 (53,23%)
+Number of candidates
+who wrote
+1 332
+1 General comments on the degree of difficulty of the question
+A fair paper testing valuation principles, strategy and performance management, including taxation principles related to a
+share option scheme and bonus bank scheme.
+The scenario was practical and relevant. However, the open-ended nature of the required may have increased the level of
+complexity.
+There was a fair balance between discussion and calculation questions and a good integration between management
+accounting and finance and tax.
+Part (c) of the required asked candidates to critically evaluate the performance incentive options (share option scheme and
+the bonus bank scheme), which made the question more challenging. It was, however, a well-balanced question offering
+candidates who applied their minds to the two options, an opportunity to score well.
+There was a good level of integration between the employees’ tax and normal tax implications as it relates to both the share
+option scheme and the bonus bank scheme in part (d). However, the open-ended nature of the required (no specific year of
+assessment or taxing event was triggered) resulted in some candidates considering a multitude of normal tax and employees’
+tax implications. The integration between the employees’ tax and normal tax from both the employer and employee’s tax
+perspective increased the level of complexity.
+2 Feedback on the candidate responses
+Exam technique
+• Candidates did not adequately plan for the discussion responses as some needed viewpoints from different situations
+(i.e. share option scheme vs bonus bank scheme) and from different perspectives (i.e. taxpayers).
+• With the valuation calculation, most candidates correctly identified the valuation method and answered the required.
+Markers’ and umpires’ comments 19 © SAICA 2024
+ITC June 2024
+• Candidates who performed well were those with good planning skills.
+•
+Time management
+• Candidates overspent time on part (a), unnecessarily re-writing the financials for all the years only to average it at the
+end. This may be an indication that candidates could not decide on which information to use (lack of planning). The
+impact was some rushed responses in the other parts of the required.
+• Candidates who performed well were those who dedicated the appropriate amount of time to each part of the required.
+Communication
+Most of the candidates' responses were clearly articulated.
+Layout, structure and presentation
+The layout and structure of part (a) was done well.
+Relevance
+In some instances, candidates reproduced the information in the scenario without any application to the required.
+Recommendations
+• Planning is critical for such questions. Candidates should not rush into responding without first understanding the
+required and planning the response. This will ensure that time is spread reasonably over all the required parts.
+• The number of marks allocated to each part of the required should indicate the amount of time to be spent on each
+part of the required.
+Workings (and references to workings)
+Some candidates provided workings without referencing the workings to a final answer.
+2 Feedback per each required section of the question
+3.1 Areas that candidates handled well
+Part (a)
+• In most instances, candidates correctly identified the operating profit starting point and the adjustments to make for
+maintainable earnings. Candidates were able to identify the correct multiple being EBITDA and not a PE ratio.
+• Candidates who made a decision and had a rationale on which year to use as their base year for the valuation
+performed well as they optimised their time.
+• Most candidates were able to correctly identify the comparable company, i.e., Eureka Pets (Pty) Ltd or Organica.
+• Most candidates were able to correctly elaborate on why they were adjusting the earnings multiple of the comparable
+company.
+• Most candidates were able to calculate the total company value based on the maintainable EBITDA and adjusted
+multiplier.
+• Most candidates were able to calculate the value of Petrus’s share.
+• Several candidates correctly included the financial implications of future strategic items like the rent, moving costs and
+savings in salary as a result of Petrus leaving.
+Part (b)
+• Some candidates were able to utilise the scenario to identify the strategic concerns that would arise once Petrus was
+no longer part of Ultra Canin.
+• Several candidates identified and addressed the loss of savings in rental.
+Part (c)
+• Most candidates addressed the cash bonus bank scheme.
+Markers’ and umpires’ comments 20 © SAICA 2024
+ITC June 2024
+• Some candidates were able to succinctly evaluate both the share option scheme and bonus bank scheme and
+provided logical reasons for each.
+• Most candidates concluded which of the two options would result in the most benefit for the employee vs the employer.
+• Candidates understood the cash flow impact between the two performance incentive schemes.
+Part (d)
+• Some candidates correctly scoped themselves in s8C and differentiated between the implications of the share option
+scheme on grant and exercise date for both the employer and the employee.
+• Most candidates were able to identify that the bonus would form part of remuneration in terms of the Fourth Schedule,
+and Ultra Canin should withhold employees’ tax.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (a)
+• Several candidates did not optimise their time by either starting with revenue or profit after tax as opposed to operating
+profit.
+• Several candidates did not make any adjustments for non-operational activity items.
+• Some candidates did not provide reasons as to why they were using a specific year as their benchmark.
+• Some candidates used an average of the three years without providing a reason.
+• In some cases, candidates identified that adjustments had to be performed. However, the adjustments were in the
+wrong direction.
+• Some candidates included changes in working capital in the calculation of the maintainable EBITDA.
+• Some candidates also used the free cash flow valuation method, which was not required.
+• Some candidates incorrectly identified the comparable company.
+• Some candidates used the PE multiplier instead of the EBITDA multiple.
+• Several candidates did not consider the non-operating assets and liabilities to determine the value of Petrus’s share.
+• Most candidates included the full R31 million as the value of the NCI or added it back instead of subtracting it.
+Part (b)
+• Where candidates were unable to correctly identify Petrus’s role in the success of the company, they fell short of the
+required.
+• Some candidates ‘dumped’ general strategic considerations that were not applicable to the scenario.
+• Many candidates did not adequately address the impact on the company’s future due to Petrus leaving, such as how
+future funding would be acquired and the success of the company without the health stores.
+• There were instances where operational issues as opposed to strategic considerations were addressed.
+Part (c)
+• Candidates who neglected to plan their responses to address both the share option scheme and the bonus bank
+scheme fell short of the required.
+• Some candidates discussed IFRS 2, share based payments accounting implications.
+• Many candidates did not address the dilutive effect should the share options scheme be chosen.
+• Some candidates discussed the tax considerations of the different schemes, even though it was excluded from the
+required.
+Part (d)
+• Most candidates could identify the correct legislation to apply to the different schemes. However, not all of those
+candidates could follow through on the tax consequences.
+• The majority of the responses lacked application to the scenario.
+• Some candidates did not differentiate between the tax implications for both employer and employee in the two options.
+Markers’ and umpires’ comments 21 © SAICA 2024
+ITC June 2024
+• Most candidates incorrectly concluded that at the grant date, the share option scheme would be deductible for the
+employer and neglected to address the increase in contributed tax capital for Ultra Canin on vesting.
+• Most candidates did not differentiate between the tax implications of the share option scheme at the grant and the
+vesting date.
+• Some candidates incorrectly stated that the employer would have to account for capital gains tax on the exercise of
+the option upon the vesting date.
+• Some candidates concluded that the employer did not have any employees' tax implications on the share option
+scheme.
+• Most candidates concluded that the bonus would be included in the gross income of the employee when it is accrued
+to them, not considering the effect of s7B.
+• Many candidates failed to address the concept of variable remuneration and therefore did not address when the
+normal tax implications would arise.
+• Candidates failed to identify that the bonus would be paid out 25% in the first year and the remaining 75% in future
+years of assessments.
+• Contrary to the required, some candidates did not address both taxpayers.
+PAPER 2 QUESTION 2
+Maximum mark
+48
+Average mark
+23,63
+Number of candidates
+who passed
+609 (45,72%)
+Number of candidates
+who wrote
+1 332
+1 General comments on the degree of difficulty of the question
+The question was practical and relevant, considering the reality of the post-Covid increase of divorces in South Africa. The
+question paper was well laid out and easy for candidates to navigate.
+The question was well integrated within the tax examinable pronouncements and required candidates to demonstrate
+competence in income tax and estate duty. There was sufficient breadth in covering two different taxpayers and included both
+calculation and discursive types of questions. In parts (b) and (c) candidates were expected to apply judgement in deciding
+which taxpayer would be liable for the estate duty and income tax respectively.
+The question was assessed at a moderate level and contained a sufficient spread of easy, moderate and difficult marks, with
+more moderate calculation required parts.
+Candidates struggled with the tax implications of divorce settlements in parts (d) and (e) and displayed a limited
+understanding of the application of stiHB, foundational capital gains tax concepts and the tax treatment of share dealers.
+2 Feedback on the candidate responses
+Exam technique
+Many candidates presented solutions with unclear arguments and incoherent calculations. In addition, in presenting solutions
+candidates often addressed the incorrect tax implications, provided incorrect section references (where required) and failed to
+clearly identify which taxpayer they were dealing with. Most candidates failed to present solutions in logical structured format.
+Candidates seemed to lack the required technical knowledge resulting in not appropriately answering/poorly attempting this
+question.
+Time management
+Candidates who started with part (e) ended up with less time to attempt the other parts. Candidates were not able to manage
+Markers’ and umpires’ comments 22 © SAICA 2024
+ITC June 2024
+their time well and this resulted in some candidates not completing all the required sections. Candidates also tended to write
+more information than was necessary, which wasted time that they could have been used in other parts.
+Communication
+Candidates should pay attention to the use of correct terminology. Candidates cannot refer to a deduction as an exemption
+and vice versa. Candidates tended to repeat themselves saying the same thing over and over.
+Layout, structure and presentation
+Candidates displayed poor layout, structure and presentation of their responses, resulting in lost communication marks.
+Candidates failed to properly follow the taxable income framework. Common mistakes were including ‘rebates’ as a deduction
+in ‘taxable income’ and completing capital gains/losses at the start of the tax computation. In part (e), while it was
+commendable that most candidates used a three-column layout, the columns often did not have headings. This led to
+incorrect placement of items, particularly capital gains, and the omission of previous taxes paid, which could have reduced
+the calculated tax. In addition, in part (e) candidate failed to add brackets or negative signs for deductions and reductions.
+Relevance
+Some candidates failed to apply relevant tax legislation to the scenario. This included making references to the Value-Added
+Tax Act No. 89 of 1991, which resulted in missed opportunities to secure easy marks.
+Recommendations
+Candidates are strongly advised to plan their responses in relation to the required and consider the mark allocation. In a
+required where a conclusion is required – make sure the conclusion is in line with the required. Always present your solution
+in a format that is logical and easy to follow.
+3 Feedback per each required section of the question
+3.1 Areas that candidates handled well
+Part (a)
+• Most candidates performed well in this part.
+• Candidates were able to identify that Grace’s accrual of R50 000 would be reduced against Itumeleng’s estate and
+correctly apportioned the net accrual by 50%.
+Part (b)
+• Most candidates identified that the life policy would be deemed the property of Itumeleng upon his death.
+• Furthermore, candidates who did well understood the deemed property provisions in s3(3)(a) and correctly concluded
+in terms of s11(b)(i) on whom would be liable for the estate duty.
+• Candidates correctly noted the value of the deemed property would be the amount of the proceeds less/reduced by
+the sum of the premiums paid by Grace plus interest at 6% per annum on such premiums paid.
+Part (c)
+• Most candidates correctly calculated the lump sum amount due to Grace using the retirement fund lump sum
+withdrawal table.
+• Candidates correctly deduced the transfer in terms of para. 6(1)(a) of the Second Schedule in determining the lump
+sum included in gross income.
+Part (d)
+• Candidates identified that maintenance and legal costs were not deductible.
+• Candidates correctly identified the base cost on the Bailey shares and the primary residence.
+• Candidates who identified that the Bailey shares were held for at least three years applied stiC correctly.
+Markers’ and umpires’ comments 23 © SAICA 2024
+ITC June 2024
+Part (e)
+• Most candidates provided valid reasons for amounts that had nil tax effects.
+• Most candidates identified the inclusion of maintenance due to the specific inclusion para. (b) of the gross income
+definition and applied the s10(1)(u) exemption correctly.
+• Most candidates included Grace’s commission income in gross income.
+• Candidates presented the taxable capital gain calculation in the correct format.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (a)
+• Several candidates attempted to work out the value of the estates despite this already being given, and this would
+have caused them to waste time.
+Part (b)
+• Many candidates failed to identify that the policy was a domestic policy and did not discuss the fact that Grace was
+dependent on Itumeleng for maintenance.
+• Some candidates dealt with the normal tax implications of the amounts to be received by Grace in the event of
+Itumeleng’s death as opposed to the estate duty implications.
+• Most candidates did not identify that because the policy proceeds do not accrue to a surviving spouse it will not qualify
+for a s4(q) deduction.
+• Candidates failed to address that the executor of Itumeleng’s estate would be able to recover any estate duty
+attributable to this amount from Grace in terms of s13 of the Estate Duty Act.
+Part (c)
+• Some candidates failed to clearly identify the tax consequences for Grace and Itumeleng.
+• Candidates either did not comment on the non-deductibility of the previous contributions to the pension fund or
+incorrectly used it in the calculation.
+• The calculation of theoretical tax on previous lump sums was often done using the current-year lump sum instead of
+the previous withdrawals.
+• At times candidates applied the incorrect tax tables including using the normal tax tables or using a retirement fund
+lump sum table.
+Part (d)
+• Most candidates failed to identify that stiHB would be applicable on the disposal of the assets by Itumeleng to Grace.
+• Most candidates did not disregard the capital gains/losses in Itumeleng’s taxable income calculation.
+• Many candidates did not account for the accrual amount in cash.
+• Many candidates calculated the capital gain on the disposal of the assets at proceeds equal to market value and in
+that incorrectly applied para. 38, whereas the proceeds should have been Rnil.
+• Candidate displayed poor understanding of the income tax consequences relating to share dealers. Candidates
+treated all shares as capital in nature and calculated a capital gain instead of dealing the shares as trading stock.
+• In contrast where candidates identified that the shares were held as trading stock, candidates would only deal with the
+opening stock component, not the ss 9HB or 9C recoupment
+• Most candidates did not address the application of stiC.
+• Several candidates calculated the normal tax payable for Itumeleng instead of calculating the effects on his taxable
+income as required.
+Part (e)
+• Some candidates included calculations for Itumeleng instead of Grace in part (e).
+• Many candidates failed to score relatively easier marks in this part such as dealing with gross income and exemptions,
+Markers’ and umpires’ comments 24 © SAICA 2024
+ITC June 2024
+application of the tax tables and the rebates.
+• Many candidates wasted much time redoing calculations from part (c) in part (e).
+• Some candidates did not carry forward their rationale from part (c) to part (e) or did not provide a reason.
+• A considerable number of candidates carried forward amounts from parts (d) relating to the Astra and Bailey share
+incorrectly, mixing up the trading stock with the CGT distinction.
+• Some candidates incorrectly used an 80% CGT inclusion rate. In contrast some candidates included 40% of an
+assessed capital loss or Rnil, into taxable income.
+• Some candidates failed to include the CGT calculation as the final inclusion into taxable income.
+• Many candidates used the incorrect or a prior year of assessment tax tables.
+• Some candidates ‘deducted’ rebates from taxable income instead of reducing it from tax per the tax tables.
+• Candidates did not address the additional medical tax credit in terms of s6B. Even though Grace was not entitled to a
+s6A rebate, Grace had medical expenses which would qualify for the rebate in terms of s6B.
+• In calculating the normal tax payable or refundable, some candidates added back the employees’ tax instead of
+deducting the amount.
+PROFESSIONAL PAPER 3
+Paper 3 consisted of a single question that dealt with the following aspects:
+Part I
+(a) Candidates had to critically evaluate the tasks performed by ChatGPT as part of a company’s process of
+identifying and evaluating the suitability of the potential investment in an emerging company (ACL), based on
+–
+(i) the earnings-based valuation of ACL performed by ChatGPT; and
+(ii) the additional work required to assess the reasonability of the forecast income statements (apart from
+the work already performed by ChatGPT).
+• Candidates did not have to perform any calculations or re-perform any of the calculations provided by
+ChatGPT.
+(b) Candidates were required to perform a valuation of ACL using the free cash flow valuation methodology.
+• Candidates had to start with the movement in cash.
+(c) A discussion of the risks and other relevant strategic factors that the company should consider regarding the
+decision to make use of an AI such as ChatGPT in performing the valuation of companies that are potential
+investment opportunities.
+Part II
+(d) Candidates had to discuss and conclude on the ethical considerations surrounding the proposal by the
+company’s executives to use ChatGPT to replace the team of financial analysts and investment specialists.
+(e) A description of the controls that the company’s management should have implemented with regard to –
+(i) the investment process as described in the background information, excluding the payment process
+and human resources department controls, in addition to those already described in the scenario.
+• Candidates had to limit their answers to four additional controls; and
+(ii) protecting the company against cyber attacks.
+(f) A discussion of the governance concerns surrounding the bonus and share option schemes.
+• Candidates had to include appropriate and applicable considerations in terms of the SAICA Code of
+Professional Conduct.
+• Candidates did not have to include aspects to be considered in evaluating or addressing the threats
+identified.
+Markers’ and umpires’ comments 25 © SAICA 2024
+ITC June 2024
+(g) A description of the procedures that the company’s consultants should perform as part of their due diligence
+to identify possible unrecorded liabilities and contingent liabilities not accounted for in the financial
+statements of target companies.
+(h) Candidates had to describe, with reference to the external audit of ACL for FY2023 –
+(i) the risk of material misstatement related to the right-of-use assets; and
+(ii) the substantive procedures to verify the right-of-use assets that ACL’s auditors should perform.
+• Candidates did not have to address presentation and disclosure in their answers.
+Five communication skills marks were available for this paper. These marks were clearly and separately
+stated in the ‘required’ sections of each part.
+PAPER 3 PART I
+Maximum mark
+47
+Average mark
+17,75
+Number of candidates
+who passed
+97 (7,28%)
+Number of candidates
+who wrote
+1 332
+1 General comments on the degree of difficulty of the question
+Overall, part I was considered to be moderate to difficult. The major reason is that part (c) presented a challenge to
+candidates who find it difficult to work backwards from the movement in cash to perform a discounted cash flow valuation.
+However, this is not the first time that the ITC has assessed discounted cash flows in this manner.
+Parts (a(i) and (c) was considered fair to moderate difficulty. The difficulty level of part (a)(ii) is mitigated by the fact that it
+only counts four marks.
+2 Feedback on the candidate responses
+Exam technique – candidates who did well were those who were able to take the time to exactly understand what the
+required was asking of them, particularly in parts (a) and (c).
+Communication – candidate responses to part (c) showed a lack of logical argument, as many candidates posed questions
+of risks to consider instead of articulating why something was a risk.
+Relevance – candidates’ answers to part (c) often lacked application to the use of AI in the investment process for the
+company.
+Workings (and references to workings) – in some attempts on the free cash flow question in part (b), some candidates had
+workings which they did not use on the face of their free cash flow or which they did not cross-reference appropriately.
+3 Feedback per each required section of the part
+3.1 Areas that candidates handled well
+In part (a)(i) candidates were able to apply the basic principles of multiple valuations to criticise the valuation performed by
+ChatGPT.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (a) (ii)
+Markers’ and umpires’ comments 26 © SAICA 2024
+ITC June 2024
+• Candidates could not demonstrate that they were able to criticise uncertain future information.
+• While the required was focused on forecast information, some candidates focused on verifying historic information.
+Part (b)
+• Candidates struggled to work backwards from the movement in cash.
+• Most candidates performed the discounted cash flow movements from scratch, completely ignoring the explicit
+instruction to start with the change in cash.
+• Their attempts seem to indicate that there is a need for providers to expose candidates to different starting points
+when preparing a discounted cash flow. Similar questions have also been assessed in the ITC previously.
+Part (c)
+• This was a fairly opened-ended strategic, risk and other qualitative factors discussion question. Candidates generally
+tended to either struggle to generate enough points in questions like these OR they raised generic points which were
+not relevant to the scenario.
+• Many candidates raised generic points that were not relevant to the use of AI in the investment process for this
+particular company.
+PAPER 3 PART II
+Maximum mark
+53
+Average mark
+23,93
+Number of candidates
+who passed
+614 (46,10%)
+Number of candidates
+who wrote
+1 332
+1 General comments on the degree of difficulty of the question
+Overall, this part of the question was assessed as moderate. While there were some challenging parts, overall candidates
+had an opportunity to score well on the fair to easy parts.
+• The paper was interesting and innovative but challenging.
+• The length of the paper was appropriate, but candidates struggled because of the unusual (but very innovative, topical
+and relevant) inclusion of AI and the sheer volume of information.
+• The reference of ChatGPT was topical, and the inclusion of an ethical issue around the use of AI was thoughtful.
+Part (e)(i) was deemed challenging due to the nature of the question, being controls over an investment cycle for a private
+equity firm. Candidates were not always able to relate to the cycle, an aspect which required higher order thinking.
+Part (f) refers to the CoPC, but the scenario was not clear in defining designations of the various directors and an executive of
+one of the companies.
+Part (h) required candidates to have a solid knowledge of IFRS 16 Right of Use Assets to appropriately formulate risks and
+substantive procedures.
+2 Feedback on the candidate responses
+Exam technique
+• Candidates appeared to attempt all parts of the question except for part (e)(i) where the responses were very limited.
+This was because part (e)(i) was challenging. This is in line with the expectations of the providers and Examco, as it
+was the most difficult part of the paper.
+• Planning of answers and good exam technique was not too often apparent. Candidates as a result defaulted to lack of
+Markers’ and umpires’ comments 27 © SAICA 2024
+ITC June 2024
+application on various aspects, especially the substantive procedures and risk of material misstatements.
+Layout, structure and presentation
+• Overall, the layout and structure for each part was fairly considered by the candidates and presented appropriately.
+• On part (f) candidates defaulted mainly to the CoPC without consideration of other governance structures that could
+have been used to answer the required in more detail.
+3 Feedback per each required section of the part
+3.1 Areas that candidates handled well
+Part (d)
+• The majority of the candidates performed very well in this part.
+• Candidates showed a good understanding of the impact that ChatGPT would have on staff being retrenched.
+Part (e)
+• Candidates performed well in part (e)(ii) on controls to avoid cyber-attacks.
+• Some of the candidates were able to clearly identify and appropriately explain the controls.
+Part (f)
+• Although the scenario and required did not state that the CFO was a CA(SA), the required specifically stated that the
+CoPC should be considered, and majority of the candidates answered this part by making use of the CoPC. Most
+candidates therefore made the correct assumption that the CFO was a CA(SA).
+Part (g)
+• The candidates did reasonably well in this question. They were able to describe procedures that were appropriately
+linked to the risk of unrecorded liabilities and contingencies for the purpose of performing a due diligence on target
+entities.
+Part (h)
+• In part (h)(i) the candidates were able to identify and address risks due to the complexity of the IFRS 16 standard and
+the inexperienced staff members.
+• In part (h)(ii) candidates appropriately described procedures around the existence of the ROU.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (d)
+• Some candidates wrote too much for four marks, which could have unnecessarily caused them to lose time.
+• It was also noted that although more than enough issues were discussed, many candidates did not come to a
+conclusion at the end of their discussions.
+Part (e)(i)
+• Candidates generally failed to identify the broader controls (high-level process controls) and consequently fared poorly
+in this required.
+• Several candidates dumped detail ‘application-level’ controls, especially on reviewing and approval of detailed
+investment procedures, but these were not applicable.
+• In other instances, candidates also duplicated the controls already mentioned in the scenario; or they made
+assumptions on how the process worked to ‘force’ detailed controls on it. This did not earn them marks.
+Part (f)
+• Some candidates could identify the correct threat and fundamental principle, but the lack of give proper application of
+the issue at hand lost them marks.
+Markers’ and umpires’ comments 28 © SAICA 2024
+ITC June 2024
+• There were quite a few candidates who also elaborated on governance concerns using King IV and by far the minority
+also included the Companies Act.
+• The majority of candidates used the CoPC as the starting point for their discussion. This could be because the
+required specifically stated that the CoPC should be considered.
+Part (g)
+• Although the candidates performed fairly well, quite a few candidates struggled to formulate the procedures correctly,
+which then cost them some marks.
+Part (h)(i)
+• Candidates identified risk factors but failed to sufficiently explain why these were risks, thus lacking application.
+• Application of IFRS 16 technical aspects was not evident as most candidates would merely state that there was a risk
+that depreciation was incorrect without providing an explanation.
+• Candidates struggled to formulate valid risks at assertion level for the right-of-use asset, again providing generic
+statements with little explanation of their possible impact.
+Part (h)(ii)
+• Many candidates did poorly in this question because they did not formulate the procedures correctly as per the ISA
+(Lack of appropriate use of terminology linked to inspection, recalculations, etc.).
+• Some substantive procedures listed were generic, lacking an appropriate demonstration of how, what and why a
+procedure should be performed.
+PROFESSIONAL PAPER 4
+This paper consisted of two stand-alone questions, which dealt with the following aspects:
+Question 1
+(a) Candidates had to calculate the consolidated profit of a group of companies from continuing operations for
+FY2023 after consolidating a subsidiary.
+Candidates had to –
+• ignore taxation;
+• show any fair value adjustment or remeasurement separately in their calculations; and
+• ignore all adjustments relating to a cash-generating unit.
+(b) A discussion of five concerns that the candidate may have about the calculation of the value in use for the
+cash-generating unit, and for each concern, the provision of the appropriate treatment.
+• Candidates had to limit their discussion to issues for which there is evidence of inaccuracies,
+inconsistencies, errors in application and/or non-compliance with IFRS in the scenario.
+(c) The preparation, on the assumption that the group decided to sell the cash-generating unit, of the analysis of
+the single amount in respect of the discontinued operation in profit or loss in terms of IFRS 5.33b for
+inclusion in the notes to the consolidated financial statements of the group of companies for FY2023.
+Candidates had to –
+• indicate the allocation of the impairment loss to the respective assets in their calculations;
+• round and present all amounts in R’000;
+• not split any income tax expense between current tax and deferred tax;
+• not provide a disclosure of information relating to any allocation to the owners of the parent or the
+non-controlling interests; and
+• not provide comparative amounts.
+(d) Using the information provided on the performance for FY2023 and on the target revenue, cost-volume and
+Markers’ and umpires’ comments 29 © SAICA 2024
+ITC June 2024
+profit for the cash-generating unit, and on the assumption that the group adopted the option of moving the
+cash-generating unit to Botswana, candidates had to –
+(i) calculate the amount by which the current gross profit should increase to reach the target gross profit
+of the cash-generating unit in FY2024;
+(iii) calculate the sales value required for the cash-generating unit to achieve the target gross profit for
+both the South African and Botswana operations in FY2024; and
+(iii) calculate and conclude, taking into account their answers to part (d)(ii) above, the impact that the
+move to Botswana will have on the cash-generating unit’s profitability.
+(e) A determination, assuming the group moved the cash-generating unit to Botswana and based on the
+information provided regarding strategic considerations, financial information and selected ratios, the
+strategies that could have been used to ensure that the cash-generating unit remained solvent and liquid
+following the move to Botswana.
+Question 2
+(a) Candidates had to prepare the pro forma consolidation journal entries to account for all intragroup
+transactions in the consolidated financial statements of a group of companies for FY2024.
+(b) A discussion of whether the candidates agree with the inventory manager’s decision to buy the shipping
+containers from an unrelated container company, with reference to the good for self and good for others
+approach and the utilitarian ethical theory.
+(c) Calculate the revenue that the group should recognise in accordance with IFRS 15 Revenue from Contracts
+with Customers, from the contract with a non-profit organization (Vuka Mzansi) for FY2024.
+(d) Candidates had to briefly discuss matters that should be considered during a brainstorming session
+regarding –
+(j) the fact that Vuka Mzansi can obtain financing or generate income from the solar-powered innovation
+stations in the Eastern Cape;
+(ii) the significant challenges that Vuka Mzansi will face while operating innovation stations in the Eastern
+Cape; and
+(iv) the environmental impact of the innovation stations, particularly in rural areas.
+(e) Candidates had to prepare the pro forma consolidation journal entries to account for the effects of the civil
+unrest in the consolidated financial statements of the group for FY2024.
+(i) Candidates had to ignore taxation.
+(ii) Pro forma journal entries to account for non-controlling interest were not required.
+Five communication skills marks were available for this paper. These marks were clearly and separately
+stated in the ‘required’ sections of each part.
+Markers’ and umpires’ comments 30 © SAICA 2024
+ITC June 2024
+PAPER 4 QUESTION 1
+Maximum mark
+50
+Average mark
+18,64
+Number of candidates
+who passed
+148 (11,11%)
+Number of candidates
+who wrote
+1 332
+1 General comments on the degree of difficulty of the question
+The question was assessed as moderate by the academic programme providers and as a fair and appropriate question for
+the ITC.
+The number of required sections were noted as a possible cause of concern that could raise the difficulty level of the
+question.
+Overall, candidates’ performance in this question was disappointing.
+Financial accounting
+• Candidates failed to illustrate the necessary technical competence expected of a candidate at this level.
+• For part (a), candidates struggled to calculate the consolidated gain or loss and remeasurement adjustment on the
+loss of control.
+• For part (b), candidates failed to identify valid concerns with the value in use calculation.
+• For part (c), a concerning number of candidates could not perform the required IFRS 5 disclosure and struggled to
+calculate the IAS 36 impairment loss.
+MAF
+• Providers mostly agreed that the MAF sections were not difficult and of a moderate difficulty level. However, some
+providers did indicate that they expected candidates to perform poorly due to some ambiguities in the question.
+• Candidates might have struggled to understand exactly what was required of them in question (d)(ii), which could have
+impacted on their time management.
+• For section (e) most providers agreed that there were sufficient available marks compared to the maximum for the
+question for candidates to perform well. However, the generic nature of the solution was noted as a possible cause of
+concern. Some providers mentioned that it would have posed difficulties for candidates looking to provide strategies
+that are primarily driven by the scenario as opposed to being more generic.
+2 Feedback on the candidate responses
+Time management: Candidates seemed to have had a problem with time management as section (e) was poorly attempted
+with several candidates not attempting it at all.
+Relevance: Candidates' answers also often lacked application, and they listed generic points, especially in part (b) and in the
+strategy question (part (e)).
+Technical knowledge: Overall, candidates’ technical knowledge displayed for accounting was a concern with many technical
+errors in answers. This was also the case with Management Accounting where candidates for example could not apply the
+high-low method to separate fixed and variable costs.
+Markers’ and umpires’ comments 31 © SAICA 2024
+ITC June 2024
+3 Feedback per each required section of the question
+3.1 Areas that candidates handled well
+Part (a)
+• Most candidates demonstrated an understanding of what was required, by calculating the consolidated profit or loss
+with adjustments for the effect of the loss of control.
+• Candidates were also mostly able to reverse the profit or loss on the sale of the shares that was recognised in the
+separate financial statements of the parent.
+Part (b)
+• Candidates demonstrated good exam technique by only identifying five concerns, as was required.
+• Most candidates included recommendations for the concerns identified.
+Part (c)
+• Most candidates did well to calculate the IAS 36 impairment loss.
+Part (d)(i)
+• Candidates seemed to understand what was required and they did relatively well on this section.
+• Most candidates managed to calculate the target gross profit and current gross profit.
+• They also used these amounts to determine the amount by which the current gross profit should increase. This was
+evident in the fact that part (d)(i) had the highest performance of the question.
+Part (d)(ii)
+• Most candidates recognised that they had to split the cost between fixed and variable cost and attempted to do so.
+• Several candidates did apply the high-low method to determine the fixed and variable cost and applied the formula
+correctly, thus obtaining the correct answers.
+Part (d)(iii)
+• Some candidates did recognise that there were less fixed costs to cover and that it would have a positive effect on
+profitability.
+Part (e)
+• The candidates who listed sufficient points in this section performed well.
+• Several candidates did manage to identify strategies that could be implemented to ensure that a cash-generating unit
+remained liquid and solvent following the move to Botswana.
+• Some points were mentioned by several candidates, such as debtors’ policy, inventory management, currency risk
+mitigation and back-up power solutions.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part (a)
+• Overall, candidates’ attempts for this part of the question was weak.
+• The majority of candidates included the profit of the subsidiary at 60%, which is incorrect since the consolidated profit
+includes non-controlling interest.
+• Very few candidates reversed the remeasurement gain that was recognised in the separate financial statements of the
+parent.
+• Furthermore, many candidates incorrectly included the current year profit of the subsidiary in the parent’s interest of
+R4 700 000, which was a given amount on the date of disposal.
+• In general, candidates struggled to calculate the group gain or loss and remeasurement adjustment in the consolidated
+Markers’ and umpires’ comments 32 © SAICA 2024
+ITC June 2024
+financial statements.
+• Some candidates included amounts for the cash-generating unit, although the question noted that any adjustments
+relating to this should be ignored.
+Part (b)
+• Candidates struggled to identify a sufficient number of valid concerns with appropriate recommendations.
+• Although many candidates identified that the R3 million termination benefits should not be included in the cash flows,
+the appropriate reason was often lacking.
+• Furthermore, many candidates identified that no capital expenditure was included in the cash flows (since this was
+stated in the question) but failed to link it specifically to the replacement of a glass-cutting machine.
+• Some candidates also included mainly theoretical considerations from IAS 36, with limited application to the scenario.
+• A concerning number of candidates confused the IAS 36 value in use calculation with a free cash flow valuation, by
+recommending that the tax should be included in the cash flows and that an after-tax discount rate should be used
+(which is incorrect in terms of IAS 36) and also recommending that a terminal value should be included.
+Part (c)
+• A concerning number of candidates failed to include the required presentation / disclosure of the discontinued
+operation, and only included a calculation of the impairment loss, which was worth only three marks.
+• Where candidates did include the required presentation / disclosure, they often did not show the effect on the income
+tax expense, thereby losing out on some marks.
+• When calculating the impairment loss, some candidates did not limit the loss on the land to its own recoverable
+amount.
+• Very few candidates calculated the amount of the impairment loss to be recognised in profit or loss (i.e. excluding land
+recognised in OCI and grossing down of goodwill), thereby losing out on marks.
+Part (d)(i)
+• Several candidates failed to calculate the target gross profit by applying mark-up on cost.
+• Instead of applying the 25% mark-up to the cost, they calculated a 25% profit on sales.
+Part (d)(ii)
+• The first two marks were for splitting the total cost between variable and fixed cost using the high-low method. Most
+candidates recognised that they had to split the cost between fixed and variable cost but applied the formula
+incorrectly, showing a lack of technical knowledge.
+• Overall candidates struggled with the rest of this required. There was no clear approach that the majority of the
+candidates seemed to have followed. Some candidates did mention that the correct target sales value was the R120
+million.
+• Many candidates calculated a break-even value but used the sales plus fixed costs instead of the target profit and
+fixed costs.
+• Very few candidates calculated sales values for both Botswana and South Africa as required. Most candidates
+calculated one value (often not even stating clearly if this related to Botswana or current operations).
+• Candidates clearly struggled with this section and in many instances this section was not attempted at all.
+Part (d)(iii)
+• Section (d)(iii) was a conclusion based on the calculations in section d(ii) and therefore not answered well.
+• The majority of candidates did not attempt this section at all.
+• Those who did, wrote generic statements such as that the profit would increase with the move to Botswana without
+basing the answer on any calculations or referring any of the answers to the previous sections.
+Part (e)
+• The performance of candidates in this section was disappointing as there were many available marks and the solution
+Markers’ and umpires’ comments 33 © SAICA 2024
+ITC June 2024
+included generic strategies to improve liquidity and solvability.
+• Several candidates answered in cryptic bullet point format, which seemed to indicate time mismanagement.
+• Overall, candidates did not write a lot on this part, with several candidates not attempting this part at all.
+PAPER 4 QUESTION 2
+Maximum mark
+50
+Average mark
+22,06
+Number of candidates
+who passed
+444 (33,38%)
+Number of candidates
+who wrote
+1 331
+1 General comments on the degree of difficulty of the question
+The question was considered moderately difficult. Although part (d) may have been challenging, the question was well
+balanced with a good distribution of easy, moderate, and difficult marks, which should have allowed candidates sufficient
+opportunity to demonstrate their abilities. The question covered decision making, ethics and financial reporting (including
+groups, IFRS 15 (revenue) and IAS 36 (impairment of assets).
+Part a) was a fair assessment of undergraduate concepts. Apart from the intercompany discount (1 mark), this part assessed
+basic inter-company inventory journal entries.
+Part b) was fair and there were numerous aspects in the scenario that candidates could have referred to.
+Part c) was straight-forward and candidates generally did well in this part.
+Part d) was challenging due to its discursive nature, which required candidates to ‘think out of the box’.
+Part e) was a relatively simple question assessing basic impairment principles.
+2 Feedback on the candidate responses
+Candidates who performed well in this question were those who attempted all the parts, were able to plan their answers,
+demonstrate a basic understanding of IFRS principles and apply their minds to the ethical dilemma. Candidates who clearly
+showed and cross-referenced their calculations and kept to the allocated time per part generally did well. However, many
+candidates did not show or cross-reference their workings. It is strongly suggested that candidates practice cross-referencing
+and to show calculations clearly by doing questions properly under exam conditions.
+Candidates’ who failed this question were those who did not demonstrate an understanding of inter-company sales, revenue
+from contracts with customers, impairment of a cash-generating unit and their answers lacked application (i.e., where a
+candidate failed to apply the requirements of a particular provision to the detail provided in the scenario – they merely rewrote
+the scenario without any context). Based on the available number of marks for the ethical dilemma in part (b) and the issues
+in part (d), candidates could have done well if they applied their minds.
+Candidates should also work on improving their handwriting.
+3 Feedback per each required section of the question
+3.1 Areas that candidates handled well
+Part (a)
+• Candidates were generally able to calculate the 20/120 profit and candidates who eliminated the unrealised profit in
+the opening and closing inventories generally also managed to determine the tax effect correctly.
+• Candidates illustrated good exam technique by including journal narrations, which earned them the communication
+skill mark.
+Markers’ and umpires’ comments 34 © SAICA 2024
+ITC June 2024
+Part (b)
+• Generally, candidates performed well in this part. They were able to identify and discuss how the transaction was good
+/ bad for various role players in the question.
+Part (c)
+• Candidates were generally able to identify the transaction price and allocate it based on the stand-alone selling prices.
+• Candidates recognised that revenue from the sale of the innovation stations should be recognised in full in FY2024.
+Part (d)
+• Candidates performed better than expected in this part, considering providers’ comments that this part required ‘out-of-
+the-box’ thinking.
+• Candidates who identified that funding could be obtained from banks and other companies, identified on possible
+revenue stream, one challenge and one environmental consideration were able to pass this part.
+Part (e)
+• Candidates were generally able to calculate the goodwill and impairment loss by identifying the carrying amount and
+the recoverable amount of the subsidiary.
+• Candidates also performed well in allocating the residual impairment loss to the PPE assets within the subsidiary.
+3.2 In what respect candidates’ answers are considered to fall short of requirements
+Part a)
+• Apart from the intercompany discount (1 mark), this part assessed basic intercompany inventory journal entries.
+Candidates did not perform as well as expected in this part.
+• For example, they did not eliminate unrealised profit in the opening balance of inventory and also eliminated the profit-
+share of current year sales, instead of eliminating current year sales in full.
+• It was concerning to see how many candidates prepared at-acquisition journal entries, had ‘bank’ in their pro forma
+journal entries or prepared the journals in the separate financial statements or recorded the adjustment against an
+investment in subsidiary account.
+Part (b)
+• Many candidates failed to state and apply the utilitarian theory.
+• There were a large number of issues in the scenario that the candidates could have applied, but on the whole their
+answers were very limited in scope.
+Part (c)
+• Many candidates did not recognise that revenue from the storage services transferred over time and did not include it
+in their FY2024 revenue calculation.
+• Some candidates recognised revenue on a cash basis and recognised the 50% deposit received as revenue.
+• The stand-alone selling prices of the innovation stations and the warranty services were given per unit as opposed to
+the stand-alone selling price of the storage services, which was given for total units combined.
+• Many candidates added per units stand-alone selling prices to total stand-alone selling prices, with the result that they
+did not compare like with like.
+Part (d)
+• Many candidates failed to capitalise on the easy marks.
+• There were 23 available marks and to pass this part candidates only had to identify one financing option, one new
+revenue stream, one challenge and one environmental impact (which would have also earned them the
+communication skill mark).
+Markers’ and umpires’ comments 35 © SAICA 2024
+ITC June 2024
+Part (e)
+• Many candidates did not gross-up the goodwill and did not illustrate an understanding that the annual goodwill
+impairment test involved comparing the company’s entire recoverable amount (given) with its entire carrying amount
+(not given).
+• This is problematic when the goodwill is measured at the non-controlling interests' proportionate share of the
+acquiree’s identifiable net assets, because the recoverable amount of the subsidiary will include goodwill attributable to
+both the parent and the non-controlling interests.
+• In contrast, the goodwill recognised in the consolidated statement of financial position includes only the portion of
+goodwill allocated to the parent, which owns 80% interest in a subsidiary, and it measures non-controlling interests
+initially at a proportionate share of the net identifiable assets. This implies that the subsidiary’s carrying amount would
+need to be restated to include the unrecognised non-controlling interests' portion of goodwill.
+• Many candidates failed to allocate the impairment loss to the goodwill.

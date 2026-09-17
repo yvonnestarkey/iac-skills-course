@@ -1,0 +1,474 @@
+Source: SAICA IAC January 2025 — Paper 2 question (FreschKart).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC January 2025 1 (of 9) © SAICA 2025
+Paper 2
+PAPER 2 120 marks
+Ignore value-added tax (VAT).
+1 Background
+FreschKart Supermarkets Ltd (‘FreschKart’) is a grocery, clothing and general merchandise
+retailer that operates over 2 500 stores across South Africa, Lesotho and Namibia. FreschKart
+was established in 1994 by Sipho Nxiweni when he purchased a small grocery retailer in Cape
+Town. Since then, FreschKart has grown to become one of the best-known brands in Southern
+Africa, mainly due to the wide range of quality goods it offers at affordable prices. Most of the
+products that FreschKart sells are purchased from local retailers, but the company also
+imports some of its products from countries in various parts of the world.
+FreschKart has a 31 December financial year end and its functional and presentation currency
+is the South African rand. Its financial statements are authorised for issue three months after
+each year end. Appendix 1 contains an extract of FreschKart’s financial statements.
+FreschKart believes in good corporate governance principles and strives to comply with the
+King IV Report on Corporate Governance. FreschKart is listed on the Johannesburg Stock
+Exchange.
+FreschKart operates through multiple store formats under two distinct brands: the FreschKart
+Brand (‘FKB’) and the Cracker Brand (‘CB’).
+• FKB stores target middle to high income households, which generally result in greater
+profit margins than CB stores. However, FKB stores have lower growth opportunities.
+• CB stores generally cater to lower income households. These stores offer consumers
+affordable groceries and cheaper clothes and typically have lower profit margins but
+high-volume sales.
+The food retail industry is subject to rigorous health and safety regulations and food safety
+standards, which require businesses like FreschKart to ensure the safety and well-being of its
+customers while maintaining a strong reputation. FreschKart ensures that all its franchise
+stores are in compliance with these standards by undertaking regular audits of its franchise
+stores.
+Since listing in 2013, FreschKart’s share price has been highly volatile due to several
+operational and financial matters. During the current year, FreschKart’s share price has fallen
+by more than 10% to its current share price of R20,50. FreschKart’s current asset beta
+(unlevered) is 0,45 and its current equity beta is 4,84 (levered).
+FreschKart is highly geared and most of its debt is subject to a variable interest rate.
+Consequently, FreschKart is currently in discussions with its lenders about refinancing its debt.
+However, this process has not yet been finalised. Furthermore, FreschKart’s historic
+overreliance on debt for funding operations has moved the entity outside its targeted debt to
+total firm value of 40%.
+IAC January 2025 2 (of 9) © SAICA 2025
+Paper 2
+2 Operations of FreschKart South Africa ('FreschKart SA’)
+2.1 Overall performance
+FreschKart’s poor performance has mainly been driven by the performance of FreschKart SA
+over the past five years. This has been impacted by the declining economic growth rate in
+South Africa and it has also struggled to grow its market share in South Africa. The major
+factors are the highly competitive retail environment in the country and consumers who are
+becoming increasingly price sensitive due to increases in interest rates and high inflation. This
+has had a negative impact primarily on FKB stores. FreschKart SA currently accounts for 90%
+of FreschKart’s total revenue.
+For the financial year ended 31 December 2024 (FY2024), FreschKart SA’s operations
+reported a considerable loss after its retail sales declined significantly. This was in part due to
+employee strikes in the industry for wage increases, resulting in the loss of operating capacity
+and stock-outs1. FreschKart SA also had to increase prices of some imported goods due to
+the depreciation of the rand against the United States dollar (USD).
+Another key reason for the poor performance of the company over the past five years has
+been the company’s food ordering and delivery service application (‘app’), GoFresch.
+2.2 The GoFresch app (‘GoFresch’)
+GoFresch was launched in 2009 as part of FreschKart SA’s strategy to reach a wider
+consumer base in South Africa. At the time of its launch, FreschKart SA was the only grocery
+store in South Africa to offer a food ordering and delivery service.
+GoFresch enables customers to order a maximum of 20 items from their closest FreschKart
+SA store. The items ordered are then selected, packed and delivered to the customers’ chosen
+address within two days of an order being placed. GoFresch collects customer data, including
+their payment information and home addresses.
+In the first few years of operating GoFresch, FreschKart SA was able to capture valuable
+market share away from its competitors. However, since 2021 competitor retailers have
+offered similar services to their customers at cheaper prices, as these retailers use third parties
+to deliver their orders. All FreschKart SA’s deliveries are made by inhouse delivery teams (i.e.,
+FreschKart SA makes its own deliveries).
+As competitors are able to offer customers delivery within 60 minutes of an order being placed,
+FreschKart SA’s customers have started to complain about the delay of FreschKart’s delivery
+service and also that incorrect items are being delivered.
+Furthermore, competitor apps allow customers to select alternative items when a preferred
+item is out of stock. Customers find these apps to be more user-friendly, which has allowed
+their competitors to attract a greater share of the online market. Consequently, FreschKart SA
+has seen its once innovative service being overtaken by that of its competitors. As at
+31 December 2024, sales through GoFresch accounted for more than 20% of FreschKart SA’s
+total sales.
+1 Stock-out is a situation where a company does not have enough of a specific product to sell to its
+customers.
+IAC January 2025 3 (of 9) © SAICA 2025
+Paper 2
+2.3 FreschRewards customer loyalty programme
+In response to increasing competition and changing consumer preferences, FreschKart SA,
+particularly its FKB stores, embarked on a strategic initiative to enhance customer loyalty
+through the implementation of a customer loyalty programme. On 1 December 2024,
+FreschKart SA launched the ‘FreschRewards programme’ at selected FKB stores. The
+FreschRewards programme is aimed at rewarding loyal FKB store customers for their
+purchases and encouraging repeat visits.
+FreschKart SA integrated its loyalty programme across multiple channels, both in-store and
+via GoFresch. Customers earn points (‘FreschRewards’) every time they use their
+FreschRewards card at the till in-store or online (i.e., when buying via GoFresch). They can
+thus redeem loyalty points for discounts on future purchases.
+FreschRewards members earn one point for every R2 spent, while every 100 points earn
+customers a discount of R1. FreschRewards can only be earned on goods purchased in-store
+or via GoFresch and not on delivery fees or FreschRewards redeemed.
+During December 2024, the selected FKB stores offering the FreschRewards programme sold
+goods for the total cash amount (i.e., including delivery fees) of R5 million via GoFresch and
+in-store of R19 million. All the goods purchased via GoFresch were delivered by FreschKart’s
+delivery service (FKB stores deliver goods at a fixed delivery fee of R35 per order). 20% of
+the 10 000 orders made during December 2024 via GoFresch were purchased with a
+FreschRewards card and earned FreschRewards. One order requires one delivery.
+FreschKart SA correctly estimated that 75% of these FreschRewards would be redeemed. By
+31 December 2024, 250 000 FreschRewards earned during December 2024 were redeemed
+on in-store purchases. These customers only paid R100 000 cash for these goods.
+FreschKart correctly determined that sales made via GoFresch to non-FreschRewards
+members consist of two performance obligations: (i) sale of goods and (ii) delivery services.
+Sales made to FreschRewards members have a third additional performance obligation,
+namely (iii) material right – FreschRewards.
+FreschKart is uncertain how the FreschRewards programme will influence its revenue
+recognition and recognised the following in this regard for sales made via GoFresch:
+Account descriptions and calculations Dr. Cr.
+Bank (SoFP) 5 000 000
+Revenue: Delivery fees (P/L)
+C1: (10 000) orders x R35 per order
+350 000
+Revenue: Sale of goods (P/L)
+C2: R5 million – R350 000
+4 650 000
+Bank (SoFP) 100 000
+Revenue: Sale of goods (P/L) 100 000
+3 Debt refinancing
+The FreschKart board is considering refinancing some of its existing loans to help ease
+FreschKart’s current cash flow constraints. Some of FreschKart’s loans worth a total of
+R4,3 billion are due to expire on 30 September 2025.
+IAC January 2025 4 (of 9) © SAICA 2025
+Paper 2
+FreschKart would like to refinance the full balance of these loans before they become due, as
+the company does not have sufficient cash flow to repay the outstanding balance of these
+loans. Most of these loans were originally taken out years ago when the company was able to
+negotiate favourable terms. The current average interest rate on these loans is 10,75%.
+One of the directors at the board meeting suggested that FreschKart consider settling a portion
+of the loans using a rights issue. This would help FreschKart to raise additional equity finance,
+which would in turn help it to recapitalise its balance sheet. The director suggested that
+FreschKart could offer one share for every four shares held at a price of R17,20 per share.
+The board agreed that FreschKart would need to reduce its current debt levels as it had
+experienced increases in debt servicing costs over the past five years. FreschKart has already
+breached one of its covenants when the company’s total liabilities exceeded its total assets
+by more than 75% and the company is close to breaching another debt covenant, should its
+interest-bearing debt rise beyond 90% of total assets.
+However, the directors ultimately voted against the rights issue for two reasons.
+First, the rights issue would possibly have a negative effect on FreschKart’s current share
+price and could have a further dilutive effect on shareholder value. FreschKart’s share price
+has historically been between R20 and R36 per share, which is the board of directors’ target
+share range in order to protect company value. This is based on the following share tracker
+information:
+Indicator 2023 2022 2021 2020
+Shares in issue (million) 1 000 1 000 1 000 1 000
+Closing share price (per share) R24 R25 R28 R36
+Second, since FreschKart had an unsuccessful rights issue in 2018 where only R230 million
+of the envisioned R350 million was raised, the market may react negatively and shareholders
+are unlikely to support another rights issue. This would probably drive up the cost of any
+alternative recapitalisation efforts in the future. FreschKart’s total shares in issue as at
+31 December 2024 remain at one billion.
+While no rights issue would be undertaken at that time, the board agreed to revisit the matter
+during FY2025 to help FreschKart to recapitalise its balance sheet. For the time being, the
+loans would be refinanced using new debt.
+Given FreschKart’s already high debt balance, only one bank was willing to provide refinancing
+for the FreschKart loans. Bank Finance Ltd offered FreschKart a single new loan to cover the
+full refinancing. The terms for the Bank Finance Ltd loan are as follows:
+Principal amount R4,3 billion
+Nominal interest rate 19% p.a. fixed
+Loan advance date 1 July 2025
+Term 3 years
+Upfront issuance cost 3%
+Interest on the loan is to be calculated and paid quarterly in arrears. The principal amount is
+to be repaid in three equal annual instalments, with the first repayment due on 30 June 2026.
+FreschKart is to pay the upfront issuance cost on the loan advance date. This cost is calculated
+based on the principal amount received.
+4 Impairment of South African operations
+IAC January 2025 5 (of 9) © SAICA 2025
+Paper 2
+In view of FreschKart SA’s poor performance, FreschKart’s management considered it
+appropriate to carry out an impairment test on the Sandton store, FreschKart’s worst
+performing store, at the end of FY2024.
+The following lists the affected assets of FreschKart’s Sandton store, as at 31 December 2024:
+R’000
+Land 2 250
+Buildings 3 860
+Furniture and fittings 9 500
+Intangible assets 200
+Financial assets 2 150
+Inventory 10 300
+Total 28 260
+Additional information on the impairment
+1 The carrying amounts of property, plant and equipment and the intangible assets have
+been calculated correctly in accordance with IAS 16 Property, Plant and Equipment and
+IAS 38 Intangible Assets respectively, at cost. Inventory is reflected correctly in accordance
+with IAS 2 Inventories at the lower of cost or net realisable value. The carrying amount
+of financial assets (bonds) are reflected accurately at amortised cost in accordance
+with IFRS 9 Financial Instruments.
+2 Goodwill of R120 000 attributable to the acquisition of the FreschKart Sandton store is
+included in intangible assets.
+3 The FreschKart Sandton store was correctly identified as a cash-generating unit as
+defined in IAS 36 Impairment of Assets.
+4 The recoverable amount for the FreschKart Sandton cash-generating unit is R24 million.
+5 FreschKart SA’s eco-friendly strategy
+Given the last few years of poor performance, FreschKart’s new chief executive officer (CEO)
+believed that FreschKart SA needed to re-strategise its operations and focus on profitability.
+He believed that FreschKart SA needed to reposition itself as an eco-friendly retailer2, as
+consumers are becoming more conscious of how companies’ operations affect the
+environment. Competitors have pursued this strategy and, although FreschKart SA has no
+experience in this area, the CEO believed that FreschKart SA would be successful. He
+believed that this strategy would perfectly align with one of FreschKart’s core values of
+promoting green energy. To give effect to this new strategy, the CEO put together a
+presentation to the board of directors of several areas of the business that would need to be
+adjusted to implement the strategy.
+This strategy was implemented effective from 1 December 2024 and consists of the following:
+5.1 Customer packaging
+2 An eco-friendly retailer is a retailer that focuses on reducing environmental waste in every section of
+its business.
+IAC January 2025 6 (of 9) © SAICA 2025
+Paper 2
+FreschKart SA is phasing out the use of plastic bags at till points to package customer goods
+at all its stores. Thus, all FKB and CB stores are packaging customer goods in FreschKart
+branded cotton bags. The new bags are being sold to customers for R5 per bag as opposed
+to the traditional plastic bags, which were sold at R1,60 per bag.
+5.2 Recycling centres
+All FKB stores greater than 2 500 m2 (approximately 60% of all stores) have drop-off recycling
+bins outside the stores. The recyclable goods are being delivered to various recycling retailers
+in the area once a month.
+5.3 Marketing
+All FKB and CB stores are now marketing themselves as only selling goods that are
+environmentally safe. Goods that are not environmentally safe and that are sold under existing
+contractual agreements (see section 7 below on the Cisty Ltd (‘Cisty’) contract), are being sold
+to non-related grocery retailers, such as Pay and Choose Ltd (‘Pay and Choose’), at the cost
+of the goods (for FKB and CB stores) less 10%. The decision to sell these products at a loss
+to Pay and Choose was because FreschKart struggled to find a suitable buyer before the
+implementation date of the strategy and the significant penalties payable for early termination
+of these contracts before the contract end date.
+5.4 Green energy
+All FreschKart SA stores are investing more in solar panels and sustainable water harvesting
+techniques (such as boreholes). This will help to reduce FreschKart‘s carbon emissions,
+consistent with commitments made on climate change. At the time of deciding on this strategy,
+these measures had already been introduced in some of the company’s warehouses and
+distribution centres.
+5.5 Reporting
+FreschKart will publish a list of its environmental commitments in its 2025 annual report
+(sustainability report section). The commitments will be updated every year to include any new
+commitments or remove any commitments which the company believes it will be unable to
+achieve.
+6 Acquisition of solar panels
+In its endeavour to fulfil one of the company’s core values of promoting green energy,
+FreschKart SA ordered 10 000 advanced solar panels for its distribution warehouses and
+selected stores from a supplier based in China. The order was placed on 1 February 2024.
+These solar panels are expected to surpass the normal lifespan of 20–30 years of locally
+sourced solar panels, and last up to 40 years. FreschKart’s management agreed with this
+estimate.
+The total purchase price was USD1,3 million. A 50% deposit of the purchase price was paid
+on 1 March 2024 when the solar panels were loaded onto the ship in Shanghai, China. This
+is also the date control of the solar panels transferred to FreschKart SA. The balance was paid
+on the arrival of the solar panels in Durban, on 22 March 2024. FreschKart incurred and paid
+total shipping costs of R1,1 million and non-refundable import (customs) duties of R2,6 million.
+The solar panels were –
+IAC January 2025 7 (of 9) © SAICA 2025
+Paper 2
+1 transported to the distribution warehouses and selected stores at a total cash cost of
+R750 000;
+2 installed at a total cash cost of R1,2 million; and
+3 tested for effective operation at a total cash cost of R200 000.
+All solar panels were installed and certified as working as intended on 1 May 2024. This
+milestone was publicised at a celebratory event at a cash cost of R143 750. On 1 May 2024,
+management estimated that the solar panels have a 20% residual value of their total cost. The
+solar panels are depreciated on a straight-line basis.
+The following exchange rates were obtained from a reputable financial institution:
+USD 1 = ZAR
+1 February 2024 18,59
+1 March 2024 18,79
+22 March 2024 19,60
+1 May 2024 18,86
+7 Cisty contract
+Cisty manufactures and sells laundry detergents. Cisty had negotiated a contract with FKB
+stores to supply Cisty laundry detergent exclusively in all FKB stores for a period of three
+years. The contract comes to an end on 30 November 2025.
+Laundry detergents contain heavy metals, phosphates and other toxic chemicals. When
+washed through waterways and into the rivers, these harmful additives can be poisonous to
+fish and affect the quality of the water.
+As a result of FreschKart’s new commitment to only sell goods that are environmentally safe,
+it had to reconsider the contract with Cisty. FKB stores stopped selling Cisty laundry detergent
+units in their stores from 1 December 2024. From this date onward, it sold all its Cisty detergent
+units to Pay and Choose at cost less 10%. While initially a beneficial partnership, the contract
+has now become onerous as a result of FreschKart’s new strategy.
+The contract stipulates that each FKB store must purchase a minimum of 10 000 Cisty
+detergent units each month, regardless of actual demand or sales performance. The contract
+includes a clause allowing Cisty to increase the prices of Cisty detergent annually, on
+1 December, linked to the consumer price index (CPI) on that date. The cost price per Cisty
+detergent on 1 December 2022 was fixed at R90 per detergent unit for the 12 months ended
+30 November 2023. The CPI was 5,3% and 5,7% on 1 December 2023 and 1 December 2024
+respectively.
+FKB stores face substantial penalties if they fail to meet the volume commitments or breach
+any other terms of the contract. These penalties include a fine of R1,5 million and potential
+legal action, putting additional pressure on these stores to comply with the onerous terms,
+even if it means sacrificing profits.
+8 Leave pay provision
+The leave policy applicable to the FKB store managers on 31 December 2023 (FY2023)
+stipulated the following:
+• Each store manager is entitled to 30 days’ leave in an annual leave cycle;
+IAC January 2025 8 (of 9) © SAICA 2025
+Paper 2
+• There is no limit to the number of unused leave days that can be accrued in an annual
+leave cycle;
+• Unused leave days can be carried forward and taken or be paid out in subsequent years;
+• Leave days not yet taken by the date store managers resign or retire will be paid out at
+a daily gross salary rate at the time they resign or retire; and
+• Accrued leave days expected to be taken before a store manager resigns or retires, will
+accrue at a cost-to-company rate.
+In view of FreschKart’s poor financial results, and to improve its debt levels, FreschKart
+changed some terms of the FY2023 leave policy for FY2024 and future years to no longer
+allow accumulated leave days to be paid out, i.e., the terms were changed from vesting to
+non-vesting. The number of leave days granted to the store managers remained unchanged
+and they were still allowed to accumulate their leave to use in future periods.
+A store manager earns on average a basic gross salary of R800 000 per annum. No salary
+increases were forecast for FY2024. FreschKart contributes a further R80 000 per annum in
+company contributions to a store manager. These company contributions are expected to
+remain the same for FY2025.
+Each store has one manager. On 31 December 2023, each store manager (on average) had
+accrued 40 leave days. At that date, it was expected that (on average) each store manager
+would use 20% of these accrued leave days before they retire or resign. During FY2024 each
+store manager (on average) took 45 days’ leave.
+On 31 December 2024, it was expected that (on average) each store manager would only be
+able to use 60% of their accrued leave days before they retire or resign.
+FreschKart’s annual leave cycle coincides with its financial year. Leave days are taken on a
+first-in-first-out basis. There are 260 working days in a financial year.
+IAC January 2025 9 (of 9) © SAICA 2025
+Paper 2
+Appendix 1 – Extract: FreschKart annual financial statements
+Statement of profit or loss
+2024 2023
+R million R million
+Gross profit 27 693 29 935
+Other income 2 505 2 265
+Operating expenses (18 014) (21 154)
+Finance income 525 451
+Finance costs (11 972) (10 963)
+Profit before tax, before capital items 737 534
+Loss on capital items (288) (73)
+Profit before tax, after capital items 449 461
+Income tax (547) (538)
+Loss for the period (98) (77)
+Statement of financial position
+2024 2023
+R million R million
+ASSETS
+Non-current assets 88 054 111 061
+Current assets 61 530 35 995
+Total assets 149 584 147 056
+EQUITY AND LIABILITIES
+Total equity 10 418 10 516
+Non-current liabilities 111 372 101 984
+Lease liabilities 3 657 9 133
+Interest-bearing loans 107 715 92 851
+Current liabilities 27 794 34 556
+Trade and other payables 13 976 17 661
+Deferred revenue 385 377
+Interest-bearing loans 10 625 10 800
+Current tax liabilities 280 269
+Provisions 2 528 5 449
+Total equity and liabilities 149 584 147 056
+IAC January 2025 1 (of 1) © SAICA 2025
+Paper 2 required part I
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2025
+PROFESSIONAL PAPER 2
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 2 PART I – REQUIRED
+Marks
+Sub-
+total Total
+(a) Discuss the key risks that FreschKart was exposed to in its
+operating environment before the company shifted to an eco-
+friendly strategy.
+• Ignore risks that would be addressed by a shift to an eco-
+friendly strategy.
+Z2: Business external environment
+11
+1 12
+(b) Critically evaluate the strategic actions that FreschKart has
+undertaken to become more eco-friendly. 8 8
+(c) Write a memorandum to the board of directors in which you
+critically review its decision to vote against a rights issue as a
+means of reducing the company’s debt.
+• Include calculations and key ratios.
+Calculations: 10 marks; discussion: 16 marks
+Y4: Judgement and decision making
+X1: Communication skill – layout and structure
+26
+1
+1 28
+(d) Discuss the ethical behaviour and ethical leadership of FreschKart
+as demonstrated by the directors towards the following
+stakeholders: the lenders, suppliers represented by Cisty, the store
+managers and the local communities.
+Y6: Ethical reasoning
+8
+1 9
+Total for part I 57
+IAC January 2025 1 (of 2) © SAICA 2025
+Paper 2 required part II
+INITIAL ASSESSMENT OF COMPETENCE, JANUARY 2025
+PROFESSIONAL PAPER 2
+This paper consists of one scenario and two required parts.
+Answer each required part in a separate answer book.
+PAPER 2 PART II – REQUIRED
+Marks
+Sub-
+total Total
+(e) Prepare the correcting journal entries to account for the sales made
+by the selected FKB stores via GoFresch (see section 2) during
+December 2024 in FreschKart’s FY2024 financial statements.
+• Ignore all forms of taxation.
+• Dates and journal narrations are not required.
+• Assume all amounts are material.
+• Round all calculated amounts to the nearest rand.
+Y1: Critical thinking
+15
+1 16
+(f) Calculate the annual effective cost of the new loan from Bank
+Finance Ltd.
+• Ignore all forms of taxation.
+8
+8
+(g) Prepare, based on the information on the Sandton store in section
+4, an extract of FreschKart SA’s FY2024 property, plant and
+equipment note as it would appear in the notes to its financial
+statements.
+• Total columns are not required.
+• Round all calculated amounts to the nearest rand.
+X1: Communication skill – presentation
+8
+1 9
+(h) Prepare all the journal entries necessary to account for all aspects
+relating to the solar panels in FreschKart's FY2024 financial
+statements.
+• Ignore all forms of taxation.
+• Dates and journal narrations are not required.
+• Round all calculated amounts to the nearest rand.
+13
+13
+Continued on page 2
+IAC January 2025 2 (of 2) © SAICA 2025
+Paper 2 required part II
+PAPER 2 PART II – REQUIRED (cont.)
+Marks
+Sub-
+total Total
+(i) Calculate the total FY2024 profit or loss effect related to one FKB
+store of –
+(i) the Cisty contract; and
+(ii) the change in the leave policy.
+• Assume the following additional information:
+o On 1 January 2024 and 30 November 2024, each FKB
+store had (on average) 4 000 and 9 000 Cisty detergent
+units respectively on hand and were able to sell Cisty
+detergent units (on average) at R120 per detergent unit
+prior to 1 December 2024.
+o The 9 000 units on hand on 30 November 2024 were
+sold to Pay and Choose on 1 December 2024. All other
+cash flows occur at the end of each month.
+o An appropriate discount rate is 10% per annum
+(compounded monthly).
+o The FKB stores did not buy more than the minimum
+number of Cisty detergent units they were contractually
+required to purchase.
+• Ignore all forms of taxation.
+• Round all calculated amounts to the nearest rand.
+10
+7
+17
+Total for part II 63
+TOTAL FOR PAPER 2 120

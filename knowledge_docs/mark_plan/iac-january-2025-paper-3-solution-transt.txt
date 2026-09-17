@@ -1,0 +1,683 @@
+Source: SAICA IAC January 2025 — Paper 3 suggested solution (TransT).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART I
+IAC January 2025 1 © SAICA 2025
+Paper 3
+Part (a) Calculate the WACC as at 30 November 2023 that TT could use in
+evaluating whether to invest in Project Drone.
+● Ignore VAT. Marks
+Equity
+Market value of equity
+(8.45*10 000 000) 84 500 000 1
+Cost of equity
+Levered beta 1,40
+Unlevered beta (Hamada)
+(1.4/[1+(1-0.27)*45 437
+665/927 847] 1,03 1
+Adjust 0,24
+Project beta 1,27 1P
+Re-lever Beta (1.27*[1+(1-
+0.27)*45 437 665/927 847] 1,73 1P
+Return on market 14,50%
+Risk-free rate 10,70% 1
+Cost of equity (CAPM)
+10.7+1.73(14.50-10.70) 17,26% 1P
+Interest-bearing loans
+Coupon 9%
+Market rate 11,50%
+N 5
+Book value 50 000 000
+Market value
+-PV (i=11.5%,N=5, PMT=50
+000 000*9%,FV=50 000
+000,0)
+Alternative(after tax)
+PV (i=8.395%,N=5, PMT=50
+000 000*9%*0.73,FV=50 000
+000,0) 45 437 653 2
+Cost of debt after tax
+(11.50*0.73) 8,40% 1
+Minority interest Excl Def tax
+Incl Def
+Tax
+Estimate using book to market
+(84 500 )/(12 000+26 326) 2,20 1,80 1P
+Market value estimate
+3528/(12 000+26 326)*84 500 7 778 427 6 349 649 1P
+(May assume that deferred
+tax is irrelevant, or forms part
+of equity)
+WACC calculation
+Market
+value Weight Market
+cost WACC
+Ordinary equity 84 500 000
+Minority interest 7 778 427
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART I
+IAC January 2025 2 © SAICA 2025
+Paper 3
+Total equity 92 278 427 67%
+17,26
+% 11,57%
+Interest-bearing debt 45 437 653 33% 8,40% 2,77%
+137 716 080 14,33% 1P
+Available 12
+Maximum 12
+Total for part (a) 12
+Part (b) Using the forecast information for Project Drone provided by
+Denzil, calculate the IRR and conclude on whether it was the
+correct decision for TT to go ahead with the drone fleet purchase.
+● Use the WACC rate provided by the director as the
+benchmark rate.
+● Provide brief explanations for any irrelevant amounts.
+● Ignore information relating to the sale of the planes.
+● Ignore VAT.
+Marks
+Assumptions
+Number of drones 8
+Number of batteries 3
+Drone spraying capacity 125 hectares per hour
+Drone operating hours per
+day 20
+Working weeks for drones 40
+Drones per drone pilot 2
+Shift length 10
+Number of drone pilots 8
+8 drones operational per day
+4 pilots per shift - pilots can only work
+one shift (8*2)/2 1
+Hectares sprayed per year 4 000 000 (8*40*125*5*20) 1
+Ground vehicles 4
+Revenue per hectare 170
+Variable cost per hectare 150
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART I
+IAC January 2025 3 © SAICA 2025
+Paper 3
+Capital budget 0 1 2 3 4 5 Marks
+Development cost of drones -
+irrelevant as not TT's cost 1
+Depreciation irrelevant as not
+cash 1
+Drone maintenance and variable
+costs (20*5*40*125*8*150) (600 000 000) (636 000 000) (674 160 000) (714 609 600) (757 486 176) 2P
+Drone pilot's salary (8*168 000) (1 344 000) (1 424 640) (1 510 118) (1 600 726) (1 696 769) 1P
+Revenue per drone
+Inflation adjustment from Y2 @6%
+(20*5*40*125*8*170) 680 000 000 720 800 000 764 048 600 809 890 880 858 484 333
+2P
+78 656 000 83 375 360 88 377 882 93 680 554 99 301 388
+Taxation inclusion mark (3 171 960) (3 865 147) (4 327 420) (4 594 193) (5 734 493) 1P
+Purchase of drones (8*220 000) (1 760 000) 1
+Purchase of batteries(40 000*3*8) (960 000) 1
+Purchase solar charging station
+(50 000*8) (400 000) 1
+Sale of drones (72 000*8) 576 000 1
+Sale of batteries(40 000*0,7*3*8) 672 000 1
+Market value of solar stations(40
+000*8) 320 000 1
+Opportunity cost of vehicles
+(higher chosen) (475 000*4) (1 900 000) 1
+Cost to repair vehicles(12 000*4) (48 000) 1
+Sale of vehicles at end of project
+(300 000*4) 1 200 000 1
+Planes crop sprayer implications -
+not relevant as not incremental 1
+Cash flows (casting mark) (4 748 000) 11 484 040 11 670 213 12 140 062 12 861 337 15 312 369 1P
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART I
+IAC January 2025 4 © SAICA 2025
+Paper 3
+(IRR of project ) 1 156% 1P
+Taxation
+Operating cash flows above 78 656 000 83 375 360 88 377 882 93 680 554 99 301 388 1P
+Wear and tear drones(1 760000/4) (440 000) (440 000) (440 000) (440 000) 1
+S12BA batteries and charging
+station(3*8*40 000)+(1*8*50 000)*
+125% (1 700 000) 1
+Recoupment of drones 576 000 1
+Recoupment of batteries 672 000 1
+Recoupment of solar station 320 000 1
+Avoided recoupment vehicles
+(475 000-390 000)*4 (340 000) 1
+Cost to repair vehicles (48 000) 1
+Wear and tear on vehicles now
+deducted (390 000/2*4) (780 000) (780 000) 1
+Recoupment at end of period
+vehicles 1 200 000 1
+11 748 000 14 315 360 16 027 482 17 015 530 21 238 862
+Taxation @27% 3 171 960 3 865 147 4 327 420 4 594 193 5 734 493 1P
+Conclusion 1P
+Available 34
+Maximum 34
+Y4: Judgement and decision making
+Y3: Problem solving
+1
+1
+Total for part (b) 36
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART I
+IAC January 2025 5 © SAICA 2025
+Paper 3
+Part (c) Discuss the key strategic risks and benefits in the decision to
+invest in drones that may affect the overall sustainability of SprayT
+and provide overall mitigating actions for the strategic risks
+identified. Marks
+1 Risks that could endanger the viability of the project as a going concern
+include sustainability factors as listed below:
+2 As the risk of changes to and new developments in technology, leading to
+obsolescence, is transferred to TT, this should be included in considerations
+for the risk of the project. 1
+3 Not going ahead is a threat to going concern as the planes are no longer
+competitive with the advantages of drones. 1
+4 The actual purchase reveals additional costs such as import duties and
+repair costs. A comprehensive consideration of all costs may reveal other
+hidden costs. 1
+5 Technology is changing swiftly, and the assumption of a useful life of five
+years and the disposal values may be inaccurate. 1
+6 Public liability due to harming people, causing fires or cyber security threats
+could result in large claims. 1
+7 The precision and reliability of the drones were tested in a Chinese market,
+these may not necessarily be transferable to the African market and/or
+environment. 1
+8 This will also attract other risks relating to POPIA if the data is shared with
+the other farmers. 1
+9 Introducing drones might result in plane pilots becoming redundant (should
+the pilots not be happy with a lower salary offering and working as drone
+pilots) and thus TT may incur high retrenchment costs. 1
+10 In hindsight, the market reaction to drones might have been overvalued as
+customers only entered in two-year contracts and not the anticipated five
+years. 1
+11 As the drones need to be stored while not being used and transported to
+the particular farm when crop spraying takes place, the risk exists that the
+drones could be stolen from storage or while in transit. 1
+12 Given that the drones imported from China. TT could be exposed to foreign
+exchange risk given the volatility of the South African rand. 1
+13 Should any drones under warranty need to be returned to the supplier and
+be replaced/repaired, the time taken will disrupt spraying activities. 1
+14 The drones could be hacked while in flight and potentially resulting in the
+loss of the drone(s). 1
+15 Adverse weather conditions could result in the drones not being able to fly,
+disrupting the crop spraying process and impact profitability. 1
+16 Given that crop spraying, depending on the particular crop, generally does
+not take place throughout the year; the drones will not be utilised as
+planned, affecting the IRR of the project. 1
+Strategic benefits
+1 Drones are more environmentally friendly, as they do not use fossil fuel but
+rather solar power. With the global trend away from fossil fuels, the drones
+are a necessary change. 1
+2 Drones use less water, increasingly important with water being the number
+one sustainability issue globally currently. 1
+3 The financial benefits for farmers in increased yields and lower costs will
+make planes particularly less competitive, as it is not only the cost that is
+the benefit. 1
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART I
+IAC January 2025 6 © SAICA 2025
+Paper 3
+4 A decrease in operational costs (such as fewer plane pilots, fuel, water
+costs, less waste of pesticides due to increased precision) can be
+transferred to customers (in lower pricing) and subsequently make SprayT
+more attractive, thus increasing its market share. 1
+5 Project Drone increased TT's corporate citizenship flag as it allows it the
+opportunity of upskilling local people based on the less stringent licensing
+requirements of drone pilots. 1
+6 Drones also introduce a potentially new revenue stream for TT. The data
+collected by the drones could be shared with the farmers at a fee to assist
+them in enhancing their productivity. 1
+7 The 20 hours flying ability of the drones allows SprayT to reduce time spent
+on each customer and thus able to serve a larger market. 1
+Risk mitigations
+1 Risk of additional hidden costs – perform more detailed research on all
+costs, including import duties and foreign currency exposures. 1
+2 Risk changing technology – Perform scenario analyses on the project to
+consider shorter lifespan options, and potential earlier replacement options
+with different assumptions to create a broader risk profile. 1
+3 Public liability risk – Obtain public liability insurance products to address the
+losses that would be incurred on any claims. 1
+4 Drones not tested in African environment – Obtain a test drone to perform
+testing in the South African climate to ensure that drones remain suitable in
+the different conditions. 1
+5 It is suggested that a forward exchange contract (FEC) could be used to
+hedge against the foreign exchange risk at acquisition. 1
+6 Cybersecurity measures need to be in place to counteract the risk of
+hacking. 1
+7 The drones will need to be insured against the risk of theft. 1
+Available 29
+Discussion on risks and benefits: 8 marks
+Discussion on mitigating actions: 3 marks
+Maximum 11
+Z1: Business internal environment
+Z2: Business external environment
+1
+1
+Total for part (c) 13
+Total for part I 61
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART II
+IAC January 2025 7 © SAICA 2025
+Paper 3
+Part (d) Provide the correcting journal entries relating to the loan from
+BuzzFin, for the year ended 30 June 2024.
+• Provide brief explanations for your correcting journal entries.
+• Ignore all forms of taxation.
+Marks
+Calculations
+Calculation 1 Amount
+Effective interest rate R’000
+PV (14 000 000 (0.5) – (14 000 000 x 0,025%) (0.5) = 13 965 000 13 965 1
+N = 16 16 0,5
+P/Y = 2
+FV (R14 000 000 x 30%) (4 200) 1
+PMT = (995) 0,5
+i (compute) 3.89%
+Yearly rate 7.79%
+13 965 000 (0.5P) x 3.89% (0.5P) / (7,79% x 6/12) / OR
+P1 AMRT = R543 743
+543 937 1P
+Liability (995 000 – 543 937) 451 063
+Total payment 995 000
+Correcting journal entries and explanations
+Dr Cr
+Equity (SCE) 2 099 665 0,5
+Loan liability (SFP) 2 099 665 0,5
+Correcting the financial liability and reversing the
+equity component previously recognised
+The equity instrument can only be recognised if there is an option to deliver a fixed
+number of shares. The number of shares to be transferred at the option of BuzzFin
+will vary. Therefore, the full loan is a financial liability.
+1
+The loan should have been measured at the initial amount received (R14m) less
+the transaction costs (R35 000).
+1P
+The equity component of this loan needs to be reversed. 1
+Loan liability (SFP) 148 405 0,5P
+Interest (P/L) _ 148 405 0,5P
+(692 342 (0.5) – 543 937/ 543 743(0.5P)) 1P
+Alt: 451 063 – 302 6584
+Correcting the interest to be capitalised and reduction
+of the loan
+The accountant incorrectly applied the market rate to the loan as a discount rate
+in the calculation of the amortised cost.
+1
+The interest expense should be based on the effective interest rate. This rate
+should have been calculated after considering the initial amount received value
+less the transaction costs and this should be used to calculate the interest on loan.
+The effective interest rate of 7,79% / 3.89% should have been applied.
+1
+Available 12
+Maximum 11
+Total for part (d) 11
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART II
+IAC January 2025 8 © SAICA 2025
+Paper 3
+Part (e) Discuss any concerns you may have about the draft journal
+entry prepared by the accountant relating to the share option
+scheme for the year ended 30 June 2024, and advise the
+accountant on the correct accounting treatment of the share
+option scheme.
+• Support your discussion with calculations where necessary.
+• Do not provide correcting journal entries.
+• Do not discuss any presentation and disclosure requirements.
+• Ignore all forms of taxation.
+Marks
+1. The accountant incorrectly classified the incentive scheme to be a cash-
+settled share-based payment liability. (concern)
+Alt concern: The accountant recognised a liability as opposed to
+recognising an equity reserve. (concern).
+This is incorrect, as the share options will be settled in shares, the
+incentive scheme should be classified as an equity-settled share-based
+payment (advice).
+1
+1
+2. The share options incentives were measured at the incorrect fair value
+(R3.98) (concern), being the fair value on 30 June 2024, adjusted for both
+the performance and service condition.
+1
+3. As this is equity-settled, there is no need to remeasure the options on
+30 June 2024. (advice)
+1
+4. The equity settled share-based incentive scheme should be measured at
+grant date fair value (R4.50) throughout the vesting period. (advice)
+1
+5. The fair value should only be adjusted for the performance market
+condition because the service condition gets adjusted through the
+number of options expected to be exercised. (advice)
+1
+6. The period used is incorrect (12 months) as it should be the period that
+the senior managers have served (concern). From 1 December 2023 until
+30 June 2024, the senior managers have served for seven months.
+(advice)
+1
+1
+7. The journal entry adjusted for an incorrect number (12) of senior
+managers (concern), there are only two senior managers who left
+employment with one expected to resign before 30 November 2026.
+(advice)
+1
+1
+8. The medically boarded senior manager should be included in the number
+of employees. (advice)
+1
+9. For FY2024, TT should recognise a share-based payment reserve in
+equity of R113 750.
+[(16 – 2 – 1) (1P) x 10 000 (1) x R4,50 (1P) x 7/36 (1P)] = R113 750 4
+10. It is incorrect to debit “Interest expense” with the movement in the share-
+based payment transaction. (concern)
+11. Employee benefits in P/L should be debited with the amount of R113 750.
+(advice)
+1
+1
+Available 17
+Maximum 13
+Y1: Critical thinking
+Awarded to candidates that were able to demonstrate the core error in the
+calculation - the accountant incorrectly accounted for this share-based
+payment (SBP) as a cash-settled SBP instead of an equity-settled SBP.
+Candidates may interrogate the other errors in the calculation but if the
+distinction of equity vs cash is not done, this mark is not awarded.
+1
+Total for part (e) 14
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART II
+IAC January 2025 9 © SAICA 2025
+Paper 3
+Part (f) Recommend substantive tests of details that the auditors of TT
+should perform to obtain sufficient and appropriate audit
+evidence related to the classification; rights; and accuracy,
+valuation and allocation assertions pertaining to the agricultural
+drones of TT for the financial year ended 30 June 2024.
+• The following procedures have already been performed
+and should not be included in your recommendations:
+o Obtained all relevant schedules from management.
+o Casted and cross-cast all relevant schedules.
+o Obtained a management representation letter
+regarding all assertions.
+o Agreed all totals to the general ledger and trial
+balance.
+o Stratified all fixed assets registers.
+o Selected a sample for testing.
+o Auditing of the notes to the financial statements.
+o Scanning for and following up on abnormal / unusual
+items.
+• Consider VAT.
+Marks
+Rights and classification
+1. Inspect a sample of farmers' lease agreements to ensure they are signed
+by both parties and confirm the following lease terms (to assess whether
+the agreements were correctly classified as operating leases):
+1
+1.1 That the lease agreement is for two years and that none of the lease
+agreement terms are for three or more years, constituting a major
+part of the five-year estimated economic life of the drones.
+1
+1.2 The agricultural drone ownership will not be transferred to the farmer
+at the end of the lease term.
+1
+1.3 The farmers were not granted the option to purchase the agricultural
+drone for an amount significantly lower than the fair value at the expiry of
+the lease, and the farmers indicated they would elect this option.
+1
+1.4 Perform a recalculation (on 1 March 2024) of the present value of the
+minimum future lease payments of a specific lease agreement and
+assess whether it is not substantially close or equal to
+R220 000/R220200 (estimated fair value).
+1
+2. Inspect the insurance agreement/insurance policy to determine that the
+drones have been insured and that TT is the insured party (the insured
+party is usually the legal owner and it provides additional support that
+TT has rights to the drones).
+1
+3. Inspect loan/bank confirmation/insurance schedule/policy/minutes of
+board meetings to determine whether the drones have been offered as
+security for loans/overdrafts.
+1
+Classification and accuracy – additions (initial measurement)
+4. Inspect the contractual agreement, dated 23 January 2024, with ZAGG
+to confirm that ZAGG and TT are the parties to the agreement and that
+the agreement has been duly signed.
+1
+5. Inspect the agreement between ZAGG and TT to confirm the following:
+5.1 The cost price of each drone amounts to CNY85 600/R220 200. 1
+5.2 The standard shipment and delivery fee per drone amounts to
+CNY500/R1 285.
+1
+5.3 The shipping terms stipulated in the purchase contract is CIF. 1
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART II
+IAC January 2025 10 © SAICA 2025
+Paper 3
+6. Inspect documentation from the shipment company/courier company
+to confirm that the drones were shipped on 29 January 2024 and arrived
+in Durban on 12 February 2024.
+1
+7. Obtain the relevant foreign currency CNY to ZAR spot rate for the
+transaction date from a reputable financial institution.
+1
+8. Inspect customs documents and/or invoices to confirm the import duty
+amount as 20% of the value of drones imported.
+1
+9. Inspect invoices or transport documents to confirm the distribution
+costs of R45 000 to warehouses.
+1
+10. Recalculate the cost price of the drones using the spot rate obtained and
+ensure that it agrees to R6 686 800 (amount given in scenario or
+alternative amount used of R6 606 000).
+1
+11. Recalculate the import duties as 20% of R6 686 800 (given). 1
+12. Recalculate the distribution cost to the warehouse to be capitalised as
+R39130 (R45 000 less VAT).
+1
+13. Inspect fixed assets register/general ledger for the cost price of the
+drones to confirm the following:
+13.1 That the correct costs have been capitalised i.e. import duties,
+distribution costs, assembly costs; and
+1
+13.2 That the shipment and delivery have not been capitalised (CIF, the
+seller carries the cost).
+1
+14. Inspect the drones’ cost price in the general ledger to ensure that 15%
+VAT on R6 686 800 (or alternative amount used) has not been
+capitalised (R1 030 200), but has been included in the VAT input
+account (control account).
+1
+15. Inspect the bank statements on 26 January 2024 to confirm the total
+amount paid to ZAGG amounted to R6 686 800.
+1
+Accuracy, valuation and allocation (subsequent measurement)
+Depreciation and useful life
+16. Enquire from management about the reasonability of using the straight-
+line basis to account for depreciation on drones, especially since the
+drones have a residual value of R72 000 at the end of their useful lives,
+indicating they still have an economic life beyond five years (accounting
+policy).
+1
+17. Inspect delivery documentation at the Johannesburg warehouse and the
+contractor report after assembly to confirm the date on which the drones
+were ready for use was 15 February 2024.
+1
+18. Recalculate the depreciation from 15 February 2024 (ready for use)
+until 30 June 2024 to ensure that the deprecation amount in the fixed
+assets register and general ledger is accurate and that only four and a
+half months’ depreciation was accounted for.
+1
+19. Enquire from management about the reasonability of using a useful
+life of 5 years and consider the following in the assessment, i.e. market
+conditions/comparison to useful life used by similar entities; SARS write-
+off periods; using an expert.
+1
+20. Calculate the carrying amount of the drones on 30 June 2024 to
+confirm the accuracy of the carrying amount per the drone fixed assets
+register / general ledger.
+1
+21. Inspect the minutes of the board meeting where the discussion took
+place regarding the damaged drones and the significant drop in the Agra
+drones' fair value to determine management’s decision on further action
+of the damaged drones.
+1
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART II
+IAC January 2025 11 © SAICA 2025
+Paper 3
+22. Inspect and review weather reports and/or obtain independent
+sources, such as newspaper articles to verify the occurrence of severe
+storms in the Free State on 3 May 2024.
+1
+23. During the physical verification of drones, inspect each drone for
+visible signs of significant damage (structural damage etc) and assess
+whether the damage may impact the drone’s functionality or valuation.
+1
+Useful lives
+24. Enquire from management what assumptions, internal and external
+factors they took into account when determining the adjusted remaining
+useful lives of the drones and evaluate the reasonability of the remaining
+rental term for which they would be able to use the drones if repaired.
+Note – a period of five years and beyond would not be reasonable based
+on business practices of TT and the introduction of the new technology.
+1
+Determining recoverable amount – value-in-use of the 10 drones in the
+Free State determined by management
+Value-in-use calculation
+25. Discussions with management/inspection of qualifications (if relevant) to
+evaluate the competence and experience of management who
+calculated the value-in-use.
+1
+26. Enquire from management and the finance department about the
+reliability and accuracy of other present value calculations applied
+by management in the past in other sections/divisions of the business.
+1
+27. Through discussions with management/inspecting the value-in-use
+calculation, assess whether there are indicators of management bias
+in selecting the method, significant assumptions, and data used in
+performing the value-in-use calculation (ISA 540).
+1
+28. Through discussions with management, assess whether management
+has taken the appropriate steps to understand and address estimation
+uncertainty (ISA 540).
+1
+29. Obtain management’s value-in-use calculation and assess the
+reasonability of a 6% escalation in fee per hectare by comparing it with
+the fee escalation per hectare of similar entities.
+1
+30. Through discussions with management/inspection of the value-in-use
+calculation, assess the reasonability of all cash outflows (including
+servicing and maintenance fees of the drone, salaries of drone pilots,
+etc.) and ensure it is not less than the prevailing inflation rate of South
+Africa.
+1
+31. Inspect the value-in-use calculation to determine whether management
+took into account the estimated R90 000 repairs upfront (in period 0).
+1
+32. Inspect the value-in-use calculation for a residual value and obtain
+supporting documentation (contractual agreement) from management
+that the drones would be sold to a third party at the end of the adjusted
+useful life.
+1
+33. Through inspection, ensure that the value-in-use calculation does not
+take into consideration income tax.
+1
+34. Through inspection of the calculation, evaluate/assess whether the pre-
+tax discount rate used by management is reasonable in comparison
+with the WACC of 14,33%.
+1
+35. Inspect the calculation to ensure that no insurance claim payouts, if
+any, have been taken into account in the cash inflows.
+1
+36. Reperform the calculation of the value-in-use using management’s
+inputs and updated inputs based on reasonability assessment and
+compare to management’s estimate.
+1
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART II
+IAC January 2025 12 © SAICA 2025
+Paper 3
+Determining recoverable amount – fair value less cost to sell (fair value
+determined by a management expert)
+37. Inspect AgriValSpec’s report regarding the fair values of the drones
+and compare it to TT management’s schedule to ensure that they
+correspond.
+1
+38. Inspect the engagement letter/contract between AgriValSpec and TT
+and assess the respective roles and responsibilities of AgriValSpec and
+TT’s management respectively.
+1
+39. Through discussion with TT management and the expert/written
+confirmation/declaration of conflict of interest, evaluate the
+objectivity/independence of the valuation specialist assigned by
+AgriValSpec to perform the valuation to ascertain whether any interests
+and relationships may threaten the expert’s independence. 1
+40. Inspect the CV and qualifications of the expert and assess the
+experience of the AgriValSpec expert assigned to valuing agricultural
+drones.
+1
+41. Inspect the calculation/discussions with management expert to obtain
+an understanding of the work done, assumptions and data used to
+consider its appropriateness and relevance as audit evidence, including
+the following:
+1
+41.1 Inspect the valuation report from AfriValSpec to assess whether the
+valuation methodology adopted is appropriate in accordance with
+IFRS13.
+1
+42.2 Inspect the report from AgriValSpec and evaluate whether it took into
+account the fact that brand-new Agra drones sell for about half of
+R220 600 (the purchase price that TT paid). A fair value of more than this
+amount would be unrealistic.
+1
+43. Inspect the cost-to-sell estimation to confirm that the R1 500 standard
+legal contractual drafting fee is taken into consideration.
+1
+44. Reperform the calculation of fair value less cost to sell using
+AgriValSpec’s inputs and updated inputs based on a reasonability
+assessment and compare to AgriValSpec’s estimate.
+1
+General
+45. The auditor should evaluate the reasonableness of the value-in-use
+calculations and/or valuation report of the fair value by applying their
+own knowledge of the business/assess against other audit
+evidence/audit team’s professional judgement and information obtained
+through discussions with management (stand-back test).
+1
+46. Discuss with management the possibility of adjusting/reassessing the
+residual value of the remaining drones with the expected 45% drop in
+the market value, when new drones are launched/with the new
+technological advancements.
+1
+Impairment loss: Higher of FVLCTS and VIU
+47. Recalculate the impairment loss using the recoverable amount as
+the higher of fair value less cost to sell or value-in-use (as audited) and
+compare to management’s impairment loss.
+1
+48. Based on the outcome, if there are significant differences between the
+auditor’s point estimate and management’s recoverable amount,
+consider using an auditor’s expert. (no indicator was given in the
+scenario and therefore candidates must not go into the detail of the
+procedures here)
+1
+Available 56
+Maximum 33
+Y2: Integrative thinking 1
+IAC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 3 PART II
+IAC January 2025 13 © SAICA 2025
+Paper 3
+The integrative thinking mark assessed candidates’ ability to apply knowledge
+across modules. An integrated approach should be followed, combining auditing,
+accounting, taxation, and selected aspects of financial management.
+Candidates needed to go beyond listing substantive procedures and
+demonstrate how these procedures assess key accounting considerations, such
+as initial recognition, subsequent measurement, impairment indicators,
+estimates, and operating leases (accounting).
+Taxation aspects, including VAT and income tax, also had to be addressed
+(taxation).
+Candidates had to address procedures around the recoverable amount (fair
+value less costs to sell and value in use) by assessing whether an appropriate
+discount rate was used (financial management).
+Total for part (f) 34
+Note: it is not necessary for candidates to refer to CAATs, as this was not
+specifically stated in the required.
+Total for part II 59

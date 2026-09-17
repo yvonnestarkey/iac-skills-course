@@ -1,0 +1,930 @@
+Source: SAICA IAC June 2025 — Paper 2 suggested solution (SSC).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+1 © SAICA 2025
+Part (a) Discuss and conclude whether the amounts noted under ‘robotic
+process automation’ (in part 3 of the scenario) are capital in nature
+or not in terms section 11(a) of the Income Tax Act for the year of
+assessment ended 31 December 2024.
+Marks
+1 The onus to prove that an amount is deductible (not capital in nature) lies
+with the taxpayer, in terms of s102(1)(a) or (b) of Tax Administration Act.
+1
+2 The issue at hand is whether the bot and automation costs are ‘capital in
+nature’ in terms of section 11(a) (general deduction formula) or not. Since the
+phrase is not defined in the Income Tax Act, case law principles will be used
+to make such determination.
+1
+3 The main court case principle is the so-called ‘operations v structure’ test
+(New State Areas Ltd v CIR case). It was held that if the cost is part of
+performance of income-earning operations, it is deductible under section
+11(a).
+or
+The expenditure is incurred to create an ‘enduring benefit’, thus capital in
+nature and not deductible.
+1
+4 Bot – R1.5 million
+The R1,5 million expended on the acquisition of the bot relates to improved
+efficiencies within the company’s accounting and compliance function and
+thus relates to improving the income earning structure (or enduring benefit).
+1
+5 Therefore, the R1,5 million is capital in nature and not deductible under
+section 11(a).
+1P
+6 Automation – R350 000
+The R350 000 expended on the automation of the bots relates to the optimal
+functioning of the bot, in that it will process repetitive functions seamlessly.
+This amount therefore relates to the bots and its income-earning structure. 1
+7 Therefore, the amount of R350 000 is capital in nature and not deductible
+under section 11(a). 1P
+Available 7
+Maximum 6
+X1: Communication skill – clarity of expression 1
+Total for part (a) 7
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+2 © SAICA 2025
+Part (b) Calculate SSC’s corrected taxable income for the year of assessment
+ended 31 December 2024.
+• Start with the profit before tax of R29 310 000 used by the bot in the tax
+workbook / ITR 14 Income Tax Return – 31/12/2024.
+• For each adjustment, provide brief reasons to support calculations.
+• Provide brief reasons where you consider no adjustment is required or where
+an item has no effect on the taxable income calculation.
+• Ignore the impact that the acquisition of PED may have on the profit before
+tax and the taxable income of SSC
+• Present all amounts in R’000.
+• Include each adjustment in a separate line.
+Marks
+SSC’s corrected taxable income
+Calc/
+note
+R’000
+Profit before tax 29 310
+Amounts received in advance
+SSC is only unconditionally entitled to R5,75 million once the
+beverages are delivered and invoiced in February 2025 and
+thus the full amount should not be included into taxable
+income.
+4.1 3 500 ½
+1
+Gross income inclusion at the earlier of receipt or accrual.
+The amount of R3,5 million has been received.
+1
+Cost to produce the Onze Revived beverages
+Deductions claimed in the year of assessment in which the
+expenditure is actually incurred (2025), thus R2,5 cannot be
+deducted.
+-
+1
+S24C allowance
+The R3,5 million has been received in respect of the contract
+and will be used to finance future expenditure as defined in
+terms of s24C(1).
+1
+IN87: Total cost/total revenue x income received= R2,5 m/R5,75
+= 43,47%. or
+R2,6 m/R5,75 = 45,22% (taking legal fees into account)
+1
+R3,5 million x 43% less Rnil (43,47% = R1,52m) or
+R3,5 million x 45,22% less R100k = R1,483m
+(1 505) 1P
+Dividends:
+No adjustment for account treatment as dividends received
+included in Gross Income (world-wide) in terms of section 1
+(R300’ +R960’)
+4.2
+- 1
+PED: Exempt local dividends
+Local dividends are exempt in terms of s10(1)(k) (300) 1
+Exempt foreign dividends received from RV
+SSC holds more than 10% of the equity shares and voting
+rights and therefore the participation exemption in terms of
+s10B(2)(a) applies
+(240) 1
+Exempt foreign dividends received from LSM
+s10B(3)) R720 000 x 7/27
+As SSC holds less than 10% of the equity shares and voting
+rights in LSM, the ration exemption is limited to 7/27 under
+s10B(3).
+(187) ½
+1
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+3 © SAICA 2025
+Legal fees capital expenditure and / or losses
+Expenditure incurred to register Onze Revived (trademark)
+used in the production of income is deductible in full in terms
+of s11(gB).
+The amount is capitalised to intangible assets under IFRS and it
+therefore should not be included in determining profit before tax.
+4.1
+(100) 1
+1
+Cost of sales
+Add back: Trading stock purchased from Australia
+The trading stock was not held by SSC nor was it disposed of
+by 31 December 2024. No deduction is allowed in terms of
+s11(a) read with S23F(1).
+4.3.1 2 750 ½
+1
+Cost of sales
+Add back: Trading stock purchased from Australia
+No deduction on the amounts paid to the customs officials. This
+is a bribe and the deduction is prohibited in terms of s23(o).
+4.3.1
+30 ½
+1
+Cost of sales
+Closing values of inventory added back
+In terms of s22(1), closing inventory must be added back at the
+lower cost or the value to which it has diminished due to
+damage or deterioration.
+In terms of the Volkswagen SA case the amount should not be
+net of the inventory obsolescence provision as this takes into
+account future expenditure.
+Alternatively: Section 23(e)
+4.3.2 1 500 ½
+1
+Recoupment of donation to SSC Foundation at cost in terms
+of s22 (8)(C)
+4.3.3 4 000 1
+Recoupment of beverages
+Trading stock applied for purposes other than trade in terms of
+s22(8)(b)(ii)
+A recoupment must be accounted for at an amount equal to the
+market value.
+4.3.4 600 ½
+1
+Other donations - beverages
+Deduction is allowed in terms of proviso (a) to s22(8) read with
+section 11(a), as the trading stock has been applied for
+promotional purposes (marketing) and the recoupment is
+deemed to be costs incurred by the taxpayer in acquiring the
+asset.
+4.3.4 (600) ½
+1
+Prepaid expenditure in terms of s23H(1)(aa)
+The benefit of the insurance will be received within six months
+of the end of the year of assessment. Prepaid expenses relating
+to the period 1 July 2023 to 30 June 2024 would have been fully
+deducted during the 2023 year of assessment
+4.4
+1
+Included in PBT
+Add back: Insurance premiums 1 July 2023 to 30 June 2024
+R1,5 million x 6/12
+Deduct: Insurance premiums 1 July 2024 to 30 June 2025
+R1,8 million x 6/12
+750
+(900)
+1
+1
+Provisions not deductible for the current year: s23(e) 4.5.1 3 300 ½
+Bonuses accrual on 31 December 2024 is variable
+remuneration in terms of s7B and variable remuneration is
+only deducted once paid.
+Bonuses paid on 31 March 2024 are deducted in the current
+year
+4.5.1
+(2 100)
+1
+½
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+4 © SAICA 2025
+Restraint of trade
+Section 11(cA) allows a deduction when amounts are paid to
+natural persons, irrespective of whether the amount is of a
+capital nature or not, and provided that the amount constitutes
+or will constitute income in the hands of Musi Thou.
+Adjustment is R1 million – R250 000 = R750 000
+4.5.2
+750
+1
+1P
+Deduction limited to lesser of
+R1 million / 3 = R333 333 or
+R1 million / 4 = R250 000 1
+Depreciation is an accounting entry and not an income tax
+deduction (reversal)
+4.6 13 000 ½
+Accounting loss on disposal of fixed and / or other assets
+Reversal of an accounting entry: recoupment or scrapping
+allowances are determined for tax purposes.
+(Alt. R815 000 if the journal in the scenario is re-calculated)
+4.6.1(c)
+845 1
+Commercial building deduction: R10 300 x 55% x 5%
+Commercial building of 3-8 floors, therefore a part of a building
+and capital allowances in terms of s13quin(7) is based on 55%
+of the cost.
+4.6.1(a) (283) 1
+1
+Computers – wear and tear
+Each computer has a cost of R6 000, which is less than R7 000,
+and is therefore fully deductible in the year of assessment of
+acquisition (or of rounded to R1)
+Alt: s11(e) – (R600’/3 x 11/12) = R183,33
+4.6.1(b) (600) ½
+1
+Purchased software bots – (part (a)
+Expenditure is of a capital nature and bots are entitled to a
+capital allowance in terms of Int 47 read with BGR7 of three
+years: R1,85 million / 3
+(Mark through with part a)
+4.6.2 (617) ½
+1P
+Bottling machine
+Manufacturing capital allowance: R1,3 million x 40%
+The machine was acquired new and unused and therefore
+allowances in year 1 is equal to 40% in terms is section 12C.
+The cost of the acquisition is capital in nature.
+4.6.1(c)
+(520) 1
+1
+Filler machine
+Capital allowance: R2,55 million x 20%
+Sale of the filler machine: SSC should consider the recovery of
+previous deductions or allowances granted in terms of s8(4)(a)
+(recoupment).
+4.6.1(c)
+(510) 1
+1
+Cost
+Allowances: 2023 year of assessment @ 40%
+Allowances: 2024 year of assessment @ 20%
+Tax value
+Selling price
+2 550
+(1 020)
+(510)
+1 020
+1 480
+½
+½P
+Recoupment (selling price less tax value) 460 460 1P
+CGT: para. 2 of the 8th Schedule read with s 26A
+Disposal (selling price)
+Less: recoupment
+Proceeds
+1 480
+(460)
+1 020
+1P
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+5 © SAICA 2025
+Original cost par 20
+Less: allowances
+Base cost
+2 550
+(1 530)
+1 020 1P
+Capital gain (Proceeds less base cost) 0 0
+As the proceeds were used to purchase a replacement asset,
+para. 66 of the 8th Schedule allows the gain and recoupment
+to be deferred. However, as the purchase of the new bottling
+machine of R1,3m is less than the proceeds of R1,48m (para.
+66(1)(c)), para. 66 cannot apply.
+1
+Taxable income before s18A 52 333
+S18A donations – value of the donation is the amount recouped
+in terms of s22(8)(C) (read with s18A(3)(a)(ii))), thus R4 million.
+4.3.3
+1
+Deduction is limited to 10% of taxable income of R52 333 =
+R5 233 before the deduction, thus not limited.
+(4 000) 1
+Adjusted taxable income 48 333
+Available 46
+Maximum 43
+Y1: Critical thinking 1
+X1: Communication skill – layout and presentation 1
+Total for part (b) 45
+TOTAL FOR PART I 52
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+6 © SAICA 2025
+Part (c) Draft a report to the management of SSC, with reference only to
+the information under ‘digital strategy’ (in part 2 of the scenario),
+in which you –
+(i) describe nine key business risks that SSC may be exposed
+to relating to the digital strategy, and
+(ii) for each risk identified, provide a mitigating measure that
+could be implemented by SSC.
+• Ignore ethical considerations.
+• Exclude controls related to journal entries generated by the
+bot
+Marks
+Report
+Management of SSC
+Prepared by: Candidate
+I attach a description of nine key business risks that SSC may be exposed to
+relating to the digital strategy as well as a mitigatory measure that could be
+implemented by SSC to address each risk.
+Risks description Marks Mitigatory measure Marks
+Cohesion
+• There are multiple elements to
+the strategy and initiatives and
+they may not be cohesive. (The
+proposed initiatives could not
+align with SSC’s long-term
+strategy and goals.)
+• The overall plan may not be
+supported by market research,
+etc. (The risk is that the plan
+implemented by the company
+does not meet the needs of its
+current and future customers,
+leading to a loss in revenue /
+market share.)
+1
+1
+• Develop internal governance
+processes over the approval
+of the strategy to ensure
+cohesion with SSC’s long-
+term strategy.
+• Annual reflection and review
+of strategy to ensure it aligns
+with the business
+environment and it remains
+effective in achieving
+strategic goals.
+• Develop a project
+management plan to ensure
+oversight into the
+implementation of the AI
+tools.
+2
+Investment required
+• The initial upfront implementation
+costs, which may include
+software, hardware and
+consultancy fees, may be quite
+significant.
+• The trade-off between creating a
+company that can thrive in a
+digitally enabled future and the
+pace of change may not have
+been adequately considered.
+(Having not adequately
+considered that a company
+created to thrive in a digitally
+enabled future may not align with
+the change of pace in the
+beverage and snack industry,
+SSC could face decreases in
+1
+1
+• A full investment appraisal to
+be performed to quantify the
+expected ROI (to quantify the
+value of the investment).
+• Development of a
+prioritisation matrix.
+• KPIs and ROI should be
+continually monitored to
+determine if the targets are
+reached.
+• Seek legal counsel or advise
+in the implementation of the
+retrenchment plan to mitigate
+against labour unrest.
+4
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+7 © SAICA 2025
+revenue and a loss of market
+share if its products do not meet
+the current needs of its existing
+customers.)
+• Prioritisation of the different
+elements of the strategy and the
+initiatives may not have been
+adequately considered.
+• The reduction in headcount is
+proposed by SHAI as the main
+justification for the roll-out of the
+initiatives. Costs such as
+retrenchment costs and those
+relating to possible legal
+processes or engagement with
+unions may not been considered.
+(These include reputational risk,
+lack of social responsibility in a
+South African context, employee
+morale.)
+1
+1
+Over-reliance on digitisation/automation or not having access to maintenance of
+the system should anything go wrong
+• Over-reliance on digital solutions
+can lead to a reduction in human
+oversight, critical thinking and
+creativity, which are essential for
+addressing anomalies or unusual
+transactions.
+1 • Assign individuals to overall
+oversight and responsibility
+for the various functions that
+are being automated.
+• Regular audits should be
+conducted on the work
+performed by SHAI.
+1
+Dependence on SHAI
+• The dependence on SHAI for
+software updates, support and
+troubleshooting can be risky if
+the vendor’s service quality is
+inconsistent.
+• There is also potential
+reputational risk should the
+production quality not be of the
+appropriate standard.
+• Data collected by bots might end
+up being hosted on SHAI’s
+infrastructure, risking SCC’s
+ownership.
+1
+1
+1
+• Have a signed service level
+agreement with SHAI, which
+clearly stipulates the
+deliverables and penalties for
+non-performance.
+• Perform a due diligence on
+SHAI to assess its capacity
+and competence to provide
+digital solutions.
+• Regularly check that the bots
+are working as they should,
+and for occasional human
+product testing.
+• Define data ownership
+contractually and possibly
+include a data portability
+clause.
+3
+Data security and privacy
+• Given the sensitive nature of
+customer and accounting data, if
+not properly secured, SSC can
+become a target for cyberattacks
+or data breaches. (External
+parties may hack the system.)
+1 • Put access controls in place
+to ensure that only authorised
+personnel and bots have
+access to sensitive data.
+• Sign confidentiality
+agreements with SHAI and
+2
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+8 © SAICA 2025
+• Data collected by the bots may
+be improperly used by the
+vendor, i.e. it will have
+authorised access but it could be
+used for unauthorised means.
+(Internal parties may misuse the
+information.)
+1 include punitive measures for
+data breaches occurring at
+SHAI.
+• Have a signed service level
+agreement with SHAI, which
+clearly prohibits the use of
+the collected data for
+unauthorised/ illicit means
+and which specifies that the
+vendor should implement
+adequate measures to
+mitigate use of the data
+collected by its personnel.
+Compliance and regulatory
+• The implementation of the
+strategy may not be aligned or
+up to date with changing
+regulations and compliance
+requirements, as non-
+compliance may result in legal
+penalties (i.e., POPIA).
+1 • Regular training of staff.
+• Ensure SSC maintains
+proper audit trails and
+documentation.
+• Subject its electronic systems
+to pre-scheduled compliance
+audits.
+1
+Technical feasibility
+• There can be technical issues
+with the AI tools, apps and bots,
+such as bugs causing the system
+to crash, which can disrupt the
+business.
+• In the event of a technical bug,
+the error can be replicated over
+large quantities of data, well as
+across multiple functions which
+makes the process to rectify the
+issue onerous.
+• Errors in technical configuration
+can lead to inaccurate decision
+making, communications,
+accounting and reporting. (If
+proper controls are not
+implemented (not just for the
+configuration part) over the
+development and implementation
+of the AI tools, apps and bots,
+this will lead to errors in the
+financial and non-financial data.).
+1
+1
+1
+• Robust testing before the
+tools are launched to
+processing of live data.
+• Review of the data processed
+and produced by a
+competent individual.
+• Appointment of suitably
+skilled staff to address the
+technical issues as they
+arise, to minimise disruptions
+to daily operations.
+• A signed service level
+agreement (SLA) to set out
+the terms and conditions and
+requirements for
+configurations.
+3
+Compatibility issues
+• The systems developed may not
+be compatible with existing
+accounting systems and
+software, resulting in disruptions
+in workflows.
+1 • SHAI must assess
+compatibility of its systems
+with SSC’s accounting
+systems and software.
+1
+Change management
+• Employees may resist the
+adoption of strategy due to fear
+of job losses, particularly as it
+1 • An effective, clear,
+empathetic and transparent
+communication strategy,
+3
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+9 © SAICA 2025
+could lead to a cut of 50% of the
+staff compliment if the digital
+solutions are implemented.
+• Also, there may be resistance to
+change as employees fear
+changes in their roles and
+responsibilities.
+• The adoption of a digital strategy
+requires a culture shift for which
+employees may not be ready.
+1
+1
+including discussions with
+unions and employee
+representatives, particularly
+as the workforce is likely to
+be cut, which means that
+retrenchments are imminent.
+• Carefully consider the
+employee mix, operational
+needs and where possible
+and practical, upskilling
+employees to enable them to
+take up new roles within SSC
+should their current jobs be
+made redundant.
+• Adequate training of
+employees to be able to
+effectively work alongside
+SHAI and AI tools and handle
+exceptions that bots cannot
+manage.
+• Fair retrenchment packages.
+• SSC should consult with legal
+experts to ensure a fair and
+legally compliant
+retrenchment process.
+Process complexity
+• Non-standardised or non-routine
+accounting processes may be
+difficult to automate effectively
+with RPA.
+1 • Process mapping to identify
+routine processes that can be
+automated and those that are
+non-routine and will still need
+to be done manually or with
+human intervention.
+1
+Content curation
+• Cooking shows that are being
+watched may not be aligned with
+the SSC brand and/or vision.
+• The AI tools may be designed in
+such a way that it does not
+mitigate cognitive and
+information biases stemming
+from data used from social
+media, online recipes and TV
+shows. This could cause
+decisions made by AI tools to
+perpetuate these biases.
+1
+1
+• Assign individuals with
+overall oversight and
+responsibility.
+• Regular calibration and
+testing of bots should take
+place, human oversight
+during the initial deployment
+phases should be
+maintained.
+2
+Reputational Impact:
+• Negative public perception of
+SSC due to AI monitoring social
+media and reducing the
+workforce.
+1 • Develop a public relations
+strategy to communicate the
+benefits of digital
+transformation, engage with
+stakeholders early in the
+process to manage their
+expectations.
+1
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+10 © SAICA 2025
+• Maintain a visible human
+touch in consumer-facing
+activities and ensure fallback
+protocols are in place.
+Disaster recovery
+• If systems or bots fail, manual
+fallback may not exist.
+1 • Robust disaster recovery
+planning and system
+backups.
+1
+Other valid points
+• ‘Long-term’ knowledge of the
+business and its products may
+be lost (i.e. some form of
+institutional memory) if the bots
+take over.
+1 • Experienced personnel
+should document their
+knowledge and experience,
+e.g. in training manuals.
+1
+Thank you for the opportunity, I hope you will find the above in order
+Kind regards
+Candidate
+Available 26 Available 26
+Maximum 9 Maximum 9
+X1: Communication skill – layout and presentation 1
+Z2: Business external environment 1
+Total for part (c) 20
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+11 © SAICA 2025
+Part (d) Describe the controls that should be put in place by SSC over the
+journal entries recorded by the bot.
+Marks
+1. Employee training (all) – provide regular training to employees on the use
+of the bots to minimise the risk of incorrect usage. 1
+2. Segregation of duties (validity) – ensure that different individuals or teams
+are responsible for ‘bot’ configurations, bot operation and oversight. This will
+prevent a conflict of interest and reduces the risk of errors or fraud. 1
+3. Access controls for users (validity) – implement user access controls to
+ensure that only authorised personnel can run the bots.
+• The use of access tables (read/write tables) to limit access to authorised
+users (least privilege).
+• The use of unique username and password combinations.
+• Password controls such as a minimum of eight characters; a combination
+of letters and numbers; not easily guessed, inclusion of special
+characters, etc.
+1
+4. Access controls for the bot (validity) – define and limit the access rights of
+bots to specific systems and data required for the journal processing task.
+Limit the bot’s access to specific journal entries or prevent the bot from
+creating and approving the same journal entries. 1
+5. Supporting documentation (validity) - For each journal, supporting
+documents should be attached and kept in the electronic journal file or
+embedded in the accounting system and reviewed by authorised personnel
+before being posted.
+1
+6. Approval (all / validity) – the journal entries created by the bots should be
+reviewed and approved by authorised personnel before being posted. 1
+7. Data validation controls (all) – Configure the bots to perform data validation
+checks before processing journal entries. This should include verifying the
+validity, completeness and accuracy of input data and can include for
+example the following.
+• Reasonability check: Rand value of debits = rand value of credits. (Control
+totals for the journals posted must agree.)
+• No blank fields for amount or GL codes or other fields etc. / the system
+does not process the journal if each general account name has / does not
+have a corresponding amount.
+1
+8. Sequence checking (completeness and validity) - The bots should
+allocate a unique sequential number to each journal entry and sequence
+check journal entries to identify missing and duplicate journal entries. 1
+9. Activity logs (all) – ensure that all access activities and bot activities (journal
+entry creation, modification, authorisation and deletion) are logged with
+detailed time stamps and user identifiers. 1
+10. Exception reporting (all) – configure the bots to be able to detect or flag
+anomalies or errors during journal entry processing. The following are
+examples of possible reports:
+• Any entries flagged by the bot as uncertain or falling outside defined
+parameters (e.g. materiality / monetary thresholds or unusual account
+combinations) should trigger exception reports.
+• Journal entries recorded twice / duplicates; entries where only one side
+(debit or credit) was recorded, entries missing a date, etc.
+1
+11. Follow-up procedures (all) – All access logs, activity logs and exception
+reports must be reviewed, followed up and resolved by relevant staff. 1
+12. Monitoring / operational testing of the ‘bot’ (all)
+• Testing of bot before operational implementation should be performed.
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+12 © SAICA 2025
+• Perform periodic reconciliations of bot output (journal entries) with
+information sources to detect discrepancies (can request review over ‘bot’
+controls in the scope internal auditors).
+1
+Available 12
+Maximum 6
+Total for part (d) 6
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+13 © SAICA 2025
+Part (e) Briefly explain whether or not you agree with the conclusion of the
+bot that 1 June 2024 is the acquisition date of PED by SSC (in
+accordance with IFRS).
+• State what the acquisition date should be, if you do not agree
+with the bot’s conclusion.
+• Give reasons for your answer.
+Marks
+1 The acquisition date is the date on which SSC obtains control over PED.
+SSC has control over PED when it has –
+power over PED, and
+• exposure or rights to variable returns from its involvement with PED, and
+the ability to use its power to affect the amount of its returns.
+1
+2 An investor has power over an investee when the investor has existing rights
+that give it the current ability to direct the relevant activities. T
+3 Relevant activities are those activities that significantly affect the investee’s
+returns. T
+4 In accordance with PED’s Memorandum of Incorporation, power is obtained
+directly and solely from voting rights attached to its shareholding and how the
+voting rights related to the shareholding are exercised at the annual
+shareholders’ meeting. 1
+5 This means that the party with the majority of the voting rights will have the
+power to direct the relevant activities of PED. It is therefore not necessary to
+get into an investigation of the relevant activities 1
+6 SSC has a 10% shareholding in PED and acquired an option to purchase 60%
+of the shares in PED on 1 February 2024. 1
+7 In assessing whether SSC has power over PED, the potential voting rights in
+the form of the option to acquire 60% of PED’s ordinary shares from nVestor
+are considered when they are substantive.
+1
+8 The options are substantive when SSC has the practical ability to exercise its
+option, i.e., when the options can be exercised.
+• Given that the options were acquired on 1 February 2024 and were
+exercisable from 1 April 2024, that would be the date of practical ability to
+exercise the option. This is before the next general shareholders’ meeting
+of PED on 30 June 2024.
+• There is no financial barrier preventing the exercise of the options. This
+further supports that SSC has the practical ability to exercise power over
+PED from 1 April 2024.
+• SSC will benefit from synergies from the relationship with PED. This further
+supports that the options are substantive from 1 April 2024.
+1
+1
+1
+9 SSC has exposure to variable returns from its involvement with PED through
+the dividends it will get from its shareholding. 1
+10 SSC is able to use its voting rights and power to affect the amount of its returns
+and dividends as it is acting on its own accord. 1
+11 Based on the above, SSC has power over the relevant activities of PED
+through its shareholding and the potential voting rights. SSC has exposure to
+variable returns and the ability to use its voting rights and power to affect the
+amount of its returns and dividends. Thus, they have control.
+(Mark for concluding on control) 1
+12 For the reasons outlined above, 1 June 2024 is not the acquisition date. The
+acquisition date is rather 1 April 2024. 1C
+Available 12
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+14 © SAICA 2025
+Maximum 6
+X1: Communication skill – logical argument
+Comment: The required asks candidates to briefly explain. Read together with the
+mark allocation, the IAC candidates are expected to gauge the depth of their
+response in this instance. 1
+Total for part (e) 7
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+15 © SAICA 2025
+Part (f) Assume for part (f), irrespective of your answer to part (e), that the
+acquisition date of PED by SSC is 1 June 2024.
+Calculate the goodwill or gain on bargain purchase that should be
+recognised on 31 December 2024 by the SSC group relating to the
+acquisition of PED.
+• Start with the goodwill balance of R24 978 539 as calculated
+by the bot in the consolidation entry.
+• While tax is applicable, ignore the tax effect only on the fair
+value adjustments on the initial investment of 10% in PED.
+• Provide each adjustment in a separate line.
+• Do not re-process any journal entries.
+Marks
+Goodwill as presented 24 978 539
+Effects on goodwill of adjustments to consideration
+transferred 668 112
+Liability to nVestor incorrectly measured (25 000 000) ½
+Liability to nVestor at PV 21 843 112
+Total cash flow = R25 million (½) + R1,2 million (½) +
+R1,2 million (½)
+1½
+FV = 27,4 million; N = 2 (1); RATE = 12% (1);
+PV = 21 843 112 2
+Shares issued incorrectly measured (12 500 000) ½
+Shares issued measured on acquisition date (250 000 x R48,50) 12 125 000 1
+Remeasurement of 10% shareholding on acquisition date
+(R10 million - R8,2 million) 1 800 000 1
+Removal of transaction costs (600 000) 1
+Removal of capitalised interest (700 000) 1
+Option not included in cost 500 000 1
+Contingent consideration not included 3 200 000 1
+Effects on goodwill of adjustments to fair value of net
+assets 933 600
+Property, plant and equipment
+Reverse incorrect adjustment 7 500 000 ½
+Recognise correct adjustment (R24 million - R12,5 million) (11 500 000) 1
+Deferred tax on owner-occupied land
+(R15 million - R5 million = R10 million (1) x 27% x 80% (1)) 2 160 000 2P
+Deferred tax on factory building
+(R9 million - R7,5 million = R1,5 million (1) x 27% (½)) 405 000 1½P
+Intangible asset
+Reverse incorrect provisional fair value 20 000 000 ½
+Recognise final fair value (25 400 000) 1
+Deferred tax on brand name (R25,4 million x 27%) 6 858 000 1P
+Non-current asset held for sale
+Reverse incorrect adjustment 500 000 ½
+Recognise correct adjustment
+(R3 million - R100 000 = R2,9 million (1) - R2,2 million (½)) (700 000) 1½
+Deferred tax on capital gain 86 400 2P
+IAC JUNE 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+16 © SAICA 2025
+(R2,9 million - R2,5 million = R400 000 (1) x 27% x 80% (1))
+Deferred tax on portion of recoupment
+(R2,5 million - R2,2 million = R300 000 (1) x 27% (½) 81 000 1½ P
+Lease
+Adjustment to lease liability (R9 372 418 - R9 549 210) (176 792) 1
+Deferred tax on lease liability (R176 792 x 27%) 47 734 1P
+Adjustment to ROU asset
+Reverse incorrect adjustment 1 771 590 ½
+PV of off-market component
+(RATE = 12% (1); N = 5 (1); PMT = -150 000 (1); PV =
+R540 716) 3
+Adjustment = R9 372 418 (½) - R540 716 (1C) - R8 228 410
+(½) (603 292) 2
+Deferred tax on right-of-use asset (R603 292 x 27%) 162 889 1P
+Trade receivables
+R3,9 million (½) - (R3,5 million (½) - R160 000 (½)) (560 000) 1½
+Deferred tax on trade receivables (R560 000 x 27%) 151 200 1P
+Reversal of total incorrect deferred tax adjustment (2 190 129) 1
+Contingent liability incorrectly adjusted for no past event (1 660 000) 1
+Goodwill on prior business combination 4 000 000 1
+Other adjustments 2 700 000
+Removal of reclassification adjustment 2 700 000 1
+Correct goodwill balance 29 280 251
+Available 38
+Maximum 35
+Total for part (f) 35
+TOTAL FOR PART II 68

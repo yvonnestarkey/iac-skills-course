@@ -1,0 +1,777 @@
+Source: SAICA IAC January 2025 — Paper 2 suggested solution (FreschKart).
+Extracted for internal IAC diagnostic use. SAICA owns these examination documents.
+
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+IAC January 2025 1 © SAICA 2025
+Paper 2
+Part (a) Discuss the key risks that FreschKart was exposed to in its
+operating environment before the company shifted to an eco-
+friendly strategy.
+• Ignore risks that would be addressed by a shift to an eco-
+friendly strategy.
+Marks
+1 Concentration / Market risk
+1.1 The highly competitive nature of the South African retail industry could lead
+to challenges in attracting and retaining customers.
+1
+1.2 Price conscious consumers will make it difficult for FreschKart to increase its
+prices to help the company to turn a profit.
+1
+1.3 There is an over reliance on the SA leg of the business (which accounts for
+>90% of all revenue)
+1
+2 Exchange rate risk
+2.1 FreschKart operates in several countries around Africa and the company
+could be negatively affected by fluctuations (rand appreciation) in the local
+currency.
+1
+2.2 Furthermore, FreschKart imports some of its products from other countries,
+thus the company could be forced to pay higher prices for imports should the
+rand depreciate.
+1
+3 Financial and operational risk
+3.1 The volatility of interest rates in the countries in which FreschKart operates
+increases the risks of the company being unable to repay its debts, as debt
+costs are likely to rise.
+1
+3.2 FreschKart’s high gearing level will affect the company’s ability to raise new
+debt finance and how much debt it can support (debt capacity). Given its high
+gearing level, FreschKart may find that it cannot raise any more debt finance,
+or it may find that new debt will be at a significantly higher interest rate shown
+by the proposed Bank Finance Ltd loan.
+2
+3.3 High gearing leads to a high interest obligation for FreschKart and an
+increased risk of being unable to pay all its interest given the company’s
+reduction in profits and low cash flow.
+1
+3.4 Escalating debt may cause the company to further be in breach of its key
+covenant ratios (debt/equity) which could result in further restrictions on
+leading for the company or increases in debt repayment costs.
+1
+3.5 Increased volatility of earnings and the declining share price will increase the
+cost of equity, making equity finance more expensive. As seen by the
+financial risk premium when comparing the asset beta of 0,48 with the equity
+beta of 4,84.
+2
+3.6 Risks of strikes in the industry may have a negative effect on the company’s
+ability to operate efficiently, which will lead to a loss of customers that favour
+efficiency.
+1
+3.7 FreschKart’s decision not to increase its managers salaries may impact the
+company’s ability to retain good management, which may have a negative
+effect on the company’s ability to improve its performance.
+1
+3.8 FreschKart uses its own drivers to deliver goods ordered via the app - they
+may therefore be held liable if their drivers cause accidents or are themselves
+injured on the road (or risks around hiring and vetting of drivers process).
+1
+4 Liquidity risk
+4.1 FreschKart’s lack of cash flow increases the risk that the company would be
+unable to repay its creditors on time, resulting in default on supplier terms
+and possible restrictions on supplier sales to the company.
+1
+5 Technology risk
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+IAC January 2025 2 © SAICA 2025
+Paper 2
+5.1 As the company’s GoFresch application is dependent on the functionality of
+the operating system, there is a risk that the system may be hacked and stop
+operations from continuing.
+1
+5.2 The GoFresch application requires constant upgrades due to the rapid pace
+of technological advancements. Failure to do so may render the app obsolete
+or user unfriendly.
+1
+5.3 Given the nature of the GoFresch application, it is likely that personal data
+will be stored on the application, which increases the risk of data breach that
+may cause the company to not be in compliance with the POPIA.
+1
+5.4 Payment information is housed on the application and therefore a data
+breach may cause the company to be financially liable or suffer reputational
+damage.
+1
+6 Regulatory and compliance risk
+6.1 Adhering to rigorous health, safety and food standards is crucial in the
+competitive retail industry, and non-compliance could result in penalties or
+reputational damage.
+1
+Available 21
+Maximum 11
+Z2: Business external environment 1
+Total for part (a) 12
+Part (b) Critically evaluate the strategic actions that FreschKart has
+undertaken to become more eco-friendly. Marks
+1 Alignment with values
+• 1.1 The suggested strategy shows a commitment by FreschKart to sustainability,
+as the company is taking a proactive step to improve its environmental
+influence by reducing the company’s reliance on non-ecofriendly electricity
+generation sources and focusing on sustainable water harvesting techniques.
+1
+• 1.2 The removal of plastic bags for holding of customer goods is also a good way
+to project the company as being a sustainable retailer, given the effects of
+plastic on the environment.
+1
+• 1.3 The rebranding does well to cover most of the operations of the company as
+no more non-environmentally safe products will be sold by FreschKart stores.
+However, no mention is made of how non-environmentally safe products,
+which may still be sold at the company’s CB stores, will be treated. Will these
+products still continue to be sold or will they form part of the resale to
+agreement with Pick and Choose? 1
+• 1.4 By selling the non-environmentally safe products to another retailer, there is
+a likelihood that such products will still be sold to the public and will therefore
+still possibly cause harm to the environment through production or disposal.
+1
+• 1.5 FreschKart could also be said to be assisting in increasing the demand for
+such products as these products will now be sold at cheaper prices by the
+Pick and Choose, which could encourage more customers to purchase them.
+Thus this would not seem to align to the company values.
+1
+• 1.6 The published list of environmental commitments is good; however, the
+company does not seem to want to report selectively on its achievements in
+this area, which shows a lack of transparency to the public about the
+company’s commitment to real environmental change as there is no
+accountability for non-achievements in this area.
+1
+• 1.7 The marketing of the company as an environmentally friendly company could
+be seen as the company ‘greenwashing’ its business given the above. This
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+IAC January 2025 3 © SAICA 2025
+Paper 2
+would be misleading to the public and may create a negative perception of
+the company, as the company could be said to doing the rebrand only to
+generate more profits.
+1
+2 Improvement of profitability
+• 2.1 The introduction of recycling bins would encourage more customers to do
+business with FreschKart, as non-customers would also make use of
+recycling bins, which will help them to take notice of the company and may
+encourage them to do business with the company.
+1
+• 2.2 There is however no guarantee that the new ecofriendly rebrand would
+increase the demand for FreschKart products and increase company profits.
+1
+• 2.3 FreschKart’s decision to rebrand itself as a sustainable retailer will help the
+company to attract a new customer base, which may assist the company in
+growing its market share. This seems to be the main reason why the CEO
+suggested this strategy.
+1
+• 2.4 However, introducing more expensive bags to consumers, especially those
+who buy from CB stores (being lower income households), may deter some
+of the customers from shopping in these stores given the increased cost of
+shopping bags.
+1
+• 2.5 The company has not done enough to suggest that most of its products are
+sustainable as no effort has been made to ensure that its clothing lines are
+made from sustainable, long-lasting products.
+1
+• 2.6 Investing in solar technology and water harvesting would assist the company
+in reducing the cost of water and electricity, which would help to improve the
+company’s profitability.
+1
+• 2.7 However, as no financial projections have been done to show how the new
+strategy will influence profitability, the strategy may not be appropriate for the
+company in improving its profitability given the lack of success of the
+company’s recent GoFresch strategy.
+1
+• 2.8 Furthermore, the agreement with Pick and Choose over the resale of the
+laundry detergent will have a negative impact on the profitability of the
+company.
+1
+3 Other
+• 3.1 Given the current poor financial position and cash flow of the company, how
+has the rebrand been financed? This may not be the most appropriate
+strategy given the company’s lack of access to finance. The question is
+whether this strategy will create value for current shareholders of the
+company.
+1
+• 3.2 Senior management does not appear to have the necessary experience in
+this rebrand, thus the rebrand may not be successful unless FreschKart
+makes use of a specialist company to assist it.
+1
+Available 17
+Maximum 8
+Total for part (b) 8
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+IAC January 2025 4 © SAICA 2025
+Paper 2
+Part (c) Write a memorandum to the board of directors in which you
+critically review its decision to vote against a rights issue as a
+means to reducing the company’s debt.
+• Include calculations and key ratios.
+Calculations: 10 marks; Discussion: 16 marks
+Marks
+Calculation 2020 2021 2022 2023 2024
+Share price R36 R28 R25 R24 R20,5
+Annual change 15,2% -10,7% -4% -14,6%
+Compound growth -13,13% 1
+Market capitalisation R36 000 R28 000 R25 000 R24 000 R20 500
+Annual change –22% –11% –4% –15% 1
+Share price prior to
+announcement
+R20,5
+Rights issue price R17,2
+Discount 16,1% 1
+Total # shares prior to
+rights issue 1 000
+Rights issue shares 250
+Post rights issue 1 250 1
+Current firm value 20 500
+New equity/cash post
+rights issue 4 300
+Total equity value 24 800 1
+Share price post rights
+issue 19,84
+1
+Value per right (R19.84
+– R17.2)
+2,64 1
+Ratios
+Old New
+Interest-bearing debt 121 997 117 697
+Total assets 149 584 149 584
+Interest-bearing debt /
+Assets ratio
+82% 79% 2
+Total liabilities 139 166 134 866
+Total assets 149 584 149 584
+Total liabilities / Assets
+ratio
+93% 90% 2
+Profit from operations
+(EBIT)
+12 184 12 184
+Interest expense
+New interest expense
+= R11 972 – R4 300 x
+10,75%
+11 972 11 510 2
+Interest cover ratio (%) 102% 106% 1
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+IAC January 2025 5 © SAICA 2025
+Paper 2
+Available 14
+Maximum 10
+Total for part (c) calculations) 10
+Discussion Marks
+To: Board of Directors
+From: IAC Candidate
+Date: January/July 2025
+Possible Rights Issue
+1 Introduction
+• 1.1 I would agree that issuing rights would be good initiative to recapitalise the
+company and improve the company’s current debt servicing costs.
+1
+2 Effect on share price
+• 2.1 The rights issue may have an initial positive effect on the share price of
+FreschKart as shareholders would likely be encouraged by the company’s
+decision to reduce its financial leverage.
+1
+• 2.2 It is true however that the rights issue would reduce the company’s share price
+to below the board’s targeted levels of between R20 and R35 for the
+company’s share price. This would result in a loss of shareholder value.
+1
+• 2.3 The current estimated ex-rights price for the shares is R19,68, which is below
+the targeted range. However market sentiment to the rights issue may
+increase the share price if investors believe that the rights issue is warranted.
+1
+• 2.4 The negative growth shown by the company over time (-13%) may increase
+the chances of investors not being interested in the rights issue.
+1
+• 2.5 However, the rights issue would give shareholders the opportunity to sell their
+rights, which may allow the company to gain a new type of investor who is
+willing take more financial risk.
+1
+• 2.6 The lack of a successful history with rights issues increases the risk that the
+current rights issue may not be successful, which would increase the chances
+of a further decline in share price.
+1
+• 2.7 Delaying the rights issue may continue to have a negative impact on the
+company’s share price as the market is clearly not encouraged by the
+increasing debt (as evidenced by the difference in asset and equity beta).
+1
+3 Key ratios
+• 3.1 The rights issue would have a positive effect on key debt and financial ratios,
+which may help to encourage shareholders about the prospects of the
+company. .
+1
+• 3.2 The issuing of the rights would also have a major effect on the current
+solvency of the company, as the company’s solvency ratio would improve by
+3%.
+1
+• 3.3 Thus, this would still be above the company’s targeted debt to total firm value
+and above some of the entities covenant ratios, which means that the
+company would still need to raise more equity after the issue. This may further
+negatively affect the share price.
+1
+• 3.4 The interest cover ratio would improve slightly, which would help to reduce the
+overall company risk. In addition, interest costs would reduce, which would
+improve overall cash flow of the company.
+1
+• 3.5 Not having the rights issue now would continue to negatively affect the
+company’s ability to raise debt increase the cost of debt and further erode
+profits.
+1
+• 3.6 A non-rights issue would make it harder for the company to pay dividends, as
+it may struggle in future to meet solvency ratios as required by the Companies
+Act. This may further discourage potential investment.
+1
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+IAC January 2025 6 © SAICA 2025
+Paper 2
+4 General
+• 4.1 The 16,1% discount to the share price prior to the rights issue would be
+enticing current shareholders to take up the rights.
+1
+• 4.2 Shareholders however may be concerned by the company’s constant
+declining share price given that the market value of the company has declined
+by 15% over the past year.
+1
+• 4.3 FreschKart has not had a successful history with rights issues, with the
+company failing to raise the required capital. This may be due to the company
+issuing rights in times of need and not for expansionary purposes.
+1
+• 4.4 The question is that if the rights issue is not fully generated, will the funds
+needed will the rest of money be obtained via one or more loans?
+1
+• 4.5 Debt costs have risen significantly since the last the loan was taken out, as
+the new loan would be at 19%. This means the company will need to repay
+more than it would for debt servicing costs. Thus, recapitalising the company
+would appear to be imperative for the company to continue to operate
+profitably.
+1
+1
+• 4.6 A rights issue may be attractive to a different profile of shareholder, such as
+those that are eco-conscious. Such investors may purchase rights from those
+that would sell their rights in the company. This may help to increase the value
+of the company.
+1
+• 4.7 A rights issue will give existing investors the opportunity to be part of the
+company’s new eco-friendly strategy, which, if successful, would increase
+investor value in the company.
+1
+• 4.8 Having a rights issue may encourage all shareholders to take up their rights
+as they may not want to lose their current shareholding within the company
+1
+• 4.9 A rights issue may be a cheaper way to raise additional finance given the
+company’s low cash flow, as the company would be able to save on
+underwriting fees.
+1
+Available 24
+Maximum 16
+Y4: Judgement and decision making
+X1 Communication skill – layout and structure
+1
+1
+Total for part (c) for discussion 18
+Total for part (c) 28
+Part (d) Discuss the ethical behaviour and ethical leadership of FreschKart
+as demonstrated by the directors towards the following
+stakeholders: the lenders, suppliers represented by Cisty, the
+store managers and the local communities.
+Marks
+1 Ethical behaviour refers to doing what is good for self and also for others,
+even when no one sees it.
+1
+2 Directors are expected to display personal ethics in their capacity, business
+ethics as representative of FreschKart (tone from the top) and display
+professional ethics as presumably some of them are members of
+professional bodies.
+That is, they need to act with integrity and honesty, be straightforward and
+with fairness and uphold stakeholder inclusivity.
+For a company that adopts King IV, principle 16 requires that the directors
+uphold stakeholder inclusiveness.
+Moreover, ethical theories require that the company upholds laws and
+regulations, which include company policies.
+1
+1
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART I
+IAC January 2025 7 © SAICA 2025
+Paper 2
+3 Refinancing existing loans at favourable terms, is good for FreschKart from
+a cash flow commitment perspective and demonstrates responsibility to
+existing lenders, safeguarding any defaults, and upholding and honouring of
+commitments.
+1
+4 Due to FreschKart’s pursuit of an eco-friendly strategy, withdrawing from the
+Cisty contract was good for FreschKart. Moreover, FreschKart’s
+communication with Cisty, and honouring of its commitment, being the lower
+of continuing with the contract or incurring the penalty, is a responsible and
+ethical act towards Cisty.
+1
+5 Revising the leave day policy from vesting to non-vesting, as an example,
+in response to FreschKart’s poor financial results, and negotiating with store
+managers on no salary increases and employer contributions are good for
+FreschKart that is struggling financially, but also retaining all store managers
+and not retrenching them especially under the prevailing circumstances is
+in the interest of the store managers.
+However, the zero increase to salaries may create unhappiness, lead to
+labour union involvement, potential unrest, a desire to change jobs by store
+managers, reduce morale, etc.
+1
+1
+1
+6 The pursuit of the eco-friendly strategy is beneficial to FreschKart’s reporting
+and business standing on sustainability and compliance with King IV.
+It is equally beneficial to the majority of FreschKart’s customers, that is,
+communities in which FreschKart operates. It ensures their sustainability
+and their safety.
+This is consistent with the consequential point of view theory or good for self
+and others, where an ethical choice should be considered from benefitting
+the majority.
+1
+1
+7 Based on the above, based on the transparency in negotiating and
+communicating changes and responding to prevailing challenges, means
+that FreschKart, represented by its directors, is acting ethically and is
+displaying ethical leadership. They consider the interests of other
+stakeholders in their decision-making processes.
+1
+Available 11
+Maximum 8
+Y6: Ethical reasoning 1
+Total for part (e) 9
+Total for part I 57
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+IAC January 2025 8 © SAICA 2025
+Paper 2
+Part (e) Prepare the correcting journal entries to account for the sales
+made by the selected FKB stores via GoFresch (see section 2)
+during December 2024 in FreschKart’s FY2024 financial
+statements.
+• Ignore all forms of taxation.
+• Dates and journal narrations are not required.
+• Assume all amounts are material.
+• Round all calculated amounts to the nearest rand.
+Marks
+Correcting journal entries Dr. Cr.
+Revenue: Sale of goods (P/L) R3 233 C4
+Revenue: Delivery services (P/L) R243 C5
+Contract liability: FreschRewards (SFP) (note1) R3 476 0.50
+Contract liability: FreschRewards (SFP) R2 492 0.50
+Revenue: Sale of goods (P/L) (note 2) R2 492 C3
+Note 1: Or award 1 mark if journal is balanced to the contract liability account.
+Note 2: Can be combined with top line Revenue: Sale of goods
+Calculations
+C1:
+Total cash sales Given R5 000 000 1
+Online sales to FreschRewards
+members x 20% R1 000 000 1P
+Less delivery fees (not earning points) 2 000 x R35 (R70 000) 1
+Sales subject to points
+Or: (R5 000 000 – R350 000) x 20% R930 000
+Number of points (1 point for R2 spent) /2 465,000 1P
+Considering likelihood of redemption
+(IFRS 15.B42) x 75% 348 750 1P
+SSP: 100 points = R1 discount /100 R3 488 1P
+C2:
+PO’s SSP (R) Allocated SSP (R) Calculation
+Sale of goods 930 000 1 926 767 930 000 / 1 003 488
+x 1 000 000 0.5P
+Delivery
+services 70 000 1 69 757 70 000 / 1 003 488
+x 1 000 000 0.5P
+Material right –
+FreschReward
+s
+3 488 C1 3 476 3 488 / 1 003 488 x
+1 000 000 0.5P
+Total 1 003 488 1,000,000 1 (TP)
+C3: FreschRewards redeemed
+Actual R250 000 1
+Estimate R348 750 C1
+Allocated SSP R3 476 0.5P
+R3 476 x 250 000 / 348 750 R2 492 Or 1.5
+C4: R930 000 – R926 767 R3 233 1P
+C5: R70 000 – R69 757 R243 1P
+Available 15
+Maximum 15
+Y1: Critical thinking 1
+Total for part (e) 16
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+IAC January 2025 9 © SAICA 2025
+Paper 2
+Part (f) Calculate the annual effective cost of the new loan from Bank
+Finance Ltd.
+• Ignore all forms of taxation.
+Marks
+Nominal interest rate 19%
+Effective annual interest rate 20.4% (19 ENT; 4 XY) 1
+0 2025 2026 2027
+Upfront receipt 4 300 0.5
+Issue cost
+(4 300*3%)
+(129) 0.5
+Interest paid 2025
+(4 300*20,40%)
+(877) 1
+Interest paid 2026 (4 300-
+1 433)*20,40%)
+(585) 1
+Interest paid 2027 (4 300 -
+2 866*20,40%)
+(292) 1
+Capital repayment (1 433) (1 433) (1 433) 1
+4 171 (2 310) (2 018) (1 726) 1
+IRR 22.48% 1
+Available 8
+Maximum 8
+Total for part (f) 8
+Part (f) Alternative Marks
+Nominal interest rate 19%
+0 2025
+Q1-Q3 Q4
+2026
+Q1-Q3
+Q4 Q1-Q3
+2027
+Q4
+Upfront receipt 4 300 0.5
+Issue cost (129) 0.5
+Interest repayment (200) (200) (136) (136) (67) (67) 3
+Capital repayment (1 433) (1 433) (1 433) 1
+4 171 (200) (1 633) (136) (1 569) (67) (1 500) 1
+IRR 5.16% Per quarter 1
+Nominal rate 20.66%
+Effective annual rate 22.32% Annual cost 1
+Available 8
+Maximum 8
+Total for part (f) 8
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+IAC January 2025 10 © SAICA 2025
+Paper 2
+Part (g) Prepare, based on the information on the Sandton store in section
+4, an extract of FreschKart SA’s FY2024 property, plant and
+equipment note as it would appear in the notes to its financial
+statements.
+• Total columns are not required.
+• Round all calculated amounts to the nearest rand.
+Marks
+Prepare, based on the information on the Sandton store in section 4, an
+extract of FreschKart SA’s FY2024 property, plant and equipment note as
+it would appear in the notes to its financial statements.
+• Total columns are not required.
+• Round all calculated amounts to the nearest rand.
+FreschKart SA
+Extract
+Notes to the financial statements for the year ended 31 December 2024
+Property, plant and equipment
+Land Buildings Furniture &
+fittings
+Carrying amount pre-impairment
+loss 31 December 2024 2 250 000 3 860 000 9 500 000
+1
+MOVEMENT
+Impairment loss (593 690) (1 018 509) (2 506 692) 1
+Carrying amount as at 31
+December 2024
+1 656 310 2 841 491 6 993 308
+Calculations
+C1:
+Carrying amount 28 260 000 0.5
+Recoverable amount (24 000 000) 0.5
+Impairment loss 4 260 000
+Allocate to goodwill (IAS
+36.104a)
+(120 000) 1
+Remaining impairment loss
+for assets not listed in IAS
+36.2
+4 140 000
+0.5P
+C2:
+Carrying amount of assets within the IAS 36 measurement scope (not listed in
+IAS 36:2), excluding financial assets, inventory and goodwill already impaired:
+R28 260 000 – R2 150 000 – R10 300 000 – R120 000 = R15 690 000 .
+Alternatively: 2 250 + 3 860 + 9 500 + 200 – 120 = 15 690
+If candidate includes:
+Financial assets (bonds)
+Inventory
+2
+-1
+-1
+C3: R
+Land
+4 140 000 x 2 250 000 / 15 690 000 593 690 0.5P
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+IAC January 2025 11 © SAICA 2025
+Paper 2
+Buildings
+4 140 000 000 x 3 860 000 / 15 690 000 1 018 509 0.5P
+Furniture & fittings
+4 140 000 x 9 500 000 / 15 690 000 2 506 692 0.5P
+Intangible assets excluding Goodwill
+4 140 000*80 000/15 690 000
+Note: This is included for completeness of the calculation; no
+mark should be awarded as the required is for a PPE note.
+21 109
+Available 8
+Maximum 8
+X1: Communication skill – presentation 1
+Total for part (g) 9
+Part (h) Prepare all the journal entries necessary to account for all aspects
+relating to the solar panels in FreschKart’s FY2024 financial
+statements.
+• Ignore all forms of taxation.
+• Dates and journal narrations are not required
+• Round all calculated amounts to the nearest rand.
+Marks
+Dr. Cr.
+Entertainment expense (P/L) 143 750 0.5
+Bank (SFP) 143 750 0.5
+Alternative 1
+Solar panels (SFP) 30 277 000 C1
+Forex expense (P/L) 526 500 C4
+Bank (SFP) 30 803 500 C3
+Alternative 2
+Solar panels (SFP) 24 427 000 C5
+Creditor (SFP) 12 213 500
+Bank (SFP) 12 213 500 C5
+Creditor (SFP) 12 213 500
+Foreign expense (P/L) 526 500 C4
+Solar panels (SFP) 5 850 000 C6
+Bank (SFP) 18 590 000 C7
+Depreciation (P/L) 403 693 C2
+Accumulated depreciation (SFP) 403 693 0.5
+C1:
+Cost USD1,3m x R18,79 24 427 000 1.00
+Shipping cost 1 100 000 1.00
+Import duties 2 600 000 1.00
+Transport cost 750 000 1.00
+Installation cost 1 200 000 1.00
+Testing cost 200 000 1.00
+30 277 000
+C2:
+x 80% 24 221 600 0.5
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+IAC January 2025 12 © SAICA 2025
+Paper 2
+/ 40 605 540 0.5
+x 8 / 12 403 693 0.5
+C3:
+Bank
+USD1.3M x 50% x R18.79 12 213 500 0.5
+USD1.3M x 50% x R19.60 12 740 000 0.5
+30,277,000 – 24,427,000 5 850 000 1
+30 803 500
+C4:
+Forex
+(R19.60 – R18.79) x (USD1.3M x 50%) 526 500 2
+Alternative 2
+C5:
+Cost USD1,3m x R18,79 24 427 000 1.00
+Bank USD1.3M x 50% x R18.79 0.5
+C6:
+Shipping cost 1 100 000 1.00
+Import duties 2 600 000 1.00
+Transport cost 750 000 1.00
+Installation cost 1 200 000 1.00
+Testing cost 200 000 1.00
+5 850 000
+C7:
+Bank
+USD1.3M x 50% x R19.60 12 740 000 0.5
+Cash costs (C6) 5 850 000 1
+18 590 000
+Available 13
+Maximum 13
+Total for part (h) 13
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+IAC January 2025 13 © SAICA 2025
+Paper 2
+Part (i) Calculate the total FY2024 profit or loss effect related to one FKB
+store of –
+(i) the Cisty contract; and
+(ii) the change in the leave policy
+• Assume the following additional information:
+o On 1 January 2024 and 30 November 2024, each FKB
+store had (on average) 4 000 and 9 000 Cisty detergent
+units respectively on hand and were able to sell Cisty
+detergent units (on average) at R120 per detergent unit
+prior to 1 December 2024.
+o The 9 000 units on hand on 30 November 2024 were
+sold to Pay and Choose on 1 December 2024. All other
+cash flows occur at the end of each month.
+o An appropriate discount rate of 10% per annum
+(compounded monthly).
+o The FKB stores did not buy more than the minimum
+number of Cisty detergent units they were contractually
+required to purchase.
+• Ignore all forms of taxation.
+• Round all calculated amounts to the nearest rand.
+Marks
+Total profit or loss: FKB store P/(L) (R)
+Revenue:
+1 Jan 2024 to 30 Nov 2024
+R120 (0,5) x 105 000
+detergents (C1) 12 600 000 0.5P
+Cost of sales
+1 Jan 2024 to 30 Nov 2024
+R94,77 (R90 (0.5) x
+1,053 (0,5)) x 105 000
+(C1) (9 950 850) 1
+NRV write-down on 30 Nov 2024
+9 000 detergents x
+R94,77 x 10% (85 293) 1P
+Onerous contract expense (1 139 406) C2
+Finance cost PV x 0,83% (9 495) 1P
+Leave pay expense 74 769 C3
+Effect on profit /loss: Profit increase 1 489 725
+Calculations: R
+C1:
+On hand 1 Jan 2024 4 000 0.5
+Purchased 1 Jan to 30 Nov 2024
+10 000 detergents x
+11 months 110 000 1
+Less on hand 30 Nov 2024 (9 000) 0.5
+105 000
+C2:
+I = 10%/12 0.83% 1
+PMT =
+R94,77 x 1,057 (0,5) x
+10% (1) x 10 000 (0,5) 100 172 2
+N = 12 0.5
+Comp PV = (1 139 406)
+Fine 1 500 000 0.5
+Lower of: 1 139 406 0.5P
+C3:
+Number of employees 1
+Vesting days 40 x 80% 32 0.5
+Basic gross salary 800 000 0.5
+Basic gross salary per day /260 days 3 077 0.5
+ITC JANUARY 2025 SUGGESTED SOLUTION
+PAPER 2 PART II
+IAC January 2025 14 © SAICA 2025
+Paper 2
+R3 077 x 32 98 464
+Non-vesting days 40 x 20% 8 0.5
+Basic gross salary 800 000 0.5
+Company contributions 80 000 0.5
+Cost-to-company 880 000
+Cost-to-company per day /260 days 3 385 0.5
+R3 385 x 8 27 080
+Opening balance FY2024 R98 464 + R27 080 125 544 0.5
+Days accumulated at beginning of year 40 0.5
+Days granted 30 0.5
+Days taken (45) 0.5
+Accumulated days 25
+Limited to 60% (non-vesting) 15 0.5
+Cost-to-company per day 3 385 0.5
+Closing balance FY2024 50 775
+Movement (income) R125 544 – R50 775 74 769 0.5
+Available 17
+Maximum 17
+Total for part (i) 17
+Total for part II 63
