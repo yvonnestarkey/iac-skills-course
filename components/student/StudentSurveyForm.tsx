@@ -70,7 +70,7 @@ export default function StudentSurveyForm({
       .map((item) => item.id);
     if (!ids.length) return;
     void inbox.markNotificationsRead(ids);
-  }, [survey, existing, inbox.notifications, inbox.markNotificationsRead]);
+  }, [survey, existing, inbox]);
 
   useEffect(() => {
     let cancelled = false;

@@ -62,7 +62,7 @@ export default function StudentPlayer({
       cancelled = true;
       if (notesTimer.current) clearTimeout(notesTimer.current);
     };
-  }, [lesson.id]);
+  }, [completedMap, lesson.id]);
 
   const persist = async (next: { completed: boolean; notes: string }, silent = false) => {
     const result = await saveLessonProgress(lesson.id, next);

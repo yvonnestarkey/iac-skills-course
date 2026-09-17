@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import BrandMark from "@/components/BrandMark";
 import StudentLoginForm from "@/components/student/StudentLoginForm";
@@ -13,9 +14,9 @@ export default function LoginPage() {
     <StudentSessionProvider>
       <header className="topbar">
         <BrandMark href="/" />
-        <a className="ghost" href="/">
+        <Link className="ghost" href="/">
           Course waitlist
-        </a>
+        </Link>
       </header>
       <Suspense fallback={<p className="student-loading">Loading…</p>}>
         <StudentLoginForm />

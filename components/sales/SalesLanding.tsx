@@ -3,15 +3,16 @@ import SenjaTestimonials from "@/components/SenjaTestimonials";
 import FaqAccordion from "@/components/sales/FaqAccordion";
 import WaitlistForm from "@/components/sales/WaitlistForm";
 import { SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO, VALUE_PROPS } from "@/lib/sales-copy";
+import Link from "next/link";
 
 export default function SalesLanding() {
   return (
     <div className="sales-page">
       <header className="topbar sales-topbar">
         <BrandMark href="/" />
-        <a className="ghost" href="/login">
+        <Link className="ghost" href="/login">
           Student / Coach Login ↗
-        </a>
+        </Link>
       </header>
 
       <section className="sales-hero">
@@ -67,7 +68,7 @@ export default function SalesLanding() {
       <footer className="sales-footer">
         <BrandMark href="/" />
         <p className="muted small">Accounting Study Advice · IAC Skills Board Course</p>
-        <a href="/login">Student / Coach Login ↗</a>
+        <Link href="/login">Student / Coach Login ↗</Link>
       </footer>
     </div>
   );
