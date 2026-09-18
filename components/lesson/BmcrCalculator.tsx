@@ -75,12 +75,18 @@ export default function BmcrCalculator({
   readOnly = false,
   idPrefix = "bmcr",
   maxMarks,
+  showTable = true,
+  showInterpretation = true,
+  showDiagnostics = true,
 }: {
   value?: BmcrValue | null;
   onChange?: (next: BmcrValue) => void;
   readOnly?: boolean;
   idPrefix?: string;
   maxMarks?: number;
+  showTable?: boolean;
+  showInterpretation?: boolean;
+  showDiagnostics?: boolean;
 }) {
   const ready = withDiagnostics(value || EMPTY_BMCR_VALUE);
   const marks = withQuestionTotal(ready);
@@ -110,93 +116,97 @@ export default function BmcrCalculator({
 
   return (
     <div className="bmcr-calculator">
-      <div className="bmcr-table-wrap">
-        <table className="bmcr-table">
-          <thead>
-            <tr>
-              <th scope="col">Difficulty Level</th>
-              <th scope="col">My Marks</th>
-              <th scope="col">Markplan Marks</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ROWS.map((row) => {
-              const mine = MARK_FIELDS[row.key].mine;
-              const plan = MARK_FIELDS[row.key].plan;
-              return (
-                <tr key={row.key}>
-                  <th scope="row">{row.label}</th>
+      {showTable ? (
+        <>
+          <div className="bmcr-table-wrap">
+            <table className="bmcr-table">
+              <thead>
+                <tr>
+                  <th scope="col">Difficulty Level</th>
+                  <th scope="col">My Marks</th>
+                  <th scope="col">Markplan Marks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ROWS.map((row) => {
+                  const mine = MARK_FIELDS[row.key].mine;
+                  const plan = MARK_FIELDS[row.key].plan;
+                  return (
+                    <tr key={row.key}>
+                      <th scope="row">{row.label}</th>
+                      <td>
+                        {readOnly ? (
+                          marks[mine]
+                        ) : (
+                          <input
+                            id={`${idPrefix}-${mine}`}
+                            className="select-line"
+                            type="number"
+                            min={0}
+                            max={cap}
+                            step={0.5}
+                            inputMode="decimal"
+                            value={displayNumber(marks[mine])}
+                            onChange={(event) => setField(mine, event.target.value)}
+                            aria-label={`${row.label} my marks`}
+                          />
+                        )}
+                      </td>
+                      <td>
+                        {readOnly ? (
+                          marks[plan]
+                        ) : (
+                          <input
+                            id={`${idPrefix}-${plan}`}
+                            className="select-line"
+                            type="number"
+                            min={0}
+                            max={cap}
+                            step={0.5}
+                            inputMode="decimal"
+                            value={displayNumber(marks[plan])}
+                            onChange={(event) => setField(plan, event.target.value)}
+                            aria-label={`${row.label} markplan marks`}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+                <tr className="bmcr-total">
+                  <th scope="row">Question Total</th>
                   <td>
-                    {readOnly ? (
-                      marks[mine]
-                    ) : (
-                      <input
-                        id={`${idPrefix}-${mine}`}
-                        className="select-line"
-                        type="number"
-                        min={0}
-                        max={cap}
-                        step={0.5}
-                        inputMode="decimal"
-                        value={displayNumber(marks[mine])}
-                        onChange={(event) => setField(mine, event.target.value)}
-                        aria-label={`${row.label} my marks`}
-                      />
-                    )}
+                    <span className="bmcr-sum">{marks.question_total_my_marks}</span>
                   </td>
                   <td>
                     {readOnly ? (
-                      marks[plan]
+                      marks.question_total_markplan
                     ) : (
                       <input
-                        id={`${idPrefix}-${plan}`}
+                        id={`${idPrefix}-question_total_markplan`}
                         className="select-line"
                         type="number"
                         min={0}
                         max={cap}
                         step={0.5}
                         inputMode="decimal"
-                        value={displayNumber(marks[plan])}
-                        onChange={(event) => setField(plan, event.target.value)}
-                        aria-label={`${row.label} markplan marks`}
+                        value={displayNumber(marks.question_total_markplan)}
+                        onChange={(event) => setField("question_total_markplan", event.target.value)}
+                        aria-label="Total question markplan marks"
                       />
                     )}
                   </td>
                 </tr>
-              );
-            })}
-            <tr className="bmcr-total">
-              <th scope="row">Question Total</th>
-              <td>
-                <span className="bmcr-sum">{marks.question_total_my_marks}</span>
-              </td>
-              <td>
-                {readOnly ? (
-                  marks.question_total_markplan
-                ) : (
-                  <input
-                    id={`${idPrefix}-question_total_markplan`}
-                    className="select-line"
-                    type="number"
-                    min={0}
-                    max={cap}
-                    step={0.5}
-                    inputMode="decimal"
-                    value={displayNumber(marks.question_total_markplan)}
-                    onChange={(event) => setField("question_total_markplan", event.target.value)}
-                    aria-label="Total question markplan marks"
-                  />
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p className="muted small">
-        Question Total My Marks is the sum of Basic, Average, and Higher Grade.
-        {cap != null ? ` This section is capped at ${cap} marks.` : ""}
-      </p>
-      {showStats ? (
+              </tbody>
+            </table>
+          </div>
+          <p className="muted small">
+            Question Total My Marks is the sum of Basic, Average, and Higher Grade.
+            {cap != null ? ` This section is capped at ${cap} marks.` : ""}
+          </p>
+        </>
+      ) : null}
+      {showInterpretation && showStats ? (
         <div className="bmcr-stats">
           <div className="bmcr-stat">
             <span>YOU KNOW...</span>
@@ -212,28 +222,30 @@ export default function BmcrCalculator({
           </div>
         </div>
       ) : null}
-      {feedback ? (
+      {showInterpretation && feedback ? (
         <aside className="bmcr-feedback" aria-live="polite">
           <strong>{feedback.title}</strong>
           <p>{feedback.body}</p>
         </aside>
       ) : null}
-      <div className="bmcr-diagnostics">
-        <YesNoToggle
-          id={`${idPrefix}-feels-needs-theory`}
-          label="Do you still FEEL that you need theory?"
-          value={ready.feels_needs_theory}
-          readOnly={readOnly}
-          onChange={(next) => emit({ ...ready, feels_needs_theory: next })}
-        />
-        <YesNoToggle
-          id={`${idPrefix}-feelings-reliable`}
-          label="Are your feelings reliable?"
-          value={ready.feelings_reliable}
-          readOnly={readOnly}
-          onChange={(next) => emit({ ...ready, feelings_reliable: next })}
-        />
-      </div>
+      {showDiagnostics ? (
+        <div className="bmcr-diagnostics">
+          <YesNoToggle
+            id={`${idPrefix}-feels-needs-theory`}
+            label="Do you still FEEL that you need theory?"
+            value={ready.feels_needs_theory}
+            readOnly={readOnly}
+            onChange={(next) => emit({ ...ready, feels_needs_theory: next })}
+          />
+          <YesNoToggle
+            id={`${idPrefix}-feelings-reliable`}
+            label="Are your feelings reliable?"
+            value={ready.feelings_reliable}
+            readOnly={readOnly}
+            onChange={(next) => emit({ ...ready, feelings_reliable: next })}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

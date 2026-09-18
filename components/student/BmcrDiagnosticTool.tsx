@@ -1,95 +1,217 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import BmcrCalculator from "@/components/lesson/BmcrCalculator";
 import {
-  EMPTY_BMCR_VALUE,
+  EMPTY_BMCR_MARKS,
   computeBmcrPct,
+  fetchStudentBmcrEvaluations,
   formatPct,
   saveBmcrEvaluation,
+  withDiagnostics,
   withQuestionTotal,
+  type BmcrEvaluation,
   type BmcrValue,
 } from "@/lib/bmcr";
 import {
   EXAM_SITTINGS,
-  findPaper,
-  findQuestion,
   findSitting,
   paperDisplayName,
   paperLabel,
   questionLabel,
+  type ExamPaper,
+  type ExamSitting,
 } from "@/lib/exam-structure";
 import { useStudentSession } from "@/lib/student-session";
 
-function diagnosticAssignmentId(paper: string, question: string): string {
-  const slug = `${paper}:${question}`
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 80);
-  return `diagnostic:${slug || "standalone"}`;
+type PaperDraft = {
+  questions: Record<string, BmcrValue>;
+  feels_needs_theory: boolean | null;
+  feelings_reliable: boolean | null;
+  notes: string;
+};
+
+type PaperStatus = { error?: string; saved?: string };
+
+function diagnosticQuestionId(paperCode: string, questionCode: string): string {
+  return `diagnostic:${paperCode}:${questionCode}`.toLowerCase();
+}
+
+function diagnosticPaperId(paperCode: string): string {
+  return `diagnostic:${paperCode}`.toLowerCase();
+}
+
+function emptyQuestionBmcr(marks: number): BmcrValue {
+  return withDiagnostics(
+    withQuestionTotal({
+      ...EMPTY_BMCR_MARKS,
+      question_total_markplan: marks,
+    })
+  );
+}
+
+function emptyPaperDraft(paper: ExamPaper): PaperDraft {
+  return {
+    questions: Object.fromEntries(paper.questions.map((question) => [question.code, emptyQuestionBmcr(question.marks)])),
+    feels_needs_theory: null,
+    feelings_reliable: null,
+    notes: "",
+  };
+}
+
+function emptyAllDrafts(sitting: ExamSitting): Record<string, PaperDraft> {
+  return Object.fromEntries(sitting.papers.map((paper) => [paper.id, emptyPaperDraft(paper)]));
+}
+
+function draftFromEvaluations(sitting: ExamSitting, rows: BmcrEvaluation[]): Record<string, PaperDraft> {
+  const next = emptyAllDrafts(sitting);
+  for (const paper of sitting.papers) {
+    const paperRow = rows.find((row) => row.assignment_id === diagnosticPaperId(paper.code));
+    const questions = { ...next[paper.id].questions };
+    for (const question of paper.questions) {
+      const saved = rows.find((row) => row.assignment_id === diagnosticQuestionId(paper.code, question.code));
+      if (saved) questions[question.code] = withDiagnostics(saved);
+    }
+    next[paper.id] = {
+      questions,
+      feels_needs_theory: paperRow?.feels_needs_theory ?? null,
+      feelings_reliable: paperRow?.feelings_reliable ?? null,
+      notes: paperNotes(paperRow?.key_takeaways || "", paperDisplayName(sitting, paper)),
+    };
+  }
+  return next;
+}
+
+function paperNotes(takeaways: string, paperName: string): string {
+  if (!takeaways) return "";
+  if (takeaways.startsWith(paperName)) return takeaways.slice(paperName.length).replace(/^\s+/, "");
+  return takeaways;
+}
+
+function aggregatePaper(draft: PaperDraft): BmcrValue {
+  const items = Object.values(draft.questions);
+  const summed = withQuestionTotal({
+    basic_my_marks: items.reduce((sum, item) => sum + item.basic_my_marks, 0),
+    basic_markplan: items.reduce((sum, item) => sum + item.basic_markplan, 0),
+    average_my_marks: items.reduce((sum, item) => sum + item.average_my_marks, 0),
+    average_markplan: items.reduce((sum, item) => sum + item.average_markplan, 0),
+    higher_my_marks: items.reduce((sum, item) => sum + item.higher_my_marks, 0),
+    higher_markplan: items.reduce((sum, item) => sum + item.higher_markplan, 0),
+    question_total_my_marks: 0,
+    question_total_markplan: items.reduce((sum, item) => sum + item.question_total_markplan, 0),
+  });
+  return withDiagnostics({
+    ...summed,
+    feels_needs_theory: draft.feels_needs_theory,
+    feelings_reliable: draft.feelings_reliable,
+  });
 }
 
 export default function BmcrDiagnosticTool() {
   const { user } = useStudentSession();
   const defaultExam = EXAM_SITTINGS[0];
-  const defaultPaper = defaultExam.papers[0];
   const [examId, setExamId] = useState(defaultExam.id);
-  const [paperId, setPaperId] = useState(defaultPaper.id);
-  const [questionCode, setQuestionCode] = useState(defaultPaper.questions[0].code);
-  const [notes, setNotes] = useState("");
-  const [bmcr, setBmcr] = useState<BmcrValue>(
-    withQuestionTotal({ ...EMPTY_BMCR_VALUE, question_total_markplan: defaultPaper.questions[0].marks })
-  );
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
-  const [saved, setSaved] = useState("");
+  const [drafts, setDrafts] = useState<Record<string, PaperDraft>>(() => emptyAllDrafts(defaultExam));
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [status, setStatus] = useState<Record<string, PaperStatus>>({});
+  const [savedPapers, setSavedPapers] = useState<Record<string, boolean>>({});
+  const [openIds, setOpenIds] = useState<Record<string, boolean>>(() => ({ [defaultExam.papers[0].id]: true }));
 
   const sitting = findSitting(examId) || defaultExam;
-  const paper = findPaper(examId, paperId) || sitting.papers[0];
-  const question = findQuestion(examId, paper.id, questionCode) || paper.questions[0];
-  const paperName = paperDisplayName(sitting, paper);
 
-  const cap = question.marks;
-  const selectedLabel = useMemo(() => questionLabel(question), [question]);
-
-  const applyQuestion = (code: string) => {
-    const next = findQuestion(examId, paper.id, code) || paper.questions[0];
-    setQuestionCode(next.code);
-    setBmcr(withQuestionTotal({ ...EMPTY_BMCR_VALUE, question_total_markplan: next.marks }));
-  };
-
-  const changePaper = (nextPaperId: string, nextExamId = examId) => {
-    const nextSitting = findSitting(nextExamId) || defaultExam;
-    const nextPaper = findPaper(nextExamId, nextPaperId) || nextSitting.papers[0];
-    const first = nextPaper.questions[0];
-    setPaperId(nextPaper.id);
-    setQuestionCode(first.code);
-    setBmcr(withQuestionTotal({ ...EMPTY_BMCR_VALUE, question_total_markplan: first.marks }));
-  };
-
-  const submit = async () => {
+  useEffect(() => {
     if (!user?.id) return;
-    if (bmcr.question_total_my_marks > cap || bmcr.question_total_markplan > cap) {
-      setError(`${question.code} is ${cap} marks. Entered marks cannot exceed that section total.`);
-      return;
-    }
-    setBusy(true);
-    setError("");
-    setSaved("");
-    const result = await saveBmcrEvaluation({
-      studentId: user.id,
-      assignmentId: diagnosticAssignmentId(paper.code, question.code),
-      marks: bmcr,
-      key_takeaways: [`${paperName} · ${selectedLabel}`, notes].filter(Boolean).join(" · "),
+    fetchStudentBmcrEvaluations(user.id).then((rows) => {
+      const diagnosticRows = rows.filter((row) => row.assignment_id.startsWith("diagnostic:"));
+      setDrafts(draftFromEvaluations(sitting, diagnosticRows));
+      const saved: Record<string, boolean> = {};
+      for (const paper of sitting.papers) {
+        saved[paper.id] = diagnosticRows.some((row) => row.assignment_id === diagnosticPaperId(paper.code));
+      }
+      setSavedPapers(saved);
     });
-    setBusy(false);
-    if (!result.ok) {
-      setError(result.error || "Could not save the BMCR.");
+  }, [user?.id, sitting.id]);
+
+  const setQuestionBmcr = (paperId: string, code: string, value: BmcrValue) => {
+    setDrafts((prev) => ({
+      ...prev,
+      [paperId]: {
+        ...(prev[paperId] || emptyPaperDraft(sitting.papers.find((item) => item.id === paperId) || sitting.papers[0])),
+        questions: {
+          ...(prev[paperId]?.questions || {}),
+          [code]: value,
+        },
+      },
+    }));
+  };
+
+  const patchPaper = (paperId: string, patch: Partial<PaperDraft>) => {
+    setDrafts((prev) => ({
+      ...prev,
+      [paperId]: {
+        ...(prev[paperId] || emptyPaperDraft(sitting.papers.find((item) => item.id === paperId) || sitting.papers[0])),
+        ...patch,
+      },
+    }));
+  };
+
+  const savePaper = async (paper: ExamPaper) => {
+    if (!user?.id) return;
+    const draft = drafts[paper.id] || emptyPaperDraft(paper);
+    for (const question of paper.questions) {
+      const bmcr = draft.questions[question.code] || emptyQuestionBmcr(question.marks);
+      if (bmcr.question_total_my_marks > question.marks || bmcr.question_total_markplan > question.marks) {
+        setStatus((prev) => ({
+          ...prev,
+          [paper.id]: { error: `${question.code} is ${question.marks} marks. Entered marks cannot exceed that section total.` },
+        }));
+        return;
+      }
+    }
+    if (draft.feels_needs_theory == null || draft.feelings_reliable == null) {
+      setStatus((prev) => ({
+        ...prev,
+        [paper.id]: { error: `Answer the theory questions at the end of ${paper.title} before saving.` },
+      }));
       return;
     }
-    setSaved(`Saved. BMCR conversion ${formatPct(computeBmcrPct(bmcr))}.`);
+    setBusyId(paper.id);
+    setStatus((prev) => ({ ...prev, [paper.id]: {} }));
+    const paperName = paperDisplayName(sitting, paper);
+    for (const question of paper.questions) {
+      const bmcr = draft.questions[question.code] || emptyQuestionBmcr(question.marks);
+      const result = await saveBmcrEvaluation({
+        studentId: user.id,
+        assignmentId: diagnosticQuestionId(paper.code, question.code),
+        marks: { ...bmcr, feels_needs_theory: null, feelings_reliable: null },
+        key_takeaways: `${paperName} · ${questionLabel(question)}`,
+      });
+      if (!result.ok) {
+        setBusyId(null);
+        setStatus((prev) => ({ ...prev, [paper.id]: { error: result.error || "Could not save the BMCR." } }));
+        return;
+      }
+    }
+    const aggregated = aggregatePaper(draft);
+    const paperResult = await saveBmcrEvaluation({
+      studentId: user.id,
+      assignmentId: diagnosticPaperId(paper.code),
+      marks: aggregated,
+      feels_needs_theory: draft.feels_needs_theory,
+      feelings_reliable: draft.feelings_reliable,
+      key_takeaways: [paperName, draft.notes.trim()].filter(Boolean).join("\n\n"),
+    });
+    setBusyId(null);
+    if (!paperResult.ok) {
+      setStatus((prev) => ({ ...prev, [paper.id]: { error: paperResult.error || "Could not save the BMCR." } }));
+      return;
+    }
+    setSavedPapers((prev) => ({ ...prev, [paper.id]: true }));
+    setStatus((prev) => ({
+      ...prev,
+      [paper.id]: { saved: `Saved ${paper.title}. BMCR conversion ${formatPct(computeBmcrPct(aggregated))}.` },
+    }));
   };
 
   return (
@@ -99,24 +221,21 @@ export default function BmcrDiagnosticTool() {
       </p>
       <p className="kicker">Pre-exam diagnostic</p>
       <h1>BMCR</h1>
-      <p className="muted">Basic Mark Capture Record. Choose a June 2026 IAC section, then categorize your marks. Inputs are capped at that section total.</p>
-      <form
-        className="eval-form"
-        onSubmit={(event) => {
-          event.preventDefault();
-          void submit();
-        }}
-      >
-        <label>
+      <p className="muted">
+        Complete the calc table for every section in a paper. Interpretation and the theory questions sit at the end of that paper, then save.
+      </p>
+      {EXAM_SITTINGS.length > 1 ? (
+        <label className="va-exam-select">
           Exam
           <select
             className="select-line"
             value={examId}
             onChange={(event) => {
               const next = findSitting(event.target.value) || defaultExam;
-              const firstPaper = next.papers[0];
               setExamId(next.id);
-              changePaper(firstPaper.id, next.id);
+              setDrafts(emptyAllDrafts(next));
+              setStatus({});
+              setOpenIds({ [next.papers[0].id]: true });
             }}
           >
             {EXAM_SITTINGS.map((exam) => (
@@ -126,39 +245,92 @@ export default function BmcrDiagnosticTool() {
             ))}
           </select>
         </label>
-        <label>
-          Paper
-          <select className="select-line" value={paper.id} onChange={(event) => changePaper(event.target.value)}>
-            {sitting.papers.map((item) => (
-              <option key={item.id} value={item.id}>
-                {paperLabel(item)} · {item.total_marks} marks
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Question
-          <select className="select-line" value={question.code} onChange={(event) => applyQuestion(event.target.value)}>
-            {paper.questions.map((item) => (
-              <option key={item.code} value={item.code}>
-                {questionLabel(item)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <BmcrCalculator value={bmcr} onChange={setBmcr} idPrefix="diag-bmcr" maxMarks={cap} />
-        <label className="eval-notes">
-          Notes
-          <textarea rows={3} value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="What leaked on this question?" />
-        </label>
-        {error ? <p className="notice">{error}</p> : null}
-        {saved ? <p className="waiting">{saved}</p> : null}
-        <div className="actions">
-          <button className="primary" type="submit" disabled={busy || !user?.id}>
-            {busy ? "Saving…" : "Save BMCR"}
-          </button>
-        </div>
-      </form>
+      ) : null}
+
+      <div className="va-paper-stack">
+        {sitting.papers.map((paper) => {
+          const draft = drafts[paper.id] || emptyPaperDraft(paper);
+          const paperStatus = status[paper.id] || {};
+          const aggregated = aggregatePaper(draft);
+          return (
+            <details
+              key={paper.id}
+              className="va-paper-box"
+              open={Boolean(openIds[paper.id])}
+              onToggle={(event) => {
+                const nextOpen = (event.currentTarget as HTMLDetailsElement).open;
+                setOpenIds((prev) => (prev[paper.id] === nextOpen ? prev : { ...prev, [paper.id]: nextOpen }));
+              }}
+            >
+              <summary>
+                <span>
+                  {paperLabel(paper)} · {paper.total_marks} marks
+                </span>
+                {savedPapers[paper.id] ? <span className="pill">Saved</span> : <span className="muted small">To do</span>}
+              </summary>
+              <form
+                className="va-paper-body"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  void savePaper(paper);
+                }}
+              >
+                {paper.questions.map((question) => (
+                  <section key={question.code} className="bmcr-question">
+                    <h2>
+                      {question.code} · {question.title}
+                      <span className="muted small"> {question.marks} marks</span>
+                    </h2>
+                    <BmcrCalculator
+                      value={draft.questions[question.code] || emptyQuestionBmcr(question.marks)}
+                      onChange={(next) => setQuestionBmcr(paper.id, question.code, next)}
+                      idPrefix={`bmcr-${paper.id}-${question.code}`}
+                      maxMarks={question.marks}
+                      showInterpretation={false}
+                      showDiagnostics={false}
+                    />
+                  </section>
+                ))}
+                <section className="bmcr-paper-end">
+                  <h2>Paper interpretation</h2>
+                  <p className="muted">
+                    These boxes use the totals from every section above. Answer the theory questions for {paper.title} as a whole.
+                  </p>
+                  <BmcrCalculator
+                    value={aggregated}
+                    onChange={(next) =>
+                      patchPaper(paper.id, {
+                        feels_needs_theory: next.feels_needs_theory ?? null,
+                        feelings_reliable: next.feelings_reliable ?? null,
+                      })
+                    }
+                    idPrefix={`bmcr-${paper.id}-paper`}
+                    showTable={false}
+                    showInterpretation
+                    showDiagnostics
+                  />
+                  <label className="eval-notes">
+                    Notes
+                    <textarea
+                      rows={3}
+                      value={draft.notes}
+                      onChange={(event) => patchPaper(paper.id, { notes: event.target.value })}
+                      placeholder="What leaked across this paper?"
+                    />
+                  </label>
+                </section>
+                {paperStatus.error ? <p className="notice">{paperStatus.error}</p> : null}
+                {paperStatus.saved ? <p className="waiting">{paperStatus.saved}</p> : null}
+                <div className="actions">
+                  <button className="primary" type="submit" disabled={busyId === paper.id || !user?.id}>
+                    {busyId === paper.id ? "Saving…" : `Save ${paper.title}`}
+                  </button>
+                </div>
+              </form>
+            </details>
+          );
+        })}
+      </div>
     </article>
   );
 }

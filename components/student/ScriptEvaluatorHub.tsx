@@ -38,7 +38,7 @@ export default function ScriptEvaluatorHub() {
           <div className="eval-hub-step-copy">
             {progress.hasBmcr ? <span className="pill">Done</span> : <span className="muted small">To do</span>}
             <p>
-              Capture your question-by-question marks against the June 2026 IAC sections. This shows how much of the knowledge you already have you actually converted into marks.
+              Capture your question-by-question marks for a paper, then interpret the paper as a whole and answer the theory questions.
             </p>
           </div>
         </li>
