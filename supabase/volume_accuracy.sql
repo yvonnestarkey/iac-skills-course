@@ -1,5 +1,15 @@
--- Volume / Accuracy diagnostic log for pre-exam practice.
+-- Volume vs Accuracy diagnostic log for pre-exam practice.
 -- Paste into the Supabase SQL editor (Dashboard → SQL Editor → New query).
+-- Column mapping:
+--   paper_name          = Question Code · section title
+--   marks_available     = Total Marks (official capped section allocation)
+--   questions_available = Total Marks (same value, for compatibility)
+--   questions_completed = Points Attempted
+--   marks_earned        = Marks Earned
+-- Ratios (computed in app, not stored):
+--   Volume Ratio       = Points Attempted / Total Marks
+--   Accuracy Ratio     = Marks Earned / Points Attempted
+--   Score Conversion   = Marks Earned / Total Marks
 
 create table if not exists public.volume_accuracy_entries (
   id uuid primary key default gen_random_uuid(),

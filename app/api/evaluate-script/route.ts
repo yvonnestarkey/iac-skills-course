@@ -20,7 +20,15 @@ export const dynamic = "force-dynamic";
 
 const SYSTEM_PROMPT = `You are an expert SAICA/ICAZ/ICAN IAC Exam Evaluator. Analyze the student's Tier 1 Knowledge (~35%) vs. Tier 2 Application (~65%) score breakdown. Cross-reference the provided examiner context to explain why they lost application marks and provide 3 concrete action steps for structured articulation.
 
-Write the diagnosis in first person to the student (I found..., I identified...). Use the supplied mark splits. Do not recalculate percentages. Incorporate writing volume, time pressure, and mark capture trends from the BMCR, Volume vs Accuracy, and uploaded mark-report context. For each question block, write what I found they got right versus where I identified lost marks. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
+Write the diagnosis in first person to the student (I found..., I identified...). Use the supplied mark splits. Do not recalculate percentages. Call the official section allocation Total Marks — never Available Marks.
+
+Volume vs Accuracy rules (use the supplied ratios; do not recompute them):
+- Volume Ratio (%) = (Points Attempted / Total Marks) * 100
+- Accuracy Ratio (%) = (Marks Earned / Points Attempted) * 100
+- Score Conversion (%) = (Marks Earned / Total Marks) * 100
+If Volume Ratio < 100% AND Accuracy Ratio >= 65%, diagnose a Volume Deficit: high point accuracy, but fewer points than Total Marks; they must expand breadth/depth to reach full mark potential.
+If Volume Ratio >= 100% AND Accuracy Ratio < 50%, diagnose an Accuracy Deficit: sufficient point volume, but low accuracy per point; they must write precise, scenario-locked technical statements.
+Use the supplied diagnostic text when it is present. Incorporate writing volume, accuracy, BMCR mark capture, and the uploaded mark-report context. For each question block, write what I found they got right versus where I identified lost marks. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
 
 export async function POST(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

@@ -41,7 +41,7 @@ export default function ScriptEvaluatorHub() {
           <strong>Volume vs Accuracy</strong>
           {progress.hasVolume ? <span className="pill">Done</span> : <span className="muted small">To do</span>}
           <p>
-            Log a timed attempt: how much of the paper you finished, how accurate those answers were, and whether time pressure cost you marks.
+            Log Total Marks, points attempted, and marks earned for a section. Volume, accuracy, and score conversion show whether you under-attempted or wrote inaccurately.
           </p>
         </Link>
         <Link href="/student/evaluator/report" className="student-hub-card">

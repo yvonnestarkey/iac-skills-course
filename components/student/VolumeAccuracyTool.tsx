@@ -1,51 +1,83 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { fetchOwnVolumeAccuracy, saveVolumeAccuracy, type VolumeAccuracyEntry } from "@/lib/volume-accuracy";
+import { useEffect, useMemo, useState } from "react";
+import {
+  saveVolumeAccuracy,
+  fetchOwnVolumeAccuracy,
+  volumeRatios,
+  type VolumeAccuracyEntry,
+} from "@/lib/volume-accuracy";
+import {
+  EXAM_SITTINGS,
+  findPaper,
+  findQuestion,
+  findSitting,
+  paperLabel,
+  questionLabel,
+} from "@/lib/exam-structure";
 import { useStudentSession } from "@/lib/student-session";
-
-const EMPTY = {
-  paper_name: "",
-  minutes_allowed: "",
-  minutes_used: "",
-  questions_available: "",
-  questions_completed: "",
-  marks_available: "",
-  marks_earned: "",
-  notes: "",
-};
 
 export default function VolumeAccuracyTool() {
   const { user } = useStudentSession();
-  const [form, setForm] = useState(EMPTY);
+  const defaultExam = EXAM_SITTINGS[0];
+  const defaultPaper = defaultExam.papers[0];
+  const [examId, setExamId] = useState(defaultExam.id);
+  const [paperId, setPaperId] = useState(defaultPaper.id);
+  const [questionCode, setQuestionCode] = useState(defaultPaper.questions[0].code);
+  const [pointsAttempted, setPointsAttempted] = useState("");
+  const [marksEarned, setMarksEarned] = useState("");
+  const [notes, setNotes] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [history, setHistory] = useState<VolumeAccuracyEntry[]>([]);
+
+  const sitting = findSitting(examId) || defaultExam;
+  const paper = findPaper(examId, paperId) || sitting.papers[0];
+  const question = findQuestion(examId, paper.id, questionCode) || paper.questions[0];
+  const totalMarks = question.marks;
+
+  const preview = useMemo(
+    () => volumeRatios(Number(pointsAttempted || 0), totalMarks, Number(marksEarned || 0)),
+    [pointsAttempted, totalMarks, marksEarned]
+  );
 
   useEffect(() => {
     if (!user?.id) return;
     fetchOwnVolumeAccuracy(user.id).then(setHistory);
   }, [user?.id]);
 
-  const setField = (key: keyof typeof EMPTY, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
+  const applyQuestion = (code: string) => {
+    const next = findQuestion(examId, paper.id, code) || paper.questions[0];
+    setQuestionCode(next.code);
+  };
+
+  const changePaper = (nextPaperId: string, nextExamId = examId) => {
+    const nextSitting = findSitting(nextExamId) || defaultExam;
+    const nextPaper = findPaper(nextExamId, nextPaperId) || nextSitting.papers[0];
+    const first = nextPaper.questions[0];
+    setPaperId(nextPaper.id);
+    setQuestionCode(first.code);
   };
 
   const submit = async () => {
     if (!user?.id) return;
+    const attempted = Number(pointsAttempted || 0);
+    const earned = Number(marksEarned || 0);
+    if (earned > totalMarks) {
+      setError(`${question.code} is ${totalMarks} total marks. Marks earned cannot exceed that section allocation.`);
+      return;
+    }
     setBusy(true);
     setError("");
     const result = await saveVolumeAccuracy({
       userId: user.id,
-      paper_name: form.paper_name.trim(),
-      minutes_allowed: Number(form.minutes_allowed || 0),
-      minutes_used: Number(form.minutes_used || 0),
-      questions_available: Number(form.questions_available || 0),
-      questions_completed: Number(form.questions_completed || 0),
-      marks_available: Number(form.marks_available || 0),
-      marks_earned: Number(form.marks_earned || 0),
-      notes: form.notes.trim(),
+      question_code: question.code,
+      paper_name: `${question.code} · ${question.title}`,
+      total_marks: totalMarks,
+      points_attempted: attempted,
+      marks_earned: earned,
+      notes: notes.trim(),
     });
     setBusy(false);
     if (result.ok === false) {
@@ -53,7 +85,9 @@ export default function VolumeAccuracyTool() {
       return;
     }
     setHistory((prev) => [result.entry, ...prev].slice(0, 8));
-    setForm(EMPTY);
+    setPointsAttempted("");
+    setMarksEarned("");
+    setNotes("");
   };
 
   return (
@@ -63,7 +97,9 @@ export default function VolumeAccuracyTool() {
       </p>
       <p className="kicker">Pre-exam diagnostic</p>
       <h1>Volume vs Accuracy</h1>
-      <p className="muted">Track your completion speed vs. accuracy under exam conditions.</p>
+      <p className="muted">
+        Total Marks is the official capped allocation for the section (for example 33 for Beita Risks). Volume, accuracy, and score conversion are calculated from the points you wrote and the marks awarded.
+      </p>
       <form
         className="eval-form"
         onSubmit={(event) => {
@@ -72,45 +108,86 @@ export default function VolumeAccuracyTool() {
         }}
       >
         <label>
-          Paper or session
-          <input type="text" value={form.paper_name} onChange={(event) => setField("paper_name", event.target.value)} placeholder="e.g. Timed Paper 1 attempt" required />
+          Exam
+          <select
+            className="select-line"
+            value={examId}
+            onChange={(event) => {
+              const next = findSitting(event.target.value) || defaultExam;
+              const firstPaper = next.papers[0];
+              setExamId(next.id);
+              changePaper(firstPaper.id, next.id);
+            }}
+          >
+            {EXAM_SITTINGS.map((exam) => (
+              <option key={exam.id} value={exam.id}>
+                {exam.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Paper
+          <select className="select-line" value={paper.id} onChange={(event) => changePaper(event.target.value)}>
+            {sitting.papers.map((item) => (
+              <option key={item.id} value={item.id}>
+                {paperLabel(item)} · {item.total_marks} marks
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Question Code
+          <select className="select-line" value={question.code} onChange={(event) => applyQuestion(event.target.value)}>
+            {paper.questions.map((item) => (
+              <option key={item.code} value={item.code}>
+                {questionLabel(item)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Total Marks
+          <input type="number" value={totalMarks} readOnly />
         </label>
         <fieldset className="eval-marks">
-          <legend>Time</legend>
+          <legend>Attempt</legend>
           <label>
-            Minutes allowed
-            <input type="number" min={0} step="1" value={form.minutes_allowed} onChange={(event) => setField("minutes_allowed", event.target.value)} required />
+            Points Attempted
+            <input
+              type="number"
+              min={0}
+              step="1"
+              value={pointsAttempted}
+              onChange={(event) => setPointsAttempted(event.target.value)}
+              required
+            />
           </label>
           <label>
-            Minutes used
-            <input type="number" min={0} step="1" value={form.minutes_used} onChange={(event) => setField("minutes_used", event.target.value)} required />
-          </label>
-        </fieldset>
-        <fieldset className="eval-marks">
-          <legend>Volume</legend>
-          <label>
-            Questions available
-            <input type="number" min={0} step="1" value={form.questions_available} onChange={(event) => setField("questions_available", event.target.value)} required />
-          </label>
-          <label>
-            Questions completed
-            <input type="number" min={0} step="1" value={form.questions_completed} onChange={(event) => setField("questions_completed", event.target.value)} required />
-          </label>
-        </fieldset>
-        <fieldset className="eval-marks">
-          <legend>Accuracy</legend>
-          <label>
-            Marks available
-            <input type="number" min={0} step="0.5" value={form.marks_available} onChange={(event) => setField("marks_available", event.target.value)} required />
-          </label>
-          <label>
-            Marks earned
-            <input type="number" min={0} step="0.5" value={form.marks_earned} onChange={(event) => setField("marks_earned", event.target.value)} required />
+            Marks Earned
+            <input
+              type="number"
+              min={0}
+              max={totalMarks}
+              step="0.5"
+              value={marksEarned}
+              onChange={(event) => setMarksEarned(event.target.value)}
+              required
+            />
           </label>
         </fieldset>
+        <p className="muted small">
+          Volume Ratio {preview.volume_pct}% · Accuracy Ratio {preview.accuracy_pct}% · Score Conversion {preview.score_conversion_pct}%
+        </p>
+        {preview.message ? <p className="notice">{preview.message}</p> : null}
         <label className="eval-notes">
           Notes
-          <textarea rows={3} value={form.notes} onChange={(event) => setField("notes", event.target.value)} placeholder="Where did time pressure or incomplete volume show up?" />
+          <textarea
+            rows={3}
+            value={notes}
+            onChange={(event) => setNotes(event.target.value)}
+            placeholder="Where did incomplete volume or weak point accuracy show up?"
+          />
         </label>
         {error ? <p className="notice">{error}</p> : null}
         <div className="actions">
@@ -127,10 +204,11 @@ export default function VolumeAccuracyTool() {
             {history.map((row) => (
               <li key={row.id}>
                 <div>
-                  <strong>{row.paper_name || "Practice session"}</strong>
+                  <strong>{row.paper_name || row.question_code || "Practice session"}</strong>
                   <span className="muted small">
-                    Volume {row.volume_pct}% · Accuracy {row.accuracy_pct}% · Time {row.time_pct}%
+                    Volume {row.volume_pct}% · Accuracy {row.accuracy_pct}% · Conversion {row.score_conversion_pct}%
                   </span>
+                  {row.diagnostic ? <p>{row.diagnostic}</p> : null}
                 </div>
               </li>
             ))}

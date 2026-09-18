@@ -9,21 +9,32 @@ import {
   type BmcrEvaluation,
 } from "./bmcr";
 
+export type VolumeDiagnosticKind = "volume_deficit" | "accuracy_deficit" | "none";
+
+export const VOLUME_DEFICIT_MESSAGE =
+  "Volume Deficit: High point accuracy, but you attempted fewer points than the total marks available. Work on expanding breadth/depth to reach full mark potential.";
+
+export const ACCURACY_DEFICIT_MESSAGE =
+  "Accuracy Deficit: You generated sufficient point volume, but accuracy per point was low. Focus on precise, scenario-locked technical statements.";
+
 export type VolumeAccuracyEntry = {
   id?: string;
   user_id: string;
   paper_name: string;
+  question_code: string;
   minutes_allowed: number;
   minutes_used: number;
-  questions_available: number;
-  questions_completed: number;
-  marks_available: number;
+  total_marks: number;
+  points_attempted: number;
   marks_earned: number;
   notes: string;
   created_at?: string;
   volume_pct: number;
   accuracy_pct: number;
+  score_conversion_pct: number;
   time_pct: number;
+  diagnostic_kind: VolumeDiagnosticKind;
+  diagnostic: string;
 };
 
 function asNumber(value: unknown): number {
@@ -36,28 +47,53 @@ export function pctOf(earned: number, available: number): number {
   return Math.max(0, Math.round((earned / available) * 1000) / 10);
 }
 
+export function classifyVolumeDiagnostic(volumePct: number, accuracyPct: number): {
+  kind: VolumeDiagnosticKind;
+  message: string;
+} {
+  if (volumePct < 100 && accuracyPct >= 65) {
+    return { kind: "volume_deficit", message: VOLUME_DEFICIT_MESSAGE };
+  }
+  if (volumePct >= 100 && accuracyPct < 50) {
+    return { kind: "accuracy_deficit", message: ACCURACY_DEFICIT_MESSAGE };
+  }
+  return { kind: "none", message: "" };
+}
+
+export function volumeRatios(pointsAttempted: number, totalMarks: number, marksEarned: number) {
+  const volume_pct = pctOf(pointsAttempted, totalMarks);
+  const accuracy_pct = pctOf(marksEarned, pointsAttempted);
+  const score_conversion_pct = pctOf(marksEarned, totalMarks);
+  const diagnostic = classifyVolumeDiagnostic(volume_pct, accuracy_pct);
+  return { volume_pct, accuracy_pct, score_conversion_pct, ...diagnostic };
+}
+
 export function entryFromRow(row: Record<string, unknown>): VolumeAccuracyEntry {
   const minutes_allowed = asNumber(row.minutes_allowed);
   const minutes_used = asNumber(row.minutes_used);
-  const questions_available = asNumber(row.questions_available);
-  const questions_completed = asNumber(row.questions_completed);
-  const marks_available = asNumber(row.marks_available);
+  const total_marks = asNumber(row.marks_available) || asNumber(row.questions_available);
+  const points_attempted = asNumber(row.questions_completed);
   const marks_earned = asNumber(row.marks_earned);
+  const paper_name = String(row.paper_name || "");
+  const ratios = volumeRatios(points_attempted, total_marks, marks_earned);
   return {
     id: row.id ? String(row.id) : undefined,
     user_id: String(row.user_id || ""),
-    paper_name: String(row.paper_name || ""),
+    paper_name,
+    question_code: paper_name.split(" · ")[0] || paper_name,
     minutes_allowed,
     minutes_used,
-    questions_available,
-    questions_completed,
-    marks_available,
+    total_marks,
+    points_attempted,
     marks_earned,
     notes: String(row.notes || ""),
     created_at: row.created_at ? String(row.created_at) : undefined,
-    volume_pct: pctOf(questions_completed, questions_available),
-    accuracy_pct: pctOf(marks_earned, marks_available),
+    volume_pct: ratios.volume_pct,
+    accuracy_pct: ratios.accuracy_pct,
+    score_conversion_pct: ratios.score_conversion_pct,
     time_pct: pctOf(minutes_used, minutes_allowed),
+    diagnostic_kind: ratios.kind,
+    diagnostic: ratios.message,
   };
 }
 
@@ -93,27 +129,26 @@ export async function fetchOwnVolumeAccuracy(userId: string): Promise<VolumeAccu
 export async function saveVolumeAccuracy(input: {
   userId: string;
   paper_name: string;
-  minutes_allowed: number;
-  minutes_used: number;
-  questions_available: number;
-  questions_completed: number;
-  marks_available: number;
+  question_code: string;
+  total_marks: number;
+  points_attempted: number;
   marks_earned: number;
   notes: string;
 }): Promise<{ ok: true; entry: VolumeAccuracyEntry } | { ok: false; error: string }> {
   const { getSupabase } = await import("./supabase");
   const supabase = getSupabase();
   if (!supabase) return { ok: false, error: "Supabase is not configured." };
+  const paperName = input.paper_name || input.question_code;
   const { data, error } = await supabase
     .from("volume_accuracy_entries")
     .insert({
       user_id: input.userId,
-      paper_name: input.paper_name,
-      minutes_allowed: input.minutes_allowed,
-      minutes_used: input.minutes_used,
-      questions_available: input.questions_available,
-      questions_completed: input.questions_completed,
-      marks_available: input.marks_available,
+      paper_name: paperName,
+      minutes_allowed: 0,
+      minutes_used: 0,
+      questions_available: input.total_marks,
+      questions_completed: input.points_attempted,
+      marks_available: input.total_marks,
       marks_earned: input.marks_earned,
       notes: input.notes,
     })
@@ -161,13 +196,17 @@ export function formatBmcrContext(evaluation: BmcrEvaluation | null): string {
 }
 
 export function formatVolumeContext(entry: VolumeAccuracyEntry | null): string {
-  if (!entry) return "Latest Volume/Accuracy: none saved yet.";
-  const overTime = entry.minutes_allowed > 0 && entry.minutes_used > entry.minutes_allowed;
+  if (!entry) return "Latest Volume vs Accuracy: none saved yet.";
   return [
-    `Latest Volume/Accuracy (${entry.created_at || "undated"} · ${entry.paper_name || "unspecified paper"}):`,
-    `- Time: ${entry.minutes_used} / ${entry.minutes_allowed} minutes (${entry.time_pct}% of allowed${overTime ? ", over time" : ""})`,
-    `- Volume: completed ${entry.questions_completed} / ${entry.questions_available} questions (${entry.volume_pct}%)`,
-    `- Accuracy: ${entry.marks_earned} / ${entry.marks_available} marks (${entry.accuracy_pct}%)`,
+    `Latest Volume vs Accuracy (${entry.created_at || "undated"} · ${entry.paper_name || "unspecified section"}):`,
+    `- Question Code: ${entry.question_code || "not recorded"}`,
+    `- Total Marks: ${entry.total_marks} (official section allocation — do not call this Available Marks)`,
+    `- Points Attempted: ${entry.points_attempted}`,
+    `- Marks Earned: ${entry.marks_earned}`,
+    `- Volume Ratio: ${entry.volume_pct}% = (Points Attempted / Total Marks) * 100`,
+    `- Accuracy Ratio: ${entry.accuracy_pct}% = (Marks Earned / Points Attempted) * 100`,
+    `- Score Conversion: ${entry.score_conversion_pct}% = (Marks Earned / Total Marks) * 100`,
+    entry.diagnostic ? `- Diagnostic: ${entry.diagnostic}` : "- Diagnostic: neither volume deficit nor accuracy deficit thresholds were met.",
     entry.notes ? `- Notes: ${entry.notes}` : "",
   ]
     .filter(Boolean)

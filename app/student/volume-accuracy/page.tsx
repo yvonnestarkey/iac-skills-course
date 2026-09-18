@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Volume / Accuracy · IAC Skills Course",
+  title: "Volume vs Accuracy · IAC Skills Course",
 };
 
 export default function StudentVolumeAccuracyPage() {
