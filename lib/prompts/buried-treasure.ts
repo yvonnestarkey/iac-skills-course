@@ -53,8 +53,37 @@ For each mark-report question block, also copy this sentence using the supplied 
 "Out of [Total Marks] in [Question Code], I identified [X] Tier 1 Knowledge marks and [Y] Tier 2 Application marks. You earned [A] on Knowledge and [B] on Application. Your main mark leak was [Primary Gap]."
 
 Action-plan steps must cite the exact conversion percentages (Direct %, Indirect %, Thinking %, Knowledge %, Application %) and the Volume/Accuracy tags supplied in the user message.
+`;
 
-### 6. STANDARDIZED MARKDOWN OUTPUT
+export const COMPETENCY_EXPLANATION_PROMPT = `
+### 7. SAICA COMPETENCY AREA RULES
+The user message will include DETERMINISTIC SAICA COMPETENCY METRICS. Copy those exact available marks, earned marks, conversion percentages, diagnostic statuses, related question codes, and diagnostic sentences. Do not recalculate, regroup sections into different competency areas, or invent areas that are not in the metrics.
+
+Use the CA of the Future technical areas as labelled in the metrics:
+- Strategy and Governance
+- Stewardship of Capitals
+- Decision-making
+- Reporting on Value Creation
+- Tax Governance and Compliance
+- Assurance and Related Services
+- Ethics and Professional Values
+
+In \`fullReportMarkdown\`, include a SAICA Competency Area performance table and then a diagnostic paragraph per area. Weak areas (Critical leak or Developing) must name the related question codes from the metrics. Strengths must be acknowledged so the student knows what to keep doing. Tie competency leaks to Buried Treasure conversion: theory-heavy leaks in tax/reporting often show as weak Direct/Indirect; execution leaks in assurance/decision-making often show as weak Thinking.
+
+Student report markdown template to follow for this section (fill brackets from the deterministic competency metrics only):
+
+## SAICA Competency Area Performance
+
+| Competency Area | Available Marks | Marks You Got | Conversion % | Diagnostic Status |
+|---|---|---|---|---|
+| [area] | [available] | [earned] | [percentage]% | [status] |
+
+## Competency Diagnostics
+- [area]: [supplied diagnostic sentence, including related question codes]
+`;
+
+export const COMPETENCY_MARKDOWN_HEADINGS = `
+### 8. STANDARDIZED MARKDOWN OUTPUT
 \`fullReportMarkdown\` MUST follow this exact heading structure:
 
 # Buried Treasure Diagnostic
@@ -77,6 +106,12 @@ State \`hasTheoryGap\` and \`primaryFailureCause\` in coach language. Use the su
 ## Volume vs Accuracy Link
 Explicitly connect Volume Deficit / Accuracy Deficit / Optimal tags to Buried Treasure conversion (volume leaks with weak Direct/Indirect; accuracy leaks with weak Thinking).
 
+## SAICA Competency Area Performance
+Copy the deterministic competency table exactly (Competency Area, Available Marks, Marks You Got, Conversion %, Diagnostic Status).
+
+## Competency Diagnostics
+Copy each supplied competency diagnostic sentence. Weak areas must name the related question codes.
+
 ## Action Plan
 Exactly 3 numbered steps that name the exact percentages to repair.
 `;
@@ -84,4 +119,8 @@ Exactly 3 numbered steps that name the exact percentages to repair.
 export const BURIED_TREASURE_SYSTEM_PROMPT = `${BURIED_TREASURE_FRAMEWORK_PROMPT.trim()}
 
 ${KNOWLEDGE_APP_SECTION_PROMPT.trim()}
+
+${COMPETENCY_EXPLANATION_PROMPT.trim()}
+
+${COMPETENCY_MARKDOWN_HEADINGS.trim()}
 `;

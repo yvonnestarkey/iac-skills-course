@@ -29,6 +29,7 @@ import {
   pastPaperSectionCapError,
   type PastPaper,
 } from "@/lib/past-papers";
+import { evaluateCompetencyBreakdown, formatCompetencyBreakdown } from "@/lib/competency-evaluator";
 import { BURIED_TREASURE_SYSTEM_PROMPT } from "@/lib/prompts/buried-treasure";
 import type { BuriedTreasureAnalysis, TierScore } from "@/types/evaluation";
 
@@ -61,7 +62,7 @@ Field meaning:
 - knowledgeScore = Tier 1 + Tier 2 combined
 - applicationScore = Tier 3
 - macroCommScore = standalone X1 / layout / presentation marks
-- fullReportMarkdown = a supportive, brutally honest first-person Buried Treasure coaching report that explicitly links Volume/Accuracy trends with Buried Treasure conversion`;
+- fullReportMarkdown = a supportive, brutally honest first-person Buried Treasure coaching report that explicitly links Volume/Accuracy trends with Buried Treasure conversion and includes the SAICA Competency Area performance table plus competency diagnostics`;
 
 const SYSTEM_PROMPT = `${BURIED_TREASURE_SYSTEM_PROMPT.trim()}
 
@@ -389,9 +390,11 @@ export async function POST(request: NextRequest) {
   const latestBmcr = await fetchLatestBmcr(supabase, user.id).catch(() => null);
   const latestVolume = await fetchLatestVolumeAccuracy(supabase, user.id).catch(() => null);
   const latestBuriedTreasure = await fetchLatestBuriedTreasure(supabase, user.id).catch(() => null);
+  const studentSectionMarks = studentSectionMarksFromBody(body);
   const buriedTreasureDiagnostics =
-    calculateMarksForPaper(paper_id, studentSectionMarksFromBody(body)) ||
+    calculateMarksForPaper(paper_id, studentSectionMarks) ||
     computeBuriedTreasureDiagnostics(buriedTreasureMarkInput(body, latestBuriedTreasure, selectedPaper));
+  const competencyBreakdown = evaluateCompetencyBreakdown(paper_id, studentSectionMarks);
 
   let matches: Awaited<ReturnType<typeof matchKnowledgeBase>> = [];
   try {
@@ -441,6 +444,9 @@ export async function POST(request: NextRequest) {
           "",
           "Use the deterministic Buried Treasure metrics below as the source of truth. Copy these exact percentages into fullReportMarkdown, keyTakeaways, and actionPlan. Do not recalculate them.",
           formatBuriedTreasureDiagnostics(buriedTreasureDiagnostics),
+          "",
+          "Use the deterministic SAICA Competency Area metrics below as the source of truth for the competency table and diagnostics. Copy these exact figures into fullReportMarkdown. Do not recalculate them.",
+          formatCompetencyBreakdown(competencyBreakdown),
           "",
           "Ingest Tools 1–3 below for qualitative context (BMCR, Volume/Accuracy, logged Buried Treasure). The deterministic metrics above override any conflicting conversion math.",
           "",
@@ -518,6 +524,7 @@ export async function POST(request: NextRequest) {
       dropped_marks_breakdown: {
         ...(typeof stored.dropped_marks_breakdown === "object" ? stored.dropped_marks_breakdown : {}),
         buried_treasure: evaluation,
+        competency_breakdown: competencyBreakdown,
       },
     });
 
