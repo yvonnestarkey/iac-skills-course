@@ -1,0 +1,1129 @@
+{
+  "sittings": [
+    {
+      "id": "nov-2024",
+      "label": "November 2024 IAC Exam",
+      "papers": [
+        {
+          "id": "nov-2024-p1",
+          "code": "N24-P1",
+          "title": "Paper 1",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.3,
+            "thinking_available": 64.7
+          },
+          "questions": [
+            {
+              "code": "N24P1Q1_a",
+              "title": "Paper 1 Question 1(a)",
+              "marks": 22,
+              "isCalculation": false,
+              "direct_available": 2.2,
+              "indirect_available": 7.9,
+              "thinking_available": 11.9
+            },
+            {
+              "code": "N24P1Q1_b",
+              "title": "Paper 1 Question 1(b)",
+              "marks": 11,
+              "isCalculation": false,
+              "direct_available": 1.1,
+              "indirect_available": 4,
+              "thinking_available": 5.9
+            },
+            {
+              "code": "N24P1Q1_c",
+              "title": "Paper 1 Question 1(c)",
+              "marks": 27,
+              "isCalculation": true,
+              "direct_available": 2.7,
+              "indirect_available": 9.7,
+              "thinking_available": 14.6
+            },
+            {
+              "code": "N24P1Q1_d",
+              "title": "Paper 1 Question 1(d)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            },
+            {
+              "code": "N24P1Q2_e",
+              "title": "Paper 1 Question 2(e)",
+              "marks": 14,
+              "isCalculation": false,
+              "direct_available": 1.4,
+              "indirect_available": 5.1,
+              "thinking_available": 7.5
+            },
+            {
+              "code": "N24P1Q2_f",
+              "title": "Paper 1 Question 2(f)",
+              "marks": 11,
+              "isCalculation": false,
+              "direct_available": 1.1,
+              "indirect_available": 4,
+              "thinking_available": 5.9
+            },
+            {
+              "code": "N24P1Q2_g1",
+              "title": "Paper 1 Question 2(g1)",
+              "marks": 12,
+              "isCalculation": false,
+              "direct_available": 1.2,
+              "indirect_available": 4.3,
+              "thinking_available": 6.5
+            },
+            {
+              "code": "N24P1Q2_g2",
+              "title": "Paper 1 Question 2(g2)",
+              "marks": 7,
+              "isCalculation": false,
+              "direct_available": 0.7,
+              "indirect_available": 2.5,
+              "thinking_available": 3.8
+            },
+            {
+              "code": "N24P1Q2_h",
+              "title": "Paper 1 Question 2(h)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            }
+          ]
+        },
+        {
+          "id": "nov-2024-p2",
+          "code": "N24-P2",
+          "title": "Paper 2",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.4,
+            "thinking_available": 64.6
+          },
+          "questions": [
+            {
+              "code": "N24P2Q1_a",
+              "title": "Paper 2 Question 1(a)",
+              "marks": 70,
+              "isCalculation": true,
+              "direct_available": 7,
+              "indirect_available": 25.3,
+              "thinking_available": 37.7
+            },
+            {
+              "code": "N24P2Q2_b",
+              "title": "Paper 2 Question 2(b)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "N24P2Q2_c",
+              "title": "Paper 2 Question 2(c)",
+              "marks": 8,
+              "isCalculation": false,
+              "direct_available": 0.8,
+              "indirect_available": 2.9,
+              "thinking_available": 4.3
+            },
+            {
+              "code": "N24P2Q2_d",
+              "title": "Paper 2 Question 2(d)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            },
+            {
+              "code": "N24P2Q2_e",
+              "title": "Paper 2 Question 2(e)",
+              "marks": 20,
+              "isCalculation": false,
+              "direct_available": 2,
+              "indirect_available": 7.2,
+              "thinking_available": 10.8
+            },
+            {
+              "code": "N24P2Q2_f",
+              "title": "Paper 2 Question 2(f)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            }
+          ]
+        },
+        {
+          "id": "nov-2024-p3",
+          "code": "N24-P3",
+          "title": "Paper 3",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.3,
+            "thinking_available": 64.7
+          },
+          "questions": [
+            {
+              "code": "N24P3Q1_a",
+              "title": "Paper 3 Question 1(a)",
+              "marks": 33,
+              "isCalculation": false,
+              "direct_available": 3.3,
+              "indirect_available": 11.9,
+              "thinking_available": 17.8
+            },
+            {
+              "code": "N24P3Q1_b",
+              "title": "Paper 3 Question 1(b)",
+              "marks": 43,
+              "isCalculation": false,
+              "direct_available": 4.3,
+              "indirect_available": 15.5,
+              "thinking_available": 23.2
+            },
+            {
+              "code": "N24P3Q2_c",
+              "title": "Paper 3 Question 2(c)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "N24P3Q2_d",
+              "title": "Paper 3 Question 2(d)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "N24P3Q2_e",
+              "title": "Paper 3 Question 2(e)",
+              "marks": 24,
+              "isCalculation": false,
+              "direct_available": 2.4,
+              "indirect_available": 8.7,
+              "thinking_available": 12.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jan-2025",
+      "label": "January 2025 IAC Exam",
+      "papers": [
+        {
+          "id": "jan-2025-p1",
+          "code": "J25-P1",
+          "title": "Paper 1",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.3,
+            "thinking_available": 64.7
+          },
+          "questions": [
+            {
+              "code": "J25P1Q1_a",
+              "title": "Paper 1 Question 1(a)",
+              "marks": 22,
+              "isCalculation": false,
+              "direct_available": 2.2,
+              "indirect_available": 7.9,
+              "thinking_available": 11.9
+            },
+            {
+              "code": "J25P1Q1_b",
+              "title": "Paper 1 Question 1(b)",
+              "marks": 11,
+              "isCalculation": false,
+              "direct_available": 1.1,
+              "indirect_available": 4,
+              "thinking_available": 5.9
+            },
+            {
+              "code": "J25P1Q1_c",
+              "title": "Paper 1 Question 1(c)",
+              "marks": 27,
+              "isCalculation": true,
+              "direct_available": 2.7,
+              "indirect_available": 9.7,
+              "thinking_available": 14.6
+            },
+            {
+              "code": "J25P1Q1_d",
+              "title": "Paper 1 Question 1(d)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            },
+            {
+              "code": "J25P1Q2_e",
+              "title": "Paper 1 Question 2(e)",
+              "marks": 14,
+              "isCalculation": false,
+              "direct_available": 1.4,
+              "indirect_available": 5.1,
+              "thinking_available": 7.5
+            },
+            {
+              "code": "J25P1Q2_f",
+              "title": "Paper 1 Question 2(f)",
+              "marks": 11,
+              "isCalculation": false,
+              "direct_available": 1.1,
+              "indirect_available": 4,
+              "thinking_available": 5.9
+            },
+            {
+              "code": "J25P1Q2_g1",
+              "title": "Paper 1 Question 2(g1)",
+              "marks": 12,
+              "isCalculation": false,
+              "direct_available": 1.2,
+              "indirect_available": 4.3,
+              "thinking_available": 6.5
+            },
+            {
+              "code": "J25P1Q2_g2",
+              "title": "Paper 1 Question 2(g2)",
+              "marks": 7,
+              "isCalculation": false,
+              "direct_available": 0.7,
+              "indirect_available": 2.5,
+              "thinking_available": 3.8
+            },
+            {
+              "code": "J25P1Q2_h",
+              "title": "Paper 1 Question 2(h)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            }
+          ]
+        },
+        {
+          "id": "jan-2025-p2",
+          "code": "J25-P2",
+          "title": "Paper 2",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.4,
+            "thinking_available": 64.6
+          },
+          "questions": [
+            {
+              "code": "J25P2Q1_a",
+              "title": "Paper 2 Question 1(a)",
+              "marks": 70,
+              "isCalculation": true,
+              "direct_available": 7,
+              "indirect_available": 25.3,
+              "thinking_available": 37.7
+            },
+            {
+              "code": "J25P2Q2_b",
+              "title": "Paper 2 Question 2(b)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "J25P2Q2_c",
+              "title": "Paper 2 Question 2(c)",
+              "marks": 8,
+              "isCalculation": false,
+              "direct_available": 0.8,
+              "indirect_available": 2.9,
+              "thinking_available": 4.3
+            },
+            {
+              "code": "J25P2Q2_d",
+              "title": "Paper 2 Question 2(d)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            },
+            {
+              "code": "J25P2Q2_e",
+              "title": "Paper 2 Question 2(e)",
+              "marks": 20,
+              "isCalculation": false,
+              "direct_available": 2,
+              "indirect_available": 7.2,
+              "thinking_available": 10.8
+            },
+            {
+              "code": "J25P2Q2_f",
+              "title": "Paper 2 Question 2(f)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            }
+          ]
+        },
+        {
+          "id": "jan-2025-p3",
+          "code": "J25-P3",
+          "title": "Paper 3",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.3,
+            "thinking_available": 64.7
+          },
+          "questions": [
+            {
+              "code": "J25P3Q1_a",
+              "title": "Paper 3 Question 1(a)",
+              "marks": 33,
+              "isCalculation": false,
+              "direct_available": 3.3,
+              "indirect_available": 11.9,
+              "thinking_available": 17.8
+            },
+            {
+              "code": "J25P3Q1_b",
+              "title": "Paper 3 Question 1(b)",
+              "marks": 43,
+              "isCalculation": false,
+              "direct_available": 4.3,
+              "indirect_available": 15.5,
+              "thinking_available": 23.2
+            },
+            {
+              "code": "J25P3Q2_c",
+              "title": "Paper 3 Question 2(c)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "J25P3Q2_d",
+              "title": "Paper 3 Question 2(d)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "J25P3Q2_e",
+              "title": "Paper 3 Question 2(e)",
+              "marks": 24,
+              "isCalculation": false,
+              "direct_available": 2.4,
+              "indirect_available": 8.7,
+              "thinking_available": 12.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "june-2025",
+      "label": "June 2025 IAC Exam",
+      "papers": [
+        {
+          "id": "june-2025-p1",
+          "code": "JN25-P1",
+          "title": "Paper 1",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.3,
+            "thinking_available": 64.7
+          },
+          "questions": [
+            {
+              "code": "JN25P1Q1_a",
+              "title": "Paper 1 Question 1(a)",
+              "marks": 22,
+              "isCalculation": false,
+              "direct_available": 2.2,
+              "indirect_available": 7.9,
+              "thinking_available": 11.9
+            },
+            {
+              "code": "JN25P1Q1_b",
+              "title": "Paper 1 Question 1(b)",
+              "marks": 11,
+              "isCalculation": false,
+              "direct_available": 1.1,
+              "indirect_available": 4,
+              "thinking_available": 5.9
+            },
+            {
+              "code": "JN25P1Q1_c",
+              "title": "Paper 1 Question 1(c)",
+              "marks": 27,
+              "isCalculation": true,
+              "direct_available": 2.7,
+              "indirect_available": 9.7,
+              "thinking_available": 14.6
+            },
+            {
+              "code": "JN25P1Q1_d",
+              "title": "Paper 1 Question 1(d)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            },
+            {
+              "code": "JN25P1Q2_e",
+              "title": "Paper 1 Question 2(e)",
+              "marks": 14,
+              "isCalculation": false,
+              "direct_available": 1.4,
+              "indirect_available": 5.1,
+              "thinking_available": 7.5
+            },
+            {
+              "code": "JN25P1Q2_f",
+              "title": "Paper 1 Question 2(f)",
+              "marks": 11,
+              "isCalculation": false,
+              "direct_available": 1.1,
+              "indirect_available": 4,
+              "thinking_available": 5.9
+            },
+            {
+              "code": "JN25P1Q2_g1",
+              "title": "Paper 1 Question 2(g1)",
+              "marks": 12,
+              "isCalculation": false,
+              "direct_available": 1.2,
+              "indirect_available": 4.3,
+              "thinking_available": 6.5
+            },
+            {
+              "code": "JN25P1Q2_g2",
+              "title": "Paper 1 Question 2(g2)",
+              "marks": 7,
+              "isCalculation": false,
+              "direct_available": 0.7,
+              "indirect_available": 2.5,
+              "thinking_available": 3.8
+            },
+            {
+              "code": "JN25P1Q2_h",
+              "title": "Paper 1 Question 2(h)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            }
+          ]
+        },
+        {
+          "id": "june-2025-p2",
+          "code": "JN25-P2",
+          "title": "Paper 2",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.4,
+            "thinking_available": 64.6
+          },
+          "questions": [
+            {
+              "code": "JN25P2Q1_a",
+              "title": "Paper 2 Question 1(a)",
+              "marks": 70,
+              "isCalculation": true,
+              "direct_available": 7,
+              "indirect_available": 25.3,
+              "thinking_available": 37.7
+            },
+            {
+              "code": "JN25P2Q2_b",
+              "title": "Paper 2 Question 2(b)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "JN25P2Q2_c",
+              "title": "Paper 2 Question 2(c)",
+              "marks": 8,
+              "isCalculation": false,
+              "direct_available": 0.8,
+              "indirect_available": 2.9,
+              "thinking_available": 4.3
+            },
+            {
+              "code": "JN25P2Q2_d",
+              "title": "Paper 2 Question 2(d)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            },
+            {
+              "code": "JN25P2Q2_e",
+              "title": "Paper 2 Question 2(e)",
+              "marks": 20,
+              "isCalculation": false,
+              "direct_available": 2,
+              "indirect_available": 7.2,
+              "thinking_available": 10.8
+            },
+            {
+              "code": "JN25P2Q2_f",
+              "title": "Paper 2 Question 2(f)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            }
+          ]
+        },
+        {
+          "id": "june-2025-p3",
+          "code": "JN25-P3",
+          "title": "Paper 3",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.3,
+            "thinking_available": 64.7
+          },
+          "questions": [
+            {
+              "code": "JN25P3Q1_a",
+              "title": "Paper 3 Question 1(a)",
+              "marks": 33,
+              "isCalculation": false,
+              "direct_available": 3.3,
+              "indirect_available": 11.9,
+              "thinking_available": 17.8
+            },
+            {
+              "code": "JN25P3Q1_b",
+              "title": "Paper 3 Question 1(b)",
+              "marks": 43,
+              "isCalculation": false,
+              "direct_available": 4.3,
+              "indirect_available": 15.5,
+              "thinking_available": 23.2
+            },
+            {
+              "code": "JN25P3Q2_c",
+              "title": "Paper 3 Question 2(c)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "JN25P3Q2_d",
+              "title": "Paper 3 Question 2(d)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "JN25P3Q2_e",
+              "title": "Paper 3 Question 2(e)",
+              "marks": 24,
+              "isCalculation": false,
+              "direct_available": 2.4,
+              "indirect_available": 8.7,
+              "thinking_available": 12.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nov-2025",
+      "label": "November 2025 IAC Exam",
+      "papers": [
+        {
+          "id": "nov-2025-p1",
+          "code": "N25-P1",
+          "title": "Paper 1",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.3,
+            "thinking_available": 64.7
+          },
+          "questions": [
+            {
+              "code": "N25P1Q1_a",
+              "title": "Paper 1 Question 1(a)",
+              "marks": 22,
+              "isCalculation": false,
+              "direct_available": 2.2,
+              "indirect_available": 7.9,
+              "thinking_available": 11.9
+            },
+            {
+              "code": "N25P1Q1_b",
+              "title": "Paper 1 Question 1(b)",
+              "marks": 11,
+              "isCalculation": false,
+              "direct_available": 1.1,
+              "indirect_available": 4,
+              "thinking_available": 5.9
+            },
+            {
+              "code": "N25P1Q1_c",
+              "title": "Paper 1 Question 1(c)",
+              "marks": 27,
+              "isCalculation": true,
+              "direct_available": 2.7,
+              "indirect_available": 9.7,
+              "thinking_available": 14.6
+            },
+            {
+              "code": "N25P1Q1_d",
+              "title": "Paper 1 Question 1(d)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            },
+            {
+              "code": "N25P1Q2_e",
+              "title": "Paper 1 Question 2(e)",
+              "marks": 14,
+              "isCalculation": false,
+              "direct_available": 1.4,
+              "indirect_available": 5.1,
+              "thinking_available": 7.5
+            },
+            {
+              "code": "N25P1Q2_f",
+              "title": "Paper 1 Question 2(f)",
+              "marks": 11,
+              "isCalculation": false,
+              "direct_available": 1.1,
+              "indirect_available": 4,
+              "thinking_available": 5.9
+            },
+            {
+              "code": "N25P1Q2_g1",
+              "title": "Paper 1 Question 2(g1)",
+              "marks": 12,
+              "isCalculation": false,
+              "direct_available": 1.2,
+              "indirect_available": 4.3,
+              "thinking_available": 6.5
+            },
+            {
+              "code": "N25P1Q2_g2",
+              "title": "Paper 1 Question 2(g2)",
+              "marks": 7,
+              "isCalculation": false,
+              "direct_available": 0.7,
+              "indirect_available": 2.5,
+              "thinking_available": 3.8
+            },
+            {
+              "code": "N25P1Q2_h",
+              "title": "Paper 1 Question 2(h)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            }
+          ]
+        },
+        {
+          "id": "nov-2025-p2",
+          "code": "N25-P2",
+          "title": "Paper 2",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.4,
+            "thinking_available": 64.6
+          },
+          "questions": [
+            {
+              "code": "N25P2Q1_a",
+              "title": "Paper 2 Question 1(a)",
+              "marks": 70,
+              "isCalculation": true,
+              "direct_available": 7,
+              "indirect_available": 25.3,
+              "thinking_available": 37.7
+            },
+            {
+              "code": "N25P2Q2_b",
+              "title": "Paper 2 Question 2(b)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "N25P2Q2_c",
+              "title": "Paper 2 Question 2(c)",
+              "marks": 8,
+              "isCalculation": false,
+              "direct_available": 0.8,
+              "indirect_available": 2.9,
+              "thinking_available": 4.3
+            },
+            {
+              "code": "N25P2Q2_d",
+              "title": "Paper 2 Question 2(d)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            },
+            {
+              "code": "N25P2Q2_e",
+              "title": "Paper 2 Question 2(e)",
+              "marks": 20,
+              "isCalculation": false,
+              "direct_available": 2,
+              "indirect_available": 7.2,
+              "thinking_available": 10.8
+            },
+            {
+              "code": "N25P2Q2_f",
+              "title": "Paper 2 Question 2(f)",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            }
+          ]
+        },
+        {
+          "id": "nov-2025-p3",
+          "code": "N25-P3",
+          "title": "Paper 3",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.3,
+            "thinking_available": 64.7
+          },
+          "questions": [
+            {
+              "code": "N25P3Q1_a",
+              "title": "Paper 3 Question 1(a)",
+              "marks": 33,
+              "isCalculation": false,
+              "direct_available": 3.3,
+              "indirect_available": 11.9,
+              "thinking_available": 17.8
+            },
+            {
+              "code": "N25P3Q1_b",
+              "title": "Paper 3 Question 1(b)",
+              "marks": 43,
+              "isCalculation": false,
+              "direct_available": 4.3,
+              "indirect_available": 15.5,
+              "thinking_available": 23.2
+            },
+            {
+              "code": "N25P3Q2_c",
+              "title": "Paper 3 Question 2(c)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "N25P3Q2_d",
+              "title": "Paper 3 Question 2(d)",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "N25P3Q2_e",
+              "title": "Paper 3 Question 2(e)",
+              "marks": 24,
+              "isCalculation": false,
+              "direct_available": 2.4,
+              "indirect_available": 8.7,
+              "thinking_available": 12.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "june-2026",
+      "label": "June 2026 IAC Exam",
+      "papers": [
+        {
+          "id": "iac-2026-p1",
+          "code": "IAC-2026-P1",
+          "title": "Paper 1",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.3,
+            "thinking_available": 64.7
+          },
+          "questions": [
+            {
+              "code": "P1Q1_a",
+              "title": "Inpahla SWOT",
+              "marks": 22,
+              "isCalculation": false,
+              "direct_available": 2.2,
+              "indirect_available": 7.9,
+              "thinking_available": 11.9
+            },
+            {
+              "code": "P1Q1_b",
+              "title": "Inpahla Turnaround",
+              "marks": 11,
+              "isCalculation": false,
+              "direct_available": 1.1,
+              "indirect_available": 4,
+              "thinking_available": 5.9
+            },
+            {
+              "code": "P1Q1_c",
+              "title": "Inpahla Capital Budget NPV",
+              "marks": 27,
+              "isCalculation": true,
+              "direct_available": 2.7,
+              "indirect_available": 9.7,
+              "thinking_available": 14.6
+            },
+            {
+              "code": "P1Q1_d",
+              "title": "Inpahla SDGs",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            },
+            {
+              "code": "P1Q2_e",
+              "title": "Inpahla Ethics & Covenants",
+              "marks": 14,
+              "isCalculation": false,
+              "direct_available": 1.4,
+              "indirect_available": 5.1,
+              "thinking_available": 7.5
+            },
+            {
+              "code": "P1Q2_f",
+              "title": "Inpahla Client Acceptance",
+              "marks": 11,
+              "isCalculation": false,
+              "direct_available": 1.1,
+              "indirect_available": 4,
+              "thinking_available": 5.9
+            },
+            {
+              "code": "P1Q2_g1",
+              "title": "Inpahla FS Risk Assessment",
+              "marks": 12,
+              "isCalculation": false,
+              "direct_available": 1.2,
+              "indirect_available": 4.3,
+              "thinking_available": 6.5
+            },
+            {
+              "code": "P1Q2_g2",
+              "title": "Inpahla Audit Response",
+              "marks": 7,
+              "isCalculation": false,
+              "direct_available": 0.7,
+              "indirect_available": 2.5,
+              "thinking_available": 3.8
+            },
+            {
+              "code": "P1Q2_h",
+              "title": "Inpahla Going Concern Audit",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            }
+          ]
+        },
+        {
+          "id": "iac-2026-p2",
+          "code": "IAC-2026-P2",
+          "title": "Paper 2",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.4,
+            "thinking_available": 64.6
+          },
+          "questions": [
+            {
+              "code": "P2Q1_a",
+              "title": "Med4Me Consolidated Direct Cash Flow",
+              "marks": 70,
+              "isCalculation": true,
+              "direct_available": 7,
+              "indirect_available": 25.3,
+              "thinking_available": 37.7
+            },
+            {
+              "code": "P2Q2_b",
+              "title": "Med4Me Loyalty Programme Tax",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "P2Q2_c",
+              "title": "Med4Me SARs s8C Tax",
+              "marks": 8,
+              "isCalculation": false,
+              "direct_available": 0.8,
+              "indirect_available": 2.9,
+              "thinking_available": 4.3
+            },
+            {
+              "code": "P2Q2_d",
+              "title": "Med4Me VAT Branch Registration",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            },
+            {
+              "code": "P2Q2_e",
+              "title": "Med4Me Clinic Expansion Tax",
+              "marks": 20,
+              "isCalculation": false,
+              "direct_available": 2,
+              "indirect_available": 7.2,
+              "thinking_available": 10.8
+            },
+            {
+              "code": "P2Q2_f",
+              "title": "Med4Me Management Fees s80A",
+              "marks": 6,
+              "isCalculation": false,
+              "direct_available": 0.6,
+              "indirect_available": 2.2,
+              "thinking_available": 3.2
+            }
+          ]
+        },
+        {
+          "id": "iac-2026-p3",
+          "code": "IAC-2026-P3",
+          "title": "Paper 3",
+          "total_marks": 120,
+          "buried_treasure": {
+            "direct_available": 12,
+            "indirect_available": 43.3,
+            "thinking_available": 64.7
+          },
+          "questions": [
+            {
+              "code": "P3Q1_a",
+              "title": "Beita Financial & Operational Risks",
+              "marks": 33,
+              "isCalculation": false,
+              "direct_available": 3.3,
+              "indirect_available": 11.9,
+              "thinking_available": 17.8
+            },
+            {
+              "code": "P3Q1_b",
+              "title": "Beita Breakeven & Costing",
+              "marks": 43,
+              "isCalculation": false,
+              "direct_available": 4.3,
+              "indirect_available": 15.5,
+              "thinking_available": 23.2
+            },
+            {
+              "code": "P3Q2_c",
+              "title": "Beita Governance & Ethics",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "P3Q2_d",
+              "title": "Beita Minimum Wage NOCLAR",
+              "marks": 10,
+              "isCalculation": false,
+              "direct_available": 1,
+              "indirect_available": 3.6,
+              "thinking_available": 5.4
+            },
+            {
+              "code": "P3Q2_e",
+              "title": "Beita Share & Dividend Audit",
+              "marks": 24,
+              "isCalculation": false,
+              "direct_available": 2.4,
+              "indirect_available": 8.7,
+              "thinking_available": 12.9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

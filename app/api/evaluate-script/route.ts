@@ -21,6 +21,13 @@ import {
   formatBuriedTreasureDiagnostics,
   type MarkTierInput,
 } from "@/lib/buried-treasure-calculator";
+import {
+  findPastPaper,
+  paperBuriedTreasureCaps,
+  pastPaperDisplayName,
+  pastPaperSectionCapError,
+  type PastPaper,
+} from "@/lib/past-papers";
 import { BURIED_TREASURE_SYSTEM_PROMPT } from "@/lib/prompts/buried-treasure";
 import type { BuriedTreasureAnalysis, TierScore } from "@/types/evaluation";
 
@@ -153,14 +160,40 @@ function asMarkNumber(value: unknown, fallback: number): number {
   return Number.isFinite(n) ? n : fallback;
 }
 
+function sumQuestionBuriedTreasureEarned(body: Record<string, unknown> | null): {
+  direct: number;
+  indirect: number;
+  thinking: number;
+} | null {
+  const raw = Array.isArray(body?.questions) ? body.questions : [];
+  let sawTierMarks = false;
+  let direct = 0;
+  let indirect = 0;
+  let thinking = 0;
+  for (const item of raw) {
+    if (!item || typeof item !== "object") continue;
+    const row = item as Record<string, unknown>;
+    if (row.direct_earned != null || row.indirect_earned != null || row.thinking_earned != null) {
+      sawTierMarks = true;
+    }
+    direct += asMarkNumber(row.direct_earned, 0);
+    indirect += asMarkNumber(row.indirect_earned, 0);
+    thinking += asMarkNumber(row.thinking_earned, 0);
+  }
+  return sawTierMarks ? { direct, indirect, thinking } : null;
+}
+
 function buriedTreasureMarkInput(
   body: Record<string, unknown> | null,
-  log: BuriedTreasureLog | null
+  log: BuriedTreasureLog | null,
+  paper: PastPaper | null
 ): MarkTierInput {
   const nested =
     body?.buried_treasure && typeof body.buried_treasure === "object"
       ? (body.buried_treasure as Record<string, unknown>)
       : body || {};
+  const caps = paper ? paperBuriedTreasureCaps(paper) : null;
+  const earnedFromQuestions = sumQuestionBuriedTreasureEarned(body);
   const macroAvailable = asMarkNumber(
     nested.macro_comm_available ?? nested.macroCommAvailable ?? nested.x1_available,
     0
@@ -170,23 +203,32 @@ function buriedTreasureMarkInput(
     directMarks: {
       available: asMarkNumber(
         nested.direct_available ?? nested.tier1_available,
-        log?.tier1_available ?? BURIED_TREASURE_TIERS[0].available
+        caps?.direct_available ?? log?.tier1_available ?? BURIED_TREASURE_TIERS[0].available
       ),
-      earned: asMarkNumber(nested.direct_earned ?? nested.tier1_earned, log?.tier1_earned ?? 0),
+      earned: asMarkNumber(
+        nested.direct_earned ?? nested.tier1_earned,
+        earnedFromQuestions?.direct ?? log?.tier1_earned ?? 0
+      ),
     },
     indirectMarks: {
       available: asMarkNumber(
         nested.indirect_available ?? nested.tier2_available,
-        log?.tier2_available ?? BURIED_TREASURE_TIERS[1].available
+        caps?.indirect_available ?? log?.tier2_available ?? BURIED_TREASURE_TIERS[1].available
       ),
-      earned: asMarkNumber(nested.indirect_earned ?? nested.tier2_earned, log?.tier2_earned ?? 0),
+      earned: asMarkNumber(
+        nested.indirect_earned ?? nested.tier2_earned,
+        earnedFromQuestions?.indirect ?? log?.tier2_earned ?? 0
+      ),
     },
     thinkingMarks: {
       available: asMarkNumber(
         nested.thinking_available ?? nested.tier3_available,
-        log?.tier3_available ?? BURIED_TREASURE_TIERS[2].available
+        caps?.thinking_available ?? log?.tier3_available ?? BURIED_TREASURE_TIERS[2].available
       ),
-      earned: asMarkNumber(nested.thinking_earned ?? nested.tier3_earned, log?.tier3_earned ?? 0),
+      earned: asMarkNumber(
+        nested.thinking_earned ?? nested.tier3_earned,
+        earnedFromQuestions?.thinking ?? log?.tier3_earned ?? 0
+      ),
     },
     macroCommMarks: macroAvailable > 0 ? { available: macroAvailable, earned: macroEarned } : undefined,
   };
@@ -236,25 +278,58 @@ export async function POST(request: NextRequest) {
   }
 
   const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
-  const paper_name = String(body?.paper_name || "").trim();
+  const paper_id = String(body?.paper_id || "").trim();
+  const mappedPaper = findPastPaper(paper_id);
+  if (paper_id && !mappedPaper) {
+    return NextResponse.json({ error: "Unknown past paper. Choose one of the listed IAC sittings." }, { status: 400 });
+  }
+  const selectedPaper = mappedPaper?.paper || null;
+  const paper_name =
+    String(body?.paper_name || "").trim() ||
+    (mappedPaper ? pastPaperDisplayName(mappedPaper.sitting, mappedPaper.paper) : "");
   const student_notes = String(body?.student_notes || "").trim();
   const script_text = String(body?.script_text || body?.raw_script || body?.script || "").trim();
   const blocks = parseQuestionBlocks(body);
 
   if (!paper_name) {
-    return NextResponse.json({ error: "Enter the paper name." }, { status: 400 });
+    return NextResponse.json({ error: "Enter the paper name or select a past paper." }, { status: 400 });
   }
   if (!blocks.length && !script_text && !student_notes) {
     return NextResponse.json({ error: "Enter at least one question block, notes, or raw script text." }, { status: 400 });
   }
-  for (const block of blocks) {
-    const capError = sectionCapError(
-      block.question_code,
-      block.tier1_available + block.tier2_available,
-      block.tier1_earned + block.tier2_earned
-    );
-    if (capError) {
-      return NextResponse.json({ error: capError }, { status: 400 });
+  if (selectedPaper) {
+    const rawQuestions = Array.isArray(body?.questions) ? body.questions : [];
+    for (const item of rawQuestions) {
+      if (!item || typeof item !== "object") continue;
+      const row = item as Record<string, unknown>;
+      const code = String(row.question_code || "").trim();
+      if (!code) continue;
+      const question = selectedPaper.questions.find((entry) => entry.code === code);
+      if (!question) {
+        return NextResponse.json(
+          { error: `${code} is not a question on ${selectedPaper.title} (${selectedPaper.code}).` },
+          { status: 400 }
+        );
+      }
+      const capError = pastPaperSectionCapError(question, {
+        direct: asMarkNumber(row.direct_earned, 0),
+        indirect: asMarkNumber(row.indirect_earned, 0),
+        thinking: asMarkNumber(row.thinking_earned, 0),
+      });
+      if (capError) {
+        return NextResponse.json({ error: capError }, { status: 400 });
+      }
+    }
+  } else {
+    for (const block of blocks) {
+      const capError = sectionCapError(
+        block.question_code,
+        block.tier1_available + block.tier2_available,
+        block.tier1_earned + block.tier2_earned
+      );
+      if (capError) {
+        return NextResponse.json({ error: capError }, { status: 400 });
+      }
     }
   }
 
@@ -293,7 +368,7 @@ export async function POST(request: NextRequest) {
   const latestVolume = await fetchLatestVolumeAccuracy(supabase, user.id).catch(() => null);
   const latestBuriedTreasure = await fetchLatestBuriedTreasure(supabase, user.id).catch(() => null);
   const buriedTreasureDiagnostics = computeBuriedTreasureDiagnostics(
-    buriedTreasureMarkInput(body, latestBuriedTreasure)
+    buriedTreasureMarkInput(body, latestBuriedTreasure, selectedPaper)
   );
 
   let matches: Awaited<ReturnType<typeof matchKnowledgeBase>> = [];
@@ -327,6 +402,10 @@ export async function POST(request: NextRequest) {
         role: "user",
         content: [
           `Paper: ${paper_name}`,
+          paper_id ? `Paper id: ${paper_id}` : "",
+          selectedPaper
+            ? `Selected past paper caps: Direct ${selectedPaper.buried_treasure.direct_available} / Indirect ${selectedPaper.buried_treasure.indirect_available} / Thinking ${selectedPaper.buried_treasure.thinking_available} of ${selectedPaper.total_marks} Total Marks`
+            : "",
           blocks.length
             ? `Overall total: ${totals.total_earned} / ${totals.total_available} (${totals.total_score_pct}%)`
             : "",

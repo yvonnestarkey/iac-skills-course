@@ -13,46 +13,41 @@ import {
   type DiagnosticProgress,
 } from "@/lib/diagnostic-progress";
 import {
-  EXAM_SITTINGS,
-  findPaper,
-  findQuestion,
-  findSitting,
-  paperDisplayName,
-  paperLabel,
-  questionLabel,
-  splitSectionMarks,
-} from "@/lib/exam-structure";
+  DEFAULT_PAST_PAPER_SITTING_ID,
+  draftsFromPastPaper,
+  findPastPaperSitting,
+  knowledgeApplicationCaps,
+  pastPaperDisplayName,
+  PAST_PAPER_SITTINGS,
+  type PastPaper,
+  type PastPaperDraft,
+  type PastPaperSitting,
+} from "@/lib/past-papers";
 import { useStudentSession } from "@/lib/student-session";
 
-type QuestionDraft = {
-  question_code: string;
-  tier1_earned: string;
-  tier1_available: string;
-  tier2_earned: string;
-  tier2_available: string;
-};
+function sittingOrDefault(id: string): PastPaperSitting {
+  return findPastPaperSitting(id) || findPastPaperSitting(DEFAULT_PAST_PAPER_SITTING_ID) || PAST_PAPER_SITTINGS[0];
+}
 
-function draftFromQuestion(code: string, marks: number): QuestionDraft {
-  const split = splitSectionMarks(marks);
-  return {
-    question_code: code,
-    tier1_earned: "",
-    tier1_available: String(split.knowledge),
-    tier2_earned: "",
-    tier2_available: String(split.application),
-  };
+function paperOrDefault(sitting: PastPaperSitting, paperId: string): PastPaper {
+  return sitting.papers.find((item) => item.id === paperId) || sitting.papers[0];
+}
+
+function clampToCap(value: string, cap: number): string {
+  if (value === "") return "";
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return value;
+  return String(Math.max(0, Math.min(numeric, cap)));
 }
 
 export default function ScriptEvaluator() {
   const { user } = useStudentSession();
-  const defaultExam = EXAM_SITTINGS[0];
-  const defaultPaper = defaultExam.papers[0];
-  const [examId, setExamId] = useState(defaultExam.id);
+  const defaultSitting = sittingOrDefault(DEFAULT_PAST_PAPER_SITTING_ID);
+  const defaultPaper = defaultSitting.papers[0];
+  const [sittingId, setSittingId] = useState(defaultSitting.id);
   const [paperId, setPaperId] = useState(defaultPaper.id);
   const [studentNotes, setStudentNotes] = useState("");
-  const [questions, setQuestions] = useState<QuestionDraft[]>([
-    draftFromQuestion(defaultPaper.questions[0].code, defaultPaper.questions[0].marks),
-  ]);
+  const [questions, setQuestions] = useState<PastPaperDraft[]>(() => draftsFromPastPaper(defaultPaper));
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -68,9 +63,9 @@ export default function ScriptEvaluator() {
     ready: false,
   });
 
-  const sitting = findSitting(examId) || defaultExam;
-  const paper = findPaper(examId, paperId) || sitting.papers[0];
-  const paperName = paperDisplayName(sitting, paper);
+  const sitting = sittingOrDefault(sittingId);
+  const paper = paperOrDefault(sitting, paperId);
+  const paperName = pastPaperDisplayName(sitting, paper);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -79,32 +74,27 @@ export default function ScriptEvaluator() {
   }, [user?.id]);
 
   const canSubmit = useMemo(() => {
-    return Boolean(progress.ready && paperName && questions.some((question) => question.question_code.trim()) && !busy);
+    return Boolean(progress.ready && paperName && questions.length && !busy);
   }, [progress.ready, paperName, questions, busy]);
 
-  const setQuestion = (index: number, key: keyof QuestionDraft, value: string) => {
-    setQuestions((prev) =>
-      prev.map((question, i) => {
-        if (i !== index) return question;
-        if (key === "question_code") {
-          const mapped = findQuestion(examId, paper.id, value);
-          return mapped ? draftFromQuestion(mapped.code, mapped.marks) : { ...question, question_code: value };
-        }
-        const mapped = findQuestion(examId, paper.id, question.question_code);
-        const cap = mapped?.marks;
-        const numeric = Number(value);
-        const nextValue = cap != null && Number.isFinite(numeric) ? String(Math.min(numeric, cap)) : value;
-        return { ...question, [key]: nextValue };
-      })
-    );
+  const selectPaper = (nextSittingId: string, nextPaperId?: string) => {
+    const nextSitting = sittingOrDefault(nextSittingId);
+    const nextPaper = paperOrDefault(nextSitting, nextPaperId || nextSitting.papers[0].id);
+    setSittingId(nextSitting.id);
+    setPaperId(nextPaper.id);
+    setQuestions(draftsFromPastPaper(nextPaper));
   };
 
-  const changePaper = (nextPaperId: string, nextExamId = examId) => {
-    const nextSitting = findSitting(nextExamId) || defaultExam;
-    const nextPaper = findPaper(nextExamId, nextPaperId) || nextSitting.papers[0];
-    const first = nextPaper.questions[0];
-    setPaperId(nextPaper.id);
-    setQuestions([draftFromQuestion(first.code, first.marks)]);
+  const setEarned = (code: string, key: "direct_earned" | "indirect_earned" | "thinking_earned", value: string) => {
+    const mapped = paper.questions.find((item) => item.code === code);
+    const cap =
+      key === "direct_earned"
+        ? mapped?.direct_available
+        : key === "indirect_earned"
+          ? mapped?.indirect_available
+          : mapped?.thinking_available;
+    const nextValue = cap != null ? clampToCap(value, cap) : value;
+    setQuestions((prev) => prev.map((row) => (row.question_code === code ? { ...row, [key]: nextValue } : row)));
   };
 
   const onUpload = async (file: File | undefined) => {
@@ -128,19 +118,31 @@ export default function ScriptEvaluator() {
     setBusy(true);
     setError("");
     try {
-      const payloadQuestions = questions
-        .filter((question) => question.question_code.trim())
-        .map((question) => ({
-          question_code: question.question_code.trim(),
-          tier1_earned: Number(question.tier1_earned || 0),
-          tier1_available: Number(question.tier1_available || 0),
-          tier2_earned: Number(question.tier2_earned || 0),
-          tier2_available: Number(question.tier2_available || 0),
-        }));
+      const payloadQuestions = questions.map((row) => {
+        const mapped = paper.questions.find((item) => item.code === row.question_code);
+        const split = mapped ? knowledgeApplicationCaps(mapped) : { knowledge: Number(row.tier1_available || 0), application: Number(row.tier2_available || 0) };
+        const direct = Number(row.direct_earned || 0);
+        const indirect = Number(row.indirect_earned || 0);
+        const thinking = Number(row.thinking_earned || 0);
+        const totalEarned = direct + indirect + thinking;
+        const knowledgeEarned = Math.min(split.knowledge, Math.round(totalEarned * 0.35 * 10) / 10);
+        const applicationEarned = Math.max(0, Math.round((totalEarned - knowledgeEarned) * 10) / 10);
+        return {
+          question_code: row.question_code,
+          direct_earned: direct,
+          indirect_earned: indirect,
+          thinking_earned: thinking,
+          tier1_earned: knowledgeEarned,
+          tier1_available: split.knowledge,
+          tier2_earned: applicationEarned,
+          tier2_available: split.application,
+        };
+      });
       const response = await fetch("/api/evaluate-script", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          paper_id: paper.id,
           paper_name: paperName,
           student_notes: studentNotes.trim(),
           questions: payloadQuestions,
@@ -171,7 +173,7 @@ export default function ScriptEvaluator() {
       <p className="kicker">AI mark report evaluation</p>
       <h1>Generate your diagnostic</h1>
       <p className="muted">
-        Upload your marked script, then enter section scores. The AI report runs only after BMCR, Volume vs Accuracy, Buried Treasure, and this upload are complete.
+        Choose a past paper, then enter Direct, Indirect, and Thinking marks from your marked script. The AI report runs only after BMCR, Volume vs Accuracy, Buried Treasure, and this upload are complete.
       </p>
       <ul className="eval-prereqs">
         <li>{progress.hasBmcr ? "BMCR saved." : "BMCR still needed."}</li>
@@ -187,6 +189,35 @@ export default function ScriptEvaluator() {
           if (canSubmit) void run();
         }}
       >
+        <label>
+          Select Past Paper
+          <select
+            className="select-line"
+            value={sitting.id}
+            onChange={(event) => selectPaper(event.target.value)}
+          >
+            {PAST_PAPER_SITTINGS.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Paper
+          <select className="select-line" value={paper.id} onChange={(event) => selectPaper(sitting.id, event.target.value)}>
+            {sitting.papers.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title} · {item.total_marks} marks
+              </option>
+            ))}
+          </select>
+        </label>
+        <p className="muted small">
+          Buried Treasure caps for this paper: Direct {paper.buried_treasure.direct_available} · Indirect{" "}
+          {paper.buried_treasure.indirect_available} · Thinking {paper.buried_treasure.thinking_available}
+        </p>
+
         <label>
           Upload mark report (PDF)
           <input
@@ -206,133 +237,79 @@ export default function ScriptEvaluator() {
             Finish BMCR, Volume vs Accuracy, and Buried Treasure, and upload your mark report, before the AI evaluation will run.
           </p>
         ) : null}
-        <label>
-          Exam
-          <select
-            className="select-line"
-            value={examId}
-            onChange={(event) => {
-              const next = findSitting(event.target.value) || defaultExam;
-              const firstPaper = next.papers[0];
-              setExamId(next.id);
-              changePaper(firstPaper.id, next.id);
-            }}
-          >
-            {EXAM_SITTINGS.map((exam) => (
-              <option key={exam.id} value={exam.id}>
-                {exam.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Paper
-          <select className="select-line" value={paper.id} onChange={(event) => changePaper(event.target.value)}>
-            {sitting.papers.map((item) => (
-              <option key={item.id} value={item.id}>
-                {paperLabel(item)} · {item.total_marks} marks
-              </option>
-            ))}
-          </select>
-        </label>
 
-        {questions.map((question, index) => {
-          const mapped = findQuestion(examId, paper.id, question.question_code);
-          const cap = mapped?.marks;
-          return (
-            <fieldset key={index} className="eval-block">
-              <legend>Question block {index + 1}</legend>
-              <label>
-                Question
-                <select
-                  className="select-line"
-                  value={question.question_code}
-                  onChange={(event) => setQuestion(index, "question_code", event.target.value)}
-                  required={index === 0}
-                >
-                  {paper.questions.map((item) => (
-                    <option key={item.code} value={item.code}>
-                      {questionLabel(item)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              {cap != null ? <p className="muted small">Section total: {cap} marks</p> : null}
-              <div className="eval-marks">
-                <fieldset>
-                  <legend>Tier 1 Knowledge (~35%)</legend>
-                  <label>
-                    Earned
-                    <input
-                      type="number"
-                      min={0}
-                      max={Number(question.tier1_available || cap || undefined)}
-                      step="0.5"
-                      value={question.tier1_earned}
-                      onChange={(event) => setQuestion(index, "tier1_earned", event.target.value)}
-                      required
-                    />
-                  </label>
-                  <label>
-                    Available
-                    <input
-                      type="number"
-                      min={0}
-                      max={cap}
-                      step="0.5"
-                      value={question.tier1_available}
-                      onChange={(event) => setQuestion(index, "tier1_available", event.target.value)}
-                      required
-                    />
-                  </label>
-                </fieldset>
-                <fieldset>
-                  <legend>Tier 2 Application (~65%)</legend>
-                  <label>
-                    Earned
-                    <input
-                      type="number"
-                      min={0}
-                      max={Number(question.tier2_available || cap || undefined)}
-                      step="0.5"
-                      value={question.tier2_earned}
-                      onChange={(event) => setQuestion(index, "tier2_earned", event.target.value)}
-                      required
-                    />
-                  </label>
-                  <label>
-                    Available
-                    <input
-                      type="number"
-                      min={0}
-                      max={cap}
-                      step="0.5"
-                      value={question.tier2_available}
-                      onChange={(event) => setQuestion(index, "tier2_available", event.target.value)}
-                      required
-                    />
-                  </label>
-                </fieldset>
-              </div>
-              {questions.length > 1 ? (
-                <button className="ghost" type="button" onClick={() => setQuestions((prev) => prev.filter((_, i) => i !== index))}>
-                  Remove block
-                </button>
-              ) : null}
-            </fieldset>
-          );
-        })}
-
-        <button
-          className="ghost"
-          type="button"
-          onClick={() => {
-            const unused = paper.questions.find((item) => !questions.some((row) => row.question_code === item.code)) || paper.questions[0];
-            setQuestions((prev) => [...prev, draftFromQuestion(unused.code, unused.marks)]);
-          }}
-        >
-          Add question block
-        </button>
+        <div className="va-table-wrap">
+          <table className="va-table bt-table">
+            <caption>
+              {paperName} — question codes and mark caps
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Question</th>
+                <th scope="col">Total Marks</th>
+                <th scope="col">Direct cap</th>
+                <th scope="col">Direct got</th>
+                <th scope="col">Indirect cap</th>
+                <th scope="col">Indirect got</th>
+                <th scope="col">Thinking cap</th>
+                <th scope="col">Thinking got</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paper.questions.map((question) => {
+                const row = questions.find((item) => item.question_code === question.code);
+                return (
+                  <tr key={question.code} className={question.isCalculation ? "va-calc" : undefined}>
+                    <th scope="row">
+                      <strong>{question.code}</strong>
+                      <span className="muted small">{question.title}</span>
+                    </th>
+                    <td>{question.marks}</td>
+                    <td>{question.direct_available}</td>
+                    <td>
+                      <input
+                        type="number"
+                        min={0}
+                        max={question.direct_available}
+                        step="0.5"
+                        value={row?.direct_earned ?? ""}
+                        onChange={(event) => setEarned(question.code, "direct_earned", event.target.value)}
+                        aria-label={`${question.code} Direct Marks You Got`}
+                        required
+                      />
+                    </td>
+                    <td>{question.indirect_available}</td>
+                    <td>
+                      <input
+                        type="number"
+                        min={0}
+                        max={question.indirect_available}
+                        step="0.5"
+                        value={row?.indirect_earned ?? ""}
+                        onChange={(event) => setEarned(question.code, "indirect_earned", event.target.value)}
+                        aria-label={`${question.code} Indirect Marks You Got`}
+                        required
+                      />
+                    </td>
+                    <td>{question.thinking_available}</td>
+                    <td>
+                      <input
+                        type="number"
+                        min={0}
+                        max={question.thinking_available}
+                        step="0.5"
+                        value={row?.thinking_earned ?? ""}
+                        onChange={(event) => setEarned(question.code, "thinking_earned", event.target.value)}
+                        aria-label={`${question.code} Thinking Marks You Got`}
+                        required
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
 
         <label className="eval-notes">
           Student notes
