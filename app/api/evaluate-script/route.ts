@@ -1,27 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { getOpenAI, matchKnowledgeBase, EVALUATION_MODEL } from "@/lib/knowledge";
-import { asDroppedMarks, asStringList, type ScriptEvaluationReport } from "@/lib/script-evaluation";
+import {
+  APPLICATION_WEIGHT,
+  KNOWLEDGE_WEIGHT,
+  diagnosticReportSchema,
+  mergeModelReport,
+  parseQuestionBlocks,
+  reportToStorage,
+  summariseBlocks,
+  withQuestionStats,
+} from "@/lib/diagnostic-report";
 import { studentUserFromAuth } from "@/lib/student-lesson";
 
 export const dynamic = "force-dynamic";
 
 const SYSTEM_PROMPT = `You are an expert SAICA/ICAZ/ICAN IAC Exam Evaluator. Analyze the student's Tier 1 Knowledge (~35%) vs. Tier 2 Application (~65%) score breakdown. Cross-reference the provided examiner context to explain why they lost application marks and provide 3 concrete action steps for structured articulation.
 
-Return JSON only with this shape:
-{
-  "knowledge_summary": "string",
-  "application_summary": "string",
-  "dropped_marks_breakdown": [
-    { "area": "string", "likely_loss": "string", "examiner_note": "string" }
-  ],
-  "coaching_recommendation": ["step 1", "step 2", "step 3"]
-}`;
-
-function asNumber(value: unknown): number {
-  const n = typeof value === "number" ? value : Number(value);
-  return Number.isFinite(n) ? n : NaN;
-}
+Use the supplied mark splits. Do not recalculate percentages. For each question block, write what the student likely got right versus where marks were lost. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
 
 export async function POST(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -48,23 +44,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Sign in to run a diagnostic." }, { status: 401 });
   }
 
-  const body = await request.json().catch(() => null);
+  const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
   const paper_name = String(body?.paper_name || "").trim();
-  const question_code = String(body?.question_code || "").trim();
   const student_notes = String(body?.student_notes || "").trim();
-  const tier1_earned = asNumber(body?.tier1_earned);
-  const tier1_available = asNumber(body?.tier1_available);
-  const tier2_earned = asNumber(body?.tier2_earned);
-  const tier2_available = asNumber(body?.tier2_available);
+  const blocks = parseQuestionBlocks(body);
 
-  if (!paper_name || !question_code) {
-    return NextResponse.json({ error: "Enter the paper name and question code." }, { status: 400 });
+  if (!paper_name) {
+    return NextResponse.json({ error: "Enter the paper name." }, { status: 400 });
   }
-  if ([tier1_earned, tier1_available, tier2_earned, tier2_available].some((n) => Number.isNaN(n) || n < 0)) {
-    return NextResponse.json({ error: "Enter valid Tier 1 and Tier 2 marks." }, { status: 400 });
-  }
-  if (tier1_earned > tier1_available || tier2_earned > tier2_available) {
-    return NextResponse.json({ error: "Earned marks cannot exceed available marks." }, { status: 400 });
+  if (!blocks.length) {
+    return NextResponse.json({ error: "Enter at least one question block with valid Tier 1 and Tier 2 marks." }, { status: 400 });
   }
 
   const openai = getOpenAI();
@@ -72,9 +61,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "OPENAI_API_KEY is not set on the server." }, { status: 500 });
   }
 
+  const totals = summariseBlocks(blocks);
+  const scoredBlocks = blocks.map((block) => withQuestionStats(block));
+  const questionQuery = blocks.map((block) => block.question_code).join(" ");
+
   let matches: Awaited<ReturnType<typeof matchKnowledgeBase>> = [];
   try {
-    matches = await matchKnowledgeBase(`${paper_name} ${question_code} IAC examiner commentary application marks`, 5);
+    matches = await matchKnowledgeBase(`${paper_name} ${questionQuery} IAC examiner commentary application marks`, 5);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Knowledge search failed.";
     if (/match_knowledge_base|schema cache|does not exist|vector/i.test(message)) {
@@ -95,18 +88,32 @@ export async function POST(request: NextRequest) {
 
   const completion = await openai.chat.completions.create({
     model: EVALUATION_MODEL,
-    response_format: { type: "json_object" },
-    temperature: 0.3,
+    temperature: 0.2,
+    response_format: {
+      type: "json_schema",
+      json_schema: {
+        name: diagnosticReportSchema.name,
+        strict: true,
+        schema: diagnosticReportSchema.schema as unknown as Record<string, unknown>,
+      },
+    },
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       {
         role: "user",
         content: [
           `Paper: ${paper_name}`,
-          `Question: ${question_code}`,
-          `Tier 1 Knowledge: ${tier1_earned} / ${tier1_available} (~35% of the paper)`,
-          `Tier 2 Application: ${tier2_earned} / ${tier2_available} (~65% of the paper)`,
+          `Overall total: ${totals.total_earned} / ${totals.total_available} (${totals.total_score_pct}%)`,
+          `Tier 1 Knowledge (~${Math.round(KNOWLEDGE_WEIGHT * 100)}%): ${totals.tier1_earned} / ${totals.tier1_available} (${totals.knowledge_pct}%)`,
+          `Tier 2 Application (~${Math.round(APPLICATION_WEIGHT * 100)}%): ${totals.tier2_earned} / ${totals.tier2_available} (${totals.application_pct}%)`,
+          `Calculated primary blocker: ${totals.primary_blocker}`,
           `Student notes: ${student_notes || "(none)"}`,
+          "",
+          "Question blocks with calculated 35/65 splits:",
+          ...scoredBlocks.map(
+            (block) =>
+              `${block.question_code}: available ${block.available_marks}; knowledge ${block.tier1_earned}/${block.tier1_available} (${block.knowledge_earned_pct}%); application ${block.tier2_earned}/${block.tier2_available} (${block.application_earned_pct}%); question total ${block.question_total} (${block.question_total_pct}%)`
+          ),
           "",
           "Examiner context retrieved from the knowledge base:",
           examinerContext || "(No matching examiner commentary was found. Reason from IAC marking principles anyway.)",
@@ -122,32 +129,14 @@ export async function POST(request: NextRequest) {
     parsed = {};
   }
 
-  const report: ScriptEvaluationReport = {
-    knowledge_summary: String(parsed.knowledge_summary || "").trim() || "Knowledge marks were recorded, but the model returned no summary.",
-    application_summary:
-      String(parsed.application_summary || "").trim() || "Application marks were recorded, but the model returned no summary.",
-    dropped_marks_breakdown: asDroppedMarks(parsed.dropped_marks_breakdown),
-    coaching_recommendation: asStringList(parsed.coaching_recommendation).slice(0, 3),
-  };
-  while (report.coaching_recommendation.length < 3) {
-    report.coaching_recommendation.push("Practise articulating the required using a planned structure before writing.");
-  }
+  const report = mergeModelReport(paper_name, student_notes, blocks, parsed);
+  const stored = reportToStorage(report);
 
   const { data, error } = await supabase
     .from("script_evaluations")
     .insert({
       user_id: user.id,
-      paper_name,
-      question_code,
-      tier1_earned,
-      tier1_available,
-      tier2_earned,
-      tier2_available,
-      student_notes,
-      knowledge_summary: report.knowledge_summary,
-      application_summary: report.application_summary,
-      dropped_marks_breakdown: report.dropped_marks_breakdown,
-      coaching_recommendation: report.coaching_recommendation,
+      ...stored,
     })
     .select("id, created_at")
     .single();
@@ -165,13 +154,6 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({
     id: data?.id,
     created_at: data?.created_at,
-    paper_name,
-    question_code,
-    tier1_earned,
-    tier1_available,
-    tier2_earned,
-    tier2_available,
-    student_notes,
     student: studentUserFromAuth(user).email,
     sources: matches.map((row) => ({
       title: row.document_title,
@@ -179,5 +161,13 @@ export async function POST(request: NextRequest) {
       similarity: row.similarity,
     })),
     ...report,
+    knowledge_summary: report.knowledge_summary,
+    application_summary: report.application_summary,
+    dropped_marks_breakdown: report.questions.map((question) => ({
+      area: question.question_code,
+      likely_loss: question.lost_marks.join("; "),
+      examiner_note: question.got_right.join("; "),
+    })),
+    coaching_recommendation: report.skill_drills,
   });
 }

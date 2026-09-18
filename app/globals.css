@@ -5291,9 +5291,8 @@ a.live-session-watch:hover {
   border-color: var(--link);
 }
 
-.eval-marks {
+.eval-block {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin: 0;
   padding: 12px 14px 14px;
@@ -5301,10 +5300,115 @@ a.live-session-watch:hover {
   border-radius: 14px;
 }
 
+.eval-block legend,
 .eval-marks legend {
   padding: 0 6px;
   font-family: var(--serif);
   font-weight: 700;
+}
+
+.eval-marks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.eval-marks fieldset {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.diag-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 12px 0 18px;
+}
+
+.diag-table-wrap,
+.diag-breakdown,
+.diag-verdict {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.diag-table-wrap {
+  overflow-x: auto;
+}
+
+.diag-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.diag-table th,
+.diag-table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.diag-q {
+  border-top: 1px solid var(--line);
+  padding: 10px 0;
+}
+
+.diag-q summary {
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  list-style: none;
+}
+
+.diag-q summary::-webkit-details-marker {
+  display: none;
+}
+
+.diag-q-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.diag-q-grid h4 {
+  margin-bottom: 6px;
+}
+
+.diag-verdict {
+  background: #fff6f9;
+  border-color: var(--link);
+}
+
+.diag-verdict h3 {
+  color: var(--link);
+}
+
+@media (max-width: 800px) {
+  .eval-marks,
+  .eval-marks fieldset,
+  .eval-scores,
+  .eval-grid,
+  .diag-overview,
+  .diag-q-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .eval-scores {
@@ -5386,10 +5490,3 @@ a.live-session-watch:hover {
   border-color: var(--link);
 }
 
-@media (max-width: 800px) {
-  .eval-marks,
-  .eval-scores,
-  .eval-grid {
-    grid-template-columns: 1fr;
-  }
-}
