@@ -62,7 +62,7 @@ export default function StudentDashboard() {
         <section className="student-tools" aria-label="Script evaluator">
           <Link href="/student/evaluator" className="student-hub-card student-hub-card-featured">
             <strong>Script Evaluator</strong>
-            <p>Open BMCR, Volume vs Accuracy, and the AI mark report evaluation from one place.</p>
+            <p>Open BMCR, Volume vs Accuracy, Buried Treasure, and the AI mark report evaluation from one place.</p>
           </Link>
         </section>
       )}

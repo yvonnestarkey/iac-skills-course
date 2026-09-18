@@ -8,6 +8,7 @@ import { useStudentSession } from "@/lib/student-session";
 const EMPTY: DiagnosticProgress = {
   hasBmcr: false,
   hasVolume: false,
+  hasBuriedTreasure: false,
   hasMarkReport: false,
   markReport: null,
   ready: false,
@@ -27,7 +28,7 @@ export default function ScriptEvaluatorHub() {
       <p className="kicker">Script evaluator</p>
       <h1>Diagnostic tools</h1>
       <p className="muted">
-        Work through the steps in order. Complete the BMCR Tool and Volume vs Accuracy, then upload your mark report. The AI evaluation unlocks only after all three are done.
+        Work through the steps in order. Complete BMCR, Volume vs Accuracy, and Buried Treasure, then upload your mark report. The AI evaluation unlocks only after all four are done.
       </p>
       <ol className="eval-hub-steps" aria-label="Script evaluator steps">
         <li className="eval-hub-step">
@@ -56,13 +57,25 @@ export default function ScriptEvaluatorHub() {
         </li>
         <li className="eval-hub-step">
           <span className="eval-hub-step-num">3</span>
+          <Link href="/student/buried-treasure" className="primary">
+            Buried Treasure
+          </Link>
+          <div className="eval-hub-step-copy">
+            {progress.hasBuriedTreasure ? <span className="pill">Done</span> : <span className="muted small">To do</span>}
+            <p>
+              Measure how effectively you extract value from the case study across Direct, Indirect, and Thinking marks.
+            </p>
+          </div>
+        </li>
+        <li className="eval-hub-step">
+          <span className="eval-hub-step-num">4</span>
           <Link href="/student/evaluator/report" className="primary">
             AI Mark Report Evaluation
           </Link>
           <div className="eval-hub-step-copy">
-            {progress.ready ? <span className="pill">Ready</span> : <span className="muted small">Locked until steps 1 and 2 plus your upload are complete</span>}
+            {progress.ready ? <span className="pill">Ready</span> : <span className="muted small">Locked until steps 1–3 plus your upload are complete</span>}
             <p>
-              Upload your marked script and generate the first-person Tier 1 vs Tier 2 diagnostic. The report will not run until BMCR, Volume vs Accuracy, and your mark report are all in.
+              Upload your marked script and generate the first-person diagnostic. The report will not run until BMCR, Volume vs Accuracy, Buried Treasure, and your mark report are all in.
             </p>
           </div>
         </li>

@@ -7,7 +7,7 @@ import { useCoursePreview } from "@/lib/course-preview";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentNav } from "@/lib/student-nav";
 
-const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator", "dashboard", "bmcr", "volume-accuracy"]);
+const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator", "dashboard", "bmcr", "volume-accuracy", "buried-treasure"]);
 
 export default function StudentCourseNav() {
   const { outline, completed, submissions, surveyReviews } = useStudentSession();

@@ -59,6 +59,7 @@ export default function ScriptEvaluator() {
   const [progress, setProgress] = useState<DiagnosticProgress>({
     hasBmcr: false,
     hasVolume: false,
+    hasBuriedTreasure: false,
     hasMarkReport: false,
     markReport: null,
     ready: false,
@@ -118,7 +119,7 @@ export default function ScriptEvaluator() {
 
   const run = async () => {
     if (!progress.ready) {
-      setError("Complete the BMCR Tool, Volume vs Accuracy, and upload your mark report before generating the AI evaluation.");
+      setError("Complete the BMCR Tool, Volume vs Accuracy, Buried Treasure, and upload your mark report before generating the AI evaluation.");
       return;
     }
     setBusy(true);
@@ -164,11 +165,12 @@ export default function ScriptEvaluator() {
       <p className="kicker">AI mark report evaluation</p>
       <h1>Generate your diagnostic</h1>
       <p className="muted">
-        Upload your marked script, then enter section scores. The AI report runs only after BMCR, Volume vs Accuracy, and this upload are complete.
+        Upload your marked script, then enter section scores. The AI report runs only after BMCR, Volume vs Accuracy, Buried Treasure, and this upload are complete.
       </p>
       <ul className="eval-prereqs">
         <li>{progress.hasBmcr ? "BMCR saved." : "BMCR still needed."}</li>
         <li>{progress.hasVolume ? "Volume vs Accuracy saved." : "Volume vs Accuracy still needed."}</li>
+        <li>{progress.hasBuriedTreasure ? "Buried Treasure saved." : "Buried Treasure still needed."}</li>
         <li>{progress.hasMarkReport ? `Mark report uploaded${progress.markReport?.file_name ? `: ${progress.markReport.file_name}` : "."}` : "Mark report upload still needed."}</li>
       </ul>
 
@@ -195,7 +197,7 @@ export default function ScriptEvaluator() {
         {uploading ? <p className="waiting">Uploading mark report…</p> : null}
         {!progress.ready ? (
           <p className="notice">
-            Finish BMCR and Volume vs Accuracy, and upload your mark report, before the AI evaluation will run.
+            Finish BMCR, Volume vs Accuracy, and Buried Treasure, and upload your mark report, before the AI evaluation will run.
           </p>
         ) : null}
         <label>

@@ -16,6 +16,7 @@ import { studentUserFromAuth } from "@/lib/student-lesson";
 import { sectionCapError } from "@/lib/exam-structure";
 import { fetchDiagnosticProgress, formatMarkReportContext } from "@/lib/diagnostic-progress";
 import { fetchLatestBmcr, fetchLatestVolumeAccuracy, formatBmcrContext, formatVolumeContext } from "@/lib/volume-accuracy";
+import { fetchLatestBuriedTreasure, formatBuriedTreasureContext } from "@/lib/buried-treasure";
 
 export const dynamic = "force-dynamic";
 
@@ -42,7 +43,17 @@ Volume vs Accuracy rules (use the supplied ratios; do not recompute them):
 - Calculation/disclosure sections have Points Wrote = N/A. Do not use them in volume or accuracy ratios. Tag them N/A - Calculation.
 If Volume % < 100% AND Accuracy % >= 65%, tag Volume Deficit: high point accuracy, but fewer points than Total Marks; they must expand breadth/depth to reach full mark potential.
 If Volume % >= 100% AND Accuracy % < 50%, tag Accuracy Deficit: sufficient point volume, but low accuracy per point; they must write precise, scenario-locked technical statements.
-Otherwise tag discussion sections Optimal. Use the supplied diagnostic tags when present. Incorporate writing volume, accuracy, BMCR mark capture, and the uploaded mark-report context. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
+Otherwise tag discussion sections Optimal. Use the supplied diagnostic tags when present.
+
+Buried Treasure (case-study conversion) rules — use the supplied percentages; do not recompute them:
+- Tier 1 Direct Marks (~10% / ~36 marks, target >= 80%): straight scenario extraction (given numbers, figures, share counts, dates).
+- Tier 2 Indirect Marks (~35-40% / ~130 marks, target >= 60%): scenario trigger + small leap (15/115 VAT fraction, control weaknesses, Hamada beta un-levering).
+- Tier 3 Thinking Marks (~50-55% / ~194 marks, target >= 50%): deeper reasoning and execution (journal entries, multi-stakeholder memos, scenario-locked audit steps).
+If Tier 1 Direct conversion is below 80%, they are not extracting buried treasure from the scenario (theory/extraction gap).
+If Tier 1 is at or above 80% and Tier 3 Thinking conversion is below 50%, diagnose a Tier 3 execution gap, not a theory gap.
+The final report must explicitly say whether the student suffers from a theory gap or a Tier 3 execution gap using these conversion rates.
+
+Incorporate writing volume, accuracy, BMCR mark capture, Buried Treasure conversion, and the uploaded mark-report context. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
 
 export async function POST(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -104,16 +115,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error:
-          "Complete the BMCR Tool, Volume vs Accuracy, and upload your mark report before generating the AI evaluation.",
+          "Complete the BMCR Tool, Volume vs Accuracy, Buried Treasure, and upload your mark report before generating the AI evaluation.",
       },
       { status: 400 }
     );
   }
   const latestBmcr = await fetchLatestBmcr(supabase, user.id).catch(() => null);
   const latestVolume = await fetchLatestVolumeAccuracy(supabase, user.id).catch(() => null);
+  const latestBuriedTreasure = await fetchLatestBuriedTreasure(supabase, user.id).catch(() => null);
   const diagnosticContext = [
     formatBmcrContext(latestBmcr),
     formatVolumeContext(latestVolume),
+    formatBuriedTreasureContext(latestBuriedTreasure),
     formatMarkReportContext(progress.markReport),
   ].join("\n\n");
 
@@ -161,7 +174,7 @@ export async function POST(request: NextRequest) {
           `Calculated primary blocker: ${totals.primary_blocker}`,
           `Student notes: ${student_notes || "(none)"}`,
           "",
-          "Pre-exam diagnostic context (BMCR, Volume vs Accuracy, mark report upload):",
+          "Pre-exam diagnostic context (BMCR, Volume vs Accuracy, Buried Treasure, mark report upload):",
           diagnosticContext,
           "",
           "Question blocks with calculated Tier 1 Knowledge (~35%) vs Tier 2 Application (~65%) splits:",

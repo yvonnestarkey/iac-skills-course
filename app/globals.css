@@ -5460,6 +5460,11 @@ a.live-session-watch:hover {
   min-width: 180px;
 }
 
+.bt-table tbody th {
+  min-width: 240px;
+  white-space: normal;
+}
+
 .va-table tbody th strong,
 .va-table tbody th .muted.small {
   display: block;

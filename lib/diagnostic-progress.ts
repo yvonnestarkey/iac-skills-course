@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { fetchLatestBmcr, fetchLatestVolumeAccuracy } from "./volume-accuracy";
+import { fetchLatestBuriedTreasure } from "./buried-treasure";
 import { getSupabase } from "./supabase";
 
 export type MarkReportUpload = {
@@ -14,6 +15,7 @@ export type MarkReportUpload = {
 export type DiagnosticProgress = {
   hasBmcr: boolean;
   hasVolume: boolean;
+  hasBuriedTreasure: boolean;
   hasMarkReport: boolean;
   markReport: MarkReportUpload | null;
   ready: boolean;
@@ -49,27 +51,30 @@ export async function fetchDiagnosticProgress(
   supabase: SupabaseClient,
   userId: string
 ): Promise<DiagnosticProgress> {
-  const [bmcr, volume, markReport] = await Promise.all([
+  const [bmcr, volume, buriedTreasure, markReport] = await Promise.all([
     fetchLatestBmcr(supabase, userId).catch(() => null),
     fetchLatestVolumeAccuracy(supabase, userId).catch(() => null),
+    fetchLatestBuriedTreasure(supabase, userId).catch(() => null),
     fetchLatestMarkReport(supabase, userId).catch(() => null),
   ]);
   const hasBmcr = Boolean(bmcr);
   const hasVolume = Boolean(volume);
+  const hasBuriedTreasure = Boolean(buriedTreasure);
   const hasMarkReport = Boolean(markReport?.file_url);
   return {
     hasBmcr,
     hasVolume,
+    hasBuriedTreasure,
     hasMarkReport,
     markReport,
-    ready: hasBmcr && hasVolume && hasMarkReport,
+    ready: hasBmcr && hasVolume && hasBuriedTreasure && hasMarkReport,
   };
 }
 
 export async function fetchOwnDiagnosticProgress(userId: string): Promise<DiagnosticProgress> {
   const supabase = getSupabase();
   if (!supabase || !userId) {
-    return { hasBmcr: false, hasVolume: false, hasMarkReport: false, markReport: null, ready: false };
+    return { hasBmcr: false, hasVolume: false, hasBuriedTreasure: false, hasMarkReport: false, markReport: null, ready: false };
   }
   return fetchDiagnosticProgress(supabase, userId);
 }

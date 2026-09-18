@@ -283,6 +283,11 @@ export default function VolumeAccuracyTool() {
           );
         })}
       </div>
+      <div className="actions va-continue">
+        <Link href="/student/buried-treasure" className="primary">
+          Continue Script Evaluation
+        </Link>
+      </div>
     </article>
   );
 }
