@@ -59,24 +59,11 @@ export default function StudentDashboard() {
       ) : null}
 
       {unlocked ? null : (
-        <section className="student-tools" aria-label="Pre-Exam Diagnostic Tools">
-          <p className="kicker">Diagnostics</p>
-          <h2>Pre-Exam Diagnostic Tools</h2>
-          <nav className="student-tools-grid">
-            <Link href="/student/bmcr" className="student-hub-card">
-              <strong>BMCR</strong>
-              <span className="muted small">Basic Mark Capture Record</span>
-              <p>Input and categorize your question-by-question marks.</p>
-            </Link>
-            <Link href="/student/volume-accuracy" className="student-hub-card">
-              <strong>Volume / Accuracy Tool</strong>
-              <p>Track your completion speed vs. accuracy under exam conditions.</p>
-            </Link>
-            <Link href="/student/evaluator" className="student-hub-card">
-              <strong>Script Evaluator</strong>
-              <p>Generate your unified Tier 1 vs. Tier 2 diagnostic report.</p>
-            </Link>
-          </nav>
+        <section className="student-tools" aria-label="Script evaluator">
+          <Link href="/student/evaluator" className="student-hub-card student-hub-card-featured">
+            <strong>Script Evaluator</strong>
+            <p>Open BMCR, Volume vs Accuracy, and the AI mark report evaluation from one place.</p>
+          </Link>
         </section>
       )}
 

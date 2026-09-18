@@ -3159,6 +3159,7 @@ input[type="tel"]:focus {
 }
 
 .student-tools {
+  display: grid;
   margin: 8px 0 22px;
 }
 
@@ -3167,14 +3168,21 @@ input[type="tel"]:focus {
   margin-bottom: 12px;
 }
 
-.student-tools-grid {
+.eval-hub-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+  margin-top: 18px;
+}
+
+.eval-prereqs {
+  margin: 0 0 16px;
+  padding-left: 18px;
+  color: var(--muted);
 }
 
 @media (max-width: 900px) {
-  .student-tools-grid {
+  .eval-hub-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -5308,6 +5316,7 @@ a.live-session-watch:hover {
   margin-top: 0;
 }
 
+.eval-form input[type="file"],
 .eval-form input[type="number"] {
   width: 100%;
   border: 1px solid var(--line);

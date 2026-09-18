@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ScriptEvaluator from "@/components/student/ScriptEvaluator";
+import ScriptEvaluatorHub from "@/components/student/ScriptEvaluatorHub";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function StudentEvaluatorPage() {
-  return <ScriptEvaluator />;
+  return <ScriptEvaluatorHub />;
 }

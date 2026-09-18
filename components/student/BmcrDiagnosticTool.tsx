@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import BmcrCalculator from "@/components/lesson/BmcrCalculator";
 import {
@@ -93,6 +94,9 @@ export default function BmcrDiagnosticTool() {
 
   return (
     <article className="lesson-body wide eval-page">
+      <p>
+        <Link href="/student/evaluator">← Script evaluator</Link>
+      </p>
       <p className="kicker">Pre-exam diagnostic</p>
       <h1>BMCR</h1>
       <p className="muted">Basic Mark Capture Record. Choose a June 2026 IAC section, then categorize your marks. Inputs are capped at that section total.</p>

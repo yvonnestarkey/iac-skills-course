@@ -20,7 +20,11 @@ export default function StudentCourseNav() {
   const activeLessonId = segment && !RESERVED.has(segment) ? segment : null;
   const onDashboard = pathname === basePath || pathname === "/student/dashboard";
   const onOverview = pathname === `${basePath}/overview`;
-  const onEvaluator = pathname === "/student/evaluator" || pathname === "/student/bmcr" || pathname === "/student/volume-accuracy";
+  const onEvaluator =
+    pathname === "/student/evaluator" ||
+    pathname.startsWith("/student/evaluator/") ||
+    pathname === "/student/bmcr" ||
+    pathname === "/student/volume-accuracy";
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
   const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
   const total = lessons.length;

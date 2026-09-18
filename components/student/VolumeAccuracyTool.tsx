@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchOwnVolumeAccuracy, saveVolumeAccuracy, type VolumeAccuracyEntry } from "@/lib/volume-accuracy";
 import { useStudentSession } from "@/lib/student-session";
@@ -57,8 +58,11 @@ export default function VolumeAccuracyTool() {
 
   return (
     <article className="lesson-body wide eval-page">
+      <p>
+        <Link href="/student/evaluator">← Script evaluator</Link>
+      </p>
       <p className="kicker">Pre-exam diagnostic</p>
-      <h1>Volume / Accuracy</h1>
+      <h1>Volume vs Accuracy</h1>
       <p className="muted">Track your completion speed vs. accuracy under exam conditions.</p>
       <form
         className="eval-form"

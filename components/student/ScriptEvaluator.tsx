@@ -1,9 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import DiagnosticReportCard from "@/components/DiagnosticReportCard";
 import { fetchOwnEvaluations, pct } from "@/lib/script-evaluation";
 import type { DiagnosticReportResult } from "@/lib/diagnostic-report";
+import {
+  fetchOwnDiagnosticProgress,
+  uploadMarkReport,
+  type DiagnosticProgress,
+} from "@/lib/diagnostic-progress";
 import {
   EXAM_SITTINGS,
   findPaper,
@@ -46,9 +52,17 @@ export default function ScriptEvaluator() {
     draftFromQuestion(defaultPaper.questions[0].code, defaultPaper.questions[0].marks),
   ]);
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [report, setReport] = useState<DiagnosticReportResult | null>(null);
   const [history, setHistory] = useState<DiagnosticReportResult[]>([]);
+  const [progress, setProgress] = useState<DiagnosticProgress>({
+    hasBmcr: false,
+    hasVolume: false,
+    hasMarkReport: false,
+    markReport: null,
+    ready: false,
+  });
 
   const sitting = findSitting(examId) || defaultExam;
   const paper = findPaper(examId, paperId) || sitting.papers[0];
@@ -57,11 +71,12 @@ export default function ScriptEvaluator() {
   useEffect(() => {
     if (!user?.id) return;
     fetchOwnEvaluations(user.id).then(setHistory);
+    fetchOwnDiagnosticProgress(user.id).then(setProgress);
   }, [user?.id]);
 
   const canSubmit = useMemo(() => {
-    return Boolean(paperName && questions.some((question) => question.question_code.trim()) && !busy);
-  }, [paperName, questions, busy]);
+    return Boolean(progress.ready && paperName && questions.some((question) => question.question_code.trim()) && !busy);
+  }, [progress.ready, paperName, questions, busy]);
 
   const setQuestion = (index: number, key: keyof QuestionDraft, value: string) => {
     setQuestions((prev) =>
@@ -88,7 +103,24 @@ export default function ScriptEvaluator() {
     setQuestions([draftFromQuestion(first.code, first.marks)]);
   };
 
+  const onUpload = async (file: File | undefined) => {
+    if (!file || !user?.id) return;
+    setUploading(true);
+    setError("");
+    const result = await uploadMarkReport(user.id, file, paperName);
+    setUploading(false);
+    if (result.ok === false) {
+      setError(result.error);
+      return;
+    }
+    fetchOwnDiagnosticProgress(user.id).then(setProgress);
+  };
+
   const run = async () => {
+    if (!progress.ready) {
+      setError("Complete the BMCR Tool, Volume vs Accuracy, and upload your mark report before generating the AI evaluation.");
+      return;
+    }
     setBusy(true);
     setError("");
     try {
@@ -126,11 +158,19 @@ export default function ScriptEvaluator() {
 
   return (
     <article className="lesson-body wide eval-page">
-      <p className="kicker">AI diagnostic engine</p>
-      <h1>Script evaluator</h1>
-      <p className="muted">
-        Select the June 2026 IAC paper and question. Available marks are capped at that section total and split Tier 1 Knowledge (~35%) vs Tier 2 Application (~65%).
+      <p>
+        <Link href="/student/evaluator">← Script evaluator</Link>
       </p>
+      <p className="kicker">AI mark report evaluation</p>
+      <h1>Generate your diagnostic</h1>
+      <p className="muted">
+        Upload your marked script, then enter section scores. The AI report runs only after BMCR, Volume vs Accuracy, and this upload are complete.
+      </p>
+      <ul className="eval-prereqs">
+        <li>{progress.hasBmcr ? "BMCR saved." : "BMCR still needed."}</li>
+        <li>{progress.hasVolume ? "Volume vs Accuracy saved." : "Volume vs Accuracy still needed."}</li>
+        <li>{progress.hasMarkReport ? `Mark report uploaded${progress.markReport?.file_name ? `: ${progress.markReport.file_name}` : "."}` : "Mark report upload still needed."}</li>
+      </ul>
 
       <form
         className="eval-form"
@@ -139,6 +179,25 @@ export default function ScriptEvaluator() {
           if (canSubmit) void run();
         }}
       >
+        <label>
+          Upload mark report (PDF)
+          <input
+            type="file"
+            accept="application/pdf,.pdf"
+            disabled={uploading || !user?.id}
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              event.target.value = "";
+              void onUpload(file);
+            }}
+          />
+        </label>
+        {uploading ? <p className="waiting">Uploading mark report…</p> : null}
+        {!progress.ready ? (
+          <p className="notice">
+            Finish BMCR and Volume vs Accuracy, and upload your mark report, before the AI evaluation will run.
+          </p>
+        ) : null}
         <label>
           Exam
           <select
@@ -280,7 +339,7 @@ export default function ScriptEvaluator() {
         {busy ? <p className="waiting">Comparing against IAC Examiner Frameworks...</p> : null}
         <div className="actions">
           <button className="primary" type="submit" disabled={!canSubmit}>
-            {busy ? "Evaluating…" : "Run diagnostic"}
+            {busy ? "Evaluating…" : progress.ready ? "Run diagnostic" : "Complete the steps above first"}
           </button>
         </div>
       </form>
