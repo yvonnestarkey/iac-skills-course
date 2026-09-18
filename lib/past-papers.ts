@@ -36,6 +36,7 @@ export type PastPaperSitting = {
 function sittingLabel(exam: PastExamConfig): string {
   if (exam.id === "jan-2025") return "January 2025 IAC Exam";
   if (exam.id === "june-2025") return "June 2025 IAC Exam";
+  if (exam.id === "jan-2026") return "January 2026 IAC Exam";
   return exam.title;
 }
 
@@ -67,9 +68,18 @@ function examToSitting(exam: PastExamConfig): PastPaperSitting {
   };
 }
 
+const SITTING_ORDER = ["nov-2024", "jan-2025", "june-2025", "nov-2025", "jan-2026", "june-2026"];
+
 function mergeRegisteredSittings(base: PastPaperSitting[]): PastPaperSitting[] {
   const overlays = PAST_EXAMS.map(examToSitting);
-  return base.map((sitting) => overlays.find((item) => item.id === sitting.id) || sitting);
+  const byId = new Map<string, PastPaperSitting>();
+  for (const sitting of base) byId.set(sitting.id, sitting);
+  for (const overlay of overlays) byId.set(overlay.id, overlay);
+  return [...byId.values()].sort((left, right) => {
+    const leftRank = SITTING_ORDER.indexOf(left.id);
+    const rightRank = SITTING_ORDER.indexOf(right.id);
+    return (leftRank === -1 ? 99 : leftRank) - (rightRank === -1 ? 99 : rightRank);
+  });
 }
 
 export const PAST_PAPER_SITTINGS = mergeRegisteredSittings(pastPaperData.sittings as PastPaperSitting[]);

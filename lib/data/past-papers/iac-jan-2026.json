@@ -1,0 +1,275 @@
+{
+  "id": "jan-2026",
+  "code": "IAC_JAN_2026",
+  "title": "January 2026 SAICA IAC Examination",
+  "totalMarks": 360,
+  "papers": [
+    {
+      "id": "jan-2026-p1",
+      "code": "IAC-JAN-2026-P1",
+      "title": "Paper 1 – Mzansi Trendz",
+      "caseName": "Mzansi Trendz / Inala / AID",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P1Q1_a",
+          "title": "Discuss the effect of inventory-account information on Sentinal’s RoMM assessment for MT’s FY2025 inventory",
+          "totalMarks": 16,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 5,
+          "thinking": 10,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q1_b",
+          "title": "Describe key controls over clearance-sale data captured by Paul and promotional discounts captured by Debra",
+          "totalMarks": 19,
+          "isCalculation": false,
+          "direct": 2,
+          "indirect": 7,
+          "thinking": 9,
+          "macroComm": 1
+        },
+        {
+          "code": "P1Q1_c",
+          "title": "Formulate additional substantive procedures on the inventory obsolescence allowance at 31 December 2025",
+          "totalMarks": 10,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 6,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q1_d",
+          "title": "Describe additional going-concern procedures on management’s action plan and any auditor’s-report modifications",
+          "totalMarks": 19,
+          "isCalculation": false,
+          "direct": 2,
+          "indirect": 6,
+          "thinking": 11,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q2_e",
+          "title": "Evaluate Sarah’s IFRS statement on pledged inventory and the XYZ Bank loan",
+          "totalMarks": 12,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 6,
+          "macroComm": 1
+        },
+        {
+          "code": "P1Q2_f",
+          "title": "Describe steps AID’s accounting authority should take after media criticism of the Inala agreement",
+          "totalMarks": 10,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 3,
+          "thinking": 7,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q2_g",
+          "title": "Prepare FY2025 separate journal entries for the Louw Investments bond",
+          "totalMarks": 12,
+          "isCalculation": true,
+          "direct": 2,
+          "indirect": 4,
+          "thinking": 6,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q2_h",
+          "title": "Calculate the group profit or loss Inala should recognise on disposal of the MT shares on 1 January 2026",
+          "totalMarks": 22,
+          "isCalculation": true,
+          "direct": 3,
+          "indirect": 8,
+          "thinking": 11,
+          "macroComm": 0
+        }
+      ]
+    },
+    {
+      "id": "jan-2026-p2",
+      "code": "IAC-JAN-2026-P2",
+      "title": "Paper 2 – Lexi & CreativeLexi",
+      "caseName": "Lexi / CreativeLexi / Holdings / MGT",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P2Q1_a",
+          "title": "Discuss, with case-law principles, the income tax implications of Lexi’s all-expenses-paid trip",
+          "totalMarks": 7,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 3,
+          "thinking": 4,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q1_b",
+          "title": "Calculate Lexi’s normal tax payable for her 2025 year of assessment",
+          "totalMarks": 27,
+          "isCalculation": true,
+          "direct": 4,
+          "indirect": 10,
+          "thinking": 13,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q1_c",
+          "title": "Discuss whether Hebony should withhold employees’ tax on R121 500 payable to CreativeLexi for January 2025",
+          "totalMarks": 7,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 3,
+          "thinking": 4,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q1_d",
+          "title": "Discuss the income tax implications for Holdings of R68,1 million interest paid to Africa Holdings",
+          "totalMarks": 9,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 5,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q2_e",
+          "title": "Calculate, using IRR, which loan offer for the CreativeLexi acquisition is more cost effective",
+          "totalMarks": 25,
+          "isCalculation": true,
+          "direct": 3,
+          "indirect": 8,
+          "thinking": 14,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q2_f",
+          "title": "Advise MGT on which loan offer to accept, considering quantitative and qualitative factors",
+          "totalMarks": 12,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 4,
+          "thinking": 8,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q2_g",
+          "title": "Discuss social-media performance factors MGT should consider before acquiring CreativeLexi",
+          "totalMarks": 11,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 7,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q2_h",
+          "title": "Discuss ethical concerns regarding Arno’s conduct under the SAICA Code of Professional Conduct",
+          "totalMarks": 14,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 4,
+          "thinking": 10,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q2_i",
+          "title": "Discuss Lexi’s ethical conduct as CEO of CreativeLexi in responding to the video allegations",
+          "totalMarks": 8,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 2,
+          "thinking": 6,
+          "macroComm": 0
+        }
+      ]
+    },
+    {
+      "id": "jan-2026-p3",
+      "code": "IAC-JAN-2026-P3",
+      "title": "Paper 3 – Infinite Reality / LC Stores",
+      "caseName": "Infinite Reality / LC Stores",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P3Q1_a",
+          "title": "Discuss King IV governance issues and ethical leadership concerns from the CEO’s LC store openings",
+          "totalMarks": 12,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 7,
+          "macroComm": 0
+        },
+        {
+          "code": "P3Q1_b",
+          "title": "Critically evaluate the strategic considerations that influenced IR’s decision to invest in LC stores",
+          "totalMarks": 16,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 5,
+          "thinking": 10,
+          "macroComm": 0
+        },
+        {
+          "code": "P3Q1_c",
+          "title": "Memorandum on LC store profit variances and whether right-sizing store formats would improve profitability",
+          "totalMarks": 36,
+          "isCalculation": true,
+          "direct": 4,
+          "indirect": 12,
+          "thinking": 19,
+          "macroComm": 1
+        },
+        {
+          "code": "P3Q1_d",
+          "title": "Evaluate the proposal to close Group C stores using relevant costing and internal-stakeholder impact",
+          "totalMarks": 17,
+          "isCalculation": true,
+          "direct": 2,
+          "indirect": 5,
+          "thinking": 10,
+          "macroComm": 0
+        },
+        {
+          "code": "P3Q2_e",
+          "title": "Discuss accounting for IR’s customer loyalty programmes and the effect of closing Group C stores",
+          "totalMarks": 17,
+          "isCalculation": true,
+          "direct": 2,
+          "indirect": 5,
+          "thinking": 10,
+          "macroComm": 0
+        },
+        {
+          "code": "P3Q2_f",
+          "title": "Critically evaluate the inventory write-down journal and provide correcting entries where relevant",
+          "totalMarks": 10,
+          "isCalculation": true,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 6,
+          "macroComm": 0
+        },
+        {
+          "code": "P3Q2_g",
+          "title": "Describe additional year-end substantive procedures on valuation of the loyalty-programme contract liability",
+          "totalMarks": 12,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 7,
+          "macroComm": 0
+        }
+      ]
+    }
+  ]
+}
