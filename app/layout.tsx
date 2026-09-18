@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/next";
 import BehindModal from "@/components/BehindModal";
 import ChatWidget from "@/components/ChatWidget";
 import NotifyComposer from "@/components/NotifyComposer";
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <BehindModal />
           <NotifyComposer />
         </StoreProvider>
+        <Analytics />
       </body>
     </html>
   );
