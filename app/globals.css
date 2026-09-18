@@ -5377,6 +5377,54 @@ a.live-session-watch:hover {
   border-color: var(--link);
 }
 
+.va-exam-select {
+  display: grid;
+  gap: 6px;
+  max-width: 420px;
+  margin: 18px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.va-paper-stack {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.va-paper-box {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.va-paper-box > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.va-paper-box > summary::-webkit-details-marker {
+  display: none;
+}
+
+.va-paper-box[open] > summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.va-paper-body {
+  display: grid;
+  gap: 14px;
+  padding: 16px 20px 18px;
+}
+
 .va-table-wrap {
   overflow-x: auto;
   margin-top: 4px;
@@ -5413,6 +5461,7 @@ a.live-session-watch:hover {
   display: block;
 }
 
+.va-paper-box .va-table input[type="number"],
 .eval-form .va-table input[type="number"] {
   width: 5.6rem;
   padding: 8px 10px;
