@@ -40,6 +40,7 @@ export function useEvaluatorExam() {
   const searchParams = useSearchParams();
   const urlExam = resolveExamId(searchParams.get(EVALUATOR_EXAM_PARAM));
   const [examId, setExamIdState] = useState(urlExam);
+  const [ready, setReady] = useState(() => Boolean(urlExam));
 
   useEffect(() => {
     const fromStore = resolveExamId(storedExamId());
@@ -47,13 +48,14 @@ export function useEvaluatorExam() {
     setExamIdState((prev) => (prev === next ? prev : next));
     if (urlExam) {
       window.sessionStorage.setItem(EVALUATOR_EXAM_STORAGE_KEY, urlExam);
-      return;
+    } else if (fromStore && pathname.startsWith("/student/")) {
+      const params = new URLSearchParams(searchParams.toString());
+      if (params.get(EVALUATOR_EXAM_PARAM) !== fromStore) {
+        params.set(EVALUATOR_EXAM_PARAM, fromStore);
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      }
     }
-    if (!fromStore || !pathname.startsWith("/student/")) return;
-    const params = new URLSearchParams(searchParams.toString());
-    if (params.get(EVALUATOR_EXAM_PARAM) === fromStore) return;
-    params.set(EVALUATOR_EXAM_PARAM, fromStore);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    setReady(true);
   }, [urlExam, pathname, router, searchParams]);
 
   const setExamId = useCallback(
@@ -88,6 +90,7 @@ export function useEvaluatorExam() {
     sitting,
     setExamId,
     href,
+    ready,
     sittings: PAST_PAPER_SITTINGS,
   };
 }

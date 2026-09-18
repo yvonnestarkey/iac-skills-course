@@ -3158,21 +3158,6 @@ input[type="tel"]:focus {
   text-decoration: none;
 }
 
-.student-tools {
-  display: grid;
-  margin: 8px 0 22px;
-}
-
-.student-tools h2 {
-  font-size: 22px;
-  margin-bottom: 12px;
-}
-
-.student-tools .primary {
-  justify-self: start;
-  margin-top: 4px;
-}
-
 .eval-exam-picker {
   display: grid;
   gap: 8px;
@@ -3188,6 +3173,15 @@ input[type="tel"]:focus {
 
 .eval-exam-picker .select-line {
   font-weight: 500;
+}
+
+.eval-exam-title {
+  margin: 4px 0 8px;
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
 }
 
 .eval-hub-steps {

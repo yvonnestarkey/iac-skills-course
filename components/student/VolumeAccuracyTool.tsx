@@ -10,7 +10,7 @@ import {
   volumeRatios,
   type VolumePaperSession,
 } from "@/lib/volume-accuracy";
-import EvaluatorExamPicker from "@/components/student/EvaluatorExamPicker";
+import EvaluatorExamHeading from "@/components/student/EvaluatorExamHeading";
 import { isCalculationQuestion, paperDisplayName, paperLabel, type ExamPaper, type ExamQuestion, type ExamSitting } from "@/lib/exam-structure";
 import { useEvaluatorExam } from "@/lib/use-evaluator-exam";
 import { useStudentSession } from "@/lib/student-session";
@@ -154,18 +154,10 @@ export default function VolumeAccuracyTool() {
 
   return (
     <article className="lesson-body wide eval-page">
-      <p>
-        <Link href={href("/student/evaluator")}>← Script evaluator</Link>
-      </p>
-      <p className="kicker">Pre-exam diagnostic</p>
-      <h1>Volume vs Accuracy</h1>
-      <p className="muted">
-        Complete each paper in its own box. Collapse papers you are not working on. Points Wrote is N/A on calculation/disclosure questions so those rows do not skew volume.
-      </p>
-      <EvaluatorExamPicker />
-      {!sitting ? (
-        <p className="notice">Select an exam to load the Volume vs Accuracy tables for that sitting.</p>
-      ) : null}
+      <EvaluatorExamHeading
+        tool="Volume vs Accuracy"
+        description="Complete each paper in its own box. Collapse papers you are not working on. Points Wrote is N/A on calculation/disclosure questions so those rows do not skew volume."
+      />
 
       <div className="va-paper-stack" key={sitting?.id || "none"}>
         {(sitting?.papers || []).map((paper) => {

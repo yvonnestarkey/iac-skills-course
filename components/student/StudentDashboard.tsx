@@ -58,22 +58,13 @@ export default function StudentDashboard() {
         </section>
       ) : null}
 
-      {unlocked ? null : (
-        <section className="student-tools" aria-label="Script evaluator">
-          <p className="kicker">Script evaluator</p>
-          <h2>Evaluate a past paper</h2>
-          <p className="muted">
-            Open the diagnostic tools, choose the exam you sat, then work through BMCR, Volume vs Accuracy, Buried Treasure, and the AI mark report.
-          </p>
-          <Link href="/student/evaluator" className="primary">
-            Open Script Evaluator
-          </Link>
-        </section>
-      )}
-
       <nav className="student-hub" aria-label="Student shortcuts">
         {unlocked ? null : (
           <>
+            <Link href="/student/evaluator" className="student-hub-card">
+              <strong>Script Evaluator</strong>
+              <p>Choose a past paper, then work through BMCR, Volume vs Accuracy, Buried Treasure, and the AI mark report.</p>
+            </Link>
             <Link href="/student/coaching" className="student-hub-card">
               <strong>1-on-1 Coaching</strong>
               <p>Book a private session or access your meeting summaries and recordings.</p>

@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import DiagnosticReportCard from "@/components/DiagnosticReportCard";
 import BuriedTreasureReportCard from "@/components/BuriedTreasureReportCard";
-import EvaluatorExamPicker from "@/components/student/EvaluatorExamPicker";
+import EvaluatorExamHeading from "@/components/student/EvaluatorExamHeading";
 import { fetchOwnEvaluations, pct } from "@/lib/script-evaluation";
 import type { DiagnosticReportResult } from "@/lib/diagnostic-report";
 import type { BuriedTreasureAnalysis } from "@/types/evaluation";
@@ -37,7 +36,7 @@ function clampToCap(value: string, cap: number): string {
 
 export default function ScriptEvaluator() {
   const { user } = useStudentSession();
-  const { sitting, href } = useEvaluatorExam();
+  const { sitting } = useEvaluatorExam();
   const [paperId, setPaperId] = useState("");
   const [studentNotes, setStudentNotes] = useState("");
   const [questions, setQuestions] = useState<PastPaperDraft[]>([]);
@@ -181,15 +180,10 @@ export default function ScriptEvaluator() {
 
   return (
     <article className="lesson-body wide eval-page">
-      <p>
-        <Link href={href("/student/evaluator")}>← Script evaluator</Link>
-      </p>
-      <p className="kicker">AI mark report evaluation</p>
-      <h1>Generate your diagnostic</h1>
-      <p className="muted">
-        The exam selected above fills this paper&apos;s question codes and Buried Treasure caps. Enter Direct, Indirect, and Thinking marks from your marked script. The AI report runs only after BMCR, Volume vs Accuracy, Buried Treasure, and this upload are complete.
-      </p>
-      <EvaluatorExamPicker />
+      <EvaluatorExamHeading
+        tool="Generate your diagnostic"
+        description="Enter Direct, Indirect, and Thinking marks from your marked script for this exam. The AI report runs only after BMCR, Volume vs Accuracy, Buried Treasure, and this upload are complete."
+      />
       <ul className="eval-prereqs">
         <li>{progress.hasBmcr ? "BMCR saved." : "BMCR still needed."}</li>
         <li>{progress.hasVolume ? "Volume vs Accuracy saved." : "Volume vs Accuracy still needed."}</li>

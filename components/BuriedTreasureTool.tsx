@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import EvaluatorExamPicker from "@/components/student/EvaluatorExamPicker";
+import EvaluatorExamHeading from "@/components/student/EvaluatorExamHeading";
 import {
   BURIED_TREASURE_TIERS,
   buriedTreasureTag,
@@ -104,18 +104,11 @@ export default function BuriedTreasureTool() {
 
   return (
     <article className="lesson-body wide eval-page">
-      <p>
-        <Link href={href("/student/evaluator")}>← Script evaluator</Link>
-      </p>
-      <p className="kicker">Pre-exam diagnostic</p>
-      <h1>Buried Treasure</h1>
-      <p className="muted">
-        Measure how effectively you extract value from the case study across Direct, Indirect, and Thinking marks.
-      </p>
-      <EvaluatorExamPicker />
-      {!sitting ? (
-        <p className="notice">Select an exam to load Buried Treasure caps for that sitting.</p>
-      ) : (
+      <EvaluatorExamHeading
+        tool="Buried Treasure"
+        description="Measure how effectively you extract value from the case study across Direct, Indirect, and Thinking marks."
+      />
+      {!sitting ? null : (
       <form
         className="eval-form va-form"
         onSubmit={(event) => {

@@ -14,7 +14,7 @@ import {
   type BmcrEvaluation,
   type BmcrValue,
 } from "@/lib/bmcr";
-import EvaluatorExamPicker from "@/components/student/EvaluatorExamPicker";
+import EvaluatorExamHeading from "@/components/student/EvaluatorExamHeading";
 import { paperDisplayName, paperLabel, questionLabel, type ExamPaper, type ExamSitting } from "@/lib/exam-structure";
 import { useEvaluatorExam } from "@/lib/use-evaluator-exam";
 import { useStudentSession } from "@/lib/student-session";
@@ -220,18 +220,10 @@ export default function BmcrDiagnosticTool() {
 
   return (
     <article className="lesson-body wide eval-page">
-      <p>
-        <Link href={href("/student/evaluator")}>← Script evaluator</Link>
-      </p>
-      <p className="kicker">Pre-exam diagnostic</p>
-      <h1>BMCR</h1>
-      <p className="muted">
-        Complete the calc table for every section in a paper. Interpretation and the theory questions sit at the end of that paper, then save.
-      </p>
-      <EvaluatorExamPicker />
-      {!sitting ? (
-        <p className="notice">Select an exam to load the BMCR tables for that sitting.</p>
-      ) : null}
+      <EvaluatorExamHeading
+        tool="BMCR"
+        description="Complete the calc table for every section in a paper. Interpretation and the theory questions sit at the end of that paper, then save."
+      />
 
       <div className="va-paper-stack" key={sitting?.id || "none"}>
         {(sitting?.papers || []).map((paper) => {

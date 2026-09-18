@@ -14,15 +14,15 @@ export default function ScriptEvaluatorHub() {
         <Link href="/student/dashboard">← Student dashboard</Link>
       </p>
       <p className="kicker">Script evaluator</p>
-      <h1>Diagnostic tools</h1>
+      <h1>{exam ? exam.label : "Diagnostic tools"}</h1>
       <p className="muted">
-        Choose the exam you sat. That selection fills the BMCR tables, Volume vs Accuracy tables, Buried Treasure caps, and the AI mark report.
+        Choose the exam you sat. Every tool in this session uses that sitting. To evaluate a different exam, come back here and change it before you start the tools.
       </p>
       <EvaluatorExamPicker />
       {exam ? (
         <>
-          <p className="waiting">
-            Loaded {exam.label}: {exam.papers.map((paper) => paper.title).join(" · ")}.
+          <p className="muted small">
+            {exam.papers.map((paper) => paper.title).join(" · ")}
           </p>
           <ScriptEvaluatorSteps />
         </>
