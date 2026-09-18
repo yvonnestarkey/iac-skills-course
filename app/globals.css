@@ -5711,3 +5711,8 @@ a.live-session-watch:hover {
   border-color: var(--link);
 }
 
+.bt-report-md {
+  white-space: pre-wrap;
+  margin: 8px 0 0;
+}
+

@@ -3,8 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import DiagnosticReportCard from "@/components/DiagnosticReportCard";
+import BuriedTreasureReportCard from "@/components/BuriedTreasureReportCard";
 import { fetchOwnEvaluations, pct } from "@/lib/script-evaluation";
 import type { DiagnosticReportResult } from "@/lib/diagnostic-report";
+import type { BuriedTreasureAnalysis } from "@/types/evaluation";
 import {
   fetchOwnDiagnosticProgress,
   uploadMarkReport,
@@ -55,6 +57,7 @@ export default function ScriptEvaluator() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [report, setReport] = useState<DiagnosticReportResult | null>(null);
+  const [evaluation, setEvaluation] = useState<BuriedTreasureAnalysis | null>(null);
   const [history, setHistory] = useState<DiagnosticReportResult[]>([]);
   const [progress, setProgress] = useState<DiagnosticProgress>({
     hasBmcr: false,
@@ -147,9 +150,12 @@ export default function ScriptEvaluator() {
       if (!response.ok) {
         throw new Error(payload.error || "Could not run the diagnostic.");
       }
-      const next = payload as DiagnosticReportResult;
-      setReport(next);
-      setHistory((prev) => [next, ...prev.filter((row) => row.id !== next.id)].slice(0, 8));
+      if (!payload.success || !payload.evaluation) {
+        throw new Error("The diagnostic did not return a Buried Treasure analysis.");
+      }
+      setEvaluation(payload.evaluation as BuriedTreasureAnalysis);
+      setReport(null);
+      if (user?.id) fetchOwnEvaluations(user.id).then(setHistory);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not run the diagnostic.");
     } finally {
@@ -346,6 +352,7 @@ export default function ScriptEvaluator() {
         </div>
       </form>
 
+      {evaluation ? <BuriedTreasureReportCard evaluation={evaluation} /> : null}
       {report ? <DiagnosticReportCard report={report} /> : null}
 
       {history.length ? (
@@ -354,7 +361,7 @@ export default function ScriptEvaluator() {
           <ul>
             {history.map((row) => (
               <li key={row.id || row.question_code}>
-                <button type="button" onClick={() => setReport(row)}>
+                <button type="button" onClick={() => { setReport(row); setEvaluation(null); }}>
                   <strong>
                     {row.paper_name} · {row.question_code}
                   </strong>

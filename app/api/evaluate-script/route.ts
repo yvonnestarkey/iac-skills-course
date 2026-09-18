@@ -4,7 +4,7 @@ import { getOpenAI, matchKnowledgeBase, EVALUATION_MODEL } from "@/lib/knowledge
 import {
   APPLICATION_WEIGHT,
   KNOWLEDGE_WEIGHT,
-  diagnosticReportSchema,
+  asStringList,
   firstPersonLeakSummary,
   mergeModelReport,
   parseQuestionBlocks,
@@ -12,47 +12,157 @@ import {
   summariseBlocks,
   withQuestionStats,
 } from "@/lib/diagnostic-report";
-import { studentUserFromAuth } from "@/lib/student-lesson";
 import { sectionCapError } from "@/lib/exam-structure";
 import { fetchDiagnosticProgress, formatMarkReportContext } from "@/lib/diagnostic-progress";
 import { fetchLatestBmcr, fetchLatestVolumeAccuracy, formatBmcrContext, formatVolumeContext } from "@/lib/volume-accuracy";
-import { fetchLatestBuriedTreasure, formatBuriedTreasureContext } from "@/lib/buried-treasure";
+import { fetchLatestBuriedTreasure, formatBuriedTreasureContext, type BuriedTreasureLog } from "@/lib/buried-treasure";
+import { BURIED_TREASURE_SYSTEM_PROMPT } from "@/lib/prompts/buried-treasure";
+import type { BuriedTreasureAnalysis, TierScore } from "@/types/evaluation";
 
 export const dynamic = "force-dynamic";
 
-const SYSTEM_PROMPT = `You are an expert SAICA/ICAZ/ICAN IAC Exam Evaluator writing a unified diagnostic from every script-evaluation tool.
+const FAILURE_CAUSES = ["THEORY_GAP", "EXECUTION_GAP", "BREADTH_OMISSION", "MECHANICS_FAILURE"] as const;
+type FailureCause = (typeof FAILURE_CAUSES)[number];
 
-TOOL 1 — BMCR (ingest; do not recalculate the supplied BMCR percentages)
-Use the student's Basic / Average / Higher mark capture. BMCR conversion is how much of THEIR basic knowledge they turned into marks. A low BMCR is a conversion leak, not automatically a theory gap. Incorporate whether they still feel they need theory.
+const OUTPUT_SCHEMA_INSTRUCTIONS = `You MUST respond with a single JSON object (no markdown fences, no extra keys wrapped around it). The object must use this exact structure:
 
-TOOL 2 — Volume vs Accuracy (ingest; use the supplied ratios; do not recompute them)
-- Volume % = (Points Wrote / Total Marks) * 100
-- Accuracy % = (Marks You Got / Points Wrote) * 100
-- Calculation/disclosure sections have Points Wrote = N/A. Do not use them in volume or accuracy ratios.
-If Volume % < 100% AND Accuracy % >= 65%, tag Volume Deficit: high point accuracy, but fewer points than Total Marks; they must expand breadth/depth.
-If Volume % >= 100% AND Accuracy % < 50%, tag Accuracy Deficit: sufficient point volume, but low accuracy per point; they must write precise, scenario-locked technical statements.
-Otherwise tag discussion sections Optimal. Use the supplied diagnostic tags when present.
+{
+  "directMarks": { "available": number, "earned": number, "percentage": number },
+  "indirectMarks": { "available": number, "earned": number, "percentage": number },
+  "thinkingMarks": { "available": number, "earned": number, "percentage": number },
+  "knowledgeScore": { "available": number, "earned": number, "percentage": number },
+  "applicationScore": { "available": number, "earned": number, "percentage": number },
+  "macroCommScore": { "available": number, "earned": number, "percentage": number },
+  "hasTheoryGap": boolean,
+  "primaryFailureCause": "THEORY_GAP" | "EXECUTION_GAP" | "BREADTH_OMISSION" | "MECHANICS_FAILURE",
+  "diagnosticHeadline": string,
+  "keyTakeaways": string[],
+  "actionPlan": string[],
+  "fullReportMarkdown": string
+}
 
-TOOL 3 — Buried Treasure (classify paper allocations, then compute conversion)
-Classify the paper's mark allocations into:
-- Tier 1 Direct (~10% / ~36 marks, target >= 80%): straight scenario extraction (given numbers, figures, share counts, dates).
-- Tier 2 Indirect (~35-40% / ~130 marks, target >= 60%): scenario trigger + small leap (15/115 VAT fraction, control weaknesses, Hamada beta un-levering).
-- Tier 3 Thinking (~50-55% / ~194 marks, target >= 50%): deeper reasoning and execution (journal entries, multi-stakeholder memos, scenario-locked audit steps).
-Compute candidate conversion for each tier as (Marks You Got / Available Marks) * 100. If a Buried Treasure session is supplied, treat those conversion percentages as the candidate's logged rates and reconcile them with your classification of the paper. If Tier 1 Direct conversion is below 80%, they are not extracting buried treasure from the scenario (extraction/theory gap). If Tier 1 is at or above 80% and Tier 3 Thinking conversion is below 50%, diagnose a Tier 3 execution gap, not a theory gap.
+Field meaning:
+- directMarks = Tier 1 Direct Marks
+- indirectMarks = Tier 2 Indirect Marks
+- thinkingMarks = Tier 3 Thinking Marks
+- knowledgeScore = Tier 1 + Tier 2 combined
+- applicationScore = Tier 3
+- macroCommScore = standalone X1 / layout / presentation marks
+- fullReportMarkdown = a supportive, brutally honest first-person Buried Treasure coaching report that explicitly links Volume/Accuracy trends with Buried Treasure conversion`;
 
-Mark-report Knowledge vs Application (use the supplied 35/65 splits; do not recalculate earned or max)
-- Tier 1 Knowledge (~35%): general theory, IFRS/Tax definitions, standards listing, or generic steps.
-- Tier 2 Application (~65%): scenario-linked facts, calculations, context-specific judgment, and practical synthesis.
-Call the official section allocation Total Marks — never Available Marks.
-For each question the user message already computes Knowledge earned vs max, Application earned vs max, and Primary Mark Leakage Reason (Theory gap | Scenario application gap | Incomplete depth). Copy the required first-person sentence verbatim into first_person_summary and set primary_leakage to the supplied reason. Each question's diagnosis must open with:
-"Out of [Total Marks] in [Question Code], I identified [X] Tier 1 Knowledge marks and [Y] Tier 2 Application marks. You earned [A] on Knowledge and [B] on Application. Your main mark leak was [Primary Gap]."
+const SYSTEM_PROMPT = `${BURIED_TREASURE_SYSTEM_PROMPT.trim()}
 
-TOOL 4 — Unified first-person coaching report
-Write a supportive first-person coaching report (I found..., I identified..., I want you to...). Explicitly link Volume/Accuracy trends with Buried Treasure conversion, for example:
-- Volume Deficit plus weak Direct/Indirect conversion → they are not pulling enough case-study facts onto the page.
-- Accuracy Deficit plus weak Tier 3 Thinking conversion → they generate volume but leak execution and mechanics.
-- Strong Direct conversion with weak Thinking conversion → not a theory gap; a Tier 3 execution gap.
-core_verdict must state whether the main leak is a theory/extraction gap, a volume/accuracy pattern, or a Tier 3 execution gap, using BMCR, Volume/Accuracy, and Buried Treasure together. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
+${OUTPUT_SCHEMA_INSTRUCTIONS}`;
+
+function asFiniteNumber(value: unknown): number | null {
+  const n = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function parseTierScore(value: unknown, fallback?: TierScore | null): TierScore | null {
+  const row = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+  const available = asFiniteNumber(row.available) ?? fallback?.available ?? null;
+  const earned = asFiniteNumber(row.earned) ?? fallback?.earned ?? null;
+  if (available == null || earned == null) return null;
+  const percentage = asFiniteNumber(row.percentage);
+  return {
+    available,
+    earned,
+    percentage: percentage ?? (available > 0 ? Math.round((earned / available) * 1000) / 10 : 0),
+  };
+}
+
+function tierFromLog(
+  log: BuriedTreasureLog | null,
+  key: "tier1" | "tier2" | "tier3"
+): TierScore | null {
+  if (!log) return null;
+  return {
+    available: log[`${key}_available`],
+    earned: log[`${key}_earned`],
+    percentage: log[`${key}_conversion`],
+  };
+}
+
+function combineTiers(left: TierScore, right: TierScore): TierScore {
+  const available = left.available + right.available;
+  const earned = left.earned + right.earned;
+  return {
+    available,
+    earned,
+    percentage: available > 0 ? Math.round((earned / available) * 1000) / 10 : 0,
+  };
+}
+
+function parseFailureCause(value: unknown, hasTheoryGap: boolean, thinkingPct: number): FailureCause {
+  const cause = String(value || "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "_");
+  if ((FAILURE_CAUSES as readonly string[]).includes(cause)) return cause as FailureCause;
+  if (hasTheoryGap) return "THEORY_GAP";
+  if (thinkingPct < 45) return "EXECUTION_GAP";
+  return "BREADTH_OMISSION";
+}
+
+function unwrapAnalysisPayload(parsed: Record<string, unknown>): Record<string, unknown> {
+  if (parsed.directMarks || parsed.thinkingMarks) return parsed;
+  for (const key of ["evaluation", "analysis", "buriedTreasure", "buried_treasure"]) {
+    const nested = parsed[key];
+    if (nested && typeof nested === "object" && !Array.isArray(nested)) {
+      return nested as Record<string, unknown>;
+    }
+  }
+  return parsed;
+}
+
+function parseBuriedTreasureAnalysis(
+  parsed: Record<string, unknown>,
+  log: BuriedTreasureLog | null
+): BuriedTreasureAnalysis | null {
+  const source = unwrapAnalysisPayload(parsed);
+  const directMarks = parseTierScore(source.directMarks, tierFromLog(log, "tier1"));
+  const indirectMarks = parseTierScore(source.indirectMarks, tierFromLog(log, "tier2"));
+  const thinkingMarks = parseTierScore(source.thinkingMarks, tierFromLog(log, "tier3"));
+  if (!directMarks || !indirectMarks || !thinkingMarks) return null;
+
+  const knowledgeScore =
+    parseTierScore(source.knowledgeScore, combineTiers(directMarks, indirectMarks)) ||
+    combineTiers(directMarks, indirectMarks);
+  const applicationScore = parseTierScore(source.applicationScore, thinkingMarks) || thinkingMarks;
+  const macroCommScore =
+    parseTierScore(source.macroCommScore) || { available: 0, earned: 0, percentage: 0 };
+
+  const hasTheoryGap =
+    typeof source.hasTheoryGap === "boolean"
+      ? source.hasTheoryGap
+      : directMarks.percentage < 70 || indirectMarks.percentage < 45;
+  const primaryFailureCause = parseFailureCause(source.primaryFailureCause, hasTheoryGap, thinkingMarks.percentage);
+  const diagnosticHeadline = String(source.diagnosticHeadline || "").trim();
+  const fullReportMarkdown = String(source.fullReportMarkdown || "").trim();
+  if (!diagnosticHeadline || !fullReportMarkdown) return null;
+
+  return {
+    directMarks,
+    indirectMarks,
+    thinkingMarks,
+    knowledgeScore,
+    applicationScore,
+    macroCommScore,
+    hasTheoryGap,
+    primaryFailureCause,
+    diagnosticHeadline,
+    keyTakeaways: asStringList(source.keyTakeaways),
+    actionPlan: asStringList(source.actionPlan),
+    fullReportMarkdown,
+  };
+}
+
+function blockerFromCause(cause: FailureCause): "theory" | "execution" | "both" {
+  if (cause === "THEORY_GAP") return "theory";
+  if (cause === "BREADTH_OMISSION") return "both";
+  return "execution";
+}
 
 export async function POST(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -82,13 +192,14 @@ export async function POST(request: NextRequest) {
   const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
   const paper_name = String(body?.paper_name || "").trim();
   const student_notes = String(body?.student_notes || "").trim();
+  const script_text = String(body?.script_text || body?.raw_script || body?.script || "").trim();
   const blocks = parseQuestionBlocks(body);
 
   if (!paper_name) {
     return NextResponse.json({ error: "Enter the paper name." }, { status: 400 });
   }
-  if (!blocks.length) {
-    return NextResponse.json({ error: "Enter at least one question block with valid Tier 1 and Tier 2 marks." }, { status: 400 });
+  if (!blocks.length && !script_text && !student_notes) {
+    return NextResponse.json({ error: "Enter at least one question block, notes, or raw script text." }, { status: 400 });
   }
   for (const block of blocks) {
     const capError = sectionCapError(
@@ -106,7 +217,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "OPENAI_API_KEY is not set on the server." }, { status: 500 });
   }
 
-  const totals = summariseBlocks(blocks);
+  const totals = blocks.length
+    ? summariseBlocks(blocks)
+    : {
+        tier1_earned: 0,
+        tier1_available: 0,
+        tier2_earned: 0,
+        tier2_available: 0,
+        total_earned: 0,
+        total_available: 0,
+        total_score_pct: 0,
+        knowledge_pct: 0,
+        application_pct: 0,
+        primary_blocker: "both" as const,
+      };
   const scoredBlocks = blocks.map((block) => withQuestionStats(block));
   const questionQuery = blocks.map((block) => block.question_code).join(" ");
   const progress = await fetchDiagnosticProgress(supabase, user.id).catch(() => null);
@@ -147,41 +271,42 @@ export async function POST(request: NextRequest) {
   const completion = await openai.chat.completions.create({
     model: EVALUATION_MODEL,
     temperature: 0.2,
-    response_format: {
-      type: "json_schema",
-      json_schema: {
-        name: diagnosticReportSchema.name,
-        strict: true,
-        schema: diagnosticReportSchema.schema as unknown as Record<string, unknown>,
-      },
-    },
+    response_format: { type: "json_object" },
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       {
         role: "user",
         content: [
           `Paper: ${paper_name}`,
-          `Overall total: ${totals.total_earned} / ${totals.total_available} (${totals.total_score_pct}%)`,
-          `Tier 1 Knowledge (~${Math.round(KNOWLEDGE_WEIGHT * 100)}%): ${totals.tier1_earned} / ${totals.tier1_available} (${totals.knowledge_pct}%)`,
-          `Tier 2 Application (~${Math.round(APPLICATION_WEIGHT * 100)}%): ${totals.tier2_earned} / ${totals.tier2_available} (${totals.application_pct}%)`,
-          `Calculated primary blocker: ${totals.primary_blocker}`,
+          blocks.length
+            ? `Overall total: ${totals.total_earned} / ${totals.total_available} (${totals.total_score_pct}%)`
+            : "",
+          blocks.length
+            ? `Mark-report Knowledge (~${Math.round(KNOWLEDGE_WEIGHT * 100)}%): ${totals.tier1_earned} / ${totals.tier1_available} (${totals.knowledge_pct}%)`
+            : "",
+          blocks.length
+            ? `Mark-report Application (~${Math.round(APPLICATION_WEIGHT * 100)}%): ${totals.tier2_earned} / ${totals.tier2_available} (${totals.application_pct}%)`
+            : "",
           `Student notes: ${student_notes || "(none)"}`,
           "",
-          "Unified diagnostic inputs. Ingest Tools 1–3 and write Tool 4 as one first-person coaching report that links Volume/Accuracy trends with Buried Treasure conversion.",
+          "Ingest Tools 1–3 below. Classify paper allocations into Direct / Indirect / Thinking, compute conversion, and return the Buried Treasure JSON object.",
           "",
-          "Tool 1 — BMCR (ingest; do not recalculate):",
+          "Tool 1 — BMCR marks (ingest; do not recalculate):",
           formatBmcrContext(latestBmcr),
           "",
-          "Tool 2 — Volume vs Accuracy (ingest; use supplied ratios):",
+          "Tool 2 — Volume vs Accuracy inputs (ingest; use supplied ratios):",
           formatVolumeContext(latestVolume),
           "",
-          "Tool 3 — Buried Treasure (classify Direct ~10% / Indirect ~35-40% / Thinking ~50-55%; compute conversion = Marks You Got / Available Marks; reconcile with this log if present):",
+          "Tool 3 — Buried Treasure log (classify Direct ~10% / Indirect ~35-40% / Thinking ~50-55%; compute conversion = Marks You Got / Available Marks; reconcile with this log if present):",
           formatBuriedTreasureContext(latestBuriedTreasure),
           "",
           "Mark report upload:",
           formatMarkReportContext(progress.markReport),
           "",
-          "Question blocks with calculated Tier 1 Knowledge (~35%) vs Tier 2 Application (~65%) splits:",
+          script_text ? "Raw script text:" : "",
+          script_text || "",
+          "",
+          scoredBlocks.length ? "Question blocks from the mark report:" : "",
           ...scoredBlocks.map((block) =>
             [
               `${block.question_code}:`,
@@ -196,7 +321,9 @@ export async function POST(request: NextRequest) {
           "",
           "Examiner context retrieved from the knowledge base:",
           examinerContext || "(No matching examiner commentary was found. Reason from IAC marking principles anyway.)",
-        ].join("\n"),
+        ]
+          .filter((line) => line !== "")
+          .join("\n"),
       },
     ],
   });
@@ -208,17 +335,37 @@ export async function POST(request: NextRequest) {
     parsed = {};
   }
 
-  const report = mergeModelReport(paper_name, student_notes, blocks, parsed);
+  const parsedAnalysis = parseBuriedTreasureAnalysis(parsed, latestBuriedTreasure);
+  if (!parsedAnalysis) {
+    return NextResponse.json({ error: "The diagnostic did not return a valid Buried Treasure analysis." }, { status: 500 });
+  }
+
+  const report = mergeModelReport(paper_name, student_notes, blocks.length ? blocks : [{
+    question_code: paper_name || "Paper",
+    tier1_earned: parsedAnalysis.knowledgeScore.earned,
+    tier1_available: parsedAnalysis.knowledgeScore.available,
+    tier2_earned: parsedAnalysis.applicationScore.earned,
+    tier2_available: parsedAnalysis.applicationScore.available,
+  }], {
+    knowledge_summary: parsedAnalysis.diagnosticHeadline,
+    application_summary: parsedAnalysis.keyTakeaways.join(" "),
+    core_verdict: parsedAnalysis.diagnosticHeadline,
+    skill_drills: parsedAnalysis.actionPlan,
+    questions: [],
+  });
+  report.primary_blocker = blockerFromCause(parsedAnalysis.primaryFailureCause);
   const stored = reportToStorage(report);
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("script_evaluations")
     .insert({
       user_id: user.id,
       ...stored,
-    })
-    .select("id, created_at")
-    .single();
+      dropped_marks_breakdown: {
+        ...(typeof stored.dropped_marks_breakdown === "object" ? stored.dropped_marks_breakdown : {}),
+        buried_treasure: parsedAnalysis,
+      },
+    });
 
   if (error) {
     if (/script_evaluations|schema cache|does not exist/i.test(error.message)) {
@@ -230,23 +377,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({
-    id: data?.id,
-    created_at: data?.created_at,
-    student: studentUserFromAuth(user).email,
-    sources: matches.map((row) => ({
-      title: row.document_title,
-      category: row.category,
-      similarity: row.similarity,
-    })),
-    ...report,
-    knowledge_summary: report.knowledge_summary,
-    application_summary: report.application_summary,
-    dropped_marks_breakdown: report.questions.map((question) => ({
-      area: question.question_code,
-      likely_loss: question.lost_marks.join("; "),
-      examiner_note: question.got_right.join("; "),
-    })),
-    coaching_recommendation: report.skill_drills,
-  });
+  return NextResponse.json({ success: true, evaluation: parsedAnalysis });
 }
