@@ -58,6 +58,28 @@ export default function StudentDashboard() {
         </section>
       ) : null}
 
+      {unlocked ? null : (
+        <section className="student-tools" aria-label="Pre-Exam Diagnostic Tools">
+          <p className="kicker">Diagnostics</p>
+          <h2>Pre-Exam Diagnostic Tools</h2>
+          <nav className="student-tools-grid">
+            <Link href="/student/bmcr" className="student-hub-card">
+              <strong>BMCR</strong>
+              <span className="muted small">Basic Mark Capture Record</span>
+              <p>Input and categorize your question-by-question marks.</p>
+            </Link>
+            <Link href="/student/volume-accuracy" className="student-hub-card">
+              <strong>Volume / Accuracy Tool</strong>
+              <p>Track your completion speed vs. accuracy under exam conditions.</p>
+            </Link>
+            <Link href="/student/evaluator" className="student-hub-card">
+              <strong>Script Evaluator</strong>
+              <p>Generate your unified Tier 1 vs. Tier 2 diagnostic report.</p>
+            </Link>
+          </nav>
+        </section>
+      )}
+
       <nav className="student-hub" aria-label="Student shortcuts">
         {unlocked ? null : (
           <>
@@ -82,10 +104,6 @@ export default function StudentDashboard() {
         </Link>
         {unlocked ? null : (
           <>
-            <Link href="/student/evaluator" className="student-hub-card">
-              <strong>Script evaluator</strong>
-              <p>Paste mark-sheet scores and get an AI diagnostic against examiner commentary.</p>
-            </Link>
             <Link href="/student/feedback" className="student-hub-card">
               <strong>Survey & assignment feedback</strong>
               <p>See every submission, grade, and coach comment in one place.</p>

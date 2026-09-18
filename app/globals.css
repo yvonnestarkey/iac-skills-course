@@ -3158,6 +3158,27 @@ input[type="tel"]:focus {
   text-decoration: none;
 }
 
+.student-tools {
+  margin: 8px 0 22px;
+}
+
+.student-tools h2 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.student-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .student-tools-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .student-hub {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3185,6 +3206,11 @@ input[type="tel"]:focus {
   display: block;
   font-family: var(--serif);
   font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.student-hub-card .muted.small {
+  display: block;
   margin-bottom: 6px;
 }
 
@@ -5475,7 +5501,13 @@ a.live-session-watch:hover {
   margin-top: 28px;
 }
 
-.eval-history button {
+.eval-history li {
+  display: grid;
+  gap: 4px;
+}
+
+.eval-history button,
+.eval-history li > div {
   width: 100%;
   text-align: left;
   display: grid;

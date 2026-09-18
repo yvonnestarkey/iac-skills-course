@@ -12,12 +12,13 @@ import {
   withQuestionStats,
 } from "@/lib/diagnostic-report";
 import { studentUserFromAuth } from "@/lib/student-lesson";
+import { fetchLatestBmcr, fetchLatestVolumeAccuracy, formatBmcrContext, formatVolumeContext } from "@/lib/volume-accuracy";
 
 export const dynamic = "force-dynamic";
 
 const SYSTEM_PROMPT = `You are an expert SAICA/ICAZ/ICAN IAC Exam Evaluator. Analyze the student's Tier 1 Knowledge (~35%) vs. Tier 2 Application (~65%) score breakdown. Cross-reference the provided examiner context to explain why they lost application marks and provide 3 concrete action steps for structured articulation.
 
-Use the supplied mark splits. Do not recalculate percentages. For each question block, write what the student likely got right versus where marks were lost. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
+Write the diagnosis in first person to the student (I found..., I identified...). Use the supplied mark splits. Do not recalculate percentages. Incorporate writing volume, time pressure, and mark capture trends from the BMCR and Volume/Accuracy context when they are provided. For each question block, write what I found they got right versus where I identified lost marks. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
 
 export async function POST(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -64,6 +65,11 @@ export async function POST(request: NextRequest) {
   const totals = summariseBlocks(blocks);
   const scoredBlocks = blocks.map((block) => withQuestionStats(block));
   const questionQuery = blocks.map((block) => block.question_code).join(" ");
+  const [latestBmcr, latestVolume] = await Promise.all([
+    fetchLatestBmcr(supabase, user.id).catch(() => null),
+    fetchLatestVolumeAccuracy(supabase, user.id).catch(() => null),
+  ]);
+  const diagnosticContext = [formatBmcrContext(latestBmcr), formatVolumeContext(latestVolume)].join("\n\n");
 
   let matches: Awaited<ReturnType<typeof matchKnowledgeBase>> = [];
   try {
@@ -108,6 +114,9 @@ export async function POST(request: NextRequest) {
           `Tier 2 Application (~${Math.round(APPLICATION_WEIGHT * 100)}%): ${totals.tier2_earned} / ${totals.tier2_available} (${totals.application_pct}%)`,
           `Calculated primary blocker: ${totals.primary_blocker}`,
           `Student notes: ${student_notes || "(none)"}`,
+          "",
+          "Pre-exam diagnostic context (BMCR mark capture + Volume/Accuracy):",
+          diagnosticContext,
           "",
           "Question blocks with calculated 35/65 splits:",
           ...scoredBlocks.map(

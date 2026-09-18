@@ -7,7 +7,7 @@ import { useCoursePreview } from "@/lib/course-preview";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentNav } from "@/lib/student-nav";
 
-const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator"]);
+const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator", "dashboard", "bmcr", "volume-accuracy"]);
 
 export default function StudentCourseNav() {
   const { outline, completed, submissions, surveyReviews } = useStudentSession();
@@ -18,9 +18,9 @@ export default function StudentCourseNav() {
   const chapters = outline || [];
   const segment = pathname.startsWith(prefix) ? pathname.slice(prefix.length).split("/")[0] : null;
   const activeLessonId = segment && !RESERVED.has(segment) ? segment : null;
-  const onDashboard = pathname === basePath;
+  const onDashboard = pathname === basePath || pathname === "/student/dashboard";
   const onOverview = pathname === `${basePath}/overview`;
-  const onEvaluator = pathname === "/student/evaluator";
+  const onEvaluator = pathname === "/student/evaluator" || pathname === "/student/bmcr" || pathname === "/student/volume-accuracy";
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
   const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
   const total = lessons.length;
@@ -31,7 +31,7 @@ export default function StudentCourseNav() {
     <>
       <div className="course-head">
         <nav className="student-nav-buttons" aria-label="Student pages">
-          <Link href={basePath} className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
+          <Link href={unlocked ? basePath : "/student/dashboard"} className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
             Student Dashboard
           </Link>
           <Link href={`${basePath}/overview`} className={`dash-link ${onOverview ? "active" : ""}`} onClick={close}>
