@@ -1,5 +1,6 @@
 import pastPaperData from "@/data/past-papers.json";
 import { KNOWLEDGE_WEIGHT, round1 } from "@/lib/diagnostic-report";
+import { PAST_EXAMS, type PastExamConfig } from "@/lib/data/past-papers";
 
 export type PastPaperQuestion = {
   code: string;
@@ -32,7 +33,40 @@ export type PastPaperSitting = {
   papers: PastPaper[];
 };
 
-export const PAST_PAPER_SITTINGS = pastPaperData.sittings as PastPaperSitting[];
+function examToSitting(exam: PastExamConfig): PastPaperSitting {
+  return {
+    id: exam.id,
+    label: exam.id === "jan-2025" ? "January 2025 IAC Exam" : exam.title,
+    papers: exam.papers.map((paper) => {
+      const direct_available = round1(paper.sections.reduce((sum, section) => sum + section.direct, 0));
+      const indirect_available = round1(paper.sections.reduce((sum, section) => sum + section.indirect, 0));
+      const thinking_available = round1(paper.sections.reduce((sum, section) => sum + section.thinking, 0));
+      return {
+        id: paper.id,
+        code: paper.code,
+        title: paper.title,
+        total_marks: paper.totalMarks,
+        buried_treasure: { direct_available, indirect_available, thinking_available },
+        questions: paper.sections.map((section) => ({
+          code: section.code,
+          title: section.title,
+          marks: section.totalMarks,
+          isCalculation: section.isCalculation,
+          direct_available: section.direct,
+          indirect_available: section.indirect,
+          thinking_available: section.thinking,
+        })),
+      };
+    }),
+  };
+}
+
+function mergeRegisteredSittings(base: PastPaperSitting[]): PastPaperSitting[] {
+  const overlays = PAST_EXAMS.map(examToSitting);
+  return base.map((sitting) => overlays.find((item) => item.id === sitting.id) || sitting);
+}
+
+export const PAST_PAPER_SITTINGS = mergeRegisteredSittings(pastPaperData.sittings as PastPaperSitting[]);
 
 export const DEFAULT_PAST_PAPER_SITTING_ID = "june-2026";
 

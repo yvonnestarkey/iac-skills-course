@@ -18,6 +18,7 @@ import { fetchLatestBmcr, fetchLatestVolumeAccuracy, formatBmcrContext, formatVo
 import { BURIED_TREASURE_TIERS, fetchLatestBuriedTreasure, formatBuriedTreasureContext, type BuriedTreasureLog } from "@/lib/buried-treasure";
 import {
   computeBuriedTreasureDiagnostics,
+  calculateMarksForPaper,
   formatBuriedTreasureDiagnostics,
   type MarkTierInput,
 } from "@/lib/buried-treasure-calculator";
@@ -234,6 +235,27 @@ function buriedTreasureMarkInput(
   };
 }
 
+function studentSectionMarksFromBody(body: Record<string, unknown> | null): Record<string, number> {
+  const marks: Record<string, number> = {};
+  const raw = Array.isArray(body?.questions) ? body.questions : [];
+  for (const item of raw) {
+    if (!item || typeof item !== "object") continue;
+    const row = item as Record<string, unknown>;
+    const code = String(row.question_code || "").trim();
+    if (!code) continue;
+    const direct = asMarkNumber(row.direct_earned, 0);
+    const indirect = asMarkNumber(row.indirect_earned, 0);
+    const thinking = asMarkNumber(row.thinking_earned, 0);
+    const macro = asMarkNumber(row.macro_comm_earned ?? row.macroCommEarned, 0);
+    marks[`${code}.direct`] = direct;
+    marks[`${code}.indirect`] = indirect;
+    marks[`${code}.thinking`] = thinking;
+    marks[`${code}.macroComm`] = macro;
+    marks[code] = asMarkNumber(row.earned_marks ?? row.marks_got, direct + indirect + thinking + macro);
+  }
+  return marks;
+}
+
 function applyDeterministicMetrics(
   analysis: BuriedTreasureAnalysis,
   diagnostics: ReturnType<typeof computeBuriedTreasureDiagnostics>
@@ -367,9 +389,9 @@ export async function POST(request: NextRequest) {
   const latestBmcr = await fetchLatestBmcr(supabase, user.id).catch(() => null);
   const latestVolume = await fetchLatestVolumeAccuracy(supabase, user.id).catch(() => null);
   const latestBuriedTreasure = await fetchLatestBuriedTreasure(supabase, user.id).catch(() => null);
-  const buriedTreasureDiagnostics = computeBuriedTreasureDiagnostics(
-    buriedTreasureMarkInput(body, latestBuriedTreasure, selectedPaper)
-  );
+  const buriedTreasureDiagnostics =
+    calculateMarksForPaper(paper_id, studentSectionMarksFromBody(body)) ||
+    computeBuriedTreasureDiagnostics(buriedTreasureMarkInput(body, latestBuriedTreasure, selectedPaper));
 
   let matches: Awaited<ReturnType<typeof matchKnowledgeBase>> = [];
   try {

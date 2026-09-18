@@ -1,0 +1,265 @@
+{
+  "id": "jan-2025",
+  "code": "IAC_JAN_2025",
+  "title": "January 2025 SAICA IAC Examination",
+  "totalMarks": 360,
+  "papers": [
+    {
+      "id": "jan-2025-p1",
+      "code": "IAC-JAN-2025-P1",
+      "title": "Paper 1 – Marchant",
+      "caseName": "Marchant / VendiBoys",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P1_a",
+          "title": "Calculate Marchant’s normal tax payable for the 2024 year of assessment",
+          "totalMarks": 20,
+          "isCalculation": true,
+          "direct": 3,
+          "indirect": 9,
+          "thinking": 8,
+          "macroComm": 0
+        },
+        {
+          "code": "P1_b",
+          "title": "Discuss whether VendiBoys should have acquired OMV shares or the business assets (income tax and VAT)",
+          "totalMarks": 13,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 4,
+          "thinking": 9,
+          "macroComm": 0
+        },
+        {
+          "code": "P1_c",
+          "title": "Discuss the income tax implications of second-hand vending machines acquired in exchange for VendiBoys shares",
+          "totalMarks": 8,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 3,
+          "macroComm": 1
+        },
+        {
+          "code": "P1_d",
+          "title": "Calculate VAT payable or refundable for VendiBoys for the March / April 2024 tax period",
+          "totalMarks": 18,
+          "isCalculation": true,
+          "direct": 3,
+          "indirect": 8,
+          "thinking": 7,
+          "macroComm": 0
+        },
+        {
+          "code": "P1_e",
+          "title": "Discuss VendiBoys’ business and financial risks from purchasing and operating the OMV assets",
+          "totalMarks": 19,
+          "isCalculation": false,
+          "direct": 2,
+          "indirect": 6,
+          "thinking": 10,
+          "macroComm": 1
+        },
+        {
+          "code": "P1_f",
+          "title": "Identify and discuss RoMM at assertion level for inventory and PPE",
+          "totalMarks": 14,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 5,
+          "thinking": 7,
+          "macroComm": 1
+        },
+        {
+          "code": "P1_g",
+          "title": "Describe how automated tools and techniques could test VendiBoys’ revenue using OpKonnect data",
+          "totalMarks": 13,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 8,
+          "macroComm": 0
+        },
+        {
+          "code": "P1_h",
+          "title": "Discuss ethical concerns regarding how the Peddlar brothers run VendiBoys",
+          "totalMarks": 15,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 10,
+          "macroComm": 0
+        }
+      ]
+    },
+    {
+      "id": "jan-2025-p2",
+      "code": "IAC-JAN-2025-P2",
+      "title": "Paper 2 – FreschKart",
+      "caseName": "FreschKart / GoFresch",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P2_a",
+          "title": "Discuss key operating-environment risks before the eco-friendly strategy shift",
+          "totalMarks": 12,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 7,
+          "macroComm": 0
+        },
+        {
+          "code": "P2_b",
+          "title": "Critically evaluate FreschKart’s eco-friendly strategic actions",
+          "totalMarks": 8,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 3,
+          "thinking": 5,
+          "macroComm": 0
+        },
+        {
+          "code": "P2_c",
+          "title": "Memorandum critically reviewing the vote against a rights issue, with calculations and key ratios",
+          "totalMarks": 28,
+          "isCalculation": false,
+          "direct": 2,
+          "indirect": 8,
+          "thinking": 17,
+          "macroComm": 1
+        },
+        {
+          "code": "P2_d",
+          "title": "Discuss ethical behaviour and ethical leadership toward lenders, Cisty, store managers and communities",
+          "totalMarks": 9,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 3,
+          "thinking": 6,
+          "macroComm": 0
+        },
+        {
+          "code": "P2_e",
+          "title": "Prepare correcting journal entries for GoFresch sales by selected FKB stores",
+          "totalMarks": 16,
+          "isCalculation": true,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 11,
+          "macroComm": 0
+        },
+        {
+          "code": "P2_f",
+          "title": "Calculate the annual effective cost of the new loan from Bank Finance Ltd",
+          "totalMarks": 8,
+          "isCalculation": true,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 3,
+          "macroComm": 0
+        },
+        {
+          "code": "P2_g",
+          "title": "Prepare the Sandton store FY2024 PPE note extract",
+          "totalMarks": 9,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 4,
+          "macroComm": 1
+        },
+        {
+          "code": "P2_h",
+          "title": "Prepare journal entries for the solar panels in FY2024",
+          "totalMarks": 13,
+          "isCalculation": true,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 8,
+          "macroComm": 0
+        },
+        {
+          "code": "P2_i",
+          "title": "Calculate FY2024 profit or loss effect of the Cisty contract and the leave-policy change",
+          "totalMarks": 17,
+          "isCalculation": true,
+          "direct": 2,
+          "indirect": 7,
+          "thinking": 8,
+          "macroComm": 0
+        }
+      ]
+    },
+    {
+      "id": "jan-2025-p3",
+      "code": "IAC-JAN-2025-P3",
+      "title": "Paper 3 – TransT",
+      "caseName": "TransT / SprayT / Project Drone",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P3_a",
+          "title": "Calculate the WACC as at 30 November 2023 for Project Drone",
+          "totalMarks": 12,
+          "isCalculation": true,
+          "direct": 2,
+          "indirect": 5,
+          "thinking": 5,
+          "macroComm": 0
+        },
+        {
+          "code": "P3_b",
+          "title": "Calculate the IRR and conclude whether the drone fleet purchase was the correct decision",
+          "totalMarks": 36,
+          "isCalculation": true,
+          "direct": 4,
+          "indirect": 12,
+          "thinking": 20,
+          "macroComm": 0
+        },
+        {
+          "code": "P3_c",
+          "title": "Discuss strategic risks and benefits of investing in drones, with mitigating actions",
+          "totalMarks": 13,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 8,
+          "macroComm": 0
+        },
+        {
+          "code": "P3_d",
+          "title": "Provide correcting journal entries for the BuzzFin loan for the year ended 30 June 2024",
+          "totalMarks": 11,
+          "isCalculation": true,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 6,
+          "macroComm": 0
+        },
+        {
+          "code": "P3_e",
+          "title": "Discuss concerns about the share-option journal and advise on the correct accounting treatment",
+          "totalMarks": 14,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 9,
+          "macroComm": 0
+        },
+        {
+          "code": "P3_f",
+          "title": "Recommend substantive tests of details for classification, rights, and AVA of agricultural drones",
+          "totalMarks": 34,
+          "isCalculation": false,
+          "direct": 3,
+          "indirect": 12,
+          "thinking": 19,
+          "macroComm": 0
+        }
+      ]
+    }
+  ]
+}

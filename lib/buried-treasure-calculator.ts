@@ -1,4 +1,6 @@
 import { BURIED_TREASURE_TIERS, pctOf } from "@/lib/buried-treasure";
+import { round1 } from "@/lib/diagnostic-report";
+import { sectionsForPaperId, type PastPaperSectionConfig } from "@/lib/data/past-papers";
 import type { BuriedTreasureAnalysis, TierScore } from "@/types/evaluation";
 
 export interface MarkTierInput {
@@ -120,6 +122,90 @@ export function computeBuriedTreasureDiagnostics(input: MarkTierInput): BuriedTr
     diagnosticHeadline,
     diagnosticMessage,
   };
+}
+
+function asEarned(value: unknown): number {
+  const n = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(n) ? Math.max(0, n) : 0;
+}
+
+function earnedForSection(section: PastPaperSectionConfig, studentSectionMarks: Record<string, number>) {
+  const directKey = `${section.code}.direct`;
+  const indirectKey = `${section.code}.indirect`;
+  const thinkingKey = `${section.code}.thinking`;
+  const macroKey = `${section.code}.macroComm`;
+  const hasSplit = [directKey, indirectKey, thinkingKey, macroKey].some((key) =>
+    Object.prototype.hasOwnProperty.call(studentSectionMarks, key)
+  );
+  if (hasSplit) {
+    return {
+      direct: Math.min(section.direct, asEarned(studentSectionMarks[directKey])),
+      indirect: Math.min(section.indirect, asEarned(studentSectionMarks[indirectKey])),
+      thinking: Math.min(section.thinking, asEarned(studentSectionMarks[thinkingKey])),
+      macroComm: Math.min(section.macroComm, asEarned(studentSectionMarks[macroKey])),
+    };
+  }
+
+  const total = Math.min(section.totalMarks, asEarned(studentSectionMarks[section.code]));
+  const capTotal = section.direct + section.indirect + section.thinking + section.macroComm;
+  if (capTotal <= 0 || total <= 0) {
+    return { direct: 0, indirect: 0, thinking: 0, macroComm: 0 };
+  }
+  const scale = Math.min(1, total / capTotal);
+  const direct = Math.min(section.direct, round1(section.direct * scale));
+  const indirect = Math.min(section.indirect, round1(section.indirect * scale));
+  const thinking = Math.min(section.thinking, round1(section.thinking * scale));
+  const macroComm = Math.min(section.macroComm, round1(section.macroComm * scale));
+  const allocated = round1(direct + indirect + thinking + macroComm);
+  const gap = round1(total - allocated);
+  if (gap === 0) return { direct, indirect, thinking, macroComm };
+  if (thinking + gap <= section.thinking && thinking + gap >= 0) {
+    return { direct, indirect, thinking: round1(thinking + gap), macroComm };
+  }
+  if (macroComm + gap <= section.macroComm && macroComm + gap >= 0) {
+    return { direct, indirect, thinking, macroComm: round1(macroComm + gap) };
+  }
+  return { direct, indirect, thinking, macroComm };
+}
+
+export function calculateMarksForPaper(
+  paperId: string,
+  studentSectionMarks: Record<string, number>
+): BuriedTreasureDiagnostics | null {
+  const sections = sectionsForPaperId(paperId);
+  if (!sections.length) return null;
+
+  const totals = sections.reduce(
+    (acc, section) => {
+      const earned = earnedForSection(section, studentSectionMarks);
+      return {
+        directMarks: {
+          available: round1(acc.directMarks.available + section.direct),
+          earned: round1(acc.directMarks.earned + earned.direct),
+        },
+        indirectMarks: {
+          available: round1(acc.indirectMarks.available + section.indirect),
+          earned: round1(acc.indirectMarks.earned + earned.indirect),
+        },
+        thinkingMarks: {
+          available: round1(acc.thinkingMarks.available + section.thinking),
+          earned: round1(acc.thinkingMarks.earned + earned.thinking),
+        },
+        macroCommMarks: {
+          available: round1(acc.macroCommMarks.available + section.macroComm),
+          earned: round1(acc.macroCommMarks.earned + earned.macroComm),
+        },
+      };
+    },
+    {
+      directMarks: { available: 0, earned: 0 },
+      indirectMarks: { available: 0, earned: 0 },
+      thinkingMarks: { available: 0, earned: 0 },
+      macroCommMarks: { available: 0, earned: 0 },
+    }
+  );
+
+  return computeBuriedTreasureDiagnostics(totals);
 }
 
 export function formatBuriedTreasureDiagnostics(diagnostics: BuriedTreasureDiagnostics): string {
