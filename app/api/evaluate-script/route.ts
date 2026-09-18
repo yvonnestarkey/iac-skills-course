@@ -15,7 +15,12 @@ import {
 import { sectionCapError } from "@/lib/exam-structure";
 import { fetchDiagnosticProgress, formatMarkReportContext } from "@/lib/diagnostic-progress";
 import { fetchLatestBmcr, fetchLatestVolumeAccuracy, formatBmcrContext, formatVolumeContext } from "@/lib/volume-accuracy";
-import { fetchLatestBuriedTreasure, formatBuriedTreasureContext, type BuriedTreasureLog } from "@/lib/buried-treasure";
+import { BURIED_TREASURE_TIERS, fetchLatestBuriedTreasure, formatBuriedTreasureContext, type BuriedTreasureLog } from "@/lib/buried-treasure";
+import {
+  computeBuriedTreasureDiagnostics,
+  formatBuriedTreasureDiagnostics,
+  type MarkTierInput,
+} from "@/lib/buried-treasure-calculator";
 import { BURIED_TREASURE_SYSTEM_PROMPT } from "@/lib/prompts/buried-treasure";
 import type { BuriedTreasureAnalysis, TierScore } from "@/types/evaluation";
 
@@ -72,28 +77,6 @@ function parseTierScore(value: unknown, fallback?: TierScore | null): TierScore 
   };
 }
 
-function tierFromLog(
-  log: BuriedTreasureLog | null,
-  key: "tier1" | "tier2" | "tier3"
-): TierScore | null {
-  if (!log) return null;
-  return {
-    available: log[`${key}_available`],
-    earned: log[`${key}_earned`],
-    percentage: log[`${key}_conversion`],
-  };
-}
-
-function combineTiers(left: TierScore, right: TierScore): TierScore {
-  const available = left.available + right.available;
-  const earned = left.earned + right.earned;
-  return {
-    available,
-    earned,
-    percentage: available > 0 ? Math.round((earned / available) * 1000) / 10 : 0,
-  };
-}
-
 function parseFailureCause(value: unknown, hasTheoryGap: boolean, thinkingPct: number): FailureCause {
   const cause = String(value || "")
     .trim()
@@ -118,27 +101,28 @@ function unwrapAnalysisPayload(parsed: Record<string, unknown>): Record<string, 
 
 function parseBuriedTreasureAnalysis(
   parsed: Record<string, unknown>,
-  log: BuriedTreasureLog | null
+  diagnostics: ReturnType<typeof computeBuriedTreasureDiagnostics>
 ): BuriedTreasureAnalysis | null {
   const source = unwrapAnalysisPayload(parsed);
-  const directMarks = parseTierScore(source.directMarks, tierFromLog(log, "tier1"));
-  const indirectMarks = parseTierScore(source.indirectMarks, tierFromLog(log, "tier2"));
-  const thinkingMarks = parseTierScore(source.thinkingMarks, tierFromLog(log, "tier3"));
-  if (!directMarks || !indirectMarks || !thinkingMarks) return null;
+  const directMarks = parseTierScore(source.directMarks, diagnostics.directMarks) || diagnostics.directMarks;
+  const indirectMarks = parseTierScore(source.indirectMarks, diagnostics.indirectMarks) || diagnostics.indirectMarks;
+  const thinkingMarks = parseTierScore(source.thinkingMarks, diagnostics.thinkingMarks) || diagnostics.thinkingMarks;
 
   const knowledgeScore =
-    parseTierScore(source.knowledgeScore, combineTiers(directMarks, indirectMarks)) ||
-    combineTiers(directMarks, indirectMarks);
-  const applicationScore = parseTierScore(source.applicationScore, thinkingMarks) || thinkingMarks;
+    parseTierScore(source.knowledgeScore, diagnostics.knowledgeScore) || diagnostics.knowledgeScore;
+  const applicationScore =
+    parseTierScore(source.applicationScore, diagnostics.applicationScore) || diagnostics.applicationScore;
   const macroCommScore =
-    parseTierScore(source.macroCommScore) || { available: 0, earned: 0, percentage: 0 };
+    parseTierScore(source.macroCommScore, diagnostics.macroCommScore) || diagnostics.macroCommScore;
 
   const hasTheoryGap =
-    typeof source.hasTheoryGap === "boolean"
-      ? source.hasTheoryGap
-      : directMarks.percentage < 70 || indirectMarks.percentage < 45;
-  const primaryFailureCause = parseFailureCause(source.primaryFailureCause, hasTheoryGap, thinkingMarks.percentage);
-  const diagnosticHeadline = String(source.diagnosticHeadline || "").trim();
+    typeof source.hasTheoryGap === "boolean" ? source.hasTheoryGap : diagnostics.hasTheoryGap;
+  const primaryFailureCause = parseFailureCause(
+    source.primaryFailureCause,
+    hasTheoryGap,
+    thinkingMarks.percentage
+  );
+  const diagnosticHeadline = String(source.diagnosticHeadline || diagnostics.diagnosticHeadline || "").trim();
   const fullReportMarkdown = String(source.fullReportMarkdown || "").trim();
   if (!diagnosticHeadline || !fullReportMarkdown) return null;
 
@@ -162,6 +146,68 @@ function blockerFromCause(cause: FailureCause): "theory" | "execution" | "both" 
   if (cause === "THEORY_GAP") return "theory";
   if (cause === "BREADTH_OMISSION") return "both";
   return "execution";
+}
+
+function asMarkNumber(value: unknown, fallback: number): number {
+  const n = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function buriedTreasureMarkInput(
+  body: Record<string, unknown> | null,
+  log: BuriedTreasureLog | null
+): MarkTierInput {
+  const nested =
+    body?.buried_treasure && typeof body.buried_treasure === "object"
+      ? (body.buried_treasure as Record<string, unknown>)
+      : body || {};
+  const macroAvailable = asMarkNumber(
+    nested.macro_comm_available ?? nested.macroCommAvailable ?? nested.x1_available,
+    0
+  );
+  const macroEarned = asMarkNumber(nested.macro_comm_earned ?? nested.macroCommEarned ?? nested.x1_earned, 0);
+  return {
+    directMarks: {
+      available: asMarkNumber(
+        nested.direct_available ?? nested.tier1_available,
+        log?.tier1_available ?? BURIED_TREASURE_TIERS[0].available
+      ),
+      earned: asMarkNumber(nested.direct_earned ?? nested.tier1_earned, log?.tier1_earned ?? 0),
+    },
+    indirectMarks: {
+      available: asMarkNumber(
+        nested.indirect_available ?? nested.tier2_available,
+        log?.tier2_available ?? BURIED_TREASURE_TIERS[1].available
+      ),
+      earned: asMarkNumber(nested.indirect_earned ?? nested.tier2_earned, log?.tier2_earned ?? 0),
+    },
+    thinkingMarks: {
+      available: asMarkNumber(
+        nested.thinking_available ?? nested.tier3_available,
+        log?.tier3_available ?? BURIED_TREASURE_TIERS[2].available
+      ),
+      earned: asMarkNumber(nested.thinking_earned ?? nested.tier3_earned, log?.tier3_earned ?? 0),
+    },
+    macroCommMarks: macroAvailable > 0 ? { available: macroAvailable, earned: macroEarned } : undefined,
+  };
+}
+
+function applyDeterministicMetrics(
+  analysis: BuriedTreasureAnalysis,
+  diagnostics: ReturnType<typeof computeBuriedTreasureDiagnostics>
+): BuriedTreasureAnalysis {
+  return {
+    ...analysis,
+    directMarks: diagnostics.directMarks,
+    indirectMarks: diagnostics.indirectMarks,
+    thinkingMarks: diagnostics.thinkingMarks,
+    knowledgeScore: diagnostics.knowledgeScore,
+    applicationScore: diagnostics.applicationScore,
+    macroCommScore: diagnostics.macroCommScore,
+    hasTheoryGap: diagnostics.hasTheoryGap,
+    primaryFailureCause: diagnostics.primaryFailureCause,
+    diagnosticHeadline: analysis.diagnosticHeadline || diagnostics.diagnosticHeadline,
+  };
 }
 
 export async function POST(request: NextRequest) {
@@ -246,6 +292,9 @@ export async function POST(request: NextRequest) {
   const latestBmcr = await fetchLatestBmcr(supabase, user.id).catch(() => null);
   const latestVolume = await fetchLatestVolumeAccuracy(supabase, user.id).catch(() => null);
   const latestBuriedTreasure = await fetchLatestBuriedTreasure(supabase, user.id).catch(() => null);
+  const buriedTreasureDiagnostics = computeBuriedTreasureDiagnostics(
+    buriedTreasureMarkInput(body, latestBuriedTreasure)
+  );
 
   let matches: Awaited<ReturnType<typeof matchKnowledgeBase>> = [];
   try {
@@ -289,7 +338,10 @@ export async function POST(request: NextRequest) {
             : "",
           `Student notes: ${student_notes || "(none)"}`,
           "",
-          "Ingest Tools 1–3 below. Classify paper allocations into Direct / Indirect / Thinking, compute conversion, and return the Buried Treasure JSON object.",
+          "Use the deterministic Buried Treasure metrics below as the source of truth. Copy these exact percentages into fullReportMarkdown, keyTakeaways, and actionPlan. Do not recalculate them.",
+          formatBuriedTreasureDiagnostics(buriedTreasureDiagnostics),
+          "",
+          "Ingest Tools 1–3 below for qualitative context (BMCR, Volume/Accuracy, logged Buried Treasure). The deterministic metrics above override any conflicting conversion math.",
           "",
           "Tool 1 — BMCR marks (ingest; do not recalculate):",
           formatBmcrContext(latestBmcr),
@@ -335,25 +387,26 @@ export async function POST(request: NextRequest) {
     parsed = {};
   }
 
-  const parsedAnalysis = parseBuriedTreasureAnalysis(parsed, latestBuriedTreasure);
+  const parsedAnalysis = parseBuriedTreasureAnalysis(parsed, buriedTreasureDiagnostics);
   if (!parsedAnalysis) {
     return NextResponse.json({ error: "The diagnostic did not return a valid Buried Treasure analysis." }, { status: 500 });
   }
+  const evaluation = applyDeterministicMetrics(parsedAnalysis, buriedTreasureDiagnostics);
 
   const report = mergeModelReport(paper_name, student_notes, blocks.length ? blocks : [{
     question_code: paper_name || "Paper",
-    tier1_earned: parsedAnalysis.knowledgeScore.earned,
-    tier1_available: parsedAnalysis.knowledgeScore.available,
-    tier2_earned: parsedAnalysis.applicationScore.earned,
-    tier2_available: parsedAnalysis.applicationScore.available,
+    tier1_earned: evaluation.knowledgeScore.earned,
+    tier1_available: evaluation.knowledgeScore.available,
+    tier2_earned: evaluation.applicationScore.earned,
+    tier2_available: evaluation.applicationScore.available,
   }], {
-    knowledge_summary: parsedAnalysis.diagnosticHeadline,
-    application_summary: parsedAnalysis.keyTakeaways.join(" "),
-    core_verdict: parsedAnalysis.diagnosticHeadline,
-    skill_drills: parsedAnalysis.actionPlan,
+    knowledge_summary: evaluation.diagnosticHeadline,
+    application_summary: evaluation.keyTakeaways.join(" "),
+    core_verdict: evaluation.diagnosticHeadline,
+    skill_drills: evaluation.actionPlan,
     questions: [],
   });
-  report.primary_blocker = blockerFromCause(parsedAnalysis.primaryFailureCause);
+  report.primary_blocker = blockerFromCause(evaluation.primaryFailureCause);
   const stored = reportToStorage(report);
 
   const { error } = await supabase
@@ -363,7 +416,7 @@ export async function POST(request: NextRequest) {
       ...stored,
       dropped_marks_breakdown: {
         ...(typeof stored.dropped_marks_breakdown === "object" ? stored.dropped_marks_breakdown : {}),
-        buried_treasure: parsedAnalysis,
+        buried_treasure: evaluation,
       },
     });
 
@@ -377,5 +430,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true, evaluation: parsedAnalysis });
+  return NextResponse.json({ success: true, evaluation });
 }
