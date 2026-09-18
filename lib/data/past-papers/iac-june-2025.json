@@ -1,0 +1,255 @@
+{
+  "id": "june-2025",
+  "code": "IAC_JUNE_2025",
+  "title": "June 2025 SAICA IAC Examination",
+  "totalMarks": 360,
+  "papers": [
+    {
+      "id": "june-2025-p1",
+      "code": "IAC-JUNE-2025-P1",
+      "title": "Paper 1 – UbudCargo",
+      "caseName": "UbudCargo / CargoPlat",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P1_a",
+          "title": "CargoPlat™ IAS 38 recognition date and FY2024 prior-period error note extract",
+          "totalMarks": 16,
+          "isCalculation": false,
+          "direct": 2,
+          "indirect": 5,
+          "thinking": 8,
+          "macroComm": 1
+        },
+        {
+          "code": "P1_b",
+          "title": "ITT lease recognition exemption and correcting journal entries at 1 January 2024",
+          "totalMarks": 16,
+          "isCalculation": true,
+          "direct": 1,
+          "indirect": 5,
+          "thinking": 10,
+          "macroComm": 0
+        },
+        {
+          "code": "P1_c",
+          "title": "Discuss whether UC’s FY2024 financial statements must be audited or independently reviewed",
+          "totalMarks": 11,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 5,
+          "macroComm": 1
+        },
+        {
+          "code": "P1_d",
+          "title": "Discuss ethical requirements Ingxelo must consider in pre-engagement activities for the UC audit",
+          "totalMarks": 12,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 4,
+          "thinking": 8,
+          "macroComm": 0
+        },
+        {
+          "code": "P1_e",
+          "title": "Describe substantive tests of detail for the office and warehouse lease liability (FY2023 and FY2024)",
+          "totalMarks": 15,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 5,
+          "thinking": 8,
+          "macroComm": 1
+        },
+        {
+          "code": "P1_f",
+          "title": "Calculate profitability and liquidity ratios from Bongani’s management accounts and comment on the outcomes",
+          "totalMarks": 30,
+          "isCalculation": true,
+          "direct": 4,
+          "indirect": 10,
+          "thinking": 16,
+          "macroComm": 0
+        },
+        {
+          "code": "P1_g",
+          "title": "Criticise the free cash flow valuation performed by Bongani",
+          "totalMarks": 20,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 6,
+          "thinking": 13,
+          "macroComm": 0
+        }
+      ]
+    },
+    {
+      "id": "june-2025-p2",
+      "code": "IAC-JUNE-2025-P2",
+      "title": "Paper 2 – SSC",
+      "caseName": "SSC / PED / digital strategy",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P2_a",
+          "title": "Discuss and conclude whether robotic process automation amounts are capital in nature under s11(a)",
+          "totalMarks": 7,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 3,
+          "thinking": 3,
+          "macroComm": 1
+        },
+        {
+          "code": "P2_b",
+          "title": "Calculate SSC’s corrected taxable income for the 2024 year of assessment, starting from R29 310 000",
+          "totalMarks": 45,
+          "isCalculation": true,
+          "direct": 5,
+          "indirect": 16,
+          "thinking": 23,
+          "macroComm": 1
+        },
+        {
+          "code": "P2_c",
+          "title": "Report to SSC management: nine digital-strategy business risks and a mitigating measure for each",
+          "totalMarks": 20,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 6,
+          "thinking": 12,
+          "macroComm": 1
+        },
+        {
+          "code": "P2_d",
+          "title": "Describe the controls SSC should put in place over journal entries recorded by the bot",
+          "totalMarks": 6,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 3,
+          "thinking": 3,
+          "macroComm": 0
+        },
+        {
+          "code": "P2_e",
+          "title": "Explain whether 1 June 2024 is the IFRS acquisition date of PED and state the correct date if not",
+          "totalMarks": 7,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 2,
+          "macroComm": 1
+        },
+        {
+          "code": "P2_f",
+          "title": "Calculate goodwill or a gain on bargain purchase for the PED acquisition at 31 December 2024",
+          "totalMarks": 35,
+          "isCalculation": true,
+          "direct": 4,
+          "indirect": 12,
+          "thinking": 19,
+          "macroComm": 0
+        }
+      ]
+    },
+    {
+      "id": "june-2025-p3",
+      "code": "IAC-JUNE-2025-P3",
+      "title": "Paper 3 – Reprop",
+      "caseName": "Reprop / Spark-HOA",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P3_a",
+          "title": "Discuss matters JEM Inc. should consider regarding appointment as Reprop’s FY2024 auditors",
+          "totalMarks": 13,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 7,
+          "macroComm": 1
+        },
+        {
+          "code": "P3_b",
+          "title": "Discuss assertion-level RoMM and formulate substantive tests for Reprop’s contingent liability",
+          "totalMarks": 19,
+          "isCalculation": false,
+          "direct": 2,
+          "indirect": 6,
+          "thinking": 11,
+          "macroComm": 0
+        },
+        {
+          "code": "P3_c",
+          "title": "Discuss ethical concerns related to Reprop’s decision on the municipal underbilling",
+          "totalMarks": 6,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 2,
+          "thinking": 4,
+          "macroComm": 0
+        },
+        {
+          "code": "P3_d",
+          "title": "Discuss Spark-HOA’s compliance concerns under the Companies Act",
+          "totalMarks": 14,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 5,
+          "thinking": 7,
+          "macroComm": 1
+        },
+        {
+          "code": "P3_e",
+          "title": "Discuss Carol’s professional responsibility for information discovered at and after the Spark-HOA AGM",
+          "totalMarks": 12,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 4,
+          "thinking": 8,
+          "macroComm": 0
+        },
+        {
+          "code": "P3_f",
+          "title": "Critically evaluate whether Spark-HOA board decisions align with its strategic objectives",
+          "totalMarks": 9,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 3,
+          "thinking": 6,
+          "macroComm": 0
+        },
+        {
+          "code": "P3_g",
+          "title": "Perform an NPV analysis and conclude on procuring solar and water solutions under Spark-HOA",
+          "totalMarks": 21,
+          "isCalculation": true,
+          "direct": 3,
+          "indirect": 7,
+          "thinking": 11,
+          "macroComm": 0
+        },
+        {
+          "code": "P3_h",
+          "title": "Evaluate Spark-HOA’s performance forecast against sustainability and environmental strategic goals",
+          "totalMarks": 10,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 5,
+          "macroComm": 1
+        },
+        {
+          "code": "P3_i",
+          "title": "Report advising the Spark-HOA board on the best financing option for solar and water backup solutions",
+          "totalMarks": 16,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 5,
+          "thinking": 9,
+          "macroComm": 1
+        }
+      ]
+    }
+  ]
+}

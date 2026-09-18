@@ -83,6 +83,9 @@ export default function ScriptEvaluator() {
     setSittingId(nextSitting.id);
     setPaperId(nextPaper.id);
     setQuestions(draftsFromPastPaper(nextPaper));
+    setEvaluation(null);
+    setReport(null);
+    setError("");
   };
 
   const setEarned = (code: string, key: "direct_earned" | "indirect_earned" | "thinking_earned", value: string) => {
@@ -239,7 +242,7 @@ export default function ScriptEvaluator() {
         ) : null}
 
         <div className="va-table-wrap">
-          <table className="va-table bt-table">
+          <table className="va-table bt-table" key={paper.id}>
             <caption>
               {paperName} — question codes and mark caps
             </caption>
@@ -259,7 +262,7 @@ export default function ScriptEvaluator() {
               {paper.questions.map((question) => {
                 const row = questions.find((item) => item.question_code === question.code);
                 return (
-                  <tr key={question.code} className={question.isCalculation ? "va-calc" : undefined}>
+                  <tr key={`${paper.id}-${question.code}`} className={question.isCalculation ? "va-calc" : undefined}>
                     <th scope="row">
                       <strong>{question.code}</strong>
                       <span className="muted small">{question.title}</span>

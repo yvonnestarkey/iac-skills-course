@@ -33,10 +33,16 @@ export type PastPaperSitting = {
   papers: PastPaper[];
 };
 
+function sittingLabel(exam: PastExamConfig): string {
+  if (exam.id === "jan-2025") return "January 2025 IAC Exam";
+  if (exam.id === "june-2025") return "June 2025 IAC Exam";
+  return exam.title;
+}
+
 function examToSitting(exam: PastExamConfig): PastPaperSitting {
   return {
     id: exam.id,
-    label: exam.id === "jan-2025" ? "January 2025 IAC Exam" : exam.title,
+    label: sittingLabel(exam),
     papers: exam.papers.map((paper) => {
       const direct_available = round1(paper.sections.reduce((sum, section) => sum + section.direct, 0));
       const indirect_available = round1(paper.sections.reduce((sum, section) => sum + section.indirect, 0));

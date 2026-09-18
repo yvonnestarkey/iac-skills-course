@@ -1,4 +1,5 @@
 import iacJan2025 from "./iac-jan-2025.json";
+import iacJune2025 from "./iac-june-2025.json";
 
 export type PastPaperSectionConfig = {
   code: string;
@@ -28,6 +29,14 @@ export type PastExamConfig = {
   papers: PastPaperConfig[];
 };
 
+export type PastPaperMarkCaps = {
+  total: number;
+  direct: number;
+  indirect: number;
+  thinking: number;
+  macroComm: number;
+};
+
 export type PastPaperRegistryEntry = {
   id: string;
   code: string;
@@ -35,27 +44,46 @@ export type PastPaperRegistryEntry = {
   totalMarks: number;
   paperList: { id: string; code: string; title: string; totalMarks: number }[];
   sectionCodes: string[];
+  markCaps: PastPaperMarkCaps;
 };
+
+function sumCaps(exam: PastExamConfig): PastPaperMarkCaps {
+  const sections = exam.papers.flatMap((paper) => paper.sections);
+  return {
+    total: exam.totalMarks,
+    direct: sections.reduce((sum, section) => sum + section.direct, 0),
+    indirect: sections.reduce((sum, section) => sum + section.indirect, 0),
+    thinking: sections.reduce((sum, section) => sum + section.thinking, 0),
+    macroComm: sections.reduce((sum, section) => sum + section.macroComm, 0),
+  };
+}
+
+function registryEntry(exam: PastExamConfig): PastPaperRegistryEntry {
+  return {
+    id: exam.id,
+    code: exam.code,
+    title: exam.title,
+    totalMarks: exam.totalMarks,
+    paperList: exam.papers.map((paper) => ({
+      id: paper.id,
+      code: paper.code,
+      title: paper.title,
+      totalMarks: paper.totalMarks,
+    })),
+    sectionCodes: exam.papers.flatMap((paper) => paper.sections.map((section) => section.code)),
+    markCaps: sumCaps(exam),
+  };
+}
 
 export const IAC_JAN_2025_CONFIG = iacJan2025 as PastExamConfig;
+export const IAC_JUNE_2025_CONFIG = iacJune2025 as PastExamConfig;
 
-export const IAC_JAN_2025: PastPaperRegistryEntry = {
-  id: IAC_JAN_2025_CONFIG.id,
-  code: IAC_JAN_2025_CONFIG.code,
-  title: IAC_JAN_2025_CONFIG.title,
-  totalMarks: IAC_JAN_2025_CONFIG.totalMarks,
-  paperList: IAC_JAN_2025_CONFIG.papers.map((paper) => ({
-    id: paper.id,
-    code: paper.code,
-    title: paper.title,
-    totalMarks: paper.totalMarks,
-  })),
-  sectionCodes: IAC_JAN_2025_CONFIG.papers.flatMap((paper) => paper.sections.map((section) => section.code)),
-};
+export const IAC_JAN_2025 = registryEntry(IAC_JAN_2025_CONFIG);
+export const IAC_JUNE_2025 = registryEntry(IAC_JUNE_2025_CONFIG);
 
-export const PAST_EXAMS: PastExamConfig[] = [IAC_JAN_2025_CONFIG];
+export const PAST_EXAMS: PastExamConfig[] = [IAC_JAN_2025_CONFIG, IAC_JUNE_2025_CONFIG];
 
-export const PAST_PAPERS: PastPaperRegistryEntry[] = [IAC_JAN_2025];
+export const PAST_PAPERS: PastPaperRegistryEntry[] = [IAC_JAN_2025, IAC_JUNE_2025];
 
 export function findRegisteredExam(paperId: string | undefined | null): PastExamConfig | null {
   if (!paperId) return null;
