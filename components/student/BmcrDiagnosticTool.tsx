@@ -1,14 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import BmcrCalculator from "@/components/lesson/BmcrCalculator";
 import {
   EMPTY_BMCR_VALUE,
   computeBmcrPct,
   formatPct,
   saveBmcrEvaluation,
+  withQuestionTotal,
   type BmcrValue,
 } from "@/lib/bmcr";
+import {
+  EXAM_SITTINGS,
+  findPaper,
+  findQuestion,
+  findSitting,
+  paperDisplayName,
+  paperLabel,
+  questionLabel,
+} from "@/lib/exam-structure";
 import { useStudentSession } from "@/lib/student-session";
 
 function diagnosticAssignmentId(paper: string, question: string): string {
@@ -22,26 +32,56 @@ function diagnosticAssignmentId(paper: string, question: string): string {
 
 export default function BmcrDiagnosticTool() {
   const { user } = useStudentSession();
-  const [paperName, setPaperName] = useState("");
-  const [questionCode, setQuestionCode] = useState("");
+  const defaultExam = EXAM_SITTINGS[0];
+  const defaultPaper = defaultExam.papers[0];
+  const [examId, setExamId] = useState(defaultExam.id);
+  const [paperId, setPaperId] = useState(defaultPaper.id);
+  const [questionCode, setQuestionCode] = useState(defaultPaper.questions[0].code);
   const [notes, setNotes] = useState("");
-  const [bmcr, setBmcr] = useState<BmcrValue>(EMPTY_BMCR_VALUE);
+  const [bmcr, setBmcr] = useState<BmcrValue>(
+    withQuestionTotal({ ...EMPTY_BMCR_VALUE, question_total_markplan: defaultPaper.questions[0].marks })
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState("");
 
+  const sitting = findSitting(examId) || defaultExam;
+  const paper = findPaper(examId, paperId) || sitting.papers[0];
+  const question = findQuestion(examId, paper.id, questionCode) || paper.questions[0];
+  const paperName = paperDisplayName(sitting, paper);
+
+  const cap = question.marks;
+  const selectedLabel = useMemo(() => questionLabel(question), [question]);
+
+  const applyQuestion = (code: string) => {
+    const next = findQuestion(examId, paper.id, code) || paper.questions[0];
+    setQuestionCode(next.code);
+    setBmcr(withQuestionTotal({ ...EMPTY_BMCR_VALUE, question_total_markplan: next.marks }));
+  };
+
+  const changePaper = (nextPaperId: string, nextExamId = examId) => {
+    const nextSitting = findSitting(nextExamId) || defaultExam;
+    const nextPaper = findPaper(nextExamId, nextPaperId) || nextSitting.papers[0];
+    const first = nextPaper.questions[0];
+    setPaperId(nextPaper.id);
+    setQuestionCode(first.code);
+    setBmcr(withQuestionTotal({ ...EMPTY_BMCR_VALUE, question_total_markplan: first.marks }));
+  };
+
   const submit = async () => {
     if (!user?.id) return;
+    if (bmcr.question_total_my_marks > cap || bmcr.question_total_markplan > cap) {
+      setError(`${question.code} is ${cap} marks. Entered marks cannot exceed that section total.`);
+      return;
+    }
     setBusy(true);
     setError("");
     setSaved("");
     const result = await saveBmcrEvaluation({
       studentId: user.id,
-      assignmentId: diagnosticAssignmentId(paperName, questionCode),
+      assignmentId: diagnosticAssignmentId(paper.code, question.code),
       marks: bmcr,
-      key_takeaways: [paperName && `Paper: ${paperName}`, questionCode && `Question: ${questionCode}`, notes]
-        .filter(Boolean)
-        .join(" · "),
+      key_takeaways: [`${paperName} · ${selectedLabel}`, notes].filter(Boolean).join(" · "),
     });
     setBusy(false);
     if (!result.ok) {
@@ -55,7 +95,7 @@ export default function BmcrDiagnosticTool() {
     <article className="lesson-body wide eval-page">
       <p className="kicker">Pre-exam diagnostic</p>
       <h1>BMCR</h1>
-      <p className="muted">Basic Mark Capture Record. Input and categorize your question-by-question marks.</p>
+      <p className="muted">Basic Mark Capture Record. Choose a June 2026 IAC section, then categorize your marks. Inputs are capped at that section total.</p>
       <form
         className="eval-form"
         onSubmit={(event) => {
@@ -64,14 +104,45 @@ export default function BmcrDiagnosticTool() {
         }}
       >
         <label>
-          Paper name
-          <input type="text" value={paperName} onChange={(event) => setPaperName(event.target.value)} placeholder="e.g. IAC Paper 1" required />
+          Exam
+          <select
+            className="select-line"
+            value={examId}
+            onChange={(event) => {
+              const next = findSitting(event.target.value) || defaultExam;
+              const firstPaper = next.papers[0];
+              setExamId(next.id);
+              changePaper(firstPaper.id, next.id);
+            }}
+          >
+            {EXAM_SITTINGS.map((exam) => (
+              <option key={exam.id} value={exam.id}>
+                {exam.label}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
-          Question code
-          <input type="text" value={questionCode} onChange={(event) => setQuestionCode(event.target.value)} placeholder="e.g. Q2.1" required />
+          Paper
+          <select className="select-line" value={paper.id} onChange={(event) => changePaper(event.target.value)}>
+            {sitting.papers.map((item) => (
+              <option key={item.id} value={item.id}>
+                {paperLabel(item)} · {item.total_marks} marks
+              </option>
+            ))}
+          </select>
         </label>
-        <BmcrCalculator value={bmcr} onChange={setBmcr} idPrefix="diag-bmcr" />
+        <label>
+          Question
+          <select className="select-line" value={question.code} onChange={(event) => applyQuestion(event.target.value)}>
+            {paper.questions.map((item) => (
+              <option key={item.code} value={item.code}>
+                {questionLabel(item)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <BmcrCalculator value={bmcr} onChange={setBmcr} idPrefix="diag-bmcr" maxMarks={cap} />
         <label className="eval-notes">
           Notes
           <textarea rows={3} value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="What leaked on this question?" />

@@ -12,6 +12,7 @@ import {
   withQuestionStats,
 } from "@/lib/diagnostic-report";
 import { studentUserFromAuth } from "@/lib/student-lesson";
+import { sectionCapError } from "@/lib/exam-structure";
 import { fetchLatestBmcr, fetchLatestVolumeAccuracy, formatBmcrContext, formatVolumeContext } from "@/lib/volume-accuracy";
 
 export const dynamic = "force-dynamic";
@@ -55,6 +56,16 @@ export async function POST(request: NextRequest) {
   }
   if (!blocks.length) {
     return NextResponse.json({ error: "Enter at least one question block with valid Tier 1 and Tier 2 marks." }, { status: 400 });
+  }
+  for (const block of blocks) {
+    const capError = sectionCapError(
+      block.question_code,
+      block.tier1_available + block.tier2_available,
+      block.tier1_earned + block.tier2_earned
+    );
+    if (capError) {
+      return NextResponse.json({ error: capError }, { status: 400 });
+    }
   }
 
   const openai = getOpenAI();

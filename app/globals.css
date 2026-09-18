@@ -5304,6 +5304,10 @@ a.live-session-watch:hover {
   font-weight: 600;
 }
 
+.eval-form select.select-line {
+  margin-top: 0;
+}
+
 .eval-form input[type="number"] {
   width: 100%;
   border: 1px solid var(--line);

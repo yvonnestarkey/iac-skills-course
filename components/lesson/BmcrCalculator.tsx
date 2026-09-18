@@ -74,11 +74,13 @@ export default function BmcrCalculator({
   onChange,
   readOnly = false,
   idPrefix = "bmcr",
+  maxMarks,
 }: {
   value?: BmcrValue | null;
   onChange?: (next: BmcrValue) => void;
   readOnly?: boolean;
   idPrefix?: string;
+  maxMarks?: number;
 }) {
   const ready = withDiagnostics(value || EMPTY_BMCR_VALUE);
   const marks = withQuestionTotal(ready);
@@ -92,13 +94,16 @@ export default function BmcrCalculator({
     onChange(withDiagnostics(next));
   };
 
+  const cap = maxMarks && maxMarks > 0 ? maxMarks : undefined;
+
   const setField = (field: keyof BmcrValue, raw: string) => {
     const parsed = raw.trim() === "" ? 0 : Number(raw);
+    const nextValue = Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
     emit({
       ...ready,
       ...withQuestionTotal({
         ...marks,
-        [field]: Number.isFinite(parsed) && parsed >= 0 ? parsed : 0,
+        [field]: cap != null ? Math.min(nextValue, cap) : nextValue,
       }),
     });
   };
@@ -130,6 +135,7 @@ export default function BmcrCalculator({
                         className="select-line"
                         type="number"
                         min={0}
+                        max={cap}
                         step={0.5}
                         inputMode="decimal"
                         value={displayNumber(marks[mine])}
@@ -147,6 +153,7 @@ export default function BmcrCalculator({
                         className="select-line"
                         type="number"
                         min={0}
+                        max={cap}
                         step={0.5}
                         inputMode="decimal"
                         value={displayNumber(marks[plan])}
@@ -172,6 +179,7 @@ export default function BmcrCalculator({
                     className="select-line"
                     type="number"
                     min={0}
+                    max={cap}
                     step={0.5}
                     inputMode="decimal"
                     value={displayNumber(marks.question_total_markplan)}
@@ -184,7 +192,10 @@ export default function BmcrCalculator({
           </tbody>
         </table>
       </div>
-      <p className="muted small">Question Total My Marks is the sum of Basic, Average, and Higher Grade.</p>
+      <p className="muted small">
+        Question Total My Marks is the sum of Basic, Average, and Higher Grade.
+        {cap != null ? ` This section is capped at ${cap} marks.` : ""}
+      </p>
       {showStats ? (
         <div className="bmcr-stats">
           <div className="bmcr-stat">
