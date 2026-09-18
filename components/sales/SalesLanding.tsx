@@ -5,7 +5,6 @@ import FaqAccordion from "@/components/sales/FaqAccordion";
 import SkillsAccordion from "@/components/sales/SkillsAccordion";
 import WaitlistForm from "@/components/sales/WaitlistForm";
 import { COURSE_DATES, PAYMENT_CAPTION, PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO, WEBINAR } from "@/lib/sales-copy";
-import Link from "next/link";
 
 export default function SalesLanding() {
   return (
@@ -17,9 +16,6 @@ export default function SalesLanding() {
       </a>
       <header className="topbar sales-topbar">
         <BrandMark href="/" />
-        <Link className="ghost" href="/login">
-          Student / Coach Login ↗
-        </Link>
       </header>
 
       <section className="sales-hero">
