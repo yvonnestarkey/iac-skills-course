@@ -3168,11 +3168,50 @@ input[type="tel"]:focus {
   margin-bottom: 12px;
 }
 
-.eval-hub-grid {
+.eval-hub-steps {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 18px;
+  gap: 14px;
+}
+
+.eval-hub-step {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(200px, 260px) minmax(0, 1fr);
+  gap: 16px 20px;
+  align-items: center;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.eval-hub-step-num {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--link);
+}
+
+.eval-hub-step .primary {
+  margin: 0;
+  text-align: center;
+  justify-self: stretch;
+}
+
+.eval-hub-step-copy p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.eval-hub-step-copy .pill,
+.eval-hub-step-copy .muted.small {
+  display: inline-block;
+  margin: 0;
 }
 
 .eval-prereqs {
@@ -3181,9 +3220,17 @@ input[type="tel"]:focus {
   color: var(--muted);
 }
 
-@media (max-width: 900px) {
-  .eval-hub-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 800px) {
+  .eval-hub-step {
+    grid-template-columns: 2.4rem minmax(0, 1fr);
+  }
+
+  .eval-hub-step .primary {
+    grid-column: 2;
+  }
+
+  .eval-hub-step-copy {
+    grid-column: 1 / -1;
   }
 }
 
