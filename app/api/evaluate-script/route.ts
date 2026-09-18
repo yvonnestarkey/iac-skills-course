@@ -5,6 +5,7 @@ import {
   APPLICATION_WEIGHT,
   KNOWLEDGE_WEIGHT,
   diagnosticReportSchema,
+  firstPersonLeakSummary,
   mergeModelReport,
   parseQuestionBlocks,
   reportToStorage,
@@ -18,9 +19,22 @@ import { fetchLatestBmcr, fetchLatestVolumeAccuracy, formatBmcrContext, formatVo
 
 export const dynamic = "force-dynamic";
 
-const SYSTEM_PROMPT = `You are an expert SAICA/ICAZ/ICAN IAC Exam Evaluator. Analyze the student's Tier 1 Knowledge (~35%) vs. Tier 2 Application (~65%) score breakdown. Cross-reference the provided examiner context to explain why they lost application marks and provide 3 concrete action steps for structured articulation.
+const SYSTEM_PROMPT = `You are an expert SAICA/ICAZ/ICAN IAC Exam Evaluator.
 
-Write the diagnosis in first person to the student (I found..., I identified...). Use the supplied mark splits. Do not recalculate percentages. Call the official section allocation Total Marks — never Available Marks.
+Evaluate candidate scripts by explicitly separating marks into:
+- Tier 1 Knowledge (~35%): general theory, IFRS/Tax definitions, standards listing, or generic steps.
+- Tier 2 Application (~65%): scenario-linked facts, calculations, context-specific judgment, and practical synthesis.
+
+Use the supplied mark splits. Do not recalculate Tier 1 or Tier 2 earned marks, max available, or percentages. Call the official section allocation Total Marks — never Available Marks.
+
+For each question the user message already computes:
+- Tier 1 Marks Earned vs Tier 1 Max Available
+- Tier 2 Marks Earned vs Tier 2 Max Available
+- Primary Mark Leakage Reason: exactly one of "Theory gap", "Scenario application gap", or "Incomplete depth"
+- The required first-person diagnostic sentence
+
+Copy that sentence verbatim into first_person_summary and set primary_leakage to the supplied reason. Then, in first person (I found..., I identified...), explain what they got right versus where marks leaked, consistent with that Primary Mark Leakage Reason. Each question's diagnosis must open with:
+"Out of [Total Marks] in [Question Code], I identified [X] Tier 1 Knowledge marks and [Y] Tier 2 Application marks. You earned [A] on Knowledge and [B] on Application. Your main mark leak was [Primary Gap]."
 
 Volume vs Accuracy rules (use the supplied ratios; do not recompute them):
 - Volume % = (Points Wrote / Total Marks) * 100
@@ -28,7 +42,7 @@ Volume vs Accuracy rules (use the supplied ratios; do not recompute them):
 - Calculation/disclosure sections have Points Wrote = N/A. Do not use them in volume or accuracy ratios. Tag them N/A - Calculation.
 If Volume % < 100% AND Accuracy % >= 65%, tag Volume Deficit: high point accuracy, but fewer points than Total Marks; they must expand breadth/depth to reach full mark potential.
 If Volume % >= 100% AND Accuracy % < 50%, tag Accuracy Deficit: sufficient point volume, but low accuracy per point; they must write precise, scenario-locked technical statements.
-Otherwise tag discussion sections Optimal. Use the supplied diagnostic tags when present. Incorporate writing volume, accuracy, BMCR mark capture, and the uploaded mark-report context. For each question block, write what I found they got right versus where I identified lost marks. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
+Otherwise tag discussion sections Optimal. Use the supplied diagnostic tags when present. Incorporate writing volume, accuracy, BMCR mark capture, and the uploaded mark-report context. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
 
 export async function POST(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -150,10 +164,17 @@ export async function POST(request: NextRequest) {
           "Pre-exam diagnostic context (BMCR, Volume vs Accuracy, mark report upload):",
           diagnosticContext,
           "",
-          "Question blocks with calculated 35/65 splits:",
-          ...scoredBlocks.map(
-            (block) =>
-              `${block.question_code}: available ${block.available_marks}; knowledge ${block.tier1_earned}/${block.tier1_available} (${block.knowledge_earned_pct}%); application ${block.tier2_earned}/${block.tier2_available} (${block.application_earned_pct}%); question total ${block.question_total} (${block.question_total_pct}%)`
+          "Question blocks with calculated Tier 1 Knowledge (~35%) vs Tier 2 Application (~65%) splits:",
+          ...scoredBlocks.map((block) =>
+            [
+              `${block.question_code}:`,
+              `- Total Marks: ${block.available_marks}`,
+              `- Tier 1 Knowledge: ${block.tier1_earned} earned vs ${block.tier1_available} max available (${block.knowledge_earned_pct}%)`,
+              `- Tier 2 Application: ${block.tier2_earned} earned vs ${block.tier2_available} max available (${block.application_earned_pct}%)`,
+              `- Question total: ${block.question_total} / ${block.available_marks} (${block.question_total_pct}%)`,
+              `- Primary Mark Leakage Reason: ${block.primary_leakage}`,
+              `- Required first-person sentence: ${firstPersonLeakSummary(block, block.primary_leakage)}`,
+            ].join("\n")
           ),
           "",
           "Examiner context retrieved from the knowledge base:",

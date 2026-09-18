@@ -2,6 +2,7 @@ export const KNOWLEDGE_WEIGHT = 0.35;
 export const APPLICATION_WEIGHT = 0.65;
 
 export type PrimaryBlocker = "theory" | "execution" | "both";
+export type MarkLeakage = "Theory gap" | "Scenario application gap" | "Incomplete depth";
 
 export type DiagnosticQuestionInput = {
   question_code: string;
@@ -17,6 +18,8 @@ export type DiagnosticQuestion = DiagnosticQuestionInput & {
   application_earned_pct: number;
   question_total: number;
   question_total_pct: number;
+  primary_leakage: MarkLeakage;
+  first_person_summary: string;
   got_right: string[];
   lost_marks: string[];
 };
@@ -64,10 +67,15 @@ export const diagnosticReportSchema = {
           additionalProperties: false,
           properties: {
             question_code: { type: "string" },
+            first_person_summary: { type: "string" },
+            primary_leakage: {
+              type: "string",
+              enum: ["Theory gap", "Scenario application gap", "Incomplete depth"],
+            },
             got_right: { type: "array", items: { type: "string" } },
             lost_marks: { type: "array", items: { type: "string" } },
           },
-          required: ["question_code", "got_right", "lost_marks"],
+          required: ["question_code", "first_person_summary", "primary_leakage", "got_right", "lost_marks"],
         },
       },
       skill_drills: {
@@ -121,6 +129,28 @@ export function inferPrimaryBlocker(knowledgePct: number, applicationPct: number
   return "both";
 }
 
+export function inferMarkLeakage(input: DiagnosticQuestionInput): MarkLeakage {
+  const knowledge_pct = pct(input.tier1_earned, input.tier1_available);
+  const application_pct = pct(input.tier2_earned, input.tier2_available);
+  const total_pct = pct(
+    round1(input.tier1_earned + input.tier2_earned),
+    round1(input.tier1_available + input.tier2_available)
+  );
+  const gap = knowledge_pct - application_pct;
+  if (knowledge_pct < 55 && application_pct < 55) return "Incomplete depth";
+  if (total_pct < 50 && Math.abs(gap) < 8) return "Incomplete depth";
+  if (gap >= 8) return "Scenario application gap";
+  if (gap <= -8) return "Theory gap";
+  if (application_pct < knowledge_pct) return "Scenario application gap";
+  if (knowledge_pct < application_pct) return "Theory gap";
+  return "Incomplete depth";
+}
+
+export function firstPersonLeakSummary(input: DiagnosticQuestionInput, leakage = inferMarkLeakage(input)): string {
+  const total = round1(input.tier1_available + input.tier2_available);
+  return `Out of ${total} in ${input.question_code}, I identified ${input.tier1_available} Tier 1 Knowledge marks and ${input.tier2_available} Tier 2 Application marks. You earned ${input.tier1_earned} on Knowledge and ${input.tier2_earned} on Application. Your main mark leak was ${leakage}.`;
+}
+
 export function splitQuestionBlock(raw: Record<string, unknown>): DiagnosticQuestionInput | null {
   const question_code = String(raw.question_code || raw.question || raw.block || "").trim();
   if (!question_code) return null;
@@ -160,6 +190,7 @@ export function splitQuestionBlock(raw: Record<string, unknown>): DiagnosticQues
 export function withQuestionStats(input: DiagnosticQuestionInput, extras?: { got_right?: string[]; lost_marks?: string[] }): DiagnosticQuestion {
   const available_marks = round1(input.tier1_available + input.tier2_available);
   const question_total = round1(input.tier1_earned + input.tier2_earned);
+  const primary_leakage = inferMarkLeakage(input);
   return {
     ...input,
     available_marks,
@@ -167,6 +198,8 @@ export function withQuestionStats(input: DiagnosticQuestionInput, extras?: { got
     application_earned_pct: pct(input.tier2_earned, input.tier2_available),
     question_total,
     question_total_pct: pct(question_total, available_marks),
+    primary_leakage,
+    first_person_summary: firstPersonLeakSummary(input, primary_leakage),
     got_right: extras?.got_right || [],
     lost_marks: extras?.lost_marks || [],
   };

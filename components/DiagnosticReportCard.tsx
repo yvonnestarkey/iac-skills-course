@@ -62,10 +62,10 @@ export default function DiagnosticReportCard({ report }: { report: DiagnosticRep
           <thead>
             <tr>
               <th scope="col">Question block</th>
-              <th scope="col">Available marks</th>
-              <th scope="col">Knowledge earned</th>
-              <th scope="col">Application earned</th>
-              <th scope="col">Question total</th>
+              <th scope="col">Total Marks</th>
+              <th scope="col">Tier 1 earned vs max</th>
+              <th scope="col">Tier 2 earned vs max</th>
+              <th scope="col">Primary mark leak</th>
             </tr>
           </thead>
           <tbody>
@@ -79,9 +79,7 @@ export default function DiagnosticReportCard({ report }: { report: DiagnosticRep
                 <td>
                   {question.tier2_earned} / {question.tier2_available} ({question.application_earned_pct}%)
                 </td>
-                <td>
-                  {question.question_total} ({question.question_total_pct}%)
-                </td>
+                <td>{question.primary_leakage}</td>
               </tr>
             ))}
           </tbody>
@@ -91,13 +89,12 @@ export default function DiagnosticReportCard({ report }: { report: DiagnosticRep
       <div className="diag-breakdown">
         <h3>Detailed question breakdown</h3>
         {report.questions.map((question) => (
-          <details key={question.question_code} className="diag-q">
+          <details key={question.question_code} className="diag-q" open>
             <summary>
               <strong>{question.question_code}</strong>
-              <span className="muted small">
-                Knowledge {question.knowledge_earned_pct}% · Application {question.application_earned_pct}%
-              </span>
+              <span className="muted small">{question.primary_leakage}</span>
             </summary>
+            <p>{question.first_person_summary}</p>
             <div className="diag-q-grid">
               <article>
                 <h4>What I found you got right</h4>
