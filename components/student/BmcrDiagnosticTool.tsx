@@ -331,6 +331,11 @@ export default function BmcrDiagnosticTool() {
           );
         })}
       </div>
+      <div className="actions va-continue">
+        <Link href="/student/volume-accuracy" className="primary">
+          Continue Script Evaluation
+        </Link>
+      </div>
     </article>
   );
 }

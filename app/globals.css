@@ -5392,6 +5392,10 @@ a.live-session-watch:hover {
   margin-top: 18px;
 }
 
+.va-continue {
+  margin-top: 22px;
+}
+
 .va-paper-box {
   border: 1px solid var(--line);
   border-radius: 16px;
