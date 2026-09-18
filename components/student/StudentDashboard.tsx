@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import StudentDashboardBanner from "@/components/student/StudentDashboardBanner";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
+import ScriptEvaluatorSteps from "@/components/student/ScriptEvaluatorSteps";
 import { fetchCoachingDashboardHint } from "@/lib/coaching";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useCoursePreview } from "@/lib/course-preview";
@@ -60,10 +61,10 @@ export default function StudentDashboard() {
 
       {unlocked ? null : (
         <section className="student-tools" aria-label="Script evaluator">
-          <Link href="/student/evaluator" className="student-hub-card student-hub-card-featured">
-            <strong>Script Evaluator</strong>
-            <p>Open BMCR, Volume vs Accuracy, Buried Treasure, and the AI mark report evaluation from one place.</p>
-          </Link>
+          <p className="kicker">Script evaluator</p>
+          <h2>Diagnostic tools</h2>
+          <p className="muted">Work through BMCR, Volume vs Accuracy, Buried Treasure, then the AI mark report.</p>
+          <ScriptEvaluatorSteps />
         </section>
       )}
 

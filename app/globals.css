@@ -3178,7 +3178,7 @@ input[type="tel"]:focus {
 
 .eval-hub-step {
   display: grid;
-  grid-template-columns: 2.4rem minmax(200px, 260px) minmax(0, 1fr);
+  grid-template-columns: 2.4rem minmax(220px, 280px) minmax(0, 1fr);
   gap: 16px 20px;
   align-items: center;
   padding: 18px 20px;
