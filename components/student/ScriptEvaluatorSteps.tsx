@@ -52,7 +52,7 @@ export default function ScriptEvaluatorSteps() {
       <li className="eval-hub-step">
         <span className="eval-hub-step-num">3</span>
         <Link href="/student/buried-treasure" className="primary">
-          Tool 3: Buried Treasure
+          Buried Treasure
         </Link>
         <div className="eval-hub-step-copy">
           {progress.hasBuriedTreasure ? <span className="pill">Done</span> : <span className="muted small">To do</span>}
