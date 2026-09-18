@@ -4811,9 +4811,9 @@ a.live-session-watch:hover {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 8px 14px;
-  padding: 12px 22px;
-  background: var(--dark);
+  gap: 12px 22px;
+  padding: 20px 24px;
+  background: var(--link);
   color: #fff;
   text-align: center;
   text-decoration: none;
@@ -4826,28 +4826,51 @@ a.live-session-watch:hover {
 
 .sales-webinar-banner strong {
   font-family: var(--serif);
-  font-size: 15px;
-  letter-spacing: 0.02em;
+  font-size: clamp(22px, 2.4vw, 28px);
+  letter-spacing: 0.01em;
+  line-height: 1.15;
 }
 
-.sales-webinar-banner span {
-  font-size: 14.5px;
+.sales-webinar-banner > span:not(.sales-webinar-cta) {
+  font-size: clamp(16px, 1.6vw, 19px);
   line-height: 1.4;
+  max-width: 44ch;
 }
 
 .sales-webinar-cta {
   display: inline-flex;
   align-items: center;
-  padding: 6px 14px;
+  justify-content: center;
+  padding: 11px 24px;
   border-radius: 999px;
-  background: var(--sand);
-  color: var(--dark);
-  font-size: 13px;
+  background: #fff;
+  color: var(--link);
+  font-size: 16px;
   font-weight: 800;
+  animation: webinar-pulse 2.6s ease-in-out infinite;
 }
 
 .sales-webinar-banner:hover .sales-webinar-cta {
-  background: #fff;
+  background: var(--sand);
+  color: var(--link);
+}
+
+@keyframes webinar-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.72);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 14px rgba(255, 255, 255, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sales-webinar-cta {
+    animation: none;
+  }
 }
 
 .sales-topbar {
