@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import VolumeAccuracyTool from "@/components/student/VolumeAccuracyTool";
 
 export const dynamic = "force-dynamic";
@@ -9,5 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function StudentVolumeAccuracyPage() {
-  return <VolumeAccuracyTool />;
+  return (
+    <Suspense fallback={<article className="lesson-body wide eval-page"><p className="muted">Loading Volume vs Accuracy…</p></article>}>
+      <VolumeAccuracyTool />
+    </Suspense>
+  );
 }

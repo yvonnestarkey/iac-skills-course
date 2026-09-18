@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import BuriedTreasureTool from "@/components/BuriedTreasureTool";
 
 export const dynamic = "force-dynamic";
@@ -9,5 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function StudentBuriedTreasurePage() {
-  return <BuriedTreasureTool />;
+  return (
+    <Suspense fallback={<article className="lesson-body wide eval-page"><p className="muted">Loading Buried Treasure…</p></article>}>
+      <BuriedTreasureTool />
+    </Suspense>
+  );
 }

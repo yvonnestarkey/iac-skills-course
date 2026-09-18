@@ -3168,6 +3168,28 @@ input[type="tel"]:focus {
   margin-bottom: 12px;
 }
 
+.student-tools .primary {
+  justify-self: start;
+  margin-top: 4px;
+}
+
+.eval-exam-picker {
+  display: grid;
+  gap: 8px;
+  max-width: 520px;
+  margin: 20px 0 8px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.eval-exam-picker .select-line {
+  font-weight: 500;
+}
+
 .eval-hub-steps {
   list-style: none;
   margin: 18px 0 0;

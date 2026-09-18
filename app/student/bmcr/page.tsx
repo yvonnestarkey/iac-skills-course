@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import BmcrDiagnosticTool from "@/components/student/BmcrDiagnosticTool";
 
 export const dynamic = "force-dynamic";
@@ -9,5 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function StudentBmcrPage() {
-  return <BmcrDiagnosticTool />;
+  return (
+    <Suspense fallback={<article className="lesson-body wide eval-page"><p className="muted">Loading BMCR…</p></article>}>
+      <BmcrDiagnosticTool />
+    </Suspense>
+  );
 }

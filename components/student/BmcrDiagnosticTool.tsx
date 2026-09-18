@@ -14,15 +14,9 @@ import {
   type BmcrEvaluation,
   type BmcrValue,
 } from "@/lib/bmcr";
-import {
-  EXAM_SITTINGS,
-  findSitting,
-  paperDisplayName,
-  paperLabel,
-  questionLabel,
-  type ExamPaper,
-  type ExamSitting,
-} from "@/lib/exam-structure";
+import EvaluatorExamPicker from "@/components/student/EvaluatorExamPicker";
+import { paperDisplayName, paperLabel, questionLabel, type ExamPaper, type ExamSitting } from "@/lib/exam-structure";
+import { useEvaluatorExam } from "@/lib/use-evaluator-exam";
 import { useStudentSession } from "@/lib/student-session";
 
 type PaperDraft = {
@@ -110,17 +104,25 @@ function aggregatePaper(draft: PaperDraft): BmcrValue {
 
 export default function BmcrDiagnosticTool() {
   const { user } = useStudentSession();
-  const defaultExam = EXAM_SITTINGS[0];
-  const [examId, setExamId] = useState(defaultExam.id);
-  const [drafts, setDrafts] = useState<Record<string, PaperDraft>>(() => emptyAllDrafts(defaultExam));
+  const { exam, href } = useEvaluatorExam();
+  const sitting = exam;
+  const [drafts, setDrafts] = useState<Record<string, PaperDraft>>({});
   const [busyId, setBusyId] = useState<string | null>(null);
   const [status, setStatus] = useState<Record<string, PaperStatus>>({});
   const [savedPapers, setSavedPapers] = useState<Record<string, boolean>>({});
-  const [openIds, setOpenIds] = useState<Record<string, boolean>>(() => ({ [defaultExam.papers[0].id]: true }));
-
-  const sitting = findSitting(examId) || defaultExam;
+  const [openIds, setOpenIds] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
+    if (!sitting) {
+      setDrafts({});
+      setSavedPapers({});
+      setOpenIds({});
+      setStatus({});
+      return;
+    }
+    setDrafts(emptyAllDrafts(sitting));
+    setStatus({});
+    setOpenIds({ [sitting.papers[0].id]: true });
     if (!user?.id) return;
     fetchStudentBmcrEvaluations(user.id).then((rows) => {
       const diagnosticRows = rows.filter((row) => row.assignment_id.startsWith("diagnostic:"));
@@ -131,9 +133,10 @@ export default function BmcrDiagnosticTool() {
       }
       setSavedPapers(saved);
     });
-  }, [user?.id, sitting.id]);
+  }, [user?.id, sitting]);
 
   const setQuestionBmcr = (paperId: string, code: string, value: BmcrValue) => {
+    if (!sitting) return;
     setDrafts((prev) => ({
       ...prev,
       [paperId]: {
@@ -147,6 +150,7 @@ export default function BmcrDiagnosticTool() {
   };
 
   const patchPaper = (paperId: string, patch: Partial<PaperDraft>) => {
+    if (!sitting) return;
     setDrafts((prev) => ({
       ...prev,
       [paperId]: {
@@ -157,7 +161,7 @@ export default function BmcrDiagnosticTool() {
   };
 
   const savePaper = async (paper: ExamPaper) => {
-    if (!user?.id) return;
+    if (!user?.id || !sitting) return;
     const draft = drafts[paper.id] || emptyPaperDraft(paper);
     for (const question of paper.questions) {
       const bmcr = draft.questions[question.code] || emptyQuestionBmcr(question.marks);
@@ -217,38 +221,20 @@ export default function BmcrDiagnosticTool() {
   return (
     <article className="lesson-body wide eval-page">
       <p>
-        <Link href="/student/evaluator">← Script evaluator</Link>
+        <Link href={href("/student/evaluator")}>← Script evaluator</Link>
       </p>
       <p className="kicker">Pre-exam diagnostic</p>
       <h1>BMCR</h1>
       <p className="muted">
         Complete the calc table for every section in a paper. Interpretation and the theory questions sit at the end of that paper, then save.
       </p>
-      {EXAM_SITTINGS.length > 1 ? (
-        <label className="va-exam-select">
-          Exam
-          <select
-            className="select-line"
-            value={examId}
-            onChange={(event) => {
-              const next = findSitting(event.target.value) || defaultExam;
-              setExamId(next.id);
-              setDrafts(emptyAllDrafts(next));
-              setStatus({});
-              setOpenIds({ [next.papers[0].id]: true });
-            }}
-          >
-            {EXAM_SITTINGS.map((exam) => (
-              <option key={exam.id} value={exam.id}>
-                {exam.label}
-              </option>
-            ))}
-          </select>
-        </label>
+      <EvaluatorExamPicker />
+      {!sitting ? (
+        <p className="notice">Select an exam to load the BMCR tables for that sitting.</p>
       ) : null}
 
-      <div className="va-paper-stack">
-        {sitting.papers.map((paper) => {
+      <div className="va-paper-stack" key={sitting?.id || "none"}>
+        {(sitting?.papers || []).map((paper) => {
           const draft = drafts[paper.id] || emptyPaperDraft(paper);
           const paperStatus = status[paper.id] || {};
           const aggregated = aggregatePaper(draft);
@@ -332,7 +318,7 @@ export default function BmcrDiagnosticTool() {
         })}
       </div>
       <div className="actions va-continue">
-        <Link href="/student/volume-accuracy" className="primary">
+        <Link href={href("/student/volume-accuracy")} className="primary">
           Continue Script Evaluation
         </Link>
       </div>

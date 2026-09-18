@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import StudentDashboardBanner from "@/components/student/StudentDashboardBanner";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
-import ScriptEvaluatorSteps from "@/components/student/ScriptEvaluatorSteps";
 import { fetchCoachingDashboardHint } from "@/lib/coaching";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useCoursePreview } from "@/lib/course-preview";
@@ -62,9 +61,13 @@ export default function StudentDashboard() {
       {unlocked ? null : (
         <section className="student-tools" aria-label="Script evaluator">
           <p className="kicker">Script evaluator</p>
-          <h2>Diagnostic tools</h2>
-          <p className="muted">Work through BMCR, Volume vs Accuracy, Buried Treasure, then the AI mark report.</p>
-          <ScriptEvaluatorSteps />
+          <h2>Evaluate a past paper</h2>
+          <p className="muted">
+            Open the diagnostic tools, choose the exam you sat, then work through BMCR, Volume vs Accuracy, Buried Treasure, and the AI mark report.
+          </p>
+          <Link href="/student/evaluator" className="primary">
+            Open Script Evaluator
+          </Link>
         </section>
       )}
 

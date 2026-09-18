@@ -10,16 +10,9 @@ import {
   volumeRatios,
   type VolumePaperSession,
 } from "@/lib/volume-accuracy";
-import {
-  EXAM_SITTINGS,
-  findSitting,
-  isCalculationQuestion,
-  paperDisplayName,
-  paperLabel,
-  type ExamPaper,
-  type ExamQuestion,
-  type ExamSitting,
-} from "@/lib/exam-structure";
+import EvaluatorExamPicker from "@/components/student/EvaluatorExamPicker";
+import { isCalculationQuestion, paperDisplayName, paperLabel, type ExamPaper, type ExamQuestion, type ExamSitting } from "@/lib/exam-structure";
+import { useEvaluatorExam } from "@/lib/use-evaluator-exam";
 import { useStudentSession } from "@/lib/student-session";
 
 type Draft = { points: string; marks: string };
@@ -82,30 +75,37 @@ function livePreview(question: ExamQuestion, draft: Draft) {
 
 export default function VolumeAccuracyTool() {
   const { user } = useStudentSession();
-  const defaultExam = EXAM_SITTINGS[0];
-  const [examId, setExamId] = useState(defaultExam.id);
-  const [drafts, setDrafts] = useState<DraftMap>(() => emptyAllDrafts(defaultExam));
+  const { exam, href } = useEvaluatorExam();
+  const sitting = exam;
+  const [drafts, setDrafts] = useState<DraftMap>({});
   const [busyId, setBusyId] = useState<string | null>(null);
   const [status, setStatus] = useState<Record<string, PaperStatus>>({});
   const [sessions, setSessions] = useState<VolumePaperSession[]>([]);
-  const [openIds, setOpenIds] = useState<Record<string, boolean>>(() => ({ [defaultExam.papers[0].id]: true }));
-
-  const sitting = findSitting(examId) || defaultExam;
+  const [openIds, setOpenIds] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
+    if (!sitting) {
+      setDrafts({});
+      setOpenIds({});
+      setStatus({});
+      return;
+    }
+    setDrafts(emptyAllDrafts(sitting));
+    setStatus({});
+    setOpenIds({ [sitting.papers[0].id]: true });
     if (!user?.id) return;
     fetchOwnVolumeSessions(user.id).then((next) => {
       setSessions(next);
       setDrafts(draftsFromSessions(sitting, next));
     });
-  }, [user?.id, sitting.id]);
+  }, [user?.id, sitting]);
 
   const setDraft = (code: string, key: keyof Draft, value: string) => {
     setDrafts((prev) => ({ ...prev, [code]: { ...(prev[code] || { points: "", marks: "" }), [key]: value } }));
   };
 
   const savePaper = async (paper: ExamPaper) => {
-    if (!user?.id) return;
+    if (!user?.id || !sitting) return;
     const rows = [];
     for (const question of paper.questions) {
       const draft = drafts[question.code] || { points: "", marks: "" };
@@ -155,38 +155,20 @@ export default function VolumeAccuracyTool() {
   return (
     <article className="lesson-body wide eval-page">
       <p>
-        <Link href="/student/evaluator">← Script evaluator</Link>
+        <Link href={href("/student/evaluator")}>← Script evaluator</Link>
       </p>
       <p className="kicker">Pre-exam diagnostic</p>
       <h1>Volume vs Accuracy</h1>
       <p className="muted">
         Complete each paper in its own box. Collapse papers you are not working on. Points Wrote is N/A on calculation/disclosure questions so those rows do not skew volume.
       </p>
-      {EXAM_SITTINGS.length > 1 ? (
-        <label className="va-exam-select">
-          Exam
-          <select
-            className="select-line"
-            value={examId}
-            onChange={(event) => {
-              const next = findSitting(event.target.value) || defaultExam;
-              setExamId(next.id);
-              setDrafts(emptyAllDrafts(next));
-              setStatus({});
-              setOpenIds({ [next.papers[0].id]: true });
-            }}
-          >
-            {EXAM_SITTINGS.map((exam) => (
-              <option key={exam.id} value={exam.id}>
-                {exam.label}
-              </option>
-            ))}
-          </select>
-        </label>
+      <EvaluatorExamPicker />
+      {!sitting ? (
+        <p className="notice">Select an exam to load the Volume vs Accuracy tables for that sitting.</p>
       ) : null}
 
-      <div className="va-paper-stack">
-        {sitting.papers.map((paper) => {
+      <div className="va-paper-stack" key={sitting?.id || "none"}>
+        {(sitting?.papers || []).map((paper) => {
           const savedSession = sessions.find((session) => session.paper_code === paper.code);
           const paperStatus = status[paper.id] || {};
           return (
@@ -284,7 +266,7 @@ export default function VolumeAccuracyTool() {
         })}
       </div>
       <div className="actions va-continue">
-        <Link href="/student/buried-treasure" className="primary">
+        <Link href={href("/student/buried-treasure")} className="primary">
           Continue Script Evaluation
         </Link>
       </div>

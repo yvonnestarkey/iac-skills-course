@@ -39,6 +39,18 @@ export const BURIED_TREASURE_TIERS: BuriedTreasureTier[] = [
   },
 ];
 
+export function buriedTreasureTiersForCaps(caps: {
+  direct_available: number;
+  indirect_available: number;
+  thinking_available: number;
+}): BuriedTreasureTier[] {
+  return [
+    { ...BURIED_TREASURE_TIERS[0], available: caps.direct_available },
+    { ...BURIED_TREASURE_TIERS[1], available: caps.indirect_available },
+    { ...BURIED_TREASURE_TIERS[2], available: caps.thinking_available },
+  ];
+}
+
 export type BuriedTreasureLog = {
   id?: string;
   user_id: string;
@@ -126,6 +138,9 @@ export async function fetchOwnBuriedTreasure(userId: string): Promise<BuriedTrea
 export async function saveBuriedTreasureSession(input: {
   userId: string;
   paper_name?: string;
+  tier1_available?: number;
+  tier2_available?: number;
+  tier3_available?: number;
   tier1_earned: number;
   tier2_earned: number;
   tier3_earned: number;
@@ -136,18 +151,21 @@ export async function saveBuriedTreasureSession(input: {
   const tier1 = BURIED_TREASURE_TIERS[0];
   const tier2 = BURIED_TREASURE_TIERS[1];
   const tier3 = BURIED_TREASURE_TIERS[2];
+  const tier1Available = input.tier1_available ?? tier1.available;
+  const tier2Available = input.tier2_available ?? tier2.available;
+  const tier3Available = input.tier3_available ?? tier3.available;
   const payload = {
     user_id: input.userId,
     paper_name: input.paper_name || "June 2026 IAC Exam",
-    tier1_available: tier1.available,
+    tier1_available: tier1Available,
     tier1_earned: input.tier1_earned,
-    tier1_conversion: pctOf(input.tier1_earned, tier1.available),
-    tier2_available: tier2.available,
+    tier1_conversion: pctOf(input.tier1_earned, tier1Available),
+    tier2_available: tier2Available,
     tier2_earned: input.tier2_earned,
-    tier2_conversion: pctOf(input.tier2_earned, tier2.available),
-    tier3_available: tier3.available,
+    tier2_conversion: pctOf(input.tier2_earned, tier2Available),
+    tier3_available: tier3Available,
     tier3_earned: input.tier3_earned,
-    tier3_conversion: pctOf(input.tier3_earned, tier3.available),
+    tier3_conversion: pctOf(input.tier3_earned, tier3Available),
     notes: input.notes || "",
   };
   const { data, error } = await supabase.from("case_study_conversion_logs").insert(payload).select("*").single();

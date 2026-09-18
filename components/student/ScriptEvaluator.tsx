@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import DiagnosticReportCard from "@/components/DiagnosticReportCard";
 import BuriedTreasureReportCard from "@/components/BuriedTreasureReportCard";
+import EvaluatorExamPicker from "@/components/student/EvaluatorExamPicker";
 import { fetchOwnEvaluations, pct } from "@/lib/script-evaluation";
 import type { DiagnosticReportResult } from "@/lib/diagnostic-report";
 import type { BuriedTreasureAnalysis } from "@/types/evaluation";
@@ -13,21 +14,15 @@ import {
   type DiagnosticProgress,
 } from "@/lib/diagnostic-progress";
 import {
-  DEFAULT_PAST_PAPER_SITTING_ID,
   draftsFromPastPaper,
-  findPastPaperSitting,
   knowledgeApplicationCaps,
   pastPaperDisplayName,
-  PAST_PAPER_SITTINGS,
   type PastPaper,
   type PastPaperDraft,
   type PastPaperSitting,
 } from "@/lib/past-papers";
+import { useEvaluatorExam } from "@/lib/use-evaluator-exam";
 import { useStudentSession } from "@/lib/student-session";
-
-function sittingOrDefault(id: string): PastPaperSitting {
-  return findPastPaperSitting(id) || findPastPaperSitting(DEFAULT_PAST_PAPER_SITTING_ID) || PAST_PAPER_SITTINGS[0];
-}
 
 function paperOrDefault(sitting: PastPaperSitting, paperId: string): PastPaper {
   return sitting.papers.find((item) => item.id === paperId) || sitting.papers[0];
@@ -42,12 +37,10 @@ function clampToCap(value: string, cap: number): string {
 
 export default function ScriptEvaluator() {
   const { user } = useStudentSession();
-  const defaultSitting = sittingOrDefault(DEFAULT_PAST_PAPER_SITTING_ID);
-  const defaultPaper = defaultSitting.papers[0];
-  const [sittingId, setSittingId] = useState(defaultSitting.id);
-  const [paperId, setPaperId] = useState(defaultPaper.id);
+  const { sitting, href } = useEvaluatorExam();
+  const [paperId, setPaperId] = useState("");
   const [studentNotes, setStudentNotes] = useState("");
-  const [questions, setQuestions] = useState<PastPaperDraft[]>(() => draftsFromPastPaper(defaultPaper));
+  const [questions, setQuestions] = useState<PastPaperDraft[]>([]);
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -63,9 +56,24 @@ export default function ScriptEvaluator() {
     ready: false,
   });
 
-  const sitting = sittingOrDefault(sittingId);
-  const paper = paperOrDefault(sitting, paperId);
-  const paperName = pastPaperDisplayName(sitting, paper);
+  const paper = sitting ? paperOrDefault(sitting, paperId) : null;
+  const paperName = sitting && paper ? pastPaperDisplayName(sitting, paper) : "";
+
+  useEffect(() => {
+    if (!sitting) {
+      setPaperId("");
+      setQuestions([]);
+      setEvaluation(null);
+      setReport(null);
+      return;
+    }
+    const nextPaper = paperOrDefault(sitting, paperId);
+    setPaperId(nextPaper.id);
+    setQuestions(draftsFromPastPaper(nextPaper));
+    setEvaluation(null);
+    setReport(null);
+    setError("");
+  }, [sitting?.id]);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -77,10 +85,9 @@ export default function ScriptEvaluator() {
     return Boolean(progress.ready && paperName && questions.length && !busy);
   }, [progress.ready, paperName, questions, busy]);
 
-  const selectPaper = (nextSittingId: string, nextPaperId?: string) => {
-    const nextSitting = sittingOrDefault(nextSittingId);
-    const nextPaper = paperOrDefault(nextSitting, nextPaperId || nextSitting.papers[0].id);
-    setSittingId(nextSitting.id);
+  const selectPaper = (nextPaperId: string) => {
+    if (!sitting) return;
+    const nextPaper = paperOrDefault(sitting, nextPaperId);
     setPaperId(nextPaper.id);
     setQuestions(draftsFromPastPaper(nextPaper));
     setEvaluation(null);
@@ -89,7 +96,7 @@ export default function ScriptEvaluator() {
   };
 
   const setEarned = (code: string, key: "direct_earned" | "indirect_earned" | "thinking_earned", value: string) => {
-    const mapped = paper.questions.find((item) => item.code === code);
+    const mapped = paper?.questions.find((item) => item.code === code);
     const cap =
       key === "direct_earned"
         ? mapped?.direct_available
@@ -114,8 +121,12 @@ export default function ScriptEvaluator() {
   };
 
   const run = async () => {
-    if (!progress.ready) {
-      setError("Complete the BMCR Tool, Volume vs Accuracy, Buried Treasure, and upload your mark report before generating the AI evaluation.");
+    if (!progress.ready || !paper) {
+      setError(
+        paper
+          ? "Complete the BMCR Tool, Volume vs Accuracy, Buried Treasure, and upload your mark report before generating the AI evaluation."
+          : "Select an exam to generate the diagnostic."
+      );
       return;
     }
     setBusy(true);
@@ -171,13 +182,14 @@ export default function ScriptEvaluator() {
   return (
     <article className="lesson-body wide eval-page">
       <p>
-        <Link href="/student/evaluator">← Script evaluator</Link>
+        <Link href={href("/student/evaluator")}>← Script evaluator</Link>
       </p>
       <p className="kicker">AI mark report evaluation</p>
       <h1>Generate your diagnostic</h1>
       <p className="muted">
-        Choose a past paper, then enter Direct, Indirect, and Thinking marks from your marked script. The AI report runs only after BMCR, Volume vs Accuracy, Buried Treasure, and this upload are complete.
+        The exam selected above fills this paper&apos;s question codes and Buried Treasure caps. Enter Direct, Indirect, and Thinking marks from your marked script. The AI report runs only after BMCR, Volume vs Accuracy, Buried Treasure, and this upload are complete.
       </p>
+      <EvaluatorExamPicker />
       <ul className="eval-prereqs">
         <li>{progress.hasBmcr ? "BMCR saved." : "BMCR still needed."}</li>
         <li>{progress.hasVolume ? "Volume vs Accuracy saved." : "Volume vs Accuracy still needed."}</li>
@@ -185,6 +197,9 @@ export default function ScriptEvaluator() {
         <li>{progress.hasMarkReport ? `Mark report uploaded${progress.markReport?.file_name ? `: ${progress.markReport.file_name}` : "."}` : "Mark report upload still needed."}</li>
       </ul>
 
+      {!sitting || !paper ? (
+        <p className="notice">Select an exam to load the AI mark report tables for that sitting.</p>
+      ) : (
       <form
         className="eval-form"
         onSubmit={(event) => {
@@ -193,22 +208,8 @@ export default function ScriptEvaluator() {
         }}
       >
         <label>
-          Select Past Paper
-          <select
-            className="select-line"
-            value={sitting.id}
-            onChange={(event) => selectPaper(event.target.value)}
-          >
-            {PAST_PAPER_SITTINGS.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
           Paper
-          <select className="select-line" value={paper.id} onChange={(event) => selectPaper(sitting.id, event.target.value)}>
+          <select className="select-line" value={paper.id} onChange={(event) => selectPaper(event.target.value)}>
             {sitting.papers.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.title} · {item.total_marks} marks
@@ -331,6 +332,7 @@ export default function ScriptEvaluator() {
           </button>
         </div>
       </form>
+      )}
 
       {evaluation ? <BuriedTreasureReportCard evaluation={evaluation} /> : null}
       {report ? <DiagnosticReportCard report={report} /> : null}

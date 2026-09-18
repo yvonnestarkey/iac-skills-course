@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchOwnDiagnosticProgress, type DiagnosticProgress } from "@/lib/diagnostic-progress";
+import { useEvaluatorExam } from "@/lib/use-evaluator-exam";
 import { useStudentSession } from "@/lib/student-session";
 
 const EMPTY: DiagnosticProgress = {
@@ -16,6 +17,7 @@ const EMPTY: DiagnosticProgress = {
 
 export default function ScriptEvaluatorSteps() {
   const { user } = useStudentSession();
+  const { href } = useEvaluatorExam();
   const [progress, setProgress] = useState<DiagnosticProgress>(EMPTY);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function ScriptEvaluatorSteps() {
     <ol className="eval-hub-steps" aria-label="Script evaluator steps">
       <li className="eval-hub-step">
         <span className="eval-hub-step-num">1</span>
-        <Link href="/student/bmcr" className="primary">
+        <Link href={href("/student/bmcr")} className="primary">
           The BMCR Tool
         </Link>
         <div className="eval-hub-step-copy">
@@ -39,7 +41,7 @@ export default function ScriptEvaluatorSteps() {
       </li>
       <li className="eval-hub-step">
         <span className="eval-hub-step-num">2</span>
-        <Link href="/student/volume-accuracy" className="primary">
+        <Link href={href("/student/volume-accuracy")} className="primary">
           Volume vs Accuracy
         </Link>
         <div className="eval-hub-step-copy">
@@ -51,7 +53,7 @@ export default function ScriptEvaluatorSteps() {
       </li>
       <li className="eval-hub-step">
         <span className="eval-hub-step-num">3</span>
-        <Link href="/student/buried-treasure" className="primary">
+        <Link href={href("/student/buried-treasure")} className="primary">
           Buried Treasure
         </Link>
         <div className="eval-hub-step-copy">
@@ -63,7 +65,7 @@ export default function ScriptEvaluatorSteps() {
       </li>
       <li className="eval-hub-step">
         <span className="eval-hub-step-num">4</span>
-        <Link href="/student/evaluator/report" className="primary">
+        <Link href={href("/student/evaluator/report")} className="primary">
           AI Mark Report Evaluation
         </Link>
         <div className="eval-hub-step-copy">

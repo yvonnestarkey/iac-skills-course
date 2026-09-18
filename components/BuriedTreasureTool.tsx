@@ -2,14 +2,18 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import EvaluatorExamPicker from "@/components/student/EvaluatorExamPicker";
 import {
   BURIED_TREASURE_TIERS,
   buriedTreasureTag,
+  buriedTreasureTiersForCaps,
   fetchOwnBuriedTreasure,
   pctOf,
   saveBuriedTreasureSession,
   type BuriedTreasureTierId,
 } from "@/lib/buried-treasure";
+import { sittingBuriedTreasureCaps } from "@/lib/past-papers";
+import { useEvaluatorExam } from "@/lib/use-evaluator-exam";
 import { useStudentSession } from "@/lib/student-session";
 
 type Drafts = Record<BuriedTreasureTierId, string>;
@@ -18,16 +22,27 @@ const EMPTY: Drafts = { tier1: "", tier2: "", tier3: "" };
 
 export default function BuriedTreasureTool() {
   const { user } = useStudentSession();
+  const { sitting, href } = useEvaluatorExam();
   const [drafts, setDrafts] = useState<Drafts>(EMPTY);
   const [notes, setNotes] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState("");
 
+  const tiers = useMemo(
+    () => (sitting ? buriedTreasureTiersForCaps(sittingBuriedTreasureCaps(sitting)) : BURIED_TREASURE_TIERS),
+    [sitting]
+  );
+
   useEffect(() => {
-    if (!user?.id) return;
+    setDrafts(EMPTY);
+    setNotes("");
+    setError("");
+    setSaved("");
+    if (!user?.id || !sitting) return;
     fetchOwnBuriedTreasure(user.id).then((log) => {
       if (!log) return;
+      if (log.paper_name && log.paper_name !== sitting.label) return;
       setDrafts({
         tier1: String(log.tier1_earned),
         tier2: String(log.tier2_earned),
@@ -35,11 +50,11 @@ export default function BuriedTreasureTool() {
       });
       setNotes(log.notes);
     });
-  }, [user?.id]);
+  }, [user?.id, sitting]);
 
   const rows = useMemo(
     () =>
-      BURIED_TREASURE_TIERS.map((tier) => {
+      tiers.map((tier) => {
         const raw = drafts[tier.id];
         const earned = raw === "" ? null : Number(raw);
         const conversion = earned == null || Number.isNaN(earned) ? null : pctOf(earned, tier.available);
@@ -50,11 +65,11 @@ export default function BuriedTreasureTool() {
           tag: buriedTreasureTag(tier.id, conversion),
         };
       }),
-    [drafts]
+    [drafts, tiers]
   );
 
   const submit = async () => {
-    if (!user?.id) return;
+    if (!user?.id || !sitting) return;
     for (const row of rows) {
       if (row.earned == null || Number.isNaN(row.earned)) {
         setError(`Enter Marks You Got for ${row.name}.`);
@@ -70,6 +85,10 @@ export default function BuriedTreasureTool() {
     setSaved("");
     const result = await saveBuriedTreasureSession({
       userId: user.id,
+      paper_name: sitting.label,
+      tier1_available: rows[0].available,
+      tier2_available: rows[1].available,
+      tier3_available: rows[2].available,
       tier1_earned: rows[0].earned || 0,
       tier2_earned: rows[1].earned || 0,
       tier3_earned: rows[2].earned || 0,
@@ -86,13 +105,17 @@ export default function BuriedTreasureTool() {
   return (
     <article className="lesson-body wide eval-page">
       <p>
-        <Link href="/student/evaluator">← Script evaluator</Link>
+        <Link href={href("/student/evaluator")}>← Script evaluator</Link>
       </p>
-      <p className="kicker">Tool 3</p>
-      <h1>Tool 3: Buried Treasure</h1>
+      <p className="kicker">Pre-exam diagnostic</p>
+      <h1>Buried Treasure</h1>
       <p className="muted">
         Measure how effectively you extract value from the case study across Direct, Indirect, and Thinking marks.
       </p>
+      <EvaluatorExamPicker />
+      {!sitting ? (
+        <p className="notice">Select an exam to load Buried Treasure caps for that sitting.</p>
+      ) : (
       <form
         className="eval-form va-form"
         onSubmit={(event) => {
@@ -158,8 +181,9 @@ export default function BuriedTreasureTool() {
           </button>
         </div>
       </form>
+      )}
       <div className="actions va-continue">
-        <Link href="/student/evaluator/report" className="primary">
+        <Link href={href("/student/evaluator/report")} className="primary">
           Continue Script Evaluation
         </Link>
       </div>
