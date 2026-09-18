@@ -37,6 +37,7 @@ function sittingLabel(exam: PastExamConfig): string {
   if (exam.id === "jan-2025") return "January 2025 IAC Exam";
   if (exam.id === "june-2025") return "June 2025 IAC Exam";
   if (exam.id === "jan-2026") return "January 2026 IAC Exam";
+  if (exam.id === "june-2026") return "June 2026 IAC Exam";
   return exam.title;
 }
 

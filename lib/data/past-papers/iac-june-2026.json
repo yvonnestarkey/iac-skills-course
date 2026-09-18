@@ -1,0 +1,235 @@
+{
+  "id": "june-2026",
+  "code": "IAC_JUNE_2026",
+  "title": "June 2026 SAICA IAC Examination",
+  "totalMarks": 360,
+  "papers": [
+    {
+      "id": "iac-2026-p1",
+      "code": "IAC-2026-P1",
+      "title": "Paper 1 – Inpahla SOC Ltd",
+      "caseName": "Inpahla SOC Ltd / NKT",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P1Q1_a",
+          "title": "Prepare a SWOT analysis in view of the going concern challenges experienced by Inpahla",
+          "totalMarks": 22,
+          "isCalculation": false,
+          "direct": 2,
+          "indirect": 8,
+          "thinking": 12,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q1_b",
+          "title": "Evaluate the two turnaround strategy financing proposals, based on the current situation of Inpahla",
+          "totalMarks": 11,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 6,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q1_c",
+          "title": "Prepare a capital budget, based on a single locomotive, to assess the viability of the Zug AG proposal",
+          "totalMarks": 27,
+          "isCalculation": true,
+          "direct": 3,
+          "indirect": 9,
+          "thinking": 15,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q1_d",
+          "title": "Discuss how Inpahla’s green initiatives align with the United Nations Sustainable Development Goals 6 and 7",
+          "totalMarks": 6,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 2,
+          "thinking": 3,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q2_e",
+          "title": "Discuss the business ethics and professional ethical considerations NKT would need to consider about alleged loan-covenant defaults",
+          "totalMarks": 14,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 5,
+          "thinking": 8,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q2_f",
+          "title": "Discuss the factors that NKT should have considered before accepting the audit of Inpahla for FY2026",
+          "totalMarks": 11,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 6,
+          "macroComm": 1
+        },
+        {
+          "code": "P1Q2_g1",
+          "title": "Assess the risk of material misstatement at the financial statement level of Inpahla for the FY2026 audit",
+          "totalMarks": 12,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 7,
+          "macroComm": 0
+        },
+        {
+          "code": "P1Q2_g2",
+          "title": "Describe a suitable overall audit response for the FY2026 audit based on your risk assessment",
+          "totalMarks": 7,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 2,
+          "thinking": 3,
+          "macroComm": 1
+        },
+        {
+          "code": "P1Q2_h",
+          "title": "Formulate the audit procedures to perform at the FY2026 year end to audit the going concern of Inpahla",
+          "totalMarks": 10,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 6,
+          "macroComm": 0
+        }
+      ]
+    },
+    {
+      "id": "iac-2026-p2",
+      "code": "IAC-2026-P2",
+      "title": "Paper 2 – Med4Me Group",
+      "caseName": "Med4Me Group / BHealth",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P2Q1_a",
+          "title": "Prepare, using the direct method, the operating and investing activities sections of the Med4Me Group consolidated statement of cash flows for FY2025",
+          "totalMarks": 70,
+          "isCalculation": true,
+          "direct": 7,
+          "indirect": 24,
+          "thinking": 38,
+          "macroComm": 1
+        },
+        {
+          "code": "P2Q2_b",
+          "title": "Discuss the VAT consequences and the effect on taxable income of BHealth’s patient loyalty programme",
+          "totalMarks": 10,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 5,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q2_c",
+          "title": "Discuss the normal tax implications of the SARs expense for BHealth and its employees",
+          "totalMarks": 8,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 2,
+          "thinking": 4,
+          "macroComm": 1
+        },
+        {
+          "code": "P2Q2_d",
+          "title": "Advise whether BHealth can register the Newcastle and QwaQwa clinics as separate VAT vendors",
+          "totalMarks": 6,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 2,
+          "thinking": 3,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q2_e",
+          "title": "Discuss the VAT and normal tax consequences of BHealth’s clinic expansion transactions",
+          "totalMarks": 20,
+          "isCalculation": false,
+          "direct": 2,
+          "indirect": 6,
+          "thinking": 12,
+          "macroComm": 0
+        },
+        {
+          "code": "P2Q2_f",
+          "title": "Discuss the income tax implications of the management fees levied by the Med4Me holding company on the clinics",
+          "totalMarks": 6,
+          "isCalculation": false,
+          "direct": 0,
+          "indirect": 2,
+          "thinking": 4,
+          "macroComm": 0
+        }
+      ]
+    },
+    {
+      "id": "iac-2026-p3",
+      "code": "IAC-2026-P3",
+      "title": "Paper 3 – Beita Furniture",
+      "caseName": "Beita Furniture / Fezile",
+      "totalMarks": 120,
+      "sections": [
+        {
+          "code": "P3Q1_a",
+          "title": "Write a report identifying the financial and operational risks of Beita Furniture",
+          "totalMarks": 33,
+          "isCalculation": false,
+          "direct": 3,
+          "indirect": 11,
+          "thinking": 18,
+          "macroComm": 1
+        },
+        {
+          "code": "P3Q1_b",
+          "title": "Calculate the breakeven sales in units per month for Beita Furniture on a market-related, most-profitable basis",
+          "totalMarks": 43,
+          "isCalculation": true,
+          "direct": 4,
+          "indirect": 15,
+          "thinking": 24,
+          "macroComm": 0
+        },
+        {
+          "code": "P3Q2_c",
+          "title": "Discuss any ethical concerns arising from the way Beita Furniture is managed",
+          "totalMarks": 10,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 4,
+          "thinking": 5,
+          "macroComm": 0
+        },
+        {
+          "code": "P3Q2_d",
+          "title": "Discuss the matters Fezile should consider in reaction to the WhatsApp conversation between Zolani and Abulele",
+          "totalMarks": 10,
+          "isCalculation": false,
+          "direct": 1,
+          "indirect": 3,
+          "thinking": 6,
+          "macroComm": 0
+        },
+        {
+          "code": "P3Q2_e",
+          "title": "Describe the substantive procedures on the issue of shares and the dividend payment made by Beita Furniture during FY2025",
+          "totalMarks": 24,
+          "isCalculation": false,
+          "direct": 3,
+          "indirect": 7,
+          "thinking": 13,
+          "macroComm": 1
+        }
+      ]
+    }
+  ]
+}

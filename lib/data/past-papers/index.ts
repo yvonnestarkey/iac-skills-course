@@ -1,6 +1,7 @@
 import iacJan2025 from "./iac-jan-2025.json";
 import iacJune2025 from "./iac-june-2025.json";
 import iacJan2026 from "./iac-jan-2026.json";
+import iacJune2026 from "./iac-june-2026.json";
 
 export type PastPaperSectionConfig = {
   code: string;
@@ -79,14 +80,21 @@ function registryEntry(exam: PastExamConfig): PastPaperRegistryEntry {
 export const IAC_JAN_2025_CONFIG = iacJan2025 as PastExamConfig;
 export const IAC_JUNE_2025_CONFIG = iacJune2025 as PastExamConfig;
 export const IAC_JAN_2026_CONFIG = iacJan2026 as PastExamConfig;
+export const IAC_JUNE_2026_CONFIG = iacJune2026 as PastExamConfig;
 
 export const IAC_JAN_2025 = registryEntry(IAC_JAN_2025_CONFIG);
 export const IAC_JUNE_2025 = registryEntry(IAC_JUNE_2025_CONFIG);
 export const IAC_JAN_2026 = registryEntry(IAC_JAN_2026_CONFIG);
+export const IAC_JUNE_2026 = registryEntry(IAC_JUNE_2026_CONFIG);
 
-export const PAST_EXAMS: PastExamConfig[] = [IAC_JAN_2025_CONFIG, IAC_JUNE_2025_CONFIG, IAC_JAN_2026_CONFIG];
+export const PAST_EXAMS: PastExamConfig[] = [
+  IAC_JAN_2025_CONFIG,
+  IAC_JUNE_2025_CONFIG,
+  IAC_JAN_2026_CONFIG,
+  IAC_JUNE_2026_CONFIG,
+];
 
-export const PAST_PAPERS: PastPaperRegistryEntry[] = [IAC_JAN_2025, IAC_JUNE_2025, IAC_JAN_2026];
+export const PAST_PAPERS: PastPaperRegistryEntry[] = [IAC_JAN_2025, IAC_JUNE_2025, IAC_JAN_2026, IAC_JUNE_2026];
 
 export function findRegisteredExam(paperId: string | undefined | null): PastExamConfig | null {
   if (!paperId) return null;
