@@ -4,12 +4,17 @@ import CourseFeatures from "@/components/sales/CourseFeatures";
 import FaqAccordion from "@/components/sales/FaqAccordion";
 import SkillsAccordion from "@/components/sales/SkillsAccordion";
 import WaitlistForm from "@/components/sales/WaitlistForm";
-import { COURSE_DATES, PAYMENT_CAPTION, PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO } from "@/lib/sales-copy";
+import { COURSE_DATES, PAYMENT_CAPTION, PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO, WEBINAR } from "@/lib/sales-copy";
 import Link from "next/link";
 
 export default function SalesLanding() {
   return (
     <div className="sales-page">
+      <a className="sales-webinar-banner" href={WEBINAR.href} target="_blank" rel="noopener noreferrer">
+        <strong>{WEBINAR.kicker}</strong>
+        <span>{WEBINAR.body}</span>
+        <span className="sales-webinar-cta">{WEBINAR.cta}</span>
+      </a>
       <header className="topbar sales-topbar">
         <BrandMark href="/" />
         <Link className="ghost" href="/login">

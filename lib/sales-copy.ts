@@ -1,5 +1,12 @@
 import { WAITLIST_EXAMS, type WaitlistExam } from "./waitlist";
 
+export const WEBINAR = {
+  kicker: "Free webinar",
+  body: "Join a live session for IAC candidates on 22 September at 18:00 (SAST).",
+  cta: "Register now",
+  href: "https://us02web.zoom.us/meeting/register/vbcadbgLT02PZHusey-gxg",
+} as const;
+
 export const SALES_BADGE = "IAC Skills Board Course — January 2027 IAC Exam";
 
 export const SALES_HEADLINE =

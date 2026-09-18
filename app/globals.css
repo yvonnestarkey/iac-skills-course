@@ -4806,6 +4806,50 @@ a.live-session-watch:hover {
   background: var(--paper);
 }
 
+.sales-webinar-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+  padding: 12px 22px;
+  background: var(--dark);
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+}
+
+.sales-webinar-banner:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sales-webinar-banner strong {
+  font-family: var(--serif);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+.sales-webinar-banner span {
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+
+.sales-webinar-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--sand);
+  color: var(--dark);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.sales-webinar-banner:hover .sales-webinar-cta {
+  background: #fff;
+}
+
 .sales-topbar {
   background: #fff;
 }
