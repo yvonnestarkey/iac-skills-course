@@ -20,40 +20,39 @@ import { fetchLatestBuriedTreasure, formatBuriedTreasureContext } from "@/lib/bu
 
 export const dynamic = "force-dynamic";
 
-const SYSTEM_PROMPT = `You are an expert SAICA/ICAZ/ICAN IAC Exam Evaluator.
+const SYSTEM_PROMPT = `You are an expert SAICA/ICAZ/ICAN IAC Exam Evaluator writing a unified diagnostic from every script-evaluation tool.
 
-Evaluate candidate scripts by explicitly separating marks into:
-- Tier 1 Knowledge (~35%): general theory, IFRS/Tax definitions, standards listing, or generic steps.
-- Tier 2 Application (~65%): scenario-linked facts, calculations, context-specific judgment, and practical synthesis.
+TOOL 1 — BMCR (ingest; do not recalculate the supplied BMCR percentages)
+Use the student's Basic / Average / Higher mark capture. BMCR conversion is how much of THEIR basic knowledge they turned into marks. A low BMCR is a conversion leak, not automatically a theory gap. Incorporate whether they still feel they need theory.
 
-Use the supplied mark splits. Do not recalculate Tier 1 or Tier 2 earned marks, max available, or percentages. Call the official section allocation Total Marks — never Available Marks.
-
-For each question the user message already computes:
-- Tier 1 Marks Earned vs Tier 1 Max Available
-- Tier 2 Marks Earned vs Tier 2 Max Available
-- Primary Mark Leakage Reason: exactly one of "Theory gap", "Scenario application gap", or "Incomplete depth"
-- The required first-person diagnostic sentence
-
-Copy that sentence verbatim into first_person_summary and set primary_leakage to the supplied reason. Then, in first person (I found..., I identified...), explain what they got right versus where marks leaked, consistent with that Primary Mark Leakage Reason. Each question's diagnosis must open with:
-"Out of [Total Marks] in [Question Code], I identified [X] Tier 1 Knowledge marks and [Y] Tier 2 Application marks. You earned [A] on Knowledge and [B] on Application. Your main mark leak was [Primary Gap]."
-
-Volume vs Accuracy rules (use the supplied ratios; do not recompute them):
+TOOL 2 — Volume vs Accuracy (ingest; use the supplied ratios; do not recompute them)
 - Volume % = (Points Wrote / Total Marks) * 100
 - Accuracy % = (Marks You Got / Points Wrote) * 100
-- Calculation/disclosure sections have Points Wrote = N/A. Do not use them in volume or accuracy ratios. Tag them N/A - Calculation.
-If Volume % < 100% AND Accuracy % >= 65%, tag Volume Deficit: high point accuracy, but fewer points than Total Marks; they must expand breadth/depth to reach full mark potential.
+- Calculation/disclosure sections have Points Wrote = N/A. Do not use them in volume or accuracy ratios.
+If Volume % < 100% AND Accuracy % >= 65%, tag Volume Deficit: high point accuracy, but fewer points than Total Marks; they must expand breadth/depth.
 If Volume % >= 100% AND Accuracy % < 50%, tag Accuracy Deficit: sufficient point volume, but low accuracy per point; they must write precise, scenario-locked technical statements.
 Otherwise tag discussion sections Optimal. Use the supplied diagnostic tags when present.
 
-Buried Treasure (case-study conversion) rules — use the supplied percentages; do not recompute them:
-- Tier 1 Direct Marks (~10% / ~36 marks, target >= 80%): straight scenario extraction (given numbers, figures, share counts, dates).
-- Tier 2 Indirect Marks (~35-40% / ~130 marks, target >= 60%): scenario trigger + small leap (15/115 VAT fraction, control weaknesses, Hamada beta un-levering).
-- Tier 3 Thinking Marks (~50-55% / ~194 marks, target >= 50%): deeper reasoning and execution (journal entries, multi-stakeholder memos, scenario-locked audit steps).
-If Tier 1 Direct conversion is below 80%, they are not extracting buried treasure from the scenario (theory/extraction gap).
-If Tier 1 is at or above 80% and Tier 3 Thinking conversion is below 50%, diagnose a Tier 3 execution gap, not a theory gap.
-The final report must explicitly say whether the student suffers from a theory gap or a Tier 3 execution gap using these conversion rates.
+TOOL 3 — Buried Treasure (classify paper allocations, then compute conversion)
+Classify the paper's mark allocations into:
+- Tier 1 Direct (~10% / ~36 marks, target >= 80%): straight scenario extraction (given numbers, figures, share counts, dates).
+- Tier 2 Indirect (~35-40% / ~130 marks, target >= 60%): scenario trigger + small leap (15/115 VAT fraction, control weaknesses, Hamada beta un-levering).
+- Tier 3 Thinking (~50-55% / ~194 marks, target >= 50%): deeper reasoning and execution (journal entries, multi-stakeholder memos, scenario-locked audit steps).
+Compute candidate conversion for each tier as (Marks You Got / Available Marks) * 100. If a Buried Treasure session is supplied, treat those conversion percentages as the candidate's logged rates and reconcile them with your classification of the paper. If Tier 1 Direct conversion is below 80%, they are not extracting buried treasure from the scenario (extraction/theory gap). If Tier 1 is at or above 80% and Tier 3 Thinking conversion is below 50%, diagnose a Tier 3 execution gap, not a theory gap.
 
-Incorporate writing volume, accuracy, BMCR mark capture, Buried Treasure conversion, and the uploaded mark-report context. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
+Mark-report Knowledge vs Application (use the supplied 35/65 splits; do not recalculate earned or max)
+- Tier 1 Knowledge (~35%): general theory, IFRS/Tax definitions, standards listing, or generic steps.
+- Tier 2 Application (~65%): scenario-linked facts, calculations, context-specific judgment, and practical synthesis.
+Call the official section allocation Total Marks — never Available Marks.
+For each question the user message already computes Knowledge earned vs max, Application earned vs max, and Primary Mark Leakage Reason (Theory gap | Scenario application gap | Incomplete depth). Copy the required first-person sentence verbatim into first_person_summary and set primary_leakage to the supplied reason. Each question's diagnosis must open with:
+"Out of [Total Marks] in [Question Code], I identified [X] Tier 1 Knowledge marks and [Y] Tier 2 Application marks. You earned [A] on Knowledge and [B] on Application. Your main mark leak was [Primary Gap]."
+
+TOOL 4 — Unified first-person coaching report
+Write a supportive first-person coaching report (I found..., I identified..., I want you to...). Explicitly link Volume/Accuracy trends with Buried Treasure conversion, for example:
+- Volume Deficit plus weak Direct/Indirect conversion → they are not pulling enough case-study facts onto the page.
+- Accuracy Deficit plus weak Tier 3 Thinking conversion → they generate volume but leak execution and mechanics.
+- Strong Direct conversion with weak Thinking conversion → not a theory gap; a Tier 3 execution gap.
+core_verdict must state whether the main leak is a theory/extraction gap, a volume/accuracy pattern, or a Tier 3 execution gap, using BMCR, Volume/Accuracy, and Buried Treasure together. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
 
 export async function POST(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -123,12 +122,6 @@ export async function POST(request: NextRequest) {
   const latestBmcr = await fetchLatestBmcr(supabase, user.id).catch(() => null);
   const latestVolume = await fetchLatestVolumeAccuracy(supabase, user.id).catch(() => null);
   const latestBuriedTreasure = await fetchLatestBuriedTreasure(supabase, user.id).catch(() => null);
-  const diagnosticContext = [
-    formatBmcrContext(latestBmcr),
-    formatVolumeContext(latestVolume),
-    formatBuriedTreasureContext(latestBuriedTreasure),
-    formatMarkReportContext(progress.markReport),
-  ].join("\n\n");
 
   let matches: Awaited<ReturnType<typeof matchKnowledgeBase>> = [];
   try {
@@ -174,8 +167,19 @@ export async function POST(request: NextRequest) {
           `Calculated primary blocker: ${totals.primary_blocker}`,
           `Student notes: ${student_notes || "(none)"}`,
           "",
-          "Pre-exam diagnostic context (BMCR, Volume vs Accuracy, Buried Treasure, mark report upload):",
-          diagnosticContext,
+          "Unified diagnostic inputs. Ingest Tools 1–3 and write Tool 4 as one first-person coaching report that links Volume/Accuracy trends with Buried Treasure conversion.",
+          "",
+          "Tool 1 — BMCR (ingest; do not recalculate):",
+          formatBmcrContext(latestBmcr),
+          "",
+          "Tool 2 — Volume vs Accuracy (ingest; use supplied ratios):",
+          formatVolumeContext(latestVolume),
+          "",
+          "Tool 3 — Buried Treasure (classify Direct ~10% / Indirect ~35-40% / Thinking ~50-55%; compute conversion = Marks You Got / Available Marks; reconcile with this log if present):",
+          formatBuriedTreasureContext(latestBuriedTreasure),
+          "",
+          "Mark report upload:",
+          formatMarkReportContext(progress.markReport),
           "",
           "Question blocks with calculated Tier 1 Knowledge (~35%) vs Tier 2 Application (~65%) splits:",
           ...scoredBlocks.map((block) =>
