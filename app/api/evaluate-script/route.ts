@@ -23,12 +23,12 @@ const SYSTEM_PROMPT = `You are an expert SAICA/ICAZ/ICAN IAC Exam Evaluator. Ana
 Write the diagnosis in first person to the student (I found..., I identified...). Use the supplied mark splits. Do not recalculate percentages. Call the official section allocation Total Marks — never Available Marks.
 
 Volume vs Accuracy rules (use the supplied ratios; do not recompute them):
-- Volume Ratio (%) = (Points Attempted / Total Marks) * 100
-- Accuracy Ratio (%) = (Marks Earned / Points Attempted) * 100
-- Score Conversion (%) = (Marks Earned / Total Marks) * 100
-If Volume Ratio < 100% AND Accuracy Ratio >= 65%, diagnose a Volume Deficit: high point accuracy, but fewer points than Total Marks; they must expand breadth/depth to reach full mark potential.
-If Volume Ratio >= 100% AND Accuracy Ratio < 50%, diagnose an Accuracy Deficit: sufficient point volume, but low accuracy per point; they must write precise, scenario-locked technical statements.
-Use the supplied diagnostic text when it is present. Incorporate writing volume, accuracy, BMCR mark capture, and the uploaded mark-report context. For each question block, write what I found they got right versus where I identified lost marks. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
+- Volume % = (Points Wrote / Total Marks) * 100
+- Accuracy % = (Marks You Got / Points Wrote) * 100
+- Calculation/disclosure sections have Points Wrote = N/A. Do not use them in volume or accuracy ratios. Tag them N/A - Calculation.
+If Volume % < 100% AND Accuracy % >= 65%, tag Volume Deficit: high point accuracy, but fewer points than Total Marks; they must expand breadth/depth to reach full mark potential.
+If Volume % >= 100% AND Accuracy % < 50%, tag Accuracy Deficit: sufficient point volume, but low accuracy per point; they must write precise, scenario-locked technical statements.
+Otherwise tag discussion sections Optimal. Use the supplied diagnostic tags when present. Incorporate writing volume, accuracy, BMCR mark capture, and the uploaded mark-report context. For each question block, write what I found they got right versus where I identified lost marks. Set primary_blocker to theory, execution, or both. Give exactly 3 concrete skill drills.`;
 
 export async function POST(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

@@ -4,6 +4,7 @@ export type ExamQuestion = {
   code: string;
   marks: number;
   title: string;
+  isCalculation?: boolean;
 };
 
 export type ExamPaper = {
@@ -32,7 +33,7 @@ export const JUNE_2026_IAC: ExamSitting = {
       questions: [
         { code: "P1Q1_a", marks: 22, title: "Inpahla SWOT" },
         { code: "P1Q1_b", marks: 11, title: "Inpahla Turnaround" },
-        { code: "P1Q1_c", marks: 27, title: "Inpahla Capital Budget NPV" },
+        { code: "P1Q1_c", marks: 27, title: "Inpahla Capital Budget NPV", isCalculation: true },
         { code: "P1Q1_d", marks: 6, title: "Inpahla SDGs" },
         { code: "P1Q2_e", marks: 14, title: "Inpahla Ethics & Covenants" },
         { code: "P1Q2_f", marks: 11, title: "Inpahla Client Acceptance" },
@@ -47,7 +48,7 @@ export const JUNE_2026_IAC: ExamSitting = {
       title: "Paper 2",
       total_marks: 120,
       questions: [
-        { code: "P2Q1_a", marks: 70, title: "Med4Me Consolidated Direct Cash Flow" },
+        { code: "P2Q1_a", marks: 70, title: "Med4Me Consolidated Direct Cash Flow", isCalculation: true },
         { code: "P2Q2_b", marks: 10, title: "Med4Me Loyalty Programme Tax" },
         { code: "P2Q2_c", marks: 8, title: "Med4Me SARs s8C Tax" },
         { code: "P2Q2_d", marks: 6, title: "Med4Me VAT Branch Registration" },
@@ -79,6 +80,10 @@ export function paperLabel(paper: ExamPaper): string {
 
 export function questionLabel(question: ExamQuestion): string {
   return `${question.code} · ${question.title} (${question.marks})`;
+}
+
+export function isCalculationQuestion(question: ExamQuestion): boolean {
+  return Boolean(question.isCalculation);
 }
 
 export function paperDisplayName(sitting: ExamSitting, paper: ExamPaper): string {

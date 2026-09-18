@@ -50,7 +50,7 @@ export default function ScriptEvaluatorHub() {
           <div className="eval-hub-step-copy">
             {progress.hasVolume ? <span className="pill">Done</span> : <span className="muted small">To do</span>}
             <p>
-              Log Total Marks, points attempted, and marks earned for a section. Volume, accuracy, and score conversion show whether you under-attempted or wrote inaccurately.
+              Fill Points Wrote and Marks You Got for every section of a paper. Calculation questions are N/A for volume so they do not skew the ratios.
             </p>
           </div>
         </li>
