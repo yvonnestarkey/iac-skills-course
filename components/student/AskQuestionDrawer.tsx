@@ -96,8 +96,7 @@ export default function AskQuestionDrawer({ isOpen, onClose }: { isOpen: boolean
             <div className="ask-drawer-bubble assistant">
               <span className="ask-drawer-role">Eve</span>
               <p>
-                Hi! I&apos;m Eve, your IAC Skills Companion. Ask me anything about how to study, manage your exam time, or
-                self-diagnose your performance using tools like BMCR and RTFQ!
+                Hi! I&apos;m Eve, your study companion. Talk to me about what you&apos;re struggling with in your studying, or ask a specific question to get started.
               </p>
             </div>
           ) : null}
