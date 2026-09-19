@@ -123,6 +123,7 @@ export async function POST(request: NextRequest) {
       .eq("active", true);
 
     if (insightError) {
+      console.error("Supabase fetch error:", insightError);
       if (/coaching_insights|schema cache|does not exist/i.test(insightError.message)) {
         return NextResponse.json({ error: "Could not load coaching insights." }, { status: 500 });
       }
@@ -143,22 +144,33 @@ export async function POST(request: NextRequest) {
       last?.role === "user" && last.content === question
         ? history
         : [...history, { role: "user" as const, content: question }];
-    const completion = await openai.chat.completions.create({
-      model: ASK_MODEL,
-      temperature: 0.3,
-      messages: [
-        { role: "system", content: userId ? `${systemPrompt}\n\nStudent id: ${userId}` : systemPrompt },
-        ...conversation,
-      ],
-    });
+
+    let completion;
+    try {
+      completion = await openai.chat.completions.create({
+        model: ASK_MODEL,
+        temperature: 0.3,
+        messages: [
+          { role: "system", content: userId ? `${systemPrompt}\n\nStudent id: ${userId}` : systemPrompt },
+          ...conversation,
+        ],
+      });
+    } catch (error) {
+      console.error("Supabase fetch error:", error);
+      console.error("OpenAI fetch error:", error);
+      const message = error instanceof Error ? error.message : "Could not answer the question.";
+      return NextResponse.json({ error: message }, { status: 500 });
+    }
 
     const reply = String(completion.choices[0]?.message?.content || "").trim();
     if (!reply) {
+      console.error("OpenAI fetch error:", completion);
       return NextResponse.json({ error: "The facilitator did not return a reply." }, { status: 500 });
     }
 
     return NextResponse.json({ reply });
   } catch (error) {
+    console.error("Supabase fetch error:", error);
     const message = error instanceof Error ? error.message : "Could not answer the question.";
     return NextResponse.json({ error: message }, { status: 500 });
   }
