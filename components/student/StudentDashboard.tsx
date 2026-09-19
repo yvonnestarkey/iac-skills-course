@@ -65,6 +65,10 @@ export default function StudentDashboard() {
               <strong>Script Evaluator</strong>
               <p>Choose a past paper, then work through BMCR, Volume vs Accuracy, Buried Treasure, and the AI mark report.</p>
             </Link>
+            <button type="button" className="student-hub-card" onClick={() => window.dispatchEvent(new Event("open-ask-question"))}>
+              <strong>Ask a Question</strong>
+              <p>24/7 IAC Exam &amp; Skills Facilitator. Ask about a required, a mark leak, or how to use the study tools.</p>
+            </button>
             <Link href="/student/coaching" className="student-hub-card">
               <strong>1-on-1 Coaching</strong>
               <p>Book a private session or access your meeting summaries and recordings.</p>

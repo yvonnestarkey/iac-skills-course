@@ -1,11 +1,12 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { Mail } from "lucide-react";
+import { Mail, MessageCircle } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import RoleSwitcher from "@/components/RoleSwitcher";
+import AskQuestionDrawer from "@/components/student/AskQuestionDrawer";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import StudentNotifyMenu from "@/components/student/StudentNotifyMenu";
 import { isCoachAccount } from "@/lib/roles";
@@ -40,10 +41,17 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const closeNav = nav?.setOpen;
+  const [askOpen, setAskOpen] = useState(false);
 
   useEffect(() => {
     closeNav?.(false);
   }, [pathname, closeNav]);
+
+  useEffect(() => {
+    const openAsk = () => setAskOpen(true);
+    window.addEventListener("open-ask-question", openAsk);
+    return () => window.removeEventListener("open-ask-question", openAsk);
+  }, []);
 
   useEffect(() => {
     if (!pathname.startsWith("/student/inbox")) return;
@@ -90,6 +98,14 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
         <BrandMark />
         <div className="topbar-right flex items-center gap-2 flex-wrap">
           <button
+            className={`notify-btn ${askOpen ? "on" : ""}`}
+            type="button"
+            aria-label="Ask a question"
+            onClick={() => setAskOpen(true)}
+          >
+            <MessageCircle size={18} aria-hidden="true" />
+          </button>
+          <button
             className={`notify-btn ${pathname.startsWith("/student/inbox") ? "on" : ""}`}
             type="button"
             aria-label="Inbox"
@@ -126,6 +142,7 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
         </aside>
         <main className="main">{children}</main>
       </div>
+      <AskQuestionDrawer isOpen={askOpen} onClose={() => setAskOpen(false)} />
     </div>
   );
 }
