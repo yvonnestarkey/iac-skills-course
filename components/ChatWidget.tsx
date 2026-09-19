@@ -9,6 +9,7 @@ import { nowLabel } from "@/lib/dates";
 import { postInboxMessage } from "@/lib/inbox";
 import { useStore } from "@/lib/store";
 import type { CourseData } from "@/lib/types";
+import AskQuestionDrawer from "@/components/student/AskQuestionDrawer";
 import EmojiPickerButton, { insertTextAtCursor } from "@/components/ui/EmojiPicker";
 import LinkInsertButton from "@/components/ui/LinkInsertButton";
 import LinkedText from "@/components/ui/LinkedText";
@@ -28,6 +29,7 @@ function markEscalated(draft: CourseData, key: string, question: string, paragra
 
 export default function ChatWidget() {
   const { ready, data, session, mutate, chatOpen, setChatOpen, setNotice } = useStore();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [text, setText] = useState("");
   const body = useRef<HTMLDivElement>(null);
   const chatInput = useRef<HTMLInputElement>(null);
@@ -49,9 +51,12 @@ export default function ChatWidget() {
 
   if (!chatOpen) {
     return (
-      <button className="widget-fab" id="fab" aria-label="Open course assistant" onClick={() => setChatOpen(true)}>
-        <span>💬</span> Ask a question
-      </button>
+      <>
+        <button className="widget-fab" id="fab" aria-label="Open course assistant" onClick={() => setIsDrawerOpen(true)}>
+          <span>💬</span> Ask a question
+        </button>
+        <AskQuestionDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      </>
     );
   }
 

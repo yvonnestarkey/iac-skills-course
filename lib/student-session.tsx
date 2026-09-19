@@ -174,3 +174,7 @@ export function useStudentSession(): StudentSessionValue {
   if (!value) throw new Error("useStudentSession must be used inside StudentSessionProvider");
   return value;
 }
+
+export function useOptionalStudentSession(): StudentSessionValue | null {
+  return useContext(StudentSessionContext);
+}

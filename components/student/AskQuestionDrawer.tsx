@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import { useStudentSession } from "@/lib/student-session";
+import { useOptionalStudentSession } from "@/lib/student-session";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
 export default function AskQuestionDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const { user } = useStudentSession();
+  const session = useOptionalStudentSession();
+  const user = session?.user;
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
