@@ -119,17 +119,26 @@ export async function POST(request: NextRequest) {
       auth: { persistSession: false, autoRefreshToken: false },
     });
 
-    const { data: insightRows, error: insightError } = await supabase
+    let { data: insightRows, error: insightError } = await supabase
       .from("coaching_insights")
       .select("category, title, coaching_rule, saica_competency_mappings")
       .eq("active", true);
 
+    if (insightError && /active|schema cache|column/i.test(insightError.message || JSON.stringify(insightError))) {
+      console.error("Supabase fetch error:", insightError);
+      const fallback = await supabase
+        .from("coaching_insights")
+        .select("category, title, coaching_rule, saica_competency_mappings");
+      insightRows = fallback.data;
+      insightError = fallback.error;
+    }
+
     if (insightError) {
       console.error("Supabase fetch error:", insightError);
-      if (/coaching_insights|schema cache|does not exist/i.test(insightError.message)) {
-        return NextResponse.json({ error: "Could not load coaching insights." }, { status: 500 });
-      }
-      return NextResponse.json({ error: insightError.message }, { status: 500 });
+      return NextResponse.json(
+        { error: insightError.message || JSON.stringify(insightError) },
+        { status: 500 }
+      );
     }
 
     const apiKey = process.env.OPENAI_API_KEY;
