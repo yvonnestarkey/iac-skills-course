@@ -65,7 +65,7 @@ export default function AskQuestionDrawer({ isOpen, onClose }: { isOpen: boolean
       setError(message);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "I could not reach the facilitator just then. Try that question again." },
+        { role: "assistant", content: "I couldn't reach Eve just then. Try asking again." },
       ]);
     } finally {
       setBusy(false);
@@ -83,8 +83,8 @@ export default function AskQuestionDrawer({ isOpen, onClose }: { isOpen: boolean
       >
         <header className="ask-drawer-head">
           <div>
-            <h2 id="ask-question-title">Ask a Question</h2>
-            <p className="muted small">24/7 IAC Exam &amp; Skills Facilitator</p>
+            <h2 id="ask-question-title">Ask Eve</h2>
+            <p className="muted small">Your 24/7 IAC Skills Companion</p>
           </div>
           <button className="ask-drawer-close" type="button" aria-label="Close" onClick={onClose}>
             <X size={18} aria-hidden="true" />
@@ -93,14 +93,17 @@ export default function AskQuestionDrawer({ isOpen, onClose }: { isOpen: boolean
 
         <div className="ask-drawer-log" ref={listRef}>
           {messages.length === 0 && !busy ? (
-            <p className="muted small ask-drawer-empty">
-              Ask about a required, a mark leak, or how to use BMCR, Volume vs Accuracy, or Buried Treasure. The facilitator
-              will start from the macro framework, then give you next actions.
-            </p>
+            <div className="ask-drawer-bubble assistant">
+              <span className="ask-drawer-role">Eve</span>
+              <p>
+                Hi! I&apos;m Eve, your IAC Skills Companion. Ask me anything about how to study, manage your exam time, or
+                self-diagnose your performance using tools like BMCR and RTFQ!
+              </p>
+            </div>
           ) : null}
           {messages.map((message, index) => (
             <div key={`${message.role}-${index}`} className={`ask-drawer-bubble ${message.role}`}>
-              <span className="ask-drawer-role">{message.role === "user" ? "You" : "Facilitator"}</span>
+              <span className="ask-drawer-role">{message.role === "user" ? "You" : "Eve"}</span>
               <p>{message.content}</p>
             </div>
           ))}
