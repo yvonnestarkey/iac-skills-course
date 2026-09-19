@@ -52,6 +52,7 @@ export default function AskQuestionDrawer({ isOpen, onClose }: { isOpen: boolean
         body: JSON.stringify({
           question,
           user_id: user?.id || undefined,
+          messages: [...messages, { role: "user", content: question }],
         }),
       });
       const payload = (await response.json().catch(() => ({}))) as { reply?: string; error?: string };
