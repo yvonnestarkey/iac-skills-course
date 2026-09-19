@@ -40,7 +40,7 @@ export const DEFAULT_COACHING_CONFIG: CoachingPageConfig = {
     "Book a private session with Yvonne. After you meet, your Fireflies summary, recording, and coach notes will appear here.",
   calendly_url: "",
   banner_image_url: null,
-  dashboard_banner_url: null,
+  dashboard_banner_url: "/student-dashboard-banner.jpg",
   recording_section_title: "Session Recording and Notes",
   recording_section_description: "",
   recording_button_label: "Watch Meeting Recording",
