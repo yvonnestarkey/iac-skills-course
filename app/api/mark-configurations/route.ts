@@ -18,6 +18,10 @@ function paperNameFrom(request: NextRequest, body?: Record<string, unknown> | nu
   return String(body?.paper_name || "").trim();
 }
 
+function stripPaperNameFilter(value: string): string {
+  return value.replace(/^(eq|ilike)\./i, "").trim();
+}
+
 export async function GET(request: NextRequest) {
   try {
     const paperName = paperNameFrom(request);
@@ -56,7 +60,7 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
-    const paperName = paperNameFrom(request, body);
+    const paperName = stripPaperNameFilter(paperNameFrom(request, body));
     if (!paperName) {
       return NextResponse.json({ error: "paper_name is required." }, { status: 400 });
     }
@@ -72,7 +76,7 @@ export async function PATCH(request: NextRequest) {
     const { data, error } = await supabase
       .from("mark_configurations")
       .update({ config_json: body.config_json })
-      .eq("paper_name", paperName)
+      .ilike("paper_name", paperName)
       .select("paper_name, config_json")
       .maybeSingle();
 
