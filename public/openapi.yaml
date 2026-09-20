@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: IAC Skills Course GPT API
-  version: 1.0.0
+  version: 1.0.2
   description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT Action.
 servers:
   - url: https://iac.accountingstudyadvice.com
@@ -35,15 +35,16 @@ paths:
         "400":
           description: Missing query or search error
   /api/mark-configurations:
+    parameters:
+      - name: paper_name
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Paper name to fetch or update. Required for PATCH.
     get:
       operationId: getMarkConfigurations
       summary: Fetch mark configurations by paper name
-      parameters:
-        - name: paper_name
-          in: query
-          required: false
-          schema:
-            type: string
       responses:
         "200":
           description: Matching mark configuration rows
@@ -51,7 +52,7 @@ paths:
           description: Query error
     patch:
       operationId: updateMarkConfiguration
-      summary: Update config_json for a paper
+      summary: Update config_json for a paper. Pass paper_name as a query parameter.
       requestBody:
         required: true
         content:
@@ -59,11 +60,8 @@ paths:
             schema:
               type: object
               required:
-                - paper_name
                 - config_json
               properties:
-                paper_name:
-                  type: string
                 config_json:
                   type: object
                   additionalProperties: true
