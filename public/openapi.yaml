@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   title: IAC Skills Course GPT API
   version: 1.0.0
@@ -52,22 +52,21 @@ paths:
     patch:
       operationId: updateMarkConfiguration
       summary: Update config_json for a paper
-      parameters:
-        - name: paper_name
-          in: query
-          required: false
-          schema:
-            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
+              required:
+                - paper_name
+                - config_json
               properties:
                 paper_name:
                   type: string
-                config_json: {}
+                config_json:
+                  type: object
+                  additionalProperties: true
       responses:
         "200":
           description: Updated mark configuration
@@ -106,8 +105,13 @@ paths:
                   type: string
                 vimeo_video_id:
                   type: string
-                course_ids: {}
-                saica_competency_mappings: {}
+                course_ids:
+                  type: array
+                  items:
+                    type: string
+                saica_competency_mappings:
+                  type: object
+                  additionalProperties: true
       responses:
         "201":
           description: Created coaching insight
@@ -116,7 +120,9 @@ paths:
               schema:
                 type: object
                 properties:
-                  insight: {}
+                  insight:
+                    type: object
+                    additionalProperties: true
         "400":
           description: Missing insight fields
         "500":
