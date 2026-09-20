@@ -12,7 +12,7 @@ import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/l
 import { useStudentSession } from "@/lib/student-session";
 import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult } from "@/lib/accessControl";
 import { findResumeLesson, isChapterSequentiallyLocked, splitCoursePhases } from "@/lib/course-phases";
-import { useCoursePreview } from "@/lib/course-preview";
+import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
 
 const LessonPdfViewer = dynamic(() => import("@/components/LessonPdfViewer"), {
@@ -36,6 +36,7 @@ export default function StudentPlayer({
 }) {
   const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions } = useStudentSession();
   const { basePath } = useCoursePreview();
+  const skipLocks = overrideLocks || useBypassLessonLocks();
   const [completed, setCompleted] = useState(() => Boolean(completedMap[lesson.id]));
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
@@ -109,7 +110,7 @@ export default function StudentPlayer({
   const showSubmission = lesson.requires_submission === true || lesson.requires_coach_approval === true;
   const kind = displayLessonType(lesson);
 
-  if (!overrideLocks && access.isLocked) {
+  if (!skipLocks && access.isLocked) {
     return (
       <article className="lesson-body">
         <p className="kicker">Locked lesson</p>
@@ -130,7 +131,7 @@ export default function StudentPlayer({
     );
   }
 
-  if (!overrideLocks && chapterLocked && resume && resume.lesson.id !== lesson.id) {
+  if (!skipLocks && chapterLocked && resume && resume.lesson.id !== lesson.id) {
     return (
       <article className="lesson-body">
         <p className="kicker">Locked lesson</p>

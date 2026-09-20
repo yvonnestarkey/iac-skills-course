@@ -3,12 +3,13 @@
 import Link from "next/link";
 import CoursePhaseAccordions from "@/components/course/CoursePhaseAccordions";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
-import { useCoursePreview } from "@/lib/course-preview";
+import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { useStudentSession } from "@/lib/student-session";
 
 export default function StudentOverview() {
   const { outline, completed, submissions, surveyReviews } = useStudentSession();
-  const { unlocked, basePath } = useCoursePreview();
+  const { basePath } = useCoursePreview();
+  const bypassLocks = useBypassLessonLocks();
   const chapters = outline || [];
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
   const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
@@ -21,7 +22,7 @@ export default function StudentOverview() {
       <p className="kicker">Course overview</p>
       <h1>Your course</h1>
       <p className="lead">
-        {unlocked
+        {bypassLocks
           ? "This is the student course with every lesson open. Expand any section to read the titles and open the content."
           : "Expand any section to preview upcoming titles. Locked lessons stay closed until you finish the work before them."}
       </p>
@@ -46,7 +47,7 @@ export default function StudentOverview() {
         variant="hub"
         submissions={submissions || {}}
         surveyReviews={surveyReviews || {}}
-        unlocked={unlocked}
+        unlocked={bypassLocks}
       />
     </article>
   );

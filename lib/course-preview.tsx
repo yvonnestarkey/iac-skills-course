@@ -2,6 +2,8 @@
 
 import { createContext, useContext } from "react";
 import type { ReactNode } from "react";
+import { isCoachAccount } from "@/lib/roles";
+import { useStudentSession } from "@/lib/student-session";
 
 export const COURSE_PREVIEW_BASE = "/coach/preview";
 
@@ -29,4 +31,11 @@ export function CoursePreviewProvider({
 
 export function useCoursePreview(): CoursePreviewValue {
   return useContext(CoursePreviewContext);
+}
+
+/** Coach accounts and /coach/preview skip student lesson, section, and phase gates. */
+export function useBypassLessonLocks(): boolean {
+  const { unlocked } = useCoursePreview();
+  const { user } = useStudentSession();
+  return unlocked || isCoachAccount(user);
 }
