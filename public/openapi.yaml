@@ -1,0 +1,146 @@
+openapi: 3.1.0
+info:
+  title: IAC Skills Course GPT API
+  version: 1.0.0
+  description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT Action.
+servers:
+  - url: https://iac.accountingstudyadvice.com
+paths:
+  /api/knowledge-base/search:
+    get:
+      operationId: searchKnowledgeBase
+      summary: Search the coaching knowledge base
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        "200":
+          description: Matching knowledge-base rows
+        "400":
+          description: Missing query or search error
+  /api/mark-configurations:
+    get:
+      operationId: getMarkConfigurations
+      summary: Fetch mark configurations by paper name
+      parameters:
+        - name: paper_name
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Matching mark configuration rows
+        "400":
+          description: Query error
+    patch:
+      operationId: updateMarkConfiguration
+      summary: Update config_json for a paper
+      parameters:
+        - name: paper_name
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                paper_name:
+                  type: string
+                config_json: {}
+      responses:
+        "200":
+          description: Updated mark configuration
+        "400":
+          description: Missing paper_name or update error
+  /api/course-content/chapters:
+    get:
+      operationId: listCourseStructure
+      summary: List the course structure in chapter then lesson order
+      description: Read-only curriculum map. Returns chapters and lesson metadata only. No student data, lesson body, or Storage files.
+      responses:
+        "200":
+          description: Ordered chapters with nested lessons
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chapters:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                        summary:
+                          type: string
+                        position:
+                          type: integer
+                        lessons:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              chapter_id:
+                                type: string
+                              position:
+                                type: integer
+                              type:
+                                type: string
+                              title:
+                                type: string
+                              duration:
+                                type: string
+                                nullable: true
+                              seconds:
+                                type: integer
+                                nullable: true
+                              blurb:
+                                type: string
+                                nullable: true
+                              due:
+                                type: string
+                                nullable: true
+                              video_duration_seconds:
+                                type: integer
+                                nullable: true
+                              estimated_read_minutes:
+                                type: integer
+                                nullable: true
+                              duration_minutes:
+                                type: integer
+                                nullable: true
+                              requires_submission:
+                                type: boolean
+                              requires_coach_approval:
+                                type: boolean
+                              prereq_lesson_id:
+                                type: string
+                                nullable: true
+        "400":
+          description: Could not load chapters or lessons
