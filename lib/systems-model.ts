@@ -436,6 +436,7 @@ export async function recordSystemsRevision(input: {
   revisit?: RevisitItem[];
   unresolved_implications?: string;
   needs_yvonne_review?: boolean;
+  working_state_version?: string;
   payload?: Record<string, unknown>;
 }): Promise<{ revision: SystemsRecord; successor: SystemsRecord; working_state: SystemsWorkingState }> {
   const target = await getSystemsRecord(input.target_id);
@@ -463,6 +464,7 @@ export async function recordSystemsRevision(input: {
     related_record_ids: [target.id, successor.id],
     source_refs: (input.trigger.source_ids || []).map((source_id) => ({ source_id })),
     payload: {
+      ...(input.payload || {}),
       previous_understanding: input.previous_understanding || target.statement,
       revised_understanding: input.revised_understanding,
       trigger: input.trigger,
@@ -478,6 +480,7 @@ export async function recordSystemsRevision(input: {
   let working = await getSystemsWorkingState();
   if (input.revisit?.length) {
     working = await updateSystemsWorkingState({
+      version: input.working_state_version,
       state: mergeRevisitQueue(working.state, input.revisit),
     });
   }
@@ -559,6 +562,7 @@ export async function createSystemsCheckpoint(input: {
   informed_by_record_ids?: string[];
   revision_id?: string;
   created_by?: "ai" | "yvonne";
+  working_state_version?: string;
 }): Promise<SystemsCheckpoint> {
   const client = requireClient();
   const current = await getCurrentCheckpoint();
@@ -615,6 +619,7 @@ export async function createSystemsCheckpoint(input: {
   if (error || !data) throw new Error(error?.message || "Could not create checkpoint.");
   const checkpoint = asCheckpoint(data as Record<string, unknown>);
   await updateSystemsWorkingState({
+    version: input.working_state_version,
     current_checkpoint_id: checkpoint.id,
     state: {
       current_checkpoint_id: checkpoint.id,
@@ -770,10 +775,26 @@ export async function getSystemsModelEvidence(recordId?: string) {
 
 export async function deleteRecordsByPayloadFlag(flag: string, value: string): Promise<number> {
   const client = requireClient();
-  const { data } = await client.from("mindset_systems_records").select("id, payload");
-  const ids = (data || [])
-    .filter((row) => (row as { payload?: Record<string, unknown> }).payload?.[flag] === value)
-    .map((row) => String((row as { id: string }).id));
+  const { data } = await client.from("mindset_systems_records").select("id, record_type, title, payload, related_record_ids");
+  const rows = (data || []) as {
+    id: string;
+    record_type?: string;
+    title?: string;
+    payload?: Record<string, unknown>;
+    related_record_ids?: string[];
+  }[];
+  const flagged = new Set(
+    rows.filter((row) => row.payload?.[flag] === value || JSON.stringify(row.payload || {}).includes(value)).map((row) => String(row.id))
+  );
+  for (const row of rows) {
+    if (/SYNTHETIC/i.test(String(row.title || ""))) flagged.add(String(row.id));
+  }
+  for (const row of rows) {
+    if (row.record_type === "revision" && asStringArray(row.related_record_ids).some((id) => flagged.has(id))) {
+      flagged.add(String(row.id));
+    }
+  }
+  const ids = [...flagged];
   if (!ids.length) return 0;
   await client.from("mindset_systems_checkpoints").update({ revision_id: null }).in("revision_id", ids);
   await client.from("mindset_systems_records").update({ supersedes_id: null, checkpoint_id: null }).in("id", ids);

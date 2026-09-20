@@ -124,6 +124,7 @@ async function main() {
       synthesis: "SYNTHETIC first house: the activity currently looks like exam technique. Not a real methodology claim.",
       supporting_record_ids: [observation.id, interpretation.id],
       informed_by_record_ids: [observation.id, interpretation.id],
+      working_state_version: WORKING_VERSION,
     });
     assert(firstCheckpoint.informed_by_record_ids.includes(interpretation.id), "C: checkpoint is informed by the interpretation");
     assert((firstCheckpoint.provenance.source_ids as string[])?.includes(lessonId), "C: checkpoint provenance keeps source IDs");
@@ -137,6 +138,7 @@ async function main() {
       systems_why: "Function depends on position in the process, not only on the local technique.",
       revisit: [{ source_id: lessonId, record_id: observation.id, reason: "Re-read for diagnostic function." }],
       unresolved_implications: "May also be psychological.",
+      working_state_version: WORKING_VERSION,
       payload,
     });
     const original = await getSystemsRecord(interpretation.id);
@@ -188,6 +190,7 @@ async function main() {
       open_question_ids: [question.id],
       informed_by_record_ids: [observation.id, interpretation.id, revision.revision.id, revision.successor.id, yvonne.record.id, yvonne.review.id, question.id],
       revision_id: revision.revision.id,
+      working_state_version: WORKING_VERSION,
     });
 
     const resumed = await getSystemsModel();
@@ -220,11 +223,15 @@ async function main() {
   } finally {
     const removed = await cleanup();
     const after = await getSystemsModel();
-    const leftover = [...Object.values(after.records).flat(), ...after.superseded].filter((row) =>
-      JSON.stringify(row.payload || {}).includes(RUN)
+    const leftover = [...Object.values(after.records).flat(), ...after.superseded].filter(
+      (row) => JSON.stringify(row.payload || {}).includes(RUN) || /SYNTHETIC/i.test(row.title)
+    );
+    const leftoverWorking = (after.working_state.history || []).filter(
+      (row) => row.version === WORKING_VERSION || /synthetic/i.test(String(row.version || ""))
     );
     assert(leftover.length === 0, "synthetic records should be deleted");
-    console.log(JSON.stringify({ cleanup: { removed_records: removed, leftover: leftover.length } }));
+    assert(leftoverWorking.length === 0, "synthetic working-state rows should be deleted");
+    console.log(JSON.stringify({ cleanup: { removed_records: removed, leftover: leftover.length, leftover_working: leftoverWorking.length } }));
   }
 }
 
