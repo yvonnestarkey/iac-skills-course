@@ -36,7 +36,8 @@ export default function StudentPlayer({
 }) {
   const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions } = useStudentSession();
   const { basePath } = useCoursePreview();
-  const skipLocks = overrideLocks || useBypassLessonLocks();
+  const bypassLocks = useBypassLessonLocks();
+  const skipLocks = overrideLocks || bypassLocks;
   const [completed, setCompleted] = useState(() => Boolean(completedMap[lesson.id]));
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
