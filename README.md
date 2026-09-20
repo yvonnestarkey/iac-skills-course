@@ -48,6 +48,8 @@ State still lives entirely in the browser (`localStorage`), so no database or au
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<publishable key>
+SUPABASE_SERVICE_ROLE_KEY=<server-only service role key>
+VIMEO_ACCESS_TOKEN=<server-only Vimeo personal access token>
 ```
 
 `lib/supabase.ts` creates the official `@supabase/supabase-js` client lazily and exports `supabaseConfigured`, so the UI can say the backend is missing instead of throwing. Sessions are not persisted by the client — the portal still keeps its own sign-in and student data in `localStorage`.

@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: IAC Skills Course GPT API
-  version: 1.0.5
+  version: 1.0.6
   description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT Action.
 servers:
   - url: https://iac.accountingstudyadvice.com
@@ -255,6 +255,142 @@ paths:
           description: Lesson not found
         "500":
           description: Could not load lesson
+  /api/knowledge/sources:
+    get:
+      operationId: listKnowledgeSources
+      summary: List approved knowledge sources
+      description: Read-only. Discovers source types and live counts across the project. New documents, transcripts or research appear here without a new operation. Never returns credentials, student PII, or student Storage paths.
+      responses:
+        "200":
+          description: Available knowledge sources
+        "500":
+          description: Could not list knowledge sources
+  /api/knowledge/search:
+    get:
+      operationId: searchKnowledge
+      summary: Search approved project knowledge
+      description: Read-only federated search across lessons, Vimeo transcripts, research, past papers, methodology and project context. Use source_type to narrow. Do not invent a new operation for a new document type.
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: source_type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - course
+              - lesson
+              - video_transcript
+              - worksheet
+              - resource
+              - research
+              - past_paper
+              - mark_plan
+              - examiner_commentary
+              - yvonne_feedback
+              - coaching_transcript
+              - methodology
+              - project_canon
+              - working_state
+              - historical_evidence
+        - name: chapter_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: lesson_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Matching knowledge references
+        "400":
+          description: Missing query
+        "500":
+          description: Could not search knowledge
+  /api/knowledge/items/{id}:
+    get:
+      operationId: getKnowledgeItem
+      summary: Retrieve one knowledge item
+      description: Read-only. Fetch source material by stable id from search or journey. Internal ids use colons (lesson:ch15-l3); in this path replace each colon with a slash (lesson/ch15-l3). Large items are chunked with offset and limit.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Slash-separated knowledge id, for example lesson/ch15-l3, transcript/{uuid}, context/project_canon, past_paper/june-2026/{paperId}
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 200
+            maximum: 20000
+            default: 12000
+      responses:
+        "200":
+          description: Knowledge item content
+        "404":
+          description: Knowledge item not found
+        "500":
+          description: Could not load knowledge item
+  /api/knowledge/course-journey:
+    get:
+      operationId: getCourseJourney
+      summary: Get the live student course journey
+      description: Read-only. Live chapter and lesson sequence with previous/next, gating, all associated videos, transcript availability, and approved teaching resource URLs. Lesson count is live, not hard-coded.
+      responses:
+        "200":
+          description: Course journey in student order
+        "500":
+          description: Could not load the course journey
+  /api/knowledge/lessons/{lessonId}/full:
+    get:
+      operationId: getCourseLessonFull
+      summary: Get one lesson with all associated teaching context
+      description: Read-only. Returns lesson text, gating, previous/next, every associated video, imported transcript source text for those videos, and approved teaching resource metadata/URLs. Does not invent transcripts.
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Full lesson teaching context
+        "400":
+          description: Invalid lesson id
+        "404":
+          description: Lesson not found
+        "500":
+          description: Could not load the lesson
   /api/mindset-sandbox/context:
     get:
       operationId: getMindsetSandboxContext

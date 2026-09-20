@@ -9,11 +9,14 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test lib/lesson-videos.test.ts",
+    "test": "tsx --test lib/lesson-videos.test.ts lib/vimeo-captions.test.ts",
     "scrape:thinkific": "tsx scripts/scrape-thinkific.ts",
     "seed:supabase": "tsx scripts/seed-supabase.ts",
     "ingest:docs": "tsx scripts/ingest-docs.ts",
-    "import:mindset-sandbox": "tsx scripts/import-mindset-sandbox-context.ts"
+    "import:mindset-sandbox": "tsx scripts/import-mindset-sandbox-context.ts",
+    "sync:transcripts": "tsx scripts/sync-vimeo-transcripts.ts",
+    "import:vtt": "tsx scripts/import-manual-vtt.ts",
+    "validate:knowledge": "tsx scripts/validate-knowledge-gateway.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
