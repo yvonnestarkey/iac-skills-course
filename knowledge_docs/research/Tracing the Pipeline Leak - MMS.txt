@@ -1,0 +1,1681 @@
+Title: Tracing the Pipeline Leak: A Reverse-Diagnostic of the Accounting Student's Mindset Meaning System
+Authors: Not stated in the source PDF metadata or title pages
+Source filename: Tracing the Pipeline Leak - MMS .pdf
+Original Word filename (PDF metadata): BAFA SIG 20 Apr.docx
+Source type: research
+Publication/status: BAFA Accounting Education SIG manuscript; PDF produced 20 April 2026
+Local source: Documents/Mindset/BAFA EDU SIG/Tracing the Pipeline Leak - MMS .pdf
+Ingested as source material, not methodology.
+
+--- Page 1 ---
+
+Tracing the Pipeline Leak: A Reverse-Diagnostic of the Accounting
+Student’s Mindset Meaning System
+Abstract
+With pass rates for key exit-level professional-accounting exams around 40 percent, many
+aspiring accountants fail to qualify. This presents a ‘pipeline leak, and a paradox: students
+who have successfully navigated years of coursework cannot navigate the final levels. This
+paper argues that explanations relying on technical or skill deficits are insufficient. It utilises
+the Mindset Meaning System (MMS) as a reverse-diagnostic lens to interpret this attrition
+and to explain why traditional study advice may be ineffective for at-risk students, especially
+given the increased focus on professional and transferable skills in assessments.
+The paper employs a two-phase conceptual synthesis of accounting education literature.
+Phase 1 identifies mindset-specific studies, noting a scarcity of research and a tendency to
+sample successful students (capturing ‘untested optimism’). Phase 2 maps non-mindset
+studies that explore accounting student challenges at higher levels in qualification journeys
+against the four elements of the MMS: implicit beliefs, goal orientation, effort beliefs, and
+failure responses.
+The alignment of findings in accounting education with the elements of the MMS suggests
+that accounting assessments may be filtering for psychological adaptive patterns rather than
+technical or professional abilities. Observed maladaptive responses to setbacks - such as
+surface-learning, burnout, and help-seeking avoidance - are traced back to performance-goal
+orientations where students seek to validate, rather than develop, intelligence. The analysis
+suggests that at-risk students’ underlying beliefs about intelligence may influence their
+perception of and approach to the effort required to navigate higher levels of assessment.
+Traditional academic interventions advising at-risk accounting students to emulate the study
+1
+
+--- Page 2 ---
+
+approaches and habits of successful students may be ineffective. Incorporating academic
+interventions designed to address underlying meaning systems may improve their learning
+and academic performance.
+By reinterpreting fragmented findings through the MMS, this paper identifies research gaps
+in accounting education research, including the lack of failure-based contexts and
+performance-stratified sampling. It offers a theory-driven explanation for why traditional
+academic interventions may be ineffective for at-risk students and for developing professional
+and transferable skills, and suggests exploring students’ underlying meaning systems to
+address challenges in the accounting pipeline.
+(Mindset meaning system; at-risk accounting students; fixed and growth mindset; goal
+orientation; effort belief; response to setbacks)
+1. Introduction
+Pass rates for the final, exit-level professional-accounting exams remain persistently low. In
+2024 and 2025, CPA pass rates for Financial Accounting and Reporting (FAR) and Business
+Analysis and Reporting (BAR) were approximately 39 percent and 43 percent, respectively
+(AICPA & CIMA, 2025). ACCA reported similarly low outcomes at its Strategic
+Professional level, with Advanced Performance Management (APM) and Advanced Audit
+and Assurance (AAA) recording pass rates in the 30 percent range across 2024 and 2025
+(ACCA, 2025).
+A significant portion of candidates will either repeat these exams or exit the pipeline at these
+high levels —a phenomenon referred to here as the ‘pipeline leak’. This attrition presents a
+paradox: these students have successfully navigated most of their academic journey,
+demonstrating sufficient cognitive capacity and commitment to complete years of rigorous
+coursework and assessments, yet they cannot pass their final exams. The assessments prior to
+2
+
+--- Page 3 ---
+
+exit levels are intended to prepare students for those final exams or filter out students who
+may not be capable of completing the qualification journey. The critical question, therefore, is
+why accounting students who have proven their capability in earlier stages are unable to fulfil
+the requirements at the final hurdles.
+Accounting education research has explored various elements of this challenge, though
+largely in isolation. Findings related to anxiety, burnout and intention to leave (Janse van
+Vuuren, Bodenstein & Oberholzer, 2021; Fisher, Hageman & West, 2024; Smith, Haight,
+Emerson, Mauldin & Wood, 2020; Khan, Mehmood & Huda, 2023), and inappropriate study
+approaches (Jackling, 2005; Mashishi & Rabin, 2000; Natoli, Wei & Jackling, 2020) provide
+valuable insight into the specific stressors that accounting students face. However, while
+these studies document the symptoms of the pipeline leak, they provide no cohesive answer
+regarding its root cause.
+This paper suggests that these disparate concerns share a common psychological thread: they
+are manifestations of a helpless response to challenges. In psychological literature, a helpless
+response is not merely a lack of effort, but a maladaptive reaction to a perceived
+unmanageable challenge, resulting in cognitive disruption, negative affect, and the
+abandonment of effective strategies (Dweck & Leggett, 1988; Dweck & Yeager, 2019).
+When faced with unmanageable challenges1, student behaviours typically diverge into two
+distinct patterns. Some students display mastery-oriented responses: they adapt to the
+difficulty, seek help, and increase their effort, behaviours that significantly increase the
+likelihood of achieving their final goals. Conversely, other students display helpless
+responses: maladaptive behaviours that decrease the likelihood of achieving goals (Dweck &
+1 The nature of ‘unmanageable’ challenges, as opposed to ‘manageable’ challenges are
+discussed in the section ‘Implicit Beliefs (Fixed and Growth Mindsets).
+3
+
+--- Page 4 ---
+
+Leggett, 1988; Dweck & Yeager, 2019). The research question arising from this behavioural
+difference is similar to the accounting pipeline paradox: “The puzzle, then, was why
+individuals of equal ability would show such marked performance differences in response to
+challenge.” (Dweck & Leggett, 1988). Research designed to answer that question gave rise to
+the field of mindset research as we know it today (Diener & Dweck, 1978, 1980; Dweck &
+Reppucci, 1973; Dweck & Leggett, 1988; Dweck & Yeager, 2019).
+Given that the accounting pipeline leak represents a similar crisis of capability versus
+performance, this paper applies the insights of that foundational research to the profession's
+attrition problem. Specifically, we utilise the Mindset Meaning System (MMS), illustrated in
+Figure 1. As a framework, the MMS suggests that a student's response to a challenge is not an
+isolated event, but the final outcome of a cognitive chain—a dynamic meaning-making
+process that influences how students interpret and respond to success and failure (Dweck &
+Leggett, 1988; Dweck & Yeager, 2019).
+By viewing accounting student behaviours through the lens of the MMS, this paper integrates
+fragmented findings of accounting research into a cohesive diagnostic framework. The
+analysis proposes that the accounting profession pipeline is not merely filtering for technical
+competence but is selecting for psychological responses.
+This paper contributes three key insights: (i) A reverse-diagnostic framework which
+establishes a cohesive lens that traces documented, at-risk behaviours—such as surface
+learning, disengagement, and externalised responsibility—backward to their roots in the
+Mindset Meaning System (MMS). (ii) Explanatory power for resistance, which provides a
+theory-driven explanation for why at-risk accounting students often resist traditional support.
+(iii) Strategic research gaps which identify critical blind spots in current literature to move
+from conceptual observation to stress-tested intervention.
+4
+
+--- Page 5 ---
+
+A natural starting point is to explore existing research on mindsets in accounting education.
+However, research in this area is limited and is skewed towards students with little or no
+experience of failure, leaving unanswered questions about how mindset-related beliefs
+function among those most at risk of failure (Ravenscroft, Waymire, & West, 2012); Liu,
+Robinson, & Xu, 2018; Beatson, Berg, & Smith, 2019; Farok & Mahmud, 2020). The MMS
+as a dynamic meaning-making system remains unexplored in accounting education research.
+Figure 1 - Mindset Meaning System - Overview
+A visual representation of the elements of the MMS for fixed and growth mindset beliefs,
+including the level of challenge that is suggested to trigger the divergence of the mindset
+beliefs.
+2. Methodology
+In this paper, the methodology plays a foundational role. It is necessary to outline the search
+process, since the majority of the research in this paper relies on demonstrating the scarcity of
+mindset evaluations in accounting education. Without establishing the limitations of the
+existing literature, the reframing proposed in this paper could be misinterpreted as selective,
+rather than a response to the nature of existing research in this domain.
+5
+
+--- Page 6 ---
+
+The focus of this study is whether the MMS offers a coherent framework for interpreting
+accounting students’ behaviours. It is conceptual rather than exhaustive, and the search
+focused on identifying literature relevant to the four elements of the MMS. The
+methodological approach for accounting education research included in this paper followed a
+two-stage process.
+First, locating accounting education studies that explicitly evaluate mindset and,
+subsequently, identifying accounting education studies that—while not incorporating mindset
+theory—reported findings consistent with the four elements of the MMS. The central purpose
+of this paper is to consider whether the MMS offers conceptual value for interpreting
+accounting students’ beliefs and behaviours; therefore, both stages were required.
+2.1 Phase 1: Mindset-specific studies within accounting education
+The search began with the narrowest possible scope: studies that directly measured
+accounting students’ mindsets. Searches included Google Scholar, Scopus and high-ranking
+accounting education journals. LitMaps and AI semantic search tools (Elicit and ChatGPT)
+were then used, which identify conceptually related work rather than relying solely on
+keyword matches.
+‘Mindset’ keyword searches regularly return research that uses the term generically (e.g.,
+digital mindset, leadership mindset, entrepreneurial mindset) or mentions growth mindsets as
+a desirable trait in accounting studies and careers, but does not evaluate mindsets.
+Bibliographies of mindset-specific papers were reviewed to determine whether any additional
+accounting mindset studies existed. None appeared.
+Only a small group of studies in accounting education have conducted theoretically grounded
+mindset evaluations (Annexure 1).
+6
+
+--- Page 7 ---
+
+To enhance transparency, the search process was recorded in a publicly accessible video
+(Vimeo Link). The recording shows the output of each search tool and confirms that few
+studies directly evaluate mindset in accounting education.
+2.2 Phase 2: Accounting studies aligned with MMS components
+The second stage expanded the scope to include studies that, although not incorporating
+mindset theory, reported findings aligned with the MMS elements (Figure 1). These studies
+(Annexure 2) identify narratives and behavioural patterns that align with mindset-related
+constructs. LitMaps and Elicit were particularly helpful for locating conceptually adjacent
+studies.
+2.3 Scope decision
+This paper focuses on the paradox of students at higher levels in their academic journey.
+Many widely cited studies on accounting education are based on first-year student samples.
+These cohorts often include many students who take an accounting introduction course as
+part of other degrees. Their challenges, academic trajectories and lack of evidence-based
+ability in the accounting pipeline differ markedly from those of exit-level students. To
+maintain conceptual consistency in interpreting belief–behaviour patterns, many first-year
+studies were excluded unless they evaluated mindset or offered qualitative insight.
+3. Mindset Meaning System Introduction
+Early investigations by mindset researchers into helpless and mastery-oriented responses to
+setbacks and failure evolved into a broader framework, the Mindset Meaning System (MMS)
+(Dweck & Leggett, 1988; Dweck & Yeager, 2019; Figure 1).
+Consider two students, ‘A’ and ‘B’, both of whom are preparing for their final professional
+7
+
+--- Page 8 ---
+
+exam. As part of their preparation, they take a mock exam, and both fail. Student A goes on
+to pass the final exam, while Student B fails. Initial perceptions may be that Student B lacks
+the technical competence required to pass at that level.
+Attempts to support Student B will frequently focus on study techniques or increased effort,
+and it is common to advise them to emulate Student A’s approaches to meet the
+qualification’s academic requirements.
+Mindset research suggests, however, that if the students had different interpretations of their
+mock exam failure, based on different beliefs about intelligence and learning, this would have
+affected their exam preparation and, in turn, their final results (Dweck & Leggett, 1988;
+Dweck, 2006; Dweck & Yeager, 2019; Cha, Kim, Lee, & Anderman, 2025). Students A and
+B may have identical levels of technical ability, but their interpretations of challenging
+situations will affect their responses and, in turn, their results.
+The MMS proposes that implicit beliefs about intelligence predict goal orientation and effort
+beliefs, which in turn dictate the students’ response to setbacks and failure (Dweck & Yeager,
+2019; Blackwell, Dweck, & Trzesniewski, 2007; Cha et al., 2025; Burnette, O’Boyle,
+VanEpps, Pollack, & Finkel, 2013). Table 1 illustrates the MMS for Students A and B, using
+narrative examples to show how their beliefs would practically affect their interpretations of
+and responses to the failure. This explains why classic study advice may be sound, but
+Student B may not adopt it.
+This paper refers to Students A and B as ‘growther’ and ‘fixeder’, respectively. The terms "
+growther and fixeder will be used in this paper to refer to students displaying growth and
+fixed-mindset behaviours. This is not an assumption about the mindset beliefs of accounting
+students. We explore research suggesting that accounting students display fixed-mindset
+behaviours, but further research will be required to obtain mindset evaluations that provide
+8
+
+--- Page 9 ---
+
+evidence as to whether these behaviours result from fixed-mindset beliefs or are similar but
+unrelated.
+Table 1 - Comparative MMS Profile for Student A and B
+This table summarises the divergent paths, including illustrative narratives, of two equally
+capable students—Student A and B—following their failure of a mock exam, attempted in
+preparation for an exit-level professional exam.
+(The theoretical elements of the MMS are illustrated in Figure 1)
+MMS Element Student A - ‘Growther’ Student B - ‘Fixeder’
+Implicit Belief Growth - Intelligence is
+malleable
+“I do not know this work well
+enough yet.”
+Fixed - Intelligence is static
+“I have never been good at these
+topics, and I never will be.”
+Goal Orientation
+Learning / Mastery - Focus on
+improvement, cumulative
+development of competence
+“The purpose of the mock exam
+was to help me identify what
+areas I need to work on so that I
+can improve.”
+Performance - Focus on
+validating intelligence; getting it
+right immediately; avoid looking
+incompetent
+“The purpose of the mock exam
+was to assess whether I am ready
+to pass. I should have passed it,
+and I did not.”
+Effort Belief
+Effort and struggle are part of
+learning and are required for
+success
+“It is going to take a lot of effort
+and time to master these areas;
+that is part of the journey”
+Effort signals a lack of ability;
+Smart people do not struggle
+“If I were smarter, this would not
+be so tough for me. I have tried
+already, and clearly this is
+something I cannot do.”
+9
+
+--- Page 10 ---
+
+Response to
+Setback & Failure
+(Observable
+outcome to mock
+exam failure)
+Mastery-oriented - Resilience;
+Strategy adaptation; Sustained
+effort; help-seeking; Practicing
+more mock exams, focussing on
+improvement
+“What do I need to do next in
+order to improve these areas in
+preparation for the final
+exam?”
+Helpless - Procrastination;
+Withdrawal; Exam deferral;
+Avoidance of mock questions;
+Avoidance of help-seeking;
+Higher anxiety levels
+“I think I am going to fail this,
+regardless of what I do. I cannot
+face failing more mock exams, so
+I will focus on revision. I do not
+want my tutors to know how little
+I know, so I will not ask them for
+help. I will start tomorrow when I
+feel better about it all.”
+(Diener & Dweck, 1978, 1980; Dweck & Leggett, 1988; Dweck, 2006; Cha et al., 2005)
+More recent research suggests that mindsets are more nuanced and less directly correlated
+with academic performance (Sisk, Burgoyne, Sun, Butler & Macnamara, 2018; Macnamara
+& Burgoyne, 2023; Cha et al., 2025). Regardless of mixed findings, all studies agree that
+growth mindsets are desirable for students; their concern is often whether there is sufficient
+correlation with academic performance to warrant allocating resources to interventions.
+The sections below represent a reverse-diagnostic approach to the MMS elements. It begins
+by examining responses to setbacks and challenges, then traces these behaviours back to their
+cognitive precursors—effort beliefs and goal orientations—and to the underlying implicit
+beliefs that are suggested to create these divergences.
+4. Responses to Setbacks and Failure
+The MMS suggests that students’ responses to setbacks and failure are observable outcomes
+of their underlying beliefs and the behaviours they adopt in response (Figure 1; Dweck &
+Leggett, 1988; Dweck & Yeager, 2019).
+This section will explore several studies in accounting education whose findings align with
+helpless responses, specifically regarding ineffective learning strategies and various forms of
+10
+
+--- Page 11 ---
+
+disengagement (Annexure 2). While these studies were not developed with mindset theory in
+mind, the observed outcomes provide valuable insights into at-risk students’ responses to
+failure.
+4.1 Inappropriate Learning Strategies
+To navigate the increasing complexity of the accounting curriculum, students must adapt their
+learning strategies. The MMS views this type of adaptation as a mastery-oriented response.
+Conversely, the inability or unwillingness to adjust learning strategies despite increasing
+demands is viewed as a helpless response, often leading to a deterioration of problem-solving
+skills (Dweck, 2006; Diener & Dweck, 1978, 1980; Dweck & Yeager, 2019). Students
+displaying helpless responses were later found to be more likely to have fixed-mindset beliefs
+(Dweck & Leggett, 1988). Interestingly, Dweck and Leggett (1988) found that fixeders had
+often performed better in tasks than their growther peers before they experienced
+unmanageable challenges, again contradicting the belief that lower ability was the cause of
+helpless responses.
+Qualitative studies of at-risk and failing accounting students report a specific inability to
+manage time or adopt appropriate study methods, even when current strategies are clearly
+failing (Eiselen & Geyser, 2004; Gracia & Jenkins, 2002).
+Mashishi and Rabin (2000) observed that fourth-year accounting students predominantly
+relied on surface learning, despite lecturer expectations for deep learning at this level in their
+qualification journey. Crucially, every student in this sample had passed the previous three
+years on their first attempt. This profile—academic success followed by a failure to adapt to
+meet requirements—is a hallmark of the accounting pipeline problem.
+The negative perceptions of teaching quality reported by Jackling (2005) and Natoli et al.
+(2020) were associated with surface learning approaches. In the latter study, more than 90
+11
+
+--- Page 12 ---
+
+percent of students rated most aspects of the course experience negatively, and a similar
+proportion (91.9 percent) adopted a surface learning approach.
+Interestingly, Jackling (2005) found that this was often a calculated response by students -
+They believed assessment tasks primarily required memorisation and therefore utilised
+surface strategies to meet those demands. This approach was ultimately ineffective for
+genuine learning, as students with predominantly surface motives generally failed to answer
+conceptual questions during interviews, demonstrating a clear lack of deep understanding.
+Similarly, AlBassam, AlAwadi and Alrashed (2019) observed a strong dependence on
+lecturer-led delivery, which correlated with weak judgment and limited self-directed study.
+The recurrence of these behaviours raises a question of causality: Do students adopt surface
+approaches because teaching is poor? Do they perceive teaching as poor because they lack
+the ownership required for deep learning? Or do they adopt surface approaches because the
+strategy works at earlier levels, and when they no longer yield results, they blame the
+teaching quality for not adequately preparing them and struggle to adapt?
+Ravenscroft et al. (2012) included mindset, calibration error, and academic performance in
+their study. They hypothesised that growthers would exhibit lower calibration errors and
+would have higher academic performance across the tests. Counterintuitively, a growth
+mindset predicted improvement on only one of the three tests. While the study measured how
+well students could predict their results, it did not measure how they interpreted those results
+or how they responded to those interpretations. Thus, it remains unclear whether the
+inconsistent relationship reflects differences in effort, strategy adaptation, or emotional
+responses to prior performance.
+The moderate levels of grit displayed by 75 percent of the accounting students in Farok and
+Mahmud’s (2020) study failed to translate into academic performance. Similarly, the
+12
+
+--- Page 13 ---
+
+growthers who prioritised the Big Four firms' goals in Liu et al.’s (2018) study performed
+worse on their final exams. This suggests that their effort was not aligned with the required
+outcomes of the assessments or course requirements.
+4.2 Disengagement - Burnout, Anxiety, Withdrawal
+In mindset research, helpless students often withdraw cognitively, emotionally, or
+behaviourally when they perceive a task as unmanageable or when effort seems unlikely to
+yield improvement (Dweck & Yeager, 2019; Dweck, 2006; Diener & Dweck, 1978, 1980;
+Figure 1).
+Fixeders show greater vulnerability to dysphoria (the acute distress arising from a perceived
+gap between one’s current state and an 'ideal' self), and are less effective at coping once they
+experience dysphoria, than growthers (Baer, Grant, & Dweck, 2005; Dweck, 2006), with one
+study reporting increasing depression levels for fixeders due to continuous “ruminating over
+their problems and setbacks, essentially tormenting themselves with the idea that the setbacks
+meant they were incompetent or unworthy”. The more depressed they felt, the less work they
+did. While the study found that growthers were struggling with depression as well, they took
+action to confront their problems (Dweck, 2006).
+We see evidence of depression, burnout and anxiety in accounting education. Fisher et al.
+(2024) found that more than 85 percent of accounting majors reported burnout, identifying
+high levels of cognitive test anxiety - a debilitating state where students 'freeze up' during
+exams despite preparation. They also measured disengagement as a core component of
+burnout, finding that students displayed modest to high levels of withdrawal from their
+studies. Crucially, the authors found that these helpless responses were predicted by
+maladaptive perfectionism—the tendency to equate mistakes with a loss of self-worth.
+13
+
+--- Page 14 ---
+
+These findings suggest that the freezing response and the disengagement are triggered by a
+specific underlying belief system regarding failure and identity, a relationship that aligns with
+the MMS and a meta-analysis of 113 broader mindset research papers (Burnette et al. 2013).
+The severity of this helpless response is underscored by Smith et al. (2020), who found that
+role stressors—specifically role ambiguity and role overload-significantly decreased
+accounting students' psychological health and increased academic burnout, which in turn
+drove intentions to depart the major entirely. Although not a mindset study, the authors draw
+on mindset research (Yeager & Dweck, 2012) to argue that resilience is malleable. Their
+findings support this, showing that higher resilience acted as a protective mechanism, directly
+enhancing psychological health and reducing the burnout that leads to withdrawal.
+Consequently, Smith et al. (2020) posit that resilience training would be valuable for reducing
+burnout and departure intentions among accounting students.
+Significant predictors of accounting students’ academic burnout and the intention to leave the
+institution include low grit (Khan et al., 2023) and a combination of high cynicism and low
+emotional well-being (Van den Berg & Rothmann, 2024).
+Van den Berg and Rothmann (2024) define cynicism not merely as negativity, but as a
+‘distant attitude’ stemming from a perceived ‘lack of efficacy and control’ over educational
+outcomes. This psychological detachment serves as a defence mechanism for students who
+feel their capabilities are insufficient for the demands of the curriculum.
+Janse van Vuuren et al. (2021) reported notably high levels of anxiety and depression among
+postgraduate accounting students, accompanied by low absorption2 and low vigour during
+demanding periods. Anxiety and depression were also positively correlated, and among
+2 Psychological disengagement characterised by reduced cognitive immersion in academic
+work
+14
+
+--- Page 15 ---
+
+participants receiving psychological or psychiatric treatment, 91 percent indicated that their
+treatment was study-related—further reinforcing the academic environment as a source of
+distress for which certain students were not able to develop appropriate coping mechanisms.
+They reported that 33 percent of participants were repeating the year, but did not stratify
+results by performance status. While 35 percent of students displayed mild to severe anxiety
+and depression, the lack of performance stratification means that it remains unclear whether
+the above-mentioned psychological outcomes were disproportionately experienced by those
+who had previously failed.
+Blondeel et al. (2023) reported procrastination as the observable outcome of the accounting
+students’ performance goal orientation. The avoidance served as a protective mechanism; as
+one student explained, "I just think, oh no, I will not be able to do it. I will just not start with
+it, I will just not look at it". Effectively, they choose disengagement over effort to avoid
+confirming their inability. Blondeel et al. (2023) note that students delay tasks until the
+pressure becomes unavoidable, rather than engaging in the steady, mastery-oriented effort
+required for success.
+There are other, more subtle forms of helpless responses. Early mindset studies, for example,
+found that students frequently cited boredom or a sudden loss of interest as excuses for their
+failure when tasks became difficult, in an attempt to shield their self-esteem from the
+implication of inability (Dweck & Leggett, 1988). This mirrors the qualitative findings of
+Molendijk, Taplin and Brennan (2024), who found that ‘boredom’ and ‘too much
+information’ were leading causes of disengagement among accounting students.
+While this may be interpreted as observations on the quality of the teaching material,
+‘interesting’ was also the leading cause of engagement, with ‘detail’ generally cited as a
+reason for increased engagement. Thus, the same concept is interpreted both positively and
+15
+
+--- Page 16 ---
+
+negatively by different students. Through an MMS lens, the reasons for disengagement may
+not reflect the quality of the content, but rather a helpless withdrawal triggered by a perceived
+unmanageable challenge.
+There is a common saying: “It is better to have tried and failed than never to have tried at
+all”. This is not a belief endorsed by fixeders, whose response to perceived or possible failure
+may be to avoid it by removing themselves from the situation before it happens. As noted in
+early studies on mindset, protecting their self-identity makes them unlikely to cite a
+deficiency in their intelligence as the reason. Rather, they claim a loss of interest, a change of
+goals, or lay external blame (Dweck, 2006; Diener & Dweck, 1978, 1980; Dweck & Leggett,
+1988).
+4.3 Confidence
+Research on mindset suggests that fixeders experience a decline in confidence after failure
+(Dweck & Henderson, 1990) and that confidence is a moderating factor influencing whether
+a fixeder will display mastery-oriented or helpless responses to failure.
+Beatson et al. (2019)3, however, reported no decline in confidence among fixed-mindset
+accounting students after setbacks. Several design features, however, limit the study’s
+relevance for interpreting accounting students’ failure responses using the MMS.
+Confidence was assessed only once at the start of the semester, and most students passed the
+course comfortably, so there was no reassessment of confidence after results were obtained
+and no meaningful failure to trigger a decrease in confidence. Only 20 percent of the sample
+was identified as having a fixed mindset, yet conclusions about the mindset–confidence
+3 This was a first-year accounting student study, with only 18 percent of the sample intending
+on pursuing an accounting major. The study is included here since it evaluated the mindset
+beliefs of accounting students.
+16
+
+--- Page 17 ---
+
+relationship for fixeders were drawn from the full sample by using a median split to
+artificially categorise students. Given these limitations, the relationship between mindset and
+confidence for accounting students remains obscured in the current literature.
+Despite these constraints, the study’s core idea remains valuable. The study highlights an
+important research gap in accounting education: how confidence shifts in response to
+academic setbacks, particularly among at-risk students.
+4.4 Synthesis
+Few of the accounting education studies discussed here explicitly categorise their findings by
+performance. The omission leaves a critical question unanswered: are these patterns triggered
+or amplified by academic difficulty or failure?
+Despite the lack of performance data, the patterns observed in accounting education studies
+align with the MMS’s theory of helpless responses to a highly challenging study
+environment.
+The evidence challenges the assumption that pipeline attrition is merely the natural filtration
+of less capable candidates. Instead, it implies that the pipeline may be selecting for
+psychological responses rather than ability: when encountering difficulty, students with
+mastery-oriented responses adapt and progress, while those exhibiting helpless
+responses—regardless of their prior competence—utilise inappropriate study approaches or
+disengage.
+Within the MMS, effort belief dictates whether a student displays helpless responses to
+failure. If a student withdraws when tasks become demanding, it implies a maladaptive
+relationship with effort. The following section examines this construct of effort beliefs.
+17
+
+--- Page 18 ---
+
+5. Effort Beliefs
+According to mindset research, effort belief is an MMS element that dictates students’
+responses to failure. A question raised here is whether the helpless responses we see in
+accounting students may be influenced by a belief that the need to put in more effort signals
+lower ability and that effort will not change the outcome (Dweck & Sorich, 1999; Dweck &
+Leggett, 1988; Dweck & Yeager, 2019).
+This interpretation of effort belief aligns with broader motivational research. Nicholls (1984),
+Folmer, Cole, Sigal, Benbow, Satterwhite, Swygert and Ciesla (2008), and Miele, Browman
+and Vasilyeva (2020) show that students often associate high ability with low effort,
+particularly as they progress through schooling.
+While accounting education research often explores effort in terms of its volume and type,
+few studies examine the beliefs that underpin accounting students’ decisions about effort.
+A common misconception is that fixeders are effort-averse. This is an oversimplification that
+misrepresents the belief-response mechanism of mindset beliefs and will be clarified here.
+5.1 The Futility of Effort
+A growther views ability as a moving target. A person may build the ability to perform a task
+tomorrow that they are not capable of achieving today, even if it feels impossible at the time
+(Dweck & Leggett, 1988; Dweck & Yeager, 2019). Academic resources and interventions are
+effective for this student when they are struggling with their studies because they are seeking
+a bridge from ‘cannot’ to ‘can’ and believe that their effort will make a difference in their
+results, even if it does not seem positive yet.
+For the fixed-mindset student, however, ability is perceived as static. If a person is intelligent,
+they will have the ability to achieve the task fairly easily. Inability to achieve the task,
+18
+
+--- Page 19 ---
+
+therefore, signals an intelligence deficiency in that area, and since intelligence is perceived as
+static, the inability is perceived as permanent (Dweck & Leggett, 1988; Dweck & Yeager,
+2019). A person either cannot do something, or they can. There is no bridge between the two.
+For a fixeder, no academic resources, advice or comparisons to successful students and their
+habits will persuade them to invest effort if they believe that effort is futile and will not
+change their abilities. Academic resources and interventions for this student will be less
+effective when they are struggling, since their logic suggests that if they were capable of
+doing it, the struggle or additional effort would be unnecessary. This perception of futility is
+observable across accounting education research.
+Eiselen and Geyser (2004) found that at-risk accounting students—those who stood to benefit
+most—avoided academic support tools, suggesting they believed remediation would not alter
+their trajectory. Similarly, the reduced vigour reported by postgraduate students in Janse van
+Vuuren et al. (2021) suggest a depleted capacity to invest effort when the perceived return is
+low.
+This mirrors Jackling’s (2005) findings, where students reverted to surface learning in
+response to high workloads, effectively calculating that the 'cost' of deep effort outweighed
+the likelihood of success. Collectively, these patterns align with the fixed-mindset view that
+increased effort is both unappealing and unpromising
+5.2 The Distinction Between Effort and Struggle
+To understand the pipeline leak, it is crucial to distinguish between effort and struggle. When
+effort directly translates into results, and each additional ‘unit’ of studying (e.g., hours,
+summaries, classes, tutorials) increases those results, this represents effort but no struggle.
+When the effort does not translate to results, the student spends more hours, but their marks
+19
+
+--- Page 20 ---
+
+do not increase, or worse, they decrease - This represents struggle. Mindset research suggests
+that fixeders are as willing to put in effort as growthers before failures and setbacks (Hong,
+Chiu, Dweck, Lin & Wan, 1999; Cha et al., 2025). Thus, it is only when effort does not
+translate into results that fixed-mindset students begin to withhold effort, believing that effort
+will not be the differentiating factor between what they can and cannot do.
+This means we cannot interpret a student’s investment of effort as evidence of resilience or as
+a predictor of future persistence, since their effort decisions may change when they encounter
+an unmanageable challenge (Hong et al. 1999; Cha et al. 2025).
+The MMS framework suggests a distinct profile for the pipeline leak candidate: a student
+who invested effort and achieved commensurate results throughout early studies, but who
+lacks the belief structure to navigate the non-linear demands of professional qualification.
+When these students encounter the higher-level hurdles, the requirement for a different kind
+of effort—one that involves struggle and ambiguity—is interpreted through a fatalistic lens.
+Their belief system suggests that this struggle is not a part of the learning process, but a
+signal that they have reached the absolute limit of their intelligence. They believe that if they
+were truly ‘accountant material,’ it would not be this hard.
+Accounting education studies that include mindset evaluations refer to effort beliefs but do
+not explore them (Ravenscroft et al., 2012; Liu et al., 2018; Beatson et al., 2019; Farok &
+Mahmud, 2020), thus we do not have insight into these students’ beliefs about effort.
+Additionally, the lack of performance stratification in many accounting education studies
+obscures shifts in effort beliefs.
+Incorporating effort-belief measures (Blackwell et al., 2007; Sigmundsson & Haga, 2024)
+would enable future accounting education research, particularly research involving at-risk
+20
+
+--- Page 21 ---
+
+students, to distinguish between students who struggle because they lack effective strategies
+and those who struggle because they interpret effort as futile.
+While effort belief concerns students’ interpretations of effort and intelligence during
+studying, an important question the MMS asks is: What is the students’ perception of the
+purpose of their studying - their goal orientation?
+6. Goal Orientation
+The MMS draws from achievement goal theory (Ames, 1992) and suggests that goal
+orientations also dictate students’ responses to failure.
+Fixeders are generally oriented toward performance goals (Dweck & Leggett, 1988; Dweck
+& Yeager, 2019; Figure 1). Since they view intelligence as a fixed trait, their primary concern
+becomes documenting and validating their high level of it. Their goal is ‘looking smart’ or
+avoiding ‘looking dumb’.
+Growthers are generally oriented toward learning goals. Since they believe ability can be
+developed, their primary concern is increasing their competence. Their goal is to acquire new
+skills or master tasks (Dweck & Leggett, 1988; Blackwell et al., 2007; Cha et al., 2025;
+Burnette et al., 2013; Dweck & Yeager, 2019).
+Goal achievement theory is nuanced, and research acknowledges more complex relationships
+between goal types and performance (Grant & Dweck, 2003). While these complexities are
+recognised, the simpler distinction between learning and performance goals offers a valuable
+lens here for interpreting accounting students’ behaviour, particularly when performance
+pressure is high.
+At-risk accounting students in Eiselen and Geyser (2004) who dismissed prior accounting
+21
+
+--- Page 22 ---
+
+learning as a ‘waste of time’ because it had not been sufficient to pass the current level
+indicate a performance-goal lens. Performing students, on the other hand, recognised that
+prior learning was a foundation they needed to build on, reflecting a belief that the purpose
+and process of studying are cumulative.
+One accounting education paper incorporating mindset theory (Liu et al., 2018) reported that
+growthers held stronger aspirations to work for a Big Four firm after their studies. The
+authors suggest that, as growthers, they perceive intelligence to be malleable, are less afraid
+of failure, and thus are more willing to set highly challenging, competitive career goals.
+While this suggests that the study included goal orientation from the MMS, they actually
+refer to ‘goal-setting theory’ (Locke & Latham, 1990), which focuses on what the student
+wants to achieve rather than the underlying goal that directs their learning.
+6.1 Academic Evaluative Sensitivity
+If the maintenance of the appearance of competence is more important to the fixeder than
+developing competence, any situation that may be considered ‘evaluative’ will be of concern
+to them, even if they are routine academic practices not related to final grades, and even if it
+is during the ‘learning’ phase of the academic period as opposed to the ‘assessment’ phase.
+Blondeel et al. (2023) found perfectionism and a fear of being unable to complete tasks
+amongst accounting students, who prioritised immediate competence over the learning
+process, with one student quoting: "I am quite a perfectionist. I first need to review
+everything... before starting".
+Eiselen and Geyser (2004) and Gracia and Jenkins (2002) found that at-risk accounting
+students found public sharing of test results humiliating and felt intense fear and
+embarrassment when answering questions in class. These indicate heightened sensitivity to
+22
+
+--- Page 23 ---
+
+how peers might view their performance.
+These types of avoidance may be interpreted as low confidence; however, the MMS suggests
+that the desire to maintain the perception of intelligence may influence these behaviours.
+6.2 The Academic Environment Shapes Goal Orientation
+Students’ personal goal orientations may be overridden by the learning environment.
+Accounting curricula may unintentionally signal performance-oriented expectations, which
+can lead even growthers to shift toward a performance goal orientation when the environment
+is heavily focused on assessment outcomes (Jackling, 2005; Ravenscroft et al., 2012).
+This can work in reverse. Molendijk et al. (2024) reported that ‘assessment’ was rarely
+mentioned as accounting students’ reason for engagement or disengagement in the
+Experiential Learning Activities (ELAs) included in the study. Students were informed that
+the ELAs were excluded from formal assessments, suggesting that, in an environment where
+the activity’s purpose was explicitly framed as learning rather than performance, students’
+focus shifted accordingly.
+Performance goals are not universally detrimental and can sometimes lead to high immediate
+marks through ‘exam tricks’ or strategic focus on existing strengths (Cha et al., 2025). In a
+study of additional accounting academic support programmes, Ontong, De Waal, and Wentzel
+(2020) reported that 'assistance with examination technique' was the dominant student
+objective (above 45 percent), overshadowing 'course content' (approximately 30 percent) and
+'general advice on study approach to successfully complete my studies' (less than 10 percent).
+The stark contrast between the short-term ‘exam tips’ and the advice for longer-term success
+suggests performance goal orientation.
+Given the students’ positive feedback for the support programmes as a whole, their
+23
+
+--- Page 24 ---
+
+short-term objective prioritisation may be driven by the urgency and emphasis on passing
+each academic year for qualification, and is concerning because of the context of this study -
+low pass rates for exit-level exams for accounting students.
+To understand why a student would feel compelled to prioritise validation over learning, even
+when it impedes their progress, we must look to the core assumption that drives the entire
+psychological engine. The MMS suggests that a student's effort belief and goal orientation are
+predicted by their implicit belief of intelligence.
+7. Implicit Beliefs (Fixed and Growth Mindsets)
+We have traced the pipeline leak from the observable outcome (helpless response) through
+the elements that dictate that response (effort beliefs and goal orientation). We now arrive at
+the foundation of the MMS: the Implicit Belief. This core belief—whether intelligence is a
+fixed trait or a malleable quality—sets the entire meaning system in motion (Dweck &
+Leggett, 1988; Dweck & Yeager, 2019; Cha et al., 2025; Burnette et al., 2013).
+Given the paper's focus on the helpless responses driving the pipeline leak, the following
+discussion centres on the specific belief system that the MMS identifies as the precursor to
+those responses: the fixed mindset.
+7.1 Mindset in Accounting Education Research
+As noted in the methodology, empirical research explicitly measuring implicit beliefs in
+accounting is limited. The current literature suggests that accounting student populations
+exhibit exceptionally high growth mindset ratios, ranging from 72 percent to 80 percent
+(Ravenscroft et al., 2012; Liu et al., 2018; Beatson et al., 2019; Farok & Mahmud, 2020).
+These figures are significantly higher than those in broader psychological research, which
+typically finds more balanced distributions (Blackwell et al., 2007; Claro, Paunesku, &
+24
+
+--- Page 25 ---
+
+Dweck, 2016; Mofield & Parker Peters, 2018).
+If taken at face value, the high growth-mindset ratios would refute the suggestion that at-risk
+accounting students may be likely to respond helplessly to challenges. It may also explain
+why the field hasn't investigated mindset theory further.
+Along with the inflated ratios, the impact of these reported mindsets on academic
+performance is inconsistent. While Liu et al. (2018) and Farok and Mahmud (2020) found a
+positive relationship, Beatson et al. (2019) found no correlation, and Ravenscroft et al. (2012)
+reported mixed results.
+This section argues that these inflated ratios and inconsistent results are likely not a reflection
+of accounting students' true beliefs, but a consequence of sample composition and the
+absence of failure.
+7.2 The Importance of Failure as a Trigger
+For early mindset studies, students were given tasks that were challenging yet matched their
+ability and competence (manageable challenges) (Dweck & Leggett, 1988; Diener & Dweck,
+1978, 1980; Hong et al., 1999). In response to these challenges, most students displayed
+growth-mindset responses. Researchers then provided them with tasks designed to be
+impossible (unmanageable challenges), and, as illustrated in Figure 2, these challenges
+triggered a shift from growth- to fixed-mindset narratives for some students. I refer to ‘failure
+triggers’ to represent the unmanageable challenge that causes the shift from growther to
+fixeder for some students.
+Failure triggers may be real or perceived, may represent actual failure in assessments, or may
+be perceived setbacks during the academic period, such as struggles or overwhelming
+challenges the student considers impossible to overcome.
+25
+
+--- Page 26 ---
+
+This is important for the pipeline leak paradox, which explains why students can successfully
+navigate earlier levels but then struggle later on. The difference between successfully
+navigated challenges and those at the exit level may lie in whether the student sees them as
+manageable or unmanageable (Figure 2; Table 2).
+Without a failure trigger, mindset research suggests that a fixeder may appear
+indistinguishable from a growther (Dweck & Leggett, 1988; Diener & Dweck, 1978, 1980;
+Hong et al., 1999). They are performing well, receiving validation, and thus have no reason to
+question their ability or articulate a belief that it is limited. They may encounter challenges,
+but they believe they are in control of the solution and can overcome them.
+Figure 2: Manageable and Unmanageable Challenges (Failure Triggers)
+A visual representation of the level of challenge that triggers a mindset belief divergence
+A critique of the four primary accounting mindset studies reveals that they were conducted
+almost exclusively among successful populations, thereby obscuring this distinction.
+By sampling students who are comfortably passing, these studies capture untested optimism
+rather than stress-tested beliefs. Since they have not experienced the failure required to
+trigger the distinction, they report growth-aligned beliefs that may dissolve under the pressure
+of the professional exit-level exams.
+26
+
+--- Page 27 ---
+
+This phenomenon is documented in other technical, high-difficulty domains like STEM,
+where longitudinal studies show that these optimistic endorsements often decline
+significantly once students encounter genuine academic struggle4, suggesting that the mindset
+evaluation developed in earlier mindset research may be less relevant to specific domains,
+especially those with high-stakes exams.5
+7.3 Fixeder Profile in Accounting Education
+Mindset research suggests that high-achieving students are more likely to receive praise for
+their results rather than their processes, a pattern linked to the development of fixed beliefs,
+especially at school levels where learning beliefs are formed (Mueller & Dweck, 1988;
+Kamins & Dweck, 1999). Given that entry into accounting programmes typically requires
+strong academic performance, accounting students are likely to fit this profile. Unless
+feedback is consciously structured to value effort, the dominant message students absorb is
+that success—defined by ease, speed, and correctness—is what counts (Dweck & Leggett,
+1988; Dweck & Yeager, 2019; Cha et al., 2025).
+In the absence of mindset studies in accounting education that specifically include at-risk
+accounting students, we can instead look to accounting education literature for parallels
+between students’ reported narratives and the traits mindset theory associates with fixed
+beliefs: Identity-based beliefs and the belief that intelligence and performance are outside of
+their control (Dweck & Yeager, 2019; Dweck & Leggett, 1988; Diener & Dweck, 1978,
+1980; Burnette et al., 2013; Cha et al., 2025).
+5 Stump, Husman, Chung, & Done 2009; Campbell 2023; Limeri, Carter, Lyra, Martin,
+Mastronardo, et al., 2023
+4 Little & Humphrey 2019; Limeri, Carter, Choe, Harper, Martin, et al., 2020; Malespina,
+Schunn, & Singh, 2022
+27
+
+--- Page 28 ---
+
+7.3.1 Identity-Based Beliefs
+In fixed-mindset frameworks, beliefs about intelligence are often entwined with personal
+identity. A growther’s response to failure is “I failed”, while a fixeder’s response is “I am a
+failure” (Dweck, 2006; Hong et al., 1999).
+Fixed-mindset narratives are evident in Fisher et al.’s (2024) study on burnout among
+accounting majors, with students commonly endorsing statements such as “If I fail at school,
+I am a failure as a person.” Failing accounting students in Gracia and Jenkins’s (2002) study
+described their performance in trait-like, stable terms (“I have a bad memory”; “I don’t
+deserve to be on the course”; “I always struggle to concentrate”).
+Table 2: The Failure Trigger and the Shift to Survival Strategies
+This example illustrates the difference between manageable and unmanageable challenges
+(This is oversimplified, intended to illustrate how a student may successfully navigate prior
+academic challenges and struggle at higher qualification levels.)
+Stage 1: Manageable Challenge (Prior Academic Success)
+The Challenge Fixeder
+Narrative
+Behavioural Response Outcome
+High Workload &
+Technical
+Difficulty.
+Effort generally
+yields proportional
+results (more hours
+= higher grades).
+"I am smart
+because I get good
+grades. If I work
+hard, I can prove
+my intelligence." -
+Effort is viewed as
+a tool to validate
+ability.
+Appropriate Effort: High
+engagement.
+Student increases study
+hours and attends
+classes. Uses strategies
+that worked previously
+(summaries, repetition).
+(Effort, but no ‘struggle’)
+Validation: Success
+confirms the
+identity: "I am an
+accountant."
+Confidence remains
+intact because the
+‘cost’ of effort pays
+off.
+(Indistinguishable
+from a growther)
+Stage 2: Failure Trigger (The "Unmanageable" Challenge)
+28
+
+--- Page 29 ---
+
+Non-Linear /
+Professional Skill
+Shift. Complexity
+increases. Effort no
+longer yields
+proportional
+results. The student
+studies hard, but
+grades stagnate or
+drop.
+"I am working
+hard, but I am not
+getting it. If I were
+smart, it would not
+be such a
+struggle."; "This
+difficulty means I
+have reached the
+limit of my
+potential."
+Anxiety spikes. The
+student questions their
+‘fit’ for the qualification.
+The ‘cost’ of the effort
+now outweighs the
+perceived likelihood of
+success.
+(This represents
+‘struggle’)
+Interpretation of
+Struggle: Struggle is
+interpreted as a lack
+of talent rather than
+a learning curve.
+The student feels
+‘disempowered’.
+Stage 3: Helpless Response (Post-Trigger Adaptation)
+High-Stakes
+Assessment
+Pressure. The need
+to pass remains,
+but the belief in
+learning is gone.
+"I just need to
+survive this exam.
+I will memorise
+the solution
+because I cannot
+understand the
+principle.""I will
+focus only on the
+subjects I can pass
+and ignore the
+ones I cannot."
+Survival Effort
+(Misaligned): Shift to
+‘outcome-oriented
+strategies’ (test-taking
+tricks, rote
+memorisation).OR
+Avoidance:
+Procrastination due to
+task aversiveness ("I will
+not start because I cannot
+do it").
+Maladaptive
+Survival: The
+student may pass via
+surface learning but
+lacks mastery.
+Alternatively, high
+cynicism develops,
+leading to the
+intention to leave.
+At-risk students in Eiselen and Geyser’s (2004) mixed-methods study suggested that ‘natural
+talent’ was responsible for their peers’ success, attributing their own lack of achievement to a
+lack of talent. Performing students mentioned only effort and hard work when asked what led
+to passing the course.
+Within the MMS, this form of maladaptive perfectionism represents a fixed-mindset belief
+structure in which success confirms personal adequacy, while mistakes threaten identity
+(Dweck & Leggett, 1988; Burnette et al., 2013). Such beliefs turn academic performance into
+a test of who the student is, not simply what they know (Kamins & Dweck, 1999). This
+heightens evaluative pressure and helps explain the prevalence of anxiety and disengagement
+observed in accounting students when faced with uncertainty or failure.
+29
+
+--- Page 30 ---
+
+7.3.2 Locus of Control
+Fixeders equate success with getting things right quickly and smoothly. When challenges
+arise, they may interpret them not as opportunities to grow but as signals that they have
+reached their intellectual limit (Dweck & Leggett, 1988; Dweck, 2006; Dweck & Yeager,
+2019; Cha et al., 2025). Thus. fixeders believe performance is outside their control (whether
+due to internal, unchangeable traits or external circumstances), while growthers see it as
+changeable through effort.
+Evidence of this attributional pattern appears in accounting education research, with Van den
+Berg and Rothmann (2024) describing accounting students’ lack of agency as
+‘disempowered’. The negative assessments of teaching quality in Jackling (2005) and Natoli
+et al.’s (2020) studies confirmed the authors’ concerns that students’ sense of responsibility
+for learning is externalised. Student survey responses emphasised lecturers’ responsibility to
+motivate, explain clearly, provide feedback, and make classes interesting, suggesting that
+students perceive their performance is determined by external factors.
+Similarly, in both Gracia and Jenkins’ (2002) and Eiselen and Geyser’s (2004) studies, failing
+students attributed poor performance to factors outside their control, such as teaching quality,
+workload, and institutional conditions, suggesting that the university improve these elements.
+Khan et al. (2023) drew a specific mindset analogy to accounting dropouts, suggesting that
+students withdraw from professional qualifications (ACCA and Chartered Accountants (CA))
+due to actual or pre-emptive failure, driven by the fixed-mindset belief that circumstances are
+beyond their influence.
+These findings and student narratives in the above studies align with fixed-mindset
+narratives. Further research, perhaps incorporating more recent scales used in STEM mindset
+research (Limeri, 2025), may yield valuable insights.
+30
+
+--- Page 31 ---
+
+7. Conclusion
+Given the paradox of accounting students who, despite years of rigorous preparation,
+encounter difficulties at higher levels of their qualification journey, this paper draws on
+mindset research to provide a framework for understanding these struggles.
+By applying the Mindset Meaning System (MMS) as a reverse-diagnostic lens, this analysis
+suggests that this attrition is not indicative of knowledge or ability deficits, but rather a result
+of helpless responses to perceived unmanageable challenges encountered at higher levels of
+the qualification process. Reversing the traditional MMS sequence reveals a coherent
+psychological trajectory for the at-risk accounting student.
+The MMS suggests that implicit beliefs predict students’ goal orientation and effort beliefs,
+which in turn dictate their responses to setbacks and failure. Given the types and levels of
+challenges at higher levels, these responses are reasonably expected to manifest more, as
+increased pressure would exacerbate them.
+The MMS is not a separate cause of student failure, nor does it 'create' disengagement or
+anxiety in a vacuum. Rather, it serves as a foundational logic that makes these
+concepts—such as disengagement or help-seeking—more or less likely, depending on the
+student’s mindset. It suggests that for some students, a helpless response is not a lack of will,
+but a logical conclusion drawn from a belief that effort has reached its limit.
+Helpless responses are not a distinct cognitive-psychological area; they merely describe
+various responses that are not appropriate for addressing the challenges faced, and are
+detrimental to students’ well-being and potential for success.
+What I have illustrated is that, if current accounting research is viewed through the lens of the
+MMS, we may be able to understand the types of people, beliefs, and behaviours that underlie
+31
+
+--- Page 32 ---
+
+some of the attrition we find at higher levels of the accounting qualification, and why
+traditional study advice may not be effective.
+By reinterpreting existing accounting research through this lens, this paper demonstrates that
+fragmented findings—such as surface learning or externalised responsibility—may actually
+be symptoms of a single, interconnected meaning system.
+Reframing this literature through the MMS highlights a critical gap: current research often
+captures 'untested optimism' by sampling successful students. It would be valuable to explore
+the 'stress-tested' beliefs of at-risk learners in future accounting research. Without including
+those who have experienced genuine failure, we cannot determine if the attrition at the exit
+level is a matter of technical skill or a collapse of the student's meaning system under
+pressure.
+Ultimately, the MMS does not replace existing accounting education frameworks; it
+strengthens them. It connects fragmented findings, identifies blind spots in research design,
+and provides a theoretically grounded pathway to support the students who are most
+committed to the profession yet most vulnerable to its final challenges and further research
+into each of these elements, as well as the MMS as a whole, may provide valuable insights
+for educators.
+8. Limitations
+This paper is a conceptual analysis rather than a causal study, and its primary limitation stems
+from the scarcity of mindset-specific literature in accounting. Consequently, the
+reinterpretation of non-mindset studies (Methodology - Phase 2) should be viewed as
+theoretically suggestive. While grounded in the MMS and clear behavioural parallels, these
+findings remain inferences.
+32
+
+--- Page 33 ---
+
+Furthermore, the lack of binary performance stratification in existing accounting research
+(e.g., pass or fail) limits the precision with which helpless versus mastery-oriented patterns
+can be distinguished among at-risk cohorts.
+Finally, the reliance on qualitative accounts necessitates including studies of varying ages and
+journal rankings, reflecting the limited availability of narrative-rich data in the field rather
+than a methodological preference.
+Bibliography
+American Institute of Certified Public Accountants (AICPA & CIMA) (17 October 2025).
+Learn more about CPA Exam scoring and pass rates
+https://www.aicpa-cima.com/resources/article/learn-more-about-cpa-exam-scoring-and-pass-r
+ates (Accessed 30 November 2025)
+Association of Chartered Certified Accountants (ACCA) (2025). Pass Rates
+https://www.accaglobal.com/gb/en/student/exam-support-resources/pass-rates-for-acca-qualif
+ications.html (Accessed 3 November 2025)
+AlBassam, S., AlAwadi, A., & Alrashed, W. (2019). Determinants of Accounting Students’
+Competency: Kuwait University. International Journal of Business Administration, 10(4), 30.
+https://doi.org/10.5430/ijba.v10n4p30
+Ames, C. (1992). Classrooms: Goals, structures, and student motivation. Journal of
+Educational Psychology, 84(3), 261–271. https://doi.org/10.1037/0022-0663.84.3.261
+Baer A. R., Grant H., Dweck C. S. (2005). Personal Goals, Dysphoria, & Coping Strategies.
+Columbia: Columbia University. Unpublished manuscript.
+Beatson, N. J., Berg, D. A. G., & Smith, J. K. (2019). The Sheldon effect: Fixed mindset does
+not always mean fragile confidence. Accounting Education, 28(5), 532–552.
+https://doi.org/10.1080/09639284.2019.1661858
+33
+
+--- Page 34 ---
+
+Blackwell, L. S., Dweck, C. S., & Trzesniewski, K. H. (2007). Implicit Theories of
+Intelligence Predict Achievement across an Adolescent Transition: A Longitudinal Study and
+an Intervention. Child Development, 78(1), 246–263.
+Blondeel, E., Everaert, P. C., & Opdecam, E. (2023). Why Do Accounting Students
+Procrastinate? A Qualitative Analysis Using ChatGPT. SSRN Electronic Journal.
+https://doi.org/10.2139/ssrn.4632334
+Burnette, J. L., O’Boyle, E. H., VanEpps, E. M., Pollack, J. M., & Finkel, E. J. (2013).
+Mind-sets matter: A meta-analytic review of implicit theories and self-regulation.
+Psychological Bulletin, 139(3), 655–701. https://doi.org/10.1037/a0029531
+Campbell, A. L. (2023). Exploring growth mindset experiences in university students.
+International Journal of Mathematical Education in Science and Technology, 54(9),
+1888–1906. https://doi.org/10.1080/0020739X.2023.2255212
+Cha, W., Kim, S., Lee, H. J., & Anderman, E. M. (2025). Exploration of mindset meaning
+system in an elite competitive schooling context using a mixed-methods approach.
+Contemporary Educational Psychology, 83, 102415.
+https://doi.org/10.1016/j.cedpsych.2025.102415
+Claro, S., Paunesku, D., & Dweck, C. S. (2016). Growth mindset tempers the effects of
+poverty on academic achievement. Proceedings of the National Academy of Sciences,
+113(31), 8664–8668. https://doi.org/10.1073/pnas.1608207113
+Diener, C. I., & Dweck, C. S. (1978). An Analysis of Learned Helplessness: Continuous
+Changes in Performance, Strategy, and Achievement Cognitions Following Failure. Journal
+of Personality and Social Psychology, 36, 451–462.
+Diener, C. I., & Dweck, C. S. (1980). An Analysis of Learned Helplessness: II. The
+Processing of Success. Journal of Personality and Social Psychology, 39, 940–952.
+Drewery, D. W., Sproule, R., & Pretti, T. J. (2020). Lifelong learning mindset and career
+34
+
+--- Page 35 ---
+
+success: Evidence from the field of accounting and finance. Higher Education, Skills and
+Work-Based Learning, 10(3), 567–580. https://doi.org/10.1108/HESWBL-03-2019-0041
+Dweck, C. S. (2006). Mindset: The new psychology of success. Random House.
+https://www.amazon.com/Mindset-Psychology-Carol-S-Dweck/dp/0345472322
+Dweck, C. S., & Henderson, V. (1990). Achievement and motivation in adolescence: A new
+model and its empirical test. In At the threshold—The developing adolescent.
+Dweck, C. S., & Leggett, E. L. (1988). A Social-Cognitive Approach to Motivation and
+Personality. Psychological Review.
+Dweck, C. S., & Reppucci, N. D. (1973). Learned helplessness and reinforcement
+responsibility in children. Journal of Personality and Social Psychology, 25(1), 109–116.
+https://doi.org/10.1037/h0034248
+Dweck, C. S., & Sorich, L. A. (1999). Mastery-oriented thinking. In Coping: The psychology
+of what works (pp. 232–251). Oxford University Press.
+Dweck, C. S., & Yeager, D. S. (2019). Mindsets: A View From Two Eras. Perspectives on
+Psychological Science, 14(3), 481–496. https://doi.org/10.1177/1745691618804166
+Eiselen, R., & Geyser, H. (2004). Factors distinguishing between achievers and at risk
+students: A qualitative and quantitative synthesis. South African Journal of Higher Education,
+17(2), 118–130. https://doi.org/10.4314/sajhe.v17i2.25305
+Farok, N. H. M., & Mahmud, N. (2020). Mindset and grit as the predictor of academic
+success. Jurnal Kemanusiaan, 18(2), 63–70.
+Fisher, D. G., Hageman, A. M., & West, A. N. (2024). Academic burnout among accounting
+majors: The roles of self-compassion, test anxiety, and maladaptive perfectionism.
+Accounting Education, 33(6), 791–815. https://doi.org/10.1080/09639284.2023.2257672
+Folmer, A. S., Cole, D. A., Sigal, A. B., Benbow, L. D., Satterwhite, L. F., Swygert, K. E., &
+Ciesla, J. A. (2008). Age-related changes in children’s understanding of effort and ability:
+35
+
+--- Page 36 ---
+
+Implications for attribution theory and motivation. Journal of Experimental Child
+Psychology, 99(2), 114–134. https://doi.org/10.1016/j.jecp.2007.09.003
+Gracia, L., & Jenkins, E. (2002). An exploration of student failure on an undergraduate
+accounting programme of study. Accounting Education, 11(1), 93–107.
+https://doi.org/10.1080/09639280210153290
+Grant, H., & Dweck, C. S. (2003). Clarifying Achievement Goals and Their Impact. Journal
+of Personality and Social Psychology, 85(3), 541–553.
+https://doi.org/10.1037/0022-3514.85.3.541
+Hong, Y., Chiu, C., Dweck, C. S., Lin, D. M.-S., & Wan, W. (1999). Implicit theories,
+attributions, and coping: A meaning system approach. Journal of Personality and Social
+Psychology, 77(3), 588–599. https://doi.org/10.1037/0022-3514.77.3.588
+Jackling, B. (2005). Perceptions of the learning context and learning approaches: Implications
+for quality learning outcomes in accounting. Accounting Education, 14(3), 271–291.
+https://doi.org/10.1080/06939280500036364
+Janse Van Vuuren, C., Bodenstein, K., & Oberholzer, M. (2021). Exploring the psychological
+well-being of postgraduate accounting students at a South African university. South African
+Journal of Accounting Research, 35(3), 219–238.
+https://doi.org/10.1080/10291954.2021.1887440
+Kamins, M. L., and Dweck, C. S. (1999). Person versus process praise and criticism:
+Implications for contingent self-worth and coping. Developmental Psychology, 35, 835–847.
+doi:10.1037/0012-1649.35.3.835
+Khan, A., Mehmood, H., & Huda, S. (2023). Grit and Academic Burnout among
+Accountancy Students in Pakistan: Mediating Role of Academic Resilience. Journal of
+Professional & Applied Psychology, 4(2), 200–212. https://doi.org/10.52053/jpap.v4i2.158
+Limeri, L. B., Carter, N. T., Choe, J., Harper, H. G., Martin, H. R., Benton, A., & Dolan, E. L.
+36
+
+--- Page 37 ---
+
+(2020). Growing a growth mindset: Characterizing how and why undergraduate students’
+mindsets change. International Journal of STEM Education, 7(1), 35.
+https://doi.org/10.1186/s40594-020-00227-2
+Limeri, L. B., Carter, N. T., Lyra, F., Martin, J., Mastronardo, H., Patel, J., & Dolan, E. L.
+(2023). Undergraduate Lay Theories of Abilities: Mindset, universality, and brilliance beliefs
+uniquely predict undergraduate educational outcomes. CBE—Life Sciences Education, 22(4),
+ar40. https://doi.org/10.1187/cbe.22-12-0250
+Limeri, L. B. (2025). Intelligence in Context: A Context-specific Mindset Measure Better
+Predicts Outcomes for Science and Math Undergraduates. CBE—Life Sciences Education,
+24(1), ar19. https://doi.org/10.1187/cbe.24-09-0229
+Little, A. J., Humphrey, B., Green, A., Nair, A., & Sawtelle, V. (2019). Exploring mindset’s
+applicability to students’ experiences with challenge in transformed college physics courses.
+Physical Review Physics Education Research, 15(1), 010127.
+https://doi.org/10.1103/PhysRevPhysEducRes.15.010127
+Liu, Y., Robinson, M. N., & Xu, H. (2018). The Effect of Mindset on Students’ Desire to
+work for Big Four Accounting Firms and on Academic Performance. E-Journal of Business
+Education & Scholarship of Teaching, 12(2).
+Locke, E. A., & Latham, G. P. (1990b). Work motivation: The high performance cycle. In U.
+Kleinbeck, H. Quast, H. Thierry, & H. Hacker (Eds.), Work motivation (pp. 3-25). Hillsdale,
+NJ: L. Erlbau
+Macnamara, B. N., & Burgoyne, A. P. (2023). Do growth mindset interventions impact
+students’ academic achievement? A systematic review and meta-analysis with
+recommendations for best practices. Psychological Bulletin, 149((3-4)), 133–173.
+https://doi.org/10.1037/bul0000352
+Malespina, A., Schunn, C. D., & Singh, C. (2022). Whose ability and growth matter? Gender,
+37
+
+--- Page 38 ---
+
+mindset and performance in physics. International Journal of STEM Education, 9(1), 28.
+https://doi.org/10.1186/s40594-022-00342-2
+Mashishi, K., & Rabin, E. (2000). A study of the approaches to learning, engagement with
+the learning context and conceptions of learning of a group of fourth year accounting
+students. South African Journal of Accounting Research, 14(2), 1–19.
+https://doi.org/10.1080/10291954.2000.11461398
+Miele, D. B., Browman, A. S., & Vasilyeva, M. (2020). Individual differences in students’
+effort source beliefs predict their judgments of ability. Motivation Science, 6(2), 110–132
+Molendijk, L., Taplin, R. H., & Brennan, A. J. (2024). Empirical Evidence of Factors to
+Improve Student Engagement from Experiential Learning Activities. Issues in Accounting
+Education, 40(2), 67–82. https://doi.org/10.2308/ISSUES-2023-100
+Mofield, E. L., & Parker Peters, M. (2018). Mindset Misconception? Comparing Mindsets,
+Perfectionism, and Attitudes of Achievement in Gifted, Advanced, and Typical Students.
+Gifted Child Quarterly, 62(4), 327–349. https://doi.org/10.1177/0016986218758440
+Mueller, C. M., & Dweck, C. S. (1998). Praise for intelligence can undermine children’s
+motivation and performance. Journal of Personality and Social Psychology, 75(1), 33–52.
+https://doi.org/10.1037/0022-3514.75.1.33
+Natoli, R., Wei, Z., & Jackling, B. (2020). Teaching IFRS: Evidence from course experience
+and approaches to learning in China. Accounting Research Journal, 33(1), 234–251.
+https://doi.org/10.1108/ARJ-09-2018-0142
+Nicholls, J. G. (1984). Achievement motivation: Conceptions of ability, subjective
+experience, task choice, and performance. Psychological Review, 91(3), 328–346.
+https://doi.org/10.1037/0033-295X.91.3.328
+Ontong, J. M., De Waal, T., & Wentzel, W. (2020). How accounting students within the
+Thuthuka Bursary Fund perceive academic support offered at one South African university.
+38
+
+--- Page 39 ---
+
+South African Journal of Higher Education, 34(1). https://doi.org/10.20853/34-1-3722
+Ravenscroft, S. P., Waymire, T. R., & West, T. D. (2012). Accounting students’
+metacognition: The association of performance, calibration error, and mindset. Issues in
+Accounting Education, 27(3), 707–732. https://doi.org/10.2308/iace-50148
+Sigmundsson, H., & Haga, M. (2024). Growth Mindset Scale: Aspects of reliability and
+validity of a new 8-item scale assessing growth mindset. New Ideas in Psychology, 75,
+101111. https://doi.org/10.1016/j.newideapsych.2024.101111
+Sisk, V. F., Burgoyne, A. P., Sun, J., Butler, J. L., & Macnamara, B. N. (2018). To What
+Extent and Under Which Circumstances Are Growth Mind-Sets Important to Academic
+Achievement? Two Meta-Analyses. Psychological Science, 29(4), 549–571.
+https://doi.org/10.1177/0956797617739704
+Smith, K. J., Haight, T. D., Emerson, D. J., Mauldin, S., & Wood, B. G. (2020). Resilience as
+a coping strategy for reducing departure intentions of accounting students. Accounting
+Education, 29(1), 77–108. https://doi.org/10.1080/09639284.2019.1700140
+Stump, G., Husman, J., Chung, W.-T., & Done, A. (2009). Student beliefs about intelligence:
+Relationship to learning. 2009 39th IEEE Frontiers in Education Conference, 1–6.
+https://doi.org/10.1109/FIE.2009.5350426
+Van Den Berg, E., & Rothmann, S. (2024). Capabilities, well-being and intention to leave of
+financial accounting students. SA Journal of Industrial Psychology, 50.
+https://doi.org/10.4102/sajip.v50i0.2203
+Vimeo Link (October 2025) Literature Search: Mindset Literature in Accounting Education.
+https://player.vimeo.com/video/1130162063
+Williams, C. A., & Lewis, L. (2021). Mindsets in health professions education: A scoping
+review. Nurse Education Today, 100, 104863. https://doi.org/10.1016/j.nedt.2021.104863
+39
+
+--- Page 40 ---
+
+Annexures
+Annexure 1: Detailed Mapping of Mindset-Specific Accounting Education Findings to the MMS
+This table maps the mindset-specific accounting education studies to the MMS elements including details of the studies’ alignment to the MMS
+elements.
+Study & Level
+of Studies
+Implicit Beliefs
+(Beliefs about Intelligence)
+(Section 7)
+Goal Orientation
+(Performance vs. Learning
+Goals)
+(Section 6)
+Effort Beliefs
+(Effort vs Struggle)
+(Section 5)
+Response to Failure
+(Helpless vs. Mastery)
+(Section 4)
+Ravenscroft et
+al. (2012)
+Senior
+undergraduate
+and
+graduate-level
+accounting
+students
+Measured mindset; 72%
+Growth-mindset ratio.
+Correlation to
+Performance:
+Mixed/Inconsistent. Mindset
+was significantly associated
+with performance on only
+one of three exams (Exam 2)
+and with improvement from
+Exam 1 to Exam 2
+(Sample skewed to
+performers)
+Environment shapes Goals:
+Observed that the environment
+(CPA exam requirements)
+shapes goals towards
+performance (grades).
+- Inappropriate Learning
+Strategies: Fixed mindset did not
+consistently predict academic
+improvement
+
+--- Page 41 ---
+
+Liu et al.
+(2018)
+Junior (3rd
+year)
+undergraduate
+accounting
+students
+Measured mindset;
+Estimated >75%
+Growth-mindset ratio.
+(Mean score was 2.99 on a
+4-point scale, significantly
+above the 2.5 midpoint).
+Correlation to
+Performance: Significant
+positive correlation.
+Growthers performed
+significantly better on the
+final exam than Fixeders.
+(Sample skewed to
+performers)
+Goal-setting theory, not goal
+orientation theory - Investigated
+students' desire to work for a
+Big Four firm as a specific goal.
+No indication of effort belief -
+Study controlled for effort
+(hours spent),
+Inappropriate Learning
+Strategies: Growthers who
+prioritised Big Four goals
+performed worse on final exams
+Beatson et al.
+(2019)
+First-year
+students
+(Introductory
+course; mixed
+majors, only
+18% intended
+to major in
+accounting)
+Measured mindset; 80%
+Growth-mindset ratio.
+Correlation to
+Performance: No
+significant correlation.
+Mindset was not a
+significant predictor of the
+final grade in the course;
+Fixed mindset students with
+high self-efficacy performed
+well.
+(Sample skewed to
+performers)
+- - Confidence: Did not decrease
+after tests (Confidence was only
+measured once, no second point to
+compare for increase or decrease)
+
+--- Page 42 ---
+
+Farok &
+Mahmud
+(2020)
+Undergraduate
+accounting
+students (Year
+level not
+specified)
+Measured mindset; 79.6%
+Growth-mindset ratio.
+Correlation to
+Performance: Significant
+positive correlation. Growth
+mindset was a significant
+positive predictor of
+academic success (CGPA)
+(Sample skewed to
+performers)
+- Effort vs Struggle: 75%
+displayed ‘moderate levels’ of
+grit; Appears to be before
+failure trigger
+Inappropriate Learning
+Strategies: No correlation
+between grit and performance;
+effort did not translate to results
+
+--- Page 43 ---
+
+Annexure 2: Detailed Mapping of non-Mindset Accounting Education Findings to the MMS
+This table maps the non-mindset accounting education studies to the MMS elements including details of the studies’ alignment to the MMS
+elements.
+Study &
+Level of Studies
+Implicit Beliefs
+(Beliefs about
+Intelligence)
+(Section 7)
+Goal Orientation
+(Performance vs. Learning
+Goals)
+(Section 6)
+Effort Beliefs
+(Effort vs Struggle)
+(Section 5)
+Response to Failure
+(Helpless vs. Mastery)
+(Section 4)
+AlBassam et al.
+(2019)
+Undergraduate
+accounting
+students (All
+years of study)
+- - - Inappropriate learning strategies:
+Students demonstrated strong
+dependence on lecturer-led delivery
+(‘spoon-feeding’) and weak
+self-directed study skills.
+Blondeel et al.,
+(2023)
+First-year
+undergraduate
+accounting
+students
+(Sample skewed
+to performers;
+Qualitative data
+- Evaluative Sensitivity:
+Perfectionism ("I first need to
+review everything... before
+starting"); prioritised immediate
+competence over learning; fear
+of failure linked to performance
+goals.
+- Disengagement: Procrastination
+identified as an avoidance mechanism:
+"I will just not start with it... I will not
+be able to do it".
+
+--- Page 44 ---
+
+can be mapped
+to performance)
+Eiselen and
+Geyser (2004)
+First-year
+accounting
+students
+(Split between
+‘achievers’ and
+‘at-risk’
+students)
+Identity-based beliefs:
+At-risk students attributed
+peers' success to ‘natural
+talent’ (Fixed belief)
+Locus of control: At-risk
+students blamed external
+factors (lecturers) for
+their own failure.
+Help-seeking avoidance;
+Evaluative Sensitivity: At-risk
+students avoided academic
+support tools and found public
+sharing of test results
+humiliating; Dismissed prior
+learning as a ‘waste of time’ as
+it did not immediately translate
+to current academic success.
+Misaligned effort: At-risk
+students reported lower
+discipline and higher
+procrastination (Delay
+Avoidance scores significantly
+lower); Avoided engaging with
+academic support tools.
+Inappropriate learning strategies:
+Failed to adapt study methods.
+Fisher et al.
+(2024)
+Junior (72%)
+and Senior
+(24%)
+undergraduate
+accounting
+students
+(Sample skewed
+to performers)
+Identity-based beliefs:
+‘Maladaptive
+perfectionism’ linked to
+fixed beliefs; students
+endorsed "If I fail at
+school, I am a failure as a
+person".
+- - Disengagement: High levels of
+cognitive test anxiety (‘freezing up’)
+and withdrawal were predicted by
+maladaptive perfectionism.
+
+--- Page 45 ---
+
+Gracia and
+Jenkins (2002)
+Second and
+final-year
+undergraduate
+accounting
+students
+(Split between
+‘pass’ and ‘fail’
+students)
+Identity-based beliefs;
+Students described failure
+in stable terms ("I have a
+bad memory", "I don't
+deserve to be on the
+course")
+Locus of control: Failed
+students were reluctant to
+take control of their
+learning, blaming the
+quality of teaching and
+workload.
+Help-seeking avoidance;
+Evaluative Sensitivity:
+Reluctance to participate in class
+due to fear of being "wrong" and
+embarrassment.
+Misaligned effort: Passive
+learning approach; expectation
+that tutors should ‘provide’
+learning rather than developing
+it through effort.
+Inappropriate learning strategies:
+Inability to manage time or adopt
+appropriate study methods; "I am no
+good at organising myself".
+Jackling (2005)
+Second-year
+undergraduate
+accounting
+students
+Locus of control: High
+dissatisfaction with
+teaching
+quality/workloads,
+externalising
+responsibility for
+learning.
+Environment shapes goals:
+Students perceived assessment
+tasks as requiring rote
+memorisation and adopted
+surface strategies to meet
+demands.
+Misaligned effort: Students
+calculated the 'cost' of deep
+effort outweighed the return,
+reverting to surface learning.
+Inappropriate learning strategies:
+Reliance on surface strategies
+(memorisation) led to failure in
+answering conceptual questions.
+
+--- Page 46 ---
+
+Janse van
+Vuuren et al.
+(2021)
+Postgraduate
+accounting
+students
+(33% were
+repeat students;
+No other
+performance
+data)
+- - Misaligned effort: Reported
+low levels of ‘vigour’
+(willingness to invest effort)
+and absorption; diminished
+capacity to invest effort when
+return is low.
+Disengagement: High levels of anxiety
+and depression (35% displayed ‘mild to
+severe anxiety’); psychological
+withdrawal from studies; 91% of
+students receiving psychological
+treatment cited studies as a source of
+distress.
+Khan et al.
+(2023)
+Undergraduate /
+Professional
+stream students
+(studying
+ACCA/CA)
+Identity-based beliefs:
+Suggests students
+withdraw due to 'actual or
+pre-emptive failure'
+driven by entity theorist
+beliefs that circumstances
+are beyond influence.
+- - Disengagement: Grit and resilience
+were negative predictors of academic
+burnout; low resilience was linked to
+withdrawal.
+
+--- Page 47 ---
+
+Mashishi and
+Rabin (2000)
+Fourth-year
+accounting
+students
+(All students
+passed prior
+three years on
+first attempt; No
+data on pass
+rates)
+- - - Inappropriate learning strategies:
+Fourth-year students persisted with
+surface learning strategies despite the
+lecturer's expectations for deep
+learning; all students had passed the
+prior three years on their first attempt.
+Molendijk et al
+(2024)
+Undergraduate
+students
+(Courses
+covered all three
+years of the
+degree)
+(No performance
+data)
+- Environment shapes goals:
+'Assessment' was rarely
+mentioned for
+engagement/disengagement in
+non-assessed activities,
+suggesting goals shift when
+assessment pressure is removed.
+- Disengagement: Teaching material was
+the leading cause of disengagement
+(cited 'boredom' and 'too much
+information'); However, it was also the
+leading cause of engagement (cited
+‘interesting’ and ‘detail’);
+Disengagement may be a helpless
+response, not an objective assessment
+of teaching material
+
+--- Page 48 ---
+
+Natoli et al.
+(2020)
+Second and
+third-year
+accounting
+students
+Locus of control: >90%
+rated teaching
+quality/workload
+negatively, externalising
+responsibility; passive
+stance.
+- - Inappropriate learning strategies:
+91.9% adopted a surface learning
+approach - mirroring the ratings of
+negative perceptions of teaching quality
+Ontong, De
+Waal and
+Wentzel. (2020)
+All years
+(First-year
+through to
+Honours/
+Postgraduate)
+- Environment shapes goals:
+Students prioritised "Assistance
+with examination techniques"
+(58%) over study advice or
+content, indicating a short-term
+performance focus driven by
+pass rates.
+- -
+Smith et al.
+(2020)
+Undergraduate
+accounting
+students
+(Primarily
+second and third
+year)
+- - - Disengagement: Role stressors
+(ambiguity/overload) significantly
+increased burnout and intentions to
+depart the major; resilience acted as a
+protective mechanism.
+
+--- Page 49 ---
+
+Van den Berg
+and Rothmann
+(2024)
+Senior
+undergraduate
+students
+(Completed at
+least their first
+year)
+Locus of control:
+Cynicism stems from a
+perceived ‘lack of
+efficacy and control’ over
+educational outcomes;
+feeling disempowered.
+- - Disengagement: Cynicism was a
+strong predictor of the "intention to
+leave" the university; psychological
+detachment.

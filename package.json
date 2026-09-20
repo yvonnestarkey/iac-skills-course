@@ -16,7 +16,8 @@
     "import:mindset-sandbox": "tsx scripts/import-mindset-sandbox-context.ts",
     "sync:transcripts": "tsx scripts/sync-vimeo-transcripts.ts",
     "import:vtt": "tsx scripts/import-manual-vtt.ts",
-    "validate:knowledge": "tsx scripts/validate-knowledge-gateway.ts"
+    "validate:knowledge": "tsx scripts/validate-knowledge-gateway.ts",
+    "validate:research-paper": "tsx scripts/validate-pipeline-leak-research.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

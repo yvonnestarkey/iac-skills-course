@@ -71,8 +71,27 @@ function layerForSource(type: SourceType): KnowledgeLayer {
 function kbSourceType(category: string): SourceType {
   if (category === "examiner_report") return "examiner_commentary";
   if (category === "mark_plan") return "mark_plan";
-  if (category === "competency_framework") return "research";
+  if (category === "competency_framework" || category === "research") return "research";
   return "research";
+}
+
+function kbCategoriesFor(sourceType?: SourceType): string[] | null {
+  if (sourceType === "examiner_commentary") return ["examiner_report"];
+  if (sourceType === "mark_plan") return ["mark_plan"];
+  if (sourceType === "research") return ["research", "competency_framework"];
+  if (!sourceType) return null;
+  return [];
+}
+
+function searchVariants(query: string): string[] {
+  const raw = query.trim();
+  if (!raw) return [];
+  const spaced = raw.replace(/[-–—]/g, " ").replace(/\s+/g, " ").trim();
+  return [...new Set([raw, spaced])];
+}
+
+function sanitizeIlike(value: string): string {
+  return value.replace(/[%_,()]/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function asParagraphs(value: unknown): string {
@@ -142,9 +161,9 @@ function chunkContent(content: string, offset = 0, limit = DEFAULT_CHUNK) {
 }
 
 function matchesQuery(query: string, ...fields: (string | undefined)[]): boolean {
-  const needle = query.trim().toLowerCase();
-  if (!needle) return true;
-  return fields.some((field) => (field || "").toLowerCase().includes(needle));
+  const needles = searchVariants(query).map((item) => item.toLowerCase());
+  if (!needles.length) return true;
+  return needles.some((needle) => fields.some((field) => (field || "").toLowerCase().includes(needle)));
 }
 
 type LessonRow = Record<string, unknown>;
@@ -209,10 +228,9 @@ export async function listKnowledgeSources(): Promise<{ sources: KnowledgeSource
   const [chapters, lessons, transcripts] = await Promise.all([loadChapters(), loadLessons(), fetchLessonTranscripts()]);
   const kbCounts: Record<string, number> = {};
   if (client) {
-    const { data } = await client.from("knowledge_base").select("category");
-    for (const row of data || []) {
-      const category = String((row as { category?: string }).category || "unknown");
-      kbCounts[category] = (kbCounts[category] || 0) + 1;
+    for (const category of ["research", "competency_framework", "examiner_report", "mark_plan"]) {
+      const { count } = await client.from("knowledge_base").select("id", { count: "exact", head: true }).eq("category", category);
+      kbCounts[category] = count || 0;
     }
   }
   const contexts = client
@@ -238,7 +256,13 @@ export async function listKnowledgeSources(): Promise<{ sources: KnowledgeSource
     },
     { source_type: "resource", layer: "source", count: teachingResources, notes: "Approved teaching PDF/resource URLs only" },
     { source_type: "worksheet", layer: "source", count: 0, notes: "No extracted worksheet text yet; discovery via lesson resources" },
-    { source_type: "research", layer: "source", count: kbCounts.competency_framework || 0 },
+    {
+      source_type: "research",
+      layer: "source",
+      count: (kbCounts.research || 0) + (kbCounts.competency_framework || 0),
+      status: { research_papers: kbCounts.research || 0, competency_framework: kbCounts.competency_framework || 0 },
+      notes: "Ingested research papers plus competency-framework source text",
+    },
     { source_type: "examiner_commentary", layer: "source", count: kbCounts.examiner_report || 0 },
     { source_type: "mark_plan", layer: "source", count: kbCounts.mark_plan || 0 },
     {
@@ -263,6 +287,29 @@ export async function listKnowledgeSources(): Promise<{ sources: KnowledgeSource
     { source_type: "historical_evidence", layer: "source", count: 0, notes: "Reserved for later pseudonymised research views" },
   ];
   return { sources };
+}
+
+function kbDocumentStem(title: string): string {
+  return String(title || "").replace(/\s+\(\d+\)$/, "").trim();
+}
+
+function kbRef(row: Record<string, unknown>): KnowledgeRef {
+  const title = String(row.document_title || "Knowledge item");
+  const stem = kbDocumentStem(title);
+  return {
+    id: encodeId("kb", String(row.id)),
+    source_type: kbSourceType(String(row.category || "")),
+    title,
+    layer: "source",
+    provenance: {
+      table: "knowledge_base",
+      category: row.category,
+      document: stem,
+      ingested_at: row.created_at || null,
+    },
+    metadata: { category: row.category, document: stem },
+    relationships: stem ? [{ id: encodeId("kb-doc", stem), relation: "document" }] : [],
+  };
 }
 
 function lessonRef(row: LessonRow, chapter?: ChapterRow): KnowledgeRef {
@@ -337,45 +384,33 @@ export async function searchKnowledge(input: {
 
   if (!sourceType || ["research", "examiner_commentary", "mark_plan"].includes(sourceType)) {
     if (client) {
+      const categories = kbCategoriesFor(sourceType);
+      const variants = searchVariants(query).map(sanitizeIlike).filter(Boolean);
+      const orParts = variants.flatMap((needle) => [
+        `content.ilike.%${needle}%`,
+        `document_title.ilike.%${needle}%`,
+      ]);
+      let tableQuery = client.from("knowledge_base").select("id, document_title, category, content, created_at");
+      if (categories?.length) tableQuery = tableQuery.in("category", categories);
+      if (orParts.length) tableQuery = tableQuery.or(orParts.join(","));
+      const table = await tableQuery.limit(limit);
       const rpc = await client.rpc("search_knowledge_base", {
         p_query: query,
-        p_category: sourceType === "examiner_commentary" ? "examiner_report" : sourceType === "mark_plan" ? "mark_plan" : sourceType === "research" ? "competency_framework" : null,
+        p_category: categories?.length === 1 ? categories[0] : null,
         p_limit: limit,
       });
-      const rows = (!rpc.error && rpc.data ? rpc.data : []) as Record<string, unknown>[];
-      if (!rows.length) {
-        const fallback = await client
-          .from("knowledge_base")
-          .select("id, document_title, category, content")
-          .ilike("content", `%${query}%`)
-          .limit(limit);
-        for (const row of (fallback.data || []) as Record<string, unknown>[]) {
-          const type = kbSourceType(String(row.category || ""));
-          if (sourceType && type !== sourceType) continue;
-          hits.push({
-            id: encodeId("kb", String(row.id)),
-            source_type: type,
-            title: String(row.document_title || "Knowledge item"),
-            layer: "source",
-            provenance: { table: "knowledge_base", category: row.category },
-            metadata: { category: row.category },
-            relationships: [],
-          });
-        }
-      } else {
-        for (const row of rows) {
-          const type = kbSourceType(String(row.category || ""));
-          if (sourceType && type !== sourceType) continue;
-          hits.push({
-            id: encodeId("kb", String(row.id)),
-            source_type: type,
-            title: String(row.document_title || "Knowledge item"),
-            layer: "source",
-            provenance: { table: "knowledge_base", category: row.category },
-            metadata: { category: row.category },
-            relationships: [],
-          });
-        }
+      const rows = [
+        ...((table.data || []) as Record<string, unknown>[]),
+        ...((!rpc.error && rpc.data ? rpc.data : []) as Record<string, unknown>[]),
+      ];
+      const seen = new Set<string>();
+      for (const row of rows) {
+        const rowId = String(row.id || "");
+        if (!rowId || seen.has(rowId)) continue;
+        const type = kbSourceType(String(row.category || ""));
+        if (sourceType && type !== sourceType) continue;
+        seen.add(rowId);
+        hits.push(kbRef(row));
       }
     }
   }
@@ -505,19 +540,13 @@ export async function getKnowledgeItem(
   }
 
   if (parsed.type === "kb" && client) {
-    const { data } = await client.from("knowledge_base").select("id, document_title, category, content").eq("id", parsed.parts[0]).maybeSingle();
+    const { data } = await client
+      .from("knowledge_base")
+      .select("id, document_title, category, content, created_at")
+      .eq("id", parsed.parts[0])
+      .maybeSingle();
     if (!data) return null;
-    const type = kbSourceType(String(data.category || ""));
-    return {
-      id,
-      source_type: type,
-      title: String(data.document_title || "Knowledge item"),
-      layer: "source",
-      provenance: { table: "knowledge_base", category: data.category },
-      metadata: { category: data.category },
-      relationships: [],
-      ...chunkContent(String(data.content || ""), offset, limit),
-    };
+    return { ...kbRef(data as Record<string, unknown>), ...chunkContent(String(data.content || ""), offset, limit) };
   }
 
   if (parsed.type === "context" && client) {

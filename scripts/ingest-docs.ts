@@ -20,7 +20,7 @@ import { EMBEDDING_MODEL } from "../lib/knowledge";
 
 const ROOT = process.cwd();
 const DOCS_DIR = path.join(ROOT, "knowledge_docs");
-const CATEGORIES = new Set(["competency_framework", "examiner_report", "mark_plan"]);
+const CATEGORIES = new Set(["competency_framework", "examiner_report", "mark_plan", "research"]);
 const CHUNK_SIZE = 1200;
 const CHUNK_OVERLAP = 200;
 
@@ -121,7 +121,7 @@ async function main() {
 
   let inserted = 0;
   for (const file of files) {
-    const title = path.basename(file, path.extname(file)).replace(/[-_]+/g, " ");
+    const title = path.basename(file, path.extname(file)).replace(/_+/g, " ").replace(/\s+/g, " ").trim();
     const category = categoryFor(file);
     const text = await readFileText(file);
     const chunks = chunkText(text);
@@ -130,6 +130,11 @@ async function main() {
     if (exactDelete.error) throw new Error(exactDelete.error.message);
     const chunkDelete = await supabase.from("knowledge_base").delete().like("document_title", `${title} (%`);
     if (chunkDelete.error) throw new Error(chunkDelete.error.message);
+    const collapsed = title.replace(/[-–—]/g, " ").replace(/\s+/g, " ").trim();
+    if (collapsed !== title) {
+      const legacy = await supabase.from("knowledge_base").delete().like("document_title", `${collapsed}%`);
+      if (legacy.error) throw new Error(legacy.error.message);
+    }
     console.log(`${path.relative(ROOT, file)} → ${chunks.length} chunk(s) [${category}]`);
     for (let i = 0; i < chunks.length; i += 16) {
       const batch = chunks.slice(i, i + 16);
