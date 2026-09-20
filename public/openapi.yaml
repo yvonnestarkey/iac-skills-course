@@ -73,6 +73,54 @@ paths:
           description: Updated mark configuration
         "400":
           description: Missing paper_name or update error
+  /api/coaching-insights:
+    post:
+      operationId: addCoachingInsight
+      summary: Insert a new coaching insight
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Provide at least one of coaching_rule, title, tool_code, or diagnostic_routine.
+              properties:
+                active:
+                  type: boolean
+                  default: true
+                category:
+                  type: string
+                title:
+                  type: string
+                tool_code:
+                  type: string
+                diagnostic_routine:
+                  type: string
+                diagnostic_outcome:
+                  type: string
+                sub_sub_code:
+                  type: string
+                coaching_rule:
+                  type: string
+                mindset_ref:
+                  type: string
+                vimeo_video_id:
+                  type: string
+                course_ids: {}
+                saica_competency_mappings: {}
+      responses:
+        "201":
+          description: Created coaching insight
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  insight: {}
+        "400":
+          description: Missing insight fields
+        "500":
+          description: Insert failed
   /api/course-content/chapters:
     get:
       operationId: listCourseStructure
