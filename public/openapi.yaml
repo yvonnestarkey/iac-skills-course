@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: IAC Skills Course GPT API
-  version: 1.0.4
+  version: 1.0.5
   description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT Action.
 servers:
   - url: https://iac.accountingstudyadvice.com
@@ -255,3 +255,53 @@ paths:
           description: Lesson not found
         "500":
           description: Could not load lesson
+  /api/mindset-sandbox/context:
+    get:
+      operationId: getMindsetSandboxContext
+      summary: Get current Mindset Sandbox project context
+      description: Read-only. Returns the current project_canon and working_state documents only. No student data, no generic table access, and no archived versions.
+      responses:
+        "200":
+          description: Current Mindset Sandbox context
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - project_canon
+                  - working_state
+                properties:
+                  project_canon:
+                    $ref: "#/components/schemas/MindsetSandboxContextRecord"
+                  working_state:
+                    $ref: "#/components/schemas/MindsetSandboxContextRecord"
+        "500":
+          description: Could not load Mindset Sandbox context
+components:
+  schemas:
+    MindsetSandboxContextRecord:
+      type: object
+      nullable: true
+      additionalProperties: false
+      required:
+        - context_type
+        - title
+        - version
+        - source_filename
+        - updated_at
+        - content
+      properties:
+        context_type:
+          type: string
+        title:
+          type: string
+        version:
+          type: string
+        source_filename:
+          type: string
+          nullable: true
+        updated_at:
+          type: string
+        content:
+          type: string

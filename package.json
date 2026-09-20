@@ -12,7 +12,8 @@
     "test": "tsx --test lib/lesson-videos.test.ts",
     "scrape:thinkific": "tsx scripts/scrape-thinkific.ts",
     "seed:supabase": "tsx scripts/seed-supabase.ts",
-    "ingest:docs": "tsx scripts/ingest-docs.ts"
+    "ingest:docs": "tsx scripts/ingest-docs.ts",
+    "import:mindset-sandbox": "tsx scripts/import-mindset-sandbox-context.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -31,6 +32,7 @@
     "@types/react-dom": "19.1.0",
     "eslint": "8.57.1",
     "eslint-config-next": "15.5.2",
+    "mammoth": "^1.12.3",
     "playwright": "^1.63.0",
     "tsx": "^4.23.13",
     "typescript": "5.7.2"
