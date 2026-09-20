@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: IAC Skills Course GPT API
-  version: 1.0.3
+  version: 1.0.4
   description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT Action.
 servers:
   - url: https://iac.accountingstudyadvice.com
@@ -201,3 +201,57 @@ paths:
                                 nullable: true
         "400":
           description: Could not load chapters or lessons
+  /api/course-content/lessons/{lessonId}:
+    get:
+      operationId: getCourseLesson
+      summary: Get teaching content for one lesson
+      description: Read-only. Returns only approved lesson teaching fields. No videos, PDFs, Storage, surveys, gating, or student data.
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lesson teaching content
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - id
+                  - chapter_id
+                  - position
+                  - type
+                  - title
+                  - blurb
+                  - body
+                  - takeaways
+                properties:
+                  id:
+                    type: string
+                  chapter_id:
+                    type: string
+                  position:
+                    type: integer
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  blurb:
+                    type: string
+                    nullable: true
+                  body:
+                    type: string
+                  takeaways:
+                    type: array
+                    items:
+                      type: string
+        "400":
+          description: Invalid lesson id
+        "404":
+          description: Lesson not found
+        "500":
+          description: Could not load lesson
