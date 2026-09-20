@@ -1,98 +1,48 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
 
-export const dynamic = "force-dynamic";
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
-function supabaseClient(): SupabaseClient | null {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
-}
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  let paperName = searchParams.get("paper_name");
 
-function paperNameFrom(request: NextRequest, body?: Record<string, unknown> | null): string {
-  const fromQuery = String(request.nextUrl.searchParams.get("paper_name") || "").trim();
-  if (fromQuery) return fromQuery;
-  return String(body?.paper_name || "").trim();
-}
+  let query = supabase.from("mark_configurations").select("*");
 
-function stripPaperNameFilter(value: string): string {
-  return value.replace(/^(eq|ilike)\./i, "").trim();
-}
-
-export async function GET(request: NextRequest) {
-  try {
-    const paperName = paperNameFrom(request);
-    if (!paperName) {
-      return NextResponse.json({ error: "paper_name is required." }, { status: 400 });
-    }
-
-    const supabase = supabaseClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase is not configured." }, { status: 500 });
-    }
-
-    const { data, error } = await supabase
-      .from("mark_configurations")
-      .select("paper_name, config_json")
-      .eq("paper_name", paperName)
-      .maybeSingle();
-
-    if (error) {
-      console.error("Supabase fetch error:", error);
-      return NextResponse.json({ error: error.message || JSON.stringify(error) }, { status: 500 });
-    }
-
-    if (!data) {
-      return NextResponse.json({ error: "Mark configuration not found." }, { status: 404 });
-    }
-
-    return NextResponse.json(data);
-  } catch (error) {
-    console.error("Supabase fetch error:", error);
-    const message = error instanceof Error ? error.message : "Could not load mark configuration.";
-    return NextResponse.json({ error: message }, { status: 500 });
+  if (paperName) {
+    paperName = paperName.replace(/^(eq\.|ilike\.)/, "");
+    query = query.ilike("paper_name", `%${paperName}%`);
   }
+
+  const { data, error } = await query;
+  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  return NextResponse.json(data);
 }
 
-export async function PATCH(request: NextRequest) {
-  try {
-    const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
-    const paperName = stripPaperNameFilter(paperNameFrom(request, body));
-    if (!paperName) {
-      return NextResponse.json({ error: "paper_name is required." }, { status: 400 });
-    }
-    if (!body || !("config_json" in body)) {
-      return NextResponse.json({ error: "config_json is required." }, { status: 400 });
-    }
+export async function PATCH(req: Request) {
+  const { searchParams } = new URL(req.url);
+  let paperName = searchParams.get("paper_name");
+  const body = await req.json();
 
-    const supabase = supabaseClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase is not configured." }, { status: 500 });
-    }
-
-    const { data, error } = await supabase
-      .from("mark_configurations")
-      .update({ config_json: body.config_json })
-      .ilike("paper_name", paperName)
-      .select("paper_name, config_json")
-      .maybeSingle();
-
-    if (error) {
-      console.error("Supabase fetch error:", error);
-      return NextResponse.json({ error: error.message || JSON.stringify(error) }, { status: 500 });
-    }
-
-    if (!data) {
-      return NextResponse.json({ error: "Mark configuration not found." }, { status: 404 });
-    }
-
-    return NextResponse.json(data);
-  } catch (error) {
-    console.error("Supabase fetch error:", error);
-    const message = error instanceof Error ? error.message : "Could not update mark configuration.";
-    return NextResponse.json({ error: message }, { status: 500 });
+  if (!paperName && body.paper_name) {
+    paperName = body.paper_name;
   }
+
+  if (!paperName) {
+    return NextResponse.json({ error: "Missing paper_name parameter" }, { status: 400 });
+  }
+
+  paperName = paperName.replace(/^(eq\.|ilike\.)/, "");
+
+  const { data, error } = await supabase
+    .from("mark_configurations")
+    .update({ config_json: body.config_json })
+    .ilike("paper_name", `%${paperName}%`)
+    .select();
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  return NextResponse.json(data[0] || { success: true }, { status: 200 });
 }
