@@ -29,6 +29,7 @@ export async function POST(request: Request) {
       supporting_record_ids: Array.isArray(body.supporting_record_ids) ? body.supporting_record_ids.map(String) : undefined,
       challenging_record_ids: Array.isArray(body.challenging_record_ids) ? body.challenging_record_ids.map(String) : undefined,
       open_question_ids: Array.isArray(body.open_question_ids) ? body.open_question_ids.map(String) : undefined,
+      informed_by_record_ids: Array.isArray(body.informed_by_record_ids) ? body.informed_by_record_ids.map(String) : undefined,
       revision_id: body.revision_id ? String(body.revision_id) : undefined,
       created_by: body.created_by === "yvonne" ? "yvonne" : "ai",
     });

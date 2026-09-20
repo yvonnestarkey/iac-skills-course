@@ -1,10 +1,10 @@
 /**
  * Disposable synthetic cycle for the systems model. Deletes its own rows.
- * Requires supabase/mindset-systems-model.sql to have been pasted.
  */
 
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { getCourseJourney, getCourseLessonFull, listKnowledgeSources, searchKnowledge } from "@/lib/knowledge-gateway";
 import {
   addSystemsObservation,
   createSystemsCheckpoint,
@@ -13,8 +13,9 @@ import {
   deleteWorkingStateByVersion,
   getSystemsCheckpoint,
   getSystemsModel,
-  getSystemsModelEvidence,
+  getSystemsRecord,
   getSystemsWorkingState,
+  lineageFor,
   recordSystemsRevision,
   recordYvonneSystemsReview,
   systemsModelConfigured,
@@ -22,7 +23,6 @@ import {
   upsertSystemsInterpretation,
   upsertSystemsQuestion,
 } from "@/lib/systems-model";
-import { getCourseJourney, listKnowledgeSources } from "@/lib/knowledge-gateway";
 
 const FLAG = "test_run_id";
 const RUN = "synthetic-systems-model-validation";
@@ -67,60 +67,83 @@ async function main() {
     console.log(
       JSON.stringify(
         {
-          ok: true,
+          ok: false,
           schema_installed: false,
           knowledge_gateway_intact: true,
           lesson_count: journey.lesson_count,
-          note: "Systems tables are not in Supabase yet. Architecture is implemented; paste SQL only after review.",
+          note: "Paste supabase/mindset-systems-model.sql, then re-run npm run validate:systems-model.",
         },
         null,
         2
       )
     );
-    return;
+    process.exit(2);
   }
 
   await cleanup();
   const payload = { [FLAG]: RUN };
 
+  const multi = journey.chapters.flatMap((chapter) => chapter.lessons).find((lesson) => lesson.videos.some((video) => video.transcript_available));
+  const full = await getCourseLessonFull(String(multi?.id || "ch10-l6"));
+  const transcriptId = full?.transcripts[0]?.id;
+  const research = await searchKnowledge({ query: "Tracing the Pipeline Leak", source_type: "research", limit: 3 });
+  const researchId = research.items.find((item) => item.source_type === "research")?.id;
+  assert(full?.id, "need a live lesson");
+  assert(transcriptId, "need a live transcript gateway ID");
+  assert(researchId, "need a live research gateway ID");
+  const lessonId = `lesson:${full.id}`;
+
   try {
-    const observationA = await addSystemsObservation({
+    const observation = await addSystemsObservation({
       title: "SYNTHETIC observation from a lesson",
-      statement: "The activity appears to teach an exam technique.",
-      source_refs: [{ source_id: "lesson:ch10-l6", location: "lesson body", excerpt: "synthetic excerpt only" }],
+      statement: "On first reading the activity looks like an exam technique.",
+      source_refs: [{ source_id: lessonId, location: "lesson", excerpt: "synthetic excerpt only" }],
       payload,
     });
-    const observationB = await addSystemsObservation({
-      title: "SYNTHETIC observation from research",
-      statement: "The paper discusses failure-trigger conditions in meaning systems.",
-      source_refs: [{ source_id: "context:project_canon", location: "not the paper; synthetic link only" }],
-      payload,
-    });
+    assert(observation.source_refs[0].source_id === lessonId, "A: observation uses a gateway lesson ID");
+
     const interpretation = await upsertSystemsInterpretation({
-      title: "SYNTHETIC provisional interpretation",
+      title: "SYNTHETIC multi-source interpretation",
       statement: "This activity exists only to teach exam technique.",
-      rationale: "First pass through the lesson.",
-      source_refs: observationA.source_refs,
-      supports_record_ids: [observationA.id, observationB.id],
-      needs_yvonne_review: true,
+      rationale: "First pass. Not owned by the lesson; the lesson is one source among others.",
+      source_refs: [
+        { source_id: lessonId, location: "course architecture" },
+        { source_id: transcriptId, location: "video transcript" },
+        { source_id: researchId, location: "research paper chunk" },
+      ],
+      supports_record_ids: [observation.id],
       payload,
     });
-    assert(interpretation.supports_record_ids.includes(observationA.id), "interpretation should cite both observations");
+    const sourceTypes = new Set(interpretation.source_refs.map((ref) => ref.source_type || ref.source_id.split(":")[0]));
+    assert(sourceTypes.has("lesson") && sourceTypes.has("transcript") && sourceTypes.has("kb"), "B: one interpretation cites lesson + transcript + research");
+    assert(!("lesson_id" in interpretation), "B: interpretation is not parented to a lesson");
+
+    const firstCheckpoint = await createSystemsCheckpoint({
+      version: "synthetic-0.1",
+      title: `${CHECKPOINT_PREFIX} v0.1`,
+      synthesis: "SYNTHETIC first house: the activity currently looks like exam technique. Not a real methodology claim.",
+      supporting_record_ids: [observation.id, interpretation.id],
+      informed_by_record_ids: [observation.id, interpretation.id],
+    });
+    assert(firstCheckpoint.informed_by_record_ids.includes(interpretation.id), "C: checkpoint is informed by the interpretation");
+    assert((firstCheckpoint.provenance.source_ids as string[])?.includes(lessonId), "C: checkpoint provenance keeps source IDs");
 
     const revision = await recordSystemsRevision({
       target_id: interpretation.id,
       title: "SYNTHETIC later evidence revises function",
       previous_understanding: interpretation.statement,
       revised_understanding: "The same activity also appears to diagnose how the student responds to difficulty.",
-      trigger: { source_ids: ["lesson:ch15-l1"], record_ids: [observationB.id], note: "Later lesson changed the earlier reading." },
+      trigger: { source_ids: ["lesson:ch15-l1"], record_ids: [observation.id], note: "Later lesson changed the earlier reading." },
       systems_why: "Function depends on position in the process, not only on the local technique.",
-      affected: { record_ids: [interpretation.id], concepts: ["exam technique", "diagnosis"] },
-      revisit: [{ source_id: "lesson:ch10-l6", record_id: observationA.id, reason: "Re-read for diagnostic function." }],
-      unresolved_implications: "May also be a psychological intervention.",
+      revisit: [{ source_id: lessonId, record_id: observation.id, reason: "Re-read for diagnostic function." }],
+      unresolved_implications: "May also be psychological.",
       payload,
     });
-    assert(revision.successor.supersedes_id === interpretation.id, "successor keeps lineage");
-    assert(revision.working_state.state.revisit_queue?.some((item) => item.source_id === "lesson:ch10-l6"), "revision queued earlier material");
+    const original = await getSystemsRecord(interpretation.id);
+    assert(original?.lifecycle === "superseded", "D: earlier interpretation is superseded");
+    assert(original?.epistemic_status === "ai_hypothesis", "E: original remains an AI hypothesis, not rewritten as superseded-status");
+    assert(revision.successor.supersedes_id === interpretation.id, "E: successor points at the old understanding");
+    assert(revision.working_state.state.revisit_queue?.some((item) => item.source_id === lessonId), "F: earlier source is on the revisit queue");
 
     const question = await upsertSystemsQuestion({
       title: "SYNTHETIC unresolved question",
@@ -131,52 +154,51 @@ async function main() {
 
     const yvonne = await recordYvonneSystemsReview({
       target_id: revision.successor.id,
-      action: "correct",
-      statement: "It is diagnostic and pedagogical at the same time. Do not reduce it to exam technique.",
-      rationale: "Yvonne correction outranks the AI revision.",
-      title: "SYNTHETIC Yvonne correction",
+      action: "confirm",
+      statement: revision.successor.statement,
+      rationale: "Yvonne confirms the revised systems reading.",
+      title: "SYNTHETIC Yvonne confirmation",
       payload,
     });
-    // Tag the auto-created yvonne rows for cleanup by updating payload via a follow-up question payload already tagged.
-    assert(yvonne.record.epistemic_status === "yvonne_corrected", "Yvonne correction is current");
-    assert(yvonne.record.supersedes_id === revision.successor.id, "AI revision remains in lineage");
-
-    const checkpoint = await createSystemsCheckpoint({
-      version: "synthetic-0.1",
-      title: `${CHECKPOINT_PREFIX} v0.1`,
-      synthesis:
-        "SYNTHETIC: current best understanding is that some interventions teach and diagnose at once. This is a test checkpoint, not a real methodology claim.",
-      supporting_record_ids: [observationA.id, observationB.id, yvonne.record.id],
-      challenging_record_ids: [interpretation.id],
-      open_question_ids: [question.id],
-      revision_id: revision.revision.id,
-    });
+    const aiRevised = await getSystemsRecord(revision.successor.id);
+    assert(aiRevised?.epistemic_status === "ai_hypothesis", "G: the AI hypothesis is still stored as an AI hypothesis");
+    assert(aiRevised?.lifecycle === "superseded", "G: the AI hypothesis is marked superseded, not edited into a confirmation");
+    assert(yvonne.record.epistemic_status === "yvonne_confirmed", "G: confirmation is a later record");
+    assert(yvonne.record.supersedes_id === revision.successor.id, "G: confirmation points at the AI record");
+    assert(yvonne.review.payload.from_epistemic_status === "ai_hypothesis", "G: review stores AI → Yvonne transition");
+    const chain = await lineageFor(yvonne.record.id);
+    assert(chain.map((row) => row.id).join(",") === `${interpretation.id},${revision.successor.id},${yvonne.record.id}`, "G: lineage is hypothesis → revision → Yvonne");
 
     await updateSystemsWorkingState({
       version: WORKING_VERSION,
-      current_checkpoint_id: checkpoint.id,
       state: {
-        current_checkpoint_id: checkpoint.id,
-        current_checkpoint_version: checkpoint.version,
-        traversal: { last_lesson_id: "ch10-l6", last_source_id: "lesson:ch10-l6", position_note: "synthetic pause" },
-        examined_deeply: [{ source_id: "lesson:ch10-l6", note: "synthetic" }],
+        examined_deeply: [{ source_id: lessonId, note: "synthetic deep read" }],
         scanned: [{ source_id: "lesson:ch15-l1" }],
         unresolved_question_ids: [question.id],
-        next_investigation: "synthetic only — delete after validation",
+        next_investigation: "synthetic only",
       },
     });
 
-    const resumed = await getSystemsModel();
-    const resumedCheckpoint = await getSystemsCheckpoint(checkpoint.id);
-    const resumedState = await getSystemsWorkingState();
-    const evidence = await getSystemsModelEvidence(yvonne.record.id);
+    const currentCheckpoint = await createSystemsCheckpoint({
+      version: "synthetic-0.2",
+      title: `${CHECKPOINT_PREFIX} v0.2`,
+      synthesis: "SYNTHETIC current house: some interventions teach and diagnose. Confirmed by Yvonne in the test lineage only.",
+      supporting_record_ids: [observation.id, yvonne.record.id],
+      challenging_record_ids: [interpretation.id],
+      open_question_ids: [question.id],
+      informed_by_record_ids: [observation.id, interpretation.id, revision.revision.id, revision.successor.id, yvonne.record.id, yvonne.review.id, question.id],
+      revision_id: revision.revision.id,
+    });
 
-    assert(resumedCheckpoint?.id === checkpoint.id, "new session can reload the checkpoint");
-    assert(resumedState.state.current_checkpoint_id === checkpoint.id, "new session can reload working state");
-    assert(resumed.records.interpretations.some((row) => row.id === yvonne.record.id), "current model shows Yvonne version");
-    assert(resumed.superseded.some((row) => row.id === interpretation.id), "earlier AI interpretation is retained as superseded");
-    assert(resumedState.state.revisit_queue && resumedState.state.revisit_queue.length > 0, "back-propagation queue persisted");
-    assert(evidence.evidence[0]?.sources[0]?.source_id, "evidence still points at source IDs rather than copying sources");
+    const resumed = await getSystemsModel();
+    const resumedCheckpoint = await getSystemsCheckpoint(currentCheckpoint.id);
+    const resumedState = await getSystemsWorkingState();
+    assert(resumedCheckpoint?.id === currentCheckpoint.id, "H: fresh session loads current checkpoint");
+    assert(resumedState.state.current_checkpoint_id === currentCheckpoint.id, "H: working state points at current checkpoint");
+    assert(resumedState.state.revisit_queue && resumedState.state.revisit_queue.length > 0, "H: revisit queue survived later working-state updates");
+    assert((resumedState.history || []).length >= 2, "H: earlier working-state versions remain");
+    assert(resumed.lineage?.[yvonne.record.id]?.length === 3, "H: session can reconstruct how the current interpretation was reached");
+    assert((resumedCheckpoint?.provenance.source_ids as string[] || []).includes(lessonId), "H: checkpoint provenance still lists the informing sources");
 
     console.log(
       JSON.stringify(
@@ -185,11 +207,10 @@ async function main() {
           schema_installed: true,
           knowledge_gateway_intact: true,
           lesson_count: journey.lesson_count,
-          observation_ids: [observationA.id, observationB.id],
-          interpretation_id: interpretation.id,
-          successor_id: revision.successor.id,
-          yvonne_record_id: yvonne.record.id,
-          checkpoint_id: checkpoint.id,
+          source_ids: { lessonId, transcriptId, researchId },
+          source_types: [...sourceTypes],
+          lineage: chain.map((row) => ({ id: row.id, status: row.epistemic_status, lifecycle: row.lifecycle })),
+          checkpoint_provenance: resumedCheckpoint?.provenance,
           revisit_queue: resumedState.state.revisit_queue,
         },
         null,

@@ -1,11 +1,14 @@
 import { getSupabaseAdmin } from "@/lib/knowledge-gateway-db";
 import { getKnowledgeItem, parseKnowledgeId } from "@/lib/knowledge-gateway";
 import {
+  GATEWAY_SOURCE_TYPES,
   SYSTEMS_GUARDRAILS,
   currentLineageWinner,
   emptySystemsModel,
   emptyWorkingState,
   mergeRevisitQueue,
+  mergeWorkingState,
+  sourceTypeFromId,
   yvonneOutranks,
   type RevisitItem,
   type SourceRef,
@@ -63,6 +66,8 @@ export interface SystemsCheckpoint {
   supporting_record_ids: string[];
   challenging_record_ids: string[];
   open_question_ids: string[];
+  informed_by_record_ids: string[];
+  provenance: Record<string, unknown>;
   revision_id: string | null;
   replaces_checkpoint_id: string | null;
   created_by: "ai" | "yvonne";
@@ -74,7 +79,9 @@ export interface SystemsWorkingState {
   version: string;
   status: "current" | "archived";
   current_checkpoint_id: string | null;
+  replaces_working_state_id?: string | null;
   state: WorkingStateBody;
+  history?: { id: string; version: string; created_at?: string }[];
   created_at?: string;
   updated_at?: string;
 }
@@ -118,6 +125,8 @@ function asCheckpoint(row: Record<string, unknown>): SystemsCheckpoint {
     supporting_record_ids: asStringArray(row.supporting_record_ids),
     challenging_record_ids: asStringArray(row.challenging_record_ids),
     open_question_ids: asStringArray(row.open_question_ids),
+    informed_by_record_ids: asStringArray(row.informed_by_record_ids),
+    provenance: row.provenance && typeof row.provenance === "object" ? (row.provenance as Record<string, unknown>) : {},
     revision_id: row.revision_id ? String(row.revision_id) : null,
     replaces_checkpoint_id: row.replaces_checkpoint_id ? String(row.replaces_checkpoint_id) : null,
     created_by: row.created_by === "yvonne" ? "yvonne" : "ai",
@@ -144,10 +153,32 @@ function requireClient() {
 
 export function validateSourceRef(ref: SourceRef): string | null {
   if (!ref?.source_id?.trim()) return "Each source_ref needs a source_id.";
-  if (!parseKnowledgeId(ref.source_id) && !/^[a-z0-9]+:.+/i.test(ref.source_id)) {
-    return `Unrecognised source_id: ${ref.source_id}`;
+  const parsed = parseKnowledgeId(ref.source_id);
+  if (!parsed) return `Unrecognised source_id: ${ref.source_id}. Use a gateway ID such as lesson:ch10-l6.`;
+  if (!GATEWAY_SOURCE_TYPES.includes(parsed.type as (typeof GATEWAY_SOURCE_TYPES)[number])) {
+    return `source_id type "${parsed.type}" is not a knowledge-gateway ID.`;
   }
   return null;
+}
+
+export function normalizeSourceRefs(refs: SourceRef[]): SourceRef[] {
+  return refs.map((ref) => ({
+    ...ref,
+    source_id: ref.source_id.trim(),
+    source_type: ref.source_type || sourceTypeFromId(ref.source_id) || undefined,
+  }));
+}
+
+async function resolveSourceRefs(refs: SourceRef[]): Promise<SourceRef[]> {
+  const normalized = normalizeSourceRefs(refs);
+  for (const ref of normalized) {
+    const invalid = validateSourceRef(ref);
+    if (invalid) throw new Error(invalid);
+    if (ref.source_type === "coaching_transcript") continue;
+    const item = await getKnowledgeItem(ref.source_id, 0, 200).catch(() => null);
+    if (!item) throw new Error(`Gateway source not found: ${ref.source_id}`);
+  }
+  return normalized;
 }
 
 async function insertRecord(input: Partial<SystemsRecord> & { record_type: RecordType; title: string }): Promise<SystemsRecord> {
@@ -178,12 +209,65 @@ async function insertRecord(input: Partial<SystemsRecord> & { record_type: Recor
 }
 
 async function markSuperseded(id: string): Promise<void> {
+  const existing = await getSystemsRecord(id);
   const client = requireClient();
   const { error } = await client
     .from("mindset_systems_records")
-    .update({ lifecycle: "superseded", epistemic_status: "superseded", updated_at: new Date().toISOString() })
+    .update({
+      lifecycle: "superseded",
+      payload: { ...(existing?.payload || {}), superseded_at: new Date().toISOString() },
+      updated_at: new Date().toISOString(),
+    })
     .eq("id", id);
   if (error) throw new Error(error.message);
+}
+
+export async function lineageFor(id: string): Promise<SystemsRecord[]> {
+  const chain: SystemsRecord[] = [];
+  let current = await getSystemsRecord(id);
+  const seen = new Set<string>();
+  while (current && !seen.has(current.id)) {
+    seen.add(current.id);
+    chain.unshift(current);
+    current = current.supersedes_id ? await getSystemsRecord(current.supersedes_id) : null;
+  }
+  return chain;
+}
+
+async function recordIsLocked(record: SystemsRecord): Promise<boolean> {
+  if (yvonneOutranks(record.epistemic_status) || record.created_by === "yvonne") return true;
+  const others = (await fetchRecords()).filter((row) => row.id !== record.id);
+  const referenced = others.some(
+    (row) =>
+      row.supports_record_ids.includes(record.id) ||
+      row.challenges_record_ids.includes(record.id) ||
+      row.related_record_ids.includes(record.id) ||
+      row.supersedes_id === record.id
+  );
+  if (referenced) return true;
+  const client = requireClient();
+  const { data: checkpoints } = await client
+    .from("mindset_systems_checkpoints")
+    .select("supporting_record_ids, challenging_record_ids, open_question_ids, informed_by_record_ids, revision_id");
+  const cited = (checkpoints || []).some((row) => {
+    const ids = [
+      ...asStringArray(row.supporting_record_ids),
+      ...asStringArray(row.challenging_record_ids),
+      ...asStringArray(row.open_question_ids),
+      ...asStringArray(row.informed_by_record_ids),
+      row.revision_id ? String(row.revision_id) : "",
+    ];
+    return ids.includes(record.id);
+  });
+  if (cited) return true;
+  const working = await getSystemsWorkingState();
+  const stateIds = [
+    ...(working.state.unresolved_question_ids || []),
+    ...(working.state.alternative_ids || []),
+    ...(working.state.revisit_queue || []).map((item) => item.record_id || ""),
+    ...(working.state.yvonne_clarification_needed || []).map((item) => item.record_id || ""),
+  ];
+  return stateIds.includes(record.id);
 }
 
 export async function fetchRecords(ids?: string[]): Promise<SystemsRecord[]> {
@@ -211,17 +295,14 @@ export async function addSystemsObservation(input: {
   created_by?: "ai" | "yvonne";
 }): Promise<SystemsRecord> {
   if (!input.source_refs?.length) throw new Error("An observation must reference at least one source_id.");
-  for (const ref of input.source_refs) {
-    const invalid = validateSourceRef(ref);
-    if (invalid) throw new Error(invalid);
-  }
+  const source_refs = await resolveSourceRefs(input.source_refs);
   return insertRecord({
     record_type: "observation",
     epistemic_status: "source_observation",
     title: input.title,
     statement: input.statement,
     rationale: input.rationale || "",
-    source_refs: input.source_refs,
+    source_refs,
     payload: input.payload || {},
     created_by: input.created_by || "ai",
   });
@@ -243,12 +324,27 @@ export async function upsertSystemsInterpretation(input: {
   created_by?: "ai" | "yvonne";
 }): Promise<SystemsRecord> {
   const kind = input.kind || "interpretation";
+  const source_refs = input.source_refs ? await resolveSourceRefs(input.source_refs) : undefined;
   if (input.id) {
     const existing = await getSystemsRecord(input.id);
     if (!existing) throw new Error("Interpretation not found.");
     if (existing.lifecycle !== "active") throw new Error("Cannot update a superseded record. Record a revision.");
     if (yvonneOutranks(existing.epistemic_status) && input.created_by !== "yvonne") {
       throw new Error("Yvonne-confirmed or Yvonne-corrected records cannot be overwritten by AI inference.");
+    }
+    const locked = await recordIsLocked(existing);
+    const materialChange = input.statement !== existing.statement || (source_refs && JSON.stringify(source_refs) !== JSON.stringify(existing.source_refs));
+    if (locked && materialChange) {
+      const revised = await recordSystemsRevision({
+        target_id: existing.id,
+        title: input.title,
+        previous_understanding: existing.statement,
+        revised_understanding: input.statement,
+        trigger: { note: "Meaningful change to a locked interpretation." },
+        systems_why: input.rationale || existing.rationale || "Conceptual change after the draft became part of the model.",
+        payload: input.payload,
+      });
+      return revised.successor;
     }
     const client = requireClient();
     const { data, error } = await client
@@ -257,7 +353,7 @@ export async function upsertSystemsInterpretation(input: {
         title: input.title,
         statement: input.statement,
         rationale: input.rationale ?? existing.rationale,
-        source_refs: input.source_refs ?? existing.source_refs,
+        source_refs: source_refs ?? existing.source_refs,
         supports_record_ids: input.supports_record_ids ?? existing.supports_record_ids,
         challenges_record_ids: input.challenges_record_ids ?? existing.challenges_record_ids,
         related_record_ids: input.related_record_ids ?? existing.related_record_ids,
@@ -277,7 +373,7 @@ export async function upsertSystemsInterpretation(input: {
     title: input.title,
     statement: input.statement,
     rationale: input.rationale || "",
-    source_refs: input.source_refs || [],
+    source_refs: source_refs || [],
     supports_record_ids: input.supports_record_ids || [],
     challenges_record_ids: input.challenges_record_ids || [],
     related_record_ids: input.related_record_ids || [],
@@ -395,39 +491,12 @@ export async function recordYvonneSystemsReview(input: {
   rationale?: string;
   title?: string;
   payload?: Record<string, unknown>;
-}): Promise<{ review: SystemsRecord; record: SystemsRecord }> {
+}): Promise<{ review: SystemsRecord; record: SystemsRecord; lineage: SystemsRecord[] }> {
   const target = await getSystemsRecord(input.target_id);
   if (!target) throw new Error("Review target not found.");
-  const client = requireClient();
-  if (input.action === "confirm") {
-    const { data, error } = await client
-      .from("mindset_systems_records")
-      .update({
-        epistemic_status: "yvonne_confirmed",
-        created_by: "yvonne",
-        needs_yvonne_review: false,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", target.id)
-      .select("*")
-      .maybeSingle();
-    if (error || !data) throw new Error(error?.message || "Could not confirm record.");
-    const confirmed = asRecord(data as Record<string, unknown>);
-    const review = await insertRecord({
-      record_type: "yvonne_review",
-      epistemic_status: "yvonne_confirmed",
-      title: input.title || `Yvonne confirmed: ${target.title}`,
-      statement: input.statement || target.statement,
-      rationale: input.rationale || "",
-      related_record_ids: [target.id],
-      created_by: "yvonne",
-      payload: { action: "confirm", target_id: target.id, ...(input.payload || {}) },
-    });
-    return { review, record: confirmed };
-  }
-  const corrected = await insertRecord({
+  const successor = await insertRecord({
     record_type: target.record_type,
-    epistemic_status: "yvonne_corrected",
+    epistemic_status: input.action === "confirm" ? "yvonne_confirmed" : "yvonne_corrected",
     title: input.title || target.title,
     statement: input.statement || target.statement,
     rationale: input.rationale || "",
@@ -437,20 +506,32 @@ export async function recordYvonneSystemsReview(input: {
     related_record_ids: [target.id],
     supersedes_id: target.id,
     created_by: "yvonne",
-    payload: { action: "correct", target_id: target.id, ...(input.payload || {}) },
+    payload: {
+      action: input.action,
+      target_id: target.id,
+      from_epistemic_status: target.epistemic_status,
+      ...(input.payload || {}),
+    },
   });
   await markSuperseded(target.id);
   const review = await insertRecord({
     record_type: "yvonne_review",
-    epistemic_status: "yvonne_corrected",
-    title: input.title || `Yvonne corrected: ${target.title}`,
-    statement: corrected.statement,
+    epistemic_status: successor.epistemic_status,
+    title: input.title || `Yvonne ${input.action}ed: ${target.title}`,
+    statement: successor.statement,
     rationale: input.rationale || "",
-    related_record_ids: [target.id, corrected.id],
+    related_record_ids: [target.id, successor.id],
     created_by: "yvonne",
-    payload: { action: "correct", target_id: target.id, successor_id: corrected.id, ...(input.payload || {}) },
+    payload: {
+      action: input.action,
+      target_id: target.id,
+      successor_id: successor.id,
+      from_epistemic_status: target.epistemic_status,
+      to_epistemic_status: successor.epistemic_status,
+      ...(input.payload || {}),
+    },
   });
-  return { review, record: corrected };
+  return { review, record: successor, lineage: await lineageFor(successor.id) };
 }
 
 export async function getCurrentCheckpoint(): Promise<SystemsCheckpoint | null> {
@@ -475,11 +556,35 @@ export async function createSystemsCheckpoint(input: {
   supporting_record_ids?: string[];
   challenging_record_ids?: string[];
   open_question_ids?: string[];
+  informed_by_record_ids?: string[];
   revision_id?: string;
   created_by?: "ai" | "yvonne";
 }): Promise<SystemsCheckpoint> {
   const client = requireClient();
   const current = await getCurrentCheckpoint();
+  const working = await getSystemsWorkingState();
+  const informedIds = [
+    ...new Set(
+      [
+        ...(input.supporting_record_ids || []),
+        ...(input.challenging_record_ids || []),
+        ...(input.open_question_ids || []),
+        ...(input.informed_by_record_ids || []),
+        input.revision_id || "",
+      ].filter(Boolean)
+    ),
+  ];
+  const informed = informedIds.length ? await fetchRecords(informedIds) : [];
+  const provenance = {
+    observation_ids: informed.filter((row) => row.record_type === "observation").map((row) => row.id),
+    interpretation_ids: informed.filter((row) => ["interpretation", "relationship", "alternative"].includes(row.record_type)).map((row) => row.id),
+    revision_ids: informed.filter((row) => row.record_type === "revision").map((row) => row.id),
+    yvonne_review_ids: informed.filter((row) => row.record_type === "yvonne_review").map((row) => row.id),
+    question_ids: informed.filter((row) => row.record_type === "question").map((row) => row.id),
+    source_ids: [...new Set(informed.flatMap((row) => row.source_refs.map((ref) => ref.source_id)))],
+    working_state_id: working.id,
+    replaces_checkpoint_id: current?.id || null,
+  };
   if (current) {
     const { error } = await client
       .from("mindset_systems_checkpoints")
@@ -499,6 +604,8 @@ export async function createSystemsCheckpoint(input: {
       supporting_record_ids: input.supporting_record_ids || [],
       challenging_record_ids: input.challenging_record_ids || [],
       open_question_ids: input.open_question_ids || [],
+      informed_by_record_ids: informedIds,
+      provenance,
       revision_id: input.revision_id || null,
       replaces_checkpoint_id: current?.id || null,
       created_by: input.created_by || "ai",
@@ -527,7 +634,9 @@ export async function getSystemsWorkingState(): Promise<SystemsWorkingState> {
       version: String(data.version),
       status: "current",
       current_checkpoint_id: data.current_checkpoint_id ? String(data.current_checkpoint_id) : null,
+      replaces_working_state_id: data.replaces_working_state_id ? String(data.replaces_working_state_id) : null,
       state: { ...emptyWorkingState(), ...(data.state as WorkingStateBody) },
+      history: await listWorkingStateHistory(8),
       created_at: data.created_at ? String(data.created_at) : undefined,
       updated_at: data.updated_at ? String(data.updated_at) : undefined,
     };
@@ -559,7 +668,7 @@ export async function updateSystemsWorkingState(input: {
 }): Promise<SystemsWorkingState> {
   const client = requireClient();
   const current = await getSystemsWorkingState();
-  const nextState = { ...current.state, ...(input.state || {}) };
+  const nextState = mergeWorkingState(current.state, input.state || {});
   if (input.current_checkpoint_id !== undefined) {
     nextState.current_checkpoint_id = input.current_checkpoint_id;
   }
@@ -574,6 +683,7 @@ export async function updateSystemsWorkingState(input: {
       version: input.version || current.version,
       status: "current",
       current_checkpoint_id: input.current_checkpoint_id !== undefined ? input.current_checkpoint_id : current.current_checkpoint_id,
+      replaces_working_state_id: current.id,
       state: nextState,
     })
     .select("*")
@@ -584,9 +694,26 @@ export async function updateSystemsWorkingState(input: {
     version: String(data.version),
     status: "current",
     current_checkpoint_id: data.current_checkpoint_id ? String(data.current_checkpoint_id) : null,
+    replaces_working_state_id: current.id,
     state: nextState,
     created_at: data.created_at ? String(data.created_at) : undefined,
   };
+}
+
+export async function listWorkingStateHistory(limit = 10): Promise<SystemsWorkingState["history"]> {
+  const client = requireClient();
+  const { data, error } = await client
+    .from("mindset_systems_working_state")
+    .select("id, version, created_at, status")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(error.message);
+  return (data || []).map((row) => ({
+    id: String(row.id),
+    version: String(row.version),
+    created_at: row.created_at ? String(row.created_at) : undefined,
+    status: row.status,
+  }));
 }
 
 export async function getSystemsModel() {
@@ -596,9 +723,14 @@ export async function getSystemsModel() {
     getSystemsWorkingState(),
   ]);
   const active = currentLineageWinner(records);
+  const interpretationLineage: Record<string, SystemsRecord[]> = {};
+  for (const row of active.filter((item) => ["interpretation", "relationship", "alternative"].includes(item.record_type))) {
+    interpretationLineage[row.id] = await lineageFor(row.id);
+  }
   return {
     checkpoint,
-    working_state: working,
+    working_state: { ...working, history: working.history || (await listWorkingStateHistory(8)) },
+    lineage: interpretationLineage,
     guardrails: [...SYSTEMS_GUARDRAILS],
     records: {
       observations: active.filter((row) => row.record_type === "observation"),

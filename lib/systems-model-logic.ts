@@ -34,6 +34,18 @@ export type RevisitItem = {
   reason: string;
 };
 
+export const GATEWAY_SOURCE_TYPES = [
+  "lesson",
+  "transcript",
+  "kb",
+  "kb-doc",
+  "context",
+  "chapter",
+  "past_paper",
+  "insight",
+  "coaching_transcript",
+] as const;
+
 export type WorkingStateBody = {
   current_checkpoint_id?: string | null;
   current_checkpoint_version?: string | null;
@@ -42,6 +54,12 @@ export type WorkingStateBody = {
     last_lesson_id?: string | null;
     position_note?: string;
   };
+  traversal_history?: {
+    last_source_id?: string | null;
+    last_lesson_id?: string | null;
+    position_note?: string;
+    at?: string;
+  }[];
   examined_deeply?: { source_id: string; note?: string }[];
   scanned?: { source_id: string; note?: string }[];
   unresolved_question_ids?: string[];
@@ -76,6 +94,7 @@ export function emptyWorkingState(): WorkingStateBody {
     current_checkpoint_id: null,
     current_checkpoint_version: null,
     traversal: { last_source_id: null, last_lesson_id: null, position_note: "" },
+    traversal_history: [],
     examined_deeply: [],
     scanned: [],
     unresolved_question_ids: [],
@@ -120,4 +139,54 @@ export function currentLineageWinner<T extends { id: string; supersedes_id?: str
 
 export function yvonneOutranks(status: string): boolean {
   return status === "yvonne_confirmed" || status === "yvonne_corrected";
+}
+
+function uniqueBy<T>(items: T[], keyFn: (item: T) => string): T[] {
+  const seen = new Set<string>();
+  const out: T[] = [];
+  for (const item of items) {
+    const key = keyFn(item);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(item);
+  }
+  return out;
+}
+
+export function mergeWorkingState(current: WorkingStateBody, patch: Partial<WorkingStateBody>): WorkingStateBody {
+  const next: WorkingStateBody = { ...current };
+  const traversalChanged =
+    patch.traversal &&
+    (patch.traversal.last_source_id !== current.traversal?.last_source_id ||
+      patch.traversal.last_lesson_id !== current.traversal?.last_lesson_id ||
+      (patch.traversal.position_note && patch.traversal.position_note !== current.traversal?.position_note));
+  if (traversalChanged && current.traversal) {
+    next.traversal_history = [
+      ...(current.traversal_history || []),
+      { ...current.traversal, at: new Date().toISOString() },
+    ].slice(-20);
+  }
+  if (patch.traversal) {
+    next.traversal = { ...(current.traversal || {}), ...patch.traversal };
+  }
+  if (patch.current_checkpoint_id !== undefined) next.current_checkpoint_id = patch.current_checkpoint_id;
+  if (patch.current_checkpoint_version !== undefined) next.current_checkpoint_version = patch.current_checkpoint_version;
+  if (patch.next_investigation !== undefined) next.next_investigation = patch.next_investigation;
+  next.examined_deeply = uniqueBy([...(current.examined_deeply || []), ...(patch.examined_deeply || [])], (item) => item.source_id);
+  next.scanned = uniqueBy([...(current.scanned || []), ...(patch.scanned || [])], (item) => item.source_id);
+  next.unresolved_question_ids = [...new Set([...(current.unresolved_question_ids || []), ...(patch.unresolved_question_ids || [])])];
+  next.alternative_ids = [...new Set([...(current.alternative_ids || []), ...(patch.alternative_ids || [])])];
+  next.contradictions = uniqueBy([...(current.contradictions || []), ...(patch.contradictions || [])], (item) => item.summary);
+  next.yvonne_clarification_needed = uniqueBy(
+    [...(current.yvonne_clarification_needed || []), ...(patch.yvonne_clarification_needed || [])],
+    (item) => `${item.record_id || ""}:${item.question}`
+  );
+  next.emerging_themes = uniqueBy([...(current.emerging_themes || []), ...(patch.emerging_themes || [])], (item) => item.theme);
+  next.revisit_queue = mergeRevisitQueue(current, patch.revisit_queue || []).revisit_queue;
+  return next;
+}
+
+export function sourceTypeFromId(sourceId: string): string | null {
+  const type = sourceId.split(":")[0];
+  return GATEWAY_SOURCE_TYPES.includes(type as (typeof GATEWAY_SOURCE_TYPES)[number]) ? type : null;
 }

@@ -62,6 +62,8 @@ create table if not exists public.mindset_systems_checkpoints (
   supporting_record_ids uuid[] not null default '{}',
   challenging_record_ids uuid[] not null default '{}',
   open_question_ids uuid[] not null default '{}',
+  informed_by_record_ids uuid[] not null default '{}',
+  provenance jsonb not null default '{}'::jsonb,
   revision_id uuid references public.mindset_systems_records(id),
   replaces_checkpoint_id uuid references public.mindset_systems_checkpoints(id),
   created_by text not null default 'ai'
@@ -88,6 +90,7 @@ create table if not exists public.mindset_systems_working_state (
   status text not null default 'current'
     check (status in ('current', 'archived')),
   current_checkpoint_id uuid references public.mindset_systems_checkpoints(id),
+  replaces_working_state_id uuid,
   state jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
