@@ -14,6 +14,7 @@ import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult
 import { findResumeLesson, isChapterSequentiallyLocked, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
+import { isMultiVideoLesson, parseLessonVideos, videoIdentity } from "@/lib/lesson-videos";
 
 const LessonPdfViewer = dynamic(() => import("@/components/LessonPdfViewer"), {
   ssr: false,
@@ -111,6 +112,8 @@ export default function StudentPlayer({
   const showSubmission = lesson.requires_submission === true || lesson.requires_coach_approval === true;
   const kind = displayLessonType(lesson);
   const isAssignmentPage = showSubmission || Boolean(lesson.is_assignment) || kind === "assignment" || kind === "upload";
+  const videos = lesson.videos?.length ? lesson.videos : parseLessonVideos(lesson.video_url);
+  const isMultiVideo = isMultiVideoLesson(kind, videos);
 
   if (!skipLocks && access.isLocked) {
     return (
@@ -150,7 +153,7 @@ export default function StudentPlayer({
 
   return (
     <>
-      {kind === "video" ? <VideoPlayer lesson={lesson} /> : null}
+      {kind === "video" && !isMultiVideo ? <VideoPlayer lesson={lesson} /> : null}
 
       <article className="lesson-body">
         {lesson.banner_image_url ? (
@@ -197,6 +200,15 @@ export default function StudentPlayer({
             {(lesson.body || []).map((paragraph, index) => (
               <p key={`${lesson.id}-body-${index}`}>{paragraph}</p>
             ))}
+            {isMultiVideo
+              ? videos.map((video, index) => (
+                  <section className="lesson-video-part" key={`${lesson.id}-video-${videoIdentity(video.url) || index}`}>
+                    {video.heading ? <h3>{video.heading}</h3> : null}
+                    <VideoPlayer lesson={lesson} src={video.url} title={video.heading || lesson.title} />
+                    {video.after ? <p>{video.after}</p> : null}
+                  </section>
+                ))
+              : null}
             {(lesson.takeaways || []).length ? (
               <div className="takeaways">
                 <h3>Takeaways</h3>

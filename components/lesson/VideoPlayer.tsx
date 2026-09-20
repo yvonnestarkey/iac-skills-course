@@ -51,7 +51,15 @@ export function embedSrcForVideo(raw?: string): string | null {
 }
 
 /** Vimeo or YouTube embed when the lesson has a player URL; otherwise a timed stand-in. */
-export default function VideoPlayer({ lesson }: { lesson: Lesson }) {
+export default function VideoPlayer({
+  lesson,
+  src,
+  title,
+}: {
+  lesson: Lesson;
+  src?: string;
+  title?: string;
+}) {
   const total = lesson.seconds || 0;
   const [elapsed, setElapsed] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -89,7 +97,8 @@ export default function VideoPlayer({ lesson }: { lesson: Lesson }) {
   };
 
   const [embedReady, setEmbedReady] = useState(false);
-  const embedSrc = embedSrcForVideo(lesson.video_url);
+  const embedSrc = embedSrcForVideo(src || lesson.video_url);
+  const label = title || lesson.title;
 
   useEffect(() => {
     setEmbedReady(false);
@@ -101,7 +110,7 @@ export default function VideoPlayer({ lesson }: { lesson: Lesson }) {
   if (embedSrc) {
     const isYouTube = embedSrc.includes("youtube.com/embed/");
     return (
-      <div className="player" id="player">
+      <div className="player" id={src ? undefined : "player"}>
         {embedReady ? (
           <iframe
             src={embedSrc}
@@ -113,7 +122,7 @@ export default function VideoPlayer({ lesson }: { lesson: Lesson }) {
                 : "autoplay; fullscreen"
             }
             allowFullScreen
-            title={lesson.title}
+            title={label}
           />
         ) : (
           <div className="player-skeleton" aria-busy="true" aria-label="Loading video" />

@@ -11,6 +11,7 @@ import { withComputedDuration } from "./lesson-duration";
 import { getLessonPdfUrl } from "./getLessonPdf";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
+import { firstLessonVideoUrl, parseLessonVideos, type LessonVideo } from "./lesson-videos";
 import { asLessonType, displayLessonType, lessonIsAssignment } from "./lesson-type";
 import { fetchSurveyAssignmentFlags } from "./custom-surveys";
 import type { UserProfile } from "../types/database";
@@ -28,6 +29,7 @@ export interface StudentLesson {
   estimated_read_minutes?: number;
   duration_minutes?: number;
   video_url?: string;
+  videos?: LessonVideo[];
   blurb?: string;
   body?: string[];
   takeaways?: string[];
@@ -84,23 +86,6 @@ const OUTLINE_STORAGE_KEY = "iac-course-outline-v2";
 type OutlineCacheEntry = { at: number; data: OutlineChapter[] };
 let memoryOutline: OutlineCacheEntry | null = null;
 
-function firstVideoUrl(...values: unknown[]): string | undefined {
-  const urls: string[] = [];
-  const collect = (value: unknown) => {
-    if (typeof value === "string" && value.trim()) urls.push(value.trim());
-    else if (Array.isArray(value)) value.forEach(collect);
-  };
-  values.forEach(collect);
-  return (
-    urls.find(
-      (url) =>
-        url.includes("player.vimeo.com") ||
-        url.includes("youtube.com") ||
-        url.includes("youtu.be")
-    ) || urls[0]
-  );
-}
-
 function asStringList(value: unknown): string[] | undefined {
   if (Array.isArray(value)) return value.map((item) => String(item)).filter(Boolean);
   if (typeof value === "string" && value.trim()) {
@@ -131,6 +116,7 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     .flatMap((chapter) => chapter.lessons)
     .find((item) => item.id === lesson.id);
   const pdf_url = getLessonPdfUrl(lesson);
+  const videos = parseLessonVideos(lesson.video_url, (lesson as { video_urls?: unknown }).video_urls);
   return {
     id: lesson.id,
     type: displayLessonType({ ...lesson, pdf_url }),
@@ -139,6 +125,8 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     chapterTitle: lesson.chapter.title,
     duration: lesson.duration,
     seconds: lesson.seconds,
+    video_url: videos[0]?.url || lesson.video_url,
+    videos,
     blurb: lesson.blurb,
     body: lesson.body,
     takeaways: lesson.takeaways,
@@ -586,7 +574,8 @@ export async function fetchStudentLesson(
           video_duration_seconds: data.video_duration_seconds || undefined,
           estimated_read_minutes: data.estimated_read_minutes || undefined,
           duration_minutes: data.duration_minutes || undefined,
-          video_url: firstVideoUrl(data.video_url, data.video_urls),
+          video_url: firstLessonVideoUrl(data.video_url, data.video_urls),
+          videos: parseLessonVideos(data.video_url, data.video_urls),
           blurb: data.blurb || undefined,
           body: asStringList(data.body),
           takeaways: asStringList(data.takeaways),

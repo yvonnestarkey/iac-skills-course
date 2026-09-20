@@ -773,6 +773,19 @@ h1 {
   font-size: 15.5px;
 }
 
+.lesson-video-part {
+  margin: 28px 0 8px;
+}
+
+.lesson-video-part h3 {
+  font-size: 20px;
+  margin: 0 0 12px;
+}
+
+.lesson-video-part .player {
+  margin: 0 0 16px;
+}
+
 .takeaways {
   background: var(--sand);
   border: 1px solid var(--sand-line);
