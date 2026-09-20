@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: IAC Skills Course GPT API
-  version: 1.0.6
+  version: 1.0.7
   description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT Action.
 servers:
   - url: https://iac.accountingstudyadvice.com
@@ -414,6 +414,392 @@ paths:
                     $ref: "#/components/schemas/MindsetSandboxContextRecord"
         "500":
           description: Could not load Mindset Sandbox context
+  /api/mindset-sandbox/systems/model:
+    get:
+      operationId: getSystemsModel
+      summary: Get the current systems model
+      description: Read-only. Returns the current checkpoint, active records, lineage, guardrails and working state. Empty until a checkpoint exists. No student data, SQL, or source-document copies.
+      responses:
+        "200":
+          description: Current systems model
+        "503":
+          description: Systems model tables are not installed
+        "500":
+          description: Could not load the systems model
+  /api/mindset-sandbox/systems/evidence:
+    get:
+      operationId: getSystemsModelEvidence
+      summary: Get systems-model evidence and provenance
+      description: Read-only. Resolves gateway source IDs cited by a record, or by current observations/interpretations if record_id is omitted. Does not copy source archives.
+      parameters:
+        - name: record_id
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Record evidence with source references
+        "503":
+          description: Systems model tables are not installed
+        "500":
+          description: Could not load systems evidence
+  /api/mindset-sandbox/systems/observations:
+    post:
+      operationId: addSystemsObservation
+      summary: Record a source-backed observation
+      description: Creates a source_observation. Requires at least one knowledge-gateway source_id such as lesson:ch3-l2, transcript:{id}, kb:{id}, or context:project_canon.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - title
+                - statement
+                - source_refs
+              properties:
+                title:
+                  type: string
+                statement:
+                  type: string
+                rationale:
+                  type: string
+                source_refs:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SystemsSourceRef"
+      responses:
+        "201":
+          description: Created observation
+        "400":
+          description: Missing fields or invalid source_id
+        "503":
+          description: Systems model tables are not installed
+  /api/mindset-sandbox/systems/interpretations:
+    post:
+      operationId: upsertSystemsInterpretation
+      summary: Add or update a provisional systems interpretation
+      description: Creates an interpretation, relationship, or alternative. Cite multiple gateway source types. Locked records create lineage instead of silent overwrite. Not parented to a lesson.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - title
+                - statement
+              properties:
+                id:
+                  type: string
+                kind:
+                  type: string
+                  enum:
+                    - interpretation
+                    - relationship
+                    - alternative
+                title:
+                  type: string
+                statement:
+                  type: string
+                rationale:
+                  type: string
+                source_refs:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SystemsSourceRef"
+                supports_record_ids:
+                  type: array
+                  items:
+                    type: string
+                challenges_record_ids:
+                  type: array
+                  items:
+                    type: string
+                related_record_ids:
+                  type: array
+                  items:
+                    type: string
+                needs_yvonne_review:
+                  type: boolean
+      responses:
+        "200":
+          description: Updated disposable draft
+        "201":
+          description: Created interpretation
+        "400":
+          description: Invalid interpretation
+        "503":
+          description: Systems model tables are not installed
+  /api/mindset-sandbox/systems/revisions:
+    post:
+      operationId: recordSystemsRevision
+      summary: Record a systems-model revision
+      description: Supersedes a prior record without deleting it, writes the revised understanding, and can append earlier sources to the revisit queue.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - target_id
+                - revised_understanding
+                - systems_why
+                - trigger
+              properties:
+                target_id:
+                  type: string
+                title:
+                  type: string
+                previous_understanding:
+                  type: string
+                revised_understanding:
+                  type: string
+                systems_why:
+                  type: string
+                trigger:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - note
+                  properties:
+                    note:
+                      type: string
+                    source_ids:
+                      type: array
+                      items:
+                        type: string
+                    record_ids:
+                      type: array
+                      items:
+                        type: string
+                revisit:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: false
+                    required:
+                      - reason
+                    properties:
+                      reason:
+                        type: string
+                      source_id:
+                        type: string
+                      record_id:
+                        type: string
+                unresolved_implications:
+                  type: string
+                needs_yvonne_review:
+                  type: boolean
+      responses:
+        "201":
+          description: Revision recorded
+        "400":
+          description: Invalid revision
+        "503":
+          description: Systems model tables are not installed
+  /api/mindset-sandbox/systems/yvonne-review:
+    post:
+      operationId: recordYvonneSystemsReview
+      summary: Record a Yvonne confirmation or correction
+      description: Creates a Yvonne successor and review event. The AI hypothesis remains stored as an AI hypothesis with lifecycle superseded.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - target_id
+                - action
+              properties:
+                target_id:
+                  type: string
+                action:
+                  type: string
+                  enum:
+                    - confirm
+                    - correct
+                statement:
+                  type: string
+                rationale:
+                  type: string
+                title:
+                  type: string
+      responses:
+        "201":
+          description: Yvonne review recorded
+        "400":
+          description: Invalid review
+        "503":
+          description: Systems model tables are not installed
+  /api/mindset-sandbox/systems/questions:
+    post:
+      operationId: upsertSystemsQuestion
+      summary: Add or update an unresolved question
+      description: Creates or updates an unresolved systems question. Competing explanations use upsertSystemsInterpretation with kind=alternative.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - title
+                - statement
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+                statement:
+                  type: string
+                related_record_ids:
+                  type: array
+                  items:
+                    type: string
+                source_refs:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SystemsSourceRef"
+                resolved:
+                  type: boolean
+      responses:
+        "201":
+          description: Question saved
+        "400":
+          description: Invalid question
+        "503":
+          description: Systems model tables are not installed
+  /api/mindset-sandbox/systems/checkpoints:
+    get:
+      operationId: getCurrentSystemsCheckpoint
+      summary: Get the current systems-model checkpoint
+      description: Read-only. Returns the current integrated house snapshot, or null if none exists.
+      responses:
+        "200":
+          description: Current checkpoint
+        "503":
+          description: Systems model tables are not installed
+        "500":
+          description: Could not load checkpoint
+    post:
+      operationId: createSystemsCheckpoint
+      summary: Create a systems-model checkpoint
+      description: Archives the previous current checkpoint and stores the new integrated understanding with provenance.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - version
+                - title
+                - synthesis
+              properties:
+                version:
+                  type: string
+                title:
+                  type: string
+                synthesis:
+                  type: string
+                model:
+                  type: object
+                  additionalProperties: true
+                supporting_record_ids:
+                  type: array
+                  items:
+                    type: string
+                challenging_record_ids:
+                  type: array
+                  items:
+                    type: string
+                open_question_ids:
+                  type: array
+                  items:
+                    type: string
+                informed_by_record_ids:
+                  type: array
+                  items:
+                    type: string
+                revision_id:
+                  type: string
+      responses:
+        "201":
+          description: Checkpoint created
+        "400":
+          description: Invalid checkpoint
+        "503":
+          description: Systems model tables are not installed
+  /api/mindset-sandbox/systems/checkpoints/{id}:
+    get:
+      operationId: getSystemsCheckpoint
+      summary: Get one systems-model checkpoint
+      description: Read-only. Retrieve a specific checkpoint by id, including archived versions.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Checkpoint
+        "404":
+          description: Checkpoint not found
+        "503":
+          description: Systems model tables are not installed
+        "500":
+          description: Could not load checkpoint
+  /api/mindset-sandbox/systems/working-state:
+    get:
+      operationId: getSystemsWorkingState
+      summary: Get systems-model working research state
+      description: Read-only. Returns traversal position, revisit queue, unresolved questions, alternatives, and working-state version history. Not last_lesson_id alone.
+      responses:
+        "200":
+          description: Current working research state
+        "503":
+          description: Systems model tables are not installed
+        "500":
+          description: Could not load working state
+    patch:
+      operationId: updateSystemsWorkingState
+      summary: Update systems-model working research state
+      description: Merges into the current working state and archives the previous version. Lists append; they are not replaced.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                version:
+                  type: string
+                current_checkpoint_id:
+                  type: string
+                  nullable: true
+                state:
+                  type: object
+                  additionalProperties: true
+      responses:
+        "200":
+          description: Updated working state
+        "400":
+          description: Invalid working state
+        "503":
+          description: Systems model tables are not installed
 components:
   schemas:
     MindsetSandboxContextRecord:
@@ -440,4 +826,19 @@ components:
         updated_at:
           type: string
         content:
+          type: string
+    SystemsSourceRef:
+      type: object
+      additionalProperties: false
+      required:
+        - source_id
+      properties:
+        source_id:
+          type: string
+          description: Knowledge-gateway ID, for example lesson:ch3-l2, transcript/{id} as transcript:uuid, kb:uuid, context:project_canon
+        source_type:
+          type: string
+        location:
+          type: string
+        excerpt:
           type: string

@@ -18,7 +18,8 @@
     "import:vtt": "tsx scripts/import-manual-vtt.ts",
     "validate:knowledge": "tsx scripts/validate-knowledge-gateway.ts",
     "validate:research-paper": "tsx scripts/validate-pipeline-leak-research.ts",
-    "validate:systems-model": "tsx scripts/validate-systems-model.ts"
+    "validate:systems-model": "tsx scripts/validate-systems-model.ts",
+    "validate:openapi": "tsx scripts/validate-openapi.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
