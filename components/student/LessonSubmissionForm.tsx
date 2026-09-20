@@ -19,12 +19,14 @@ export default function LessonSubmissionForm({
   requiresCoachApproval,
   saved,
   onSaved,
+  practiceOnly = false,
 }: {
   lessonId: string;
   studentId: string;
   requiresCoachApproval: boolean;
   saved?: StudentSubmission | null;
-  onSaved?: (submission: StudentSubmission) => void;
+  onSaved?: (submission?: StudentSubmission) => void;
+  practiceOnly?: boolean;
 }) {
   const [body, setBody] = useState(saved?.body || "");
   const [linkUrl, setLinkUrl] = useState(saved?.link_url || "");
@@ -66,7 +68,34 @@ export default function LessonSubmissionForm({
     setStatus("PDF uploaded. Complete the BMCR, then submit.");
   };
 
+  const savePracticeBmcr = async () => {
+    if (!hasBmcrData(bmcr) && !hasBmcrDiagnostics(bmcr)) {
+      setStatus("Enter your marks before saving the BMCR.");
+      return;
+    }
+    setBusy(true);
+    setStatus("");
+    const bmcrResult = await saveBmcrEvaluation({
+      studentId,
+      assignmentId: lessonId,
+      marks: bmcr,
+      existingId: bmcrId,
+    });
+    if (bmcrResult.evaluation?.id) setBmcrId(bmcrResult.evaluation.id);
+    setBusy(false);
+    if (!bmcrResult.ok) {
+      setStatus(bmcrResult.error || "Could not save the BMCR.");
+      return;
+    }
+    onSaved?.();
+    setStatus("BMCR saved. You do not need to upload this attempt.");
+  };
+
   const submit = async () => {
+    if (practiceOnly) {
+      await savePracticeBmcr();
+      return;
+    }
     if (!linkUrl.trim()) {
       setStatus("Upload your PDF before submitting.");
       return;
@@ -101,8 +130,11 @@ export default function LessonSubmissionForm({
     );
   };
 
-  const label =
-    saved?.status === "approved"
+  const label = practiceOnly
+    ? bmcrId
+      ? "Update BMCR"
+      : "Save BMCR"
+    : saved?.status === "approved"
       ? "Approved"
       : saved?.status === "rejected"
         ? "Returned — update and resubmit"
@@ -112,42 +144,48 @@ export default function LessonSubmissionForm({
 
   return (
     <section className="submission-form" aria-labelledby="submission-heading">
-      <h2 id="submission-heading">Submission</h2>
-      {requiresCoachApproval ? (
+      <h2 id="submission-heading">{practiceOnly ? "BMCR Calculator" : "Submission"}</h2>
+      {practiceOnly ? (
+        <p className="muted">You do not need to upload this attempt. Enter marks from your marked attempt so you can see Basic Marks % and BMCR.</p>
+      ) : requiresCoachApproval ? (
         <p className="muted">Your coach must approve this before later lessons unlock.</p>
       ) : (
         <p className="muted">Upload your marked PDF and complete the BMCR.</p>
       )}
-      {saved?.status === "approved" ? <p className="notice">Your coach approved this submission.</p> : null}
-      {saved?.status === "rejected" ? <p className="notice">Your coach asked for an update. Resubmit when you are ready.</p> : null}
-      {saved?.status === "submitted" && requiresCoachApproval ? (
+      {practiceOnly ? null : saved?.status === "approved" ? <p className="notice">Your coach approved this submission.</p> : null}
+      {practiceOnly ? null : saved?.status === "rejected" ? <p className="notice">Your coach asked for an update. Resubmit when you are ready.</p> : null}
+      {!practiceOnly && saved?.status === "submitted" && requiresCoachApproval ? (
         <p className="notice">Waiting for coach approval.</p>
       ) : null}
 
-      <label className="student-notes-label" htmlFor="submission-file">
-        PDF upload
-      </label>
-      <input
-        id="submission-file"
-        type="file"
-        accept="application/pdf,.pdf"
-        disabled={busy}
-        onChange={(event) => {
-          void pickFile(event.target.files?.[0]);
-          event.target.value = "";
-        }}
-      />
-      {linkUrl ? (
-        <p className="muted small">
-          {fileName ? <strong>{fileName} </strong> : null}
-          <a href={linkUrl} target="_blank" rel="noopener noreferrer">
-            View uploaded PDF
-          </a>
-        </p>
-      ) : null}
+      {practiceOnly ? null : (
+        <>
+          <label className="student-notes-label" htmlFor="submission-file">
+            PDF upload
+          </label>
+          <input
+            id="submission-file"
+            type="file"
+            accept="application/pdf,.pdf"
+            disabled={busy}
+            onChange={(event) => {
+              void pickFile(event.target.files?.[0]);
+              event.target.value = "";
+            }}
+          />
+          {linkUrl ? (
+            <p className="muted small">
+              {fileName ? <strong>{fileName} </strong> : null}
+              <a href={linkUrl} target="_blank" rel="noopener noreferrer">
+                View uploaded PDF
+              </a>
+            </p>
+          ) : null}
 
-      <h3 className="bmcr-submission-heading">BMCR Calculator</h3>
-      <p className="muted small">Optional. Enter marks from your marked attempt. Basic Marks % and BMCR update as you type.</p>
+          <h3 className="bmcr-submission-heading">BMCR Calculator</h3>
+          <p className="muted small">Optional. Enter marks from your marked attempt. Basic Marks % and BMCR update as you type.</p>
+        </>
+      )}
       <BmcrCalculator value={bmcr} onChange={setBmcr} idPrefix={`submission-${lessonId}`} />
 
       {status ? <p className="notice">{status}</p> : null}

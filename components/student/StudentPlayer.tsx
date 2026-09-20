@@ -236,14 +236,15 @@ export default function StudentPlayer({
                 </div>
               </>
             )}
-            {showSubmission && user ? (
+            {isAssignmentPage && user ? (
               <LessonSubmissionForm
                 lessonId={lesson.id}
                 studentId={user.id}
                 requiresCoachApproval={Boolean(lesson.requires_coach_approval)}
+                practiceOnly={!showSubmission}
                 saved={submissions[lesson.id]}
                 onSaved={(submission) => {
-                  setSubmission(lesson.id, submission);
+                  if (submission) setSubmission(lesson.id, submission);
                   setCompleted(true);
                   setLessonCompleted(lesson.id, true);
                   persist({ completed: true, notes }, true);
