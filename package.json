@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test lib/lesson-videos.test.ts lib/vimeo-captions.test.ts",
+    "test": "tsx --test lib/lesson-videos.test.ts lib/vimeo-captions.test.ts lib/systems-model-logic.test.ts",
     "scrape:thinkific": "tsx scripts/scrape-thinkific.ts",
     "seed:supabase": "tsx scripts/seed-supabase.ts",
     "ingest:docs": "tsx scripts/ingest-docs.ts",
@@ -17,7 +17,8 @@
     "sync:transcripts": "tsx scripts/sync-vimeo-transcripts.ts",
     "import:vtt": "tsx scripts/import-manual-vtt.ts",
     "validate:knowledge": "tsx scripts/validate-knowledge-gateway.ts",
-    "validate:research-paper": "tsx scripts/validate-pipeline-leak-research.ts"
+    "validate:research-paper": "tsx scripts/validate-pipeline-leak-research.ts",
+    "validate:systems-model": "tsx scripts/validate-systems-model.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
