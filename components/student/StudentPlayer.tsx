@@ -110,6 +110,7 @@ export default function StudentPlayer({
   const resume = findResumeLesson(ordered, completedMap);
   const showSubmission = lesson.requires_submission === true || lesson.requires_coach_approval === true;
   const kind = displayLessonType(lesson);
+  const isAssignmentPage = showSubmission || Boolean(lesson.is_assignment) || kind === "assignment" || kind === "upload";
 
   if (!skipLocks && access.isLocked) {
     return (
@@ -209,28 +210,32 @@ export default function StudentPlayer({
 
             <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
 
-            <label className="student-notes-label" htmlFor="student-notes">
-              Your notes
-            </label>
-            <textarea
-              id="student-notes"
-              rows={6}
-              placeholder="Write notes for this lesson…"
-              value={notes}
-              onChange={(event) => onNotesChange(event.target.value)}
-              onBlur={() => persist({ completed, notes }, true)}
-            />
+            {isAssignmentPage ? null : (
+              <>
+                <label className="student-notes-label" htmlFor="student-notes">
+                  Your notes
+                </label>
+                <textarea
+                  id="student-notes"
+                  rows={6}
+                  placeholder="Write notes for this lesson…"
+                  value={notes}
+                  onChange={(event) => onNotesChange(event.target.value)}
+                  onBlur={() => persist({ completed, notes }, true)}
+                />
 
-            <div className="actions">
-              <button className={completed ? "ghost" : "primary"} type="button" onClick={markComplete}>
-                {completed ? "Completed ✓" : "Mark as complete"}
-              </button>
-              {lesson.next ? (
-                <Link className="ghost" href={`${basePath}/${lesson.next.id}`}>
-                  Next: {lesson.next.title} →
-                </Link>
-              ) : null}
-            </div>
+                <div className="actions">
+                  <button className={completed ? "ghost" : "primary"} type="button" onClick={markComplete}>
+                    {completed ? "Completed ✓" : "Mark as complete"}
+                  </button>
+                  {lesson.next ? (
+                    <Link className="ghost" href={`${basePath}/${lesson.next.id}`}>
+                      Next: {lesson.next.title} →
+                    </Link>
+                  ) : null}
+                </div>
+              </>
+            )}
             {showSubmission && user ? (
               <LessonSubmissionForm
                 lessonId={lesson.id}
@@ -245,10 +250,22 @@ export default function StudentPlayer({
                 }}
               />
             ) : null}
-            {lesson.type === "ask" || showSubmission ? (
+            {isAssignmentPage ? (
+              <div className="actions">
+                {lesson.next ? (
+                  <Link className="primary" href={`${basePath}/${lesson.next.id}`}>
+                    Next: {lesson.next.title} →
+                  </Link>
+                ) : (
+                  <Link className="ghost" href={`${basePath}/dashboard`}>
+                    Back to dashboard
+                  </Link>
+                )}
+              </div>
+            ) : lesson.type === "ask" ? (
               <StudentCoachThread
                 compact
-                title={lesson.type === "ask" ? "Ask the Coach" : "Message your coach about this work"}
+                title="Ask the Coach"
                 context={`${lesson.chapterTitle} · ${lesson.title}`}
                 lessonId={lesson.id}
               />

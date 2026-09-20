@@ -11,7 +11,7 @@ import {
   withDiagnostics,
   type BmcrValue,
 } from "@/lib/bmcr";
-import { saveStudentSubmission, type StudentSubmission } from "@/lib/student-submissions";
+import { saveStudentSubmission, uploadAssignmentFile, type StudentSubmission } from "@/lib/student-submissions";
 
 export default function LessonSubmissionForm({
   lessonId,
@@ -28,6 +28,7 @@ export default function LessonSubmissionForm({
 }) {
   const [body, setBody] = useState(saved?.body || "");
   const [linkUrl, setLinkUrl] = useState(saved?.link_url || "");
+  const [fileName, setFileName] = useState("");
   const [bmcr, setBmcr] = useState<BmcrValue>(EMPTY_BMCR_VALUE);
   const [bmcrId, setBmcrId] = useState<string | undefined>();
   const [status, setStatus] = useState("");
@@ -50,9 +51,24 @@ export default function LessonSubmissionForm({
     };
   }, [studentId, lessonId]);
 
+  const pickFile = async (file: File | undefined) => {
+    if (!file) return;
+    setBusy(true);
+    setStatus("");
+    const result = await uploadAssignmentFile(studentId, lessonId, file);
+    setBusy(false);
+    if (result.ok === false) {
+      setStatus(result.error);
+      return;
+    }
+    setLinkUrl(result.url);
+    setFileName(result.name);
+    setStatus("PDF uploaded. Complete the BMCR, then submit.");
+  };
+
   const submit = async () => {
-    if (!body.trim() && !linkUrl.trim()) {
-      setStatus("Add your written work or a link before submitting.");
+    if (!linkUrl.trim()) {
+      setStatus("Upload your PDF before submitting.");
       return;
     }
     setBusy(true);
@@ -100,7 +116,7 @@ export default function LessonSubmissionForm({
       {requiresCoachApproval ? (
         <p className="muted">Your coach must approve this before later lessons unlock.</p>
       ) : (
-        <p className="muted">Submit written work, a link to a file, or both.</p>
+        <p className="muted">Upload your marked PDF and complete the BMCR.</p>
       )}
       {saved?.status === "approved" ? <p className="notice">Your coach approved this submission.</p> : null}
       {saved?.status === "rejected" ? <p className="notice">Your coach asked for an update. Resubmit when you are ready.</p> : null}
@@ -108,28 +124,27 @@ export default function LessonSubmissionForm({
         <p className="notice">Waiting for coach approval.</p>
       ) : null}
 
-      <label className="student-notes-label" htmlFor="submission-body">
-        Written response
-      </label>
-      <textarea
-        id="submission-body"
-        rows={8}
-        placeholder="Type your working here…"
-        value={body}
-        onChange={(event) => setBody(event.target.value)}
-      />
-
-      <label className="student-notes-label" htmlFor="submission-link">
-        Link to your file (optional)
+      <label className="student-notes-label" htmlFor="submission-file">
+        PDF upload
       </label>
       <input
-        id="submission-link"
-        type="url"
-        className="select-line"
-        placeholder="https://"
-        value={linkUrl}
-        onChange={(event) => setLinkUrl(event.target.value)}
+        id="submission-file"
+        type="file"
+        accept="application/pdf,.pdf"
+        disabled={busy}
+        onChange={(event) => {
+          void pickFile(event.target.files?.[0]);
+          event.target.value = "";
+        }}
       />
+      {linkUrl ? (
+        <p className="muted small">
+          {fileName ? <strong>{fileName} </strong> : null}
+          <a href={linkUrl} target="_blank" rel="noopener noreferrer">
+            View uploaded PDF
+          </a>
+        </p>
+      ) : null}
 
       <h3 className="bmcr-submission-heading">BMCR Calculator</h3>
       <p className="muted small">Optional. Enter marks from your marked attempt. Basic Marks % and BMCR update as you type.</p>

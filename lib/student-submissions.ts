@@ -107,6 +107,25 @@ export async function fetchLessonSubmission(
   return submissionFromRow(data);
 }
 
+export async function uploadAssignmentFile(
+  studentId: string,
+  lessonId: string,
+  file: File
+): Promise<{ ok: true; url: string; name: string } | { ok: false; error: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const safeName = file.name.replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || "submission.pdf";
+  const path = `assignment-submissions/${studentId}/${lessonId}/${Date.now()}-${safeName}`;
+  const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
+    upsert: true,
+    contentType: file.type || "application/pdf",
+  });
+  if (uploaded.error) return { ok: false, error: "Could not upload that file. Try a PDF." };
+  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
+  if (!data?.publicUrl) return { ok: false, error: "Could not get a URL for that file." };
+  return { ok: true, url: data.publicUrl, name: file.name };
+}
+
 export async function saveStudentSubmission(input: {
   studentId: string;
   lessonId: string;
