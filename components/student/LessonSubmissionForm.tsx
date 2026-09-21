@@ -11,7 +11,13 @@ import {
   withDiagnostics,
   type BmcrValue,
 } from "@/lib/bmcr";
-import { saveStudentSubmission, uploadAssignmentFile, type StudentSubmission } from "@/lib/student-submissions";
+import {
+  copyPickedFile,
+  fileNameFromUrl,
+  saveStudentSubmission,
+  uploadAssignmentFile,
+  type StudentSubmission,
+} from "@/lib/student-submissions";
 
 export default function LessonSubmissionForm({
   lessonId,
@@ -39,6 +45,7 @@ export default function LessonSubmissionForm({
   useEffect(() => {
     setBody(saved?.body || "");
     setLinkUrl(saved?.link_url || "");
+    setFileName(saved?.link_url ? fileNameFromUrl(saved.link_url) : "");
   }, [lessonId, saved?.body, saved?.link_url]);
 
   useEffect(() => {
@@ -55,8 +62,9 @@ export default function LessonSubmissionForm({
 
   const pickFile = async (file: File | undefined) => {
     if (!file) return;
+    setFileName(file.name);
     setBusy(true);
-    setStatus("");
+    setStatus("Uploading PDF…");
     const result = await uploadAssignmentFile(studentId, lessonId, file);
     setBusy(false);
     if (result.ok === false) {
@@ -160,27 +168,37 @@ export default function LessonSubmissionForm({
 
       {practiceOnly ? null : (
         <>
-          <label className="student-notes-label" htmlFor="submission-file">
-            PDF upload
-          </label>
-          <input
-            id="submission-file"
-            type="file"
-            accept="application/pdf,.pdf"
-            disabled={busy}
-            onChange={(event) => {
-              void pickFile(event.target.files?.[0]);
-              event.target.value = "";
-            }}
-          />
           {linkUrl ? (
-            <p className="muted small">
-              {fileName ? <strong>{fileName} </strong> : null}
-              <a href={linkUrl} target="_blank" rel="noopener noreferrer">
-                View uploaded PDF
+            <div className="file-card">
+              <span className="file-icon">PDF</span>
+              <div className="file-meta">
+                <strong>{fileName || "Uploaded PDF"}</strong>
+                <span className="muted small">Ready to submit</span>
+              </div>
+              <a className="ghost" href={linkUrl} target="_blank" rel="noopener noreferrer">
+                Open PDF
               </a>
-            </p>
+            </div>
           ) : null}
+          <label className="dropzone" htmlFor="submission-file">
+            <strong>{linkUrl ? "Replace your PDF" : "Choose a PDF to upload"}</strong>
+            <span className="muted small">{busy ? "Uploading…" : "PDF only · scans are fine"}</span>
+            {fileName && !linkUrl ? <span className="muted small">Selected: {fileName}</span> : null}
+            <input
+              id="submission-file"
+              type="file"
+              accept="application/pdf,.pdf"
+              disabled={busy}
+              onChange={(event) => {
+                const chosen = event.target.files?.[0];
+                if (!chosen) return;
+                const copy = copyPickedFile(chosen);
+                event.target.value = "";
+                void pickFile(copy);
+              }}
+            />
+          </label>
+          {status ? <p className="notice">{status}</p> : null}
 
           <h3 className="bmcr-submission-heading">BMCR Calculator</h3>
           <p className="muted small">Optional. Enter marks from your marked attempt. Basic Marks % and BMCR update as you type.</p>

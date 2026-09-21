@@ -533,8 +533,14 @@ function SurveyPdfUploadField({
           accept="application/pdf,.pdf"
           disabled={busy}
           onChange={(event) => {
-            void pick(event.target.files && event.target.files[0]);
+            const chosen = event.target.files && event.target.files[0];
+            if (!chosen) return;
+            const copy = new File([chosen], chosen.name, {
+              type: chosen.type || "application/pdf",
+              lastModified: chosen.lastModified,
+            });
             event.target.value = "";
+            void pick(copy);
           }}
         />
       </label>

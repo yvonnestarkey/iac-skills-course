@@ -107,6 +107,33 @@ export async function fetchLessonSubmission(
   return submissionFromRow(data);
 }
 
+function isPdfFile(file: File): boolean {
+  return file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+}
+
+function storageUploadError(message: string): string {
+  if (/row-level security|not allowed|policy|unauthorized|403/i.test(message)) {
+    return "Could not store that PDF. Paste supabase/assignment-upload-storage.sql in the Supabase SQL editor, then try again.";
+  }
+  return message || "Could not upload that file.";
+}
+
+export function copyPickedFile(file: File): File {
+  return new File([file], file.name, {
+    type: file.type || "application/pdf",
+    lastModified: file.lastModified,
+  });
+}
+
+export function fileNameFromUrl(url: string): string {
+  try {
+    const last = decodeURIComponent(new URL(url).pathname.split("/").pop() || "");
+    return last.replace(/^\d+-/, "") || "Uploaded PDF";
+  } catch {
+    return "Uploaded PDF";
+  }
+}
+
 export async function uploadAssignmentFile(
   studentId: string,
   lessonId: string,
@@ -114,16 +141,27 @@ export async function uploadAssignmentFile(
 ): Promise<{ ok: true; url: string; name: string } | { ok: false; error: string }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
+  if (!isPdfFile(file)) return { ok: false, error: "Please upload a PDF file." };
   const safeName = file.name.replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || "submission.pdf";
-  const path = `assignment-submissions/${studentId}/${lessonId}/${Date.now()}-${safeName}`;
-  const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
-    upsert: true,
-    contentType: file.type || "application/pdf",
-  });
-  if (uploaded.error) return { ok: false, error: "Could not upload that file. Try a PDF." };
-  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
-  if (!data?.publicUrl) return { ok: false, error: "Could not get a URL for that file." };
-  return { ok: true, url: data.publicUrl, name: file.name };
+  const stamp = Date.now();
+  const paths = [
+    `assignment-submissions/${studentId}/${lessonId}/${stamp}-${safeName}`,
+    `survey-responses/assignment-submissions/${studentId}/${lessonId}/${stamp}-${safeName}`,
+  ];
+  let lastError = "";
+  for (const path of paths) {
+    const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
+      upsert: true,
+      contentType: file.type || "application/pdf",
+    });
+    if (!uploaded.error) {
+      const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
+      if (!data?.publicUrl) return { ok: false, error: "Could not get a URL for that file." };
+      return { ok: true, url: data.publicUrl, name: file.name };
+    }
+    lastError = uploaded.error.message || lastError;
+  }
+  return { ok: false, error: storageUploadError(lastError) };
 }
 
 export async function saveStudentSubmission(input: {
