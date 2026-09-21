@@ -80,7 +80,7 @@ test("duplicate URL pairs stay on the single-video layout", () => {
   assert.equal(isMultiVideoLesson("reading", parseLessonVideos(["https://player.vimeo.com/video/1", "https://player.vimeo.com/video/2"])), false);
   assert.equal(
     isMultiVideoLesson("video", [{ url: "https://player.vimeo.com/video/868628532", heading: "Study Cowboy" }]),
-    true
+    false
   );
 });
 

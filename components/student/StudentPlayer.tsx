@@ -157,7 +157,9 @@ export default function StudentPlayer({
 
   return (
     <>
-      {kind === "video" && !isMultiVideo && !isCheckpoint ? <VideoPlayer lesson={lesson} /> : null}
+      {kind === "video" && !isMultiVideo && !isCheckpoint ? (
+        <VideoPlayer lesson={lesson} src={videos[0]?.url} />
+      ) : null}
 
       <article className="lesson-body">
         {lesson.banner_image_url ? (

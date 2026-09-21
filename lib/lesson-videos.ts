@@ -69,7 +69,7 @@ export function firstLessonVideoUrl(...values: unknown[]): string | undefined {
 }
 
 export function isMultiVideoLesson(type: string | undefined, videos: LessonVideo[]): boolean {
-  return type === "video" && (videos.length > 1 || Boolean(videos[0]?.heading));
+  return type === "video" && videos.length > 1;
 }
 
 /** Visible accordion label. Uses the stored heading when present; does not invent content titles. */
