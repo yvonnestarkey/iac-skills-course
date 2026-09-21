@@ -12,6 +12,7 @@ import { readFileSync, existsSync } from "node:fs";
 import path from "node:path";
 import { createClient } from "@supabase/supabase-js";
 import { defaultMinutesForType } from "../lib/lesson-duration";
+import { parseLessonVideos } from "../lib/lesson-videos";
 
 const ROOT = process.cwd();
 const JSON_FILE = path.join(ROOT, "iac-skills-course.json");
@@ -21,8 +22,10 @@ interface ScrapedLesson {
   id: string;
   type: string;
   title: string;
-  videoUrls?: string[];
+  videoUrls?: unknown;
   body?: string[];
+  blurb?: string;
+  takeaways?: string[];
   thinkificUrl?: string;
   pdf_url?: string;
 }
@@ -56,16 +59,8 @@ function loadEnvLocal() {
   }
 }
 
-function uniqueVideos(urls: string[] | undefined): string[] {
-  const seen = new Set<string>();
-  const out: string[] = [];
-  for (const raw of urls || []) {
-    const url = raw.split("?")[0];
-    if (!url || seen.has(url)) continue;
-    seen.add(url);
-    out.push(raw);
-  }
-  return out;
+function uniqueVideos(urls: unknown) {
+  return parseLessonVideos(urls);
 }
 
 async function main() {
@@ -109,9 +104,9 @@ async function main() {
         video_duration_seconds: type === "video" ? durationMinutes * 60 : null,
         estimated_read_minutes: type === "reading" ? durationMinutes : null,
         duration_minutes: durationMinutes,
-        blurb: body[0] || null,
+        blurb: lesson.blurb || body[0] || null,
         body,
-        takeaways: [] as string[],
+        takeaways: lesson.takeaways || [],
         due: null as string | null,
         brief: null as string | null,
         video_urls: videoUrls,

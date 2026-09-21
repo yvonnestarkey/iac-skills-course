@@ -14,7 +14,8 @@ import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult
 import { findResumeLesson, isChapterSequentiallyLocked, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
-import { isMultiVideoLesson, parseLessonVideos, videoIdentity } from "@/lib/lesson-videos";
+import LessonVideoParts from "@/components/lesson/LessonVideoParts";
+import { isMultiVideoLesson, parseLessonVideos } from "@/lib/lesson-videos";
 
 const LessonPdfViewer = dynamic(() => import("@/components/LessonPdfViewer"), {
   ssr: false,
@@ -200,15 +201,7 @@ export default function StudentPlayer({
             {(lesson.body || []).map((paragraph, index) => (
               <p key={`${lesson.id}-body-${index}`}>{paragraph}</p>
             ))}
-            {isMultiVideo
-              ? videos.map((video, index) => (
-                  <section className="lesson-video-part" key={`${lesson.id}-video-${videoIdentity(video.url) || index}`}>
-                    {video.heading ? <h3>{video.heading}</h3> : null}
-                    <VideoPlayer lesson={lesson} src={video.url} title={video.heading || lesson.title} />
-                    {video.after ? <p>{video.after}</p> : null}
-                  </section>
-                ))
-              : null}
+            {isMultiVideo ? <LessonVideoParts lesson={lesson} videos={videos} /> : null}
             {(lesson.takeaways || []).length ? (
               <div className="takeaways">
                 <h3>Takeaways</h3>

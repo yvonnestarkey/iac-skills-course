@@ -786,6 +786,65 @@ h1 {
   margin: 0 0 16px;
 }
 
+.lesson-video-parts {
+  margin: 8px 0 28px;
+}
+
+.lesson-video-parts-count {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.lesson-video-part-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.lesson-video-part-tab {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font: inherit;
+  font-weight: 650;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.lesson-video-part-tab.is-open {
+  background: var(--paper);
+  border-color: var(--medium);
+  box-shadow: inset 3px 0 0 var(--medium);
+}
+
+.lesson-video-part-panel {
+  width: 70%;
+  max-width: 100%;
+}
+
+.lesson-video-part-panel .player {
+  width: 100%;
+  margin: 0 0 12px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.lesson-video-part-nav {
+  margin-top: 4px;
+}
+
+@media (max-width: 720px) {
+  .lesson-video-part-panel {
+    width: 100%;
+  }
+}
+
 .takeaways {
   background: var(--sand);
   border: 1px solid var(--sand-line);

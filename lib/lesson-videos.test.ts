@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { firstLessonVideoUrl, isMultiVideoLesson, parseLessonVideos, videoIdentity } from "./lesson-videos";
+import { firstLessonVideoUrl, isMultiVideoLesson, parseLessonVideos, videoIdentity, videoPartHeading } from "./lesson-videos";
 
 test("plain URL strings become { url } and keep order", () => {
   const videos = parseLessonVideos([
@@ -78,4 +78,10 @@ test("duplicate URL pairs stay on the single-video layout", () => {
   assert.equal(isMultiVideoLesson("video", videos), false);
   assert.equal(isMultiVideoLesson("video", parseLessonVideos(["https://player.vimeo.com/video/1", "https://player.vimeo.com/video/2"])), true);
   assert.equal(isMultiVideoLesson("reading", parseLessonVideos(["https://player.vimeo.com/video/1", "https://player.vimeo.com/video/2"])), false);
+});
+
+test("videoPartHeading prefixes Part n of N without inventing a title", () => {
+  assert.equal(videoPartHeading({ url: "https://player.vimeo.com/video/1", heading: "Rules vs Tools 1.mp4" }, 0, 3), "Part 1 of 3 — Rules vs Tools 1");
+  assert.equal(videoPartHeading({ url: "https://player.vimeo.com/video/2", heading: "Part 2 of 3 — Rules vs Tools 2" }, 1, 3), "Part 2 of 3 — Rules vs Tools 2");
+  assert.equal(videoPartHeading({ url: "https://player.vimeo.com/video/3" }, 2, 3), "Part 3 of 3");
 });
