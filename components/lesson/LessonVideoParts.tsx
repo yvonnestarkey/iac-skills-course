@@ -15,47 +15,51 @@ export default function LessonVideoParts({
   const [openIndex, setOpenIndex] = useState(0);
   const total = videos.length;
   if (total < 2) return null;
-  const open = videos[openIndex];
-  if (!open) return null;
 
   return (
     <section className="lesson-video-parts" aria-label={`This lesson has ${total} parts`}>
       <p className="lesson-video-parts-count">This lesson has {total} parts</p>
-      <div className="lesson-video-part-tabs" role="tablist" aria-label="Lesson video parts">
+      <div className="lesson-video-accordion">
         {videos.map((video, index) => {
           const selected = index === openIndex;
           const heading = videoPartHeading(video, index, total);
+          const panelId = `lesson-video-part-panel-${index}`;
           return (
-            <button
+            <article
               key={videoIdentity(video.url) || `${lesson.id}-part-${index}`}
-              type="button"
-              role="tab"
-              aria-selected={selected}
-              aria-controls="lesson-video-part-panel"
-              id={`lesson-video-part-tab-${index}`}
-              className={selected ? "lesson-video-part-tab is-open" : "lesson-video-part-tab"}
-              onClick={() => setOpenIndex(index)}
+              className={selected ? "lesson-video-item is-open" : "lesson-video-item"}
             >
-              {heading}
-            </button>
+              <button
+                type="button"
+                className="lesson-video-item-header"
+                aria-expanded={selected}
+                aria-controls={panelId}
+                id={`lesson-video-part-tab-${index}`}
+                onClick={() => setOpenIndex(index)}
+              >
+                <span>{heading}</span>
+                <span className="lesson-video-item-chevron" aria-hidden="true">
+                  {selected ? "▼" : "›"}
+                </span>
+              </button>
+              {selected ? (
+                <div className="lesson-video-item-body" id={panelId} role="region" aria-labelledby={`lesson-video-part-tab-${index}`}>
+                  <div className="lesson-video-item-player">
+                    <VideoPlayer lesson={lesson} src={video.url} title={heading} />
+                    {video.after ? <p>{video.after}</p> : null}
+                    {index < total - 1 ? (
+                      <div className="lesson-video-part-nav">
+                        <button type="button" className="ghost" onClick={() => setOpenIndex(index + 1)}>
+                          Next part →
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+            </article>
           );
         })}
-      </div>
-      <div
-        className="lesson-video-part-panel"
-        role="tabpanel"
-        id="lesson-video-part-panel"
-        aria-labelledby={`lesson-video-part-tab-${openIndex}`}
-      >
-        <VideoPlayer lesson={lesson} src={open.url} title={videoPartHeading(open, openIndex, total)} />
-        {open.after ? <p>{open.after}</p> : null}
-        {openIndex < total - 1 ? (
-          <div className="lesson-video-part-nav">
-            <button type="button" className="ghost" onClick={() => setOpenIndex(openIndex + 1)}>
-              Next part →
-            </button>
-          </div>
-        ) : null}
       </div>
     </section>
   );

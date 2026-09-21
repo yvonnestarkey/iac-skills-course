@@ -796,20 +796,33 @@ h1 {
   margin: 0 0 10px;
 }
 
-.lesson-video-part-tabs {
+.lesson-video-accordion {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin: 0 0 16px;
 }
 
-.lesson-video-part-tab {
-  display: block;
-  width: 100%;
-  text-align: left;
+.lesson-video-item {
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 12px;
+  overflow: hidden;
+}
+
+.lesson-video-item.is-open {
+  background: var(--paper);
+  border-color: var(--medium);
+}
+
+.lesson-video-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
   padding: 12px 14px;
   font: inherit;
   font-weight: 650;
@@ -817,18 +830,25 @@ h1 {
   cursor: pointer;
 }
 
-.lesson-video-part-tab.is-open {
-  background: var(--paper);
-  border-color: var(--medium);
-  box-shadow: inset 3px 0 0 var(--medium);
+.lesson-video-item-chevron {
+  flex-shrink: 0;
+  width: 1.1em;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--medium);
 }
 
-.lesson-video-part-panel {
+.lesson-video-item-body {
+  padding: 0 14px 14px;
+}
+
+.lesson-video-item-player {
   width: 70%;
   max-width: 100%;
 }
 
-.lesson-video-part-panel .player {
+.lesson-video-item-player .player {
   width: 100%;
   margin: 0 0 12px;
   border-radius: 12px;
@@ -840,7 +860,7 @@ h1 {
 }
 
 @media (max-width: 720px) {
-  .lesson-video-part-panel {
+  .lesson-video-item-player {
     width: 100%;
   }
 }
