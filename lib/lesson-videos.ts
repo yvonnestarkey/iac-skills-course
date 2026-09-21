@@ -69,7 +69,7 @@ export function firstLessonVideoUrl(...values: unknown[]): string | undefined {
 }
 
 export function isMultiVideoLesson(type: string | undefined, videos: LessonVideo[]): boolean {
-  return type === "video" && videos.length > 1;
+  return type === "video" && (videos.length > 1 || Boolean(videos[0]?.heading));
 }
 
 /** Visible accordion label. Uses the stored heading when present; does not invent content titles. */
@@ -77,5 +77,7 @@ export function videoPartHeading(video: LessonVideo, index: number, total: numbe
   const raw = (video.heading || "").replace(/\.mp4$/i, "").trim();
   const stripped = raw.replace(/^part\s+\d+(\s+of\s+\d+)?\s*[—–:-]\s*/i, "").trim();
   const title = stripped || raw;
-  return title ? `Part ${index + 1} of ${total} — ${title}` : `Part ${index + 1} of ${total}`;
+  if (!title) return total > 1 ? `Part ${index + 1} of ${total}` : "Video";
+  if (total === 1) return title;
+  return `Part ${index + 1} of ${total} — ${title}`;
 }

@@ -1016,6 +1016,7 @@
             "\"I don't know the answers to questions I try\"",
             "\"I panic in exams and in my studying\"",
             "\"I need study guidance. Prepping for exams, time management etc\"",
+            "\"I always run out of time\"",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
           ],
           "thinkificUrl": "https://courses.accountingstudyadvice.com/courses/take/iac-skills-course-jan-2027/texts/78028966-what-you-ll-find-in-this-section-how-to-use-it",
@@ -1260,6 +1261,32 @@
           ],
           "thinkificUrl": "https://courses.accountingstudyadvice.com/courses/take/iac-skills-course-jan-2027/texts/78028973-i-need-some-study-guidance",
           "thinkificKind": "reading",
+          "chapterTitle": "Fixes for Common Student Challenges"
+        },
+        {
+          "id": "ch11-l14",
+          "type": "video",
+          "title": "\"I always run out of time\"",
+          "blurb": "If you always feel like there is never enough time, these videos are here when you need them.",
+          "videoUrls": [
+            {
+              "url": "https://player.vimeo.com/video/868619934",
+              "heading": "I can't study unless I have at least an hour"
+            },
+            {
+              "url": "https://player.vimeo.com/video/880796819",
+              "heading": "Time vs Attention management"
+            },
+            {
+              "url": "https://player.vimeo.com/video/868619858",
+              "heading": "Where did the time go?"
+            }
+          ],
+          "body": [
+            "Most students feel that they can only study effectively if they have more than one hour available. This is tricky when you have limited time and need to make every minute count.",
+            "Be careful, because part of this thinking is a bit of an excuse not to study. It lets us off the hook for studying because \"I can't be expected to study if I only have half an hour, so therefore it's not my fault that I'm not studying right now\":",
+            "Escapism is another challenge. We're tired. It's totally understandable and you DO deserve to breathe and relax. But you chose and committed to a really tough challenge. That exam isn't going to 'understand' that. Are you paying attention to the amount of time you spend on Instagram? TikTok? YouTube? Netflix? It adds up."
+          ],
           "chapterTitle": "Fixes for Common Student Challenges"
         },
         {
@@ -1977,33 +2004,47 @@
         {
           "id": "ch15-l3",
           "type": "video",
-          "title": "L1 - Are you studying TOWARDS your exam?",
+          "title": "L3 - Are you studying TOWARDS your exam?",
+          "blurb": "Are you studying the topic? Or are you studying what you'll need to do in the exam with the topic?",
           "videoUrls": [
-            "https://player.vimeo.com/video/746464515",
-            "https://player.vimeo.com/video/746590325",
-            "https://player.vimeo.com/video/746762484",
-            "https://player.vimeo.com/video/868628532",
-            "https://player.vimeo.com/video/868619934",
-            "https://player.vimeo.com/video/880796819",
-            "https://player.vimeo.com/video/868619858"
+            {
+              "url": "https://player.vimeo.com/video/746464515",
+              "heading": "The way we study"
+            },
+            {
+              "url": "https://player.vimeo.com/video/746590325",
+              "heading": "What have we trained our brain to do?"
+            },
+            {
+              "url": "https://player.vimeo.com/video/746762484",
+              "heading": "Do we protect our brain?"
+            }
           ],
           "body": [
-            "(Note: This is a copy of the \"I need some study guidance\" lesson in the FAQ section, so if you went through it there, you've covered it all.)",
-            "Making sure you're practicing for the environment you'll be writing in, managing your time for your studies",
-            "This seems like a silly question. But take a few steps back. Watch the videos, and think again:",
-            "The way we study (Same video as above image)",
-            "What have you trained Your Brain to do?!",
-            "Do we protect our brain? Or prepare our brain?",
-            "This continues the discussion in the beginning of the course: 'Exam is a Game'",
-            "mOur personality styles generally lead us towards doing things 'properly'. We want to take our time, get it right, finish things, be competent. This is all fantastic for your career, but isn't effective for exams that have limited time allowances and limited resources. So we have to make sure we're practicing how to operate in that environment.",
-            "I call it the 'Cowboy' because instead of being careful and considered, you have to be somewhat chaotic, messy, jump around, do things quickly, and let some stuff go. It takes practice for us.",
-            "Most students feel that they can only study effectively if they have more than one hour available. This is tricky when you have limited time and need to make every minute count.",
-            "Be careful, because part of this thinking is a bit of an excuse not to study. It lets us off the hook for studying because \"I can't be expected to study if I only have half an hour, so therefore it's not my fault that I'm not studying right now\":",
-            "Escapism is another challenge. We're tired. It's totally understandable and you DO deserve to breathe and relax. But you chose and committed to a really tough challenge. That exam isn't going to 'understand' that. Are you paying attention to the amount of time you spend on Instagram? TikTok? YouTube? Netflix? It adds up.",
-            "Time vs Attention management"
+            "This lesson has 3 short videos. Watch them in order.",
+            "We're going to look at what we are actually training ourselves to do, and whether we are studying towards the performance environment of the exam."
           ],
           "thinkificUrl": "https://courses.accountingstudyadvice.com/courses/take/iac-skills-course-jan-2027/texts/78029009-l1-are-you-studying-towards-your-exam",
           "thinkificKind": "reading",
+          "chapterTitle": "Task 4 - Strategic Planning vs Subject-matter Expertise"
+        },
+        {
+          "id": "ch15-l10",
+          "type": "video",
+          "title": "Study Cowboy",
+          "blurb": "Being good at exams and being a good subject-matter expert are not exactly the same thing.",
+          "videoUrls": [
+            {
+              "url": "https://player.vimeo.com/video/868628532",
+              "heading": "Study Cowboy"
+            }
+          ],
+          "body": [
+            "Being good at exams and being a good subject-matter expert are not exactly the same thing.",
+            "Taking time to work through something properly, investigate it, check it and understand it deeply can be an excellent professional habit.",
+            "The problem is that an exam gives you a very different environment: limited time, limited information and limited resources.",
+            "This video looks at the kind of person who can thrive in that environment — and why struggling with that environment does NOT automatically mean you are bad at the subject."
+          ],
           "chapterTitle": "Task 4 - Strategic Planning vs Subject-matter Expertise"
         },
         {
