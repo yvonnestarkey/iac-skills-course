@@ -83,15 +83,94 @@ function kbCategoriesFor(sourceType?: SourceType): string[] | null {
   return [];
 }
 
+function normalizeSearchText(value: string): string {
+  return value
+    .replace(/[\u2018\u2019\u201A\u2032]/g, "'")
+    .replace(/[\u201C\u201D\u201E\u2033]/g, '"')
+    .replace(/[-–—]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function searchVariants(query: string): string[] {
   const raw = query.trim();
   if (!raw) return [];
-  const spaced = raw.replace(/[-–—]/g, " ").replace(/\s+/g, " ").trim();
-  return [...new Set([raw, spaced])];
+  const ascii = raw.replace(/[\u2018\u2019\u201A\u2032]/g, "'").replace(/[\u201C\u201D\u201E\u2033]/g, '"');
+  const spaced = normalizeSearchText(ascii);
+  return [...new Set([raw, ascii, spaced].map((item) => item.trim()).filter(Boolean))];
+}
+
+const SEARCH_STOPWORDS = new Set([
+  "the",
+  "and",
+  "for",
+  "with",
+  "from",
+  "that",
+  "this",
+  "are",
+  "was",
+  "were",
+  "into",
+  "a",
+  "an",
+  "of",
+  "to",
+  "in",
+  "on",
+  "at",
+  "by",
+  "or",
+  "as",
+  "is",
+  "it",
+]);
+
+function significantTokens(query: string): string[] {
+  return [
+    ...new Set(
+      normalizeSearchText(query)
+        .toLowerCase()
+        .split(/[^a-z0-9]+/)
+        .filter((token) => token.length >= 3 && !SEARCH_STOPWORDS.has(token))
+    ),
+  ];
 }
 
 function sanitizeIlike(value: string): string {
   return value.replace(/[%_,()]/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function quoteIlikeValue(value: string): string {
+  const clean = sanitizeIlike(value);
+  if (!clean) return "";
+  return `"%${clean.replace(/"/g, '""')}%"`;
+}
+
+function kbIlikeOr(needles: string[]): string {
+  return needles
+    .flatMap((needle) => {
+      const quoted = quoteIlikeValue(needle);
+      return quoted ? [`content.ilike.${quoted}`, `document_title.ilike.${quoted}`] : [];
+    })
+    .join(",");
+}
+
+function kbRowHaystack(row: Record<string, unknown>): string {
+  return normalizeSearchText(`${row.document_title || ""}\n${row.content || ""}`).toLowerCase();
+}
+
+function kbSearchScore(row: Record<string, unknown>, query: string, tokens: string[]): number {
+  const hay = kbRowHaystack(row);
+  let score = String(row.category || "") === "research" ? 20 : 0;
+  for (const variant of searchVariants(query)) {
+    const needle = normalizeSearchText(variant).toLowerCase();
+    if (needle && hay.includes(needle)) score += 50;
+  }
+  for (const token of tokens) {
+    if (hay.includes(token)) score += 8;
+  }
+  return score;
 }
 
 function asParagraphs(value: unknown): string {
@@ -161,9 +240,13 @@ function chunkContent(content: string, offset = 0, limit = DEFAULT_CHUNK) {
 }
 
 function matchesQuery(query: string, ...fields: (string | undefined)[]): boolean {
-  const needles = searchVariants(query).map((item) => item.toLowerCase());
+  const needles = searchVariants(query)
+    .map((item) => normalizeSearchText(item).toLowerCase())
+    .filter(Boolean);
   if (!needles.length) return true;
-  return needles.some((needle) => fields.some((field) => (field || "").toLowerCase().includes(needle)));
+  return needles.some((needle) =>
+    fields.some((field) => normalizeSearchText(field || "").toLowerCase().includes(needle))
+  );
 }
 
 type LessonRow = Record<string, unknown>;
@@ -386,25 +469,58 @@ export async function searchKnowledge(input: {
     if (client) {
       const categories = kbCategoriesFor(sourceType);
       const variants = searchVariants(query).map(sanitizeIlike).filter(Boolean);
-      const orParts = variants.flatMap((needle) => [
-        `content.ilike.%${needle}%`,
-        `document_title.ilike.%${needle}%`,
-      ]);
-      let tableQuery = client.from("knowledge_base").select("id, document_title, category, content, created_at");
-      if (categories?.length) tableQuery = tableQuery.in("category", categories);
-      if (orParts.length) tableQuery = tableQuery.or(orParts.join(","));
-      const table = await tableQuery.limit(limit);
+      const tokens = significantTokens(query);
+      const fetchLimit = Math.min(Math.max(limit * 3, 30), 100);
+      const select = "id, document_title, category, content, created_at";
+      const rows: Record<string, unknown>[] = [];
+
+      const scoped = () => {
+        let tableQuery = client.from("knowledge_base").select(select);
+        if (categories?.length) tableQuery = tableQuery.in("category", categories);
+        return tableQuery;
+      };
+
+      const phraseOr = kbIlikeOr(variants);
+      if (phraseOr) {
+        const table = await scoped().or(phraseOr).limit(fetchLimit);
+        if (!table.error && table.data) rows.push(...(table.data as Record<string, unknown>[]));
+      }
+
+      if (rows.length < limit && tokens.length >= 2) {
+        let tokenQuery = scoped();
+        for (const token of tokens) {
+          const tokenOr = kbIlikeOr([token]);
+          if (tokenOr) tokenQuery = tokenQuery.or(tokenOr);
+        }
+        const table = await tokenQuery.limit(fetchLimit);
+        if (!table.error && table.data) rows.push(...(table.data as Record<string, unknown>[]));
+      }
+
+      if (rows.length < limit && tokens.length >= 3) {
+        const researchFirst = categories?.includes("research") ? ["research"] : categories;
+        const majorityOr = kbIlikeOr(tokens);
+        if (majorityOr && researchFirst?.length) {
+          let majorityQuery = client.from("knowledge_base").select(select).in("category", researchFirst).or(majorityOr);
+          const table = await majorityQuery.limit(fetchLimit);
+          const minHits = Math.max(2, tokens.length - 1);
+          for (const row of (table.data || []) as Record<string, unknown>[]) {
+            const hay = kbRowHaystack(row);
+            const matched = tokens.filter((token) => hay.includes(token)).length;
+            if (matched >= minHits) rows.push(row);
+          }
+        }
+      }
+
       const rpc = await client.rpc("search_knowledge_base", {
         p_query: query,
         p_category: categories?.length === 1 ? categories[0] : null,
-        p_limit: limit,
+        p_limit: fetchLimit,
       });
-      const rows = [
-        ...((table.data || []) as Record<string, unknown>[]),
-        ...((!rpc.error && rpc.data ? rpc.data : []) as Record<string, unknown>[]),
-      ];
+      if (!rpc.error && rpc.data) rows.push(...(rpc.data as Record<string, unknown>[]));
+
+      const ranked = [...rows].sort((a, b) => kbSearchScore(b, query, tokens) - kbSearchScore(a, query, tokens));
       const seen = new Set<string>();
-      for (const row of rows) {
+      for (const row of ranked) {
         const rowId = String(row.id || "");
         if (!rowId || seen.has(rowId)) continue;
         const type = kbSourceType(String(row.category || ""));
