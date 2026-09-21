@@ -12,7 +12,6 @@ import {
   type BmcrValue,
 } from "@/lib/bmcr";
 import {
-  copyPickedFile,
   fileNameFromUrl,
   saveStudentSubmission,
   uploadAssignmentFile,
@@ -192,9 +191,7 @@ export default function LessonSubmissionForm({
               onChange={(event) => {
                 const chosen = event.target.files?.[0];
                 if (!chosen) return;
-                const copy = copyPickedFile(chosen);
-                event.target.value = "";
-                void pickFile(copy);
+                void pickFile(chosen);
               }}
             />
           </label>

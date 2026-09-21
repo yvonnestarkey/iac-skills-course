@@ -29,3 +29,13 @@ create policy "students update own assignment pdfs"
     and split_part(name, '/', 1) = 'assignment-submissions'
     and split_part(name, '/', 2) = auth.uid()::text
   );
+
+drop policy if exists "students read own assignment pdfs" on storage.objects;
+create policy "students read own assignment pdfs"
+  on storage.objects for select
+  to authenticated
+  using (
+    bucket_id = 'course-pdfs'
+    and split_part(name, '/', 1) = 'assignment-submissions'
+    and split_part(name, '/', 2) = auth.uid()::text
+  );
