@@ -26,6 +26,7 @@ interface ScrapedLesson {
   body?: string[];
   blurb?: string;
   takeaways?: string[];
+  brief?: string;
   thinkificUrl?: string;
   pdf_url?: string;
 }
@@ -108,7 +109,7 @@ async function main() {
         body,
         takeaways: lesson.takeaways || [],
         due: null as string | null,
-        brief: null as string | null,
+        brief: lesson.brief || null,
         video_urls: videoUrls,
         thinkific_url: lesson.thinkificUrl || null,
         pdf_url: lesson.pdf_url?.trim() || null,

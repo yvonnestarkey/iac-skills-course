@@ -846,8 +846,16 @@ export async function submitCustomSurveyResponse(
     ({ error } = await client.from("custom_survey_responses").insert(payload));
   }
   if (error) {
-    if (error.code === "23505") return { ok: false, error: "You have already submitted this survey." };
-    return { ok: false, error: describe(error) };
+    if (error.code === "23505") {
+      const updated = await client
+        .from("custom_survey_responses")
+        .update({ answers, updated_at: new Date().toISOString() })
+        .eq("survey_id", surveyId)
+        .eq("student_id", session.user.id);
+      if (updated.error) return { ok: false, error: describe(updated.error) };
+    } else {
+      return { ok: false, error: describe(error) };
+    }
   }
   const survey = await fetchCustomSurvey(surveyId);
   if (survey.survey) {

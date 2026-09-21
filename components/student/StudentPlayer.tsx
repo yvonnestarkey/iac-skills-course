@@ -14,7 +14,9 @@ import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult
 import { findResumeLesson, isChapterSequentiallyLocked, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
+import LessonCarryForwardCheckpoint from "@/components/lesson/LessonCarryForwardCheckpoint";
 import LessonVideoParts from "@/components/lesson/LessonVideoParts";
+import { isProgressiveCheckpoint } from "@/lib/lesson-checkpoint";
 import { isMultiVideoLesson, parseLessonVideos } from "@/lib/lesson-videos";
 
 const LessonPdfViewer = dynamic(() => import("@/components/LessonPdfViewer"), {
@@ -115,6 +117,7 @@ export default function StudentPlayer({
   const isAssignmentPage = showSubmission || Boolean(lesson.is_assignment) || kind === "assignment" || kind === "upload";
   const videos = lesson.videos?.length ? lesson.videos : parseLessonVideos(lesson.video_url);
   const isMultiVideo = isMultiVideoLesson(kind, videos);
+  const isCheckpoint = isProgressiveCheckpoint({ ...lesson, videos });
 
   if (!skipLocks && access.isLocked) {
     return (
@@ -154,7 +157,7 @@ export default function StudentPlayer({
 
   return (
     <>
-      {kind === "video" && !isMultiVideo ? <VideoPlayer lesson={lesson} /> : null}
+      {kind === "video" && !isMultiVideo && !isCheckpoint ? <VideoPlayer lesson={lesson} /> : null}
 
       <article className="lesson-body">
         {lesson.banner_image_url ? (
@@ -188,14 +191,36 @@ export default function StudentPlayer({
           </>
         ) : (
           <>
-            {kind === "reading" ? (
+            {kind === "reading" && !isCheckpoint ? (
               <div className="reading-hero">
                 <span>{lesson.duration}</span>
                 <p>{lesson.blurb}</p>
               </div>
-            ) : lesson.blurb ? (
+            ) : !isCheckpoint && lesson.blurb ? (
               <p className="lead">{lesson.blurb}</p>
             ) : null}
+            {isCheckpoint ? (
+              <>
+                <LessonCarryForwardCheckpoint
+                  lesson={lesson}
+                  video={videos[0]}
+                  notes={notes}
+                  onProgress={(next) => {
+                    setNotes(next.notes);
+                    setCompleted(next.completed);
+                    setLessonCompleted(lesson.id, next.completed);
+                  }}
+                />
+                {completed && lesson.next ? (
+                  <div className="actions">
+                    <Link className="primary" href={`${basePath}/${lesson.next.id}`}>
+                      Next: {lesson.next.title} →
+                    </Link>
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <>
             {lesson.due ? <p className="lead">Due {lesson.due}</p> : null}
             {lesson.brief ? <p>{lesson.brief}</p> : null}
             {(lesson.body || []).map((paragraph, index) => (
@@ -276,6 +301,8 @@ export default function StudentPlayer({
                 lessonId={lesson.id}
               />
             ) : null}
+              </>
+            )}
           </>
         )}
       </article>

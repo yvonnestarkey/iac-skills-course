@@ -878,6 +878,43 @@ h1 {
   margin-bottom: 8px;
 }
 
+.lesson-checkpoint {
+  display: grid;
+  gap: 12px;
+  margin: 4px 0 8px;
+}
+
+.lesson-checkpoint > p {
+  margin: 0;
+}
+
+.lesson-checkpoint-saved {
+  background: var(--sand);
+  border: 1px solid var(--sand-line);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.lesson-checkpoint-saved p {
+  margin: 6px 0 0;
+}
+
+.lesson-checkpoint-player {
+  width: 70%;
+  max-width: 100%;
+}
+
+.lesson-checkpoint-player .player {
+  width: 100%;
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .lesson-checkpoint-player {
+    width: 100%;
+  }
+}
+
 .takeaways ul {
   margin: 0;
   padding-left: 18px;

@@ -1920,6 +1920,27 @@
       "summary": "",
       "lessons": [
         {
+          "id": "ch15-l0",
+          "type": "video",
+          "title": "Before Task 4 — Have you actually used these?",
+          "blurb": "A short check-in before Task 4: what have you actually carried into your own question practice?",
+          "videoUrls": [
+            "https://player.vimeo.com/video/1144779004"
+          ],
+          "surveySlug": "task-4-carry-forward-checkin",
+          "body": [
+            "Before we start Task 4, I want to check what has actually happened to the things we’ve worked on so far.",
+            "The Tasks in this course aren’t meant to be things you complete and then leave behind. So think about the questions you’ve done OUTSIDE the course since starting Tasks 1–3."
+          ],
+          "brief": "Remember this?\n\nI showed you this video back in Phase 1 — before you had actually worked through these Tasks.\n\nAt the time, you may have watched it and thought, ‘Yes, that makes sense.’\n\nBut now you’ve completed several Tasks, received feedback, and probably done some of your own studying in between.\n\nWatch it again now, with your answers above in mind.\n\nYou might understand a little more clearly what I was trying to tell you then.",
+          "takeaways": [
+            "That’s what I want you to carry with you into this Task.",
+            "You’re building a TOOLBOX.",
+            "We’re going to add another tool in Task 4 — but this time, don’t put the others down to pick this one up."
+          ],
+          "chapterTitle": "Task 4 - Strategic Planning vs Subject-matter Expertise"
+        },
+        {
           "id": "ch15-l1",
           "type": "video",
           "title": "Are you bringing your other Skills with you?",

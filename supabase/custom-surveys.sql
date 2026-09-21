@@ -89,6 +89,13 @@ create policy "students insert own custom survey responses"
   to authenticated
   with check (auth.uid() = student_id);
 
+drop policy if exists "students update own custom survey responses" on public.custom_survey_responses;
+create policy "students update own custom survey responses"
+  on public.custom_survey_responses for update
+  to authenticated
+  using (auth.uid() = student_id)
+  with check (auth.uid() = student_id);
+
 drop policy if exists "staff manage custom survey responses" on public.custom_survey_responses;
 create policy "staff manage custom survey responses"
   on public.custom_survey_responses for all
