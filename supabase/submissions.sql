@@ -108,13 +108,20 @@ create table if not exists public.student_submissions (
   id           uuid primary key default gen_random_uuid(),
   student_id   uuid not null references auth.users (id) on delete cascade,
   lesson_id    text not null,
+  content      text not null default '',
   body         text not null default '',
   link_url     text not null default '',
   status       text not null default 'submitted' check (status in ('submitted', 'approved', 'rejected')),
+  submitted_at timestamptz not null default now(),
   created_at   timestamptz not null default now(),
   updated_at   timestamptz not null default now(),
   unique (student_id, lesson_id)
 );
+
+alter table public.student_submissions add column if not exists content text not null default '';
+alter table public.student_submissions add column if not exists body text not null default '';
+alter table public.student_submissions add column if not exists link_url text not null default '';
+alter table public.student_submissions add column if not exists submitted_at timestamptz not null default now();
 
 create index if not exists student_submissions_student_idx
   on public.student_submissions (student_id, lesson_id);

@@ -9,23 +9,74 @@ function asStatus(value: unknown): SubmissionStatus {
   return "submitted";
 }
 
+function looksLikeUrl(value: string): boolean {
+  return /^https?:\/\//i.test(value);
+}
+
+function isMissingColumn(message: string, column: string): boolean {
+  return new RegExp(`'${column}' column`, "i").test(message);
+}
+
+/** Live table stores work in `content`; the repo schema uses `body` + `link_url`. */
+export function unpackSubmissionContent(row: {
+  body?: string | null;
+  link_url?: string | null;
+  content?: string | null;
+  submitted_at?: string | null;
+  updated_at?: string | null;
+}): { body: string; link_url: string; updated_at?: string } {
+  const body = String(row.body || "").trim();
+  const linkUrl = String(row.link_url || "").trim();
+  const stamp = row.updated_at || row.submitted_at || undefined;
+  if (body || linkUrl) return { body, link_url: linkUrl, updated_at: stamp };
+
+  const content = String(row.content || "").trim();
+  if (!content) return { body: "", link_url: "", updated_at: stamp };
+  if (content.startsWith("{")) {
+    try {
+      const parsed = JSON.parse(content) as { body?: unknown; link_url?: unknown; url?: unknown };
+      if (parsed && typeof parsed === "object") {
+        const parsedBody = String(parsed.body || "").trim();
+        const parsedLink = String(parsed.link_url || parsed.url || "").trim();
+        if (parsedBody || parsedLink) return { body: parsedBody, link_url: parsedLink, updated_at: stamp };
+      }
+    } catch {
+      /* treat as plain text */
+    }
+  }
+  if (looksLikeUrl(content)) return { body: "", link_url: content, updated_at: stamp };
+  return { body: content, link_url: "", updated_at: stamp };
+}
+
+export function packSubmissionContent(body: string, linkUrl: string): string {
+  const trimmedBody = body.trim();
+  const trimmedLink = linkUrl.trim();
+  if (trimmedLink && !trimmedBody) return trimmedLink;
+  if (trimmedBody && !trimmedLink) return trimmedBody;
+  if (!trimmedBody && !trimmedLink) return "";
+  return JSON.stringify({ body: trimmedBody, link_url: trimmedLink });
+}
+
 export function submissionFromRow(row: {
   id?: string;
   student_id: string;
   lesson_id: string;
   body?: string | null;
   link_url?: string | null;
+  content?: string | null;
   status?: string | null;
+  submitted_at?: string | null;
   updated_at?: string | null;
 }): StudentSubmission {
+  const unpacked = unpackSubmissionContent(row);
   return {
     id: row.id,
     student_id: row.student_id,
     lesson_id: row.lesson_id,
-    body: row.body || "",
-    link_url: row.link_url || "",
+    body: unpacked.body,
+    link_url: unpacked.link_url,
     status: asStatus(row.status),
-    updated_at: row.updated_at || undefined,
+    updated_at: unpacked.updated_at,
   };
 }
 
@@ -63,17 +114,15 @@ export async function fetchSubmissionCountsByStudent(): Promise<Record<string, n
 export async function fetchAllSubmissionBodies(): Promise<Record<string, Record<string, string>>> {
   const client = getSupabase();
   if (!client) return {};
-  const { data, error } = await client.from("student_submissions").select("student_id, lesson_id, body, link_url");
+  const { data, error } = await client.from("student_submissions").select("*");
   if (error || !data) return {};
   const map: Record<string, Record<string, string>> = {};
   data.forEach((row) => {
-    const studentId = String(row.student_id || "");
-    const lessonId = String(row.lesson_id || "");
-    if (!studentId || !lessonId) return;
-    const text = String(row.body || "").trim() || String(row.link_url || "").trim();
+    const item = submissionFromRow(row);
+    const text = item.body.trim() || item.link_url.trim();
     if (!text) return;
-    map[studentId] = map[studentId] || {};
-    map[studentId][lessonId] = text;
+    map[item.student_id] = map[item.student_id] || {};
+    map[item.student_id][item.lesson_id] = text;
   });
   return map;
 }
@@ -102,9 +151,10 @@ export async function fetchLessonSubmission(
     .select("*")
     .eq("student_id", studentId)
     .eq("lesson_id", lessonId)
-    .maybeSingle();
-  if (error || !data) return null;
-  return submissionFromRow(data);
+    .limit(1);
+  const row = data?.[0];
+  if (error || !row) return null;
+  return submissionFromRow(row);
 }
 
 function isPdfFile(file: File): boolean {
@@ -164,6 +214,24 @@ export async function uploadAssignmentFile(
   return { ok: false, error: storageUploadError(lastError) };
 }
 
+async function writeStudentSubmissionRow(
+  client: NonNullable<ReturnType<typeof getSupabase>>,
+  row: Record<string, unknown>
+) {
+  const existing = await client
+    .from("student_submissions")
+    .select("id")
+    .eq("student_id", row.student_id as string)
+    .eq("lesson_id", row.lesson_id as string)
+    .limit(1);
+  if (existing.error) return existing;
+  const id = existing.data?.[0]?.id;
+  if (id) {
+    return client.from("student_submissions").update(row).eq("id", id).select("*").limit(1).maybeSingle();
+  }
+  return client.from("student_submissions").insert(row).select("*").limit(1).maybeSingle();
+}
+
 export async function saveStudentSubmission(input: {
   studentId: string;
   lessonId: string;
@@ -173,19 +241,36 @@ export async function saveStudentSubmission(input: {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
 
-  const row = {
+  const body = input.body.trim();
+  const linkUrl = input.linkUrl.trim();
+  const liveRow = {
     student_id: input.studentId,
     lesson_id: input.lessonId,
-    body: input.body.trim(),
-    link_url: input.linkUrl.trim(),
+    content: packSubmissionContent(body, linkUrl),
     status: "submitted" as const,
-    updated_at: new Date().toISOString(),
   };
-
-  const { data, error } = await client.from("student_submissions").upsert(row, { onConflict: "student_id,lesson_id" }).select("*").maybeSingle();
+  let { data, error } = await writeStudentSubmissionRow(client, liveRow);
+  if (error && isMissingColumn(error.message, "content")) {
+    ({ data, error } = await writeStudentSubmissionRow(client, {
+      student_id: input.studentId,
+      lesson_id: input.lessonId,
+      body,
+      link_url: linkUrl,
+      status: "submitted" as const,
+      updated_at: new Date().toISOString(),
+    }));
+  }
   if (error) return { ok: false, error: error.message };
   return {
     ok: true,
-    submission: data ? submissionFromRow(data) : { ...row, student_id: input.studentId, lesson_id: input.lessonId, link_url: row.link_url },
+    submission: data
+      ? submissionFromRow(data)
+      : {
+          student_id: input.studentId,
+          lesson_id: input.lessonId,
+          body,
+          link_url: linkUrl,
+          status: "submitted",
+        },
   };
 }

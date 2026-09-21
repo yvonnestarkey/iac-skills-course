@@ -112,7 +112,7 @@ export default function LessonSubmissionForm({
     const result = await saveStudentSubmission({ studentId, lessonId, body, linkUrl });
     if (!result.ok || !result.submission) {
       setBusy(false);
-      setStatus(result.error || "Could not save your submission. Run supabase/submissions.sql in the SQL editor if this table is new.");
+      setStatus(result.error || "Could not save your submission.");
       return;
     }
     if (hasBmcrData(bmcr) || hasBmcrDiagnostics(bmcr)) {
