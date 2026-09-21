@@ -111,7 +111,7 @@ export default function LessonCarryForwardCheckpoint({
 
   const submitCheckIn = async () => {
     if (!survey) return;
-    const missing = checkIn.find((question) => question.required && !formatSurveyAnswer(answers[question.id], question.type));
+    const missing = checkIn.find((question) => !formatSurveyAnswer(answers[question.id], question.type));
     if (missing) {
       setError(`Please answer “${missing.label}”.`);
       return;
@@ -126,7 +126,7 @@ export default function LessonCarryForwardCheckpoint({
 
   const submitReflection = async () => {
     if (!survey || !reflection) return;
-    if (reflection.required && !formatSurveyAnswer(answers[reflection.id], reflection.type)) {
+    if (!formatSurveyAnswer(answers[reflection.id], reflection.type)) {
       setError(`Please answer “${reflection.label}”.`);
       return;
     }
@@ -228,12 +228,14 @@ function CheckpointField({
       <label {...(question.type === "multi_select" ? {} : { htmlFor: fieldId })}>
         <strong>
           <LinkedText text={question.label} />
-          {question.required ? " *" : ""}
+          <span className="required-mark" aria-hidden="true">
+            *
+          </span>
         </strong>
       </label>
       {question.helperText ? <p className="muted small">{question.helperText}</p> : null}
       {question.type === "multi_select" ? (
-        <div className="survey-choice-list bmcr-challenges" role="group" aria-label={question.label}>
+        <div className="survey-choice-list bmcr-challenges" role="group" aria-label={question.label} aria-required="true">
           {question.options.map((option) => {
             const selected = value
               .split(";")
@@ -261,6 +263,8 @@ function CheckpointField({
           rows={question.type === "short_text" ? 3 : 4}
           value={value}
           onChange={(event) => onChange(event.target.value)}
+          required
+          aria-required="true"
         />
       )}
     </div>

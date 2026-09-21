@@ -66,7 +66,7 @@ const QUESTIONS = [
     label:
       "Now look back at your answers. What is ONE thing from Tasks 1–3 that you understood at the time, but haven’t actually made part of the way you normally do questions?",
     helperText: "",
-    required: false,
+    required: true,
     options: [] as string[],
     resourceUrl: "",
   },

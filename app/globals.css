@@ -888,6 +888,12 @@ h1 {
   margin: 0;
 }
 
+.required-mark {
+  color: #c62828;
+  margin-left: 0.25em;
+  font-weight: 700;
+}
+
 .lesson-checkpoint-saved {
   background: var(--sand);
   border: 1px solid var(--sand-line);
