@@ -203,10 +203,42 @@ async function main() {
     if (updated.error) throw new Error(`ch11-l14 update: ${updated.error.message}`);
   }
 
+  const skills = await client.from("lessons").select("id").eq("id", "ch15-l1").maybeSingle();
+  if (!skills.data) {
+    const restored = await client.from("lessons").insert({
+      id: "ch15-l1",
+      chapter_id: "ch15",
+      position: 1,
+      type: "video",
+      title: "L2 - Are you bringing your other Skills with you?",
+      duration: "10 min",
+      seconds: 10 * 60,
+      video_duration_seconds: 10 * 60,
+      duration_minutes: 10,
+      blurb: null,
+      body: [],
+      takeaways: [],
+      brief: null,
+      due: null,
+      video_urls: [{ url: "https://player.vimeo.com/video/1033062260" }],
+      pdf_url: null,
+      requires_submission: false,
+      requires_coach_approval: false,
+      prereq_lesson_id: towards.data.prereq_lesson_id || null,
+    });
+    if (restored.error) throw new Error(`restore ch15-l1: ${restored.error.message}`);
+  }
+
   await setPositions(client, "ch15", CH15_ORDER);
 
   await copyTranscripts(client, "ch15-l3", "ch15-l10", ["868628532"]);
   await copyTranscripts(client, "ch15-l3", "ch11-l14", ["868619934", "880796819", "868619858"]);
+  const leftover = await client
+    .from("lesson_transcripts")
+    .delete()
+    .eq("lesson_id", "ch15-l3")
+    .in("vimeo_video_id", ["868628532", "868619934", "880796819", "868619858"]);
+  if (leftover.error) throw new Error(`remove leftover ch15-l3 transcripts: ${leftover.error.message}`);
 
   const verifyFaq = await client.from("lessons").select("id, title, video_urls").eq("id", "ch11-l11").maybeSingle();
   const ch15 = await client.from("lessons").select("id, title, position, video_urls").eq("chapter_id", "ch15").order("position");

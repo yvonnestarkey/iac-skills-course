@@ -17,7 +17,7 @@ export interface LessonData {
 }
 
 const loadCachedOutline = cache(
-  unstable_cache(fetchCourseOutline, ["course-outline-v1"], {
+  unstable_cache(fetchCourseOutline, ["course-outline-v2"], {
     revalidate: 120,
     tags: ["course-outline"],
   })
@@ -29,7 +29,7 @@ const loadCachedLesson = cache(async (lessonId: string) => {
       const outline = await loadCachedOutline();
       return fetchStudentLesson(lessonId, outline);
     },
-    ["student-lesson-v1", lessonId],
+    ["student-lesson-v2", lessonId],
     { revalidate: 60, tags: ["lessons", `lesson-${lessonId}`] }
   )();
 });
