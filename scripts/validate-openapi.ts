@@ -19,10 +19,12 @@ const REQUIRED_EXISTING = [
   "getCourseLessonFull",
   "getMindsetSandboxContext",
   "getEvaluatorAttemptEvidence",
+  "getEvaluatorAttemptEvidenceByQuery",
 ];
 
 const REQUIRED_SYSTEMS = [
   "getSystemsModel",
+  "getSystemsModelByGet",
   "getSystemsModelEvidence",
   "addSystemsObservation",
   "upsertSystemsInterpretation",
@@ -66,7 +68,7 @@ function walk(dir: string): string[] {
 function main() {
   const yaml = readFileSync(SPEC, "utf8");
   assert(yaml.startsWith("openapi: 3.1."), "OpenAPI must be 3.1.x");
-  assert(/version: 1\.0\.7/.test(yaml), "info.version should be 1.0.7");
+  assert(/version: 1\.0\.8/.test(yaml), "info.version should be 1.0.8");
 
   const operationIds = [...yaml.matchAll(/operationId:\s+(\S+)/g)].map((match) => match[1]);
   const duplicates = operationIds.filter((id, index) => operationIds.indexOf(id) !== index);
@@ -103,7 +105,7 @@ function main() {
     JSON.stringify(
       {
         ok: true,
-        version: "1.0.7",
+        version: "1.0.8",
         operation_count: operationIds.length,
         bytes,
         existing_preserved: REQUIRED_EXISTING,

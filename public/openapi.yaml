@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: IAC Skills Course GPT API
-  version: 1.0.7
+  version: 1.0.8
   description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT Action.
 servers:
   - url: https://iac.accountingstudyadvice.com
@@ -416,9 +416,9 @@ paths:
           description: Could not load Mindset Sandbox context
   /api/mindset-sandbox/evaluator-evidence:
     get:
-      operationId: getEvaluatorAttemptEvidence
+      operationId: getEvaluatorAttemptEvidenceByQuery
       summary: Get stored evaluator evidence for one exam attempt
-      description: Read-only. Accepts an attempt ID and returns the existing evaluator-evidence payload. Includes attempt/paper metadata, grouped BMCR, exam-script, and marking-report page images with page numbers, and official source references. Does not analyse or generate a report.
+      description: Read-only query form. Prefer getEvaluatorAttemptEvidence. Returns the existing evaluator-evidence payload. Does not analyse or generate a report.
       parameters:
         - name: attempt_id
           in: query
@@ -428,6 +428,41 @@ paths:
       responses:
         "200":
           description: Existing evaluator-evidence payload
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "400":
+          description: Missing attempt ID
+        "404":
+          description: Exam attempt not found
+        "500":
+          description: Could not load evaluator evidence
+    post:
+      operationId: getEvaluatorAttemptEvidence
+      summary: Get stored evaluator evidence for one exam attempt
+      description: Read-only. Accepts an attempt ID in the JSON body and returns the existing evaluator-evidence payload. Includes attempt/paper metadata, grouped BMCR, exam-script, and marking-report page images with page numbers, and official source references. Does not analyse or generate a report.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - attempt_id
+              properties:
+                attempt_id:
+                  type: string
+      responses:
+        "200":
+          description: Existing evaluator-evidence payload
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
         "400":
           description: Missing attempt ID
         "404":
@@ -436,12 +471,40 @@ paths:
           description: Could not load evaluator evidence
   /api/mindset-sandbox/systems/model:
     get:
-      operationId: getSystemsModel
+      operationId: getSystemsModelByGet
       summary: Get the current systems model
-      description: Read-only. Returns the current checkpoint, active records, lineage, guardrails and working state. Empty until a checkpoint exists. No student data, SQL, or source-document copies.
+      description: Read-only GET form. Prefer getSystemsModel.
       responses:
         "200":
           description: Current systems model
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "503":
+          description: Systems model tables are not installed
+        "500":
+          description: Could not load the systems model
+    post:
+      operationId: getSystemsModel
+      summary: Get the current systems model
+      description: Read-only. Returns the current checkpoint, active records, lineage, guardrails and working state. Empty until a checkpoint exists. No student data, SQL, or source-document copies.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        "200":
+          description: Current systems model
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
         "503":
           description: Systems model tables are not installed
         "500":
