@@ -1492,6 +1492,13 @@ input[type="tel"]:focus {
   vertical-align: middle;
 }
 
+.waitlist-query-cell {
+  max-width: 28ch;
+  white-space: pre-wrap;
+  line-height: 1.45;
+  vertical-align: top;
+}
+
 .data-table tbody tr {
   cursor: pointer;
 }

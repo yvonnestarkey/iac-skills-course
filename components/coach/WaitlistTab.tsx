@@ -8,6 +8,15 @@ type Filter = "all" | string;
 type PaymentFilter = "all" | (typeof WAITLIST_PAYMENTS)[number];
 type InstitutionFilter = "all" | (typeof WAITLIST_INSTITUTIONS)[number];
 
+function waitlistReplyHref(lead: WaitlistLead): string {
+  const first = lead.full_name.trim().split(/\s+/)[0] || "";
+  const subject = lead.query ? "Your IAC Skills Course question" : "IAC Skills Course";
+  const body = lead.query
+    ? `Hi ${first},\n\nThanks for your question:\n\n${lead.query}\n\n`
+    : `Hi ${first},\n\n`;
+  return `mailto:${lead.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
 export default function WaitlistTab() {
   const router = useRouter();
   const [leads, setLeads] = useState<WaitlistLead[]>([]);
@@ -171,12 +180,12 @@ export default function WaitlistTab() {
                 <tr key={lead.id}>
                   <td>{lead.full_name}</td>
                   <td>
-                    <a href={`mailto:${lead.email}`}>{lead.email}</a>
+                    <a href={waitlistReplyHref(lead)}>{lead.email}</a>
                   </td>
                   <td>{lead.preferred_cohort}</td>
                   <td>{lead.institution || "—"}</td>
                   <td>{lead.preferred_payment || "—"}</td>
-                  <td>{lead.query || "—"}</td>
+                  <td className="waitlist-query-cell">{lead.query || "—"}</td>
                   <td>{new Date(lead.created_at).toLocaleString()}</td>
                 </tr>
               ))}

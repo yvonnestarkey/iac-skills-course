@@ -67,22 +67,31 @@ export async function joinWaitlist(input: {
   if (query) {
     const withQuery = await supabase.rpc("join_waitlist", { ...rpcArgs, p_query: query });
     if (!withQuery.error) return { ok: true };
+    const insertWithQuery = await supabase.from("waitlist").insert({
+      full_name,
+      email,
+      preferred_cohort: input.preferred_cohort,
+      preferred_payment,
+      institution: input.institution,
+      query,
+    });
+    if (!insertWithQuery.error || insertWithQuery.error.code === "23505") return { ok: true };
+    if (/p_query|query|schema cache|could not find the function/i.test(`${withQuery.error.message} ${insertWithQuery.error.message}`)) {
+      return { ok: false, error: "Could not save your question. Paste supabase/waitlist-query.sql in the SQL editor, then try again." };
+    }
+    return { ok: false, error: insertWithQuery.error.message || withQuery.error.message };
   }
 
   const withoutQuery = await supabase.rpc("join_waitlist", rpcArgs);
   if (!withoutQuery.error) return { ok: true };
 
-  const row = {
+  const insertBasic = await supabase.from("waitlist").insert({
     full_name,
     email,
     preferred_cohort: input.preferred_cohort,
     preferred_payment,
     institution: input.institution,
-  };
-  const insertWithQuery = query ? await supabase.from("waitlist").insert({ ...row, query }) : { error: withoutQuery.error };
-  if (!insertWithQuery.error || insertWithQuery.error.code === "23505") return { ok: true };
-
-  const insertBasic = await supabase.from("waitlist").insert(row);
+  });
   if (!insertBasic.error || insertBasic.error.code === "23505") return { ok: true };
 
   return { ok: false, error: insertBasic.error?.message || withoutQuery.error.message };
