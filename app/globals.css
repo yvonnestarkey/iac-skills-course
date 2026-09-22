@@ -5137,6 +5137,14 @@ a.live-session-watch:hover {
   margin-bottom: 14px;
 }
 
+.sales-hero-copy-hook h1 {
+  max-width: 18ch;
+}
+
+.sales-hero-copy-hook .sales-video {
+  margin-top: 8px;
+}
+
 .sales-badge {
   display: inline-flex;
   align-items: center;

@@ -6,7 +6,15 @@ import SkillsAccordion from "@/components/sales/SkillsAccordion";
 import WaitlistForm from "@/components/sales/WaitlistForm";
 import { COURSE_DATES, PAYMENT_CAPTION, PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO, WEBINAR } from "@/lib/sales-copy";
 
-export default function SalesLanding() {
+export default function SalesLanding({
+  headline = SALES_HEADLINE,
+  video = SALES_VIDEO,
+  showHeroPitch = true,
+}: {
+  headline?: string;
+  video?: { title: string; src: string };
+  showHeroPitch?: boolean;
+} = {}) {
   return (
     <div className="sales-page">
       <a className="sales-webinar-banner" href={WEBINAR.href} target="_blank" rel="noopener noreferrer">
@@ -19,17 +27,21 @@ export default function SalesLanding() {
       </header>
 
       <section className="sales-hero">
-        <div className="sales-hero-copy">
+        <div className={showHeroPitch ? "sales-hero-copy" : "sales-hero-copy sales-hero-copy-hook"}>
           <p className="sales-badge">{SALES_BADGE}</p>
-          <h1>{SALES_HEADLINE}</h1>
-          <p className="sales-audience">{SALES_AUDIENCE}</p>
-          <p className="lead">{SALES_SUBHEAD}</p>
+          <h1>{headline}</h1>
+          {showHeroPitch ? (
+            <>
+              <p className="sales-audience">{SALES_AUDIENCE}</p>
+              <p className="lead">{SALES_SUBHEAD}</p>
+            </>
+          ) : null}
           <div className="sales-video">
-            <p className="kicker">{SALES_VIDEO.title}</p>
+            {showHeroPitch ? <p className="kicker">{video.title}</p> : null}
             <div className="sales-video-frame">
               <iframe
-                src={SALES_VIDEO.src}
-                title={SALES_VIDEO.title}
+                src={video.src}
+                title={video.title}
                 allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
                 allowFullScreen
               />

@@ -22,6 +22,13 @@ export const SALES_VIDEO = {
   src: "https://player.vimeo.com/video/1015651602?badge=0&autopause=0&player_id=0&app_id=58479",
 };
 
+export const COLD_HEADLINE = "Why is your IAC studying like being cold?";
+
+export const COLD_VIDEO = {
+  title: COLD_HEADLINE,
+  src: "https://player.vimeo.com/video/1069126463",
+};
+
 export const COURSE_FEATURES = [
   {
     title: "Submit Tasks & Get Individual Feedback",
