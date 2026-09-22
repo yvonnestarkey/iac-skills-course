@@ -414,6 +414,26 @@ paths:
                     $ref: "#/components/schemas/MindsetSandboxContextRecord"
         "500":
           description: Could not load Mindset Sandbox context
+  /api/mindset-sandbox/evaluator-evidence:
+    get:
+      operationId: getEvaluatorAttemptEvidence
+      summary: Get stored evaluator evidence for one exam attempt
+      description: Read-only. Accepts an attempt ID and returns the existing evaluator-evidence payload. Includes attempt/paper metadata, grouped BMCR, exam-script, and marking-report page images with page numbers, and official source references. Does not analyse or generate a report.
+      parameters:
+        - name: attempt_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Existing evaluator-evidence payload
+        "400":
+          description: Missing attempt ID
+        "404":
+          description: Exam attempt not found
+        "500":
+          description: Could not load evaluator evidence
   /api/mindset-sandbox/systems/model:
     get:
       operationId: getSystemsModel

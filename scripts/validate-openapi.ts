@@ -18,6 +18,7 @@ const REQUIRED_EXISTING = [
   "getCourseJourney",
   "getCourseLessonFull",
   "getMindsetSandboxContext",
+  "getEvaluatorAttemptEvidence",
 ];
 
 const REQUIRED_SYSTEMS = [
@@ -36,6 +37,7 @@ const REQUIRED_SYSTEMS = [
 ];
 
 const ROUTE_MAP: Record<string, string> = {
+  getEvaluatorAttemptEvidence: "app/api/mindset-sandbox/evaluator-evidence/route.ts",
   getSystemsModel: "app/api/mindset-sandbox/systems/model/route.ts",
   getSystemsModelEvidence: "app/api/mindset-sandbox/systems/evidence/route.ts",
   addSystemsObservation: "app/api/mindset-sandbox/systems/observations/route.ts",
