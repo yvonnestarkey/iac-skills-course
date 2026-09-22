@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: IAC Skills Course GPT API
-  version: 1.0.8
+  version: 1.0.9
   description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT Action.
 servers:
   - url: https://iac.accountingstudyadvice.com
@@ -431,8 +431,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties: true
+                $ref: "#/components/schemas/EvaluatorAttemptEvidence"
         "400":
           description: Missing attempt ID
         "404":
@@ -461,8 +460,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties: true
+                $ref: "#/components/schemas/EvaluatorAttemptEvidence"
         "400":
           description: Missing attempt ID
         "404":
@@ -480,8 +478,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties: true
+                $ref: "#/components/schemas/SystemsModel"
         "503":
           description: Systems model tables are not installed
         "500":
@@ -496,15 +493,18 @@ paths:
           application/json:
             schema:
               type: object
-              additionalProperties: true
+              additionalProperties: false
+              properties:
+                unused:
+                  type: string
+                  description: Optional. Ignored. This read accepts an empty JSON object.
       responses:
         "200":
           description: Current systems model
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties: true
+                $ref: "#/components/schemas/SystemsModel"
         "503":
           description: Systems model tables are not installed
         "500":
@@ -910,6 +910,247 @@ components:
           type: string
         content:
           type: string
+    EvaluatorAttemptEvidence:
+      type: object
+      additionalProperties: false
+      required:
+        - analysed
+        - attempt
+        - official_sources
+        - evidence
+      properties:
+        analysed:
+          type: boolean
+        attempt:
+          type: object
+          additionalProperties: true
+          properties:
+            id:
+              type: string
+            user_id:
+              type: string
+            exam_body:
+              type: string
+            sitting_id:
+              type: string
+            sitting_label:
+              type: string
+            paper_id:
+              type: string
+            paper_title:
+              type: string
+            paper_code:
+              type: string
+            status:
+              type: string
+        paper:
+          type: object
+          nullable: true
+          additionalProperties: true
+          properties:
+            paper_id:
+              type: string
+            paper_title:
+              type: string
+            paper_code:
+              type: string
+            total_marks:
+              type: number
+            requirements:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  code:
+                    type: string
+                  title:
+                    type: string
+                  total_marks:
+                    type: number
+        official_sources:
+          type: object
+          additionalProperties: true
+          properties:
+            retrieval:
+              type: string
+            complete:
+              type: boolean
+            missing:
+              type: array
+              items:
+                type: string
+            documents:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  kind:
+                    type: string
+                  document_title:
+                    type: string
+                  chunk_count:
+                    type: integer
+        evidence:
+          type: object
+          additionalProperties: true
+          properties:
+            bmcr:
+              $ref: "#/components/schemas/EvaluatorEvidenceFile"
+            exam_script:
+              $ref: "#/components/schemas/EvaluatorEvidenceFile"
+            marking_report:
+              $ref: "#/components/schemas/EvaluatorEvidenceFile"
+    EvaluatorEvidenceFile:
+      type: object
+      additionalProperties: false
+      required:
+        - group
+        - page_count
+        - page_numbers
+        - pages
+      properties:
+        group:
+          type: string
+        stored_kind:
+          type: string
+        name:
+          type: string
+          nullable: true
+        page_count:
+          type: integer
+        page_numbers:
+          type: array
+          items:
+            type: integer
+        pages:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - page
+              - image_url
+            properties:
+              page:
+                type: integer
+              image_url:
+                type: string
+    SystemsModel:
+      type: object
+      additionalProperties: false
+      required:
+        - checkpoint
+        - working_state
+        - lineage
+        - guardrails
+        - records
+        - superseded
+        - empty_model_template
+      properties:
+        checkpoint:
+          type: object
+          nullable: true
+          additionalProperties: true
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+            status:
+              type: string
+            title:
+              type: string
+            synthesis:
+              type: string
+        working_state:
+          type: object
+          additionalProperties: true
+          properties:
+            version:
+              type: string
+            current_checkpoint_id:
+              type: string
+              nullable: true
+        lineage:
+          type: object
+          additionalProperties: true
+          properties:
+            id:
+              type: string
+        guardrails:
+          type: array
+          items:
+            type: string
+        records:
+          type: object
+          additionalProperties: true
+          properties:
+            observations:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  id:
+                    type: string
+            interpretations:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  id:
+                    type: string
+            alternatives:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  id:
+                    type: string
+            questions:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  id:
+                    type: string
+            revisions:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  id:
+                    type: string
+            yvonne_reviews:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  id:
+                    type: string
+        superseded:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+            properties:
+              id:
+                type: string
+        empty_model_template:
+          type: object
+          additionalProperties: true
+          properties:
+            assumptions:
+              type: array
+              items:
+                type: string
     SystemsSourceRef:
       type: object
       additionalProperties: false
