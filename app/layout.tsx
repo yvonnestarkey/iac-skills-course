@@ -8,6 +8,7 @@ import { StoreProvider } from "@/lib/store";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://iac.accountingstudyadvice.com"),
   title: "Accounting Study Advice — IAC Skills Course",
   description: "Student learning portal and coach dashboard for the IAC Skills Course.",
 };
