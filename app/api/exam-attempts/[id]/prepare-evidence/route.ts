@@ -1,4 +1,4 @@
-import { after, NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { prepareExamAttemptEvidence } from "@/lib/exam-attempt-evidence";
 import { examAttemptFromRow, isMissingExamAttemptsTable } from "@/lib/exam-attempts";
@@ -78,12 +78,5 @@ export async function GET(
     ok: true,
     status: owned.attempt.status,
     evidence_pack: owned.attempt.evidence_pack,
-  });
-}
-
-/** Fire-and-forget helper used after submit so the student is not held on a spinner. */
-export function queueEvidencePreparation(attemptId: string) {
-  after(() => {
-    void prepareExamAttemptEvidence(attemptId);
   });
 }
