@@ -180,6 +180,9 @@ export default function ScriptEvaluator() {
 
   return (
     <article className="lesson-body wide eval-page">
+      <p className="notice">
+        This is the previous mark-report diagnostic. The Script Evaluator path is now Task 1 → sitting and paper → printable BMCR → three uploads. Existing evaluations here are unchanged.
+      </p>
       <EvaluatorExamHeading
         tool="Generate your diagnostic"
         description="Enter Direct, Indirect, and Thinking marks from your marked script for this exam. The AI report runs only after BMCR, Volume vs Accuracy, Buried Treasure, and this upload are complete."

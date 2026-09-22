@@ -63,7 +63,7 @@ export default function StudentDashboard() {
           <>
             <Link href="/student/evaluator" className="student-hub-card">
               <strong>Script Evaluator</strong>
-              <p>Choose a past paper, then work through BMCR, Volume vs Accuracy, Buried Treasure, and the AI mark report.</p>
+              <p>After Task 1, choose a sitting and paper, complete a printable BMCR worksheet, then upload your worksheet, marked script, and marking report.</p>
             </Link>
             <button type="button" className="student-hub-card" onClick={() => window.dispatchEvent(new Event("open-ask-question"))}>
               <strong>Ask a Question</strong>
