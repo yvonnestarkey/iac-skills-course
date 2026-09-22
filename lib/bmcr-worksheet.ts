@@ -1,6 +1,6 @@
-import { findRegisteredPaper, type PastPaperSectionConfig } from "@/lib/data/past-papers";
-import { findPastPaper } from "@/lib/past-papers";
+import { findRegisteredExam, findRegisteredPaper, type PastPaperSectionConfig } from "@/lib/data/past-papers";
 
+export const FIRST_BMCR_WORKSHEET_SITTING_ID = "jan-2026";
 export const FIRST_BMCR_WORKSHEET_PAPER_ID = "jan-2026-p1";
 
 export type BmcrWorksheetRow = {
@@ -9,16 +9,21 @@ export type BmcrWorksheetRow = {
   totalMarks: number;
 };
 
-export type BmcrWorksheet = {
-  examBody: "IAC";
-  sittingId: string;
-  sittingLabel: string;
+export type BmcrWorksheetPaper = {
   paperId: string;
   paperTitle: string;
   paperCode: string;
   paperTotalMarks: number;
-  marksSource: string;
   rows: BmcrWorksheetRow[];
+};
+
+export type BmcrSittingWorksheet = {
+  examBody: "IAC";
+  sittingId: string;
+  sittingLabel: string;
+  title: string;
+  marksSource: string;
+  papers: BmcrWorksheetPaper[];
 };
 
 function sittingLabelFromId(sittingId: string, fallback: string): string {
@@ -26,38 +31,54 @@ function sittingLabelFromId(sittingId: string, fallback: string): string {
   if (sittingId === "june-2025") return "June 2025";
   if (sittingId === "jan-2026") return "January 2026";
   if (sittingId === "june-2026") return "June 2026";
-  return fallback;
+  return fallback.replace(/\s+SAICA IAC Examination$/i, "").replace(/\s+IAC Exam$/i, "");
 }
 
-/** Totals come from the approved past-paper registry `section.totalMarks`, not Direct/Indirect/Thinking. */
-export function bmcrWorksheetForPaper(paperId: string | undefined | null): BmcrWorksheet | null {
-  const registered = findRegisteredPaper(paperId);
-  if (!registered?.paper.sections.length) return null;
-  const mapped = findPastPaper(registered.paper.id);
-  const sittingId = registered.exam.id;
-  const rows = registered.paper.sections.map((section: PastPaperSectionConfig) => ({
+function paperFromRegistry(paper: { id: string; title: string; code: string; totalMarks: number; sections: PastPaperSectionConfig[] }): BmcrWorksheetPaper {
+  const rows = paper.sections.map((section) => ({
     code: section.code,
     title: section.title,
     totalMarks: section.totalMarks,
   }));
   const summed = rows.reduce((sum, row) => sum + row.totalMarks, 0);
   return {
-    examBody: "IAC",
-    sittingId,
-    sittingLabel: sittingLabelFromId(sittingId, registered.exam.title),
-    paperId: registered.paper.id,
-    paperTitle: registered.paper.title,
-    paperCode: registered.paper.code,
-    paperTotalMarks: registered.paper.totalMarks || summed,
-    marksSource: `lib/data/past-papers/iac-${sittingId}.json → papers[].sections[].totalMarks`,
+    paperId: paper.id,
+    paperTitle: paper.title,
+    paperCode: paper.code,
+    paperTotalMarks: paper.totalMarks || summed,
     rows,
   };
 }
 
-export function worksheetHref(paperId: string): string {
-  return `/student/evaluator/worksheet/${encodeURIComponent(paperId)}`;
+export function resolveBmcrSittingId(id: string | undefined | null): string | null {
+  if (!id) return null;
+  const exam = findRegisteredExam(id) || findRegisteredPaper(id)?.exam;
+  return exam?.id || null;
 }
 
-export function hasPrintableBmcrWorksheet(paperId: string | undefined | null): boolean {
-  return Boolean(bmcrWorksheetForPaper(paperId));
+/**
+ * One printable BMCR for the whole sitting. Totals are registry `section.totalMarks`
+ * (maximum awarded), not available mark-plan opportunities.
+ */
+export function bmcrWorksheetForSitting(id: string | undefined | null): BmcrSittingWorksheet | null {
+  const exam = findRegisteredExam(id) || findRegisteredPaper(id)?.exam;
+  if (!exam?.papers.some((paper) => paper.sections.length)) return null;
+  const sittingLabel = sittingLabelFromId(exam.id, exam.title);
+  return {
+    examBody: "IAC",
+    sittingId: exam.id,
+    sittingLabel,
+    title: `${sittingLabel} IAC — Basic Marks Conversion Rate`,
+    marksSource: `lib/data/past-papers/iac-${exam.id}.json → papers[].sections[].totalMarks`,
+    papers: exam.papers.filter((paper) => paper.sections.length).map(paperFromRegistry),
+  };
+}
+
+export function worksheetHref(sittingOrPaperId: string): string {
+  const sittingId = resolveBmcrSittingId(sittingOrPaperId) || sittingOrPaperId;
+  return `/student/evaluator/worksheet/${encodeURIComponent(sittingId)}`;
+}
+
+export function hasPrintableBmcrWorksheet(sittingOrPaperId: string | undefined | null): boolean {
+  return Boolean(bmcrWorksheetForSitting(sittingOrPaperId));
 }

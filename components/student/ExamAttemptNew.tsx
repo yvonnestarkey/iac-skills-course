@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { FIRST_BMCR_WORKSHEET_PAPER_ID, hasPrintableBmcrWorksheet } from "@/lib/bmcr-worksheet";
+import {
+  FIRST_BMCR_WORKSHEET_PAPER_ID,
+  hasPrintableBmcrWorksheet,
+  worksheetHref,
+} from "@/lib/bmcr-worksheet";
 import { useCoursePreview } from "@/lib/course-preview";
 import { createExamAttempt } from "@/lib/exam-attempts";
 import { officialSourceSpec } from "@/lib/exam-source-pack";
@@ -28,7 +32,7 @@ export default function ExamAttemptNew() {
   );
   const papers = sitting?.papers || [];
   const selectedPaper = papers.find((paper) => paper.id === paperId) || papers[0];
-  const worksheetReady = hasPrintableBmcrWorksheet(selectedPaper?.id);
+  const worksheetReady = hasPrintableBmcrWorksheet(sitting.id);
   const sourcesKnown = selectedPaper ? Boolean(officialSourceSpec(sitting.id, selectedPaper.id)) : false;
 
   function changeSitting(nextId: string) {
@@ -84,14 +88,14 @@ export default function ExamAttemptNew() {
         <Link href="/student/evaluator">← Script evaluator</Link>
       </p>
       <p className="kicker">New exam attempt</p>
-      <h1>Choose the sitting and paper first</h1>
+      <h1>Choose the sitting, print one BMCR, then pick the paper</h1>
       <p>
-        This selection is the official identity of the attempt. We do not infer the exam from your handwriting. Download
-        the BMCR worksheet and upload files only after you have chosen the paper you actually wrote.
+        Print one BMCR worksheet for the whole sitting — Paper 1, 2 and 3 together. Then choose which paper you are
+        submitting now. Each script stays its own attempt.
       </p>
 
       <label className="eval-exam-picker">
-        Sitting
+        1. Sitting
         <select className="select-line" value={sitting.id} onChange={(event) => changeSitting(event.target.value)}>
           {PAST_PAPER_SITTINGS.map((item) => (
             <option key={item.id} value={item.id}>
@@ -101,8 +105,25 @@ export default function ExamAttemptNew() {
         </select>
       </label>
 
+      <section className="eval-upload-block">
+        <h2>2. Print the sitting BMCR</h2>
+        <p>
+          One worksheet covers all three papers. Fill it in by hand next to your marked scripts. You will not need a
+          new printout for each paper.
+        </p>
+        {worksheetReady ? (
+          <p>
+            <Link className="primary" href={worksheetHref(sitting.id)} target="_blank">
+              Open printable BMCR worksheet
+            </Link>
+          </p>
+        ) : (
+          <p className="notice">A printable BMCR worksheet is not ready for this sitting yet. Prefer January 2026.</p>
+        )}
+      </section>
+
       <label className="eval-exam-picker">
-        Paper
+        3. Which paper are you submitting now?
         <select className="select-line" value={selectedPaper?.id || ""} onChange={(event) => setPaperId(event.target.value)}>
           {papers.map((paper) => (
             <option key={paper.id} value={paper.id}>
@@ -118,9 +139,6 @@ export default function ExamAttemptNew() {
           examiner commentary.
         </p>
       ) : null}
-      {!worksheetReady ? (
-        <p className="notice">A printable BMCR worksheet is not ready for this paper yet. Prefer January 2026.</p>
-      ) : null}
       {!sourcesKnown ? (
         <p className="notice">
           Official question / solution / examiner files are not mapped for this sitting yet. You can still store the
@@ -132,7 +150,7 @@ export default function ExamAttemptNew() {
 
       <p>
         <button type="button" className="primary" disabled={busy || !user?.id || !selectedPaper} onClick={startAttempt}>
-          {busy ? "Starting…" : "Continue to worksheet and uploads"}
+          {busy ? "Starting…" : "Continue to uploads"}
         </button>
       </p>
     </article>

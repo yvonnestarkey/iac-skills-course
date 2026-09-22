@@ -22,7 +22,7 @@ import { useStudentSession } from "@/lib/student-session";
 const FILE_KINDS: ExamAttemptFileKind[] = ["bmcr_worksheet", "marked_script", "marking_report"];
 
 const FILE_HELP: Record<ExamAttemptFileKind, string> = {
-  bmcr_worksheet: "The paper BMCR sheet you completed by hand for this sitting and paper.",
+  bmcr_worksheet: "The completed sitting BMCR — one handwritten sheet covers all three papers.",
   marked_script: "The marked exam script you wrote in the venue, including workings and marker comments.",
   marking_report: "The official marking report / mark schedule for this attempt — not the script itself.",
 };
@@ -129,20 +129,20 @@ export default function ExamAttemptWorkspace() {
       </p>
 
       <section className="eval-upload-block">
-        <h2>1. Download the BMCR worksheet</h2>
+        <h2>1. Sitting BMCR</h2>
         <p>
-          Print this paper-specific sheet. Fill it in offline next to your marked script. You do the marks-I-knew ÷
-          total-available calculation yourself.
+          Use the one BMCR worksheet for this sitting. Reprint it here if you need another copy. You do the What I got /
+          Basic Marks / % I could&apos;ve earned arithmetic yourself.
         </p>
         <p>
-          <Link className="primary" href={worksheetHref(attempt.paper_id)} target="_blank">
-            Open printable BMCR worksheet
+          <Link className="primary" href={worksheetHref(attempt.sitting_id)} target="_blank">
+            Open printable sitting BMCR
           </Link>
         </p>
       </section>
 
       <section className="eval-upload-block">
-        <h2>2. Upload three PDFs</h2>
+        <h2>2. Upload three PDFs for this paper</h2>
         <p>Each file is stored against this attempt only. A PDF sitting in storage is not treated as analysed.</p>
         <div className="eval-upload-grid">
           {FILE_KINDS.map((kind) => {

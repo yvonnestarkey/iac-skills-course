@@ -6207,6 +6207,27 @@ a.live-session-watch:hover {
   margin: 4px 0 8px;
 }
 
+.bmcr-sheet-howto {
+  margin: 12px 0 0;
+  padding-left: 18px;
+}
+
+.bmcr-sheet-howto li {
+  margin: 6px 0;
+}
+
+.bmcr-sheet-paper + .bmcr-sheet-paper {
+  margin-top: 36px;
+  padding-top: 8px;
+  page-break-before: always;
+  break-before: page;
+}
+
+.bmcr-sheet-paper h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
 .bmcr-sheet-table {
   width: 100%;
   border-collapse: collapse;
@@ -6223,8 +6244,14 @@ a.live-session-watch:hover {
 }
 
 .bmcr-sheet-table th:nth-child(3),
-.bmcr-sheet-table td:nth-child(3) {
-  width: 7.5rem;
+.bmcr-sheet-table td:nth-child(3),
+.bmcr-sheet-table th:nth-child(4),
+.bmcr-sheet-table td:nth-child(4),
+.bmcr-sheet-table th:nth-child(5),
+.bmcr-sheet-table td:nth-child(5),
+.bmcr-sheet-table th:nth-child(6),
+.bmcr-sheet-table td:nth-child(6) {
+  width: 7.2rem;
   text-align: center;
 }
 

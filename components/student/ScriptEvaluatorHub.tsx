@@ -86,8 +86,8 @@ export default function ScriptEvaluatorHub() {
       <p className="kicker">Script evaluator</p>
       <h1>Submit a marked exam attempt</h1>
       <p>
-        Choose one sitting and paper, print that paper’s BMCR worksheet, work through your marked script offline, then
-        upload three PDFs: the completed worksheet, the marked script, and the marking report.
+        Choose a sitting, print one BMCR for all three papers, then submit each marked script as its own attempt with
+        the completed worksheet, the script, and the marking report.
       </p>
       <p className="muted small">
         Each attempt stays separate. If you have written IAC more than once, submit each sitting on its own.
