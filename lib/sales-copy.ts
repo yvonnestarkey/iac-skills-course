@@ -29,6 +29,17 @@ export const COLD_VIDEO = {
   src: "https://player.vimeo.com/video/1069126463",
 };
 
+export const REGISTRATION_HEADLINE = "You'll be registered for a free preview once the course is live";
+
+export const REGISTRATION_CONTACT_EMAIL = "yvonne@accountingstudyadvice.com";
+
+export const REGISTRATION_CONTACT_LABEL = "Email me for questions";
+
+export const REGISTRATION_NOTE =
+  "The course will be live before the end of September 2026. You'll be given the option to purchase or access a free preview of the course to get a feel for what it includes. Live Sessions start end October 2026";
+
+export const REGISTRATION_PAYMENT = "Payment: Once-off $327 or 6 X monthly payments of $60";
+
 export const COURSE_FEATURES = [
   {
     title: "Submit Tasks & Get Individual Feedback",

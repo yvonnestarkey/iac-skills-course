@@ -5184,6 +5184,59 @@ a.live-session-watch:hover {
   top: 84px;
 }
 
+.sales-registration {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 22px 48px;
+}
+
+.sales-registration h1 {
+  font-size: clamp(30px, 4.2vw, 42px);
+  max-width: 22ch;
+  margin: 0 0 28px;
+}
+
+.sales-registration-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.sales-registration .sales-lead-card {
+  position: static;
+}
+
+.sales-contact-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sales-contact-card .primary {
+  text-align: center;
+}
+
+.sales-contact-card p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.sales-registration-payment {
+  font-weight: 700;
+}
+
+.sales-registration-videos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 28px;
+}
+
+.sales-registration-videos .sales-video {
+  margin-top: 0;
+}
+
 .waitlist-form,
 .waitlist-success {
   display: flex;
@@ -5499,8 +5552,14 @@ a.live-session-watch:hover {
   .sales-value-grid,
   .sales-quote-grid,
   .sales-pricing-grid,
-  .sales-feature-grid {
+  .sales-feature-grid,
+  .sales-registration-columns,
+  .sales-registration-videos {
     grid-template-columns: 1fr;
+  }
+
+  .sales-registration h1 {
+    max-width: none;
   }
 
   .sales-lead-card {
