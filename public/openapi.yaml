@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: IAC Skills Course GPT API
-  version: 1.0.9
+  version: 1.1.0
   description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT Action.
 servers:
   - url: https://iac.accountingstudyadvice.com
@@ -69,7 +69,8 @@ paths:
               properties:
                 config_json:
                   type: object
-                  additionalProperties: true
+                  additionalProperties: false
+                  properties: {}
       responses:
         "200":
           description: Updated mark configuration
@@ -114,7 +115,8 @@ paths:
                     type: string
                 saica_competency_mappings:
                   type: object
-                  additionalProperties: true
+                  additionalProperties: false
+                  properties: {}
       responses:
         "201":
           description: Created coaching insight
@@ -125,7 +127,8 @@ paths:
                 properties:
                   insight:
                     type: object
-                    additionalProperties: true
+                    additionalProperties: false
+                    properties: {}
         "400":
           description: Missing insight fields
         "500":
@@ -447,13 +450,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties: false
-              required:
-                - attempt_id
-              properties:
-                attempt_id:
-                  type: string
+              $ref: "#/components/schemas/GetEvaluatorAttemptEvidenceRequest"
       responses:
         "200":
           description: Existing evaluator-evidence payload
@@ -488,16 +485,11 @@ paths:
       summary: Get the current systems model
       description: Read-only. Returns the current checkpoint, active records, lineage, guardrails and working state. Empty until a checkpoint exists. No student data, SQL, or source-document copies.
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties: false
-              properties:
-                unused:
-                  type: string
-                  description: Optional. Ignored. This read accepts an empty JSON object.
+              $ref: "#/components/schemas/GetSystemsModelRequest"
       responses:
         "200":
           description: Current systems model
@@ -797,8 +789,7 @@ paths:
                 synthesis:
                   type: string
                 model:
-                  type: object
-                  additionalProperties: true
+                  $ref: "#/components/schemas/SystemsModelTemplate"
                 supporting_record_ids:
                   type: array
                   items:
@@ -874,8 +865,7 @@ paths:
                   type: string
                   nullable: true
                 state:
-                  type: object
-                  additionalProperties: true
+                  $ref: "#/components/schemas/SystemsWorkingStateBody"
       responses:
         "200":
           description: Updated working state
@@ -910,103 +900,163 @@ components:
           type: string
         content:
           type: string
+    GetEvaluatorAttemptEvidenceRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - attempt_id
+      properties:
+        attempt_id:
+          type: string
+    GetSystemsModelRequest:
+      type: object
+      additionalProperties: false
+      properties: {}
     EvaluatorAttemptEvidence:
       type: object
       additionalProperties: false
       required:
         - analysed
         - attempt
+        - paper
         - official_sources
         - evidence
       properties:
         analysed:
           type: boolean
         attempt:
-          type: object
-          additionalProperties: true
-          properties:
-            id:
-              type: string
-            user_id:
-              type: string
-            exam_body:
-              type: string
-            sitting_id:
-              type: string
-            sitting_label:
-              type: string
-            paper_id:
-              type: string
-            paper_title:
-              type: string
-            paper_code:
-              type: string
-            status:
-              type: string
+          $ref: "#/components/schemas/EvaluatorAttemptSummary"
         paper:
-          type: object
-          nullable: true
-          additionalProperties: true
-          properties:
-            paper_id:
-              type: string
-            paper_title:
-              type: string
-            paper_code:
-              type: string
-            total_marks:
-              type: number
-            requirements:
-              type: array
-              items:
-                type: object
-                additionalProperties: true
-                properties:
-                  code:
-                    type: string
-                  title:
-                    type: string
-                  total_marks:
-                    type: number
+          $ref: "#/components/schemas/EvaluatorPaper"
         official_sources:
-          type: object
-          additionalProperties: true
-          properties:
-            retrieval:
-              type: string
-            complete:
-              type: boolean
-            missing:
-              type: array
-              items:
-                type: string
-            documents:
-              type: array
-              items:
-                type: object
-                additionalProperties: true
-                properties:
-                  kind:
-                    type: string
-                  document_title:
-                    type: string
-                  chunk_count:
-                    type: integer
+          $ref: "#/components/schemas/EvaluatorOfficialSources"
         evidence:
-          type: object
-          additionalProperties: true
-          properties:
-            bmcr:
-              $ref: "#/components/schemas/EvaluatorEvidenceFile"
-            exam_script:
-              $ref: "#/components/schemas/EvaluatorEvidenceFile"
-            marking_report:
-              $ref: "#/components/schemas/EvaluatorEvidenceFile"
+          $ref: "#/components/schemas/EvaluatorEvidenceGroups"
+    EvaluatorAttemptSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - user_id
+        - exam_body
+        - sitting_id
+        - sitting_label
+        - paper_id
+        - paper_title
+        - paper_code
+        - status
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        exam_body:
+          type: string
+        sitting_id:
+          type: string
+        sitting_label:
+          type: string
+        paper_id:
+          type: string
+        paper_title:
+          type: string
+        paper_code:
+          type: string
+        status:
+          type: string
+    EvaluatorPaper:
+      type: object
+      nullable: true
+      additionalProperties: false
+      required:
+        - paper_id
+        - paper_title
+        - paper_code
+        - total_marks
+        - requirements
+      properties:
+        paper_id:
+          type: string
+        paper_title:
+          type: string
+        paper_code:
+          type: string
+        total_marks:
+          type: number
+        requirements:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvaluatorRequirement"
+    EvaluatorRequirement:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - title
+        - total_marks
+      properties:
+        code:
+          type: string
+        title:
+          type: string
+        total_marks:
+          type: number
+    EvaluatorOfficialSources:
+      type: object
+      additionalProperties: false
+      required:
+        - retrieval
+        - complete
+        - missing
+        - documents
+      properties:
+        retrieval:
+          type: string
+        complete:
+          type: boolean
+        missing:
+          type: array
+          items:
+            type: string
+        documents:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvaluatorOfficialDocument"
+    EvaluatorOfficialDocument:
+      type: object
+      additionalProperties: false
+      required:
+        - kind
+        - document_title
+        - chunk_count
+      properties:
+        kind:
+          type: string
+        document_title:
+          type: string
+        chunk_count:
+          type: integer
+    EvaluatorEvidenceGroups:
+      type: object
+      additionalProperties: false
+      required:
+        - bmcr
+        - exam_script
+        - marking_report
+      properties:
+        bmcr:
+          $ref: "#/components/schemas/EvaluatorEvidenceFile"
+        exam_script:
+          $ref: "#/components/schemas/EvaluatorEvidenceFile"
+        marking_report:
+          $ref: "#/components/schemas/EvaluatorEvidenceFile"
     EvaluatorEvidenceFile:
       type: object
       additionalProperties: false
       required:
         - group
+        - stored_kind
+        - name
         - page_count
         - page_numbers
         - pages
@@ -1027,16 +1077,18 @@ components:
         pages:
           type: array
           items:
-            type: object
-            additionalProperties: false
-            required:
-              - page
-              - image_url
-            properties:
-              page:
-                type: integer
-              image_url:
-                type: string
+            $ref: "#/components/schemas/EvaluatorPageImage"
+    EvaluatorPageImage:
+      type: object
+      additionalProperties: false
+      required:
+        - page
+        - image_url
+      properties:
+        page:
+          type: integer
+        image_url:
+          type: string
     SystemsModel:
       type: object
       additionalProperties: false
@@ -1050,107 +1102,455 @@ components:
         - empty_model_template
       properties:
         checkpoint:
-          type: object
-          nullable: true
-          additionalProperties: true
-          properties:
-            id:
-              type: string
-            version:
-              type: string
-            status:
-              type: string
-            title:
-              type: string
-            synthesis:
-              type: string
+          $ref: "#/components/schemas/SystemsCheckpoint"
         working_state:
-          type: object
-          additionalProperties: true
-          properties:
-            version:
-              type: string
-            current_checkpoint_id:
-              type: string
-              nullable: true
+          $ref: "#/components/schemas/SystemsWorkingState"
         lineage:
-          type: object
-          additionalProperties: true
-          properties:
-            id:
-              type: string
+          $ref: "#/components/schemas/SystemsLineage"
         guardrails:
           type: array
           items:
             type: string
         records:
-          type: object
-          additionalProperties: true
-          properties:
-            observations:
-              type: array
-              items:
-                type: object
-                additionalProperties: true
-                properties:
-                  id:
-                    type: string
-            interpretations:
-              type: array
-              items:
-                type: object
-                additionalProperties: true
-                properties:
-                  id:
-                    type: string
-            alternatives:
-              type: array
-              items:
-                type: object
-                additionalProperties: true
-                properties:
-                  id:
-                    type: string
-            questions:
-              type: array
-              items:
-                type: object
-                additionalProperties: true
-                properties:
-                  id:
-                    type: string
-            revisions:
-              type: array
-              items:
-                type: object
-                additionalProperties: true
-                properties:
-                  id:
-                    type: string
-            yvonne_reviews:
-              type: array
-              items:
-                type: object
-                additionalProperties: true
-                properties:
-                  id:
-                    type: string
+          $ref: "#/components/schemas/SystemsRecordsByType"
         superseded:
           type: array
           items:
-            type: object
-            additionalProperties: true
-            properties:
-              id:
-                type: string
+            $ref: "#/components/schemas/SystemsRecord"
         empty_model_template:
-          type: object
-          additionalProperties: true
-          properties:
-            assumptions:
-              type: array
-              items:
-                type: string
+          $ref: "#/components/schemas/SystemsModelTemplate"
+    SystemsCheckpoint:
+      type: object
+      nullable: true
+      additionalProperties: false
+      required:
+        - id
+        - version
+        - status
+        - title
+        - synthesis
+        - model
+        - guardrails
+        - supporting_record_ids
+        - challenging_record_ids
+        - open_question_ids
+        - informed_by_record_ids
+        - provenance
+        - revision_id
+        - replaces_checkpoint_id
+        - created_by
+      properties:
+        id:
+          type: string
+        version:
+          type: string
+        status:
+          type: string
+        title:
+          type: string
+        synthesis:
+          type: string
+        model:
+          $ref: "#/components/schemas/SystemsModelTemplate"
+        guardrails:
+          type: array
+          items:
+            type: string
+        supporting_record_ids:
+          type: array
+          items:
+            type: string
+        challenging_record_ids:
+          type: array
+          items:
+            type: string
+        open_question_ids:
+          type: array
+          items:
+            type: string
+        informed_by_record_ids:
+          type: array
+          items:
+            type: string
+        provenance:
+          $ref: "#/components/schemas/SystemsCheckpointProvenance"
+        revision_id:
+          type: string
+          nullable: true
+        replaces_checkpoint_id:
+          type: string
+          nullable: true
+        created_by:
+          type: string
+        created_at:
+          type: string
+    SystemsCheckpointProvenance:
+      type: object
+      additionalProperties: false
+      properties:
+        source_ids:
+          type: array
+          items:
+            type: string
+        question_ids:
+          type: array
+          items:
+            type: string
+        revision_ids:
+          type: array
+          items:
+            type: string
+        observation_ids:
+          type: array
+          items:
+            type: string
+        interpretation_ids:
+          type: array
+          items:
+            type: string
+        yvonne_review_ids:
+          type: array
+          items:
+            type: string
+        working_state_id:
+          type: string
+          nullable: true
+        replaces_checkpoint_id:
+          type: string
+          nullable: true
+    SystemsWorkingState:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - version
+        - status
+        - current_checkpoint_id
+        - state
+      properties:
+        id:
+          type: string
+        version:
+          type: string
+        status:
+          type: string
+        current_checkpoint_id:
+          type: string
+          nullable: true
+        replaces_working_state_id:
+          type: string
+          nullable: true
+        state:
+          $ref: "#/components/schemas/SystemsWorkingStateBody"
+        history:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsWorkingStateHistoryItem"
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    SystemsWorkingStateBody:
+      type: object
+      additionalProperties: false
+      properties:
+        current_checkpoint_id:
+          type: string
+          nullable: true
+        current_checkpoint_version:
+          type: string
+          nullable: true
+        traversal:
+          $ref: "#/components/schemas/SystemsTraversal"
+        traversal_history:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsTraversal"
+        examined_deeply:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsSourceNote"
+        scanned:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsSourceNote"
+        unresolved_question_ids:
+          type: array
+          items:
+            type: string
+        contradictions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsContradiction"
+        alternative_ids:
+          type: array
+          items:
+            type: string
+        yvonne_clarification_needed:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsClarification"
+        revisit_queue:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsRevisitItem"
+        emerging_themes:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsEmergingTheme"
+        next_investigation:
+          type: string
+    SystemsTraversal:
+      type: object
+      additionalProperties: false
+      properties:
+        last_source_id:
+          type: string
+          nullable: true
+        last_lesson_id:
+          type: string
+          nullable: true
+        position_note:
+          type: string
+        at:
+          type: string
+    SystemsSourceNote:
+      type: object
+      additionalProperties: false
+      required:
+        - source_id
+      properties:
+        source_id:
+          type: string
+        note:
+          type: string
+    SystemsContradiction:
+      type: object
+      additionalProperties: false
+      required:
+        - summary
+      properties:
+        summary:
+          type: string
+        record_ids:
+          type: array
+          items:
+            type: string
+    SystemsClarification:
+      type: object
+      additionalProperties: false
+      required:
+        - question
+      properties:
+        question:
+          type: string
+        record_id:
+          type: string
+    SystemsRevisitItem:
+      type: object
+      additionalProperties: false
+      required:
+        - reason
+      properties:
+        source_id:
+          type: string
+        record_id:
+          type: string
+        reason:
+          type: string
+    SystemsEmergingTheme:
+      type: object
+      additionalProperties: false
+      required:
+        - theme
+      properties:
+        theme:
+          type: string
+        evidence_record_ids:
+          type: array
+          items:
+            type: string
+    SystemsWorkingStateHistoryItem:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - version
+      properties:
+        id:
+          type: string
+        version:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+    SystemsLineage:
+      type: object
+      additionalProperties: false
+      properties: {}
+    SystemsRecordsByType:
+      type: object
+      additionalProperties: false
+      required:
+        - observations
+        - interpretations
+        - alternatives
+        - questions
+        - revisions
+        - yvonne_reviews
+      properties:
+        observations:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsRecord"
+        interpretations:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsRecord"
+        alternatives:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsRecord"
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsRecord"
+        revisions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsRecord"
+        yvonne_reviews:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsRecord"
+    SystemsRecord:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - record_type
+        - epistemic_status
+        - lifecycle
+        - title
+        - statement
+        - rationale
+        - payload
+        - source_refs
+        - supports_record_ids
+        - challenges_record_ids
+        - related_record_ids
+        - supersedes_id
+        - checkpoint_id
+        - needs_yvonne_review
+        - created_by
+      properties:
+        id:
+          type: string
+        record_type:
+          type: string
+        epistemic_status:
+          type: string
+        lifecycle:
+          type: string
+        title:
+          type: string
+        statement:
+          type: string
+        rationale:
+          type: string
+        payload:
+          $ref: "#/components/schemas/EmptyObject"
+        source_refs:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemsSourceRef"
+        supports_record_ids:
+          type: array
+          items:
+            type: string
+        challenges_record_ids:
+          type: array
+          items:
+            type: string
+        related_record_ids:
+          type: array
+          items:
+            type: string
+        supersedes_id:
+          type: string
+          nullable: true
+        checkpoint_id:
+          type: string
+          nullable: true
+        needs_yvonne_review:
+          type: boolean
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    SystemsModelTemplate:
+      type: object
+      additionalProperties: false
+      properties:
+        assumptions:
+          type: array
+          items:
+            type: string
+        observable_behaviours:
+          type: array
+          items:
+            type: string
+        learning_behaviours_created:
+          type: array
+          items:
+            type: string
+        psychological_mechanisms:
+          type: array
+          items:
+            type: string
+        diagnostic_mechanisms:
+          type: array
+          items:
+            type: string
+        pedagogical_mechanisms:
+          type: array
+          items:
+            type: string
+        sequencing:
+          type: array
+          items:
+            type: string
+        feedback_loops:
+          type: array
+          items:
+            type: string
+        mindset_strategy_skills:
+          type: array
+          items:
+            type: string
+        performance_evidence:
+          type: array
+          items:
+            type: string
+        interventions:
+          type: array
+          items:
+            type: string
+        function_by_position:
+          type: array
+          items:
+            type: string
+        recurring_across_coaching_and_course:
+          type: array
+          items:
+            type: string
+    EmptyObject:
+      type: object
+      additionalProperties: false
+      properties: {}
     SystemsSourceRef:
       type: object
       additionalProperties: false
