@@ -4,6 +4,7 @@ import {
   FIRST_BMCR_WORKSHEET_PAPER_ID,
   FIRST_BMCR_WORKSHEET_SITTING_ID,
   bmcrWorksheetForSitting,
+  evaluatorContinueHref,
   resolveBmcrSittingId,
   worksheetHref,
 } from "./bmcr-worksheet";
@@ -33,4 +34,21 @@ test("a paper id still opens the sitting-level worksheet", () => {
   assert.equal(resolveBmcrSittingId(FIRST_BMCR_WORKSHEET_PAPER_ID), "jan-2026");
   assert.equal(worksheetHref(FIRST_BMCR_WORKSHEET_PAPER_ID), "/student/evaluator/worksheet/jan-2026");
   assert.equal(bmcrWorksheetForSitting(FIRST_BMCR_WORKSHEET_PAPER_ID)?.sittingId, "jan-2026");
+});
+
+test("Close BMCR returns to the evaluator from path and keeps the sitting", () => {
+  assert.equal(
+    worksheetHref("jan-2026", "/student/evaluator/new?sitting=jan-2026"),
+    "/student/evaluator/worksheet/jan-2026?from=%2Fstudent%2Fevaluator%2Fnew%3Fsitting%3Djan-2026"
+  );
+  assert.equal(
+    evaluatorContinueHref("/student/evaluator/new?sitting=jan-2026", "jan-2026"),
+    "/student/evaluator/new?sitting=jan-2026"
+  );
+  assert.equal(
+    evaluatorContinueHref("/student/evaluator/attempt/abc", "jan-2026"),
+    "/student/evaluator/attempt/abc"
+  );
+  assert.equal(evaluatorContinueHref("https://example.com", "jan-2026"), "/student/evaluator/new?sitting=jan-2026");
+  assert.equal(evaluatorContinueHref("", "jan-2026"), "/student/evaluator/new?sitting=jan-2026");
 });

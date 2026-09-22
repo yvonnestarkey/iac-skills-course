@@ -6147,6 +6147,26 @@ a.live-session-watch:hover {
   border-top: 1px solid var(--line);
 }
 
+.eval-flow {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.eval-flow-step {
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.eval-flow-step h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
 .eval-upload-block {
   margin-top: 8px;
 }
@@ -6265,7 +6285,17 @@ a.live-session-watch:hover {
 }
 
 .bmcr-sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   margin: 18px 0 0;
+}
+
+.bmcr-sheet-brand {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 28px;
 }
 
 @media (max-width: 900px) {
@@ -6282,6 +6312,17 @@ a.live-session-watch:hover {
   .bmcr-sheet-back,
   .bmcr-sheet-actions {
     display: none !important;
+  }
+
+  .bmcr-sheet {
+    padding-bottom: 72px;
+  }
+
+  .bmcr-sheet-brand {
+    position: fixed;
+    left: 16px;
+    bottom: 12px;
+    margin: 0;
   }
 
   .shell,

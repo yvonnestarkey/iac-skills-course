@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import {
-  FIRST_BMCR_WORKSHEET_PAPER_ID,
+  evaluatorContinueHref,
   hasPrintableBmcrWorksheet,
+  resolveBmcrSittingId,
   worksheetHref,
 } from "@/lib/bmcr-worksheet";
 import { useCoursePreview } from "@/lib/course-preview";
@@ -18,11 +19,14 @@ import { useStudentSession } from "@/lib/student-session";
 
 export default function ExamAttemptNew() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { ready, user, outline, submissions } = useStudentSession();
   const { unlocked } = useCoursePreview();
   const canUse = hasTask1Submission(submissions, outline) || unlocked || isCoachAccount(user);
-  const [sittingId, setSittingId] = useState("jan-2026");
-  const [paperId, setPaperId] = useState(FIRST_BMCR_WORKSHEET_PAPER_ID);
+  const [sittingId, setSittingId] = useState(
+    () => resolveBmcrSittingId(searchParams.get("sitting")) || "jan-2026"
+  );
+  const [paperId, setPaperId] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -34,11 +38,13 @@ export default function ExamAttemptNew() {
   const selectedPaper = papers.find((paper) => paper.id === paperId) || papers[0];
   const worksheetReady = hasPrintableBmcrWorksheet(sitting.id);
   const sourcesKnown = selectedPaper ? Boolean(officialSourceSpec(sitting.id, selectedPaper.id)) : false;
+  const returnTo = evaluatorContinueHref(`/student/evaluator/new?sitting=${sitting.id}`, sitting.id);
 
   function changeSitting(nextId: string) {
     setSittingId(nextId);
     const next = PAST_PAPER_SITTINGS.find((item) => item.id === nextId);
     setPaperId(next?.papers[0]?.id || "");
+    router.replace(`/student/evaluator/new?sitting=${encodeURIComponent(nextId)}`, { scroll: false });
   }
 
   async function startAttempt() {
@@ -88,50 +94,69 @@ export default function ExamAttemptNew() {
         <Link href="/student/evaluator">← Script evaluator</Link>
       </p>
       <p className="kicker">New exam attempt</p>
-      <h1>Choose the sitting, print one BMCR, then pick the paper</h1>
+      <h1>Sitting, then BMCR, then one paper</h1>
       <p>
-        Print one BMCR worksheet for the whole sitting — Paper 1, 2 and 3 together. Then choose which paper you are
-        submitting now. Each script stays its own attempt.
+        Print one BMCR for the whole sitting. After that, choose which paper&apos;s script this attempt is for. You
+        reuse the same worksheet for every paper from that sitting.
       </p>
 
-      <label className="eval-exam-picker">
-        1. Sitting
-        <select className="select-line" value={sitting.id} onChange={(event) => changeSitting(event.target.value)}>
-          {PAST_PAPER_SITTINGS.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.label}
-            </option>
-          ))}
-        </select>
-      </label>
+      <ol className="eval-flow">
+        <li className="eval-flow-step">
+          <h2>1. Choose the exam sitting</h2>
+          <label className="eval-exam-picker">
+            Sitting
+            <select className="select-line" value={sitting.id} onChange={(event) => changeSitting(event.target.value)}>
+              {PAST_PAPER_SITTINGS.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </li>
 
-      <section className="eval-upload-block">
-        <h2>2. Print the sitting BMCR</h2>
-        <p>
-          One worksheet covers all three papers. Fill it in by hand next to your marked scripts. You will not need a
-          new printout for each paper.
-        </p>
-        {worksheetReady ? (
+        <li className="eval-flow-step">
+          <h2>2. Print one BMCR for this sitting</h2>
           <p>
-            <Link className="primary" href={worksheetHref(sitting.id)} target="_blank">
-              Open printable BMCR worksheet
-            </Link>
+            One worksheet covers Paper 1, Paper 2 and Paper 3. Fill it in by hand. You do not print a new BMCR for each
+            paper.
           </p>
-        ) : (
-          <p className="notice">A printable BMCR worksheet is not ready for this sitting yet. Prefer January 2026.</p>
-        )}
-      </section>
+          <p className="muted small">
+            On this sheet: {papers.map((paper) => paper.title).join(" · ") || "all papers in the sitting"}
+          </p>
+          {worksheetReady ? (
+            <p>
+              <Link className="primary" href={worksheetHref(sitting.id, returnTo)}>
+                Print sitting BMCR
+              </Link>
+            </p>
+          ) : (
+            <p className="notice">A printable BMCR worksheet is not ready for this sitting yet. Prefer January 2026.</p>
+          )}
+        </li>
 
-      <label className="eval-exam-picker">
-        3. Which paper are you submitting now?
-        <select className="select-line" value={selectedPaper?.id || ""} onChange={(event) => setPaperId(event.target.value)}>
-          {papers.map((paper) => (
-            <option key={paper.id} value={paper.id}>
-              {paper.title} ({paper.total_marks} marks)
-            </option>
-          ))}
-        </select>
-      </label>
+        <li className="eval-flow-step">
+          <h2>3. Which paper&apos;s script is this attempt?</h2>
+          <p>
+            This only chooses the script you are uploading now. It does not create another BMCR. Each paper stays a
+            separate attempt.
+          </p>
+          <label className="eval-exam-picker">
+            Paper
+            <select
+              className="select-line"
+              value={selectedPaper?.id || ""}
+              onChange={(event) => setPaperId(event.target.value)}
+            >
+              {papers.map((paper) => (
+                <option key={paper.id} value={paper.id}>
+                  {paper.title} ({paper.total_marks} marks)
+                </option>
+              ))}
+            </select>
+          </label>
+        </li>
+      </ol>
 
       {sitting.id === "jan-2026" ? (
         <p className="muted small">
@@ -150,7 +175,7 @@ export default function ExamAttemptNew() {
 
       <p>
         <button type="button" className="primary" disabled={busy || !user?.id || !selectedPaper} onClick={startAttempt}>
-          {busy ? "Starting…" : "Continue to uploads"}
+          {busy ? "Starting…" : "4. Continue to uploads"}
         </button>
       </p>
     </article>

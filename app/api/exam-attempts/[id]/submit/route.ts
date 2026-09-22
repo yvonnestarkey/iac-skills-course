@@ -60,7 +60,7 @@ export async function POST(
   if (!isAttemptSubmitted(attempt.status)) {
     if (attemptFileCount(attempt) < 3) {
       return NextResponse.json(
-        { error: "Upload the completed BMCR worksheet, marked script, and marking report first." },
+        { error: "Upload the completed BMCR worksheet, exam script, and marking report first." },
         { status: 400 }
       );
     }

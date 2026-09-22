@@ -74,9 +74,19 @@ export function bmcrWorksheetForSitting(id: string | undefined | null): BmcrSitt
   };
 }
 
-export function worksheetHref(sittingOrPaperId: string): string {
+export function worksheetHref(sittingOrPaperId: string, from?: string): string {
   const sittingId = resolveBmcrSittingId(sittingOrPaperId) || sittingOrPaperId;
-  return `/student/evaluator/worksheet/${encodeURIComponent(sittingId)}`;
+  const path = `/student/evaluator/worksheet/${encodeURIComponent(sittingId)}`;
+  if (!from) return path;
+  return `${path}?${new URLSearchParams({ from }).toString()}`;
+}
+
+/** Safe return into the evaluator after printing. Standalone visits continue with the sitting selected. */
+export function evaluatorContinueHref(from: string | undefined | null, sittingId: string): string {
+  const fallback = `/student/evaluator/new?sitting=${encodeURIComponent(sittingId)}`;
+  const raw = String(from || "").trim();
+  if (!raw.startsWith("/student/evaluator") || raw.startsWith("//") || /:\/\//.test(raw)) return fallback;
+  return raw;
 }
 
 export function hasPrintableBmcrWorksheet(sittingOrPaperId: string | undefined | null): boolean {

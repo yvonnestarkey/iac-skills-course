@@ -49,7 +49,7 @@ export type ExamAttempt = {
 
 export const EXAM_ATTEMPT_FILE_LABELS: Record<ExamAttemptFileKind, string> = {
   bmcr_worksheet: "Completed BMCR worksheet",
-  marked_script: "Marked exam script",
+  marked_script: "Exam script",
   marking_report: "Marking report",
 };
 
@@ -348,7 +348,7 @@ export async function markAttemptAnalysing(
   if (!existing.attempt) return { ok: false, error: "That exam attempt was not found." };
   if (isAttemptSubmitted(existing.attempt.status)) return { ok: true, attempt: existing.attempt };
   if (attemptFileCount(existing.attempt) < 3) {
-    return { ok: false, error: "Upload the completed BMCR worksheet, marked script, and marking report first." };
+    return { ok: false, error: "Upload the completed BMCR worksheet, exam script, and marking report first." };
   }
   const now = new Date().toISOString();
   const { data, error } = await client

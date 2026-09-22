@@ -33,7 +33,7 @@ export default function ExamAttemptSubmitted() {
         </p>
       ) : null}
       <p>
-        We&apos;re analysing your BMCR, marked script and marking report alongside the exam question, official solution
+        We&apos;re analysing your BMCR, exam script and marking report alongside the exam question, official solution
         and examiner information.
       </p>
       <p>
@@ -43,8 +43,8 @@ export default function ExamAttemptSubmitted() {
         You don&apos;t need to wait here. You can return to the course and keep working.
       </p>
       <p>
-        Written IAC before? If you have another marked script from a previous sitting, you can submit that too.
-        You&apos;ll complete a separate BMCR for each attempt. Once you&apos;ve submitted more than one script,
+        Written IAC before? If you have another script from a previous sitting, you can submit that too. Use that
+        sitting&apos;s BMCR. Each paper is a separate attempt. Once you&apos;ve submitted more than one script,
         we&apos;ll also be able to look for patterns across your attempts.
       </p>
       <div className="eval-confirm-actions">

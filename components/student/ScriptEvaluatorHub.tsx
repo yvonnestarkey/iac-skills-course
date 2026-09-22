@@ -63,7 +63,7 @@ export default function ScriptEvaluatorHub() {
         <h1>Locked until Task 1 is submitted</h1>
         <p>
           Task 1 is the gate. You first evaluate your own performance with evidence, then the Script Evaluator opens so
-          you can submit a marked script.
+          you can submit a script.
         </p>
         <p className="notice">
           Submit <strong>{task1.lessonTitle}</strong> to unlock this tool. BMCR, Volume vs Accuracy, and Buried Treasure
@@ -84,10 +84,10 @@ export default function ScriptEvaluatorHub() {
         <Link href="/student/dashboard">← Student dashboard</Link>
       </p>
       <p className="kicker">Script evaluator</p>
-      <h1>Submit a marked exam attempt</h1>
+      <h1>Submit an exam attempt</h1>
       <p>
-        Choose a sitting, print one BMCR for all three papers, then submit each marked script as its own attempt with
-        the completed worksheet, the script, and the marking report.
+        Choose a sitting, print one BMCR for all three papers, then submit each exam script as its own attempt with the
+        completed worksheet, the script, and the marking report.
       </p>
       <p className="muted small">
         Each attempt stays separate. If you have written IAC more than once, submit each sitting on its own.

@@ -1,8 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import type { BmcrSittingWorksheet } from "@/lib/bmcr-worksheet";
 
-export default function BmcrWorksheetPrint({ worksheet }: { worksheet: BmcrSittingWorksheet }) {
+export default function BmcrWorksheetPrint({
+  worksheet,
+  continueHref,
+}: {
+  worksheet: BmcrSittingWorksheet;
+  continueHref: string;
+}) {
   return (
     <article className="bmcr-sheet">
       <header className="bmcr-sheet-head">
@@ -75,10 +82,17 @@ export default function BmcrWorksheetPrint({ worksheet }: { worksheet: BmcrSitti
         use Direct / Indirect / Thinking.
       </p>
 
+      <footer className="bmcr-sheet-brand">
+        <img src="/asa-logo.png" alt="Accounting Study Advice" className="brand-logo" width={44} height={44} />
+      </footer>
+
       <div className="bmcr-sheet-actions">
         <button type="button" className="primary" onClick={() => window.print()}>
           Print / Save as PDF
         </button>
+        <Link className="primary" href={continueHref}>
+          Close BMCR &amp; continue
+        </Link>
       </div>
     </article>
   );
