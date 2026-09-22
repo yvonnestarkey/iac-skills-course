@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test lib/lesson-videos.test.ts lib/lesson-checkpoint.test.ts lib/vimeo-captions.test.ts lib/systems-model-logic.test.ts lib/student-submissions.test.ts lib/task1-gate.test.ts lib/bmcr-worksheet.test.ts lib/exam-source-pack.test.ts lib/exam-attempts.test.ts",
+    "test": "tsx --test lib/lesson-videos.test.ts lib/lesson-checkpoint.test.ts lib/vimeo-captions.test.ts lib/systems-model-logic.test.ts lib/student-submissions.test.ts lib/task1-gate.test.ts lib/bmcr-worksheet.test.ts lib/exam-source-pack.test.ts lib/exam-attempts.test.ts lib/exam-analysis-pages.test.ts",
     "scrape:thinkific": "tsx scripts/scrape-thinkific.ts",
     "seed:supabase": "tsx scripts/seed-supabase.ts",
     "ingest:docs": "tsx scripts/ingest-docs.ts",
@@ -22,6 +22,7 @@
     "validate:openapi": "tsx scripts/validate-openapi.ts"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^1.0.9",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.116.0",
     "@vercel/analytics": "^2.0.1",

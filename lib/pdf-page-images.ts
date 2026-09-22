@@ -1,6 +1,7 @@
 "use client";
 
-const MAX_PAGES = 40;
+import { PDF_PAGE_RENDER_LIMIT } from "@/lib/pdf-page-limit";
+
 const SCALE = 1.45;
 
 /**
@@ -13,7 +14,7 @@ export async function renderPdfPageImages(file: File): Promise<{ page: number; b
   pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
   const data = new Uint8Array(await file.arrayBuffer());
   const doc = await pdfjs.getDocument({ data }).promise;
-  const count = Math.min(doc.numPages, MAX_PAGES);
+  const count = Math.min(doc.numPages, PDF_PAGE_RENDER_LIMIT);
   const pages: { page: number; blob: Blob }[] = [];
   for (let pageNumber = 1; pageNumber <= count; pageNumber += 1) {
     const page = await doc.getPage(pageNumber);

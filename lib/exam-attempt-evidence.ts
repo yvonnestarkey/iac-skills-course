@@ -1,4 +1,5 @@
 import { getServiceSupabase } from "@/lib/supabase-admin";
+import { ensureCompleteAttemptPageImages } from "@/lib/exam-analysis-pages";
 import {
   attemptFileCount,
   examAttemptFromRow,
@@ -115,9 +116,15 @@ export async function prepareExamAttemptEvidence(attemptId: string): Promise<
 
   const { data, error } = await supabase.from("exam_attempts").select("*").eq("id", attemptId).limit(1).maybeSingle();
   if (error || !data) return { ok: false, error: error?.message || "That exam attempt was not found." };
-  const attempt = examAttemptFromRow(data as Record<string, unknown>);
+  let attempt = examAttemptFromRow(data as { [key: string]: unknown });
   if (attemptFileCount(attempt) < 3) {
     return { ok: false, error: "This attempt is missing one of the three required PDFs." };
+  }
+  try {
+    const completed = await ensureCompleteAttemptPageImages(attemptId);
+    if (completed.ok) attempt = completed.attempt;
+  } catch {
+    // Keep the images already stored if server-side render is unavailable.
   }
 
   const files = {
@@ -174,5 +181,5 @@ export async function prepareExamAttemptEvidence(attemptId: string): Promise<
     .maybeSingle();
 
   if (saveError || !saved) return { ok: false, error: saveError?.message || "Could not store the evidence pack." };
-  return { ok: true, attempt: examAttemptFromRow(saved as Record<string, unknown>), pack };
+  return { ok: true, attempt: examAttemptFromRow(saved as { [key: string]: unknown }), pack };
 }

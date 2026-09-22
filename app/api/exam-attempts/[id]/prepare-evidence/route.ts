@@ -4,7 +4,7 @@ import { prepareExamAttemptEvidence } from "@/lib/exam-attempt-evidence";
 import { examAttemptFromRow, isMissingExamAttemptsTable } from "@/lib/exam-attempts";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 async function studentClient(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
