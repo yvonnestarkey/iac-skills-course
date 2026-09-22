@@ -56,47 +56,60 @@ export async function joinWaitlist(input: {
   if (query && query.length > 2000) return { ok: false, error: "Keep your question under 2000 characters." };
 
   const preferred_payment = input.preferred_payment || null;
-  const { error } = await supabase.rpc("join_waitlist", {
+  const rpcArgs = {
     p_full_name: full_name,
     p_email: email,
     p_preferred_cohort: input.preferred_cohort,
     p_preferred_payment: preferred_payment,
     p_institution: input.institution,
-    p_query: query,
-  });
-  if (!error) return { ok: true };
+  };
 
-  const { error: insertError } = await supabase.from("waitlist").insert({
+  if (query) {
+    const withQuery = await supabase.rpc("join_waitlist", { ...rpcArgs, p_query: query });
+    if (!withQuery.error) return { ok: true };
+  }
+
+  const withoutQuery = await supabase.rpc("join_waitlist", rpcArgs);
+  if (!withoutQuery.error) return { ok: true };
+
+  const row = {
     full_name,
     email,
     preferred_cohort: input.preferred_cohort,
     preferred_payment,
     institution: input.institution,
-    query,
-  });
-  if (!insertError || insertError.code === "23505") return { ok: true };
-  if (/join_waitlist|could not find the function|schema cache|preferred_payment|institution|query/i.test(error.message + (insertError.message || ""))) {
-    return { ok: false, error: "Could not save your details. Paste supabase/waitlist.sql in the SQL editor first." };
-  }
-  return { ok: false, error: insertError.message || error.message };
+  };
+  const insertWithQuery = query ? await supabase.from("waitlist").insert({ ...row, query }) : { error: withoutQuery.error };
+  if (!insertWithQuery.error || insertWithQuery.error.code === "23505") return { ok: true };
+
+  const insertBasic = await supabase.from("waitlist").insert(row);
+  if (!insertBasic.error || insertBasic.error.code === "23505") return { ok: true };
+
+  return { ok: false, error: insertBasic.error?.message || withoutQuery.error.message };
 }
 
 export async function fetchWaitlistLeads(): Promise<{ ok: true; leads: WaitlistLead[] } | { ok: false; error: string }> {
   const supabase = getSupabase();
   if (!supabase) return { ok: false, error: "Supabase is not configured." };
 
-  const { data, error } = await supabase
-    .from("waitlist")
-    .select("id, full_name, email, preferred_cohort, preferred_payment, institution, query, created_at")
-    .order("created_at", { ascending: false });
+  const { data, error } = await supabase.from("waitlist").select("*").order("created_at", { ascending: false });
 
   if (error) {
-    if (/schema cache|does not exist|waitlist|preferred_payment|institution|query/i.test(error.message)) {
-      return { ok: false, error: "Could not load the waitlist. Paste supabase/waitlist.sql in the SQL editor first." };
-    }
     return { ok: false, error: error.message };
   }
-  return { ok: true, leads: (data || []) as WaitlistLead[] };
+  return {
+    ok: true,
+    leads: (data || []).map((row) => ({
+      id: String(row.id),
+      full_name: String(row.full_name || ""),
+      email: String(row.email || ""),
+      preferred_cohort: String(row.preferred_cohort || ""),
+      preferred_payment: row.preferred_payment == null ? null : String(row.preferred_payment),
+      institution: row.institution == null ? null : String(row.institution),
+      query: row.query == null ? null : String(row.query),
+      created_at: String(row.created_at || ""),
+    })),
+  };
 }
 
 export function exportWaitlistCsv(leads: WaitlistLead[]): void {
