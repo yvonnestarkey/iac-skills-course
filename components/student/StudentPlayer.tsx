@@ -118,6 +118,25 @@ export default function StudentPlayer({
   const videos = lesson.videos?.length ? lesson.videos : parseLessonVideos(lesson.video_url);
   const isMultiVideo = isMultiVideoLesson(kind, videos);
   const isCheckpoint = isProgressiveCheckpoint({ ...lesson, videos });
+  const purchaseLocked = !skipLocks && (lesson.access === "locked" || initialAccess?.reason === "purchase");
+
+  if (purchaseLocked) {
+    return (
+      <article className="lesson-body">
+        <p className="kicker">Full course lesson</p>
+        <h1>{lesson.title}</h1>
+        <p className="lead">{lesson.locked_message || "This lesson is part of the full Jan 2027 IAC course."}</p>
+        <div className="actions">
+          <Link className="primary" href="/checkout">
+            Buy full course
+          </Link>
+          <Link className="ghost" href="/student/dashboard">
+            Back to preview
+          </Link>
+        </div>
+      </article>
+    );
+  }
 
   if (!skipLocks && access.isLocked) {
     return (

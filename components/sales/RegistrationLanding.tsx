@@ -48,7 +48,10 @@ export default function RegistrationLanding() {
             <WaitlistForm />
           </div>
           <aside className="card sales-contact-card">
-            <a className="primary" href={`mailto:${REGISTRATION_CONTACT_EMAIL}`}>
+            <a className="primary" href="/register">
+              Create free account
+            </a>
+            <a className="ghost" href={`mailto:${REGISTRATION_CONTACT_EMAIL}`}>
               {REGISTRATION_CONTACT_LABEL}
             </a>
             <p>{REGISTRATION_NOTE}</p>

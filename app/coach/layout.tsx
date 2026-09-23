@@ -28,7 +28,7 @@ function CoachLayoutInner({ children }: { children: ReactNode }) {
   const isPreview = pathname.startsWith("/coach/preview");
   const isDemoCoach = Boolean(session && session.role === "coach");
   const isAuthCoach = isCoachAccount(user);
-  const allowed = isDemoCoach || isAuthCoach;
+  const allowed = process.env.NODE_ENV === "production" ? isAuthCoach : isDemoCoach || isAuthCoach;
 
   useEffect(() => {
     if (isAuthCoach && !isDemoCoach) setSession({ role: "coach", id: "coach" });

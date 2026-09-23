@@ -13,22 +13,19 @@ import { useStudentSession } from "@/lib/student-session";
 
 type Mode = "signin" | "signup";
 
-export default function StudentLoginForm() {
+export default function StudentLoginForm({ initialMode = "signin" }: { initialMode?: Mode }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { ready, user, onboarding, signOut } = useStudentSession();
   const { setSession } = useStore();
-  const [mode, setMode] = useState<Mode>("signin");
+  const [mode, setMode] = useState<Mode>(initialMode);
+  const [resetSent, setResetSent] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const nextPath = safeStudentPath(searchParams.get("next"));
-
-  const goToOnboarding = () => {
-    router.replace("/onboarding");
-  };
 
   useEffect(() => {
     if (!ready || !user || isCoachAccount(user) || onboarding === "unknown") return;
@@ -157,7 +154,29 @@ export default function StudentLoginForm() {
       setConfirm("");
       return;
     }
-    goToOnboarding();
+    router.replace("/welcome");
+  };
+
+  const sendReset = async () => {
+    setError("");
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      setError("Enter your email to reset your password.");
+      return;
+    }
+    const supabase = getSupabase();
+    if (!supabase) return;
+    setBusy(true);
+    const origin = window.location.origin;
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(trimmedEmail, {
+      redirectTo: `${origin}/auth/callback?next=/auth/update-password`,
+    });
+    setBusy(false);
+    if (resetError) {
+      setError(resetError.message);
+      return;
+    }
+    setResetSent(true);
   };
   return (
     <section className="card login student-login">
@@ -220,10 +239,16 @@ export default function StudentLoginForm() {
             {error}
           </p>
         ) : null}
+        {resetSent ? <p className="notice">Check your email for the password reset link.</p> : null}
         <div className="actions">
           <button className="primary" type="submit" disabled={busy || !supabaseConfigured}>
             {mode === "signin" ? "Sign in" : "Create account"}
           </button>
+          {mode === "signin" ? (
+            <button className="ghost" type="button" disabled={busy} onClick={() => void sendReset()}>
+              Forgot password
+            </button>
+          ) : null}
           <button
             className="ghost"
             type="button"

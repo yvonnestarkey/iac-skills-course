@@ -10,6 +10,8 @@ import { useCoursePreview } from "@/lib/course-preview";
 import { hasCoachReview } from "@/lib/custom-surveys";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
+import PurchaseCta from "@/components/commerce/PurchaseCta";
+import ReferralCard from "@/components/commerce/ReferralCard";
 
 export default function StudentDashboard() {
   const { user, outline, completed, surveyReviews } = useStudentSession();
@@ -38,6 +40,12 @@ export default function StudentDashboard() {
       <StudentDashboardBanner />
       <p className="kicker">Student dashboard</p>
       <h1>Welcome back, {name}</h1>
+      {unlocked ? null : (
+        <>
+          <PurchaseCta />
+          <ReferralCard />
+        </>
+      )}
       <div className="student-progress-row">
         <strong className="student-progress-pct">{pct}% Complete</strong>
         <div className="student-progress" aria-hidden="true">

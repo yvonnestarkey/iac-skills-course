@@ -43,15 +43,23 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isLogin = pathname === "/student/login" || pathname === "/login";
+  const isLogin = pathname === "/student/login" || pathname === "/login" || pathname === "/register";
   const isOnboarding = pathname === "/onboarding" || pathname.startsWith("/onboarding/");
+  const isCoachPath = pathname === "/coach" || pathname.startsWith("/coach/");
+  const isCommercePath = pathname === "/welcome" || pathname.startsWith("/checkout");
+  const role = user?.user_metadata?.role || user?.app_metadata?.role || null;
+  const staff = Boolean(
+    user && isCoachAccount({ id: user.id, email: user.email || null, role: role ? String(role) : null })
+  );
+
+  if (pathname.startsWith("/auth/callback")) return response;
 
   if (isLogin) {
     response.cookies.set(onboardingSkipCookieClear());
     return response;
   }
 
-  if ((isStudentAppPath(pathname) || isOnboarding) && !user) {
+  if ((isStudentAppPath(pathname) || isOnboarding || isCommercePath || isCoachPath) && !user) {
     const login = new URL("/login", request.url);
     if (isStudentAppPath(pathname) && pathname !== "/student") {
       login.searchParams.set("next", pathname);
@@ -59,10 +67,14 @@ export async function middleware(request: NextRequest) {
     return copyCookies(response, NextResponse.redirect(login));
   }
 
+  if (isCoachPath) {
+    if (!staff) return copyCookies(response, NextResponse.redirect(new URL("/student", request.url)));
+    return response;
+  }
+
   if (!isStudentAppPath(pathname) || !user) return response;
 
-  const role = user.user_metadata?.role || user.app_metadata?.role || null;
-  if (isCoachAccount({ id: user.id, email: user.email || null, role: role ? String(role) : null })) {
+  if (staff) {
     return response;
   }
 
@@ -85,5 +97,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/student", "/student/:path*", "/onboarding", "/onboarding/:path*", "/coach/:path*", "/login"],
+  matcher: ["/student", "/student/:path*", "/onboarding", "/onboarding/:path*", "/coach", "/coach/:path*", "/login", "/register", "/welcome", "/checkout", "/checkout/:path*", "/auth/:path*"],
 };

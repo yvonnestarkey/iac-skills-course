@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { getRequestUser } from "@/lib/auth-server";
+import { getCourseProduct, resolveLessonContentAccess, stripProtectedLesson } from "@/lib/commerce";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -44,6 +46,11 @@ export async function GET(
     return NextResponse.json({ error: "Invalid lesson id." }, { status: 400 });
   }
 
+  const user = await getRequestUser();
+  if (!user) {
+    return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+  }
+
   const { data, error } = await supabase
     .from("lessons")
     .select(LESSON_COLUMNS)
@@ -60,6 +67,23 @@ export async function GET(
   }
 
   const row = data as Record<string, unknown>;
+  const access = await resolveLessonContentAccess(user, lessonId);
+  if (!access.canReadBody) {
+    const product = await getCourseProduct();
+    const locked = stripProtectedLesson(row);
+    return NextResponse.json({
+      id: String(locked.id),
+      chapter_id: String(locked.chapter_id || ""),
+      position: Number(locked.position || 0),
+      type: String(locked.type || ""),
+      title: String(locked.title || ""),
+      blurb: null,
+      body: "",
+      takeaways: [],
+      locked: true,
+      message: product.locked_lesson_message,
+    });
+  }
   return NextResponse.json({
     id: String(row.id),
     chapter_id: String(row.chapter_id || ""),
@@ -69,5 +93,6 @@ export async function GET(
     blurb: asText(row.blurb) || null,
     body: asText(row.body),
     takeaways: asTakeaways(row.takeaways),
+    locked: false,
   });
 }

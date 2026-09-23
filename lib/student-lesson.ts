@@ -11,6 +11,7 @@ import { withComputedDuration } from "./lesson-duration";
 import { getLessonPdfUrl } from "./getLessonPdf";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
+import { getServiceSupabase } from "./supabase-admin";
 import { firstLessonVideoUrl, parseLessonVideos, type LessonVideo } from "./lesson-videos";
 import { asLessonType, displayLessonType, lessonIsAssignment } from "./lesson-type";
 import { fetchSurveyAssignmentFlags } from "./custom-surveys";
@@ -45,6 +46,8 @@ export interface StudentLesson {
   survey_slug?: string | null;
   is_assignment?: boolean;
   banner_image_url?: string | null;
+  access?: "full" | "preview" | "locked";
+  locked_message?: string;
   next: { id: string; title: string } | null;
   source: "supabase" | "seed";
 }
@@ -408,6 +411,54 @@ async function withAssignmentFlags(chapters: OutlineChapter[]): Promise<OutlineC
 async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
   const client = getSupabase();
   if (client) {
+    const catalog = await client.rpc("list_lesson_catalog");
+    if (!catalog.error && Array.isArray(catalog.data) && catalog.data.length) {
+      const { data: chapterRows } = await client
+        .from("chapters")
+        .select("id, title, summary, position")
+        .order("position", { ascending: true });
+      const grouped = new Map<string, OutlineLesson[]>();
+      catalog.data.forEach((row) => {
+        const item = row as {
+          id: string;
+          title: string;
+          type: string;
+          duration?: string | null;
+          seconds?: number | null;
+          chapter_id: string;
+          position?: number;
+          video_duration_seconds?: number | null;
+          estimated_read_minutes?: number | null;
+          duration_minutes?: number | null;
+          requires_submission?: boolean | null;
+          requires_coach_approval?: boolean | null;
+          prereq_lesson_id?: string | null;
+          unlock_at?: string | null;
+          survey_id?: string | null;
+        };
+        const list = grouped.get(String(item.chapter_id)) || [];
+        list.push(outlineLessonFromRow(item));
+        grouped.set(String(item.chapter_id), list);
+      });
+      const chapterMeta = new Map((chapterRows || []).map((row) => [row.id, row]));
+      const ids = chapterRows?.length ? chapterRows.map((row) => row.id) : [...grouped.keys()];
+      const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
+      return withAssignmentFlags(
+        withSubmissionPrereqs(
+          [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
+            const lessons = grouped.get(id) || [];
+            const live = chapterMeta.get(id);
+            const seed = SEED.chapters.find((chapter) => chapter.id === id);
+            return {
+              id,
+              title: live?.title || seed?.title || id,
+              summary: live?.summary || seed?.summary,
+              lessons,
+            };
+          })
+        )
+      );
+    }
     let rows: Array<{
       id: string;
       title: string;
@@ -549,7 +600,7 @@ export async function fetchStudentLesson(
   outline?: OutlineChapter[]
 ): Promise<StudentLesson | null> {
   const tree = outline ?? (await fetchCourseOutline());
-  const client = getSupabase();
+  const client = getServiceSupabase() || getSupabase();
   if (client) {
     const { data, error } = await loadLessonRow(client, lessonId);
     if (!error && data) {

@@ -29,7 +29,7 @@ export const COLD_VIDEO = {
   src: "https://player.vimeo.com/video/1069126463",
 };
 
-export const REGISTRATION_HEADLINE = "You'll be registered for a free preview once the course is live";
+export const REGISTRATION_HEADLINE = "Create a free account, preview the Jan 2027 course, then buy when you are ready";
 
 export const REGISTRATION_CONTACT_EMAIL = "yvonne@accountingstudyadvice.com";
 
@@ -125,7 +125,7 @@ export const PRICING_TIERS = [
     kicker: "Option 1",
     title: "Full Upfront Payment",
     price: "$327",
-    detail: "Approx. R5,300 once-off",
+    detail: "US$327 once-off (approximately R5,400)",
     body: "Single payment for complete, unrestricted course access.",
   },
   {
@@ -133,7 +133,7 @@ export const PRICING_TIERS = [
     kicker: "Option 2",
     title: "6-Month Installment Plan",
     price: "$60 / month",
-    detail: "for 6 months (Approx. R970/mo)",
+    detail: "6 monthly payments of US$60 (approximately R980/month)",
     body: "Fixed 6-month payment plan. Same full course access starting immediately upon registration.",
   },
 ] as const;

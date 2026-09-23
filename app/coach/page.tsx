@@ -41,6 +41,10 @@ export default function CoachHomePage() {
             <strong>Course preview</strong>
             <span className="muted">See the student course with every lesson unlocked</span>
           </button>
+          <button onClick={() => router.push("/coach/commerce")}>
+            <strong>Payments & referrals</strong>
+            <span className="muted">Entitlement, Stripe status, and credits needing manual action</span>
+          </button>
           <button onClick={() => router.push("/coach/inbox")}>
             <strong>Inbox</strong>
             <span className="muted">Student questions and assignment feedback</span>
