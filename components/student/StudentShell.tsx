@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
@@ -117,6 +118,14 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
           <StudentNotifyMenu />
           {user?.email ? <span className="muted small student-email">{user.email}</span> : null}
           {isCoachAccount(user) ? <RoleSwitcher current="students" /> : null}
+          {isCoachAccount(user) ? null : (
+            <Link
+              href="/student/account"
+              className={`ghost student-account-link ${pathname.startsWith("/student/account") ? "on" : ""}`}
+            >
+              Account
+            </Link>
+          )}
           <button className="ghost student-signout" type="button" onClick={leave}>
             Sign Out
           </button>

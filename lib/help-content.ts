@@ -36,6 +36,13 @@ const FALLBACKS: Record<string, HelpContent> = {
       "Subscribing adds all live calls directly to your Apple, Google, or Outlook calendar. Any schedule updates or room changes will sync automatically.",
     video_url: null,
   },
+  referral_programme_info: {
+    key: "referral_programme_info",
+    title: "Referral programme",
+    description:
+      "Share your code with a colleague. They receive 5% off their selected payment option. After their qualifying payment, you earn 10% course credit on this same account. Referral and promotional codes cannot be combined.",
+    video_url: null,
+  },
 };
 
 let cache: Map<string, HelpContent> | null = null;

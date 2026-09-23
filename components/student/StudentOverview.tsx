@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import PurchaseCta from "@/components/commerce/PurchaseCta";
 import CoursePhaseAccordions from "@/components/course/CoursePhaseAccordions";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
@@ -28,6 +29,8 @@ export default function StudentOverview() {
           ? "This is the student course with every lesson open. Expand any section to read the titles and open the content."
           : "Expand any section to preview upcoming titles. Locked lessons stay closed until you finish the work before them."}
       </p>
+
+      {bypassLocks ? null : <PurchaseCta compact />}
 
       {resume?.lesson && resume.chapter ? (
         <section className="resume-banner">

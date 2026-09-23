@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import HelpTooltip from "@/components/ui/HelpTooltip";
 
 type ReferralPayload = {
   code: string;
@@ -34,7 +35,10 @@ export default function ReferralCard() {
 
   return (
     <section className="card">
-      <p className="kicker">Refer a colleague</p>
+      <p className="kicker">
+        Referral programme
+        <HelpTooltip contentKey="referral_programme_info" />
+      </p>
       <h2>Your referral code</h2>
       <p className="muted">{data.blurb}</p>
       <p>
@@ -53,7 +57,7 @@ export default function ReferralCard() {
         </button>
       </div>
       <p className="muted small">
-        {data.successful_referrals} successful referrals · {money(data.earned_cents)} credit earned · {money(data.toward_free_cents)} of {money(data.once_off_cents)} toward a free course
+        {data.successful_referrals} successful referrals · {money(data.earned_cents)} credit earned
       </p>
     </section>
   );
