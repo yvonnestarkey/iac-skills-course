@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CoursePhaseAccordions from "@/components/course/CoursePhaseAccordions";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
+import { usePreviewNavState } from "@/lib/preview-nav";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentNav } from "@/lib/student-nav";
 
@@ -13,6 +14,7 @@ export default function StudentCourseNav() {
   const { outline, completed, submissions, surveyReviews } = useStudentSession();
   const { unlocked, basePath } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
+  const { markPreviewNav, previewLessonIds } = usePreviewNavState();
   const nav = useStudentNav();
   const pathname = usePathname();
   const prefix = `${basePath}/`;
@@ -57,6 +59,8 @@ export default function StudentCourseNav() {
         submissions={submissions || {}}
         surveyReviews={surveyReviews || {}}
         unlocked={bypassLocks}
+        markPreviewNav={markPreviewNav}
+        previewLessonIds={previewLessonIds}
       />
     </>
   );

@@ -22,11 +22,14 @@ import {
 } from "@/lib/course-phases";
 import { durationBadge } from "@/lib/lesson-duration";
 import { displayLessonType } from "@/lib/lesson-type";
+import { isPurchaseLockedLesson } from "@/lib/preview-nav-state";
 import type { OutlineChapter, OutlineLesson } from "@/lib/student-lesson";
 
 function LessonEntry({
   lesson,
   locked,
+  purchaseLocked,
+  showPreviewBadge,
   active,
   done,
   href,
@@ -36,6 +39,8 @@ function LessonEntry({
 }: {
   lesson: OutlineLesson;
   locked: boolean;
+  purchaseLocked: boolean;
+  showPreviewBadge: boolean;
   active: boolean;
   done: boolean;
   href: string;
@@ -46,13 +51,15 @@ function LessonEntry({
   const badge = durationBadge(lesson);
   const kind = displayLessonType(lesson);
   const reviewText = review ? surveyReviewSummary(review) : "";
+  const showLock = locked || purchaseLocked;
   const icon = (
-    <LessonTypeIcon type={kind} title={lesson.title} done={done && !locked} size={13} />
+    <LessonTypeIcon type={kind} title={lesson.title} done={done && !showLock} size={13} />
   );
   const title = (
     <span className="lesson-title">
-      {locked ? <Lock size={12} className="lesson-lock" aria-label="Locked" /> : null}
+      {showLock ? <Lock size={12} className="lesson-lock" aria-label={purchaseLocked ? "Full course" : "Locked"} /> : null}
       {lesson.title}
+      {showPreviewBadge ? <span className="preview-access-badge">Free preview</span> : null}
       {lesson.is_assignment ? <span className="duration-badge assignment-flag">Assignment</span> : null}
       {review && review.status !== "submitted" ? (
         <span className={`badge ${surveyResponseStatusClass(review.status)}`}>{reviewText}</span>
@@ -81,7 +88,7 @@ function LessonEntry({
       </>
     );
 
-  if (locked) {
+  if (locked && !purchaseLocked) {
     return (
       <span className={`lesson-link lesson-preview locked ${kind}`} aria-disabled="true">
         {body}
@@ -92,7 +99,7 @@ function LessonEntry({
   return (
     <Link
       href={href}
-      className={`lesson-link ${active ? "active" : ""} ${kind} ${done ? "done" : ""}`}
+      className={`lesson-link ${active ? "active" : ""} ${kind} ${done ? "done" : ""} ${purchaseLocked ? "purchase-locked" : ""}`}
       onClick={onNavigate}
     >
       {body}
@@ -110,6 +117,8 @@ export default function CoursePhaseAccordions({
   submissions = {},
   surveyReviews = {},
   unlocked = false,
+  markPreviewNav = false,
+  previewLessonIds,
 }: {
   chapters: OutlineChapter[];
   completed: Record<string, boolean>;
@@ -120,6 +129,8 @@ export default function CoursePhaseAccordions({
   submissions?: Record<string, StudentSubmission | undefined>;
   surveyReviews?: Record<string, CustomSurveyResponse>;
   unlocked?: boolean;
+  markPreviewNav?: boolean;
+  previewLessonIds?: Iterable<string>;
 }) {
   const phases = useMemo(() => splitCoursePhases(chapters), [chapters]);
   const ordered = useMemo(() => phases.flatMap((phase) => phase.chapters), [phases]);
@@ -213,7 +224,9 @@ export default function CoursePhaseAccordions({
                           {chapter.summary ? <p className="chapter-summary">{chapter.summary}</p> : null}
                           {variant === "hub" ? (
                             <ul className="student-dash-lessons">
-                              {lessons.map((lesson) => (
+                              {lessons.map((lesson) => {
+                                const purchaseLocked = isPurchaseLockedLesson(lesson.id, markPreviewNav, previewLessonIds || []);
+                                return (
                                 <li key={lesson.id}>
                                   <LessonEntry
                                     lesson={lesson}
@@ -221,6 +234,8 @@ export default function CoursePhaseAccordions({
                                       !unlocked &&
                                       (chapterLocked || checkLessonAccess(lesson, catalog, submissions).isLocked)
                                     }
+                                    purchaseLocked={purchaseLocked}
+                                    showPreviewBadge={markPreviewNav && !purchaseLocked}
                                     active={lesson.id === activeLessonId}
                                     done={Boolean(completed[lesson.id])}
                                     href={`${basePath}/${lesson.id}`}
@@ -229,10 +244,13 @@ export default function CoursePhaseAccordions({
                                     review={lesson.survey_id ? surveyReviews[lesson.survey_id] : undefined}
                                   />
                                 </li>
-                              ))}
+                                );
+                              })}
                             </ul>
                           ) : (
-                            lessons.map((lesson) => (
+                            lessons.map((lesson) => {
+                              const purchaseLocked = isPurchaseLockedLesson(lesson.id, markPreviewNav, previewLessonIds || []);
+                              return (
                               <LessonEntry
                                 key={lesson.id}
                                 lesson={lesson}
@@ -240,6 +258,8 @@ export default function CoursePhaseAccordions({
                                   !unlocked &&
                                   (chapterLocked || checkLessonAccess(lesson, catalog, submissions).isLocked)
                                 }
+                                purchaseLocked={purchaseLocked}
+                                showPreviewBadge={markPreviewNav && !purchaseLocked}
                                 active={lesson.id === activeLessonId}
                                 done={Boolean(completed[lesson.id])}
                                 href={`${basePath}/${lesson.id}`}
@@ -247,7 +267,8 @@ export default function CoursePhaseAccordions({
                                 onNavigate={onNavigate}
                                 review={lesson.survey_id ? surveyReviews[lesson.survey_id] : undefined}
                               />
-                            ))
+                              );
+                            })
                           )}
                         </>
                       ) : null}

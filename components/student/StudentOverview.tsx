@@ -4,12 +4,14 @@ import Link from "next/link";
 import CoursePhaseAccordions from "@/components/course/CoursePhaseAccordions";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
+import { usePreviewNavState } from "@/lib/preview-nav";
 import { useStudentSession } from "@/lib/student-session";
 
 export default function StudentOverview() {
   const { outline, completed, submissions, surveyReviews } = useStudentSession();
   const { basePath } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
+  const { markPreviewNav, previewLessonIds } = usePreviewNavState();
   const chapters = outline || [];
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
   const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
@@ -48,6 +50,8 @@ export default function StudentOverview() {
         submissions={submissions || {}}
         surveyReviews={surveyReviews || {}}
         unlocked={bypassLocks}
+        markPreviewNav={markPreviewNav}
+        previewLessonIds={previewLessonIds}
       />
     </article>
   );

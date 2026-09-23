@@ -3146,6 +3146,12 @@ input[type="tel"]:focus {
     grid-template-columns: 1fr;
   }
 
+  .sidebar .preview-access-badge,
+  .student-dash-lessons .preview-access-badge {
+    font-size: 9px;
+    padding: 1px 5px;
+  }
+
   .student-hub {
     grid-template-columns: 1fr;
   }
@@ -4217,6 +4223,42 @@ a.live-session-watch:hover {
   opacity: 0.62;
   color: var(--muted);
   cursor: default;
+}
+
+.lesson-link.purchase-locked,
+.student-dash-lessons .lesson-link.purchase-locked {
+  opacity: 0.58;
+  color: var(--muted);
+}
+
+.lesson-link.purchase-locked:hover,
+.student-dash-lessons .lesson-link.purchase-locked:hover {
+  opacity: 0.78;
+  color: var(--ink);
+}
+
+.lesson-link.purchase-locked.active,
+.lesson-link.purchase-locked.active:hover {
+  opacity: 1;
+  color: #fff;
+}
+
+.preview-access-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(31, 123, 112, 0.12);
+  color: #1f7b70;
+  white-space: nowrap;
+}
+
+.lesson-link.active .preview-access-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
 
 .course-phase-phase1 .phase-chapter {
