@@ -75,6 +75,8 @@ create table if not exists public.course_purchases (
   stripe_checkout_session_id text unique,
   stripe_subscription_id text,
   stripe_payment_intent_id text,
+  successful_installments integer not null default 0,
+  last_paid_invoice_id text,
   amount_cents integer not null default 0,
   currency text not null default 'usd',
   referral_code_used text,
@@ -175,6 +177,114 @@ select id, 'JAN27-' || upper(substr(replace(id::text, '-', ''), 1, 8))
 from public.profiles
 on conflict (user_id) do nothing;
 
+alter table public.course_purchases add column if not exists successful_installments integer not null default 0;
+alter table public.course_purchases add column if not exists last_paid_invoice_id text;
+
+create table if not exists public.course_staff_emails (
+  email text primary key
+);
+
+insert into public.course_staff_emails (email) values
+  ('coach@accountingstudyadvice.com'),
+  ('admin@accountingstudyadvice.com'),
+  ('yvonne@accountingstudyadvice.com')
+on conflict (email) do nothing;
+
+insert into storage.buckets (id, name, public)
+values ('course-teaching', 'course-teaching', false)
+on conflict (id) do update set public = excluded.public;
+
+create or replace function public.is_course_staff()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select
+    coalesce((auth.jwt() -> 'app_metadata' ->> 'role') in ('coach', 'admin'), false)
+    or exists (
+      select 1
+      from public.course_staff_emails
+      where email = lower(coalesce(auth.jwt() ->> 'email', ''))
+    );
+$$;
+
+revoke all on function public.is_course_staff() from public;
+grant execute on function public.is_course_staff() to authenticated;
+
+alter table public.course_staff_emails enable row level security;
+revoke insert, update, delete, select on public.course_staff_emails from authenticated, anon;
+
+create or replace function public.list_lesson_catalog()
+returns table (
+  id text,
+  title text,
+  type text,
+  duration text,
+  seconds integer,
+  chapter_id text,
+  position integer,
+  video_duration_seconds integer,
+  estimated_read_minutes integer,
+  duration_minutes integer,
+  requires_submission boolean,
+  requires_coach_approval boolean,
+  prereq_lesson_id text,
+  unlock_at timestamptz,
+  survey_id uuid
+)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select
+    l.id, l.title, l.type, l.duration, l.seconds, l.chapter_id, l.position,
+    l.video_duration_seconds, l.estimated_read_minutes, l.duration_minutes,
+    l.requires_submission, l.requires_coach_approval, l.prereq_lesson_id,
+    l.unlock_at, l.survey_id
+  from public.lessons l
+  order by l.chapter_id, l.position;
+$$;
+
+revoke all on function public.list_lesson_catalog() from public;
+grant execute on function public.list_lesson_catalog() to authenticated;
+
+create or replace function public.protect_profile_role()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if tg_op = 'INSERT' then
+    if auth.role() is distinct from 'service_role' then
+      new.role := 'student';
+    end if;
+    return new;
+  end if;
+  if new.role is distinct from old.role and auth.role() is distinct from 'service_role' then
+    new.role := old.role;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists protect_profile_role on public.profiles;
+create trigger protect_profile_role
+  before update on public.profiles
+  for each row execute procedure public.protect_profile_role();
+
+drop trigger if exists protect_profile_role_insert on public.profiles;
+create trigger protect_profile_role_insert
+  before insert on public.profiles
+  for each row execute procedure public.protect_profile_role();
+
+-- Policy drop/recreate is one transaction so a mid-script failure
+-- rolls back instead of leaving lessons/profiles in a deny-all gap.
+begin;
+
 alter table public.course_products enable row level security;
 alter table public.course_preview_lessons enable row level security;
 alter table public.course_entitlements enable row level security;
@@ -246,7 +356,6 @@ create policy "promo codes readable"
   to authenticated
   using (active = true or public.is_course_staff());
 
--- Clients cannot write commerce state. Mutations go through service role.
 revoke insert, update, delete on public.course_entitlements from authenticated, anon;
 revoke insert, update, delete on public.course_purchases from authenticated, anon;
 revoke insert, update, delete on public.course_payment_events from authenticated, anon;
@@ -255,8 +364,8 @@ revoke insert, update, delete on public.referral_ledger from authenticated, anon
 revoke insert, update, delete on public.referral_attributions from authenticated, anon;
 revoke insert, update, delete on public.course_products from authenticated, anon;
 revoke insert, update, delete on public.course_preview_lessons from authenticated, anon;
+revoke insert, update, delete on public.course_staff_emails from authenticated, anon;
 
--- Tighten existing prototype policies.
 drop policy if exists "lessons writable by anon" on public.lessons;
 drop policy if exists "lessons readable by students and guests" on public.lessons;
 drop policy if exists "lessons readable by anon" on public.lessons;
@@ -296,56 +405,33 @@ create policy "staff read profiles"
   to authenticated
   using (public.is_course_staff());
 
-create or replace function public.list_lesson_catalog()
-returns table (
-  id text,
-  title text,
-  type text,
-  duration text,
-  seconds integer,
-  chapter_id text,
-  position integer,
-  video_duration_seconds integer,
-  estimated_read_minutes integer,
-  duration_minutes integer,
-  requires_submission boolean,
-  requires_coach_approval boolean,
-  prereq_lesson_id text,
-  unlock_at timestamptz,
-  survey_id uuid
-)
-language sql
-stable
-security definer
-set search_path = public
-as $$
-  select
-    l.id, l.title, l.type, l.duration, l.seconds, l.chapter_id, l.position,
-    l.video_duration_seconds, l.estimated_read_minutes, l.duration_minutes,
-    l.requires_submission, l.requires_coach_approval, l.prereq_lesson_id,
-    l.unlock_at, l.survey_id
-  from public.lessons l
-  order by l.chapter_id, l.position;
-$$;
+drop policy if exists "staff manage teaching assets" on storage.objects;
+create policy "staff manage teaching assets"
+  on storage.objects for all
+  to authenticated
+  using (bucket_id = 'course-teaching' and public.is_course_staff())
+  with check (bucket_id = 'course-teaching' and public.is_course_staff());
 
-revoke all on function public.list_lesson_catalog() from public;
-grant execute on function public.list_lesson_catalog() to authenticated;
-
-create or replace function public.protect_profile_role()
-returns trigger
-language plpgsql
-security definer
-set search_path = public
-as $$
+do $$
 begin
-  if new.role is distinct from old.role and not public.is_course_staff() then
-    new.role := old.role;
+  if to_regclass('public.notifications') is not null then
+    execute 'drop policy if exists "authenticated coaches insert notifications" on public.notifications';
+    execute 'drop policy if exists "staff read notifications" on public.notifications';
+    execute 'drop policy if exists "staff insert notifications" on public.notifications';
+    execute $policy$
+      create policy "authenticated coaches insert notifications"
+        on public.notifications for insert
+        to authenticated
+        with check (public.is_course_staff())
+    $policy$;
+    execute $policy$
+      create policy "staff read notifications"
+        on public.notifications for select
+        to authenticated
+        using (public.is_course_staff())
+    $policy$;
   end if;
-  return new;
-end;
+end
 $$;
 
-drop trigger if exists protect_profile_role on public.profiles;
-create trigger protect_profile_role
-  before update on public.profiles
-  for each row execute procedure public.protect_profile_role();
+commit;

@@ -5,7 +5,9 @@ import {
   canStackDiscounts,
   discountCents,
   refereeDiscountCents,
+  refereePerInstallmentCents,
   referrerCreditCents,
+  selectedOptionTotalCents,
   stripProtectedLesson,
 } from "./commerce";
 
@@ -17,10 +19,14 @@ test("once-off and plan prices stay in USD cents", () => {
 });
 
 test("referral percentages are USD-based and do not stack", () => {
+  assert.equal(selectedOptionTotalCents("once_off", FALLBACK_PRODUCT), 32700);
+  assert.equal(selectedOptionTotalCents("plan_6", FALLBACK_PRODUCT), 36000);
   assert.equal(refereeDiscountCents("once_off", FALLBACK_PRODUCT), 1635);
-  assert.equal(refereeDiscountCents("plan_6", FALLBACK_PRODUCT), 300);
+  assert.equal(refereeDiscountCents("plan_6", FALLBACK_PRODUCT), 1800);
+  assert.equal(refereePerInstallmentCents("once_off", FALLBACK_PRODUCT), 1635);
+  assert.equal(refereePerInstallmentCents("plan_6", FALLBACK_PRODUCT), 300);
   assert.equal(referrerCreditCents("once_off", FALLBACK_PRODUCT), 3270);
-  assert.equal(referrerCreditCents("plan_6", FALLBACK_PRODUCT), 3600);
+  assert.equal(referrerCreditCents("plan_6", FALLBACK_PRODUCT), 3270);
   assert.equal(canStackDiscounts(), false);
   assert.equal(discountCents(32700, 500), 1635);
 });

@@ -77,12 +77,22 @@ export function discountCents(amountCents: number, bps: number): number {
   return Math.round((amountCents * bps) / 10_000);
 }
 
-export function referrerCreditCents(option: PurchaseOption, product: CourseProduct): number {
-  const base = option === "plan_6" ? product.plan_amount_cents * product.plan_count : product.once_off_amount_cents;
-  return discountCents(base, product.referral_referrer_bps);
+export function selectedOptionTotalCents(option: PurchaseOption, product: CourseProduct): number {
+  return option === "plan_6" ? product.plan_amount_cents * product.plan_count : product.once_off_amount_cents;
 }
 
+/** Always 10% of the standard once-off course price, never of the plan total. */
+export function referrerCreditCents(_option: PurchaseOption, product: CourseProduct): number {
+  return discountCents(product.once_off_amount_cents, product.referral_referrer_bps);
+}
+
+/** 5% of the purchaser's selected option in total ($16.35 once-off, $18 on the plan). */
 export function refereeDiscountCents(option: PurchaseOption, product: CourseProduct): number {
+  return discountCents(selectedOptionTotalCents(option, product), product.referral_referee_bps);
+}
+
+/** Per-invoice referee discount so the plan receives $3 off each of six $60 charges. */
+export function refereePerInstallmentCents(option: PurchaseOption, product: CourseProduct): number {
   const base = option === "plan_6" ? product.plan_amount_cents : product.once_off_amount_cents;
   return discountCents(base, product.referral_referee_bps);
 }

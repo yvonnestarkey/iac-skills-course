@@ -5,6 +5,7 @@ import { getRequestUser } from "./auth-server";
 import { getCourseProduct, resolveLessonContentAccess, stripProtectedLesson } from "./commerce";
 import { displayLessonType } from "./lesson-type";
 import { getLessonPdfUrl } from "./getLessonPdf";
+import { protectLessonResourceFields } from "./lesson-assets";
 import { fetchCourseOutline, fetchStudentLesson, type StudentLesson } from "./student-lesson";
 import type { SubmissionStatus } from "./student-submissions";
 import type { LessonType } from "../types/database";
@@ -47,11 +48,15 @@ export const getLessonData = cache(async (
   }
 
   const content = await resolveLessonContentAccess(user, lessonId, { overrideLocks: options?.overrideLocks && Boolean(user) });
+  const protectedLesson = await protectLessonResourceFields(lesson as unknown as Record<string, unknown>, {
+    canRead: content.canReadBody,
+    preview: content.preview,
+  });
   const visible = content.canReadBody
-    ? lesson
+    ? ({ ...lesson, ...protectedLesson } as StudentLesson)
     : ({
         ...lesson,
-        ...stripProtectedLesson(lesson as unknown as Record<string, unknown>),
+        ...stripProtectedLesson(protectedLesson),
         body: [],
         takeaways: [],
         videos: [],
@@ -63,7 +68,7 @@ export const getLessonData = cache(async (
         locked_message: (await getCourseProduct()).locked_lesson_message,
       } as StudentLesson);
 
-  const pdfUrl = content.canReadBody ? getLessonPdfUrl(visible) || visible.pdf_url : undefined;
+  const pdfUrl = content.canReadBody ? getLessonPdfUrl(visible) || (typeof visible.pdf_url === "string" ? visible.pdf_url : undefined) : undefined;
   const lessonType = displayLessonType({ ...visible, pdf_url: pdfUrl });
   const normalized: StudentLesson = { ...visible, pdf_url: pdfUrl, type: lessonType };
 

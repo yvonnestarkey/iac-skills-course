@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRequestUser } from "@/lib/auth-server";
 import { getCourseProduct, resolveLessonContentAccess, stripProtectedLesson } from "@/lib/commerce";
+import { protectLessonResourceFields } from "@/lib/lesson-assets";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 
 const LESSON_COLUMNS =
@@ -22,14 +23,18 @@ export async function GET(_request: Request, context: { params: Promise<{ lesson
 
   const access = await resolveLessonContentAccess(user, lessonId);
   const product = await getCourseProduct();
+  const lesson = await protectLessonResourceFields(data as Record<string, unknown>, {
+    canRead: access.canReadBody,
+    preview: access.preview,
+  });
   if (!access.canReadBody) {
     return NextResponse.json({
-      lesson: stripProtectedLesson(data as Record<string, unknown>),
+      lesson: stripProtectedLesson(lesson),
       access,
       locked: true,
       message: product.locked_lesson_message,
       cta: product.buy_cta_label,
     });
   }
-  return NextResponse.json({ lesson: data, access, locked: false });
+  return NextResponse.json({ lesson, access, locked: false });
 }

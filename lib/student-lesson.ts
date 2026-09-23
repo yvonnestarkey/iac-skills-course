@@ -9,6 +9,7 @@ import {
 } from "./course-phases";
 import { withComputedDuration } from "./lesson-duration";
 import { getLessonPdfUrl } from "./getLessonPdf";
+import { staffRoleFromAppMetadata } from "./roles";
 import { SEED } from "./seed";
 import { getSupabase } from "./supabase";
 import { getServiceSupabase } from "./supabase-admin";
@@ -552,7 +553,7 @@ export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
 }
 
 export function studentUserFromAuth(user: { id: string; email?: string | null; user_metadata?: Record<string, unknown>; app_metadata?: Record<string, unknown> }): StudentUser {
-  const role = user.user_metadata?.role || user.app_metadata?.role || null;
+  const role = staffRoleFromAppMetadata(user.app_metadata);
   const fullName = user.user_metadata?.full_name;
   return {
     id: user.id,

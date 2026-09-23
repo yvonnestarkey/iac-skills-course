@@ -47,10 +47,7 @@ export async function middleware(request: NextRequest) {
   const isOnboarding = pathname === "/onboarding" || pathname.startsWith("/onboarding/");
   const isCoachPath = pathname === "/coach" || pathname.startsWith("/coach/");
   const isCommercePath = pathname === "/welcome" || pathname.startsWith("/checkout");
-  const role = user?.user_metadata?.role || user?.app_metadata?.role || null;
-  const staff = Boolean(
-    user && isCoachAccount({ id: user.id, email: user.email || null, role: role ? String(role) : null })
-  );
+  const staff = Boolean(user && isCoachAccount(user));
 
   if (pathname.startsWith("/auth/callback")) return response;
 

@@ -1,3 +1,4 @@
+import { listPreviewLessonIds } from "@/lib/commerce";
 import { isTaskChapter } from "@/lib/course-phases";
 import { fetchLessonTranscripts, type LessonTranscript } from "@/lib/lesson-transcripts";
 import { parseLessonVideos, videoIdentity } from "@/lib/lesson-videos";
@@ -734,7 +735,13 @@ export async function getKnowledgeItem(
 }
 
 export async function getCourseJourney() {
-  const [chapters, lessons, transcripts] = await Promise.all([loadChapters(), loadLessons(), fetchLessonTranscripts()]);
+  const [chapters, lessons, transcripts, previewIds] = await Promise.all([
+    loadChapters(),
+    loadLessons(),
+    fetchLessonTranscripts(),
+    listPreviewLessonIds(),
+  ]);
+  const preview = new Set(previewIds);
   const ordered = orderedLessons(chapters, lessons);
   const transcriptsByLesson = new Map<string, LessonTranscript[]>();
   for (const row of transcripts) {
@@ -788,7 +795,7 @@ export async function getCourseJourney() {
                 transcript_id: transcript ? encodeId("transcript", transcript.id) : video.vimeo_id ? encodeId("transcript", String(lesson.id), video.vimeo_id) : null,
               };
             }),
-            resources: listTeachingResources(lesson.pdf_url, lesson.resource_downloads),
+            resources: preview.has(String(lesson.id)) ? listTeachingResources(lesson.pdf_url, lesson.resource_downloads) : [],
             in_chapter_index: index + 1,
             in_chapter_count: list.length,
           };
@@ -798,7 +805,12 @@ export async function getCourseJourney() {
 }
 
 export async function getCourseLessonFull(lessonId: string) {
-  const [chapters, lessons, transcripts] = await Promise.all([loadChapters(), loadLessons(), fetchLessonTranscripts()]);
+  const [chapters, lessons, transcripts, previewIds] = await Promise.all([
+    loadChapters(),
+    loadLessons(),
+    fetchLessonTranscripts(),
+    listPreviewLessonIds(),
+  ]);
   const ordered = orderedLessons(chapters, lessons);
   const row = ordered.find((lesson) => String(lesson.id) === lessonId);
   if (!row) return null;
@@ -837,7 +849,7 @@ export async function getCourseLessonFull(lessonId: string) {
         caption_cues: transcript?.cues || [],
       };
     }),
-    resources: listTeachingResources(row.pdf_url, row.resource_downloads),
+    resources: previewIds.includes(lessonId) ? listTeachingResources(row.pdf_url, row.resource_downloads) : [],
     transcripts: lessonTranscripts
       .filter((item) => item.status === "imported")
       .map((item) => ({

@@ -6,7 +6,7 @@ import {
   canStackDiscounts,
   getCourseProduct,
   grantFullEntitlement,
-  refereeDiscountCents,
+  refereePerInstallmentCents,
   referrerCreditCents,
   type CourseProduct,
   type PurchaseOption,
@@ -188,12 +188,147 @@ export function checkoutDiscount(params: {
   if (params.referralCode && params.promoPercent && !canStackDiscounts()) {
     throw new Error("Referral and promotional discounts cannot be combined.");
   }
-  if (params.referralCode) return refereeDiscountCents(params.option, params.product);
+  if (params.referralCode) return refereePerInstallmentCents(params.option, params.product);
   if (params.promoPercent) {
     const base = params.option === "plan_6" ? params.product.plan_amount_cents : params.product.once_off_amount_cents;
     return Math.round((base * params.promoPercent) / 100);
   }
   return 0;
+}
+
+export type CheckoutCouponSpec = {
+  coupon: {
+    amount_off?: number;
+    percent_off?: number;
+    currency?: string;
+    duration: "once" | "repeating";
+    duration_in_months?: number;
+    name: string;
+  } | null;
+  applyCreditAsBalance: boolean;
+};
+
+/** Plan referral/promo uses a repeating coupon so all six instalments are discounted. */
+export function checkoutCouponSpec(params: {
+  option: PurchaseOption;
+  product: CourseProduct;
+  referralCode?: string | null;
+  promoPercent?: number | null;
+  creditCents: number;
+}): CheckoutCouponSpec {
+  const discount = checkoutDiscount({
+    option: params.option,
+    product: params.product,
+    referralCode: params.referralCode,
+    promoPercent: params.promoPercent,
+  });
+  if (params.option === "once_off") {
+    const amount = discount + params.creditCents;
+    if (amount <= 0) return { coupon: null, applyCreditAsBalance: false };
+    return {
+      coupon: {
+        amount_off: amount,
+        currency: "usd",
+        duration: "once",
+        name: params.referralCode ? "Referral discount" : params.promoPercent ? "Promo" : "Course credit",
+      },
+      applyCreditAsBalance: false,
+    };
+  }
+  if (params.referralCode) {
+    return {
+      coupon: {
+        amount_off: refereePerInstallmentCents("plan_6", params.product),
+        currency: "usd",
+        duration: "repeating",
+        duration_in_months: params.product.plan_count,
+        name: "Referral discount",
+      },
+      applyCreditAsBalance: params.creditCents > 0,
+    };
+  }
+  if (params.promoPercent) {
+    return {
+      coupon: {
+        percent_off: params.promoPercent,
+        duration: "repeating",
+        duration_in_months: params.product.plan_count,
+        name: "Promo",
+      },
+      applyCreditAsBalance: params.creditCents > 0,
+    };
+  }
+  if (params.creditCents > 0) {
+    return {
+      coupon: { amount_off: params.creditCents, currency: "usd", duration: "once", name: "Course credit" },
+      applyCreditAsBalance: false,
+    };
+  }
+  return { coupon: null, applyCreditAsBalance: false };
+}
+
+export function shouldCountSubscriptionInstallment(invoice: {
+  id?: string | null;
+  status?: string | null;
+  amount_paid?: number | null;
+  billing_reason?: string | null;
+}): boolean {
+  if (!invoice.id) return false;
+  if (invoice.status && invoice.status !== "paid") return false;
+  if (!Number(invoice.amount_paid)) return false;
+  return invoice.billing_reason === "subscription_create" || invoice.billing_reason === "subscription_cycle";
+}
+
+export function incrementSuccessfulInstallments(params: {
+  current: number;
+  lastInvoiceId: string | null | undefined;
+  invoiceId: string;
+}): { count: number; changed: boolean } {
+  if (params.lastInvoiceId && params.lastInvoiceId === params.invoiceId) {
+    return { count: params.current, changed: false };
+  }
+  return { count: params.current + 1, changed: true };
+}
+
+export async function attachSixPaymentSchedule(stripe: Stripe, subscriptionId: string, planCount: number) {
+  const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+  const existing = typeof subscription.schedule === "string" ? subscription.schedule : subscription.schedule?.id;
+  const schedule = existing
+    ? await stripe.subscriptionSchedules.retrieve(existing)
+    : await stripe.subscriptionSchedules.create({ from_subscription: subscriptionId });
+  const phase = schedule.phases[0];
+  if (!phase) return schedule.id;
+  const items = phase.items.map((item) => ({
+    price: typeof item.price === "string" ? item.price : item.price.id,
+    quantity: item.quantity || 1,
+  }));
+  const discounts = (phase.discounts || [])
+    .map((discount) => {
+      const coupon = typeof discount.coupon === "string" ? discount.coupon : discount.coupon?.id;
+      return coupon ? { coupon } : null;
+    })
+    .filter((item): item is { coupon: string } => Boolean(item));
+  await stripe.subscriptionSchedules.update(schedule.id, {
+    end_behavior: "cancel",
+    phases: [
+      {
+        items,
+        start_date: phase.start_date,
+        duration: { interval: "month", interval_count: planCount },
+        ...(discounts.length ? { discounts } : {}),
+      },
+    ],
+  });
+  return schedule.id;
+}
+
+export async function cancelSubscriptionAfterPaidTerm(stripe: Stripe, subscriptionId: string) {
+  try {
+    await stripe.subscriptions.update(subscriptionId, { cancel_at_period_end: true });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (!/canceled|cancelled|no such/i.test(message)) throw error;
+  }
 }
 
 export async function fulfillSuccessfulPayment(params: {

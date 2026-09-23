@@ -52,37 +52,11 @@ drop policy if exists "authenticated coaches insert notifications" on public.not
 create policy "authenticated coaches insert notifications"
   on public.notifications for insert
   to authenticated
-  with check (
-    coalesce((auth.jwt() -> 'user_metadata' ->> 'role') in ('coach', 'admin'), false)
-    or coalesce((auth.jwt() -> 'app_metadata' ->> 'role') in ('coach', 'admin'), false)
-    or exists (
-      select 1 from public.profiles
-      where id = auth.uid()
-        and role in ('coach', 'admin')
-    )
-    or lower(coalesce(auth.jwt() ->> 'email', '')) in (
-      'coach@accountingstudyadvice.com',
-      'admin@accountingstudyadvice.com',
-      'yvonne@accountingstudyadvice.com'
-    )
-  );
+  with check (public.is_course_staff());
 
 create policy "staff read notifications"
   on public.notifications for select
   to authenticated
-  using (
-    coalesce((auth.jwt() -> 'user_metadata' ->> 'role') in ('coach', 'admin'), false)
-    or coalesce((auth.jwt() -> 'app_metadata' ->> 'role') in ('coach', 'admin'), false)
-    or exists (
-      select 1 from public.profiles
-      where id = auth.uid()
-        and role in ('coach', 'admin')
-    )
-    or lower(coalesce(auth.jwt() ->> 'email', '')) in (
-      'coach@accountingstudyadvice.com',
-      'admin@accountingstudyadvice.com',
-      'yvonne@accountingstudyadvice.com'
-    )
-  );
+  using (public.is_course_staff());
 
 grant select, insert, update on public.notifications to authenticated;

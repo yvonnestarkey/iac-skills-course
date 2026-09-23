@@ -82,7 +82,6 @@ export async function ensureStudentProfile(user: {
     (typeof metaName === "string" && metaName.trim()) ||
     (user.full_name && user.full_name.trim()) ||
     displayName(email);
-  const role = isCoachAccount({ id: user.id, email, role: user.role || null }) ? "coach" : "student";
   const now = new Date().toISOString();
   const identity = {
     id: user.id,
@@ -104,7 +103,7 @@ export async function ensureStudentProfile(user: {
     return;
   }
 
-  const insert = { ...identity, role, cohort: DEFAULT_COHORT_ID };
+  const insert = { ...identity, role: "student", cohort: DEFAULT_COHORT_ID };
   const { error } = await client.from("profiles").insert(insert);
   if (error && /updated_at|could not find|schema cache/i.test(error.message)) {
     const { updated_at: _updated, ...withoutStamp } = insert;

@@ -25,13 +25,7 @@ security definer
 set search_path = public
 as $$
   select
-    coalesce((auth.jwt() -> 'user_metadata' ->> 'role') in ('coach', 'admin'), false)
-    or coalesce((auth.jwt() -> 'app_metadata' ->> 'role') in ('coach', 'admin'), false)
-    or exists (
-      select 1 from public.profiles
-      where id = auth.uid()
-        and role in ('coach', 'admin')
-    )
+    coalesce((auth.jwt() -> 'app_metadata' ->> 'role') in ('coach', 'admin'), false)
     or lower(coalesce(auth.jwt() ->> 'email', '')) in (
       'coach@accountingstudyadvice.com',
       'admin@accountingstudyadvice.com',
