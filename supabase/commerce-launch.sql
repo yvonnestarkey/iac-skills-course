@@ -220,11 +220,11 @@ create or replace function public.list_lesson_catalog()
 returns table (
   id text,
   title text,
-  type text,
+  "type" text,
   duration text,
   seconds integer,
   chapter_id text,
-  position integer,
+  "position" integer,
   video_duration_seconds integer,
   estimated_read_minutes integer,
   duration_minutes integer,
@@ -240,10 +240,21 @@ security definer
 set search_path = public
 as $$
   select
-    l.id, l.title, l.type, l.duration, l.seconds, l.chapter_id, l.position,
-    l.video_duration_seconds, l.estimated_read_minutes, l.duration_minutes,
-    l.requires_submission, l.requires_coach_approval, l.prereq_lesson_id,
-    l.unlock_at, l.survey_id
+    l.id,
+    l.title,
+    l.type as "type",
+    l.duration,
+    l.seconds,
+    l.chapter_id,
+    l.position as "position",
+    l.video_duration_seconds,
+    l.estimated_read_minutes,
+    l.duration_minutes,
+    l.requires_submission,
+    l.requires_coach_approval,
+    l.prereq_lesson_id,
+    l.unlock_at,
+    l.survey_id
   from public.lessons l
   order by l.chapter_id, l.position;
 $$;
