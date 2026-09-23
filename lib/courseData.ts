@@ -1,8 +1,10 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import type { AccessResult } from "./accessControl";
-import { getRequestUser } from "./auth-server";
+import { getLessonAccess } from "./lesson-access";
+import { getRequestUser, isStaffUser } from "./auth-server";
 import { getCourseProduct, resolveLessonContentAccess, stripProtectedLesson } from "./commerce";
+import { composeLessonAvailability } from "./lesson-availability";
 import { displayLessonType } from "./lesson-type";
 import { getLessonPdfUrl } from "./getLessonPdf";
 import { protectLessonResourceFields } from "./lesson-assets";
@@ -48,11 +50,20 @@ export const getLessonData = cache(async (
   }
 
   const content = await resolveLessonContentAccess(user, lessonId, { overrideLocks: options?.overrideLocks && Boolean(user) });
+  const skipProgression = Boolean(options?.overrideLocks && user) || isStaffUser(user);
+  const pedagogical =
+    user && !skipProgression
+      ? await getLessonAccess(user.id, lessonId, { outline, chapterId: lesson.chapterId })
+      : { isLocked: false };
+  const composed = composeLessonAvailability({
+    commercialCanRead: content.canReadBody,
+    pedagogical,
+  });
   const protectedLesson = await protectLessonResourceFields(lesson as unknown as Record<string, unknown>, {
-    canRead: content.canReadBody,
+    canRead: composed.canReadBody,
     preview: content.preview,
   });
-  const visible = content.canReadBody
+  const visible = composed.canReadBody
     ? ({ ...lesson, ...protectedLesson } as StudentLesson)
     : ({
         ...lesson,
@@ -64,11 +75,11 @@ export const getLessonData = cache(async (
         pdf_url: undefined,
         resource_downloads: undefined,
         banner_image_url: null,
-        access: "locked",
-        locked_message: (await getCourseProduct()).locked_lesson_message,
+        access: composed.layer === "purchase" ? "locked" : lesson.access,
+        locked_message: composed.layer === "purchase" ? (await getCourseProduct()).locked_lesson_message : undefined,
       } as StudentLesson);
 
-  const pdfUrl = content.canReadBody ? getLessonPdfUrl(visible) || (typeof visible.pdf_url === "string" ? visible.pdf_url : undefined) : undefined;
+  const pdfUrl = composed.canReadBody ? getLessonPdfUrl(visible) || (typeof visible.pdf_url === "string" ? visible.pdf_url : undefined) : undefined;
   const lessonType = displayLessonType({ ...visible, pdf_url: pdfUrl });
   const normalized: StudentLesson = { ...visible, pdf_url: pdfUrl, type: lessonType };
 
@@ -76,8 +87,8 @@ export const getLessonData = cache(async (
     lesson: normalized,
     pdfUrl,
     lessonType,
-    isLocked: !content.canReadBody,
+    isLocked: composed.access.isLocked,
     submissionStatus: null,
-    access: { isLocked: !content.canReadBody, reason: content.canReadBody ? undefined : "purchase" },
+    access: composed.access,
   };
 });

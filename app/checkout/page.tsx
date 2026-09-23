@@ -58,7 +58,7 @@ export default function CheckoutPage() {
           </p>
         ) : null}
         <button className="primary" type="submit" disabled={busy}>
-          Continue to Stripe
+          Continue to credit card payment
         </button>
       </form>
     </section>

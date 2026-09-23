@@ -232,7 +232,8 @@ export default function CoursePhaseAccordions({
                                     lesson={lesson}
                                     locked={
                                       !unlocked &&
-                                      (chapterLocked || checkLessonAccess(lesson, catalog, submissions).isLocked)
+                                      (chapterLocked ||
+                                        checkLessonAccess(lesson, catalog, submissions, { completed }).isLocked)
                                     }
                                     purchaseLocked={purchaseLocked}
                                     showPreviewBadge={markPreviewNav && !purchaseLocked}
@@ -256,7 +257,8 @@ export default function CoursePhaseAccordions({
                                 lesson={lesson}
                                 locked={
                                   !unlocked &&
-                                  (chapterLocked || checkLessonAccess(lesson, catalog, submissions).isLocked)
+                                  (chapterLocked ||
+                                    checkLessonAccess(lesson, catalog, submissions, { completed }).isLocked)
                                 }
                                 purchaseLocked={purchaseLocked}
                                 showPreviewBadge={markPreviewNav && !purchaseLocked}

@@ -1,5 +1,5 @@
-import { fetchCourseOutline, type OutlineChapter, type OutlineLesson } from "./student-lesson";
-import { fetchStudentSubmissions, type StudentSubmission } from "./student-submissions";
+import type { OutlineChapter, OutlineLesson } from "./student-lesson";
+import type { StudentSubmission } from "./student-submissions";
 
 export interface LessonGate {
   id: string;
@@ -89,7 +89,7 @@ export function checkLessonAccess(
           prereqTitle,
         };
       }
-    } else if (options.completed && Object.keys(options.completed).length && !options.completed[prereqId]) {
+    } else if (options.completed && !options.completed[prereqId]) {
       return {
         isLocked: true,
         reason: `Finish ${prereqTitle} first`,
@@ -113,12 +113,3 @@ export function checkLessonAccess(
   return { isLocked: false };
 }
 
-/** Async gate used by the lesson page when a student opens a target lesson. */
-export async function getLessonAccess(studentId: string, targetLessonId: string): Promise<AccessResult> {
-  const outline = await fetchCourseOutline();
-  const catalog = catalogFromOutline(outline);
-  const target = catalog.find((lesson) => lesson.id === targetLessonId);
-  if (!target) return { isLocked: false };
-  const submissions = await fetchStudentSubmissions(studentId);
-  return checkLessonAccess(target, catalog, submissions);
-}

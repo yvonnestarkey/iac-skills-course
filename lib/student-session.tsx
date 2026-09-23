@@ -16,9 +16,11 @@ import {
   type StudentUser,
 } from "./student-lesson";
 import { fetchOwnSurveyResponses, type CustomSurveyResponse } from "./custom-surveys";
+import type { EntitlementStatus } from "./commerce";
 import { fetchStudentSubmissions, type StudentSubmission } from "./student-submissions";
 
 export type OnboardingGate = "unknown" | "needed" | "done";
+export type SessionEntitlement = EntitlementStatus | "staff" | null;
 
 interface StudentSessionValue {
   ready: boolean;
@@ -27,6 +29,8 @@ interface StudentSessionValue {
   completed: Record<string, boolean>;
   submissions: Record<string, StudentSubmission>;
   surveyReviews: Record<string, CustomSurveyResponse>;
+  entitlement: SessionEntitlement;
+  previewLessonIds: string[];
   onboarding: OnboardingGate;
   setLessonCompleted: (lessonId: string, completed: boolean) => void;
   setSubmission: (lessonId: string, submission: StudentSubmission) => void;
@@ -43,7 +47,26 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
   const [submissions, setSubmissions] = useState<Record<string, StudentSubmission>>({});
   const [surveyReviews, setSurveyReviews] = useState<Record<string, CustomSurveyResponse>>({});
+  const [entitlement, setEntitlement] = useState<SessionEntitlement>(null);
+  const [previewLessonIds, setPreviewLessonIds] = useState<string[]>([]);
   const [onboarding, setOnboarding] = useState<OnboardingGate>("unknown");
+
+  const loadCommerce = useCallback(async (nextUser: StudentUser) => {
+    if (isCoachAccount(nextUser)) {
+      setEntitlement("staff");
+      setPreviewLessonIds([]);
+      return;
+    }
+    try {
+      const response = await fetch("/api/student/outline");
+      if (!response.ok) return;
+      const data = await response.json();
+      setEntitlement(data.entitlement === "full" || data.entitlement === "free_preview" ? data.entitlement : "free_preview");
+      setPreviewLessonIds(Array.isArray(data.preview_lesson_ids) ? data.preview_lesson_ids.map(String) : []);
+    } catch {
+      return;
+    }
+  }, []);
 
   const loadProgress = useCallback(async (userId: string) => {
     const [ids, nextSubmissions, nextReviews] = await Promise.all([
@@ -73,9 +96,14 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
         void ensureStudentProfile(nextUser);
         if (isCoachAccount(nextUser)) {
           setOnboarding("done");
+          setEntitlement("staff");
           await loadProgress(nextUser.id);
         } else {
-          const [, gate] = await Promise.all([loadProgress(nextUser.id), fetchOnboardingGate(nextUser.id)]);
+          const [, gate] = await Promise.all([
+            loadProgress(nextUser.id),
+            fetchOnboardingGate(nextUser.id),
+            loadCommerce(nextUser),
+          ]);
           if (!cancelled) setOnboarding(gate);
         }
       } else {
@@ -100,6 +128,8 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
         setCompleted({});
         setSubmissions({});
         setSurveyReviews({});
+        setEntitlement(null);
+        setPreviewLessonIds([]);
         setOnboarding("unknown");
         clearOnboardingGateCache();
         void clearOnboardingSkipCookie();
@@ -111,6 +141,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       const nextUser = studentUserFromAuth(session.user);
       setUser(nextUser);
       void loadProgress(nextUser.id);
+      void loadCommerce(nextUser);
       if (isCoachAccount(nextUser)) {
         setOnboarding("done");
         return;
@@ -124,7 +155,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       cancelled = true;
       subscription?.data.subscription.unsubscribe();
     };
-  }, [loadProgress]);
+  }, [loadCommerce, loadProgress]);
 
   const setLessonCompleted = useCallback((lessonId: string, done: boolean) => {
     setCompleted((current) => ({ ...current, [lessonId]: done }));
@@ -146,6 +177,8 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     setCompleted({});
     setSubmissions({});
     setSurveyReviews({});
+    setEntitlement(null);
+    setPreviewLessonIds([]);
     setOnboarding("unknown");
   }, []);
 
@@ -157,13 +190,15 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       completed,
       submissions,
       surveyReviews,
+      entitlement,
+      previewLessonIds,
       onboarding,
       setLessonCompleted,
       setSubmission,
       reloadProgress,
       signOut,
     }),
-    [ready, user, outline, completed, submissions, surveyReviews, onboarding, setLessonCompleted, setSubmission, reloadProgress, signOut]
+    [ready, user, outline, completed, submissions, surveyReviews, entitlement, previewLessonIds, onboarding, setLessonCompleted, setSubmission, reloadProgress, signOut]
   );
 
   return <StudentSessionContext.Provider value={value}>{children}</StudentSessionContext.Provider>;

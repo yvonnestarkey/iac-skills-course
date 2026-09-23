@@ -105,7 +105,8 @@ export default function StudentPlayer({
 
   const ordered = splitCoursePhases(outline || []).flatMap((phase) => phase.chapters || []);
   const catalog = useMemo(() => catalogFromOutline(outline), [outline]);
-  const liveAccess = checkLessonAccess(outlineToGate(lesson), catalog, submissions || {}, { completed: completedMap || {} });
+  const gatedTarget = catalog.find((item) => item.id === lesson.id) || outlineToGate(lesson);
+  const liveAccess = checkLessonAccess(gatedTarget, catalog, submissions || {}, { completed: completedMap || {} });
   const access = catalog.length ? liveAccess : initialAccess || liveAccess;
   const chapterLocked =
     Boolean(lesson.chapterId) &&

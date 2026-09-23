@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
-import { getRequestUser } from "@/lib/auth-server";
+import { getLessonAccess } from "@/lib/lesson-access";
+import { getRequestUser, isStaffUser } from "@/lib/auth-server";
 import { getCourseProduct, resolveLessonContentAccess, stripProtectedLesson } from "@/lib/commerce";
+import { composeLessonAvailability } from "@/lib/lesson-availability";
 import { protectLessonResourceFields } from "@/lib/lesson-assets";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 
@@ -21,20 +23,25 @@ export async function GET(_request: Request, context: { params: Promise<{ lesson
   if (error) return NextResponse.json({ error: "Could not load lesson." }, { status: 500 });
   if (!data) return NextResponse.json({ error: "Lesson not found." }, { status: 404 });
 
-  const access = await resolveLessonContentAccess(user, lessonId);
+  const commercial = await resolveLessonContentAccess(user, lessonId);
+  const pedagogical = isStaffUser(user) ? { isLocked: false } : await getLessonAccess(user.id, lessonId);
+  const composed = composeLessonAvailability({
+    commercialCanRead: commercial.canReadBody,
+    pedagogical,
+  });
   const product = await getCourseProduct();
   const lesson = await protectLessonResourceFields(data as Record<string, unknown>, {
-    canRead: access.canReadBody,
-    preview: access.preview,
+    canRead: composed.canReadBody,
+    preview: commercial.preview,
   });
-  if (!access.canReadBody) {
+  if (!composed.canReadBody) {
     return NextResponse.json({
       lesson: stripProtectedLesson(lesson),
-      access,
+      access: { ...commercial, ...composed.access, layer: composed.layer },
       locked: true,
-      message: product.locked_lesson_message,
-      cta: product.buy_cta_label,
+      message: composed.layer === "purchase" ? product.locked_lesson_message : composed.access.reason,
+      cta: composed.layer === "purchase" ? product.buy_cta_label : undefined,
     });
   }
-  return NextResponse.json({ lesson, access, locked: false });
+  return NextResponse.json({ lesson, access: { ...commercial, ...composed.access, layer: composed.layer }, locked: false });
 }

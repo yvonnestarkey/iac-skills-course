@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { getRequestUser } from "@/lib/auth-server";
+import { getLessonAccess } from "@/lib/lesson-access";
+import { getRequestUser, isStaffUser } from "@/lib/auth-server";
 import { getCourseProduct, resolveLessonContentAccess, stripProtectedLesson } from "@/lib/commerce";
+import { composeLessonAvailability } from "@/lib/lesson-availability";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -67,8 +69,13 @@ export async function GET(
   }
 
   const row = data as Record<string, unknown>;
-  const access = await resolveLessonContentAccess(user, lessonId);
-  if (!access.canReadBody) {
+  const commercial = await resolveLessonContentAccess(user, lessonId);
+  const pedagogical = isStaffUser(user) ? { isLocked: false } : await getLessonAccess(user.id, lessonId);
+  const composed = composeLessonAvailability({
+    commercialCanRead: commercial.canReadBody,
+    pedagogical,
+  });
+  if (!composed.canReadBody) {
     const product = await getCourseProduct();
     const locked = stripProtectedLesson(row);
     return NextResponse.json({
@@ -81,7 +88,7 @@ export async function GET(
       body: "",
       takeaways: [],
       locked: true,
-      message: product.locked_lesson_message,
+      message: composed.layer === "purchase" ? product.locked_lesson_message : composed.access.reason,
     });
   }
   return NextResponse.json({
