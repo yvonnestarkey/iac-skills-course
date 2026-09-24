@@ -1,5 +1,12 @@
 import { NextResponse } from "next/server";
-import { getRequestUser } from "@/lib/auth-server";
+import { getRequestUser, isStaffUser } from "@/lib/auth-server";
+import {
+  checkoutSmokeTestMetadata,
+  onceOffPriceIdForCheckout,
+  readSmokeTestPriceId,
+  resolveCheckoutSmokeTest,
+  SMOKE_TEST_AMOUNT_CENTS,
+} from "@/lib/checkout-smoke-test";
 import { getCourseProduct, selectedOptionTotalCents, type PurchaseOption } from "@/lib/commerce";
 import { planCheckoutPaymentParams, planInstallmentAmountCents } from "@/lib/plan-installments";
 import { getServiceSupabase } from "@/lib/supabase-admin";
@@ -22,11 +29,19 @@ export async function POST(request: Request) {
     option?: PurchaseOption;
     referral_code?: string;
     promo_code?: string;
+    smoke_test?: boolean;
   } | null;
   const option: PurchaseOption = body?.option === "plan_6" ? "plan_6" : "once_off";
+  const smokeTest = resolveCheckoutSmokeTest({
+    smokeTestRequested: body?.smoke_test === true,
+    option,
+    isStaff: isStaffUser(user),
+    smokeTestPriceId: readSmokeTestPriceId(),
+  });
+  if (smokeTest.ok === false) return NextResponse.json({ error: smokeTest.error }, { status: smokeTest.status });
   const product = await getCourseProduct();
-  const referralCode = body?.referral_code?.trim().toUpperCase() || "";
-  const promoCode = body?.promo_code?.trim().toUpperCase() || "";
+  const referralCode = smokeTest.smokeTest ? "" : body?.referral_code?.trim().toUpperCase() || "";
+  const promoCode = smokeTest.smokeTest ? "" : body?.promo_code?.trim().toUpperCase() || "";
 
   if (referralCode && promoCode) {
     return NextResponse.json({ error: "Referral and promotional discounts cannot be combined." }, { status: 400 });
@@ -51,10 +66,12 @@ export async function POST(request: Request) {
           promoPercent,
         })
       : null;
-  const credit = Math.min(
-    await availableCreditCents(user.id),
-    option === "plan_6" ? Number(installmentCents) : product.once_off_amount_cents
-  );
+  const credit = smokeTest.smokeTest
+    ? 0
+    : Math.min(
+        await availableCreditCents(user.id),
+        option === "plan_6" ? Number(installmentCents) : product.once_off_amount_cents
+      );
   const spec = checkoutCouponSpec({
     option,
     product,
@@ -62,7 +79,11 @@ export async function POST(request: Request) {
     promoPercent,
     creditCents: credit,
   });
-  const onceOffPriceId = product.stripe_once_off_price_id;
+  const onceOffPriceId = onceOffPriceIdForCheckout({
+    smokeTest: smokeTest.smokeTest,
+    onceOffPriceId: product.stripe_once_off_price_id,
+    smokeTestPriceId: smokeTest.smokeTest ? smokeTest.priceId : null,
+  });
   if (option === "once_off" && !onceOffPriceId) {
     return NextResponse.json({ error: "Stripe prices are not configured yet." }, { status: 503 });
   }
@@ -101,7 +122,11 @@ export async function POST(request: Request) {
         option,
         status: "pending",
         stripe_customer_id: customerId || null,
-        amount_cents: option === "plan_6" ? Number(installmentCents) * product.plan_count : selectedOptionTotalCents(option, product),
+        amount_cents: smokeTest.smokeTest
+          ? SMOKE_TEST_AMOUNT_CENTS
+          : option === "plan_6"
+            ? Number(installmentCents) * product.plan_count
+            : selectedOptionTotalCents(option, product),
         currency: "usd",
         referral_code_used: referralCode || null,
         promo_code_used: promoCode || null,
@@ -123,6 +148,7 @@ export async function POST(request: Request) {
     plan_count: String(product.plan_count),
     purchase_id: purchaseId || "",
     installment_amount_cents: String(installmentCents || ""),
+    ...checkoutSmokeTestMetadata(smokeTest.smokeTest),
   };
 
   const session = await stripe.checkout.sessions.create({
