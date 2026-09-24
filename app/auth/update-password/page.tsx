@@ -6,9 +6,11 @@ import { useRouter } from "next/navigation";
 import {
   afterPasswordSavedPath,
   canSubmitInvitePassword,
+  consumeAuthParamsFromLocation,
   establishAuthSession,
   isInvitePasswordFlow,
-  parseInviteAuthParams,
+  openingPasswordSessionCopy,
+  savePasswordWithSession,
   sessionNotReadyMessage,
   studentFacingPasswordError,
 } from "@/lib/invite-session";
@@ -24,16 +26,18 @@ export default function UpdatePasswordPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
+    const { params, nextSearch } = consumeAuthParamsFromLocation(window.location);
+    window.history.replaceState({}, "", `${window.location.pathname}${nextSearch}`);
+
+    const inviteFlow = isInvitePasswordFlow(params);
+    setInvite(inviteFlow);
+
     const supabase = getSupabase();
     if (!supabase) {
       setInvalid(true);
       setStatus("This page is unavailable right now. Open the invitation link again in a few minutes.");
       return;
     }
-
-    const params = parseInviteAuthParams(window.location.search, window.location.hash);
-    const inviteFlow = isInvitePasswordFlow(params);
-    setInvite(inviteFlow);
 
     let cancelled = false;
     establishAuthSession(supabase, params).then((result) => {
@@ -63,8 +67,14 @@ export default function UpdatePasswordPage() {
     if (!supabase) return;
     setSubmitting(true);
     setStatus("");
-    const { error } = await supabase.auth.updateUser({ password });
+    const { error } = await savePasswordWithSession(supabase, password);
     if (error) {
+      console.error("update-password", {
+        message: error.message || null,
+        code: error.code || null,
+        status: error.status || null,
+        invite,
+      });
       setSubmitting(false);
       setStatus(studentFacingPasswordError(error, invite));
       return;
@@ -84,7 +94,7 @@ export default function UpdatePasswordPage() {
       {invite ? (
         <p className="muted">Choose your own password. Next you will complete the course questionnaire.</p>
       ) : null}
-      {!sessionReady && !invalid ? <p className="muted">Opening your invitation…</p> : null}
+      {!sessionReady && !invalid ? <p className="muted">{openingPasswordSessionCopy(invite)}</p> : null}
       <form onSubmit={submit}>
         <label className="student-notes-label" htmlFor="new-password">
           New password
@@ -100,7 +110,7 @@ export default function UpdatePasswordPage() {
         />
         {status ? <p role="alert">{status}</p> : null}
         <button className="primary" type="submit" disabled={!submitEnabled}>
-          {submitting ? "Saving…" : !sessionReady && !invalid ? "Opening invitation…" : "Save password"}
+          {submitting ? "Saving…" : !sessionReady && !invalid ? openingPasswordSessionCopy(invite) : "Save password"}
         </button>
       </form>
     </section>

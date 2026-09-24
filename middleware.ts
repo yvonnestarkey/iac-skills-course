@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isAuthPasswordPath } from "@/lib/invite-session";
 import { ONBOARDING_SKIP_COOKIE, onboardingSkipCookieClear } from "@/lib/onboarding-session";
 import { isCoachAccount } from "@/lib/roles";
 
@@ -19,6 +20,9 @@ function isStudentAppPath(pathname: string): boolean {
  * unless this browser session set `onboarding_skipped_session`.
  */
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  if (isAuthPasswordPath(pathname)) return NextResponse.next({ request });
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   let response = NextResponse.next({ request });
@@ -42,14 +46,11 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { pathname } = request.nextUrl;
   const isLogin = pathname === "/student/login" || pathname === "/login" || pathname === "/register";
   const isOnboarding = pathname === "/onboarding" || pathname.startsWith("/onboarding/");
   const isCoachPath = pathname === "/coach" || pathname.startsWith("/coach/");
   const isCommercePath = pathname === "/welcome" || pathname.startsWith("/checkout");
   const staff = Boolean(user && isCoachAccount(user));
-
-  if (pathname.startsWith("/auth/callback") || pathname.startsWith("/auth/update-password")) return response;
 
   if (isLogin) {
     response.cookies.set(onboardingSkipCookieClear());

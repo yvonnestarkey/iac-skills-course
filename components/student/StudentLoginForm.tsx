@@ -8,6 +8,7 @@ import { fetchOnboardingGate } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
 import { goToStudentLogin, safeStudentPath, studentUserFromAuth } from "@/lib/student-lesson";
 import { useStore } from "@/lib/store";
+import { passwordResetRedirectUrl } from "@/lib/invite-session";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -169,7 +170,7 @@ export default function StudentLoginForm({ initialMode = "signin" }: { initialMo
     setBusy(true);
     const origin = window.location.origin;
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(trimmedEmail, {
-      redirectTo: `${origin}/auth/callback?next=/auth/update-password`,
+      redirectTo: passwordResetRedirectUrl(origin),
     });
     setBusy(false);
     if (resetError) {
