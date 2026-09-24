@@ -2186,6 +2186,14 @@ input[type="tel"]:focus {
   margin: 10vh auto 0;
 }
 
+.checkout-instalment-timing {
+  margin: 18px 0 22px;
+  font-size: 1.125rem;
+  line-height: 1.45;
+  font-weight: 600;
+  color: var(--link);
+}
+
 .brand {
   font-size: 27px;
 }
@@ -6413,5 +6421,29 @@ a.live-session-watch:hover {
   .bmcr-sheet-table td {
     break-inside: avoid;
   }
+}
+
+.waitlist-invite-confirm {
+  margin-top: 24px;
+}
+
+.waitlist-invite-list {
+  margin: 12px 0 18px;
+  padding-left: 20px;
+}
+
+.waitlist-invite-list li {
+  margin: 8px 0;
+}
+
+.add-student-access {
+  border: 0;
+  margin: 16px 0 8px;
+  padding: 0;
+}
+
+.add-student-access legend {
+  font-weight: 700;
+  margin-bottom: 8px;
 }
 

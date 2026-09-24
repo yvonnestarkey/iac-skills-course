@@ -161,4 +161,9 @@ export interface WaitlistRow {
   institution?: string | null;
   query?: string | null;
   created_at: string;
+  invitation_status?: string | null;
+  invited_at?: string | null;
+  invited_by?: string | null;
+  invited_user_id?: string | null;
+  invitation_access?: string | null;
 }

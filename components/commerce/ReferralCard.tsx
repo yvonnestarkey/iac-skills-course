@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import HelpTooltip from "@/components/ui/HelpTooltip";
+import { formatUsdCents } from "@/lib/format-money";
 
 type ReferralPayload = {
   code: string;
@@ -15,7 +16,7 @@ type ReferralPayload = {
 };
 
 function money(cents: number) {
-  return `US$${(cents / 100).toFixed(0)}`;
+  return formatUsdCents(cents);
 }
 
 export default function ReferralCard() {

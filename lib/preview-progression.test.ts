@@ -189,6 +189,13 @@ test("viewing or completing a preview does not unlock progression", () => {
   assert.equal(hasTask1Submission({ "ch12-l1": { body: "watched", link_url: "" } }, gated), false);
 });
 
+test("complimentary full access uses the same pedagogical gates as a paid account", () => {
+  assert.equal(view("ch3-l2", "full").canReadBody, true);
+  assert.equal(view("ch10-l7", "full").canReadBody, true);
+  assert.equal(view("ch12-l2", "full").layer, "progression");
+  assert.equal(view("ch12-l1", "full").layer, "preview");
+});
+
 test("a new paid account can open all Phase 1 and Task 1 learning content", () => {
   for (const id of ["ch3-l1", "ch5-l6", "ch7-l5", "ch10-l1", "ch10-l5", "ch10-l7", "ch10-l9"]) {
     const result = view(id, "full");

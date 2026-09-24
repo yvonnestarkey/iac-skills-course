@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getRequestUser } from "@/lib/auth-server";
-import { getEntitlement, listPreviewLessonIds } from "@/lib/commerce";
+import { getEntitlementRecord, listPreviewLessonIds } from "@/lib/commerce";
 import { fetchCourseOutline } from "@/lib/student-lesson";
 
 export const dynamic = "force-dynamic";
@@ -10,12 +10,13 @@ export async function GET() {
   if (!user) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
   const [outline, entitlement, previewIds] = await Promise.all([
     fetchCourseOutline(),
-    getEntitlement(user.id),
+    getEntitlementRecord(user.id),
     listPreviewLessonIds(),
   ]);
   return NextResponse.json({
     outline,
-    entitlement,
+    entitlement: entitlement.status,
+    entitlement_source: entitlement.source,
     preview_lesson_ids: previewIds,
   });
 }

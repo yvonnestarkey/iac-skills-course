@@ -49,7 +49,7 @@ export async function middleware(request: NextRequest) {
   const isCommercePath = pathname === "/welcome" || pathname.startsWith("/checkout");
   const staff = Boolean(user && isCoachAccount(user));
 
-  if (pathname.startsWith("/auth/callback")) return response;
+  if (pathname.startsWith("/auth/callback") || pathname.startsWith("/auth/update-password")) return response;
 
   if (isLogin) {
     response.cookies.set(onboardingSkipCookieClear());

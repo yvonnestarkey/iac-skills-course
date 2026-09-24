@@ -16,6 +16,7 @@ import {
   type StudentUser,
 } from "./student-lesson";
 import { fetchOwnSurveyResponses, type CustomSurveyResponse } from "./custom-surveys";
+import type { EntitlementSource } from "./account-access";
 import type { EntitlementStatus } from "./commerce";
 import { fetchStudentSubmissions, type StudentSubmission } from "./student-submissions";
 
@@ -30,6 +31,7 @@ interface StudentSessionValue {
   submissions: Record<string, StudentSubmission>;
   surveyReviews: Record<string, CustomSurveyResponse>;
   entitlement: SessionEntitlement;
+  entitlementSource: EntitlementSource | null;
   previewLessonIds: string[];
   onboarding: OnboardingGate;
   setLessonCompleted: (lessonId: string, completed: boolean) => void;
@@ -48,12 +50,14 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   const [submissions, setSubmissions] = useState<Record<string, StudentSubmission>>({});
   const [surveyReviews, setSurveyReviews] = useState<Record<string, CustomSurveyResponse>>({});
   const [entitlement, setEntitlement] = useState<SessionEntitlement>(null);
+  const [entitlementSource, setEntitlementSource] = useState<EntitlementSource | null>(null);
   const [previewLessonIds, setPreviewLessonIds] = useState<string[]>([]);
   const [onboarding, setOnboarding] = useState<OnboardingGate>("unknown");
 
   const loadCommerce = useCallback(async (nextUser: StudentUser) => {
     if (isCoachAccount(nextUser)) {
       setEntitlement("staff");
+      setEntitlementSource(null);
       setPreviewLessonIds([]);
       return;
     }
@@ -62,6 +66,11 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       if (!response.ok) return;
       const data = await response.json();
       setEntitlement(data.entitlement === "full" || data.entitlement === "free_preview" ? data.entitlement : "free_preview");
+      setEntitlementSource(
+        data.entitlement_source === "admin" || data.entitlement_source === "stripe" || data.entitlement_source === "signup"
+          ? data.entitlement_source
+          : "signup"
+      );
       setPreviewLessonIds(Array.isArray(data.preview_lesson_ids) ? data.preview_lesson_ids.map(String) : []);
     } catch {
       return;
@@ -129,6 +138,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
         setSubmissions({});
         setSurveyReviews({});
         setEntitlement(null);
+        setEntitlementSource(null);
         setPreviewLessonIds([]);
         setOnboarding("unknown");
         clearOnboardingGateCache();
@@ -178,6 +188,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     setSubmissions({});
     setSurveyReviews({});
     setEntitlement(null);
+    setEntitlementSource(null);
     setPreviewLessonIds([]);
     setOnboarding("unknown");
   }, []);
@@ -191,6 +202,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       submissions,
       surveyReviews,
       entitlement,
+      entitlementSource,
       previewLessonIds,
       onboarding,
       setLessonCompleted,
@@ -198,7 +210,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       reloadProgress,
       signOut,
     }),
-    [ready, user, outline, completed, submissions, surveyReviews, entitlement, previewLessonIds, onboarding, setLessonCompleted, setSubmission, reloadProgress, signOut]
+    [ready, user, outline, completed, submissions, surveyReviews, entitlement, entitlementSource, previewLessonIds, onboarding, setLessonCompleted, setSubmission, reloadProgress, signOut]
   );
 
   return <StudentSessionContext.Provider value={value}>{children}</StudentSessionContext.Provider>;

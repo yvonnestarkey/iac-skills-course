@@ -113,20 +113,47 @@ export async function listPreviewLessonIds(productId = DEFAULT_PRODUCT_ID): Prom
   return data.map((row) => String(row.lesson_id));
 }
 
-export async function getEntitlement(userId: string, productId = DEFAULT_PRODUCT_ID): Promise<EntitlementStatus> {
+export type EntitlementRecord = {
+  status: EntitlementStatus;
+  source: "signup" | "stripe" | "admin";
+};
+
+export async function getEntitlementRecord(userId: string, productId = DEFAULT_PRODUCT_ID): Promise<EntitlementRecord> {
   const client = getServiceSupabase();
-  if (!client) return "full";
+  if (!client) return { status: "full", source: "signup" };
   const { data, error } = await client
     .from("course_entitlements")
-    .select("status")
+    .select("status, source")
     .eq("user_id", userId)
     .eq("product_id", productId)
     .maybeSingle();
   if (error) {
-    if (commerceTableMissing(error.message)) return "full";
-    return "free_preview";
+    if (commerceTableMissing(error.message)) return { status: "full", source: "signup" };
+    return { status: "free_preview", source: "signup" };
   }
-  return data?.status === "full" ? "full" : "free_preview";
+  const source = data?.source === "admin" || data?.source === "stripe" ? data.source : "signup";
+  return { status: data?.status === "full" ? "full" : "free_preview", source };
+}
+
+export async function getEntitlement(userId: string, productId = DEFAULT_PRODUCT_ID): Promise<EntitlementStatus> {
+  const record = await getEntitlementRecord(userId, productId);
+  return record.status;
+}
+
+export async function grantPreviewEntitlement(userId: string) {
+  const client = getServiceSupabase();
+  if (!client) throw new Error("Supabase is not configured.");
+  const { error } = await client.from("course_entitlements").upsert(
+    {
+      user_id: userId,
+      product_id: DEFAULT_PRODUCT_ID,
+      status: "free_preview",
+      source: "signup",
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "user_id,product_id", ignoreDuplicates: true }
+  );
+  if (error) throw new Error(error.message);
 }
 
 export async function ensureCommerceAccount(user: StudentUser) {

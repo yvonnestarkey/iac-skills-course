@@ -20,6 +20,9 @@ export interface WaitlistLead {
   institution?: WaitlistInstitution | string | null;
   query?: string | null;
   created_at: string;
+  invitation_status?: string | null;
+  invited_at?: string | null;
+  invitation_access?: string | null;
 }
 
 export function isWaitlistExam(value: string): value is WaitlistExam {
@@ -117,6 +120,9 @@ export async function fetchWaitlistLeads(): Promise<{ ok: true; leads: WaitlistL
       institution: row.institution == null ? null : String(row.institution),
       query: row.query == null ? null : String(row.query),
       created_at: String(row.created_at || ""),
+      invitation_status: row.invitation_status == null ? null : String(row.invitation_status),
+      invited_at: row.invited_at == null ? null : String(row.invited_at),
+      invitation_access: row.invitation_access == null ? null : String(row.invitation_access),
     })),
   };
 }

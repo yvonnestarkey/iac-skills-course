@@ -22,6 +22,7 @@ const TABS = [
   { id: "assignments", label: "Submissions", href: null },
   { id: "surveys", label: "Surveys", href: null },
   { id: "roster", label: "Student Roster", href: null },
+  { id: "add-student", label: "Add Student", href: "/coach/students/new" },
   { id: "bmcr", label: "BMCR Analytics", href: null },
   { id: "waitlist", label: "Waitlist", href: "/coach/waitlist" },
   { id: "inbox", label: "Inbox", href: "/coach/inbox" },

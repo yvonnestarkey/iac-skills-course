@@ -18,7 +18,11 @@ export default function CoachHomePage() {
         <div className="people hub-choices">
           <button onClick={() => router.push("/coach/waitlist")}>
             <strong>Waitlist</strong>
-            <span className="muted">Leads from the sales page, filter by exam, export CSV</span>
+            <span className="muted">See who is waiting, then send one free-preview invitation at a time</span>
+          </button>
+          <button onClick={() => router.push("/coach/students/new")}>
+            <strong>Add Student</strong>
+            <span className="muted">Invite someone to free preview or complimentary full access</span>
           </button>
           <button onClick={() => router.push("/coach/surveys")}>
             <strong>Custom surveys</strong>
