@@ -4,6 +4,7 @@ import {
   isDiyLesson,
   isMainTaskAssignment,
   isSectionChapter,
+  isTask1Chapter,
   isTaskChapter,
   isTaskSubmissionAssignment,
 } from "./course-phases";
@@ -209,6 +210,10 @@ function outlineLessonFromRow(row: {
   return withComputedDuration(lesson);
 }
 
+export function applyCourseProgressionGates(chapters: OutlineChapter[]): OutlineChapter[] {
+  return withSubmissionPrereqs(chapters);
+}
+
 function withSubmissionPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
   const firstTask = chapters.findIndex((chapter) => isTaskChapter(chapter.title));
   const hasNamedPhases = chapters.some(
@@ -230,9 +235,14 @@ function withSubmissionPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
 
   flagged.forEach((chapter, chapterIndex) => {
     const phase1Open = hasNamedPhases && (firstTask === -1 || chapterIndex < firstTask);
+    const task1Open = isTask1Chapter(chapter.title || "");
     chapter.lessons.forEach((lesson) => {
-      if (phase1Open) {
+      if (phase1Open || task1Open) {
         gated.set(lesson.id, { ...lesson, prereq_lesson_id: null });
+        if (isMainTaskAssignment(chapter.title, lesson)) {
+          lastMainTaskId = lesson.id;
+          pendingPhase1Gate = null;
+        }
         return;
       }
 

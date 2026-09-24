@@ -46,24 +46,7 @@ export const FALLBACK_PRODUCT: CourseProduct = {
   stripe_plan_price_id: process.env.STRIPE_PRICE_PLAN || null,
 };
 
-export const DEFAULT_PREVIEW_LESSON_IDS = [
-  "ch3-l1",
-  "ch3-l2",
-  "ch3-l3",
-  "ch3-l4",
-  "ch3-l5",
-  "ch3-l6",
-  "ch3-l7",
-  "ch3-l8",
-  "ch4-l1",
-  "ch5-l1",
-  "ch10-l1",
-  "ch12-l1",
-  "ch13-l2",
-  "ch15-l2",
-  "ch16-l1",
-  "ch18-l1",
-] as const;
+export const DEFAULT_PREVIEW_LESSON_IDS: string[] = [];
 
 export function commerceTableMissing(message: string): boolean {
   return /course_products|course_entitlements|course_preview_lessons|referral_codes|schema cache|does not exist/i.test(message);
@@ -115,6 +98,10 @@ export async function getCourseProduct(productId = DEFAULT_PRODUCT_ID): Promise<
 }
 
 export async function listPreviewLessonIds(productId = DEFAULT_PRODUCT_ID): Promise<string[]> {
+  const { fetchCourseOutline } = await import("@/lib/student-lesson");
+  const { resolvePreviewLessonIds } = await import("@/lib/preview-lessons");
+  const resolved = resolvePreviewLessonIds(await fetchCourseOutline());
+  if (resolved.length) return resolved;
   const client = getServiceSupabase();
   if (!client) return [...DEFAULT_PREVIEW_LESSON_IDS];
   const { data, error } = await client

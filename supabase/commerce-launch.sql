@@ -34,24 +34,28 @@ create table if not exists public.course_preview_lessons (
   primary key (product_id, lesson_id)
 );
 
--- Preview set from live Jan 2027 records (S2 has only ch4-l1; no S2 L2/L3 exist).
+-- Preview set resolved from live Jan 2027 titles (S1 all; S2 L1-L4; S3 L4; Task 1 L1-L2; Fixes L1; Task 2 L1; Task 3 L1-L2; Task 4 L1-L2; Task 5 L1; Task 6 L1).
 insert into public.course_preview_lessons (product_id, lesson_id, sort) values
   ('jan27-iac', 'ch3-l1', 10),
-  ('jan27-iac', 'ch3-l2', 20),
-  ('jan27-iac', 'ch3-l3', 30),
+  ('jan27-iac', 'ch3-l9', 20),
+  ('jan27-iac', 'ch3-l2', 30),
   ('jan27-iac', 'ch3-l4', 40),
-  ('jan27-iac', 'ch3-l5', 50),
-  ('jan27-iac', 'ch3-l6', 60),
-  ('jan27-iac', 'ch3-l7', 70),
-  ('jan27-iac', 'ch3-l8', 80),
-  ('jan27-iac', 'ch4-l1', 90),
-  ('jan27-iac', 'ch5-l1', 100),
+  ('jan27-iac', 'ch3-l6', 50),
+  ('jan27-iac', 'ch5-l1', 60),
+  ('jan27-iac', 'ch5-l2', 70),
+  ('jan27-iac', 'ch5-l3', 80),
+  ('jan27-iac', 'ch5-l5', 90),
+  ('jan27-iac', 'ch7-l4', 100),
   ('jan27-iac', 'ch10-l1', 110),
-  ('jan27-iac', 'ch12-l1', 120),
-  ('jan27-iac', 'ch13-l2', 130),
-  ('jan27-iac', 'ch15-l2', 140),
-  ('jan27-iac', 'ch16-l1', 150),
-  ('jan27-iac', 'ch18-l1', 160)
+  ('jan27-iac', 'ch10-l-just-3-percent', 120),
+  ('jan27-iac', 'ch11-l1', 130),
+  ('jan27-iac', 'ch12-l1', 140),
+  ('jan27-iac', 'ch13-l2', 150),
+  ('jan27-iac', 'ch13-l3', 160),
+  ('jan27-iac', 'ch15-l2', 170),
+  ('jan27-iac', 'ch15-l3', 180),
+  ('jan27-iac', 'ch16-l1', 190),
+  ('jan27-iac', 'ch18-l1', 200)
 on conflict (product_id, lesson_id) do nothing;
 
 create table if not exists public.course_entitlements (

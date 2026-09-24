@@ -57,6 +57,7 @@ export const getLessonData = cache(async (
       : { isLocked: false };
   const composed = composeLessonAvailability({
     commercialCanRead: content.canReadBody,
+    isPreviewLesson: content.preview,
     pedagogical,
   });
   const protectedLesson = await protectLessonResourceFields(lesson as unknown as Record<string, unknown>, {

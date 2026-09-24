@@ -27,6 +27,7 @@ export async function GET(_request: Request, context: { params: Promise<{ lesson
   const pedagogical = isStaffUser(user) ? { isLocked: false } : await getLessonAccess(user.id, lessonId);
   const composed = composeLessonAvailability({
     commercialCanRead: commercial.canReadBody,
+    isPreviewLesson: commercial.preview,
     pedagogical,
   });
   const product = await getCourseProduct();

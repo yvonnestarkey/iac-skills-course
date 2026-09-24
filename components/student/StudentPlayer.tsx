@@ -11,6 +11,7 @@ import StudentSurveyForm from "@/components/student/StudentSurveyForm";
 import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
 import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult } from "@/lib/accessControl";
+import { composeLessonAvailability } from "@/lib/lesson-availability";
 import { findResumeLesson, isChapterSequentiallyLocked, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
@@ -38,7 +39,7 @@ export default function StudentPlayer({
   initialAccess?: AccessResult;
   overrideLocks?: boolean;
 }) {
-  const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions } = useStudentSession();
+  const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions, entitlement, previewLessonIds } = useStudentSession();
   const { basePath } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
   const skipLocks = overrideLocks || bypassLocks;
@@ -107,11 +108,26 @@ export default function StudentPlayer({
   const catalog = useMemo(() => catalogFromOutline(outline), [outline]);
   const gatedTarget = catalog.find((item) => item.id === lesson.id) || outlineToGate(lesson);
   const liveAccess = checkLessonAccess(gatedTarget, catalog, submissions || {}, { completed: completedMap || {} });
-  const access = catalog.length ? liveAccess : initialAccess || liveAccess;
   const chapterLocked =
     Boolean(lesson.chapterId) &&
     (outline || []).length > 0 &&
     isChapterSequentiallyLocked(outline || [], lesson.chapterId, completedMap || {});
+  const pedagogical =
+    chapterLocked && !previewLessonIds.includes(lesson.id)
+      ? { isLocked: true, reason: "Finish the previous section first." }
+      : catalog.length
+        ? liveAccess
+        : initialAccess || liveAccess;
+  const composed = composeLessonAvailability({
+    commercialCanRead:
+      skipLocks ||
+      entitlement === "full" ||
+      entitlement === "staff" ||
+      previewLessonIds.includes(lesson.id),
+    isPreviewLesson: previewLessonIds.includes(lesson.id),
+    pedagogical,
+  });
+  const access = composed.access;
   const resume = findResumeLesson(ordered, completedMap);
   const showSubmission = lesson.requires_submission === true || lesson.requires_coach_approval === true;
   const kind = displayLessonType(lesson);
@@ -119,7 +135,7 @@ export default function StudentPlayer({
   const videos = lesson.videos?.length ? lesson.videos : parseLessonVideos(lesson.video_url);
   const isMultiVideo = isMultiVideoLesson(kind, videos);
   const isCheckpoint = isProgressiveCheckpoint({ ...lesson, videos });
-  const purchaseLocked = !skipLocks && (lesson.access === "locked" || initialAccess?.reason === "purchase");
+  const purchaseLocked = !skipLocks && composed.layer === "purchase";
 
   if (purchaseLocked) {
     return (
@@ -160,7 +176,7 @@ export default function StudentPlayer({
     );
   }
 
-  if (!skipLocks && chapterLocked && resume && resume.lesson.id !== lesson.id) {
+  if (!skipLocks && composed.layer !== "preview" && chapterLocked && resume && resume.lesson.id !== lesson.id) {
     return (
       <article className="lesson-body">
         <p className="kicker">Locked lesson</p>

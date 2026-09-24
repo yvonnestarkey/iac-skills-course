@@ -23,6 +23,18 @@ test("full entitlement still withholds a pedagogically locked lesson", () => {
   assert.match(composed.access.reason || "", /submission/i);
 });
 
+test("a designated preview lesson opens even when progression is locked", () => {
+  const pedagogical = checkLessonAccess(catalog[1], catalog, {}, { completed: {} });
+  const composed = composeLessonAvailability({
+    commercialCanRead: true,
+    isPreviewLesson: true,
+    pedagogical,
+  });
+  assert.equal(composed.layer, "preview");
+  assert.equal(composed.canReadBody, true);
+  assert.equal(composed.access.isLocked, false);
+});
+
 test("free preview of a paid lesson stays on the purchase layer", () => {
   const composed = composeLessonAvailability({
     commercialCanRead: false,

@@ -73,6 +73,7 @@ export async function GET(
   const pedagogical = isStaffUser(user) ? { isLocked: false } : await getLessonAccess(user.id, lessonId);
   const composed = composeLessonAvailability({
     commercialCanRead: commercial.canReadBody,
+    isPreviewLesson: commercial.preview,
     pedagogical,
   });
   if (!composed.canReadBody) {

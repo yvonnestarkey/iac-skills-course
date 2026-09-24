@@ -1,7 +1,7 @@
 import type { AccessResult } from "@/lib/accessControl";
 import type { EntitlementStatus } from "@/lib/commerce";
 
-export type LessonAccessLayer = "open" | "purchase" | "progression";
+export type LessonAccessLayer = "open" | "preview" | "purchase" | "progression";
 
 export type ComposedLessonAccess = {
   layer: LessonAccessLayer;
@@ -10,13 +10,21 @@ export type ComposedLessonAccess = {
 };
 
 /**
- * Commercial entitlement and pedagogical progression are independent.
- * Full purchase only clears the purchase layer.
+ * can_view = preview_override OR (full commercial access AND progression unlocked).
+ * Preview is a viewing exception only and does not change pedagogical state.
  */
 export function composeLessonAvailability(input: {
   commercialCanRead: boolean;
+  isPreviewLesson?: boolean;
   pedagogical: AccessResult;
 }): ComposedLessonAccess {
+  if (input.isPreviewLesson && input.commercialCanRead) {
+    return {
+      layer: "preview",
+      canReadBody: true,
+      access: { isLocked: false },
+    };
+  }
   if (!input.commercialCanRead) {
     return {
       layer: "purchase",

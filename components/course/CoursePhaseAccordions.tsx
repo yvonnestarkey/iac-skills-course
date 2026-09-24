@@ -29,6 +29,7 @@ function LessonEntry({
   lesson,
   locked,
   purchaseLocked,
+  previewOverride,
   showPreviewBadge,
   active,
   done,
@@ -40,6 +41,7 @@ function LessonEntry({
   lesson: OutlineLesson;
   locked: boolean;
   purchaseLocked: boolean;
+  previewOverride: boolean;
   showPreviewBadge: boolean;
   active: boolean;
   done: boolean;
@@ -51,7 +53,7 @@ function LessonEntry({
   const badge = durationBadge(lesson);
   const kind = displayLessonType(lesson);
   const reviewText = review ? surveyReviewSummary(review) : "";
-  const showLock = locked || purchaseLocked;
+  const showLock = (locked && !previewOverride) || purchaseLocked;
   const icon = (
     <LessonTypeIcon type={kind} title={lesson.title} done={done && !showLock} size={13} />
   );
@@ -88,7 +90,7 @@ function LessonEntry({
       </>
     );
 
-  if (locked && !purchaseLocked) {
+  if (locked && !purchaseLocked && !previewOverride) {
     return (
       <span className={`lesson-link lesson-preview locked ${kind}`} aria-disabled="true">
         {body}
@@ -225,6 +227,7 @@ export default function CoursePhaseAccordions({
                           {variant === "hub" ? (
                             <ul className="student-dash-lessons">
                               {lessons.map((lesson) => {
+                                const previewOverride = [...(previewLessonIds || [])].includes(lesson.id);
                                 const purchaseLocked = isPurchaseLockedLesson(lesson.id, markPreviewNav, previewLessonIds || []);
                                 return (
                                 <li key={lesson.id}>
@@ -236,7 +239,8 @@ export default function CoursePhaseAccordions({
                                         checkLessonAccess(lesson, catalog, submissions, { completed }).isLocked)
                                     }
                                     purchaseLocked={purchaseLocked}
-                                    showPreviewBadge={markPreviewNav && !purchaseLocked}
+                                    previewOverride={previewOverride}
+                                    showPreviewBadge={markPreviewNav && previewOverride}
                                     active={lesson.id === activeLessonId}
                                     done={Boolean(completed[lesson.id])}
                                     href={`${basePath}/${lesson.id}`}
@@ -250,6 +254,7 @@ export default function CoursePhaseAccordions({
                             </ul>
                           ) : (
                             lessons.map((lesson) => {
+                              const previewOverride = [...(previewLessonIds || [])].includes(lesson.id);
                               const purchaseLocked = isPurchaseLockedLesson(lesson.id, markPreviewNav, previewLessonIds || []);
                               return (
                               <LessonEntry
@@ -261,7 +266,8 @@ export default function CoursePhaseAccordions({
                                     checkLessonAccess(lesson, catalog, submissions, { completed }).isLocked)
                                 }
                                 purchaseLocked={purchaseLocked}
-                                showPreviewBadge={markPreviewNav && !purchaseLocked}
+                                previewOverride={previewOverride}
+                                showPreviewBadge={markPreviewNav && previewOverride}
                                 active={lesson.id === activeLessonId}
                                 done={Boolean(completed[lesson.id])}
                                 href={`${basePath}/${lesson.id}`}

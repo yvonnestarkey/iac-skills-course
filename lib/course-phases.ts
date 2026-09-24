@@ -39,6 +39,11 @@ export function isNumberedTaskChapter(title: string): boolean {
   return /^Task\s+\d+\b/i.test(trimmed) && !/\bExtra\b/i.test(trimmed);
 }
 
+export function isTask1Chapter(title: string): boolean {
+  const trimmed = title.trim();
+  return /^Task\s+1\b/i.test(trimmed) && !/\bExtra\b/i.test(trimmed);
+}
+
 /** Assignments in Task chapters that should show the submission form. */
 export function isTaskSubmissionAssignment(
   chapterTitle: string,
