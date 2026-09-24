@@ -29,16 +29,23 @@ export const COLD_VIDEO = {
   src: "https://player.vimeo.com/video/1069126463",
 };
 
-export const REGISTRATION_HEADLINE = "Create a free account, preview the Jan 2027 course, then buy when you are ready";
+export const REGISTRATION_HEADLINE = "Create a free account, start the Free Preview, then unlock the full Jan 2027 course from your account";
 
 export const REGISTRATION_CONTACT_EMAIL = "yvonne@accountingstudyadvice.com";
 
 export const REGISTRATION_CONTACT_LABEL = "Email me for questions";
 
 export const REGISTRATION_NOTE =
-  "The course will be live before the end of September 2026. You'll be given the option to purchase or access a free preview of the course to get a feel for what it includes. Live Sessions start end October 2026";
+  "Start with the Free Preview now. Unlock the full course from your student account when you are ready. Live sessions start end October 2026.";
 
-export const REGISTRATION_PAYMENT = "Payment: Once-off $327 or 6 monthly instalments of $60";
+export const REGISTRATION_PAYMENT = "Full course: US$327 once-off or US$60 × 6 payments";
+
+export const ENROLMENT_TITLE = "Start the course";
+
+export const ENROLMENT_BODY =
+  "Create your account and begin the Free Preview now. Unlock the full course from your student account when you are ready.";
+
+export const ENROLMENT_CTA = "Start the course";
 
 export const COURSE_FEATURES = [
   {
@@ -116,7 +123,7 @@ export const COURSE_SKILLS = [
 export const COURSE_DATES = {
   kicker: "Course Dates",
   title: "When does the course run?",
-  body: "Official start end-October 2026, running until the exam in January. Students can start the course as soon as it's launched to allow more time to practice the Skills they'll learn here.",
+  body: "Official start end-October 2026, running until the exam in January. Students can start the Free Preview now to allow more time to practise the Skills they'll learn here.",
 } as const;
 
 export const PRICING_TIERS = [

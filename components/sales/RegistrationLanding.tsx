@@ -1,5 +1,5 @@
 import BrandMark from "@/components/BrandMark";
-import WaitlistForm from "@/components/sales/WaitlistForm";
+import EnrolmentOffer from "@/components/sales/EnrolmentOffer";
 import {
   COLD_VIDEO,
   REGISTRATION_CONTACT_EMAIL,
@@ -45,11 +45,11 @@ export default function RegistrationLanding() {
         <h1>{REGISTRATION_HEADLINE}</h1>
         <div className="sales-registration-columns">
           <div className="card sales-lead-card">
-            <WaitlistForm />
+            <EnrolmentOffer />
           </div>
           <aside className="card sales-contact-card">
             <a className="primary" href="/register">
-              Create free account
+              Start the course
             </a>
             <a className="ghost" href={`mailto:${REGISTRATION_CONTACT_EMAIL}`}>
               {REGISTRATION_CONTACT_LABEL}

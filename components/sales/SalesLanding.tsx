@@ -3,7 +3,7 @@ import SenjaTestimonials from "@/components/SenjaTestimonials";
 import CourseFeatures from "@/components/sales/CourseFeatures";
 import FaqAccordion from "@/components/sales/FaqAccordion";
 import SkillsAccordion from "@/components/sales/SkillsAccordion";
-import WaitlistForm from "@/components/sales/WaitlistForm";
+import EnrolmentOffer from "@/components/sales/EnrolmentOffer";
 import { COURSE_DATES, PAYMENT_CAPTION, PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO, WEBINAR } from "@/lib/sales-copy";
 
 export default function SalesLanding({
@@ -49,7 +49,7 @@ export default function SalesLanding({
           </div>
         </div>
         <div className="card sales-lead-card">
-          <WaitlistForm />
+          <EnrolmentOffer />
         </div>
       </section>
 

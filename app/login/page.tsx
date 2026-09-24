@@ -15,7 +15,7 @@ export default function LoginPage() {
       <header className="topbar">
         <BrandMark href="/" />
         <Link className="ghost" href="/">
-          Course waitlist
+          Start the course
         </Link>
       </header>
       <Suspense fallback={<p className="student-loading">Loading…</p>}>

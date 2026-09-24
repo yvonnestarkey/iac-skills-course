@@ -5385,6 +5385,61 @@ a.live-session-watch:hover {
   line-height: 1.55;
 }
 
+.enrolment-offer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.enrolment-offer h2 {
+  margin: 0;
+}
+
+.enrolment-offer > p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.enrolment-offer-plans {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.enrolment-offer-plans li {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.enrolment-offer-plans .kicker {
+  margin: 0 0 4px;
+}
+
+.enrolment-offer-price {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.enrolment-offer-plans .muted {
+  margin: 4px 0 0;
+}
+
+.enrolment-offer .primary {
+  text-align: center;
+  width: 100%;
+}
+
+.enrolment-offer-signin {
+  text-align: center;
+}
+
 .sales-section {
   max-width: 1180px;
   margin: 0 auto;
