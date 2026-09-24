@@ -49,7 +49,7 @@ export const FALLBACK_PRODUCT: CourseProduct = {
 export const DEFAULT_PREVIEW_LESSON_IDS: string[] = [];
 
 export function commerceTableMissing(message: string): boolean {
-  return /course_products|course_entitlements|course_preview_lessons|referral_codes|schema cache|does not exist/i.test(message);
+  return /course_products|course_entitlements|course_preview_lessons|course_purchase_installments|referral_codes|schema cache|does not exist/i.test(message);
 }
 
 export function percentFromBps(bps: number): number {

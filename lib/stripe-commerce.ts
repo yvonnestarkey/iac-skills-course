@@ -4,6 +4,7 @@ import { getServiceSupabase } from "@/lib/supabase-admin";
 import {
   DEFAULT_PRODUCT_ID,
   canStackDiscounts,
+  commerceTableMissing,
   getCourseProduct,
   grantFullEntitlement,
   refereePerInstallmentCents,
@@ -11,6 +12,7 @@ import {
   type CourseProduct,
   type PurchaseOption,
 } from "@/lib/commerce";
+import { futurePlanInvoiceDrafts, voidActionForInvoiceStatus } from "@/lib/plan-installments";
 
 export function getStripe(): Stripe {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -208,7 +210,7 @@ export type CheckoutCouponSpec = {
   applyCreditAsBalance: boolean;
 };
 
-/** Plan referral/promo uses a repeating coupon so all six instalments are discounted. */
+/** Once-off keeps Stripe coupons. The instalment plan bakes referral/promo into each invoice amount. */
 export function checkoutCouponSpec(params: {
   option: PurchaseOption;
   product: CourseProduct;
@@ -235,28 +237,8 @@ export function checkoutCouponSpec(params: {
       applyCreditAsBalance: false,
     };
   }
-  if (params.referralCode) {
-    return {
-      coupon: {
-        amount_off: refereePerInstallmentCents("plan_6", params.product),
-        currency: "usd",
-        duration: "repeating",
-        duration_in_months: params.product.plan_count,
-        name: "Referral discount",
-      },
-      applyCreditAsBalance: params.creditCents > 0,
-    };
-  }
-  if (params.promoPercent) {
-    return {
-      coupon: {
-        percent_off: params.promoPercent,
-        duration: "repeating",
-        duration_in_months: params.product.plan_count,
-        name: "Promo",
-      },
-      applyCreditAsBalance: params.creditCents > 0,
-    };
+  if (params.creditCents > 0 && (params.referralCode || params.promoPercent)) {
+    return { coupon: null, applyCreditAsBalance: true };
   }
   if (params.creditCents > 0) {
     return {
@@ -290,6 +272,207 @@ export function incrementSuccessfulInstallments(params: {
   return { count: params.current + 1, changed: true };
 }
 
+export function paymentMethodIdFromSession(session: Stripe.Checkout.Session): string | null {
+  const intent = session.payment_intent;
+  if (!intent || typeof intent === "string") return null;
+  const method = intent.payment_method;
+  if (typeof method === "string" && method) return method;
+  if (method && typeof method === "object" && "id" in method && typeof method.id === "string") return method.id;
+  return null;
+}
+
+export async function attachDefaultInvoicePaymentMethod(
+  stripe: Stripe,
+  customerId: string,
+  paymentMethodId: string
+) {
+  await stripe.customers.update(customerId, {
+    invoice_settings: { default_payment_method: paymentMethodId },
+  });
+}
+
+export async function scheduleRemainingPlanInvoices(params: {
+  stripe: Stripe;
+  customerId: string;
+  paymentMethodId: string;
+  purchaseId: string;
+  userId: string;
+  productId: string;
+  enrolledAt: Date;
+  amountCents: number;
+  planCount: number;
+}): Promise<{ id: string; installment: number; scheduledAt: Date }[]> {
+  const existing = await listRecordedPlanInvoices(params.purchaseId);
+  if (existing.filter((row) => row.installment >= 2).length >= params.planCount - 1) {
+    return existing.filter((row) => row.installment >= 2);
+  }
+  const drafts = futurePlanInvoiceDrafts({
+    enrolledAt: params.enrolledAt,
+    purchaseId: params.purchaseId,
+    productId: params.productId,
+    userId: params.userId,
+    amountCents: params.amountCents,
+    planCount: params.planCount,
+  });
+  const created: { id: string; installment: number; scheduledAt: Date }[] = [];
+  for (const draft of drafts) {
+    const invoice = await params.stripe.invoices.create({
+      customer: params.customerId,
+      collection_method: draft.collectionMethod,
+      auto_advance: draft.autoAdvance,
+      automatically_finalizes_at: draft.automaticallyFinalizesAt,
+      default_payment_method: params.paymentMethodId,
+      pending_invoice_items_behavior: "exclude",
+      description: draft.description,
+      metadata: draft.metadata,
+    });
+    await params.stripe.invoiceItems.create({
+      customer: params.customerId,
+      invoice: invoice.id,
+      amount: draft.amountCents,
+      currency: "usd",
+      description: draft.description,
+      metadata: draft.metadata,
+    });
+    created.push({ id: invoice.id, installment: draft.installment, scheduledAt: draft.scheduledAt });
+  }
+  return created;
+}
+
+export async function recordPlanInstallmentRows(params: {
+  purchaseId: string;
+  rows: {
+    installment: number;
+    amountCents: number;
+    scheduledAt: Date;
+    stripeInvoiceId?: string | null;
+    stripePaymentIntentId?: string | null;
+    status: "pending" | "draft" | "paid" | "failed" | "void" | "canceled";
+    paidAt?: string | null;
+  }[];
+}) {
+  const client = getServiceSupabase();
+  if (!client) return;
+  const payload = params.rows.map((row) => ({
+    purchase_id: params.purchaseId,
+    installment_number: row.installment,
+    amount_cents: row.amountCents,
+    currency: "usd",
+    scheduled_at: row.scheduledAt.toISOString(),
+    stripe_invoice_id: row.stripeInvoiceId || null,
+    stripe_payment_intent_id: row.stripePaymentIntentId || null,
+    status: row.status,
+    paid_at: row.paidAt || null,
+    updated_at: new Date().toISOString(),
+  }));
+  const { error } = await client.from("course_purchase_installments").upsert(payload, {
+    onConflict: "purchase_id,installment_number",
+  });
+  if (error && !commerceTableMissing(error.message)) {
+    throw new Error(error.message);
+  }
+}
+
+async function listRecordedPlanInvoices(purchaseId: string): Promise<{ id: string; installment: number; scheduledAt: Date }[]> {
+  const client = getServiceSupabase();
+  if (!client) return [];
+  const { data, error } = await client
+    .from("course_purchase_installments")
+    .select("installment_number, stripe_invoice_id, scheduled_at")
+    .eq("purchase_id", purchaseId)
+    .gte("installment_number", 2);
+  if (error || !data?.length) return [];
+  return data
+    .filter((row) => row.stripe_invoice_id)
+    .map((row) => ({
+      id: String(row.stripe_invoice_id),
+      installment: Number(row.installment_number),
+      scheduledAt: new Date(String(row.scheduled_at)),
+    }));
+}
+
+export async function markPlanInstallmentPaid(params: {
+  purchaseId: string;
+  invoiceId: string;
+  installment: number;
+  paymentIntentId?: string | null;
+}) {
+  const client = getServiceSupabase();
+  if (!client) return;
+  const { error } = await client
+    .from("course_purchase_installments")
+    .update({
+      status: "paid",
+      stripe_invoice_id: params.invoiceId,
+      stripe_payment_intent_id: params.paymentIntentId || null,
+      paid_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("purchase_id", params.purchaseId)
+    .eq("installment_number", params.installment);
+  if (error && !commerceTableMissing(error.message)) throw new Error(error.message);
+}
+
+export async function markPlanInstallmentFailed(params: { purchaseId: string; invoiceId: string; installment: number }) {
+  const client = getServiceSupabase();
+  if (!client) return;
+  const { error } = await client
+    .from("course_purchase_installments")
+    .update({
+      status: "failed",
+      stripe_invoice_id: params.invoiceId,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("purchase_id", params.purchaseId)
+    .eq("installment_number", params.installment);
+  if (error && !commerceTableMissing(error.message)) throw new Error(error.message);
+}
+
+export async function findPurchaseIdForPlanInvoice(invoice: {
+  id?: string | null;
+  metadata?: Record<string, string> | null;
+}): Promise<string | null> {
+  if (invoice.metadata?.purchase_id) return invoice.metadata.purchase_id;
+  if (!invoice.id) return null;
+  const client = getServiceSupabase();
+  if (!client) return null;
+  const { data } = await client
+    .from("course_purchase_installments")
+    .select("purchase_id")
+    .eq("stripe_invoice_id", invoice.id)
+    .maybeSingle();
+  return data?.purchase_id ? String(data.purchase_id) : null;
+}
+
+export async function voidUncollectedPlanInvoices(stripe: Stripe, purchaseId: string, customerId?: string | null) {
+  const ids = new Set<string>();
+  const recorded = await listRecordedPlanInvoices(purchaseId);
+  recorded.forEach((row) => ids.add(row.id));
+  if (customerId) {
+    const listed = await stripe.invoices.list({ customer: customerId, limit: 100 });
+    for (const invoice of listed.data) {
+      if (invoice.metadata?.purchase_id === purchaseId && invoice.metadata?.option === "plan_6") {
+        ids.add(invoice.id);
+      }
+    }
+  }
+  for (const invoiceId of ids) {
+    const invoice = await stripe.invoices.retrieve(invoiceId);
+    const action = voidActionForInvoiceStatus(invoice.status);
+    if (action === "delete") await stripe.invoices.del(invoiceId);
+    if (action === "void") await stripe.invoices.voidInvoice(invoiceId);
+    const client = getServiceSupabase();
+    if (client && action !== "skip") {
+      await client
+        .from("course_purchase_installments")
+        .update({ status: "void", updated_at: new Date().toISOString() })
+        .eq("purchase_id", purchaseId)
+        .eq("stripe_invoice_id", invoiceId);
+    }
+  }
+}
+
+/** Legacy 6-cycle subscription helper. Used only for purchases created before the invoicing plan. */
 export async function attachSixPaymentSchedule(stripe: Stripe, subscriptionId: string, planCount: number) {
   const subscription = await stripe.subscriptions.retrieve(subscriptionId);
   const existing = typeof subscription.schedule === "string" ? subscription.schedule : subscription.schedule?.id;

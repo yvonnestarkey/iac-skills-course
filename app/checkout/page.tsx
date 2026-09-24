@@ -34,14 +34,25 @@ export default function CheckoutPage() {
       <p className="kicker">Buy Jan 2027 IAC Course</p>
       <h1 className="brand">Choose how you pay</h1>
       <p className="muted">Charged in USD. ZAR amounts are approximate only.</p>
+      {option === "plan_6" ? (
+        <p className="muted small">
+          {referral.trim()
+            ? "With a referral code, the first instalment of US$57 is charged when you enrol. The remaining five US$57 instalments are charged at the end of each following month."
+            : "The first instalment is charged when you enrol. The remaining five are charged at the end of each following month."}
+        </p>
+      ) : null}
       <form onSubmit={submit}>
         <label className="student-notes-label">
           <input type="radio" name="option" checked={option === "once_off"} onChange={() => setOption("once_off")} />
-          Pay once: US$327 ({FALLBACK_PRODUCT.zar_once_off_caption})
+          {referral.trim()
+            ? "Pay once: US$310.65 with referral (5% off US$327)"
+            : `Pay once: US$327 (${FALLBACK_PRODUCT.zar_once_off_caption})`}
         </label>
         <label className="student-notes-label">
           <input type="radio" name="option" checked={option === "plan_6"} onChange={() => setOption("plan_6")} />
-          6 monthly payments of US$60 ({FALLBACK_PRODUCT.zar_plan_caption})
+          {referral.trim()
+            ? "6 monthly instalments of US$57 (US$342 total)"
+            : `6 monthly instalments of US$60 (${FALLBACK_PRODUCT.zar_plan_caption})`}
         </label>
         <label className="student-notes-label" htmlFor="referral">
           Referral code

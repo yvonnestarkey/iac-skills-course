@@ -90,6 +90,25 @@ create table if not exists public.course_purchases (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.course_purchase_installments (
+  id uuid primary key default gen_random_uuid(),
+  purchase_id uuid not null references public.course_purchases(id) on delete cascade,
+  installment_number integer not null check (installment_number between 1 and 6),
+  amount_cents integer not null,
+  currency text not null default 'usd',
+  scheduled_at timestamptz not null,
+  stripe_invoice_id text,
+  stripe_payment_intent_id text,
+  status text not null check (status in ('pending', 'draft', 'paid', 'failed', 'void', 'canceled')),
+  paid_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (purchase_id, installment_number)
+);
+create unique index if not exists course_purchase_installments_invoice_uidx
+  on public.course_purchase_installments (stripe_invoice_id)
+  where stripe_invoice_id is not null;
+
 create table if not exists public.course_payment_events (
   id uuid primary key default gen_random_uuid(),
   stripe_event_id text not null unique,
@@ -304,6 +323,7 @@ alter table public.course_products enable row level security;
 alter table public.course_preview_lessons enable row level security;
 alter table public.course_entitlements enable row level security;
 alter table public.course_purchases enable row level security;
+alter table public.course_purchase_installments enable row level security;
 alter table public.course_payment_events enable row level security;
 alter table public.referral_codes enable row level security;
 alter table public.referral_attributions enable row level security;
@@ -334,6 +354,19 @@ create policy "own purchases read"
   on public.course_purchases for select
   to authenticated
   using (auth.uid() = user_id or public.is_course_staff());
+
+drop policy if exists "own purchase installments read" on public.course_purchase_installments;
+create policy "own purchase installments read"
+  on public.course_purchase_installments for select
+  to authenticated
+  using (
+    exists (
+      select 1
+      from public.course_purchases p
+      where p.id = purchase_id
+        and (p.user_id = auth.uid() or public.is_course_staff())
+    )
+  );
 
 drop policy if exists "staff payment events" on public.course_payment_events;
 create policy "staff payment events"
@@ -373,6 +406,7 @@ create policy "promo codes readable"
 
 revoke insert, update, delete on public.course_entitlements from authenticated, anon;
 revoke insert, update, delete on public.course_purchases from authenticated, anon;
+revoke insert, update, delete on public.course_purchase_installments from authenticated, anon;
 revoke insert, update, delete on public.course_payment_events from authenticated, anon;
 revoke insert, update, delete on public.referral_rewards from authenticated, anon;
 revoke insert, update, delete on public.referral_ledger from authenticated, anon;

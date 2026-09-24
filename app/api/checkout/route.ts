@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRequestUser } from "@/lib/auth-server";
 import { getCourseProduct, selectedOptionTotalCents, type PurchaseOption } from "@/lib/commerce";
+import { planCheckoutPaymentParams, planInstallmentAmountCents } from "@/lib/plan-installments";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import {
   applyReferralAttribution,
@@ -42,7 +43,18 @@ export async function POST(request: Request) {
     promoPercent = Number(promo.percent_off);
   }
 
-  const credit = Math.min(await availableCreditCents(user.id), option === "plan_6" ? product.plan_amount_cents : product.once_off_amount_cents);
+  const installmentCents =
+    option === "plan_6"
+      ? planInstallmentAmountCents({
+          product,
+          referralCode: referralCode || null,
+          promoPercent,
+        })
+      : null;
+  const credit = Math.min(
+    await availableCreditCents(user.id),
+    option === "plan_6" ? Number(installmentCents) : product.once_off_amount_cents
+  );
   const spec = checkoutCouponSpec({
     option,
     product,
@@ -50,24 +62,26 @@ export async function POST(request: Request) {
     promoPercent,
     creditCents: credit,
   });
-  const priceId = option === "plan_6" ? product.stripe_plan_price_id : product.stripe_once_off_price_id;
-  if (!priceId) {
+  const onceOffPriceId = product.stripe_once_off_price_id;
+  if (option === "once_off" && !onceOffPriceId) {
     return NextResponse.json({ error: "Stripe prices are not configured yet." }, { status: 503 });
   }
 
   const stripe = getStripe();
   let customerId: string | undefined;
-  if (spec.applyCreditAsBalance && credit > 0) {
+  if (option === "plan_6" || (spec.applyCreditAsBalance && credit > 0)) {
     const customer = await stripe.customers.create({
       email: user.email || undefined,
-      metadata: { user_id: user.id, product_id: product.id },
+      metadata: { user_id: user.id, product_id: product.id, option },
     });
     customerId = customer.id;
-    await stripe.customers.createBalanceTransaction(customer.id, {
-      amount: -credit,
-      currency: "usd",
-      description: "Course credit",
-    });
+    if (spec.applyCreditAsBalance && credit > 0) {
+      await stripe.customers.createBalanceTransaction(customer.id, {
+        amount: -credit,
+        currency: "usd",
+        description: "Course credit",
+      });
+    }
   }
 
   const discounts: { coupon: string }[] = [];
@@ -76,52 +90,67 @@ export async function POST(request: Request) {
     discounts.push({ coupon: coupon.id });
   }
 
+  const client = getServiceSupabase();
+  let purchaseId: string | null = null;
+  if (client) {
+    const { data, error } = await client
+      .from("course_purchases")
+      .insert({
+        user_id: user.id,
+        product_id: product.id,
+        option,
+        status: "pending",
+        stripe_customer_id: customerId || null,
+        amount_cents: option === "plan_6" ? Number(installmentCents) * product.plan_count : selectedOptionTotalCents(option, product),
+        currency: "usd",
+        referral_code_used: referralCode || null,
+        promo_code_used: promoCode || null,
+        credit_applied_cents: credit,
+      })
+      .select("id")
+      .maybeSingle();
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    purchaseId = data?.id || null;
+  }
+
+  const sharedMetadata = {
+    user_id: user.id,
+    product_id: product.id,
+    option,
+    referral_code: referralCode,
+    promo_code: promoCode,
+    credit_applied_cents: String(credit),
+    plan_count: String(product.plan_count),
+    purchase_id: purchaseId || "",
+    installment_amount_cents: String(installmentCents || ""),
+  };
+
   const session = await stripe.checkout.sessions.create({
-    mode: option === "plan_6" ? "subscription" : "payment",
     customer: customerId,
     customer_email: customerId ? undefined : user.email || undefined,
     client_reference_id: user.id,
-    line_items: [{ price: priceId, quantity: 1 }],
     discounts: discounts.length ? discounts : undefined,
     success_url: `${siteUrl()}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${siteUrl()}/checkout/cancel`,
-    metadata: {
-      user_id: user.id,
-      product_id: product.id,
-      option,
-      referral_code: referralCode,
-      promo_code: promoCode,
-      credit_applied_cents: String(credit),
-      plan_count: String(product.plan_count),
-    },
-    subscription_data:
-      option === "plan_6"
-        ? {
-            metadata: {
-              user_id: user.id,
-              product_id: product.id,
-              option,
-              plan_count: String(product.plan_count),
-            },
-          }
-        : undefined,
+    metadata: sharedMetadata,
+    ...(option === "plan_6"
+      ? planCheckoutPaymentParams({
+          customerId: customerId as string,
+          installmentCents: Number(installmentCents),
+          planCount: product.plan_count,
+          metadata: sharedMetadata,
+        })
+      : {
+          mode: "payment" as const,
+          line_items: [{ price: onceOffPriceId as string, quantity: 1 }],
+        }),
   });
 
-  const client = getServiceSupabase();
-  if (client && session.id) {
-    await client.from("course_purchases").insert({
-      user_id: user.id,
-      product_id: product.id,
-      option,
-      status: "pending",
-      stripe_checkout_session_id: session.id,
-      stripe_customer_id: customerId || null,
-      amount_cents: selectedOptionTotalCents(option, product),
-      currency: "usd",
-      referral_code_used: referralCode || null,
-      promo_code_used: promoCode || null,
-      credit_applied_cents: credit,
-    });
+  if (client && purchaseId && session.id) {
+    await client
+      .from("course_purchases")
+      .update({ stripe_checkout_session_id: session.id, updated_at: new Date().toISOString() })
+      .eq("id", purchaseId);
   }
 
   return NextResponse.json({ url: session.url });

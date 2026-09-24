@@ -18,28 +18,25 @@ test("referral and promo discounts do not stack", () => {
   assert.equal(checkoutDiscount({ option: "once_off", product: FALLBACK_PRODUCT, promoPercent: 10 }), 3270);
 });
 
-test("plan referral coupon repeats across all six instalments", () => {
+test("plan referral is baked into each invoice amount rather than a repeating coupon", () => {
   const spec = checkoutCouponSpec({
     option: "plan_6",
     product: FALLBACK_PRODUCT,
     referralCode: "JAN27-TEST",
     creditCents: 0,
   });
-  assert.equal(spec.coupon?.amount_off, 300);
-  assert.equal(spec.coupon?.duration, "repeating");
-  assert.equal(spec.coupon?.duration_in_months, 6);
+  assert.equal(spec.coupon, null);
   assert.equal(spec.applyCreditAsBalance, false);
 });
 
-test("plan referral plus course credit keeps the repeating $3 coupon", () => {
+test("plan referral plus course credit applies credit as customer balance on instalment 1", () => {
   const spec = checkoutCouponSpec({
     option: "plan_6",
     product: FALLBACK_PRODUCT,
     referralCode: "JAN27-TEST",
     creditCents: 3270,
   });
-  assert.equal(spec.coupon?.amount_off, 300);
-  assert.equal(spec.coupon?.duration, "repeating");
+  assert.equal(spec.coupon, null);
   assert.equal(spec.applyCreditAsBalance, true);
 });
 
