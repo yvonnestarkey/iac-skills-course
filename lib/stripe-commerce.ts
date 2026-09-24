@@ -14,10 +14,39 @@ import {
 } from "@/lib/commerce";
 import { futurePlanInvoiceDrafts, voidActionForInvoiceStatus } from "@/lib/plan-installments";
 
+export function stripeSecretKeyError(key: string | undefined): string | null {
+  const value = key?.trim() || "";
+  if (!value) return "STRIPE_SECRET_KEY is not configured.";
+  if (/^mk_/i.test(value)) {
+    return "STRIPE_SECRET_KEY is a Stripe key ID (mk_...), not the secret. Paste the revealed secret that starts with sk_live_.";
+  }
+  if (!/^(sk|rk)_(live|test)_/i.test(value)) {
+    return "STRIPE_SECRET_KEY must start with sk_live_, sk_test_, rk_live_, or rk_test_.";
+  }
+  return null;
+}
+
+export function publicCheckoutError(error: unknown): string {
+  const message = error instanceof Error ? error.message : "";
+  if (/looks like the ID of an API key|^STRIPE_SECRET_KEY is a Stripe key ID|mk_/i.test(message)) {
+    return "STRIPE_SECRET_KEY is a Stripe key ID (mk_...), not the secret. Paste the revealed secret that starts with sk_live_.";
+  }
+  if (/no such price/i.test(message)) {
+    return "That Stripe Price ID was not found in the current Stripe mode.";
+  }
+  if (/invalid api key|authentication/i.test(message)) {
+    return "Stripe rejected the secret key. Check STRIPE_SECRET_KEY in Vercel Production.";
+  }
+  const configured = stripeSecretKeyError(process.env.STRIPE_SECRET_KEY);
+  if (configured) return configured;
+  return "Could not start checkout.";
+}
+
 export function getStripe(): Stripe {
   const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) throw new Error("STRIPE_SECRET_KEY is not configured.");
-  return new Stripe(key);
+  const invalid = stripeSecretKeyError(key);
+  if (invalid) throw new Error(invalid);
+  return new Stripe(key as string);
 }
 
 export function siteUrl(): string {

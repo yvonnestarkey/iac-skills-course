@@ -5,8 +5,17 @@ import {
   checkoutCouponSpec,
   checkoutDiscount,
   incrementSuccessfulInstallments,
+  publicCheckoutError,
   shouldCountSubscriptionInstallment,
+  stripeSecretKeyError,
 } from "./stripe-commerce";
+
+test("Stripe secret keys that are dashboard IDs are rejected", () => {
+  assert.match(stripeSecretKeyError("mk_1II99exampleGhnr") || "", /key ID/);
+  assert.equal(stripeSecretKeyError("sk_live_example"), null);
+  assert.equal(stripeSecretKeyError("rk_test_example"), null);
+  assert.match(publicCheckoutError(new Error("Invalid API key provided: mk_1II99***************Ghnr. This looks like the ID of an API key")), /sk_live_/);
+});
 
 test("referral and promo discounts do not stack", () => {
   assert.throws(

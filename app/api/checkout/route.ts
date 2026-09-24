@@ -19,7 +19,9 @@ import {
   checkoutCouponSpec,
   findPromoCode,
   getStripe,
+  publicCheckoutError,
   siteUrl,
+  stripeSecretKeyError,
 } from "@/lib/stripe-commerce";
 
 export const dynamic = "force-dynamic";
@@ -106,6 +108,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Stripe prices are not configured yet." }, { status: 503 });
   }
 
+  const secretError = stripeSecretKeyError(process.env.STRIPE_SECRET_KEY);
+  if (secretError) return NextResponse.json({ error: secretError }, { status: 503 });
+
   const stripe = getStripe();
   let customerId: string | undefined;
   if (option === "plan_6" || (spec.applyCreditAsBalance && credit > 0)) {
@@ -169,33 +174,41 @@ export async function POST(request: Request) {
     ...checkoutSmokeTestMetadata({ smokeTest: smokeTest.smokeTest, initiatedBy: user.id }),
   };
 
-  const session = await stripe.checkout.sessions.create({
-    customer: customerId,
-    customer_email: customerId ? undefined : buyer.email || undefined,
-    client_reference_id: buyer.id,
-    discounts: discounts.length ? discounts : undefined,
-    success_url: `${siteUrl()}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${siteUrl()}/checkout/cancel`,
-    metadata: sharedMetadata,
-    ...(option === "plan_6"
-      ? planCheckoutPaymentParams({
-          customerId: customerId as string,
-          installmentCents: Number(installmentCents),
-          planCount: product.plan_count,
-          metadata: sharedMetadata,
-        })
-      : {
-          mode: "payment" as const,
-          line_items: [{ price: onceOffPriceId as string, quantity: 1 }],
-        }),
-  });
+  try {
+    const session = await stripe.checkout.sessions.create({
+      customer: customerId,
+      customer_email: customerId ? undefined : buyer.email || undefined,
+      client_reference_id: buyer.id,
+      discounts: discounts.length ? discounts : undefined,
+      success_url: `${siteUrl()}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${siteUrl()}/checkout/cancel`,
+      metadata: sharedMetadata,
+      ...(option === "plan_6"
+        ? planCheckoutPaymentParams({
+            customerId: customerId as string,
+            installmentCents: Number(installmentCents),
+            planCount: product.plan_count,
+            metadata: sharedMetadata,
+          })
+        : {
+            mode: "payment" as const,
+            line_items: [{ price: onceOffPriceId as string, quantity: 1 }],
+          }),
+    });
 
-  if (client && purchaseId && session.id) {
-    await client
-      .from("course_purchases")
-      .update({ stripe_checkout_session_id: session.id, updated_at: new Date().toISOString() })
-      .eq("id", purchaseId);
+    if (client && purchaseId && session.id) {
+      await client
+        .from("course_purchases")
+        .update({ stripe_checkout_session_id: session.id, updated_at: new Date().toISOString() })
+        .eq("id", purchaseId);
+    }
+
+    return NextResponse.json({ url: session.url });
+  } catch (error) {
+    console.error("checkout", error);
+    if (client && purchaseId) {
+      await client.from("course_purchases").delete().eq("id", purchaseId).is("stripe_checkout_session_id", null);
+    }
+    return NextResponse.json({ error: publicCheckoutError(error) }, { status: 500 });
   }
-
-  return NextResponse.json({ url: session.url });
 }
