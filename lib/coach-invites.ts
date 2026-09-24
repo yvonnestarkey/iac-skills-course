@@ -1,6 +1,7 @@
 import { isCoachAccount } from "@/lib/roles";
 import type { EntitlementStatus } from "@/lib/commerce";
 import { normalizeEntitlementSource, type EntitlementSource } from "@/lib/account-access";
+import { inviteUserMetadata } from "@/lib/invite-email";
 import type { StudentUser } from "@/lib/student-lesson";
 
 /** Never flip this on. Deploying the app must not email the waitlist. */
@@ -225,7 +226,7 @@ export async function processCoachInvite(
         return { ok: false, error: "Invitation sending is disabled.", status: 500, emails_sent: emailsSent, outcomes };
       }
       const invited = await deps.inviteUserByEmail(target.email, {
-        data: { full_name: target.name },
+        data: inviteUserMetadata(target.name),
         redirectTo: invitationRedirectUrl(deps.siteUrl),
       });
       if (invited.error || !invited.user) {

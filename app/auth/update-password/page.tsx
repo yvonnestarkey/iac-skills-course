@@ -3,68 +3,79 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import {
+  afterPasswordSavedPath,
+  canSubmitInvitePassword,
+  establishAuthSession,
+  isInvitePasswordFlow,
+  parseInviteAuthParams,
+  sessionNotReadyMessage,
+  studentFacingPasswordError,
+} from "@/lib/invite-session";
 import { getSupabase } from "@/lib/supabase";
-
-type RecoverableOtpType = "invite" | "recovery" | "signup" | "magiclink" | "email";
-
-function queryAndHashParams() {
-  const search = new URLSearchParams(window.location.search);
-  const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-  return { search, hash };
-}
 
 export default function UpdatePasswordPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState("");
-  const [busy, setBusy] = useState(false);
   const [invite, setInvite] = useState(false);
+  const [sessionReady, setSessionReady] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const supabase = getSupabase();
-    if (!supabase) return;
-    const { search, hash } = queryAndHashParams();
-    const type = (search.get("type") || hash.get("type") || "") as RecoverableOtpType | "";
-    setInvite(type === "invite");
-
-    const tokenHash = search.get("token_hash");
-    const code = search.get("code");
-    const accessToken = hash.get("access_token");
-    const refreshToken = hash.get("refresh_token");
-
-    if (code) {
-      void supabase.auth.exchangeCodeForSession(code);
+    if (!supabase) {
+      setInvalid(true);
+      setStatus("This page is unavailable right now. Open the invitation link again in a few minutes.");
       return;
     }
-    if (tokenHash) {
-      const otpType: RecoverableOtpType =
-        type === "invite" || type === "recovery" || type === "signup" || type === "magiclink" || type === "email"
-          ? type
-          : "invite";
-      void supabase.auth.verifyOtp({ token_hash: tokenHash, type: otpType });
-      return;
-    }
-    if (accessToken && refreshToken) {
-      void supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
-    }
+
+    const params = parseInviteAuthParams(window.location.search, window.location.hash);
+    const inviteFlow = isInvitePasswordFlow(params);
+    setInvite(inviteFlow);
+
+    let cancelled = false;
+    establishAuthSession(supabase, params).then((result) => {
+      if (cancelled) return;
+      if (result.ok) {
+        setSessionReady(true);
+        setInvalid(false);
+        setStatus("");
+        return;
+      }
+      setSessionReady(false);
+      setInvalid(true);
+      setStatus(sessionNotReadyMessage(inviteFlow));
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
+
+  const submitEnabled = canSubmitInvitePassword({ sessionReady, invalid, submitting });
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    if (!canSubmitInvitePassword({ sessionReady, invalid, submitting })) return;
     const supabase = getSupabase();
     if (!supabase) return;
-    setBusy(true);
+    setSubmitting(true);
+    setStatus("");
     const { error } = await supabase.auth.updateUser({ password });
-    setBusy(false);
     if (error) {
-      setStatus(error.message);
+      setSubmitting(false);
+      setStatus(studentFacingPasswordError(error, invite));
       return;
     }
-    if (invite) {
-      router.replace("/onboarding");
+    const next = afterPasswordSavedPath(invite);
+    if (next) {
+      router.replace(next);
       return;
     }
-    setStatus("Password updated. You can continue into the course.");
+    setSubmitting(false);
+    setStatus("Password saved. You can continue into the course.");
   };
 
   return (
@@ -73,6 +84,7 @@ export default function UpdatePasswordPage() {
       {invite ? (
         <p className="muted">Choose your own password. Next you will complete the course questionnaire.</p>
       ) : null}
+      {!sessionReady && !invalid ? <p className="muted">Opening your invitation…</p> : null}
       <form onSubmit={submit}>
         <label className="student-notes-label" htmlFor="new-password">
           New password
@@ -84,10 +96,11 @@ export default function UpdatePasswordPage() {
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           required
+          disabled={!submitEnabled}
         />
         {status ? <p role="alert">{status}</p> : null}
-        <button className="primary" type="submit" disabled={busy}>
-          Save password
+        <button className="primary" type="submit" disabled={!submitEnabled}>
+          {submitting ? "Saving…" : !sessionReady && !invalid ? "Opening invitation…" : "Save password"}
         </button>
       </form>
     </section>

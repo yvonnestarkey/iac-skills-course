@@ -1,0 +1,69 @@
+Supabase Auth invitation branding — paste this yourself.
+This file is not applied by deploy. Deploying the app does not send invitations
+and does not change Supabase SMTP or email templates.
+
+============================================================
+1. Invite User email template
+============================================================
+
+Dashboard:
+  Supabase project → Authentication → Emails (sometimes labelled Notifications)
+  → Templates → Invite user
+
+Subject (paste exactly):
+  Your January 2027 IAC Course preview is ready
+
+Body:
+  Replace the entire Invite user HTML with the contents of
+  supabase/invite-user-email.html
+
+The activate button uses {{ .ConfirmationURL }}.
+First name uses {{ .Data.first_name }} when the coach invitation
+stored it; otherwise the greeting is “Hi there,”.
+
+Logo used:
+  https://iac.accountingstudyadvice.com/asa-logo.png
+  (existing production site logo; do not upload a second logo)
+
+============================================================
+2. Custom SMTP — required before students see our sender name
+============================================================
+
+Until custom SMTP is saved in the dashboard, Auth mail still
+arrives from “Supabase Auth”. Code cannot change that.
+
+Use the existing contact address already used on the course site:
+
+  Sender name:  Yvonne | Accounting Study Advice
+  Sender email: yvonne@accountingstudyadvice.com
+  Reply-to:     yvonne@accountingstudyadvice.com
+                (if the form has no Reply-to field, make the
+                sender yvonne@accountingstudyadvice.com so
+                replies reach Yvonne)
+
+Dashboard steps:
+  1. Open the live Supabase project.
+  2. Go to Authentication → Emails → SMTP Settings
+     (or Authentication → Notifications → SMTP Settings).
+  3. Enable Custom SMTP.
+  4. Fill in:
+       Sender email          yvonne@accountingstudyadvice.com
+       Sender name           Yvonne | Accounting Study Advice
+       Host                  (from your mailbox / email provider)
+       Port number           usually 587
+       Username              (SMTP username for that mailbox)
+       Password              (SMTP password / app password)
+       Minimum TLS version   default is fine
+  5. Save.
+  6. Send one Coach → Waitlist test invitation to an address
+     you control. Do not send the real waitlist.
+
+Do not put SMTP passwords in this repository or in Vercel env
+unless you later choose a code-based mailer. Supabase Auth
+invites use dashboard SMTP only.
+
+If you do not already have SMTP credentials that are allowed
+to send as yvonne@accountingstudyadvice.com, supply those
+from the mailbox host (for example the existing website /
+Google Workspace / Microsoft 365 mail settings). Do not invent
+a new address.

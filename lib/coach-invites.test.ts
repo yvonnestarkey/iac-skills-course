@@ -50,21 +50,25 @@ function fakeDeps(overrides?: {
   entitlement?: { status: "free_preview" | "full"; source: "signup" | "stripe" | "admin" } | null;
 }): CoachInviteDeps & {
   invited: string[];
+  invitedData: object[];
   purchases: unknown[];
   grants: string[];
 } {
   const invited: string[] = [];
+  const invitedData: object[] = [];
   const purchases: unknown[] = [];
   const grants: string[] = [];
   let entitlement = overrides?.entitlement ?? null;
   return {
     invited,
+    invitedData,
     purchases,
     grants,
     siteUrl: "https://iac.accountingstudyadvice.com",
     findUserByEmail: async () => overrides?.existing ?? null,
-    inviteUserByEmail: async (email) => {
+    inviteUserByEmail: async (email, options) => {
       invited.push(email);
+      if (options.data) invitedData.push(options.data);
       return { user: { id: "new-user", email }, error: null };
     },
     getEntitlement: async () => entitlement,
@@ -108,6 +112,7 @@ test("coach can invite one waitlist person", async () => {
   assert.equal(result.outcomes[0]?.entitlement_status, "free_preview");
   assert.equal(result.outcomes[0]?.created_stripe_purchase, false);
   assert.equal(waitlistInviteAccess(), "free_preview");
+  assert.deepEqual(deps.invitedData[0], { full_name: "Wait List", first_name: "Wait" });
 });
 
 test("normal student cannot use admin invitation or grant endpoints", async () => {
