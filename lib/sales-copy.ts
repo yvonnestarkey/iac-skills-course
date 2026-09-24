@@ -43,7 +43,7 @@ export const REGISTRATION_PAYMENT = "Full course: US$327 once-off or US$60 × 6 
 export const ENROLMENT_TITLE = "Start the course";
 
 export const ENROLMENT_BODY =
-  "Create your account and begin the Free Preview now. Unlock the full course from your student account when you are ready.";
+  "First, create your account, it will give you access to a free preview so you can browse the course before you buy. Once you're in the course, you can select the payment option you prefer and complete your purchase.";
 
 export const ENROLMENT_CTA = "Start the course";
 

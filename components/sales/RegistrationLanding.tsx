@@ -2,14 +2,9 @@ import BrandMark from "@/components/BrandMark";
 import EnrolmentOffer from "@/components/sales/EnrolmentOffer";
 import {
   COLD_VIDEO,
-  REGISTRATION_CONTACT_EMAIL,
-  REGISTRATION_CONTACT_LABEL,
   REGISTRATION_HEADLINE,
-  REGISTRATION_NOTE,
-  REGISTRATION_PAYMENT,
   SALES_BADGE,
   SALES_VIDEO,
-  WEBINAR,
 } from "@/lib/sales-copy";
 
 function SalesVideo({ video }: { video: { title: string; src: string } }) {
@@ -31,11 +26,6 @@ function SalesVideo({ video }: { video: { title: string; src: string } }) {
 export default function RegistrationLanding() {
   return (
     <div className="sales-page">
-      <a className="sales-webinar-banner" href={WEBINAR.href} target="_blank" rel="noopener noreferrer">
-        <strong>{WEBINAR.kicker}</strong>
-        <span>{WEBINAR.body}</span>
-        <span className="sales-webinar-cta">{WEBINAR.cta}</span>
-      </a>
       <header className="topbar sales-topbar">
         <BrandMark href="/" />
       </header>
@@ -44,22 +34,12 @@ export default function RegistrationLanding() {
         <p className="sales-badge">{SALES_BADGE}</p>
         <h1>{REGISTRATION_HEADLINE}</h1>
         <div className="sales-registration-columns">
+          <SalesVideo video={SALES_VIDEO} />
           <div className="card sales-lead-card">
             <EnrolmentOffer />
           </div>
-          <aside className="card sales-contact-card">
-            <a className="primary" href="/register">
-              Start the course
-            </a>
-            <a className="ghost" href={`mailto:${REGISTRATION_CONTACT_EMAIL}`}>
-              {REGISTRATION_CONTACT_LABEL}
-            </a>
-            <p>{REGISTRATION_NOTE}</p>
-            <p className="sales-registration-payment">{REGISTRATION_PAYMENT}</p>
-          </aside>
         </div>
         <div className="sales-registration-videos">
-          <SalesVideo video={SALES_VIDEO} />
           <SalesVideo video={COLD_VIDEO} />
         </div>
       </section>
