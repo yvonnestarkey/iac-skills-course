@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { fetchOnboardingGate, clearOnboardingSkipCookie, clearOnboardingGateCache } from "./onboarding";
 import { ensureStudentProfile } from "./profiles";
 import { isCoachAccount } from "./roles";
+import { readStaffCourseViewFromCookieHeader, staffOverrideApplies } from "./staff-access";
 import { getSupabase } from "./supabase";
 import {
   fetchCompletedLessonIds,
@@ -55,7 +56,9 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   const [onboarding, setOnboarding] = useState<OnboardingGate>("unknown");
 
   const loadCommerce = useCallback(async (nextUser: StudentUser) => {
-    if (isCoachAccount(nextUser)) {
+    const staffView =
+      typeof document === "undefined" ? "override" : readStaffCourseViewFromCookieHeader(document.cookie);
+    if (staffOverrideApplies(nextUser, staffView)) {
       setEntitlement("staff");
       setEntitlementSource(null);
       setPreviewLessonIds([]);
@@ -105,8 +108,8 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
         void ensureStudentProfile(nextUser);
         if (isCoachAccount(nextUser)) {
           setOnboarding("done");
-          setEntitlement("staff");
           await loadProgress(nextUser.id);
+          await loadCommerce(nextUser);
         } else {
           const [, gate] = await Promise.all([
             loadProgress(nextUser.id),

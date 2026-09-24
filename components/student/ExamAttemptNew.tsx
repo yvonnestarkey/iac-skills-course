@@ -9,11 +9,10 @@ import {
   resolveBmcrSittingId,
   worksheetHref,
 } from "@/lib/bmcr-worksheet";
-import { useCoursePreview } from "@/lib/course-preview";
+import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { createExamAttempt } from "@/lib/exam-attempts";
 import { officialSourceSpec } from "@/lib/exam-source-pack";
 import { PAST_PAPER_SITTINGS } from "@/lib/past-papers";
-import { isCoachAccount } from "@/lib/roles";
 import { hasTask1Submission, task1LessonHref } from "@/lib/task1-gate";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -22,7 +21,8 @@ export default function ExamAttemptNew() {
   const searchParams = useSearchParams();
   const { ready, user, outline, submissions } = useStudentSession();
   const { unlocked } = useCoursePreview();
-  const canUse = hasTask1Submission(submissions, outline) || unlocked || isCoachAccount(user);
+  const bypassLocks = useBypassLessonLocks();
+  const canUse = hasTask1Submission(submissions, outline) || unlocked || bypassLocks;
   const [sittingId, setSittingId] = useState(
     () => resolveBmcrSittingId(searchParams.get("sitting")) || "jan-2026"
   );

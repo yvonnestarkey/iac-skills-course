@@ -1,5 +1,6 @@
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import { isCoachAccount } from "@/lib/roles";
+import { staffOverrideApplies, type StaffCourseView } from "@/lib/staff-access";
 import type { StudentUser } from "@/lib/student-lesson";
 
 export const DEFAULT_PRODUCT_ID = "jan27-iac";
@@ -192,9 +193,10 @@ export type LessonContentAccess = {
 export async function resolveLessonContentAccess(
   user: StudentUser | null,
   lessonId: string,
-  options?: { overrideLocks?: boolean }
+  options?: { overrideLocks?: boolean; staffView?: StaffCourseView }
 ): Promise<LessonContentAccess> {
-  if (user && (isCoachAccount(user) || options?.overrideLocks)) {
+  const view = options?.staffView ?? "override";
+  if (user && (staffOverrideApplies(user, view) || (options?.overrideLocks && isCoachAccount(user)))) {
     return { canReadBody: true, entitlement: "staff", preview: true };
   }
   if (!user) return { canReadBody: false, entitlement: "anonymous", preview: false };

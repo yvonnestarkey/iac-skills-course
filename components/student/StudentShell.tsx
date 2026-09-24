@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { Mail, MessageCircle } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
-import RoleSwitcher from "@/components/RoleSwitcher";
+import CoachToolsBar from "@/components/coach/CoachToolsBar";
 import AskQuestionDrawer from "@/components/student/AskQuestionDrawer";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import StudentNotifyMenu from "@/components/student/StudentNotifyMenu";
@@ -79,22 +79,7 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
 
   return (
     <div className="student-player">
-      {isCoachAccount(user) ? (
-        <div className="coach-preview-banner">
-          <span>
-            <span className="coach-view-pill">Coach Preview Mode</span>
-            <strong>You are viewing the student dashboard with a coach account.</strong>
-          </span>
-          <span>
-            <button className="ghost" type="button" onClick={() => router.push("/coach")}>
-              Coach dashboard
-            </button>
-            <button className="primary" type="button" onClick={() => void leave()}>
-              Sign in as student
-            </button>
-          </span>
-        </div>
-      ) : null}
+      {isCoachAccount(user) ? <CoachToolsBar /> : null}
       <header className="topbar">
         <BrandMark />
         <div className="topbar-right flex items-center gap-2 flex-wrap">
@@ -117,8 +102,11 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
           </button>
           <StudentNotifyMenu />
           {user?.email ? <span className="muted small student-email">{user.email}</span> : null}
-          {isCoachAccount(user) ? <RoleSwitcher current="students" /> : null}
-          {isCoachAccount(user) ? null : (
+          {isCoachAccount(user) ? (
+            <button className="ghost" type="button" onClick={() => router.push("/coach")}>
+              Coach tools
+            </button>
+          ) : (
             <Link
               href="/student/account"
               className={`ghost student-account-link ${pathname.startsWith("/student/account") ? "on" : ""}`}
@@ -188,7 +176,11 @@ function StudentGate({ children }: { children: ReactNode }) {
       <div className="student-player">
         <header className="student-player-bar">
           <BrandMark />
-          {isCoachAccount(user) ? <RoleSwitcher current="students" /> : null}
+          {isCoachAccount(user) ? (
+            <button className="ghost" type="button" onClick={() => router.push("/coach")}>
+              Coach tools
+            </button>
+          ) : null}
         </header>
         {children}
       </div>

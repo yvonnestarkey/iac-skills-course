@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { getLessonAccess } from "@/lib/lesson-access";
-import { getRequestUser, isStaffUser } from "@/lib/auth-server";
+import { getRequestUser } from "@/lib/auth-server";
 import { getCourseProduct, resolveLessonContentAccess, stripProtectedLesson } from "@/lib/commerce";
-import { composeLessonAvailability } from "@/lib/lesson-availability";
+import { composeStaffAwareLessonAccess } from "@/lib/staff-access";
+import { getStaffCourseView } from "@/lib/staff-access-server";
 import { protectLessonResourceFields } from "@/lib/lesson-assets";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 
@@ -23,9 +24,12 @@ export async function GET(_request: Request, context: { params: Promise<{ lesson
   if (error) return NextResponse.json({ error: "Could not load lesson." }, { status: 500 });
   if (!data) return NextResponse.json({ error: "Lesson not found." }, { status: 404 });
 
-  const commercial = await resolveLessonContentAccess(user, lessonId);
-  const pedagogical = isStaffUser(user) ? { isLocked: false } : await getLessonAccess(user.id, lessonId);
-  const composed = composeLessonAvailability({
+  const staffView = await getStaffCourseView();
+  const commercial = await resolveLessonContentAccess(user, lessonId, { staffView });
+  const pedagogical = await getLessonAccess(user.id, lessonId);
+  const composed = composeStaffAwareLessonAccess({
+    user,
+    view: staffView,
     commercialCanRead: commercial.canReadBody,
     isPreviewLesson: commercial.preview,
     pedagogical,

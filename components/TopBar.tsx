@@ -52,7 +52,12 @@ export default function TopBar() {
             {unread ? <span className="pill">{unread}</span> : null}
           </button>
         ) : null}
-        {isCoach ? <span className="coach-view-pill">Coach View</span> : null}
+        {isCoach ? (
+          <button className="ghost" type="button" onClick={() => router.push("/student")}>
+            Student course
+          </button>
+        ) : null}
+        {isCoach ? <span className="coach-view-pill">Coach tools</span> : null}
         {isCoach ? (
           <button className="coach-signout" type="button" onClick={() => void signOut()}>
             <LogOut size={16} aria-hidden="true" />

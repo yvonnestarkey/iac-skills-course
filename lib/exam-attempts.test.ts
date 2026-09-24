@@ -36,3 +36,8 @@ test("status stays independent per attempt and does not jump to report ready", (
   assert.equal(deriveAttemptStatus(attempt({ status: "analysing" })), "analysing");
   assert.equal(attemptStatusLabel("evidence_ready"), "Documents uploaded");
 });
+
+test("staff test attempts are labelled separately from student attempts", () => {
+  assert.equal(attempt({}).source, "student");
+  assert.equal(examAttemptFromRow({ ...attempt(), source: "staff_test" }).source, "staff_test");
+});

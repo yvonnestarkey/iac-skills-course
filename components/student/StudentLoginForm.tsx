@@ -39,12 +39,12 @@ export default function StudentLoginForm({ initialMode = "signin" }: { initialMo
         <p className="kicker">Coach session</p>
         <h1 className="brand">Login as a student</h1>
         <p className="muted">
-          You are signed in as {user?.email || "a coach"}. This is a coach account. Preview the course, or sign out to
-          log in with a student email.
+          You are signed in as {user?.email || "a coach"}. Open the student course, or sign out to log in with a student
+          email.
         </p>
         <div className="actions">
-          <button className="primary" type="button" onClick={() => router.push("/coach/preview")}>
-            Preview student course
+          <button className="primary" type="button" onClick={() => router.push("/student")}>
+            Open student course
           </button>
           <button
             className="ghost"
@@ -54,7 +54,7 @@ export default function StudentLoginForm({ initialMode = "signin" }: { initialMo
               router.push("/coach");
             }}
           >
-            Coach dashboard
+            Coach tools
           </button>
           <button
             className="ghost"
@@ -119,7 +119,7 @@ export default function StudentLoginForm({ initialMode = "signin" }: { initialMo
         });
         if (isCoachAccount(studentUser)) {
           setSession({ role: "coach", id: "coach" });
-          router.replace("/coach");
+          router.replace("/student");
           return;
         }
         const gate = await fetchOnboardingGate(data.user.id);

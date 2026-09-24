@@ -2,7 +2,8 @@
 
 import { createContext, useContext } from "react";
 import type { ReactNode } from "react";
-import { isCoachAccount } from "@/lib/roles";
+import { staffOverrideApplies } from "@/lib/staff-access";
+import { useStaffCourseView } from "@/lib/staff-course-view";
 import { useStudentSession } from "@/lib/student-session";
 
 export const COURSE_PREVIEW_BASE = "/coach/preview";
@@ -33,9 +34,10 @@ export function useCoursePreview(): CoursePreviewValue {
   return useContext(CoursePreviewContext);
 }
 
-/** Coach accounts and /coach/preview skip student lesson, section, and phase gates. */
+/** Staff override and /coach/preview skip student lesson, section, and phase gates. */
 export function useBypassLessonLocks(): boolean {
   const { unlocked } = useCoursePreview();
   const { user } = useStudentSession();
-  return unlocked || isCoachAccount(user);
+  const { view } = useStaffCourseView();
+  return unlocked || staffOverrideApplies(user, view);
 }

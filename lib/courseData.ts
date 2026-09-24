@@ -2,8 +2,10 @@ import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import type { AccessResult } from "./accessControl";
 import { getLessonAccess } from "./lesson-access";
-import { getRequestUser, isStaffUser } from "./auth-server";
+import { getRequestUser } from "./auth-server";
 import { getCourseProduct, resolveLessonContentAccess, stripProtectedLesson } from "./commerce";
+import { staffOverrideApplies } from "./staff-access";
+import { getStaffCourseView } from "./staff-access-server";
 import { composeLessonAvailability } from "./lesson-availability";
 import { displayLessonType } from "./lesson-type";
 import { getLessonPdfUrl } from "./getLessonPdf";
@@ -49,8 +51,13 @@ export const getLessonData = cache(async (
     };
   }
 
-  const content = await resolveLessonContentAccess(user, lessonId, { overrideLocks: options?.overrideLocks && Boolean(user) });
-  const skipProgression = Boolean(options?.overrideLocks && user) || isStaffUser(user);
+  const staffView = await getStaffCourseView();
+  const staffOverride = staffOverrideApplies(user, staffView) || Boolean(options?.overrideLocks && user && staffOverrideApplies(user, "override"));
+  const content = await resolveLessonContentAccess(user, lessonId, {
+    overrideLocks: staffOverride,
+    staffView,
+  });
+  const skipProgression = staffOverride;
   const pedagogical =
     user && !skipProgression
       ? await getLessonAccess(user.id, lessonId, { outline, chapterId: lesson.chapterId })

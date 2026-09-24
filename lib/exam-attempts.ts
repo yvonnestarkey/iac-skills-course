@@ -1,3 +1,4 @@
+import { attemptSourceForUser, STAFF_TEST_ATTEMPT_SOURCE, STUDENT_ATTEMPT_SOURCE } from "./staff-access";
 import { getSupabase } from "./supabase";
 import { findPastPaper } from "./past-papers";
 
@@ -42,6 +43,7 @@ export type ExamAttempt = {
   page_images: Partial<Record<ExamAttemptFileKind, ExamAttemptPageImage[]>>;
   evidence_pack: Record<string, unknown> | null;
   evaluation_id: string | null;
+  source: typeof STUDENT_ATTEMPT_SOURCE | typeof STAFF_TEST_ATTEMPT_SOURCE;
   created_at: string;
   updated_at: string;
   submitted_at: string | null;
@@ -162,6 +164,7 @@ export function examAttemptFromRow(row: JsonRow): ExamAttempt {
     page_images: asPageImages(row.page_images),
     evidence_pack: row.evidence_pack && typeof row.evidence_pack === "object" ? (row.evidence_pack as JsonRow) : null,
     evaluation_id: row.evaluation_id ? String(row.evaluation_id) : null,
+    source: row.source === STAFF_TEST_ATTEMPT_SOURCE ? STAFF_TEST_ATTEMPT_SOURCE : STUDENT_ATTEMPT_SOURCE,
     created_at: String(row.created_at || ""),
     updated_at: String(row.updated_at || ""),
     submitted_at: row.submitted_at ? String(row.submitted_at) : null,
@@ -228,22 +231,31 @@ export async function createExamAttempt(input: {
     return { ok: false, error: "Choose a sitting and a paper from the exam list." };
   }
   const now = new Date().toISOString();
-  const { data, error } = await client
-    .from("exam_attempts")
-    .insert({
-      user_id: input.userId,
-      exam_body: "IAC",
-      sitting_id: mapped.sitting.id,
-      paper_id: mapped.paper.id,
-      sitting_label: mapped.sitting.label.replace(/ IAC Exam$/i, ""),
-      paper_title: mapped.paper.title,
-      paper_code: mapped.paper.code,
-      status: "started",
-      updated_at: now,
-    })
-    .select("*")
-    .limit(1)
-    .maybeSingle();
+  const { data: session } = await client.auth.getUser();
+  const source = attemptSourceForUser(
+    session.user
+      ? { id: session.user.id, email: session.user.email, app_metadata: session.user.app_metadata }
+      : { id: input.userId }
+  );
+  const payload = {
+    user_id: input.userId,
+    exam_body: "IAC",
+    sitting_id: mapped.sitting.id,
+    paper_id: mapped.paper.id,
+    sitting_label: mapped.sitting.label.replace(/ IAC Exam$/i, ""),
+    paper_title: mapped.paper.title,
+    paper_code: mapped.paper.code,
+    status: "started",
+    source,
+    updated_at: now,
+  };
+  let { data, error } = await client.from("exam_attempts").insert(payload).select("*").limit(1).maybeSingle();
+  if (error && /source|schema cache|column/i.test(error.message)) {
+    const { source: _source, ...withoutSource } = payload;
+    const retry = await client.from("exam_attempts").insert(withoutSource).select("*").limit(1).maybeSingle();
+    data = retry.data;
+    error = retry.error;
+  }
   if (error || !data) {
     return {
       ok: false,

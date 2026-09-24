@@ -10,12 +10,16 @@ export default function CoachHomePage() {
   return (
     <div className="coach-page">
       <section className="card login">
-        <h1 className="brand">Coach home</h1>
+        <h1 className="brand">Coach tools</h1>
         <p className="muted">
           {data.className} · {data.term}
         </p>
         <h3 style={{ marginTop: 22 }}>Where do you want to go?</h3>
         <div className="people hub-choices">
+          <button onClick={() => router.push("/student")}>
+            <strong>Student course</strong>
+            <span className="muted">The live student dashboard, lessons, live sessions, and Script Evaluator</span>
+          </button>
           <button onClick={() => router.push("/coach/waitlist")}>
             <strong>Waitlist</strong>
             <span className="muted">See who is waiting, then send one free-preview invitation at a time</span>
@@ -40,10 +44,6 @@ export default function CoachHomePage() {
           >
             <strong>BMCR Analytics</strong>
             <span className="muted">Cohort conversion, diagnostic tiers, and task comparison</span>
-          </button>
-          <button onClick={() => router.push("/coach/preview")}>
-            <strong>Course preview</strong>
-            <span className="muted">See the student course with every lesson unlocked</span>
           </button>
           <button onClick={() => router.push("/coach/commerce")}>
             <strong>Payments & referrals</strong>

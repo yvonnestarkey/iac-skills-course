@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useCoursePreview } from "@/lib/course-preview";
+import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import {
   attemptDisplayTitle,
   attemptStatusLabel,
@@ -10,20 +10,20 @@ import {
   isAttemptSubmitted,
   type ExamAttempt,
 } from "@/lib/exam-attempts";
-import { isCoachAccount } from "@/lib/roles";
 import { hasTask1Submission, task1AssignmentFromOutline, task1LessonHref } from "@/lib/task1-gate";
 import { useStudentSession } from "@/lib/student-session";
 
 export default function ScriptEvaluatorHub() {
   const { ready, user, outline, submissions } = useStudentSession();
   const { unlocked } = useCoursePreview();
+  const bypassLocks = useBypassLessonLocks();
   const [attempts, setAttempts] = useState<ExamAttempt[]>([]);
   const [loadError, setLoadError] = useState("");
   const [loaded, setLoaded] = useState(false);
 
   const task1 = task1AssignmentFromOutline(outline);
   const unlockedByTask1 = hasTask1Submission(submissions, outline);
-  const bypass = unlocked || isCoachAccount(user);
+  const bypass = unlocked || bypassLocks;
   const canUse = unlockedByTask1 || bypass;
 
   useEffect(() => {
