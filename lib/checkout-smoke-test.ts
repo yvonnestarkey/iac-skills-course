@@ -1,4 +1,4 @@
-import type { PurchaseOption } from "@/lib/commerce";
+import type { EntitlementStatus, PurchaseOption } from "@/lib/commerce";
 
 export const SMOKE_TEST_AMOUNT_CENTS = 100;
 export const SMOKE_TEST_METADATA_VALUE = "true";
@@ -8,16 +8,25 @@ export function readSmokeTestPriceId(env: Record<string, string | undefined> = p
   return value || null;
 }
 
+export function readSmokeTestStudentEmail(value: string | null | undefined): string {
+  return value?.trim().toLowerCase() || "";
+}
+
 export type SmokeTestResolution =
   | { ok: true; smokeTest: false }
-  | { ok: true; smokeTest: true; priceId: string }
+  | { ok: true; smokeTest: true; priceId: string; studentEmail: string }
   | { ok: false; status: 400 | 403 | 503; error: string };
+
+export type SmokeTestStudent =
+  | { ok: true; userId: string; email: string }
+  | { ok: false; status: 400; error: string };
 
 export function resolveCheckoutSmokeTest(params: {
   smokeTestRequested: boolean;
   option: PurchaseOption;
   isStaff: boolean;
   smokeTestPriceId: string | null;
+  studentEmail?: string | null;
 }): SmokeTestResolution {
   if (!params.smokeTestRequested) return { ok: true, smokeTest: false };
   if (params.option !== "once_off") {
@@ -29,7 +38,28 @@ export function resolveCheckoutSmokeTest(params: {
   if (!params.smokeTestPriceId) {
     return { ok: false, status: 503, error: "Smoke-test price is not configured." };
   }
-  return { ok: true, smokeTest: true, priceId: params.smokeTestPriceId };
+  const studentEmail = readSmokeTestStudentEmail(params.studentEmail);
+  if (!studentEmail) {
+    return { ok: false, status: 400, error: "Smoke test requires a Free Preview student email." };
+  }
+  return { ok: true, smokeTest: true, priceId: params.smokeTestPriceId, studentEmail };
+}
+
+export function validateSmokeTestStudent(params: {
+  found: { id: string; email: string } | null;
+  isStaff: boolean;
+  entitlement: EntitlementStatus;
+}): SmokeTestStudent {
+  if (!params.found) {
+    return { ok: false, status: 400, error: "That student was not found." };
+  }
+  if (params.isStaff) {
+    return { ok: false, status: 400, error: "Smoke test cannot target a staff account." };
+  }
+  if (params.entitlement === "full") {
+    return { ok: false, status: 400, error: "That student already has full access." };
+  }
+  return { ok: true, userId: params.found.id, email: params.found.email };
 }
 
 export function onceOffPriceIdForCheckout(params: {
@@ -40,6 +70,13 @@ export function onceOffPriceIdForCheckout(params: {
   return params.smokeTest ? params.smokeTestPriceId : params.onceOffPriceId;
 }
 
-export function checkoutSmokeTestMetadata(smokeTest: boolean): Record<string, string> {
-  return smokeTest ? { smoke_test: SMOKE_TEST_METADATA_VALUE } : {};
+export function checkoutSmokeTestMetadata(params: {
+  smokeTest: boolean;
+  initiatedBy?: string;
+}): Record<string, string> {
+  if (!params.smokeTest) return {};
+  return {
+    smoke_test: SMOKE_TEST_METADATA_VALUE,
+    ...(params.initiatedBy ? { smoke_test_initiated_by: params.initiatedBy } : {}),
+  };
 }

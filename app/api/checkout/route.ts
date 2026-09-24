@@ -1,14 +1,17 @@
 import { NextResponse } from "next/server";
 import { getRequestUser, isStaffUser } from "@/lib/auth-server";
+import { findAuthUserByEmail } from "@/lib/coach-invites-admin";
 import {
   checkoutSmokeTestMetadata,
   onceOffPriceIdForCheckout,
   readSmokeTestPriceId,
   resolveCheckoutSmokeTest,
   SMOKE_TEST_AMOUNT_CENTS,
+  validateSmokeTestStudent,
 } from "@/lib/checkout-smoke-test";
-import { getCourseProduct, selectedOptionTotalCents, type PurchaseOption } from "@/lib/commerce";
+import { getCourseProduct, getEntitlement, selectedOptionTotalCents, type PurchaseOption } from "@/lib/commerce";
 import { planCheckoutPaymentParams, planInstallmentAmountCents } from "@/lib/plan-installments";
+import { isCoachAccount } from "@/lib/roles";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import {
   applyReferralAttribution,
@@ -30,6 +33,7 @@ export async function POST(request: Request) {
     referral_code?: string;
     promo_code?: string;
     smoke_test?: boolean;
+    student_email?: string;
   } | null;
   const option: PurchaseOption = body?.option === "plan_6" ? "plan_6" : "once_off";
   const smokeTest = resolveCheckoutSmokeTest({
@@ -37,8 +41,22 @@ export async function POST(request: Request) {
     option,
     isStaff: isStaffUser(user),
     smokeTestPriceId: readSmokeTestPriceId(),
+    studentEmail: body?.student_email,
   });
   if (smokeTest.ok === false) return NextResponse.json({ error: smokeTest.error }, { status: smokeTest.status });
+
+  let buyer = { id: user.id, email: user.email || "" };
+  if (smokeTest.smokeTest) {
+    const found = await findAuthUserByEmail(smokeTest.studentEmail);
+    const target = validateSmokeTestStudent({
+      found,
+      isStaff: found ? isCoachAccount({ id: found.id, email: found.email }) : false,
+      entitlement: found ? await getEntitlement(found.id) : "free_preview",
+    });
+    if (target.ok === false) return NextResponse.json({ error: target.error }, { status: target.status });
+    buyer = { id: target.userId, email: target.email };
+  }
+
   const product = await getCourseProduct();
   const referralCode = smokeTest.smokeTest ? "" : body?.referral_code?.trim().toUpperCase() || "";
   const promoCode = smokeTest.smokeTest ? "" : body?.promo_code?.trim().toUpperCase() || "";
@@ -47,7 +65,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Referral and promotional discounts cannot be combined." }, { status: 400 });
   }
   if (referralCode) {
-    const attributed = await applyReferralAttribution(user.id, referralCode);
+    const attributed = await applyReferralAttribution(buyer.id, referralCode);
     if (!attributed.ok) return NextResponse.json({ error: attributed.error }, { status: 400 });
   }
 
@@ -69,7 +87,7 @@ export async function POST(request: Request) {
   const credit = smokeTest.smokeTest
     ? 0
     : Math.min(
-        await availableCreditCents(user.id),
+        await availableCreditCents(buyer.id),
         option === "plan_6" ? Number(installmentCents) : product.once_off_amount_cents
       );
   const spec = checkoutCouponSpec({
@@ -92,8 +110,8 @@ export async function POST(request: Request) {
   let customerId: string | undefined;
   if (option === "plan_6" || (spec.applyCreditAsBalance && credit > 0)) {
     const customer = await stripe.customers.create({
-      email: user.email || undefined,
-      metadata: { user_id: user.id, product_id: product.id, option },
+      email: buyer.email || undefined,
+      metadata: { user_id: buyer.id, product_id: product.id, option },
     });
     customerId = customer.id;
     if (spec.applyCreditAsBalance && credit > 0) {
@@ -117,7 +135,7 @@ export async function POST(request: Request) {
     const { data, error } = await client
       .from("course_purchases")
       .insert({
-        user_id: user.id,
+        user_id: buyer.id,
         product_id: product.id,
         option,
         status: "pending",
@@ -139,7 +157,7 @@ export async function POST(request: Request) {
   }
 
   const sharedMetadata = {
-    user_id: user.id,
+    user_id: buyer.id,
     product_id: product.id,
     option,
     referral_code: referralCode,
@@ -148,13 +166,13 @@ export async function POST(request: Request) {
     plan_count: String(product.plan_count),
     purchase_id: purchaseId || "",
     installment_amount_cents: String(installmentCents || ""),
-    ...checkoutSmokeTestMetadata(smokeTest.smokeTest),
+    ...checkoutSmokeTestMetadata({ smokeTest: smokeTest.smokeTest, initiatedBy: user.id }),
   };
 
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
-    customer_email: customerId ? undefined : user.email || undefined,
-    client_reference_id: user.id,
+    customer_email: customerId ? undefined : buyer.email || undefined,
+    client_reference_id: buyer.id,
     discounts: discounts.length ? discounts : undefined,
     success_url: `${siteUrl()}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${siteUrl()}/checkout/cancel`,
