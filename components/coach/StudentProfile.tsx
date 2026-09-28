@@ -3,8 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AskCoachThread from "@/components/coach/AskCoachThread";
+import AccountActivationBadge from "@/components/coach/AccountActivationBadge";
 import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
 import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
+import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
 import AuditThread from "@/components/comms/AuditThread";
@@ -38,6 +40,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const [surveyPacks, setSurveyPacks] = useState<
     { title: string; answers: { label: string; value: string; type: SurveyQuestionType }[] }[]
   >([]);
+  const [setupBusy, setSetupBusy] = useState(false);
+  const [setupNotice, setSetupNotice] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -132,7 +136,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         <div className="avatar">{initials(student.name)}</div>
         <div className="profile-id">
           <h1>
-            {student.name} <CourseAccessBadge access={student.courseAccess} />
+            {student.name} <CourseAccessBadge access={student.courseAccess} />{" "}
+            <AccountActivationBadge status={student.accountActivation} />
           </h1>
           <p className="muted">
             {student.email} · {cohortName(data, student.cohort)} · joined {student.joined || "—"}
@@ -155,6 +160,28 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           >
             Send notification
           </button>
+          {canSendPasswordSetupLink(student.accountActivation === "activated" ? "activated" : "needs_activation") ? (
+            <button
+              className="ghost"
+              type="button"
+              disabled={setupBusy}
+              onClick={async () => {
+                setSetupBusy(true);
+                setSetupNotice("");
+                const response = await fetch("/api/coach/account-recovery", {
+                  method: "POST",
+                  headers: { "content-type": "application/json" },
+                  body: JSON.stringify({ user_id: student.id, email: student.email }),
+                });
+                const payload = await response.json().catch(() => ({}));
+                setSetupBusy(false);
+                setSetupNotice(payload.message || payload.error || "Could not send the password setup link.");
+              }}
+            >
+              {setupBusy ? "Sending…" : "Send password setup link"}
+            </button>
+          ) : null}
+          {setupNotice ? <p className="muted small">{setupNotice}</p> : null}
         </div>
       </div>
       {notice ? <div className="notice">{notice}</div> : null}

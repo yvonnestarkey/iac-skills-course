@@ -34,7 +34,9 @@ export async function GET(request: Request) {
   });
   const { error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) {
-    return NextResponse.redirect(new URL("/auth/update-password?type=recovery", url.origin));
+    const failed = new URL("/auth/update-password", url.origin);
+    failed.searchParams.set("type", destination.searchParams.get("type") || "invite");
+    return NextResponse.redirect(failed);
   }
   return redirect;
 }

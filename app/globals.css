@@ -3283,6 +3283,14 @@ input[type="tel"]:focus {
   margin-top: 16px;
 }
 
+.invite-recovery {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 12px;
+}
+
 .student-auth-error {
   margin: 16px 0 0;
   padding: 11px 14px;

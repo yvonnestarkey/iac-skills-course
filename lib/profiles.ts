@@ -1,3 +1,4 @@
+import { type AccountActivationStatus } from "./account-activation";
 import { DEFAULT_COHORT_ID, normalizeCohortId } from "./cohorts";
 import { commerceTableMissing, DEFAULT_PRODUCT_ID, type EntitlementStatus } from "./commerce";
 import { courseAccessFromEntitlementStatus } from "./course-access";
@@ -52,6 +53,7 @@ export function profileToStudent(
     struggleAreas: onboarding.struggleAreas,
     completed,
     courseAccess: extras.courseAccess === "full" ? "full" : "free_preview",
+    accountActivation: extras.accountActivation === "activated" ? "activated" : extras.accountActivation === "needs_activation" ? "needs_activation" : undefined,
   };
 }
 
@@ -165,6 +167,24 @@ export async function fetchOnboardingByUser(): Promise<Record<string, Record<str
   return map;
 }
 
+export async function fetchAccountActivationByUser(): Promise<Record<string, AccountActivationStatus>> {
+  try {
+    const response = await fetch("/api/coach/account-activation");
+    if (!response.ok) return {};
+    const payload = (await response.json()) as {
+      users?: Array<{ user_id?: string; activation_status?: string }>;
+    };
+    const map: Record<string, AccountActivationStatus> = {};
+    (payload.users || []).forEach((row) => {
+      if (!row.user_id) return;
+      map[row.user_id] = row.activation_status === "activated" ? "activated" : "needs_activation";
+    });
+    return map;
+  } catch {
+    return {};
+  }
+}
+
 export async function fetchCourseAccessByUser(): Promise<Record<string, EntitlementStatus>> {
   const client = getSupabase();
   if (!client) return {};
@@ -187,11 +207,12 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured.", students: [] };
 
-  const [onboarding, completed, profileResult, access] = await Promise.all([
+  const [onboarding, completed, profileResult, access, activation] = await Promise.all([
     fetchOnboardingByUser(),
     fetchCompletedByUser(),
     fetchStudentProfiles(),
     fetchCourseAccessByUser(),
+    fetchAccountActivationByUser(),
   ]);
 
   const byId = new Map<string, ProfileRow>();
@@ -220,6 +241,7 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
       profileToStudent(row, completed[row.id] || [], {
         ...(onboarding[row.id] || {}),
         courseAccess: access[row.id] || "free_preview",
+        accountActivation: activation[row.id],
       })
     );
 
@@ -229,13 +251,18 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
 export async function fetchRosterStudent(id: string): Promise<Student | null> {
   const client = getSupabase();
   if (!client) return null;
-  const [completed, onboarding, access] = await Promise.all([
+  const [completed, onboarding, access, activation] = await Promise.all([
     fetchCompletedByUser(),
     fetchOnboardingByUser(),
     fetchCourseAccessByUser(),
+    fetchAccountActivationByUser(),
   ]);
   const onboardingRow = onboarding[id] || {};
-  const extras = { ...onboardingRow, courseAccess: access[id] || "free_preview" };
+  const extras = {
+    ...onboardingRow,
+    courseAccess: access[id] || "free_preview",
+    accountActivation: activation[id],
+  };
   const { data } = await client.from("profiles").select("*").eq("id", id).maybeSingle();
   if (data) {
     const row = data as ProfileRow;

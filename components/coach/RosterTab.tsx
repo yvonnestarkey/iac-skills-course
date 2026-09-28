@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import AccountActivationBadge from "@/components/coach/AccountActivationBadge";
 import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
 import RosterFilterBuilder from "@/components/coach/RosterFilterBuilder";
 import { COURSE_COHORTS } from "@/lib/cohorts";
@@ -467,6 +468,7 @@ function cellFor(id: RosterColumnId, row: RosterRow, gradedTotal: number) {
         <span className="roster-name-access">
           <strong>{student.name}</strong>
           <CourseAccessBadge access={student.courseAccess} />
+          <AccountActivationBadge status={student.accountActivation} />
         </span>
       );
     case "email":

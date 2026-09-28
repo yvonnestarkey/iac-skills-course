@@ -8,6 +8,7 @@ import {
   canSubmitInvitePassword,
   consumeAuthParamsFromLocation,
   establishAuthSession,
+  expiredInviteRecoveryCopy,
   expiredInviteMessage,
   isAuthPasswordPath,
   isInvitePasswordFlow,
@@ -60,8 +61,10 @@ test("one submission is sufficient and a double click cannot start a second upda
 
 test("friendly handling of invalid or expired invite state", () => {
   assert.match(expiredInviteMessage(), /expired or has already been used/i);
-  assert.match(expiredInviteMessage(), /yvonne@accountingstudyadvice.com/i);
+  assert.match(expiredInviteRecoveryCopy(), /new setup link/i);
+  assert.match(expiredInviteRecoveryCopy(), /sign in or use forgot password/i);
   assert.match(studentFacingPasswordError({ message: "otp_expired" }, true), /expired or has already been used/i);
+  assert.match(studentFacingPasswordError({ message: "otp_expired" }, true), /new setup link/i);
   assert.match(studentFacingPasswordError({ message: "Auth session missing!" }, true), /still opening/i);
   assert.match(studentFacingPasswordError({ message: "Auth session missing!" }, false), /password-reset link/i);
   assert.match(studentFacingPasswordError({ message: "Password update requires reauthentication" }, false), /password-reset link/i);
@@ -183,7 +186,9 @@ test("password page stays disabled until the invite session is ready", () => {
   assert.match(page, /openingPasswordSessionCopy/);
   assert.match(page, /canSubmitInvitePassword/);
   assert.match(page, /studentFacingPasswordError/);
-  assert.match(page, /afterPasswordSavedPath/);
+  assert.match(page, /Send me a new link/);
+  assert.match(page, /\/api\/auth\/password-setup/);
+  assert.match(page, /Student login/);
   const login = readFileSync(resolve("components/student/StudentLoginForm.tsx"), "utf8");
   assert.match(login, /passwordResetRedirectUrl/);
   assert.equal(login.includes("/auth/callback?next=/auth/update-password"), false);

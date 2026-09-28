@@ -30,7 +30,9 @@ type AuthClient = {
 };
 
 const EXPIRED_INVITE_COPY =
-  "This invitation link has expired or has already been used. Email me at yvonne@accountingstudyadvice.com for help.";
+  "This invitation link has expired or has already been used.";
+const EXPIRED_INVITE_RECOVERY_COPY =
+  "If you have not finished setting your password, enter your student email and we will send a new setup link. If you already activated this account, sign in or use forgot password. Your Free Preview or Full Course access stays on this same account.";
 const MISSING_RESET_COPY = "Open the password-reset link from your email again to choose a new password.";
 const GENERIC_PASSWORD_COPY =
   "We could not save your password. Wait a moment and try again, or email me at yvonne@accountingstudyadvice.com for help.";
@@ -97,8 +99,12 @@ export function expiredInviteMessage(): string {
   return EXPIRED_INVITE_COPY;
 }
 
+export function expiredInviteRecoveryCopy(): string {
+  return EXPIRED_INVITE_RECOVERY_COPY;
+}
+
 export function sessionNotReadyMessage(invite: boolean): string {
-  return invite ? EXPIRED_INVITE_COPY : MISSING_RESET_COPY;
+  return invite ? `${EXPIRED_INVITE_COPY} ${EXPIRED_INVITE_RECOVERY_COPY}` : MISSING_RESET_COPY;
 }
 
 export function openingPasswordSessionCopy(invite: boolean): string {
@@ -116,7 +122,7 @@ export function studentFacingPasswordError(
       : MISSING_RESET_COPY;
   }
   if (/reauth|reauthentication/i.test(raw)) {
-    return invite ? EXPIRED_INVITE_COPY : MISSING_RESET_COPY;
+    return invite ? `${EXPIRED_INVITE_COPY} ${EXPIRED_INVITE_RECOVERY_COPY}` : MISSING_RESET_COPY;
   }
   if (/expired|invalid|already been used|otp_expired|token.*used|403|422/.test(raw)) {
     return sessionNotReadyMessage(invite);
