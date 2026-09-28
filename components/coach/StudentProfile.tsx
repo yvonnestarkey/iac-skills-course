@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AskCoachThread from "@/components/coach/AskCoachThread";
+import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
 import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
 import { fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
@@ -130,7 +131,9 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       <div className="profile-head">
         <div className="avatar">{initials(student.name)}</div>
         <div className="profile-id">
-          <h1>{student.name}</h1>
+          <h1>
+            {student.name} <CourseAccessBadge access={student.courseAccess} />
+          </h1>
           <p className="muted">
             {student.email} · {cohortName(data, student.cohort)} · joined {student.joined || "—"}
           </p>

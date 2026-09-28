@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { COURSE_ACCESS_FILTERS, filterStudentsByCourseAccess, type CourseAccessFilter } from "@/lib/course-access";
 import AssignmentsTab from "@/components/coach/AssignmentsTab";
 import BmcrAnalyticsTab from "@/components/coach/BmcrAnalyticsTab";
 import RosterTab from "@/components/coach/RosterTab";
@@ -43,6 +44,7 @@ export default function StudentListsPage() {
   const [surveyTotal, setSurveyTotal] = useState(0);
   const [rosterNotice, setRosterNotice] = useState("");
   const [rosterReady, setRosterReady] = useState(false);
+  const [accessFilter, setAccessFilter] = useState<CourseAccessFilter>("all");
   const [awaitingLive, setAwaitingLive] = useState<{ ready: boolean; rows: { studentId: string; lessonId: string }[] | null }>({
     ready: false,
     rows: null,
@@ -112,7 +114,11 @@ export default function StudentListsPage() {
     }
   }, [assignmentLessons, coach.assignmentId, setCoach]);
 
-  const students = useMemo(() => cohortStudents({ ...data, students: liveStudents }, coach.cohort), [data, liveStudents, coach.cohort]);
+  const students = useMemo(
+    () =>
+      filterStudentsByCourseAccess(cohortStudents({ ...data, students: liveStudents }, coach.cohort), accessFilter),
+    [accessFilter, data, liveStudents, coach.cohort]
+  );
   const waiting = students.filter((s) => unansweredQuestion(data, s.id));
   const awaitingFeedback = awaitingLive.ready
     ? assignmentSubmissionsAwaitingFeedback(data, students, awaitingLive.rows)
@@ -155,6 +161,18 @@ export default function StudentListsPage() {
           >
             Notify this cohort ({students.length})
           </button>
+          <div className="access-filter" role="group" aria-label="Course access">
+            {COURSE_ACCESS_FILTERS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={accessFilter === item.id ? "active" : ""}
+                onClick={() => setAccessFilter(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
           <label className="role-chip">
             Cohort
             <select id="cohort" value={coach.cohort} onChange={(event) => setCoach({ cohort: event.target.value })}>

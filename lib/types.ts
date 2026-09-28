@@ -7,6 +7,7 @@ export type {
   UserRole,
 } from "../types/database";
 import type { Lesson } from "../types/database";
+import type { EntitlementStatus } from "./commerce";
 
 export interface Chapter {
   id: string;
@@ -84,6 +85,8 @@ export interface Student {
   email: string;
   cohort: string;
   status: "active" | "paused";
+  /** Display-only. Derived from course_entitlements.status for jan27-iac. */
+  courseAccess?: EntitlementStatus;
   joined?: string;
   lastActive?: string;
   phone?: string | null;

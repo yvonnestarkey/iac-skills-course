@@ -1,4 +1,6 @@
 import { DEFAULT_COHORT_ID, normalizeCohortId } from "./cohorts";
+import { commerceTableMissing, DEFAULT_PRODUCT_ID, type EntitlementStatus } from "./commerce";
+import { courseAccessFromEntitlementStatus } from "./course-access";
 import { isoDate, today } from "./dates";
 import { parseRosterOnboarding } from "./roster";
 import { isCoachAccount } from "./roles";
@@ -49,6 +51,7 @@ export function profileToStudent(
     coachingGoals: onboarding.coachingGoals,
     struggleAreas: onboarding.struggleAreas,
     completed,
+    courseAccess: extras.courseAccess === "full" ? "full" : "free_preview",
   };
 }
 
@@ -162,14 +165,33 @@ export async function fetchOnboardingByUser(): Promise<Record<string, Record<str
   return map;
 }
 
+export async function fetchCourseAccessByUser(): Promise<Record<string, EntitlementStatus>> {
+  const client = getSupabase();
+  if (!client) return {};
+  const { data, error } = await client
+    .from("course_entitlements")
+    .select("user_id, status, product_id")
+    .eq("product_id", DEFAULT_PRODUCT_ID);
+  if (error) {
+    if (!commerceTableMissing(error.message)) console.error(error.message);
+    return {};
+  }
+  const map: Record<string, EntitlementStatus> = {};
+  (data || []).forEach((row) => {
+    map[String(row.user_id)] = courseAccessFromEntitlementStatus(row.status);
+  });
+  return map;
+}
+
 export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: string; students: Student[] }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured.", students: [] };
 
-  const [onboarding, completed, profileResult] = await Promise.all([
+  const [onboarding, completed, profileResult, access] = await Promise.all([
     fetchOnboardingByUser(),
     fetchCompletedByUser(),
     fetchStudentProfiles(),
+    fetchCourseAccessByUser(),
   ]);
 
   const byId = new Map<string, ProfileRow>();
@@ -194,7 +216,12 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
 
   const students = [...byId.values()]
     .filter((row) => !isCoachAccount({ id: row.id, email: row.email, role: row.role || null }))
-    .map((row) => profileToStudent(row, completed[row.id] || [], onboarding[row.id] || {}));
+    .map((row) =>
+      profileToStudent(row, completed[row.id] || [], {
+        ...(onboarding[row.id] || {}),
+        courseAccess: access[row.id] || "free_preview",
+      })
+    );
 
   return { ok: true, students };
 }
@@ -202,16 +229,20 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
 export async function fetchRosterStudent(id: string): Promise<Student | null> {
   const client = getSupabase();
   if (!client) return null;
-  const completed = await fetchCompletedByUser();
-  const onboarding = await fetchOnboardingByUser();
-  const extras = onboarding[id] || {};
+  const [completed, onboarding, access] = await Promise.all([
+    fetchCompletedByUser(),
+    fetchOnboardingByUser(),
+    fetchCourseAccessByUser(),
+  ]);
+  const onboardingRow = onboarding[id] || {};
+  const extras = { ...onboardingRow, courseAccess: access[id] || "free_preview" };
   const { data } = await client.from("profiles").select("*").eq("id", id).maybeSingle();
   if (data) {
     const row = data as ProfileRow;
     if (isCoachAccount({ id: row.id, email: row.email, role: row.role || null })) return null;
     return profileToStudent(row, completed[id] || [], extras);
   }
-  if (!extras.student_id && !Object.keys(extras).length) return null;
+  if (!onboardingRow.student_id && !Object.keys(onboardingRow).length) return null;
   return profileToStudent(
     {
       id,

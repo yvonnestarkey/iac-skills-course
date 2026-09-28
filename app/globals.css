@@ -412,6 +412,29 @@ h1 {
   font-size: 13.5px;
 }
 
+.access-filter {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.access-filter button {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.access-filter button.active {
+  border-color: var(--link);
+  color: var(--ink);
+  background: var(--sand);
+}
+
 /* Shell */
 
 .shell {
@@ -1518,6 +1541,13 @@ input[type="tel"]:focus {
   margin-top: 2px;
 }
 
+.roster-name-access {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
 .row-go {
   font-size: 12.5px;
   color: transparent;
@@ -1872,6 +1902,10 @@ input[type="tel"]:focus {
 }
 
 .profile-id h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
   font-size: 26px;
   margin-bottom: 3px;
 }
