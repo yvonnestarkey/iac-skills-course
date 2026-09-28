@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { getCourseProduct, type PurchaseOption } from "@/lib/commerce";
+import { getCourseProduct, getEntitlementRecord, type PurchaseOption } from "@/lib/commerce";
+import { isSmokeTestMetadata, notifyYvonneOfSuccessfulEnrolment } from "@/lib/enrolment-notify";
 import {
   futurePlanInvoiceDrafts,
   installmentNumberFromInvoice,
@@ -227,6 +228,32 @@ export async function POST(request: Request) {
           option,
           creditAppliedCents: Number(session.metadata?.credit_applied_cents || purchase.credit_applied_cents || 0),
         });
+        const userId = String(session.metadata?.user_id || purchase.user_id);
+        const entitlement = await getEntitlementRecord(userId);
+        try {
+          await notifyYvonneOfSuccessfulEnrolment({
+            userId,
+            purchaseId: String(purchase.id),
+            option,
+            amountPaidNowCents: Number(
+              expanded.amount_total ??
+                session.amount_total ??
+                (option === "plan_6" ? session.metadata?.installment_amount_cents : purchase.amount_cents) ??
+                0
+            ),
+            referralCode: String(purchase.referral_code_used || session.metadata?.referral_code || "") || null,
+            promoCode: String(purchase.promo_code_used || session.metadata?.promo_code || "") || null,
+            creditAppliedCents: Number(session.metadata?.credit_applied_cents || purchase.credit_applied_cents || 0),
+            planCount: Number(session.metadata?.plan_count || 6),
+            duplicateStripeEvent: false,
+            smokeTest: isSmokeTestMetadata(session.metadata) || isSmokeTestMetadata(expanded.metadata),
+            entitlementStatus: entitlement.status,
+            entitlementSource: entitlement.source,
+            eventType: event.type,
+          });
+        } catch (error) {
+          console.error("enrolment-notify", error);
+        }
       }
       if (option === "plan_6" && !subscriptionId) {
         try {
