@@ -3277,10 +3277,48 @@ input[type="tel"]:focus {
 
 .student-login {
   margin-bottom: 48px;
+  width: calc(100% - 32px);
 }
 
 .student-login .student-notes-label {
   margin-top: 16px;
+}
+
+.invite-setup {
+  display: grid;
+  gap: 14px;
+}
+
+.invite-setup > p,
+.invite-setup .muted {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.invite-recovery-form {
+  display: grid;
+  gap: 10px;
+  margin: 6px 0 4px;
+}
+
+.invite-recovery-form .student-notes-label {
+  margin-top: 4px;
+}
+
+.invite-recovery-form .primary,
+.invite-setup .primary {
+  width: 100%;
+  text-align: center;
+  padding: 14px 18px;
+  font-size: 16px;
+  min-height: 48px;
+}
+
+.invite-setup input[type="email"],
+.invite-recovery input[type="email"] {
+  min-height: 48px;
+  font-size: 16px;
 }
 
 .invite-recovery {
@@ -3289,6 +3327,42 @@ input[type="tel"]:focus {
   border-top: 1px solid var(--line);
   display: grid;
   gap: 12px;
+}
+
+.invite-recovery-alt {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  margin-top: 8px;
+}
+
+.invite-recovery-alt .ghost {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.invite-recovery-help {
+  margin: 18px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.invite-recovery-help a {
+  word-break: break-word;
+}
+
+@media (max-width: 720px) {
+  .login.student-login {
+    margin: 28px 16px 48px;
+    padding: 22px 18px;
+  }
+
+  .login.student-login h1.brand {
+    font-size: 26px;
+    line-height: 1.2;
+  }
 }
 
 .student-auth-error {

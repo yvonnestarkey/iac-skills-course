@@ -6,18 +6,32 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   afterPasswordSavedPath,
+  alreadyActivatedPrompt,
   canSubmitInvitePassword,
   consumeAuthParamsFromLocation,
   establishAuthSession,
-  expiredInviteRecoveryCopy,
+  expiredInviteBody,
+  expiredInviteHeading,
+  expiredInviteRecoveryCta,
+  freshLinkSentBody,
+  freshLinkSentHeading,
+  freshLinkSentSpamNote,
   isInvitePasswordFlow,
   openingPasswordSessionCopy,
   savePasswordWithSession,
   sessionNotReadyMessage,
   studentFacingPasswordError,
 } from "@/lib/invite-session";
-import { publicPasswordSetupCopy } from "@/lib/account-recovery";
 import { getSupabase } from "@/lib/supabase";
+
+function InviteHelpFallback() {
+  return (
+    <p className="invite-recovery-help">
+      Still having trouble? Email Yvonne at{" "}
+      <a href="mailto:yvonne@accountingstudyadvice.com">yvonne@accountingstudyadvice.com</a>
+    </p>
+  );
+}
 
 export default function UpdatePasswordPage() {
   const router = useRouter();
@@ -29,7 +43,8 @@ export default function UpdatePasswordPage() {
   const [submitting, setSubmitting] = useState(false);
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [recoveryBusy, setRecoveryBusy] = useState(false);
-  const [recoveryStatus, setRecoveryStatus] = useState("");
+  const [recoveryHint, setRecoveryHint] = useState("");
+  const [recoverySent, setRecoverySent] = useState(false);
 
   useEffect(() => {
     const { params, nextSearch } = consumeAuthParamsFromLocation(window.location);
@@ -56,7 +71,7 @@ export default function UpdatePasswordPage() {
       }
       setSessionReady(false);
       setInvalid(true);
-      setStatus(sessionNotReadyMessage(inviteFlow));
+      if (!inviteFlow) setStatus(sessionNotReadyMessage(false));
     });
 
     return () => {
@@ -65,6 +80,7 @@ export default function UpdatePasswordPage() {
   }, []);
 
   const submitEnabled = canSubmitInvitePassword({ sessionReady, invalid, submitting });
+  const inviteNeedsSetup = invalid && invite;
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -98,20 +114,71 @@ export default function UpdatePasswordPage() {
     event.preventDefault();
     const email = recoveryEmail.trim();
     if (!email || !email.includes("@")) {
-      setRecoveryStatus("Enter the student email this invitation was sent to.");
+      setRecoveryHint("Enter the email this invitation was sent to.");
       return;
     }
     setRecoveryBusy(true);
-    setRecoveryStatus("");
+    setRecoveryHint("");
     const response = await fetch("/api/auth/password-setup", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ email }),
-    });
-    const payload = await response.json().catch(() => ({}));
+    }).catch(() => null);
     setRecoveryBusy(false);
-    setRecoveryStatus(payload.message || publicPasswordSetupCopy());
+    if (!response) {
+      setRecoveryHint("We could not send the email just now. Try again in a moment.");
+      return;
+    }
+    setRecoverySent(true);
   };
+
+  if (inviteNeedsSetup) {
+    return (
+      <section className="card login student-login invite-setup">
+        {recoverySent ? (
+          <>
+            <h1 className="brand">{freshLinkSentHeading()}</h1>
+            <p>{freshLinkSentBody()}</p>
+            <p className="muted">{freshLinkSentSpamNote()}</p>
+          </>
+        ) : (
+          <>
+            <h1 className="brand">{expiredInviteHeading()}</h1>
+            {expiredInviteBody().map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+            <form className="invite-recovery-form" onSubmit={(event) => void requestNewLink(event)}>
+              <label className="student-notes-label" htmlFor="recovery-email">
+                Email
+              </label>
+              <input
+                id="recovery-email"
+                type="email"
+                autoComplete="email"
+                inputMode="email"
+                autoCapitalize="none"
+                autoCorrect="off"
+                value={recoveryEmail}
+                onChange={(event) => setRecoveryEmail(event.target.value)}
+                required
+              />
+              {recoveryHint ? <p className="muted">{recoveryHint}</p> : null}
+              <button className="primary" type="submit" disabled={recoveryBusy}>
+                {recoveryBusy ? "Sending…" : expiredInviteRecoveryCta()}
+              </button>
+            </form>
+          </>
+        )}
+        <div className="invite-recovery-alt">
+          <p className="muted">{alreadyActivatedPrompt()}</p>
+          <Link className="ghost" href="/login">
+            Student Login
+          </Link>
+        </div>
+        <InviteHelpFallback />
+      </section>
+    );
+  }
 
   return (
     <section className="card login student-login">
@@ -140,14 +207,17 @@ export default function UpdatePasswordPage() {
       </form>
       {invalid ? (
         <div className="invite-recovery">
-          {invite ? <p className="muted">{expiredInviteRecoveryCopy()}</p> : null}
           <form onSubmit={(event) => void requestNewLink(event)}>
             <label className="student-notes-label" htmlFor="recovery-email">
-              Student email
+              Email
             </label>
             <input
               id="recovery-email"
               type="email"
+              autoComplete="email"
+              inputMode="email"
+              autoCapitalize="none"
+              autoCorrect="off"
               value={recoveryEmail}
               onChange={(event) => setRecoveryEmail(event.target.value)}
               required
@@ -156,15 +226,18 @@ export default function UpdatePasswordPage() {
               {recoveryBusy ? "Sending…" : "Send me a new link"}
             </button>
           </form>
-          {recoveryStatus ? <p role="status">{recoveryStatus}</p> : null}
-          <div className="actions">
+          {recoverySent ? (
+            <p role="status">{freshLinkSentBody()}</p>
+          ) : recoveryHint ? (
+            <p className="muted">{recoveryHint}</p>
+          ) : null}
+          <div className="invite-recovery-alt">
+            <p className="muted">{alreadyActivatedPrompt()}</p>
             <Link className="ghost" href="/login">
-              Student login
-            </Link>
-            <Link className="ghost" href="/login">
-              Forgot password
+              Student Login
             </Link>
           </div>
+          <InviteHelpFallback />
         </div>
       ) : null}
     </section>

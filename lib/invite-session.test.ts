@@ -5,11 +5,19 @@ import { resolve } from "node:path";
 import { AUTO_SEND_WAITLIST_ON_DEPLOY, wouldSendInvitationsOnDeploy } from "./coach-invites";
 import {
   afterPasswordSavedPath,
+  alreadyActivatedPrompt,
   canSubmitInvitePassword,
   consumeAuthParamsFromLocation,
   establishAuthSession,
-  expiredInviteRecoveryCopy,
+  expiredInviteBody,
+  expiredInviteHeading,
   expiredInviteMessage,
+  expiredInviteRecoveryCopy,
+  expiredInviteRecoveryCta,
+  freshLinkSentBody,
+  freshLinkSentHeading,
+  freshLinkSentSpamNote,
+  inviteHelpFallback,
   isAuthPasswordPath,
   isInvitePasswordFlow,
   isRecoveryPasswordFlow,
@@ -60,11 +68,23 @@ test("one submission is sufficient and a double click cannot start a second upda
 });
 
 test("friendly handling of invalid or expired invite state", () => {
-  assert.match(expiredInviteMessage(), /expired or has already been used/i);
-  assert.match(expiredInviteRecoveryCopy(), /new setup link/i);
-  assert.match(expiredInviteRecoveryCopy(), /sign in or use forgot password/i);
-  assert.match(studentFacingPasswordError({ message: "otp_expired" }, true), /expired or has already been used/i);
-  assert.match(studentFacingPasswordError({ message: "otp_expired" }, true), /new setup link/i);
+  assert.equal(expiredInviteHeading(), "Your invitation link has expired");
+  assert.equal(expiredInviteMessage(), expiredInviteHeading());
+  assert.match(expiredInviteRecoveryCopy(), /course preview is still waiting for you/i);
+  assert.match(expiredInviteRecoveryCopy(), /fresh link so you can finish setting up/i);
+  assert.equal(expiredInviteBody().length, 2);
+  assert.equal(expiredInviteRecoveryCta(), "Send me a new activation link");
+  assert.equal(freshLinkSentHeading(), "Fresh link sent");
+  assert.match(freshLinkSentBody(), /Accounting Study Advice/);
+  assert.match(freshLinkSentSpamNote(), /spam or junk/i);
+  assert.equal(alreadyActivatedPrompt(), "Already set up your account?");
+  assert.match(inviteHelpFallback(), /Still having trouble\? Email Yvonne at yvonne@accountingstudyadvice.com/);
+  assert.equal(expiredInviteMessage().includes("already been used"), false);
+  assert.equal(expiredInviteRecoveryCopy().includes("already been used"), false);
+  assert.equal(/supabase|auth session|otp/i.test(expiredInviteRecoveryCopy()), false);
+  assert.equal(/supabase|auth session|otp/i.test(freshLinkSentBody()), false);
+  assert.match(studentFacingPasswordError({ message: "otp_expired" }, true), /Your invitation link has expired/);
+  assert.equal(studentFacingPasswordError({ message: "otp_expired" }, true).includes("already been used"), false);
   assert.match(studentFacingPasswordError({ message: "Auth session missing!" }, true), /still opening/i);
   assert.match(studentFacingPasswordError({ message: "Auth session missing!" }, false), /password-reset link/i);
   assert.match(studentFacingPasswordError({ message: "Password update requires reauthentication" }, false), /password-reset link/i);
@@ -186,9 +206,13 @@ test("password page stays disabled until the invite session is ready", () => {
   assert.match(page, /openingPasswordSessionCopy/);
   assert.match(page, /canSubmitInvitePassword/);
   assert.match(page, /studentFacingPasswordError/);
-  assert.match(page, /Send me a new link/);
+  assert.match(page, /Set your password/);
+  assert.match(page, /expiredInviteRecoveryCta/);
   assert.match(page, /\/api\/auth\/password-setup/);
-  assert.match(page, /Student login/);
+  assert.match(page, /Student Login/);
+  assert.match(page, /freshLinkSentHeading/);
+  assert.equal(page.includes("This invitation link has expired or has already been used."), false);
+  assert.equal(page.includes("inviteNeedsSetup"), true);
   const login = readFileSync(resolve("components/student/StudentLoginForm.tsx"), "utf8");
   assert.match(login, /passwordResetRedirectUrl/);
   assert.equal(login.includes("/auth/callback?next=/auth/update-password"), false);

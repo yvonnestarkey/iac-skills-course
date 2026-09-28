@@ -12,10 +12,18 @@ import { sendExistingUserPasswordSetup, shouldCreateAuthUserForPasswordSetup } f
 
 test("expired invitation offers recovery instead of a dead end", () => {
   const page = readFileSync(resolve("app/auth/update-password/page.tsx"), "utf8");
-  assert.match(page, /Send me a new link/);
-  assert.match(page, /Student login/);
-  assert.match(page, /Forgot password/);
+  const css = readFileSync(resolve("app/globals.css"), "utf8");
+  assert.match(page, /expiredInviteHeading/);
+  assert.match(page, /expiredInviteRecoveryCta/);
+  assert.match(page, /Student Login/);
+  assert.match(page, /alreadyActivatedPrompt/);
+  assert.match(page, /freshLinkSentHeading/);
+  assert.match(page, /Still having trouble\? Email Yvonne at/);
+  assert.match(page, /Set your password/);
+  assert.doesNotMatch(page, /This invitation link has expired or has already been used/);
   assert.doesNotMatch(page, /Email me at yvonne@accountingstudyadvice.com for help/);
+  assert.match(css, /invite-setup/);
+  assert.match(css, /invite-recovery-form/);
 });
 
 test("already-consumed invitation recovers the existing user and does not create another", async () => {
