@@ -1,4 +1,4 @@
-import { type AccountActivationStatus } from "./account-activation";
+import { parseAccountActivationStatus, type AccountActivationStatus } from "./account-activation";
 import { DEFAULT_COHORT_ID, normalizeCohortId } from "./cohorts";
 import { commerceTableMissing, DEFAULT_PRODUCT_ID, type EntitlementStatus } from "./commerce";
 import { courseAccessFromEntitlementStatus } from "./course-access";
@@ -53,7 +53,12 @@ export function profileToStudent(
     struggleAreas: onboarding.struggleAreas,
     completed,
     courseAccess: extras.courseAccess === "full" ? "full" : "free_preview",
-    accountActivation: extras.accountActivation === "activated" ? "activated" : extras.accountActivation === "needs_activation" ? "needs_activation" : undefined,
+    accountActivation:
+      extras.accountActivation === "activated" ||
+      extras.accountActivation === "needs_activation" ||
+      extras.accountActivation === "unavailable"
+        ? extras.accountActivation
+        : undefined,
   };
 }
 
@@ -177,7 +182,8 @@ export async function fetchAccountActivationByUser(): Promise<Record<string, Acc
     const map: Record<string, AccountActivationStatus> = {};
     (payload.users || []).forEach((row) => {
       if (!row.user_id) return;
-      map[row.user_id] = row.activation_status === "activated" ? "activated" : "needs_activation";
+      const status = parseAccountActivationStatus(row.activation_status);
+      if (status) map[row.user_id] = status;
     });
     return map;
   } catch {

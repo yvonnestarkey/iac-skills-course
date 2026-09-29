@@ -1,4 +1,4 @@
-export type AccountActivationStatus = "activated" | "needs_activation";
+export type AccountActivationStatus = "activated" | "needs_activation" | "unavailable";
 
 export type AuthActivationSnapshot = {
   user_id: string;
@@ -12,21 +12,46 @@ export type AuthActivationSnapshot = {
   has_password?: boolean | null;
 };
 
-export function accountActivationStatus(user: AuthActivationSnapshot): AccountActivationStatus {
+export type CoachActivationPublicRow = {
+  user_id: string;
+  has_password: boolean | null;
+  activation_status: AccountActivationStatus;
+};
+
+export function parseHasPassword(value: unknown): boolean | null {
+  return typeof value === "boolean" ? value : null;
+}
+
+export function accountActivationStatus(user: AuthActivationSnapshot | Pick<AuthActivationSnapshot, "has_password">): AccountActivationStatus {
   if (user.has_password === true) return "activated";
   if (user.has_password === false) return "needs_activation";
-  if (user.invited_at && !user.email_confirmed_at) return "needs_activation";
-  if (user.invited_at) return "needs_activation";
-  if (user.last_sign_in_at) return "activated";
-  return "needs_activation";
+  return "unavailable";
 }
 
-export function accountActivationLabel(status: AccountActivationStatus): "Can sign in" | "Needs activation" {
-  return status === "activated" ? "Can sign in" : "Needs activation";
+export function accountActivationLabel(
+  status: AccountActivationStatus | null | undefined
+): "Can sign in" | "Needs activation" | "Activation status unavailable" {
+  if (status === "activated") return "Can sign in";
+  if (status === "needs_activation") return "Needs activation";
+  return "Activation status unavailable";
 }
 
-export function canSendPasswordSetupLink(status: AccountActivationStatus): boolean {
+export function canSendPasswordSetupLink(status: AccountActivationStatus | null | undefined): boolean {
   return status === "needs_activation";
+}
+
+export function parseAccountActivationStatus(value: unknown): AccountActivationStatus | undefined {
+  if (value === "activated" || value === "needs_activation" || value === "unavailable") return value;
+  return undefined;
+}
+
+export function coachActivationPublicRow(snapshot: AuthActivationSnapshot): CoachActivationPublicRow {
+  const has_password = parseHasPassword(snapshot.has_password);
+  return {
+    user_id: snapshot.user_id,
+    has_password,
+    activation_status: accountActivationStatus({ has_password }),
+  };
 }
 
 export function recentlySentRecovery(sentAt: string | null | undefined, now = new Date(), windowMs = 120_000): boolean {
@@ -54,6 +79,6 @@ export function authSnapshotFromAdminUser(user: {
     last_sign_in_at: user.last_sign_in_at || null,
     recovery_sent_at: user.recovery_sent_at || null,
     confirmation_sent_at: user.confirmation_sent_at || null,
-    has_password: typeof user.has_password === "boolean" ? user.has_password : null,
+    has_password: parseHasPassword(user.has_password),
   };
 }

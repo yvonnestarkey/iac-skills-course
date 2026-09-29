@@ -1,5 +1,6 @@
 -- Authoritative student activation signal from Auth, not a second stored boolean.
 -- has_password is derived from auth.users.encrypted_password on each read.
+-- The function never returns encrypted_password or any other credential.
 -- Paste in the Supabase SQL editor. This does not change entitlements or passwords.
 
 create or replace function public.list_student_account_activation()
@@ -19,7 +20,9 @@ security definer
 set search_path = auth, public
 as $$
 begin
-  if not public.is_course_staff() then
+  -- Service role is used by the staff-gated Next.js coach API.
+  -- Authenticated callers still need is_course_staff().
+  if auth.role() is distinct from 'service_role' and not public.is_course_staff() then
     raise exception 'not allowed';
   end if;
 
@@ -40,7 +43,8 @@ end;
 $$;
 
 comment on function public.list_student_account_activation() is
-  'Read-only Auth activation fields for coaches. has_password is derived from auth.users; it is not a duplicated entitlement flag.';
+  'Read-only Auth activation fields for coaches and the service-role coach API. has_password is derived from auth.users; it is not a duplicated entitlement flag. encrypted_password is never returned.';
 
 revoke all on function public.list_student_account_activation() from public;
 grant execute on function public.list_student_account_activation() to authenticated;
+grant execute on function public.list_student_account_activation() to service_role;

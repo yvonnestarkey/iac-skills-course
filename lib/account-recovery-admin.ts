@@ -1,5 +1,6 @@
 import {
   authSnapshotFromAdminUser,
+  parseHasPassword,
   type AuthActivationSnapshot,
 } from "@/lib/account-activation";
 import { findAuthUserByEmail } from "@/lib/coach-invites-admin";
@@ -78,7 +79,7 @@ export async function listAccountActivationSnapshots(): Promise<AuthActivationSn
         last_sign_in_at: row.last_sign_in_at ? String(row.last_sign_in_at) : null,
         recovery_sent_at: row.recovery_sent_at ? String(row.recovery_sent_at) : null,
         confirmation_sent_at: row.confirmation_sent_at ? String(row.confirmation_sent_at) : null,
-        has_password: Boolean(row.has_password),
+        has_password: parseHasPassword(row.has_password),
       })
     );
   }

@@ -160,7 +160,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           >
             Send notification
           </button>
-          {canSendPasswordSetupLink(student.accountActivation === "activated" ? "activated" : "needs_activation") ? (
+          {canSendPasswordSetupLink(student.accountActivation) ? (
             <button
               className="ghost"
               type="button"

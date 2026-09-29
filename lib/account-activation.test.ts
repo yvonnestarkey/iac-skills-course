@@ -6,6 +6,7 @@ import {
   accountActivationLabel,
   accountActivationStatus,
   canSendPasswordSetupLink,
+  coachActivationPublicRow,
   recentlySentRecovery,
 } from "./account-activation";
 import { sendExistingUserPasswordSetup, shouldCreateAuthUserForPasswordSetup } from "./account-recovery";
@@ -59,6 +60,94 @@ test("activated student is labelled as able to sign in, not as needing another e
   assert.equal(status, "activated");
   assert.equal(accountActivationLabel(status), "Can sign in");
   assert.equal(canSendPasswordSetupLink(status), false);
+});
+
+test("invited student with no password needs activation", () => {
+  const status = accountActivationStatus({
+    user_id: "student-1",
+    invited_at: "2026-09-01T00:00:00.000Z",
+    has_password: false,
+  });
+  assert.equal(status, "needs_activation");
+  assert.equal(accountActivationLabel(status), "Needs activation");
+  assert.equal(canSendPasswordSetupLink(status), true);
+});
+
+test("invited student who later set a password can sign in", () => {
+  const status = accountActivationStatus({
+    user_id: "student-1",
+    invited_at: "2026-09-01T00:00:00.000Z",
+    email_confirmed_at: "2026-09-01T00:05:00.000Z",
+    last_sign_in_at: "2026-09-10T00:00:00.000Z",
+    has_password: true,
+  });
+  assert.equal(status, "activated");
+  assert.equal(accountActivationLabel(status), "Can sign in");
+});
+
+test("password plus onboarding completed still classifies from has_password only", () => {
+  assert.equal(accountActivationStatus({ has_password: true }), "activated");
+  assert.equal(accountActivationStatus({ has_password: false }), "needs_activation");
+});
+
+test("password plus onboarding skipped or pending can still sign in", () => {
+  assert.equal(accountActivationStatus({ has_password: true }), "activated");
+  assert.equal(canSendPasswordSetupLink("activated"), false);
+});
+
+test("no password plus onboarding completed via invite session still needs activation", () => {
+  const status = accountActivationStatus({
+    user_id: "student-1",
+    invited_at: "2026-09-01T00:00:00.000Z",
+    email_confirmed_at: "2026-09-01T00:05:00.000Z",
+    last_sign_in_at: "2026-09-01T00:05:00.000Z",
+    has_password: false,
+  });
+  assert.equal(status, "needs_activation");
+});
+
+test("unavailable has_password never falsely reports Needs activation", () => {
+  const invitedUnknown = accountActivationStatus({
+    user_id: "student-1",
+    invited_at: "2026-09-01T00:00:00.000Z",
+    email_confirmed_at: "2026-09-01T00:05:00.000Z",
+    last_sign_in_at: "2026-09-10T00:00:00.000Z",
+  });
+  assert.equal(invitedUnknown, "unavailable");
+  assert.equal(accountActivationStatus({ user_id: "student-1" }), "unavailable");
+  assert.equal(accountActivationStatus({ has_password: null }), "unavailable");
+  assert.equal(accountActivationLabel("unavailable"), "Activation status unavailable");
+  assert.equal(accountActivationLabel(undefined), "Activation status unavailable");
+  assert.equal(canSendPasswordSetupLink("unavailable"), false);
+  assert.equal(canSendPasswordSetupLink(undefined), false);
+  const badge = readFileSync(resolve("components/coach/AccountActivationBadge.tsx"), "utf8");
+  assert.doesNotMatch(badge, /status === "activated" \? "activated" : "needs_activation"/);
+});
+
+test("coach activation API stays staff-gated and never returns Auth credentials", () => {
+  const route = readFileSync(resolve("app/api/coach/account-activation/route.ts"), "utf8");
+  assert.match(route, /isStaffUser/);
+  assert.match(route, /status: 403/);
+  assert.match(route, /coachActivationPublicRow/);
+  assert.doesNotMatch(route, /\.\.\.snapshot/);
+  assert.doesNotMatch(route, /encrypted_password/);
+  const row = coachActivationPublicRow({
+    user_id: "student-1",
+    email: "preview@example.com",
+    invited_at: "2026-09-01T00:00:00.000Z",
+    has_password: true,
+  });
+  assert.deepEqual(Object.keys(row).sort(), ["activation_status", "has_password", "user_id"]);
+  assert.equal(row.has_password, true);
+  assert.equal(row.activation_status, "activated");
+  assert.equal("encrypted_password" in row, false);
+  assert.equal("invited_at" in row, false);
+  const sql = readFileSync(resolve("supabase/student-account-activation.sql"), "utf8");
+  assert.match(sql, /auth\.role\(\) is distinct from 'service_role'/);
+  assert.match(sql, /is_course_staff\(\)/);
+  assert.match(sql, /grant execute on function public\.list_student_account_activation\(\) to service_role/);
+  assert.match(sql, /as has_password/);
+  assert.doesNotMatch(sql, /returns table \([^)]*encrypted_password/i);
 });
 
 test("resend/recovery uses the existing account and preserves entitlement", async () => {
