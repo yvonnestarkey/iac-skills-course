@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { test } from "node:test";
 import { examAttemptFromRow } from "./exam-attempts";
 import { bundleEvaluatorEvidence, extractExamAttemptId } from "./exam-evaluator-evidence";
@@ -57,4 +59,12 @@ test("extractExamAttemptId reads ChatGPT action body and query shapes", () => {
   assert.equal(extractExamAttemptId(id), id);
   assert.equal(extractExamAttemptId({ attempt_id: { id } }), id);
   assert.equal(extractExamAttemptId(null), "");
+});
+
+test("Mindset Sandbox plugin registers getEvaluatorAttemptEvidence as a quoted Supabase RPC", () => {
+  const sql = readFileSync(resolve("supabase/evaluator-attempt-evidence-rpc.sql"), "utf8");
+  assert.match(sql, /public\."getEvaluatorAttemptEvidence"\(attempt_id text\)/);
+  assert.match(sql, /page_url/);
+  assert.equal(/image_url/.test(sql), false);
+  assert.match(sql, /grant execute on function public\."getEvaluatorAttemptEvidence"\(text\) to anon/);
 });
