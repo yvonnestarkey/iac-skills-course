@@ -3353,6 +3353,33 @@ input[type="tel"]:focus {
   word-break: break-word;
 }
 
+.login-forgot-hint {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.login-activate-prompt {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 10px;
+}
+
+.login-activate-prompt p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.login-activate-prompt a {
+  font-weight: 650;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
 @media (max-width: 720px) {
   .login.student-login {
     margin: 28px 16px 48px;

@@ -46,7 +46,15 @@ export default function ChatWidget() {
     if (body.current) body.current.scrollTop = body.current.scrollHeight;
   }, [log.length, chatOpen]);
 
-  if (pathname === "/" || pathname === "/login" || pathname === "/student/login" || pathname.startsWith("/onboarding")) return null;
+  if (
+    pathname === "/" ||
+    pathname === "/login" ||
+    pathname === "/student/login" ||
+    pathname === "/activate" ||
+    pathname.startsWith("/onboarding")
+  ) {
+    return null;
+  }
   if (!ready) return null;
 
   if (!chatOpen) {

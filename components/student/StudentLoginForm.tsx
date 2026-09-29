@@ -3,6 +3,8 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
+import Link from "next/link";
+import { ACTIVATE_PATH, loginActivateLinkLabel, loginActivatePrompt, loginForgotPasswordHint } from "@/lib/account-recovery";
 import { ensureStudentProfile } from "@/lib/profiles";
 import { fetchOnboardingGate } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
@@ -263,7 +265,14 @@ export default function StudentLoginForm({ initialMode = "signin" }: { initialMo
             {mode === "signin" ? "Need an account? Register" : "Already registered? Sign in"}
           </button>
         </div>
+        {mode === "signin" ? <p className="muted login-forgot-hint">{loginForgotPasswordHint()}</p> : null}
       </form>
+      {mode === "signin" ? (
+        <div className="login-activate-prompt">
+          <p className="muted">{loginActivatePrompt()}</p>
+          <Link href={ACTIVATE_PATH}>{loginActivateLinkLabel()}</Link>
+        </div>
+      ) : null}
     </section>
   );
 }

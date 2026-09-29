@@ -22,8 +22,46 @@ export type PasswordSetupDeps = {
   now?: Date;
 };
 
+export const ACTIVATE_PATH = "/activate";
+
 export function shouldCreateAuthUserForPasswordSetup(): false {
   return false;
+}
+
+export function publicActivateUrl(origin = "https://iac.accountingstudyadvice.com"): string {
+  return `${origin.replace(/\/$/, "")}${ACTIVATE_PATH}`;
+}
+
+export function activatePageHeading(): string {
+  return "Activate your Free Preview";
+}
+
+export function activatePageBody(): string {
+  return "Already have a Free Preview? Enter the email address your invitation was sent to and we'll send you a secure link to set your password.";
+}
+
+export function activatePageCta(): string {
+  return "Send my activation link";
+}
+
+export function activateInboxHeading(): string {
+  return "Check your inbox";
+}
+
+export function activateInboxBody(): string {
+  return "If an account exists for that email, we've sent you a secure link to set up your password. Please also check your spam or junk folder.";
+}
+
+export function loginActivatePrompt(): string {
+  return "Have a Free Preview but haven't activated your account yet?";
+}
+
+export function loginActivateLinkLabel(): string {
+  return "Activate your account →";
+}
+
+export function loginForgotPasswordHint(): string {
+  return "Forgot password is for students who have already set a password.";
 }
 
 export function publicPasswordSetupCopy(): string {
