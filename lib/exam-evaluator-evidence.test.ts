@@ -42,7 +42,8 @@ test("evaluator evidence exposes BMCR, script, and marking-report page numbers",
   assert.deepEqual(bundle.evidence.exam_script.page_numbers.slice(0, 3), [1, 2, 3]);
   assert.equal(bundle.evidence.exam_script.page_numbers[55], 56);
   assert.equal(bundle.evidence.marking_report.page_count, 53);
-  assert.equal(bundle.evidence.marking_report.pages[0].image_url, "https://x/report-1.jpg");
+  assert.equal(bundle.evidence.marking_report.pages[0].page_url, "https://x/report-1.jpg");
+  assert.equal("image_url" in bundle.evidence.marking_report.pages[0], false);
   assert.equal(bundle.evidence.bmcr.stored_kind, "bmcr_worksheet");
   assert.equal(bundle.evidence.exam_script.stored_kind, "marked_script");
 });

@@ -13,21 +13,32 @@ function attemptIdFrom(request: Request, peeked: unknown): string {
   );
 }
 
+function pluginJson(body: unknown, status = 200) {
+  const encoded = JSON.stringify(body);
+  return new NextResponse(encoded, {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": String(Buffer.byteLength(encoded)),
+    },
+  });
+}
+
 async function readEvidence(request: Request, peeked: unknown) {
   const attemptId = attemptIdFrom(request, peeked);
   if (!attemptId) {
-    return NextResponse.json({ error: "Missing attempt_id." }, { status: 400 });
+    return pluginJson({ error: "Missing attempt_id." }, 400);
   }
 
   try {
     const evidence = await getEvaluatorAttemptEvidence(attemptId);
     if (!evidence) {
-      return NextResponse.json({ error: "That exam attempt was not found." }, { status: 404 });
+      return pluginJson({ error: "That exam attempt was not found." }, 404);
     }
-    return NextResponse.json(evidence);
+    return pluginJson(evidence);
   } catch (error) {
     console.error("getEvaluatorAttemptEvidence", error);
-    return NextResponse.json({ error: "Could not load evaluator evidence." }, { status: 500 });
+    return pluginJson({ error: "Could not load evaluator evidence." }, 500);
   }
 }
 
@@ -42,14 +53,21 @@ async function handle(request: Request) {
     status: response.status,
     ...responseSummary(response, payload),
   });
-  return withActionHeaders(response);
+  return withPluginHeaders(request, response);
 }
 
-function withActionHeaders(response: NextResponse) {
-  response.headers.set("Access-Control-Allow-Origin", "*");
+function withPluginHeaders(request: Request, response: NextResponse) {
+  const origin = request.headers.get("origin");
+  response.headers.set("Access-Control-Allow-Origin", origin && origin !== "null" ? origin : "*");
+  response.headers.set("Vary", "Origin, Access-Control-Request-Headers");
   response.headers.set("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS, POST");
-  response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization, OpenAI-Conversation-ID, OpenAI-Ephemeral-User-ID");
-  response.headers.set("Cache-Control", "no-store");
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    request.headers.get("access-control-request-headers") ||
+      "Content-Type, Authorization, OpenAI-Conversation-ID, OpenAI-Ephemeral-User-ID"
+  );
+  response.headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
+  response.headers.set("CDN-Cache-Control", "no-store");
   return response;
 }
 
@@ -71,7 +89,8 @@ export async function OPTIONS(request: Request) {
     response_bytes: 0,
     response_error: null,
   });
-  return withActionHeaders(
+  return withPluginHeaders(
+    request,
     new NextResponse(null, { status: 204, headers: { Allow: "GET, HEAD, OPTIONS, POST" } })
   );
 }

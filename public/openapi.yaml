@@ -1,8 +1,8 @@
 openapi: 3.1.1
 info:
   title: IAC Skills Course GPT API
-  version: 1.1.0
-  description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT Action.
+  version: 1.1.1
+  description: Read and update exam-prep tools for the Accounting Study Advice IAC Skills Course GPT plugin.
 servers:
   - url: https://iac.accountingstudyadvice.com
 paths:
@@ -422,6 +422,7 @@ paths:
       operationId: getEvaluatorAttemptEvidenceByQuery
       summary: Get stored evaluator evidence for one exam attempt
       description: Read-only query form. Prefer getEvaluatorAttemptEvidence. Returns the existing evaluator-evidence payload. Does not analyse or generate a report.
+      x-openai-isConsequential: false
       parameters:
         - name: attempt_id
           in: query
@@ -444,7 +445,8 @@ paths:
     post:
       operationId: getEvaluatorAttemptEvidence
       summary: Get stored evaluator evidence for one exam attempt
-      description: Read-only. Accepts an attempt ID in the JSON body and returns the existing evaluator-evidence payload. Includes attempt/paper metadata, grouped BMCR, exam-script, and marking-report page images with page numbers, and official source references. Does not analyse or generate a report.
+      description: Read-only. Accepts attempt_id and returns stored evaluator evidence as JSON text: attempt/paper metadata, BMCR/script/report page URLs with page numbers, and official source references. Does not analyse or generate a report.
+      x-openai-isConsequential: false
       requestBody:
         required: true
         content:
@@ -1083,12 +1085,13 @@ components:
       additionalProperties: false
       required:
         - page
-        - image_url
+        - page_url
       properties:
         page:
           type: integer
-        image_url:
+        page_url:
           type: string
+          description: Text URL of a stored page scan. Not an image or file payload.
     SystemsModel:
       type: object
       additionalProperties: false

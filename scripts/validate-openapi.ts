@@ -4,7 +4,7 @@ import path from "node:path";
 const ROOT = process.cwd();
 const SPEC = path.join(ROOT, "public/openapi.yaml");
 const ROUTES = path.join(ROOT, "app/api");
-const VERSION = "1.1.0";
+const VERSION = "1.1.1";
 
 const REQUIRED_EXISTING = [
   "searchKnowledgeBase",
@@ -211,6 +211,11 @@ function main() {
 
   const evidenceRequest = schemaBlock(yaml, "GetEvaluatorAttemptEvidenceRequest");
   assert(/required:[\s\S]*attempt_id/.test(evidenceRequest), "Evaluator request must require attempt_id");
+  const pageImage = schemaBlock(yaml, "EvaluatorPageImage");
+  assert(/page_url:/.test(pageImage), "Evaluator page scans must be text page_url fields");
+  assert(!/image_url:/.test(pageImage), "ChatGPT plugins cannot consume image_url fields as image payloads");
+  const evidencePost = operationBlock(yaml, "getEvaluatorAttemptEvidence");
+  assert(/x-openai-isConsequential:\s*false/.test(evidencePost), "getEvaluatorAttemptEvidence must be non-consequential");
   const modelRequest = schemaBlock(yaml, "GetSystemsModelRequest");
   assert(/properties:\s*\{\s*\}/.test(modelRequest), "getSystemsModel request must be an explicit empty object");
 

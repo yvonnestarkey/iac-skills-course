@@ -18,7 +18,7 @@ const GROUP_TO_STORED: { [key in EvaluatorEvidenceGroup]: ExamAttemptFileKind } 
 
 export type EvaluatorPageImage = {
   page: number;
-  image_url: string;
+  page_url: string;
 };
 
 export type EvaluatorEvidenceFile = {
@@ -76,7 +76,7 @@ function pagesForGroup(attempt: ExamAttempt, group: EvaluatorEvidenceGroup): Eva
   const stored = [...(attempt.page_images[storedKind] || [])]
     .filter((item) => Number.isFinite(item.page) && item.url)
     .sort((left, right) => left.page - right.page);
-  const pages = stored.map((item) => ({ page: item.page, image_url: item.url }));
+  const pages = stored.map((item) => ({ page: item.page, page_url: item.url }));
   return {
     group,
     stored_kind: storedKind,
