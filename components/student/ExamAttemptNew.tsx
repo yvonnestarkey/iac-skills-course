@@ -12,7 +12,7 @@ import {
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { createExamAttempt } from "@/lib/exam-attempts";
 import { officialSourceSpec } from "@/lib/exam-source-pack";
-import { PAST_PAPER_SITTINGS } from "@/lib/past-papers";
+import { DEFAULT_PAST_PAPER_SITTING_ID, PAST_PAPER_SITTINGS } from "@/lib/past-papers";
 import { hasTask1Submission, task1LessonHref } from "@/lib/task1-gate";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -24,7 +24,7 @@ export default function ExamAttemptNew() {
   const bypassLocks = useBypassLessonLocks();
   const canUse = hasTask1Submission(submissions, outline) || unlocked || bypassLocks;
   const [sittingId, setSittingId] = useState(
-    () => resolveBmcrSittingId(searchParams.get("sitting")) || "jan-2026"
+    () => resolveBmcrSittingId(searchParams.get("sitting")) || DEFAULT_PAST_PAPER_SITTING_ID
   );
   const [paperId, setPaperId] = useState("");
   const [busy, setBusy] = useState(false);
@@ -37,7 +37,9 @@ export default function ExamAttemptNew() {
   const papers = sitting?.papers || [];
   const selectedPaper = papers.find((paper) => paper.id === paperId) || papers[0];
   const worksheetReady = hasPrintableBmcrWorksheet(sitting.id);
-  const sourcesKnown = selectedPaper ? Boolean(officialSourceSpec(sitting.id, selectedPaper.id)) : false;
+  const officialSpec = selectedPaper ? officialSourceSpec(sitting.id, selectedPaper.id) : null;
+  const sourcesKnown = Boolean(officialSpec);
+  const commentaryKnown = Boolean(officialSpec?.commentary.length);
   const returnTo = evaluatorContinueHref(`/student/evaluator/new?sitting=${sitting.id}`, sitting.id);
 
   function changeSitting(nextId: string) {
@@ -158,10 +160,22 @@ export default function ExamAttemptNew() {
         </li>
       </ol>
 
+      {sitting.id === "june-2026" ? (
+        <p className="muted small">
+          June 2026 is the current calibration sitting: printable BMCR totals and official question and solution files.
+          January 2026 remains a preserved historical calibration sitting.
+        </p>
+      ) : null}
       {sitting.id === "jan-2026" ? (
         <p className="muted small">
-          January 2026 is the first complete vertical slice: printable BMCR totals and official question, solution, and
-          examiner commentary.
+          January 2026 is preserved as a complete historical calibration sitting: printable BMCR totals and official
+          question, solution, and examiner commentary.
+        </p>
+      ) : null}
+      {sourcesKnown && !commentaryKnown ? (
+        <p className="muted small">
+          Examiner commentary is not mapped for this sitting. Official question, solution, and competency sources are
+          mapped. Missing commentary does not block evidence readiness.
         </p>
       ) : null}
       {!sourcesKnown ? (

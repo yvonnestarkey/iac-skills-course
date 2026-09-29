@@ -1,5 +1,5 @@
 import { getSupabaseAdmin } from "@/lib/knowledge-gateway-db";
-import { findPastPaper } from "@/lib/past-papers";
+import { findPastPaper, findPastPaperSitting } from "@/lib/past-papers";
 
 export type OfficialSourceKind = "question" | "solution" | "commentary" | "competency";
 
@@ -79,7 +79,70 @@ const SITTING_SPECS: Record<string, SittingSourceSpec> = {
       },
     },
   },
+  "june-2026": {
+    commentary: [],
+    papers: {
+      "iac-2026-p1": {
+        question: ["iac-june-2026-paper-1-question-inpahla", "iac june 2026 paper 1 question inpahla"],
+        solution: [
+          "iac-june-2026-paper-1-part-i-solution-inpahla",
+          "iac-june-2026-paper-1-part-ii-solution-inpahla",
+          "iac june 2026 paper 1 part i solution inpahla",
+          "iac june 2026 paper 1 part ii solution inpahla",
+        ],
+      },
+      "iac-2026-p2": {
+        question: ["iac-june-2026-paper-2-question-med4me", "iac june 2026 paper 2 question med4me"],
+        solution: [
+          "iac-june-2026-paper-2-part-i-solution-med4me",
+          "iac-june-2026-paper-2-part-ii-solution-med4me",
+          "iac june 2026 paper 2 part i solution med4me",
+          "iac june 2026 paper 2 part ii solution med4me",
+        ],
+      },
+      "iac-2026-p3": {
+        question: ["iac-june-2026-paper-3-question-beita", "iac june 2026 paper 3 question beita"],
+        solution: [
+          "iac-june-2026-paper-3-part-i-solution-beita",
+          "iac-june-2026-paper-3-part-ii-solution-beita",
+          "iac june 2026 paper 3 part i solution beita",
+          "iac june 2026 paper 3 part ii solution beita",
+        ],
+      },
+    },
+  },
 };
+
+/** Commentary is listed when absent, but does not block pack completeness or evidence_ready. */
+export const OPTIONAL_OFFICIAL_SOURCE_KINDS: OfficialSourceKind[] = ["commentary"];
+
+export function officialSourcePackComplete(missing: OfficialSourceKind[]): boolean {
+  return !missing.some((kind) => !OPTIONAL_OFFICIAL_SOURCE_KINDS.includes(kind));
+}
+
+export function officialSourcesBlockEvidenceReady(missing: OfficialSourceKind[]): boolean {
+  return missing.includes("question") || missing.includes("solution");
+}
+
+export type EvaluatorNewAttemptPaper = {
+  id: string;
+  title: string;
+  officialMapped: boolean;
+  commentaryMapped: boolean;
+};
+
+export function evaluatorNewAttemptPapers(sittingId: string): EvaluatorNewAttemptPaper[] {
+  const sitting = findPastPaperSitting(sittingId);
+  return (sitting?.papers || []).map((paper) => {
+    const spec = officialSourceSpec(sittingId, paper.id);
+    return {
+      id: paper.id,
+      title: paper.title,
+      officialMapped: Boolean(spec),
+      commentaryMapped: Boolean(spec?.commentary.length),
+    };
+  });
+}
 
 export const COMPETENCY_DOCUMENT_STEMS = [
   "ca-of-the-future-academic-programme-guidance",
@@ -216,12 +279,20 @@ export async function loadOfficialSourcePack(sittingId: string, paperId: string)
   if (resolvedSitting === "jan-2026") {
     notes.push("January 2026 uses the ingested question, part I/II solutions, sitting-level markers/umpires comments, and the five competency documents.");
   }
+  if (resolvedSitting === "june-2026") {
+    notes.push(
+      "June 2026 uses the ingested Inpahla/Med4Me/Beita question and part I/II solutions plus the five competency documents. Examiner commentary is not available for this sitting."
+    );
+  }
+  if (!spec.commentary.length) {
+    notes.push("Examiner commentary is not mapped for this sitting. Missing commentary does not block evidence readiness.");
+  }
 
   return {
     sitting_id: resolvedSitting,
     paper_id: resolvedPaper,
     retrieval: "deterministic_title",
-    complete: missing.length === 0,
+    complete: officialSourcePackComplete(missing),
     missing,
     documents,
     notes,

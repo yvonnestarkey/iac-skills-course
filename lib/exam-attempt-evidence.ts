@@ -6,7 +6,11 @@ import {
   type ExamAttempt,
   type ExamAttemptFileKind,
 } from "@/lib/exam-attempts";
-import { loadOfficialSourcePack, summariseOfficialSourcePack } from "@/lib/exam-source-pack";
+import {
+  loadOfficialSourcePack,
+  officialSourcesBlockEvidenceReady,
+  summariseOfficialSourcePack,
+} from "@/lib/exam-source-pack";
 
 export type FileReadiness = {
   kind: ExamAttemptFileKind;
@@ -163,10 +167,7 @@ export async function prepareExamAttemptEvidence(attemptId: string): Promise<
     pack.readable = false;
   }
 
-  const failed =
-    !filesReadable ||
-    official.missing.includes("question") ||
-    official.missing.includes("solution");
+  const failed = !filesReadable || officialSourcesBlockEvidenceReady(official.missing);
 
   const { data: saved, error: saveError } = await supabase
     .from("exam_attempts")
