@@ -68,3 +68,15 @@ test("Mindset Sandbox plugin registers getEvaluatorAttemptEvidence as a quoted S
   assert.equal(/image_url/.test(sql), false);
   assert.match(sql, /grant execute on function public\."getEvaluatorAttemptEvidence"\(text\) to anon/);
 });
+
+test("Mindset Sandbox plugin registers a tiny getEvaluatorAttemptSummary RPC", () => {
+  const sql = readFileSync(resolve("supabase/evaluator-attempt-summary-rpc.sql"), "utf8");
+  assert.match(sql, /public\."getEvaluatorAttemptSummary"\(attempt_id text\)/);
+  assert.match(sql, /student_name/);
+  assert.match(sql, /bmcr_page_count/);
+  assert.match(sql, /exam_script_page_count/);
+  assert.match(sql, /marking_report_page_count/);
+  assert.equal(/page_url/.test(sql), false);
+  assert.equal(/image_url/.test(sql), false);
+  assert.match(sql, /grant execute on function public\."getEvaluatorAttemptSummary"\(text\) to anon/);
+});
