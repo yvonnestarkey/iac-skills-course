@@ -149,6 +149,19 @@ export function bundleEvaluatorEvidence(
   };
 }
 
+export function extractExamAttemptId(value: unknown): string {
+  if (typeof value === "string") {
+    const match = value.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+    return (match?.[0] || value).trim();
+  }
+  if (Array.isArray(value)) return extractExamAttemptId(value[0]);
+  if (value && typeof value === "object") {
+    const row = value as Record<string, unknown>;
+    return extractExamAttemptId(row.attempt_id ?? row.attemptId ?? row.id ?? "");
+  }
+  return "";
+}
+
 export async function getEvaluatorAttemptEvidence(attemptId: string): Promise<EvaluatorAttemptEvidence | null> {
   const supabase = getServiceSupabase();
   if (!supabase) return null;

@@ -17,7 +17,7 @@ export type ProfileRow = UserProfile & {
   created_at: string;
 };
 
-function displayName(email: string, fullName?: string | null): string {
+export function profileDisplayName(email: string, fullName?: string | null): string {
   if (fullName && fullName.trim()) return fullName.trim();
   const local = email.split("@")[0] || "Student";
   return local.replace(/[._-]+/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
@@ -31,7 +31,7 @@ export function profileToStudent(
   const onboarding = parseRosterOnboarding({ ...row, ...extras });
   return {
     id: row.id,
-    name: displayName(row.email, row.full_name || (typeof extras.full_name === "string" ? extras.full_name : null)),
+    name: profileDisplayName(row.email, row.full_name || (typeof extras.full_name === "string" ? extras.full_name : null)),
     email: row.email,
     cohort: normalizeCohortId(row.cohort || (typeof extras.cohort === "string" ? extras.cohort : "")),
     status: "active",
@@ -91,7 +91,7 @@ export async function ensureStudentProfile(user: {
   const fullName =
     (typeof metaName === "string" && metaName.trim()) ||
     (user.full_name && user.full_name.trim()) ||
-    displayName(email);
+    profileDisplayName(email);
   const now = new Date().toISOString();
   const identity = {
     id: user.id,

@@ -1,3 +1,4 @@
+import { profileDisplayName } from "./profiles";
 import { attemptSourceForUser, STAFF_TEST_ATTEMPT_SOURCE, STUDENT_ATTEMPT_SOURCE } from "./staff-access";
 import { getSupabase } from "./supabase";
 import { findPastPaper } from "./past-papers";
@@ -175,14 +176,45 @@ export type ExamAttemptsResult =
   | { ok: true; attempts: ExamAttempt[] }
   | { ok: false; error: string; missingTable?: boolean };
 
-export async function fetchOwnExamAttempts(userId: string): Promise<ExamAttemptsResult> {
+export type AttemptStudentLabel = {
+  name: string;
+  email: string | null;
+};
+
+export function attemptStudentLabel(
+  attempt: Pick<ExamAttempt, "source" | "user_id">,
+  profile?: { full_name?: string | null; email?: string | null } | null
+): AttemptStudentLabel {
+  const email = profile?.email?.trim() || null;
+  const fullName = profile?.full_name?.trim() || "";
+  if (fullName) return { name: fullName, email };
+  if (email) return { name: profileDisplayName(email), email };
+  if (attempt.source === STAFF_TEST_ATTEMPT_SOURCE) return { name: "Staff test", email: null };
+  return { name: "Unknown student", email: null };
+}
+
+export async function fetchAttemptStudentLabels(userIds: string[]): Promise<Record<string, AttemptStudentLabel>> {
+  const client = getSupabase();
+  const unique = [...new Set(userIds.filter(Boolean))];
+  const labels: Record<string, AttemptStudentLabel> = {};
+  if (!client || !unique.length) return labels;
+  const { data, error } = await client.from("profiles").select("id, full_name, email").in("id", unique);
+  if (error || !data) return labels;
+  for (const row of data as { id: string; full_name?: string | null; email?: string | null }[]) {
+    labels[row.id] = attemptStudentLabel({ user_id: row.id, source: STUDENT_ATTEMPT_SOURCE }, row);
+  }
+  return labels;
+}
+
+export async function fetchEvaluatorAttempts(input: {
+  userId: string;
+  staff?: boolean;
+}): Promise<ExamAttemptsResult> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
-  const { data, error } = await client
-    .from("exam_attempts")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+  let query = client.from("exam_attempts").select("*").order("created_at", { ascending: false });
+  if (!input.staff) query = query.eq("user_id", input.userId);
+  const { data, error } = await query;
   if (error) {
     return {
       ok: false,
@@ -193,6 +225,10 @@ export async function fetchOwnExamAttempts(userId: string): Promise<ExamAttempts
   return { ok: true, attempts: (data || []).map((row) => examAttemptFromRow(row as JsonRow)) };
 }
 
+export async function fetchOwnExamAttempts(userId: string): Promise<ExamAttemptsResult> {
+  return fetchEvaluatorAttempts({ userId, staff: false });
+}
+
 export type ExamAttemptFetch =
   | { ok: true; attempts: ExamAttempt[]; attempt: ExamAttempt }
   | { ok: false; error: string; missingTable?: boolean };
@@ -200,10 +236,10 @@ export type ExamAttemptFetch =
 export async function fetchExamAttempt(userId: string, attemptId: string): Promise<ExamAttemptFetch> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
+  if (!userId) return { ok: false, error: "Sign in required." };
   const { data, error } = await client
     .from("exam_attempts")
     .select("*")
-    .eq("user_id", userId)
     .eq("id", attemptId)
     .limit(1)
     .maybeSingle();

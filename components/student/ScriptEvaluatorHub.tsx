@@ -6,10 +6,14 @@ import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import {
   attemptDisplayTitle,
   attemptStatusLabel,
-  fetchOwnExamAttempts,
+  attemptStudentLabel,
+  fetchAttemptStudentLabels,
+  fetchEvaluatorAttempts,
   isAttemptSubmitted,
+  type AttemptStudentLabel,
   type ExamAttempt,
 } from "@/lib/exam-attempts";
+import { isCoachAccount } from "@/lib/roles";
 import { hasTask1Submission, task1AssignmentFromOutline, task1LessonHref } from "@/lib/task1-gate";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -17,7 +21,9 @@ export default function ScriptEvaluatorHub() {
   const { ready, user, outline, submissions } = useStudentSession();
   const { unlocked } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
+  const staff = isCoachAccount(user);
   const [attempts, setAttempts] = useState<ExamAttempt[]>([]);
+  const [studentLabels, setStudentLabels] = useState<Record<string, AttemptStudentLabel>>({});
   const [loadError, setLoadError] = useState("");
   const [loaded, setLoaded] = useState(false);
 
@@ -29,21 +35,25 @@ export default function ScriptEvaluatorHub() {
   useEffect(() => {
     if (!user?.id || !canUse) return;
     let cancelled = false;
-    fetchOwnExamAttempts(user.id).then((result) => {
+    fetchEvaluatorAttempts({ userId: user.id, staff }).then(async (result) => {
       if (cancelled) return;
       if (result.ok === false) {
         setLoadError(result.error);
         setAttempts([]);
-      } else {
-        setLoadError("");
-        setAttempts(result.attempts);
+        setStudentLabels({});
+        setLoaded(true);
+        return;
       }
+      setLoadError("");
+      setAttempts(result.attempts);
+      const labels = await fetchAttemptStudentLabels(result.attempts.map((attempt) => attempt.user_id));
+      if (!cancelled) setStudentLabels(labels);
       setLoaded(true);
     });
     return () => {
       cancelled = true;
     };
-  }, [user?.id, canUse]);
+  }, [user?.id, staff, canUse]);
 
   if (!ready) {
     return (
@@ -103,7 +113,7 @@ export default function ScriptEvaluatorHub() {
       </p>
 
       <section className="eval-attempts" aria-labelledby="my-exam-attempts">
-        <h2 id="my-exam-attempts">My exam attempts</h2>
+        <h2 id="my-exam-attempts">{staff ? "Exam attempts" : "My exam attempts"}</h2>
         {loadError ? <p className="notice">{loadError}</p> : null}
         {loaded && !attempts.length && !loadError ? (
           <p className="muted">No exam attempts yet. Start with one sitting and paper.</p>
@@ -114,12 +124,18 @@ export default function ScriptEvaluatorHub() {
               const href = isAttemptSubmitted(attempt.status)
                 ? `/student/evaluator/attempt/${attempt.id}/submitted`
                 : `/student/evaluator/attempt/${attempt.id}`;
+              const student = studentLabels[attempt.user_id] || attemptStudentLabel(attempt);
               return (
                 <li key={attempt.id}>
                   <Link href={href} className="eval-attempt-card">
-                    <strong>{attemptDisplayTitle(attempt)}</strong>
+                    <strong className="eval-attempt-student">{student.name}</strong>
                     <span className="pill">{attemptStatusLabel(attempt.status)}</span>
-                    <p className="muted small">{attempt.paper_code}</p>
+                    <p className="eval-attempt-paper">{attemptDisplayTitle(attempt)}</p>
+                    <p className="muted small">
+                      {student.email ? `${student.email} · ` : ""}
+                      {attempt.paper_code}
+                    </p>
+                    <p className="muted small eval-attempt-id">Attempt {attempt.id}</p>
                   </Link>
                 </li>
               );

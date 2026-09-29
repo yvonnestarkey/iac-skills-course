@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { examAttemptFromRow } from "./exam-attempts";
-import { bundleEvaluatorEvidence } from "./exam-evaluator-evidence";
+import { bundleEvaluatorEvidence, extractExamAttemptId } from "./exam-evaluator-evidence";
 
 test("evaluator evidence exposes BMCR, script, and marking-report page numbers", () => {
   const attempt = examAttemptFromRow({
@@ -45,4 +45,15 @@ test("evaluator evidence exposes BMCR, script, and marking-report page numbers",
   assert.equal(bundle.evidence.marking_report.pages[0].image_url, "https://x/report-1.jpg");
   assert.equal(bundle.evidence.bmcr.stored_kind, "bmcr_worksheet");
   assert.equal(bundle.evidence.exam_script.stored_kind, "marked_script");
+});
+
+test("extractExamAttemptId reads ChatGPT action body and query shapes", () => {
+  const id = "4aa3b0ed-e7d7-4d7e-ada0-77b9d52a4438";
+  assert.equal(extractExamAttemptId({ attempt_id: id }), id);
+  assert.equal(extractExamAttemptId({ attemptId: id }), id);
+  assert.equal(extractExamAttemptId({ id }), id);
+  assert.equal(extractExamAttemptId(`Attempt ${id}`), id);
+  assert.equal(extractExamAttemptId(id), id);
+  assert.equal(extractExamAttemptId({ attempt_id: { id } }), id);
+  assert.equal(extractExamAttemptId(null), "");
 });

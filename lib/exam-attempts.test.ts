@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   attemptStatusLabel,
+  attemptStudentLabel,
   deriveAttemptStatus,
   examAttemptFromRow,
   type ExamAttempt,
@@ -40,4 +41,20 @@ test("status stays independent per attempt and does not jump to report ready", (
 test("staff test attempts are labelled separately from student attempts", () => {
   assert.equal(attempt({}).source, "student");
   assert.equal(examAttemptFromRow({ ...attempt(), source: "staff_test" }).source, "staff_test");
+});
+
+test("attempt student labels come from the existing profile name, not a copied field", () => {
+  assert.equal(
+    attemptStudentLabel(attempt({ user_id: "72755d08-e52c-4387-b910-794672fd924b" }), {
+      full_name: "Amina Patel",
+      email: "amina@example.com",
+    }).name,
+    "Amina Patel"
+  );
+  assert.equal(
+    attemptStudentLabel(attempt(), { full_name: null, email: "amina.patel@example.com" }).name,
+    "Amina Patel"
+  );
+  assert.equal(attemptStudentLabel(attempt({ source: "staff_test" })).name, "Staff test");
+  assert.equal(attemptStudentLabel(attempt()).name, "Unknown student");
 });
