@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import type { BmcrSittingWorksheet } from "@/lib/bmcr-worksheet";
+import {
+  bmcrPrintPaperLine,
+  bmcrPrintQuestionLabel,
+  bmcrPrintSheetTitle,
+  type BmcrSittingWorksheet,
+} from "@/lib/bmcr-worksheet";
 
 export default function BmcrWorksheetPrint({
   worksheet,
@@ -10,38 +15,40 @@ export default function BmcrWorksheetPrint({
   worksheet: BmcrSittingWorksheet;
   continueHref: string;
 }) {
+  const sheetTitle = bmcrPrintSheetTitle(worksheet.sittingLabel);
+
   return (
     <article className="bmcr-sheet">
-      <header className="bmcr-sheet-head">
-        <p className="kicker">Printable BMCR worksheet</p>
-        <h1>{worksheet.title}</h1>
-        <p className="muted">IAC · one sheet for the whole sitting · all papers</p>
-        <ul className="bmcr-sheet-howto">
-          <li>
-            <strong>What I got</strong> = the mark actually awarded.
-          </li>
-          <li>
-            <strong>Basic Marks</strong> = the individual Basic mark opportunities you believe you knew / could
-            reasonably have obtained at the time.
-          </li>
-          <li>
-            <strong>% I could&apos;ve earned</strong> = Basic Marks ÷ Total marks. Do the arithmetic yourself.
-          </li>
-          <li>
-            This percentage can exceed 100% because a mark plan can contain more available mark opportunities than the
-            maximum total awarded. Total marks is the denominator — do not cap the percentage at 100%.
-          </li>
-        </ul>
-      </header>
-
-      {worksheet.papers.map((paper) => (
+      {worksheet.papers.map((paper, index) => (
         <section key={paper.paperId} className="bmcr-sheet-paper">
-          <h2>
-            {paper.paperTitle}{" "}
-            <span className="muted">
-              {paper.paperCode} · {paper.paperTotalMarks} marks
-            </span>
-          </h2>
+          <header className="bmcr-sheet-head">
+            <p className="bmcr-sheet-brand-line">Accounting Study Advice</p>
+            <h1>{sheetTitle}</h1>
+            <p className="bmcr-sheet-paper-line">{bmcrPrintPaperLine(paper)}</p>
+          </header>
+
+          {index === 0 ? (
+            <div className="bmcr-sheet-howto">
+              <p className="bmcr-sheet-howto-title">How to complete this worksheet</p>
+              <ul>
+                <li>
+                  <strong>What I got</strong> = marks actually awarded.
+                </li>
+                <li>
+                  <strong>Basic Marks</strong> = individual Basic mark opportunities you knew / could reasonably have
+                  obtained.
+                </li>
+                <li>
+                  <strong>% I could&apos;ve earned</strong> = Basic Marks ÷ Total marks.
+                </li>
+                <li>
+                  The percentage may exceed 100% where available mark-plan opportunities exceed the maximum marks
+                  awarded.
+                </li>
+              </ul>
+            </div>
+          ) : null}
+
           <table className="bmcr-sheet-table">
             <thead>
               <tr>
@@ -57,10 +64,10 @@ export default function BmcrWorksheetPrint({
               {paper.rows.map((row) => (
                 <tr key={row.code}>
                   <td>{row.code}</td>
-                  <td>{row.title}</td>
+                  <td title={row.title}>{bmcrPrintQuestionLabel(row.code, row.title, worksheet.sittingId)}</td>
                   <td className="bmcr-sheet-write" />
                   <td className="bmcr-sheet-write" />
-                  <td>{row.totalMarks}</td>
+                  <td className="bmcr-sheet-marks">{row.totalMarks}</td>
                   <td className="bmcr-sheet-write" />
                 </tr>
               ))}
@@ -68,23 +75,13 @@ export default function BmcrWorksheetPrint({
                 <td colSpan={2}>Paper total</td>
                 <td className="bmcr-sheet-write" />
                 <td className="bmcr-sheet-write" />
-                <td>{paper.paperTotalMarks}</td>
+                <td className="bmcr-sheet-marks">{paper.paperTotalMarks}</td>
                 <td className="bmcr-sheet-write" />
               </tr>
             </tbody>
           </table>
         </section>
       ))}
-
-      <p className="bmcr-sheet-source muted small">
-        Total marks come from the official paper registry ({worksheet.marksSource}). These are the maximum marks that
-        can be awarded for each required, not the longer list of available mark-plan opportunities. This sheet does not
-        use Direct / Indirect / Thinking.
-      </p>
-
-      <footer className="bmcr-sheet-brand">
-        <img src="/asa-logo.png" alt="Accounting Study Advice" className="brand-logo" width={44} height={44} />
-      </footer>
 
       <div className="bmcr-sheet-actions">
         <button type="button" className="primary" onClick={() => window.print()}>
