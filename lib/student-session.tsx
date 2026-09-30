@@ -11,6 +11,7 @@ import {
   fetchCompletedLessonIds,
   fetchCourseOutline,
   getStudentUser,
+  invalidateCourseOutline,
   signOutStudent,
   studentUserFromAuth,
   type OutlineChapter,
@@ -38,6 +39,7 @@ interface StudentSessionValue {
   setLessonCompleted: (lessonId: string, completed: boolean) => void;
   setSubmission: (lessonId: string, submission: StudentSubmission) => void;
   reloadProgress: () => Promise<void>;
+  reloadOutline: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -182,6 +184,12 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     if (user) await loadProgress(user.id);
   }, [loadProgress, user]);
 
+  const reloadOutline = useCallback(async () => {
+    invalidateCourseOutline();
+    const next = await fetchCourseOutline({ fresh: true });
+    setOutline(next);
+  }, []);
+
   const signOut = useCallback(async () => {
     await signOutStudent();
     await clearOnboardingSkipCookie();
@@ -211,9 +219,10 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       setLessonCompleted,
       setSubmission,
       reloadProgress,
+      reloadOutline,
       signOut,
     }),
-    [ready, user, outline, completed, submissions, surveyReviews, entitlement, entitlementSource, previewLessonIds, onboarding, setLessonCompleted, setSubmission, reloadProgress, signOut]
+    [ready, user, outline, completed, submissions, surveyReviews, entitlement, entitlementSource, previewLessonIds, onboarding, setLessonCompleted, setSubmission, reloadProgress, reloadOutline, signOut]
   );
 
   return <StudentSessionContext.Provider value={value}>{children}</StudentSessionContext.Provider>;

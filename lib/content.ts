@@ -1,5 +1,6 @@
 import { allLessons } from "./course";
 import { fetchSurveyAssignmentFlags } from "./custom-surveys";
+import { lessonMinutes } from "./lesson-duration";
 import { lessonIsAssignment } from "./lesson-type";
 import { getSupabase } from "./supabase";
 import type { Chapter, CourseData, FlatLesson, Lesson, LessonType } from "./types";
@@ -225,6 +226,7 @@ export interface LessonRow {
   title: string;
   duration: string | null;
   seconds: number | null;
+  duration_minutes?: number | null;
   blurb: string | null;
   body: string[] | null;
   takeaways: string[] | null;
@@ -245,6 +247,7 @@ export function draftToRow(draft: LessonDraft, position: number): LessonRow {
     title: l.title,
     duration: l.duration || null,
     seconds: l.seconds || null,
+    duration_minutes: lessonMinutes(l),
     blurb: l.blurb || null,
     body: l.body || null,
     takeaways: l.takeaways || null,
@@ -319,7 +322,7 @@ export async function deleteLesson(id: string): Promise<DbResult> {
   return { ok: true };
 }
 
-const OPTIONAL_LESSON_COLUMNS = ["survey_id", "banner_image_url", "video_url", "video_urls", "pdf_url"];
+const OPTIONAL_LESSON_COLUMNS = ["survey_id", "banner_image_url", "video_url", "video_urls", "pdf_url", "duration_minutes"];
 
 async function upsertLessonRows(rows: Record<string, unknown>[]): Promise<DbResult> {
   const client = getSupabase();

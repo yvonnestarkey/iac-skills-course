@@ -107,8 +107,8 @@ export function taskAction(lesson: Lesson): string {
   return "Work through this lesson";
 }
 
-// The whole course, in order, so a plan can show a finish date. Ask the Coach
-// stays open on demand and is not packed into dated sessions.
+// The live course, in order, using each lesson's duration_minutes so a plan
+// finish date updates whenever the course content changes.
 export function courseTasks(data: CourseData) {
   return allLessons(data)
     .filter((l) => l.type !== "ask")

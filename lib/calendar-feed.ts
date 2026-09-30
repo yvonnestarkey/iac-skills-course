@@ -37,7 +37,7 @@ export async function buildCalendarIcs(token: string, origin: string): Promise<s
   const plan = planFromRow(row);
   if (!plan.slots.length) return null;
   const [outline, completed] = await Promise.all([
-    fetchCourseOutline(),
+    fetchCourseOutline({ fresh: true }),
     fetchCompletedLessonIds(row.user_id),
   ]);
   const data = courseDataFromOutline(outline);

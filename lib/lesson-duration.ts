@@ -49,16 +49,16 @@ export function defaultMinutesForType(type?: string): number {
   return TYPE_DEFAULTS[type || ""] || 10;
 }
 
-/** Study minutes for a lesson, preferring measured video/read length over stored defaults. */
+/** Study minutes from lessons.duration_minutes, then other stored metadata, then type defaults. */
 export function lessonMinutes(lesson: DurationFields): number {
+  const stored = asPositive(lesson.duration_minutes);
+  if (stored) return Math.round(stored);
   const videoSeconds = asPositive(lesson.video_duration_seconds) || asPositive(lesson.seconds);
   if (videoSeconds) return Math.max(1, Math.ceil(videoSeconds / 60));
   const read = asPositive(lesson.estimated_read_minutes);
   if (read) return Math.round(read);
   const parsed = parseDurationText(lesson.duration || undefined);
   if (parsed) return parsed;
-  const stored = asPositive(lesson.duration_minutes);
-  if (stored) return Math.round(stored);
   return defaultMinutesForType(lesson.type);
 }
 

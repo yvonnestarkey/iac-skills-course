@@ -28,7 +28,7 @@ function emptyPlan(): StudyPlan {
 }
 
 export default function StudyPlanner() {
-  const { outline, user, completed } = useStudentSession();
+  const { outline, user, completed, reloadOutline } = useStudentSession();
   const course = useMemo(() => courseDataFromOutline(outline), [outline]);
   const [draft, setDraft] = useState<StudyPlan>(emptyPlan);
   const [savedPlan, setSavedPlan] = useState<StudyPlan | null>(null);
@@ -39,6 +39,10 @@ export default function StudyPlanner() {
   const [calendar, setCalendar] = useState<CalendarFeed | null>(null);
 
   const saved = Boolean(savedPlan);
+
+  useEffect(() => {
+    void reloadOutline();
+  }, [reloadOutline]);
 
   useEffect(() => {
     if (!user) return;

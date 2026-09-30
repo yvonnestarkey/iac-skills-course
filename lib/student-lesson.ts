@@ -554,9 +554,11 @@ async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
 }
 
 /** Shared course tree for the sidebar and lesson pages. Cached in-memory (and sessionStorage in the browser). */
-export async function fetchCourseOutline(): Promise<OutlineChapter[]> {
-  const cached = readOutlineCache();
-  if (cached) return cached;
+export async function fetchCourseOutline(options?: { fresh?: boolean }): Promise<OutlineChapter[]> {
+  if (!options?.fresh) {
+    const cached = readOutlineCache();
+    if (cached) return cached;
+  }
   const data = await loadCourseOutlineUncached();
   writeOutlineCache(data);
   return data;
