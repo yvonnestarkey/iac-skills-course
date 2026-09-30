@@ -276,7 +276,7 @@ export function courseDataFromOutline(outline: OutlineChapter[]): CourseData {
     className: "IAC Skills Course",
     term: CURRENT_COHORT_TERM,
     cohorts: COURSE_COHORTS.map((cohort) => ({ ...cohort })),
-    liveSessions: SEED.liveSessions || [],
+    liveSessions: [],
     chapters: outline.map((chapter) => ({
       id: chapter.id,
       title: chapter.title,

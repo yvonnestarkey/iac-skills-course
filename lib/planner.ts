@@ -103,7 +103,7 @@ export function packPlan(tasks, sessions): { sessions: ScheduledSession[]; unpla
 
 export function weeksForPlan(plan: StudyPlan, totalMinutes: number): number {
   const weekly = Math.max(0.5, Number(plan.hours) || 1) * 60;
-  return Math.max(2, Math.ceil(Math.max(totalMinutes, 1) / weekly) + 3);
+  return Math.max(1, Math.ceil(Math.max(totalMinutes, 1) / weekly));
 }
 
 export function packCourse(tasks: { lesson: FlatLesson; minutes: number }[], plan: StudyPlan) {
