@@ -1,5 +1,6 @@
 import BrandMark from "@/components/BrandMark";
 import EnrolmentOffer from "@/components/sales/EnrolmentOffer";
+import SalesTopbar from "@/components/sales/SalesTopbar";
 import {
   COLD_VIDEO,
   REGISTRATION_HEADLINE,
@@ -26,9 +27,7 @@ function SalesVideo({ video }: { video: { title: string; src: string } }) {
 export default function RegistrationLanding() {
   return (
     <div className="sales-page">
-      <header className="topbar sales-topbar">
-        <BrandMark href="/" />
-      </header>
+      <SalesTopbar />
 
       <section className="sales-registration">
         <p className="sales-badge">{SALES_BADGE}</p>

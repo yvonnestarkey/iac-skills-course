@@ -18,6 +18,16 @@ const publicLandingFiles = [
   "app/login/page.tsx",
 ];
 
+test("public landing page headers include a login button", () => {
+  const topbar = readFileSync(resolve("components/sales/SalesTopbar.tsx"), "utf8");
+  assert.match(topbar, /href="\/login"/);
+  assert.match(topbar, /Log in/);
+  for (const file of ["components/sales/SalesLanding.tsx", "components/sales/RegistrationLanding.tsx"]) {
+    const source = readFileSync(resolve(file), "utf8");
+    assert.match(source, /SalesTopbar/);
+  }
+});
+
 test("public landing pages no longer ask students to join a waitlist", () => {
   for (const file of publicLandingFiles) {
     const source = readFileSync(resolve(file), "utf8");

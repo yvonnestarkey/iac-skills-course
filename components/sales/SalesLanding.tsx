@@ -4,6 +4,7 @@ import CourseFeatures from "@/components/sales/CourseFeatures";
 import FaqAccordion from "@/components/sales/FaqAccordion";
 import SkillsAccordion from "@/components/sales/SkillsAccordion";
 import EnrolmentOffer from "@/components/sales/EnrolmentOffer";
+import SalesTopbar from "@/components/sales/SalesTopbar";
 import { COURSE_DATES, PAYMENT_CAPTION, PRICING_TIERS, REFERRAL, SALES_AUDIENCE, SALES_BADGE, SALES_HEADLINE, SALES_SUBHEAD, SALES_VIDEO } from "@/lib/sales-copy";
 
 export default function SalesLanding({
@@ -17,9 +18,7 @@ export default function SalesLanding({
 } = {}) {
   return (
     <div className="sales-page">
-      <header className="topbar sales-topbar">
-        <BrandMark href="/" />
-      </header>
+      <SalesTopbar />
 
       <section className="sales-hero">
         <div className={showHeroPitch ? "sales-hero-copy" : "sales-hero-copy sales-hero-copy-hook"}>
