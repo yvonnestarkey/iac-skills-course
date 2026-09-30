@@ -14,9 +14,11 @@ import {
 } from "@/lib/course";
 import { daysAgo, isoDate, today } from "@/lib/dates";
 import { completionProgress } from "@/lib/metrics";
+import { courseAccessLabel } from "@/lib/course-access";
 import {
   DEFAULT_ROSTER_COLUMNS,
   ROSTER_COLUMNS,
+  ROSTER_COURSE_ACCESS_OPTIONS,
   ROSTER_FILTER_FIELDS,
   downloadRosterCsv,
   matchRosterRule,
@@ -75,6 +77,8 @@ function sortValue(row: RosterRow, column: RosterColumnId): string | number {
   switch (column) {
     case "name":
       return student.name;
+    case "courseAccess":
+      return courseAccessLabel(student.courseAccess);
     case "email":
       return student.email;
     case "phone":
@@ -121,6 +125,8 @@ function plainCell(id: RosterColumnId, row: RosterRow, gradedTotal: number): str
   switch (id) {
     case "name":
       return student.name;
+    case "courseAccess":
+      return courseAccessLabel(student.courseAccess);
     case "email":
       return student.email;
     case "phone":
@@ -232,8 +238,16 @@ export default function RosterTab({
       map[field.id] = uniqueRosterOptions(
         source,
         field.id,
-        field.id === "cohort" ? (value) => cohortName(data, value) : undefined,
-        field.id === "cohort" ? cohortDefaults : undefined
+        field.id === "cohort"
+          ? (value) => cohortName(data, value)
+          : field.id === "courseAccess"
+            ? (value) => courseAccessLabel(value === "full" ? "full" : "free_preview")
+            : undefined,
+        field.id === "cohort"
+          ? cohortDefaults
+          : field.id === "courseAccess"
+            ? [...ROSTER_COURSE_ACCESS_OPTIONS]
+            : undefined
       ).filter((option) => Boolean(cleanRosterOptionValue(option.value)));
     });
     return map;
@@ -471,6 +485,8 @@ function cellFor(id: RosterColumnId, row: RosterRow, gradedTotal: number) {
           <AccountActivationBadge status={student.accountActivation} />
         </span>
       );
+    case "courseAccess":
+      return <CourseAccessBadge access={student.courseAccess} />;
     case "email":
       return <span className="muted small">{student.email}</span>;
     case "phone":

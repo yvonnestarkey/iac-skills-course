@@ -1,5 +1,6 @@
 export const ROSTER_COLUMNS = [
   { id: "name", label: "Full Name" },
+  { id: "courseAccess", label: "Course Access" },
   { id: "email", label: "Email" },
   { id: "phone", label: "Phone Number" },
   { id: "accountabilityEmail", label: "Accountability Email" },
@@ -25,6 +26,7 @@ export type RosterSortDir = "asc" | "desc";
 
 export const DEFAULT_ROSTER_COLUMNS: RosterColumnId[] = [
   "name",
+  "courseAccess",
   "email",
   "phone",
   "cohort",
@@ -37,6 +39,7 @@ export const DEFAULT_ROSTER_COLUMNS: RosterColumnId[] = [
 
 export const ROSTER_FILTER_FIELDS = [
   { id: "name", label: "Full Name", kind: "text" },
+  { id: "courseAccess", label: "Course Access", kind: "categorical" },
   { id: "email", label: "Email", kind: "text" },
   { id: "phone", label: "Phone Number", kind: "text" },
   { id: "accountabilityEmail", label: "Accountability Email", kind: "text" },
@@ -167,7 +170,13 @@ export const ROSTER_IAC_ATTEMPTS_OPTIONS = ["0", "1", "2", "3+"] as const;
 
 export const ROSTER_CTA_YEAR_OPTIONS = ["2026", "2025", "2024", "2023", "2022"] as const;
 
+export const ROSTER_COURSE_ACCESS_OPTIONS = [
+  { value: "full", label: "Full Course" },
+  { value: "free_preview", label: "Free Preview" },
+] as const;
+
 export const ROSTER_FILTER_DEFAULTS: Partial<Record<RosterFilterField, readonly string[]>> = {
+  courseAccess: ROSTER_COURSE_ACCESS_OPTIONS.map((option) => option.value),
   country: ROSTER_COUNTRY_OPTIONS,
   ctaUniversity: ROSTER_CTA_UNIVERSITY_OPTIONS,
   iacAttempts: ROSTER_IAC_ATTEMPTS_OPTIONS,
@@ -296,6 +305,7 @@ export function rosterRuleValue(student: {
   phone?: string | null;
   accountabilityEmail?: string | null;
   cohort: string;
+  courseAccess?: string | null;
   onboardingCompleted?: boolean;
   country?: string | null;
   ctaYear?: string | null;
@@ -308,6 +318,8 @@ export function rosterRuleValue(student: {
   switch (field) {
     case "name":
       return student.name || "";
+    case "courseAccess":
+      return student.courseAccess === "full" ? "full" : "free_preview";
     case "email":
       return student.email || "";
     case "phone":
