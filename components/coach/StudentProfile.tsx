@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import AskCoachThread from "@/components/coach/AskCoachThread";
 import AccountActivationBadge from "@/components/coach/AccountActivationBadge";
 import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
+import SetTemporaryPasswordPanel from "@/components/coach/SetTemporaryPasswordPanel";
 import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
@@ -185,6 +186,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         </div>
       </div>
       {notice ? <div className="notice">{notice}</div> : null}
+
+      <SetTemporaryPasswordPanel userId={student.id} studentName={student.name} />
 
       <section className="card">
         <div className="panel-head">
