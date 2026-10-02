@@ -1,0 +1,110 @@
+{
+  "name": "Eve Working Knowledge",
+  "source": "Eve_evaltool_Starter",
+  "architecture": "Pre-calibrated Question Model → Full Evaluation Dataset → Synthesised Student Report",
+  "workingPrinciple": "Collect intensely; report lightly.",
+  "tools": [
+    "BMCR",
+    "Buried Treasure / Proximity",
+    "Volume",
+    "Accuracy",
+    "Components",
+    "Core Issue",
+    "RTFQ",
+    "Question Type",
+    "Competency",
+    "Communication"
+  ],
+  "documents": [
+    {
+      "id": "00-start-here",
+      "title": "Eve Working Knowledge — Start Here",
+      "filename": "00 - Start Here.md",
+      "content": "# Eve Working Knowledge — Start Here\n\nThis vault is the working research and calibration space for Eve.\n\n## Purpose\nPreserve and refine the reasoning behind the Script Evaluator so that important methodology does not live only inside a chat transcript.\n\nThis is **not** the student-facing system.\n\n- **Obsidian** = Yvonne's thinking / research / calibration workspace\n- **Supabase / Eve Core** = approved structured production knowledge and student data\n- **AI model** = reasoning engine\n- **Course** = student-facing experience\n\n## Current evaluator architecture\n**Pre-calibrated Question Model → Full Evaluation Dataset → Synthesised Student Report**\n\n## Current evaluator tools\n1. BMCR\n2. Buried Treasure / Proximity\n3. Volume\n4. Accuracy\n5. Components\n6. Core Issue\n7. RTFQ\n8. Question Type\n9. Competency\n10. Communication\n\n## Working principle\n**Collect intensely; report lightly.**\n"
+    },
+    {
+      "id": "evaluator-architecture",
+      "title": "Evaluator Architecture",
+      "filename": "Evaluator Architecture.md",
+      "content": "# Evaluator Architecture\n\n## Core model\n**Pre-calibrated Question Model → Full Evaluation Dataset → Synthesised Student Report**\n\nEach exam question should first have a fixed question model containing:\n- mark-plan opportunities classified as Direct / Indirect / Thinking\n- Components and possible layers\n- RTFQ / required shape\n- Core Issue\n- Question Type\n- competency / topic mapping\n- exclusions and constraints\n- metadata\n\nStudent attempts are then mapped against that fixed model.\n\n## Why\nThe evaluator should identify **where the student's process broke down**, not merely whether an answer was right or wrong.\n\n## Evidence architecture\nDetailed evaluation first:\n- preserve answer evidence\n- preserve opportunity-level classifications\n- preserve diagnostic distinctions\n- do not collapse tools prematurely\n\nThen synthesise:\n- identify repeated patterns\n- prioritise plausible contributors\n- produce a short student-facing report\n- retain the detailed dataset for drill-down, Eve, and longitudinal analysis\n\n## Reporting principle\n**Collect intensely; report lightly.**\n"
+    },
+    {
+      "id": "working-principles",
+      "title": "Working Principles",
+      "filename": "Working Principles.md",
+      "content": "# Working Principles\n\n## Diagnostic discipline\nDo not infer internal mental state from behaviour alone.\n\nObservable evidence → interpretation → working diagnosis → intervention → later evidence → confirm / refine / reject.\n\nThe same behaviour may have multiple explanations.\n\n## Methodology discipline\nDo not let one paper create a rule merely because it happens to fit that paper.\n\n## Evidence discipline\nCreate the fixed question model before inspecting the student response wherever possible.\n\nThis reduces hindsight contamination.\n\n## Product discipline\nEve should not depend on one model provider.\n\nThe durable intellectual property is:\n- observable evidence structures\n- diagnostic reasoning\n- evaluator methodology\n- interventions\n- lineage and revisions\n\nAI models are replaceable reasoning engines.\n"
+    },
+    {
+      "id": "bmcr",
+      "title": "BMCR",
+      "filename": "BMCR.md",
+      "content": "# BMCR\n\nBMCR is independent of whether the student attempted the question successfully.\n\nThe student identifies, post-exam, the marks they believe they knew or could reasonably have obtained.\n\n**Actual technical marks / Basic Marks**\n\nDo not diagnose *why* the gap occurred at BMCR stage.\n\nAn unattempted question can be especially informative because BMCR can still run even when answer-evidence tools cannot.\n"
+    },
+    {
+      "id": "buried-treasure-proximity",
+      "title": "Buried Treasure / Case Study Proximity",
+      "filename": "Buried Treasure - Proximity.md",
+      "content": "# Buried Treasure / Case Study Proximity\n\n## Direct\nThe case supplies the substance. The candidate mainly needs to spot, extract, classify, or use it.\n\nExamples:\n- explicit scenario facts\n- quoted premises\n- given figures\n- listed constraints\n- required layout / headings\n\n## Indirect\nThe case provides a trigger, but the candidate must make a short bridge to the relevant rule or implication.\n\nUsually one or two reasoning steps.\n\n## Thinking\nRequires synthesis, judgment, reconciliation, or multi-step technical reasoning.\n\n## Student-level evidence\nFor each opportunity track:\n\n**Indicator visibility**\n- Seen\n- Not seen\n\n\"Not seen\" means there is no visible evidence in the answer. It does not prove the student never noticed it mentally.\n\n**Conversion**\n- Awarded\n- Not awarded\n\n## Aggregate\n| Proximity | Available | Visibly seen | Awarded |\n|---|---:|---:|---:|\n\nUse Available as the denominator.\n\nDo not generously reinterpret generic waffle as evidence that a specific case opportunity was seen.\n"
+    },
+    {
+      "id": "volume-and-accuracy",
+      "title": "Volume and Accuracy",
+      "filename": "Volume and Accuracy.md",
+      "content": "# Volume and Accuracy\n\n## Volume\nCount **distinct mark-seeking attempts on the page**.\n\nDo not count sentences, lines, paragraphs, or marks.\n\nDo not semantically deduplicate attempts merely because they are repetitive or weak.\n\n## Accuracy\n**technical marks awarded / Volume**\n\nThis separates:\n- insufficient answer production\nfrom\n- substantial answer production that did not convert\n"
+    },
+    {
+      "id": "components",
+      "title": "Components",
+      "filename": "Components.md",
+      "content": "# Components\n\n## Locked definition\n**Components = Hunt for Structure.**\n\nA Component is a **search space / structural bucket**, not a mark and not the internal structure of an individual point.\n\nThe evaluator asks:\n\n> What useful structure was available to help the student search the case, and did the student's answer show that they actually used it?\n\n## Three-part distinction\nAvailable structure → recognised → exploited\n\n## Where Components can come from\n- required\n- case sections\n- underlying theory\n- assertions\n- accounts\n- timelines\n- stakeholders\n- stages\n- years\n- legal entities\n- transaction classes\n\nComponents can be layered.\n\n## Guardrail\nDo **not** infer Component recognition merely because words in the student's answer can be made to resemble the mark plan.\n\nThe student's answer must contain evidence that they used the available structure to hunt.\n\nGeneric topic discussion is not enough.\n\n## Distinction from Core Issue\n**Components:** Where should I search?\n\n**Core Issue:** Where should I spend disproportionate time, depth, or judgment?\n"
+    },
+    {
+      "id": "core-issue",
+      "title": "Core Issue",
+      "filename": "Core Issue.md",
+      "content": "# Core Issue\n\n## Locked definition\nCore Issue evaluates whether the student recognised **which parts of the available structure the case was signalling deserved disproportionate attention**.\n\nIt is not another name for the subject matter and it is not a repeat of Components.\n\n> **Can you spot the red flag and treat it like a RED flag?**\n\n## What can create a Core Issue clue\n- risk\n- materiality / significance\n- subjectivity\n- professional judgment\n- complexity\n- interconnections\n- conflicting evidence\n- unresolved decision points\n- **density of case information**\n- multiple events, dates, conditions, stakeholders, or technical consequences clustered around one area\n\n## Important refinement: information density\nCore Issue can be signalled by the **case-study information itself**, even when there is no obvious dramatic risk or materiality cue.\n\nA student should not automatically divide time equally just because the required names two components.\n\nAsk:\n\n> Which component contains more facts, events, conditions, years, rules, unresolved consequences, or moving parts?\n\nThat component may deserve more answer weight.\n\n## Distinction from Components\n**Components:** What are the buckets I should search?\n\n**Core Issue:** Which of those buckets is the case telling me to spend more time on?\n\n## Evidence\nEvaluate Core Issue from the **balance, depth, and weighting** of the answer, not simply whether a topic was mentioned.\n\n## June 2026 P2(c) example\nThe required names both BHealth and employees.\n\nThe employee side contains more moving parts:\n- employment relationship\n- SAR classification\n- share linkage\n- vesting conditions\n- resignation\n- performance target\n- multiple tax years\n- vesting event\n- cash settlement\n- PAYE\n\nThe BHealth branch is comparatively thin once the expenditure / legal-obligation issue is resolved.\n\nTherefore the **employee tax consequences are the dominant Core Issue**.\n\nThe mark allocation may confirm this reading, but should not create it. The clue must be visible in the case before the solution is known.\n"
+    },
+    {
+      "id": "rtfq",
+      "title": "RTFQ",
+      "filename": "RTFQ.md",
+      "content": "# RTFQ\n\n## Purpose\nRTFQ evaluates whether the student's answer **delivered what the required actually asked for**.\n\nIt does not diagnose *why* the student failed to do so.\n\n## Diagnostic prompt\n> What were you supposed to see, and how was that supposed to shape your answer?\n\n## Three dimensions\n1. **Shape / instruction** — discuss, calculate, journal, recommend, evaluate, compare, explain\n2. **Hidden required / structural directions / exclusions** — named entities, years, headings, exclusions, no-calculation instructions, required perspective\n3. **Subject matter / lens** — the actual issue or framework the required asks the student to address\n\n## Boundary with Components\nRTFQ extracts the required structure.\n\nComponents evaluates whether the student actually used that structure as a search strategy.\n"
+    },
+    {
+      "id": "question-type-and-competency",
+      "title": "Question Type and Competency",
+      "filename": "Question Type and Competency.md",
+      "content": "# Question Type and Competency\n\n## Question Type\nSimple longitudinal classifier:\n- Discussion\n- Non-discussion\n\n## Competency\nHigh-level SAICA exam-topic taxonomy:\n- Reporting on value creation\n- Strategy and governance to create sustainable value\n- Stewardships of capitals: business processes and risk management\n- Assurance and related services\n- Tax governance and compliance\n- Decision-making to increase, decrease or transform capitals\n- Ethics (including CPC)\n- PVAAs separate\n\nDo not infer a broad competency weakness from one question.\n"
+    },
+    {
+      "id": "communication",
+      "title": "Communication",
+      "filename": "Communication.md",
+      "content": "# Communication\n\n## Locked principle\n**Communication evaluates what made it onto the page. It does not infer what was in the student's head.**\n\n## Point-level categories\n- Complete\n- Underdeveloped\n- Unclear\n- Miscommunicated\n\n## Guardrail\nA mark not awarded is **not automatically** a Communication problem.\n\n## Required-shape awareness\n- Discussion: fact → implication → relevance\n- Journal: account → debit/credit → amount\n- Calculation: workings → labels → result\n- Memo: structure → audience → logical conclusions\n\n## Reporting rule\nDo not quantify Communication in the mini-report.\n\nCommunication is better treated as a **trend**.\n"
+    },
+    {
+      "id": "not-attempted",
+      "title": "NOT_ATTEMPTED Rule",
+      "filename": "NOT_ATTEMPTED.md",
+      "content": "# NOT_ATTEMPTED Rule\n\nIf a question was genuinely not attempted:\n\n## Still run\n- BMCR\n- Question Type\n- Competency\n\n## Do not evaluate from absent answer evidence\n- Buried Treasure\n- Volume\n- Accuracy\n- Components\n- Core Issue\n- RTFQ\n- Communication\n\nDo not turn one blank answer into seven separate weaknesses.\n"
+    },
+    {
+      "id": "june-2026-paper-1-existing-locks",
+      "title": "June 2026 Paper 1 — Existing Calibration Locks",
+      "filename": "June 2026 - Paper 1 - Existing Locks.md",
+      "content": "# June 2026 Paper 1 — Existing Calibration Locks\n\n## Q1(a) SWOT\n- BMCR: 7 / 15 = 47%\n- Direct: 10 available, at least 8 visibly seen, 5 awarded\n- Indirect: 24 available, at least 8 visibly seen, 2 awarded\n- Thinking: 3 available, 0 visibly seen, 0 awarded\n- Volume: 24 against technical max 20 — not the problem\n- Accuracy: 7 / 24 = 29%\n- Components: SWOT 4/4 and relevant case sections/themes 5/5 — not the problem\n- Core Issue: financial distress/debt/funding and operational capacity/locomotives were dealt with but insufficiently weighted\n- RTFQ: uncertain\n- Communication: repeated underdeveloped/unclear/miscommunicated relevant starts\n\n## Q1(d) SDGs\n- BMCR: 4 basic marks identified; 0 / 4 converted\n- Volume: 6 / 6 = 100% — not the problem\n- Accuracy: 0 / 6\n- Direct: 3 / 0 / 0\n- Indirect: 10 / 0 / 0\n- Thinking: 1 / 0 / 0\n- Components: fail — Goal 6 and Goal 7 were clear search spaces\n- RTFQ: fail — required specific Goal 6 / Goal 7 alignment\n- Communication: repeatedly short / incomplete\n- Core Issue: no meaningful prioritisation requirement\n\n## Q1(b)\nNot attempted. Apply the NOT_ATTEMPTED rule.\n"
+    },
+    {
+      "id": "june-2026-paper-2-part-ii-c",
+      "title": "June 2026 Paper 2 — Part II(c)",
+      "filename": "June 2026 - Paper 2 - Part II(c).md",
+      "content": "# June 2026 Paper 2 — Part II(c)\n\n## Required\nDiscuss the normal tax implications of the expense relating to the SARs for BHealth and its employees in respect of their 2025 and 2026 years of assessment.\n\nDo not perform calculations.\n\n## Question Type\nDiscussion\n\n## Competency\nTax governance and compliance\n\n## RTFQ shape\n- BHealth\n- Employees\n- Employees: 2025\n- Employees: 2026\n- no calculations\n\n## Components\n### Layer 1\n- BHealth\n- Employees\n\n### Layer 2 within Employees\n- 2025\n- 2026\n\n## Core Issue\nThe employee side is the dominant Core Issue because the case supplies substantially more information, events, conditions, time periods, and technical consequences relating to employees than to BHealth.\n\nThis is an example of **case-information density as a Core Issue clue**.\n\n## Technical opportunities currently identified\n\n### BHealth\n- cash-settled SAR benefit is not BHealth expenditure because BHealth has no unconditional legal obligation\n- therefore no tax effect for BHealth\n\n### Employees — 2025\n- SARs are equity instruments because value is linked to the share\n- granted by virtue of employment\n- restricted instrument because not yet vested; exemption applies\n- resignation does not trigger vesting\n\n### Employees — 2026\n- target met, therefore doubled amount included on vesting\n- cash-based gain = market value of SAR right at vesting less consideration\n- cash payment is remuneration\n- PAYE withheld\n\n## Communication\nExpected to form a logical tax argument across both parties and both employee tax years, rather than isolated technical statements.\n"
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "filename": "Open Questions.md",
+      "content": "# Open Questions\n\nThese are unresolved methodology questions. Do not silently convert them into rules.\n\n## Core Issue thresholds\nHow much information-density difference is enough before one component should be treated as dominant?\n\n## RTFQ vs Communication\nWhat evidence distinguishes:\n- misunderstanding the required lens\nfrom\n- understanding it but communicating incompletely?\n\n## Components evidence threshold\nWhat minimum answer evidence shows the student actually used a structural search space rather than coincidentally mentioning related content?\n\n## Buried Treasure visibility\nHow should partial recognition be recorded where a student notices the scenario fact but applies the wrong rule?\n"
+    }
+  ]
+}
