@@ -183,52 +183,66 @@ select public.attach_student_identity_trigger('public.volume_accuracy_entries');
 
 update public.assignment_bmcr_evaluations t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.student_id) i
-where t.student_id is not null;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.student_id;
 
 update public.case_study_conversion_logs t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.course_admin_events t
 set student_name = i.student_name, student_email = coalesce(i.student_email, t.target_email)
-from public.lookup_student_identity(t.target_user_id) i
-where t.target_user_id is not null;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.target_user_id;
 
 update public.course_entitlements t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.course_purchases t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.course_purchase_installments t
 set student_name = i.student_name, student_email = i.student_email
 from public.course_purchases p
-join lateral public.lookup_student_identity(p.user_id) i on true
+join auth.users u on u.id = p.user_id
+cross join lateral public.lookup_student_identity(u.id) i
 where t.purchase_id = p.id;
 
 update public.course_payment_events t
 set student_name = i.student_name, student_email = i.student_email
 from public.course_purchases p
-join lateral public.lookup_student_identity(p.user_id) i on true
+join auth.users u on u.id = p.user_id
+cross join lateral public.lookup_student_identity(u.id) i
 where t.purchase_id = p.id;
 
 update public.custom_survey_responses t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.student_id) i
-where t.student_id is not null;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.student_id;
 
 update public.exam_attempts t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.inbox_messages t
 set student_name = i.student_name,
     student_email = coalesce(i.student_email, t.student_email)
-from public.lookup_student_identity(t.student_id) i
-where t.student_id is not null;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.student_id;
 
 update public.inbox_messages t
 set student_name = coalesce(t.student_name, p.full_name)
@@ -239,75 +253,94 @@ where t.student_id is null
 
 update public.lesson_progress t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.mark_report_uploads t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.notifications t
 set student_name = i.student_name,
     student_email = coalesce(i.student_email, t.student_email)
-from public.lookup_student_identity(coalesce(t.student_id, t.user_id)) i
-where coalesce(t.student_id, t.user_id) is not null;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = coalesce(t.student_id, t.user_id);
 
 update public.referral_codes t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.referral_ledger t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.referral_attributions t
 set
-  student_name = referee.student_name,
-  student_email = referee.student_email,
-  referee_name = referee.student_name,
-  referee_email = referee.student_email,
-  referrer_name = referrer.student_name,
-  referrer_email = referrer.student_email
-from public.lookup_student_identity(t.referee_user_id) referee,
-     public.lookup_student_identity(t.referrer_user_id) referrer;
+  student_name = (select student_name from public.lookup_student_identity(t.referee_user_id)),
+  student_email = (select student_email from public.lookup_student_identity(t.referee_user_id)),
+  referee_name = (select student_name from public.lookup_student_identity(t.referee_user_id)),
+  referee_email = (select student_email from public.lookup_student_identity(t.referee_user_id)),
+  referrer_name = (select student_name from public.lookup_student_identity(t.referrer_user_id)),
+  referrer_email = (select student_email from public.lookup_student_identity(t.referrer_user_id));
 
 update public.referral_rewards t
 set
-  student_name = referee.student_name,
-  student_email = referee.student_email,
-  referee_name = referee.student_name,
-  referee_email = referee.student_email,
-  referrer_name = referrer.student_name,
-  referrer_email = referrer.student_email
-from public.lookup_student_identity(t.referee_user_id) referee,
-     public.lookup_student_identity(t.referrer_user_id) referrer;
+  student_name = (select student_name from public.lookup_student_identity(t.referee_user_id)),
+  student_email = (select student_email from public.lookup_student_identity(t.referee_user_id)),
+  referee_name = (select student_name from public.lookup_student_identity(t.referee_user_id)),
+  referee_email = (select student_email from public.lookup_student_identity(t.referee_user_id)),
+  referrer_name = (select student_name from public.lookup_student_identity(t.referrer_user_id)),
+  referrer_email = (select student_email from public.lookup_student_identity(t.referrer_user_id));
 
 update public.script_evaluations t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.student_coaching_sessions t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.student_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.student_id;
 
 update public.student_notes t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.student_profiles t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.student_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.student_id;
 
 update public.student_submissions t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.student_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.student_id;
 
 update public.study_plans t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 update public.volume_accuracy_entries t
 set student_name = i.student_name, student_email = i.student_email
-from public.lookup_student_identity(t.user_id) i;
+from auth.users u
+cross join lateral public.lookup_student_identity(u.id) i
+where u.id = t.user_id;
 
 create or replace function public.sync_student_identity_copies()
 returns trigger
