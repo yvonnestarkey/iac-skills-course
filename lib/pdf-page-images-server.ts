@@ -1,3 +1,6 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { createCanvas } from "@napi-rs/canvas";
 import { PDF_PAGE_RENDER_LIMIT } from "@/lib/pdf-page-limit";
 
@@ -34,9 +37,18 @@ export async function countPdfPages(buffer: ArrayBuffer): Promise<number> {
   return Number(pdf.numPages || 0);
 }
 
+function pdfWorkerFileUrl() {
+  const workerPath = path.join(process.cwd(), "node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs");
+  if (!existsSync(workerPath)) {
+    throw new Error(`pdf.js worker missing at ${workerPath}`);
+  }
+  return pathToFileURL(workerPath).href;
+}
+
 async function loadPdfjs() {
   const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
-  pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
+  // Node's ESM loader only accepts file: or data: URLs. A CDN https workerSrc fails on Vercel.
+  pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerFileUrl();
   return pdfjs;
 }
 
@@ -51,8 +63,7 @@ export async function renderPdfPageJpegs(
     CanvasFactory: ServerCanvasFactory,
     isEvalSupported: false,
     useSystemFonts: true,
-    disableWorker: true,
-  } as Parameters<typeof pdfjs.getDocument>[0]).promise;
+  }).promise;
   const pageCount = doc.numPages;
   const last = Math.min(pageCount, PDF_PAGE_RENDER_LIMIT);
   const pages: RenderedPdfPage[] = [];
