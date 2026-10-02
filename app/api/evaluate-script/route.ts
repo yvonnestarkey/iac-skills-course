@@ -240,6 +240,49 @@ async function loadUploadedScript(request: NextRequest, jsonBody: Record<string,
   };
 }
 
+function asScore(value: unknown) {
+  const row = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+  return {
+    earned: asFiniteNumber(row.earned) ?? 0,
+    available: asFiniteNumber(row.available) ?? 0,
+    percentage: asFiniteNumber(row.percentage) ?? 0,
+  };
+}
+
+function claudeEvaluationRow(userId: string, paperName: string, evaluation: Record<string, unknown>) {
+  const direct = asScore(evaluation.directMarks);
+  const indirect = asScore(evaluation.indirectMarks);
+  const thinking = asScore(evaluation.thinkingMarks);
+  const takeaways = asStringList(evaluation.keyTakeaways);
+  const actions = asStringList(evaluation.actionPlan);
+  const facts = asStringList(evaluation.qualitative_facts);
+  return {
+    user_id: userId,
+    paper_name: paperName,
+    question_code: paperName,
+    created_at: new Date().toISOString(),
+    tier1_earned: direct.earned + indirect.earned,
+    tier1_available: direct.available + indirect.available,
+    tier2_earned: thinking.earned,
+    tier2_available: thinking.available,
+    tier1_direct_pct: direct.percentage,
+    tier2_indirect_pct: indirect.percentage,
+    tier3_thinking_pct: thinking.percentage,
+    student_notes: facts.join("\n"),
+    knowledge_summary: String(evaluation.diagnosticHeadline || ""),
+    application_summary: takeaways.join(" "),
+    diagnostic_summary: String(evaluation.fullReportMarkdown || evaluation.diagnosticHeadline || ""),
+    primary_failure_cause: String(evaluation.primaryFailureCause || ""),
+    coaching_recommendation: actions,
+    dropped_marks_breakdown: evaluation,
+    raw_student_responses: {
+      qualitative_facts: facts,
+      handwriting: evaluation.handwriting ?? null,
+    },
+    competency_breakdown: evaluation.saicaComparison ?? null,
+  };
+}
+
 const FAILURE_CAUSES = ["THEORY_GAP", "EXECUTION_GAP", "BREADTH_OMISSION", "MECHANICS_FAILURE"] as const;
 type FailureCause = (typeof FAILURE_CAUSES)[number];
 
@@ -541,6 +584,20 @@ export async function POST(request: NextRequest) {
         coachingRules: context.coachingRules,
         saicaSolution: context.saicaSolution,
       });
+
+      const { error: saveError } = await supabase.from("script_evaluations").insert(
+        claudeEvaluationRow(user.id, paperName, evaluation)
+      );
+      if (saveError) {
+        if (/script_evaluations|schema cache|does not exist/i.test(saveError.message)) {
+          return NextResponse.json(
+            { error: "Could not save the evaluation. Paste supabase/knowledge_base.sql in the SQL editor first." },
+            { status: 500 }
+          );
+        }
+        return NextResponse.json({ error: saveError.message }, { status: 500 });
+      }
+
       return NextResponse.json({
         success: true,
         evaluation,
