@@ -534,10 +534,11 @@ function applyDeterministicMetrics(
 }
 
 export async function POST(request: NextRequest) {
+  try {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !anonKey) {
-    return NextResponse.json({ error: "Supabase is not configured." }, { status: 500 });
+    return NextResponse.json({ success: false, error: "Supabase is not configured." }, { status: 500 });
   }
 
   const supabase = createServerClient(url, anonKey, {
@@ -563,7 +564,6 @@ export async function POST(request: NextRequest) {
     ? null
     : ((await request.json().catch(() => null)) as Record<string, unknown> | null);
 
-  try {
     const uploaded = await loadUploadedScript(request, body);
     if (uploaded) {
       const paperName = uploaded.paperName || String(body?.paper_name || "").trim();
@@ -601,13 +601,7 @@ export async function POST(request: NextRequest) {
         .select("id")
         .maybeSingle();
       if (saveError) {
-        if (/script_evaluations|schema cache|does not exist/i.test(saveError.message)) {
-          return NextResponse.json(
-            { error: "Could not save the evaluation. Paste supabase/knowledge_base.sql in the SQL editor first." },
-            { status: 500 }
-          );
-        }
-        return NextResponse.json({ error: saveError.message }, { status: 500 });
+        throw new Error(saveError.message);
       }
 
       const attemptId = uploaded.attemptId || String(body?.attempt_id || "").trim();
@@ -628,10 +622,6 @@ export async function POST(request: NextRequest) {
         user_id: user.id,
       });
     }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Could not evaluate the uploaded script.";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
 
   const paper_id = String(body?.paper_id || "").trim();
   const mappedPaper = findPastPaper(paper_id);
@@ -861,14 +851,13 @@ export async function POST(request: NextRequest) {
     });
 
   if (error) {
-    if (/script_evaluations|schema cache|does not exist/i.test(error.message)) {
-      return NextResponse.json(
-        { error: "Could not save the evaluation. Paste supabase/knowledge_base.sql in the SQL editor first." },
-        { status: 500 }
-      );
-    }
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    throw new Error(error.message);
   }
 
   return NextResponse.json({ success: true, evaluation });
+  } catch (err) {
+    console.error("Evaluate API Error:", err);
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
+  }
 }
