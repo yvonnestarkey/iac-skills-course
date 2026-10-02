@@ -34,18 +34,25 @@ export async function countPdfPages(buffer: ArrayBuffer): Promise<number> {
   return Number(pdf.numPages || 0);
 }
 
+async function loadPdfjs() {
+  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
+  return pdfjs;
+}
+
 /** Server-side JPEG render for missing or never-rendered PDF pages. Does not analyse content. */
 export async function renderPdfPageJpegs(
   buffer: ArrayBuffer,
   already: Set<number> = new Set()
 ): Promise<{ pageCount: number; pages: RenderedPdfPage[] }> {
-  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  const pdfjs = await loadPdfjs();
   const doc = await pdfjs.getDocument({
     data: copyPdfBytes(buffer),
     CanvasFactory: ServerCanvasFactory,
     isEvalSupported: false,
     useSystemFonts: true,
-  }).promise;
+    disableWorker: true,
+  } as Parameters<typeof pdfjs.getDocument>[0]).promise;
   const pageCount = doc.numPages;
   const last = Math.min(pageCount, PDF_PAGE_RENDER_LIMIT);
   const pages: RenderedPdfPage[] = [];
