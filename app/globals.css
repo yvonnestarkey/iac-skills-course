@@ -6481,10 +6481,28 @@ a.live-session-watch:hover {
 .eval-upload-card {
   display: grid;
   gap: 8px;
+  min-width: 0;
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: 16px;
   background: #fff;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.eval-upload-card strong,
+.eval-upload-card p,
+.eval-upload-filename {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.eval-upload-card input[type="file"] {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .eval-upload-card.is-ready {
@@ -6671,7 +6689,7 @@ a.live-session-watch:hover {
   margin: 10mm 12mm;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .eval-upload-grid {
     grid-template-columns: 1fr;
   }

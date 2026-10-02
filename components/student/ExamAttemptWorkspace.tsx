@@ -162,7 +162,7 @@ export default function ExamAttemptWorkspace() {
                     void onUpload(kind, file);
                   }}
                 />
-                <p className="muted small">
+                <p className="muted small eval-upload-filename">
                   {busyKind === kind
                     ? "Uploading and reading pages…"
                     : present
