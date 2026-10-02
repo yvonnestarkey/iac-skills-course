@@ -3,9 +3,11 @@ import { createServerClient } from "@supabase/ssr";
 import { prepareExamAttemptEvidence } from "@/lib/exam-attempt-evidence";
 import {
   attemptFileCount,
+  attemptPaperName,
   examAttemptFromRow,
   isAttemptSubmitted,
   isMissingExamAttemptsTable,
+  requestScriptEvaluation,
 } from "@/lib/exam-attempts";
 
 export const dynamic = "force-dynamic";
@@ -75,6 +77,16 @@ export async function POST(
 
   after(() => {
     void prepareExamAttemptEvidence(id);
+    if (attempt.marked_script_url && !attempt.evaluation_id) {
+      void requestScriptEvaluation({
+        fileUrl: attempt.marked_script_url,
+        paperName: attemptPaperName(attempt),
+        userId: user.id,
+        attemptId: id,
+        origin: request.nextUrl.origin,
+        cookie: request.headers.get("cookie") || "",
+      });
+    }
   });
 
   return NextResponse.json({ ok: true, status: "analysing" });

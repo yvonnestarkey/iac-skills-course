@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
+  attemptPaperName,
   attemptStatusLabel,
   attemptStudentLabel,
   deriveAttemptStatus,
@@ -36,6 +37,10 @@ test("status stays independent per attempt and does not jump to report ready", (
   );
   assert.equal(deriveAttemptStatus(attempt({ status: "analysing" })), "analysing");
   assert.equal(attemptStatusLabel("evidence_ready"), "Documents uploaded");
+});
+
+test("attempt paper name is sitting plus paper for the evaluation route", () => {
+  assert.equal(attemptPaperName(attempt()), "January 2026 Paper 1 – Mzansi Trendz");
 });
 
 test("staff test attempts are labelled separately from student attempts", () => {

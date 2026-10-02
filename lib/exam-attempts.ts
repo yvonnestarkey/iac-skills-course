@@ -110,6 +110,35 @@ export function attemptDisplayTitle(attempt: Pick<ExamAttempt, "sitting_label" |
   return `${attempt.sitting_label} · ${attempt.paper_title}`;
 }
 
+export function attemptPaperName(
+  attempt: Pick<ExamAttempt, "sitting_label" | "paper_title" | "paper_code">
+): string {
+  return [attempt.sitting_label, attempt.paper_title].filter(Boolean).join(" ") || attempt.paper_code;
+}
+
+export function requestScriptEvaluation(input: {
+  fileUrl: string;
+  paperName: string;
+  userId: string;
+  attemptId?: string;
+  origin?: string;
+  cookie?: string;
+}) {
+  const url = input.origin ? `${input.origin.replace(/\/$/, "")}/api/evaluate-script` : "/api/evaluate-script";
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (input.cookie) headers.cookie = input.cookie;
+  return fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      file_url: input.fileUrl,
+      paper_name: input.paperName,
+      user_id: input.userId,
+      attempt_id: input.attemptId,
+    }),
+  });
+}
+
 export function isAttemptSubmitted(status: ExamAttemptStatus): boolean {
   return TERMINAL_STATUSES.includes(status);
 }
@@ -382,7 +411,16 @@ export async function uploadExamAttemptFile(input: {
     .limit(1)
     .maybeSingle();
   if (error || !data) return { ok: false, error: examAttemptTableError(error?.message || "Could not attach that file.") };
-  return { ok: true, attempt: examAttemptFromRow(data as JsonRow) };
+  const attempt = examAttemptFromRow(data as JsonRow);
+  if (input.kind === "marked_script" && attempt.marked_script_url) {
+    void requestScriptEvaluation({
+      fileUrl: attempt.marked_script_url,
+      paperName: attemptPaperName(attempt),
+      userId: ownerId,
+      attemptId: attempt.id,
+    });
+  }
+  return { ok: true, attempt };
 }
 
 export async function markAttemptAnalysing(

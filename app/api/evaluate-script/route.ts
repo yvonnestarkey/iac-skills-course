@@ -204,11 +204,15 @@ async function loadUploadedScript(request: NextRequest, jsonBody: Record<string,
   if (contentType.includes("multipart/form-data")) {
     const form = await request.formData();
     const paperName = String(form.get("paper_name") || "").trim();
+    const attemptId = String(form.get("attempt_id") || "").trim();
+    const userId = String(form.get("user_id") || "").trim();
     const uploaded = form.get("file") || form.get("script") || form.get("script_file");
     const fileUrl = String(form.get("file_url") || form.get("script_url") || "").trim();
     if (uploaded instanceof File && uploaded.size > 0) {
       return {
         paperName,
+        attemptId,
+        userId,
         bytes: Buffer.from(await uploaded.arrayBuffer()),
         contentType: uploaded.type || "application/octet-stream",
         fileName: uploaded.name,
@@ -219,6 +223,8 @@ async function loadUploadedScript(request: NextRequest, jsonBody: Record<string,
       if (!remote.ok) throw new Error("Could not download the script file URL.");
       return {
         paperName,
+        attemptId,
+        userId,
         bytes: Buffer.from(await remote.arrayBuffer()),
         contentType: remote.headers.get("content-type") || "application/octet-stream",
         fileName: fileUrl.split("/").pop() || "script",
@@ -229,11 +235,15 @@ async function loadUploadedScript(request: NextRequest, jsonBody: Record<string,
 
   const fileUrl = String(jsonBody?.file_url || jsonBody?.script_url || jsonBody?.script_file_url || "").trim();
   const paperName = String(jsonBody?.paper_name || "").trim();
+  const attemptId = String(jsonBody?.attempt_id || "").trim();
+  const userId = String(jsonBody?.user_id || "").trim();
   if (!fileUrl) return null;
   const remote = await fetch(fileUrl);
   if (!remote.ok) throw new Error("Could not download the script file URL.");
   return {
     paperName,
+    attemptId,
+    userId,
     bytes: Buffer.from(await remote.arrayBuffer()),
     contentType: remote.headers.get("content-type") || "application/octet-stream",
     fileName: fileUrl.split("/").pop() || "script",
@@ -585,9 +595,11 @@ export async function POST(request: NextRequest) {
         saicaSolution: context.saicaSolution,
       });
 
-      const { error: saveError } = await supabase.from("script_evaluations").insert(
-        claudeEvaluationRow(user.id, paperName, evaluation)
-      );
+      const { data: saved, error: saveError } = await supabase
+        .from("script_evaluations")
+        .insert(claudeEvaluationRow(user.id, paperName, evaluation))
+        .select("id")
+        .maybeSingle();
       if (saveError) {
         if (/script_evaluations|schema cache|does not exist/i.test(saveError.message)) {
           return NextResponse.json(
@@ -598,11 +610,22 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: saveError.message }, { status: 500 });
       }
 
+      const attemptId = uploaded.attemptId || String(body?.attempt_id || "").trim();
+      if (saved?.id && attemptId) {
+        await supabase
+          .from("exam_attempts")
+          .update({ evaluation_id: saved.id, updated_at: new Date().toISOString() })
+          .eq("id", attemptId)
+          .eq("user_id", user.id);
+      }
+
       return NextResponse.json({
         success: true,
         evaluation,
+        evaluation_id: saved?.id || null,
         paper_name: paperName,
         page_count: pages.length,
+        user_id: user.id,
       });
     }
   } catch (error) {
