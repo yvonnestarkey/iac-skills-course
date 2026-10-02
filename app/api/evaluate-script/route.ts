@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { getOpenAI, matchKnowledgeBase, EVALUATION_MODEL } from "@/lib/knowledge";
-import { renderPdfPageJpegs } from "@/lib/pdf-page-images-server";
 import {
   APPLICATION_WEIGHT,
   KNOWLEDGE_WEIGHT,
@@ -113,18 +112,63 @@ async function fetchExamContext(paperName: string) {
   };
 }
 
-async function scriptPagesFromBytes(
-  bytes: Buffer,
-  contentType: string
-): Promise<Array<{ mediaType: "image/jpeg" | "image/png" | "image/gif" | "image/webp"; data: string; page: number }>> {
-  if (contentType.includes("pdf") || bytes.subarray(0, 4).toString() === "%PDF") {
-    const { pages } = await renderPdfPageJpegs(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength));
-    return pages.slice(0, CLAUDE_PAGE_LIMIT).map((page) => ({
-      mediaType: "image/jpeg" as const,
-      data: page.bytes.toString("base64"),
-      page: page.page,
-    }));
+type ScriptPage = {
+  mediaType: "image/jpeg" | "image/png" | "image/gif" | "image/webp";
+  data: string;
+  page: number;
+};
+
+function isPdfBytes(bytes: Buffer, contentType: string) {
+  return contentType.includes("pdf") || bytes.subarray(0, 4).toString() === "%PDF";
+}
+
+async function scriptPagesFromUrls(urls: string[]): Promise<ScriptPage[]> {
+  const pages: ScriptPage[] = [];
+  for (const [index, url] of urls.slice(0, CLAUDE_PAGE_LIMIT).entries()) {
+    if (!url) continue;
+    const remote = await fetch(url);
+    if (!remote.ok) continue;
+    const bytes = Buffer.from(await remote.arrayBuffer());
+    pages.push({
+      mediaType: imageMediaType(remote.headers.get("content-type") || "image/jpeg"),
+      data: bytes.toString("base64"),
+      page: index + 1,
+    });
   }
+  return pages;
+}
+
+async function scriptPagesFromAttempt(
+  supabase: { from: (table: string) => { select: (columns: string) => any } },
+  attemptId: string,
+  userId: string
+): Promise<ScriptPage[]> {
+  const { data } = await supabase
+    .from("exam_attempts")
+    .select("page_images")
+    .eq("id", attemptId)
+    .eq("user_id", userId)
+    .maybeSingle();
+  const packed = data && typeof data === "object" ? (data as { page_images?: { marked_script?: Array<{ url?: string; page?: number }> } }).page_images : null;
+  const images = packed?.marked_script;
+  if (!Array.isArray(images) || !images.length) return [];
+  const pages: ScriptPage[] = [];
+  for (const image of images.slice(0, CLAUDE_PAGE_LIMIT)) {
+    const url = String(image?.url || "").trim();
+    if (!url) continue;
+    const remote = await fetch(url);
+    if (!remote.ok) continue;
+    const bytes = Buffer.from(await remote.arrayBuffer());
+    pages.push({
+      mediaType: imageMediaType(remote.headers.get("content-type") || "image/jpeg"),
+      data: bytes.toString("base64"),
+      page: Number(image.page) || pages.length + 1,
+    });
+  }
+  return pages;
+}
+
+function scriptPagesFromImageBytes(bytes: Buffer, contentType: string): ScriptPage[] {
   return [
     {
       mediaType: imageMediaType(contentType),
@@ -136,7 +180,8 @@ async function scriptPagesFromBytes(
 
 async function evaluateScriptWithClaude(input: {
   paperName: string;
-  pages: Array<{ mediaType: "image/jpeg" | "image/png" | "image/gif" | "image/webp"; data: string; page: number }>;
+  pages: ScriptPage[];
+  pdfBase64?: string;
   markConfiguration: unknown;
   coachingRules: unknown[];
   saicaSolution: unknown[];
@@ -155,6 +200,19 @@ async function evaluateScriptWithClaude(input: {
       data: page.data,
     },
   }));
+  const documentBlock = input.pdfBase64
+    ? {
+        type: "document" as const,
+        source: {
+          type: "base64" as const,
+          media_type: "application/pdf" as const,
+          data: input.pdfBase64,
+        },
+      }
+    : null;
+  const attachmentNote = input.pages.length
+    ? `Script pages attached: ${input.pages.length} (${input.pages.map((page) => page.page).join(", ")}).`
+    : "Handwritten script PDF attached.";
 
   const completion = await anthropic.messages.create({
     model: CLAUDE_SCRIPT_MODEL,
@@ -165,12 +223,12 @@ async function evaluateScriptWithClaude(input: {
       {
         role: "user",
         content: [
-          ...imageBlocks,
+          ...(documentBlock ? [documentBlock] : imageBlocks),
           {
             type: "text",
             text: [
               `Paper: ${input.paperName}`,
-              `Script pages attached: ${input.pages.length} (${input.pages.map((page) => page.page).join(", ")}).`,
+              attachmentNote,
               "",
               "Exam mark configuration from Supabase:",
               JSON.stringify(input.markConfiguration ?? {}, null, 2).slice(0, 12000),
@@ -206,6 +264,10 @@ async function loadUploadedScript(request: NextRequest, jsonBody: Record<string,
     const paperName = String(form.get("paper_name") || "").trim();
     const attemptId = String(form.get("attempt_id") || "").trim();
     const userId = String(form.get("user_id") || "").trim();
+    const pageImageUrls = String(form.get("page_image_urls") || "")
+      .split(/\n|,/)
+      .map((url) => url.trim())
+      .filter(Boolean);
     const uploaded = form.get("file") || form.get("script") || form.get("script_file");
     const fileUrl = String(form.get("file_url") || form.get("script_url") || "").trim();
     if (uploaded instanceof File && uploaded.size > 0) {
@@ -213,18 +275,31 @@ async function loadUploadedScript(request: NextRequest, jsonBody: Record<string,
         paperName,
         attemptId,
         userId,
+        pageImageUrls,
         bytes: Buffer.from(await uploaded.arrayBuffer()),
         contentType: uploaded.type || "application/octet-stream",
         fileName: uploaded.name,
       };
     }
-    if (fileUrl) {
+    if (fileUrl || pageImageUrls.length) {
+      if (!fileUrl) {
+        return {
+          paperName,
+          attemptId,
+          userId,
+          pageImageUrls,
+          bytes: Buffer.alloc(0),
+          contentType: "application/octet-stream",
+          fileName: "script",
+        };
+      }
       const remote = await fetch(fileUrl);
       if (!remote.ok) throw new Error("Could not download the script file URL.");
       return {
         paperName,
         attemptId,
         userId,
+        pageImageUrls,
         bytes: Buffer.from(await remote.arrayBuffer()),
         contentType: remote.headers.get("content-type") || "application/octet-stream",
         fileName: fileUrl.split("/").pop() || "script",
@@ -237,13 +312,28 @@ async function loadUploadedScript(request: NextRequest, jsonBody: Record<string,
   const paperName = String(jsonBody?.paper_name || "").trim();
   const attemptId = String(jsonBody?.attempt_id || "").trim();
   const userId = String(jsonBody?.user_id || "").trim();
-  if (!fileUrl) return null;
+  const pageImageUrls = Array.isArray(jsonBody?.page_image_urls)
+    ? jsonBody.page_image_urls.map((url) => String(url || "").trim()).filter(Boolean)
+    : [];
+  if (!fileUrl && !pageImageUrls.length && !attemptId) return null;
+  if (!fileUrl) {
+    return {
+      paperName,
+      attemptId,
+      userId,
+      pageImageUrls,
+      bytes: Buffer.alloc(0),
+      contentType: "application/octet-stream",
+      fileName: "script",
+    };
+  }
   const remote = await fetch(fileUrl);
   if (!remote.ok) throw new Error("Could not download the script file URL.");
   return {
     paperName,
     attemptId,
     userId,
+    pageImageUrls,
     bytes: Buffer.from(await remote.arrayBuffer()),
     contentType: remote.headers.get("content-type") || "application/octet-stream",
     fileName: fileUrl.split("/").pop() || "script",
@@ -570,26 +660,30 @@ export async function POST(request: NextRequest) {
       if (!paperName) {
         return NextResponse.json({ error: "Enter the paper name or select a past paper." }, { status: 400 });
       }
-      if (!uploaded.bytes.length) {
-        return NextResponse.json({ error: "The uploaded script file is empty." }, { status: 400 });
+      const isPdf = uploaded.bytes.length > 0 && isPdfBytes(uploaded.bytes, uploaded.contentType);
+      const isImage = uploaded.bytes.length > 0 && SCRIPT_IMAGE_TYPES.has(uploaded.contentType.toLowerCase());
+      let pages =
+        uploaded.pageImageUrls.length > 0
+          ? await scriptPagesFromUrls(uploaded.pageImageUrls)
+          : uploaded.attemptId
+            ? await scriptPagesFromAttempt(supabase, uploaded.attemptId, user.id)
+            : [];
+      if (!pages.length && isImage) {
+        pages = scriptPagesFromImageBytes(uploaded.bytes, uploaded.contentType);
       }
-      const isPdf = uploaded.contentType.includes("pdf") || uploaded.bytes.subarray(0, 4).toString() === "%PDF";
-      const isImage = SCRIPT_IMAGE_TYPES.has(uploaded.contentType.toLowerCase());
-      if (!isPdf && !isImage) {
-        return NextResponse.json({ error: "Upload a script PDF or image (JPEG, PNG, WebP, or GIF)." }, { status: 400 });
+      const pdfBase64 = !pages.length && isPdf ? uploaded.bytes.toString("base64") : undefined;
+      if (!pages.length && !pdfBase64) {
+        return NextResponse.json(
+          { error: "Upload a script PDF or image, or wait until the page scans have been stored." },
+          { status: 400 }
+        );
       }
 
-      const [pages, context] = await Promise.all([
-        scriptPagesFromBytes(uploaded.bytes, uploaded.contentType),
-        fetchExamContext(paperName),
-      ]);
-      if (!pages.length) {
-        return NextResponse.json({ error: "Could not read any pages from the script file." }, { status: 400 });
-      }
-
+      const context = await fetchExamContext(paperName);
       const evaluation = await evaluateScriptWithClaude({
         paperName,
         pages,
+        pdfBase64,
         markConfiguration: context.markConfiguration,
         coachingRules: context.coachingRules,
         saicaSolution: context.saicaSolution,

@@ -121,6 +121,7 @@ export function requestScriptEvaluation(input: {
   paperName: string;
   userId: string;
   attemptId?: string;
+  pageImageUrls?: string[];
   origin?: string;
   cookie?: string;
 }) {
@@ -135,6 +136,7 @@ export function requestScriptEvaluation(input: {
       paper_name: input.paperName,
       user_id: input.userId,
       attempt_id: input.attemptId,
+      page_image_urls: input.pageImageUrls || [],
     }),
   });
 }
@@ -418,6 +420,7 @@ export async function uploadExamAttemptFile(input: {
       paperName: attemptPaperName(attempt),
       userId: ownerId,
       attemptId: attempt.id,
+      pageImageUrls: (attempt.page_images.marked_script || []).map((page) => page.url).filter(Boolean),
     });
   }
   return { ok: true, attempt };

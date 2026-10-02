@@ -83,6 +83,7 @@ export async function POST(
         paperName: attemptPaperName(attempt),
         userId: user.id,
         attemptId: id,
+        pageImageUrls: (attempt.page_images.marked_script || []).map((page) => page.url).filter(Boolean),
         origin: request.nextUrl.origin,
         cookie: request.headers.get("cookie") || "",
       });
