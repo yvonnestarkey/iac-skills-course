@@ -1,6 +1,10 @@
+import Anthropic from "@anthropic-ai/sdk";
+import type { ImageBlockParam } from "@anthropic-ai/sdk/resources/messages";
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { getOpenAI, matchKnowledgeBase, EVALUATION_MODEL } from "@/lib/knowledge";
+import { renderPdfPageJpegs } from "@/lib/pdf-page-images-server";
 import {
   APPLICATION_WEIGHT,
   KNOWLEDGE_WEIGHT,
@@ -30,10 +34,211 @@ import {
   type PastPaper,
 } from "@/lib/past-papers";
 import { evaluateCompetencyBreakdown, formatCompetencyBreakdown } from "@/lib/competency-evaluator";
-import { BURIED_TREASURE_SYSTEM_PROMPT } from "@/lib/prompts/buried-treasure";
+import { BURIED_TREASURE_FRAMEWORK_PROMPT, BURIED_TREASURE_SYSTEM_PROMPT } from "@/lib/prompts/buried-treasure";
 import type { BuriedTreasureAnalysis, TierScore } from "@/types/evaluation";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 120;
+
+const CLAUDE_SCRIPT_MODEL = "claude-3-5-sonnet-20241022";
+const CLAUDE_PAGE_LIMIT = 20;
+const SCRIPT_IMAGE_TYPES = new Set(["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"]);
+
+const CASE_STUDY_PROXIMITY_OUTPUT = `You MUST respond with a single JSON object (no markdown fences). Structure:
+
+{
+  "paper_name": string,
+  "handwriting": { "legibility": "good" | "fair" | "poor", "notes": string },
+  "qualitative_facts": string[],
+  "directMarks": { "available": number, "earned": number, "percentage": number, "notes": string },
+  "indirectMarks": { "available": number, "earned": number, "percentage": number, "notes": string },
+  "thinkingMarks": { "available": number, "earned": number, "percentage": number, "notes": string },
+  "saicaComparison": { "aligned": string[], "missed": string[], "incorrect": string[] },
+  "hasTheoryGap": boolean,
+  "primaryFailureCause": "THEORY_GAP" | "EXECUTION_GAP" | "BREADTH_OMISSION" | "MECHANICS_FAILURE",
+  "diagnosticHeadline": string,
+  "keyTakeaways": string[],
+  "actionPlan": string[],
+  "fullReportMarkdown": string
+}
+
+Evaluate the handwritten script pages: read the writing, extract qualitative facts the student used, and compare those facts and workings against the SAICA solution / mark plan and Eve coaching rules supplied in the user message.`;
+
+function serviceSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+}
+
+function imageMediaType(contentType: string): "image/jpeg" | "image/png" | "image/gif" | "image/webp" {
+  if (contentType.includes("png")) return "image/png";
+  if (contentType.includes("webp")) return "image/webp";
+  if (contentType.includes("gif")) return "image/gif";
+  return "image/jpeg";
+}
+
+async function fetchExamContext(paperName: string) {
+  const supabase = serviceSupabase();
+  if (!supabase) {
+    return { markConfiguration: null as unknown, coachingRules: [] as unknown[], saicaSolution: [] as unknown[] };
+  }
+
+  const [{ data: markRows }, { data: ruleRows }, { data: solutionRows }] = await Promise.all([
+    supabase.from("mark_configurations").select("*").ilike("paper_name", `%${paperName}%`),
+    supabase
+      .from("coaching_insights")
+      .select("title, tool_code, category, coaching_rule, diagnostic_routine, diagnostic_outcome")
+      .eq("active", true)
+      .limit(40),
+    supabase
+      .from("knowledge_base")
+      .select("document_title, category, content")
+      .or(
+        [
+          `document_title.ilike.%${paperName}%`,
+          `content.ilike.%${paperName}%`,
+          "category.ilike.%solution%",
+          "category.ilike.%mark plan%",
+          "category.ilike.%mark_plan%",
+        ].join(",")
+      )
+      .limit(8),
+  ]);
+
+  return {
+    markConfiguration: markRows?.[0] ?? null,
+    coachingRules: ruleRows ?? [],
+    saicaSolution: solutionRows ?? [],
+  };
+}
+
+async function scriptPagesFromBytes(
+  bytes: Buffer,
+  contentType: string
+): Promise<Array<{ mediaType: "image/jpeg" | "image/png" | "image/gif" | "image/webp"; data: string; page: number }>> {
+  if (contentType.includes("pdf") || bytes.subarray(0, 4).toString() === "%PDF") {
+    const { pages } = await renderPdfPageJpegs(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength));
+    return pages.slice(0, CLAUDE_PAGE_LIMIT).map((page) => ({
+      mediaType: "image/jpeg" as const,
+      data: page.bytes.toString("base64"),
+      page: page.page,
+    }));
+  }
+  return [
+    {
+      mediaType: imageMediaType(contentType),
+      data: bytes.toString("base64"),
+      page: 1,
+    },
+  ];
+}
+
+async function evaluateScriptWithClaude(input: {
+  paperName: string;
+  pages: Array<{ mediaType: "image/jpeg" | "image/png" | "image/gif" | "image/webp"; data: string; page: number }>;
+  markConfiguration: unknown;
+  coachingRules: unknown[];
+  saicaSolution: unknown[];
+}) {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    throw new Error("ANTHROPIC_API_KEY is not set on the server.");
+  }
+
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const imageBlocks: ImageBlockParam[] = input.pages.map((page) => ({
+    type: "image",
+    source: {
+      type: "base64",
+      media_type: page.mediaType,
+      data: page.data,
+    },
+  }));
+
+  const completion = await anthropic.messages.create({
+    model: CLAUDE_SCRIPT_MODEL,
+    max_tokens: 4096,
+    temperature: 0.2,
+    system: `${BURIED_TREASURE_FRAMEWORK_PROMPT.trim()}\n\n${CASE_STUDY_PROXIMITY_OUTPUT}`,
+    messages: [
+      {
+        role: "user",
+        content: [
+          ...imageBlocks,
+          {
+            type: "text",
+            text: [
+              `Paper: ${input.paperName}`,
+              `Script pages attached: ${input.pages.length} (${input.pages.map((page) => page.page).join(", ")}).`,
+              "",
+              "Exam mark configuration from Supabase:",
+              JSON.stringify(input.markConfiguration ?? {}, null, 2).slice(0, 12000),
+              "",
+              "Eve coaching rules from coaching_insights:",
+              JSON.stringify(input.coachingRules, null, 2).slice(0, 12000),
+              "",
+              "SAICA solution / mark-plan excerpts from the knowledge base:",
+              JSON.stringify(input.saicaSolution, null, 2).slice(0, 16000),
+              "",
+              "Read the handwritten script. Extract the qualitative facts the student used. Score Direct / Indirect / Thinking against the mark configuration and compare the answer to the SAICA solution. Return only the JSON object.",
+            ].join("\n"),
+          },
+        ],
+      },
+    ],
+  });
+
+  const text = completion.content
+    .filter((block) => block.type === "text")
+    .map((block) => block.text)
+    .join("\n")
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+  return JSON.parse(text) as Record<string, unknown>;
+}
+
+async function loadUploadedScript(request: NextRequest, jsonBody: Record<string, unknown> | null) {
+  const contentType = request.headers.get("content-type") || "";
+  if (contentType.includes("multipart/form-data")) {
+    const form = await request.formData();
+    const paperName = String(form.get("paper_name") || "").trim();
+    const uploaded = form.get("file") || form.get("script") || form.get("script_file");
+    const fileUrl = String(form.get("file_url") || form.get("script_url") || "").trim();
+    if (uploaded instanceof File && uploaded.size > 0) {
+      return {
+        paperName,
+        bytes: Buffer.from(await uploaded.arrayBuffer()),
+        contentType: uploaded.type || "application/octet-stream",
+        fileName: uploaded.name,
+      };
+    }
+    if (fileUrl) {
+      const remote = await fetch(fileUrl);
+      if (!remote.ok) throw new Error("Could not download the script file URL.");
+      return {
+        paperName,
+        bytes: Buffer.from(await remote.arrayBuffer()),
+        contentType: remote.headers.get("content-type") || "application/octet-stream",
+        fileName: fileUrl.split("/").pop() || "script",
+      };
+    }
+    return null;
+  }
+
+  const fileUrl = String(jsonBody?.file_url || jsonBody?.script_url || jsonBody?.script_file_url || "").trim();
+  const paperName = String(jsonBody?.paper_name || "").trim();
+  if (!fileUrl) return null;
+  const remote = await fetch(fileUrl);
+  if (!remote.ok) throw new Error("Could not download the script file URL.");
+  return {
+    paperName,
+    bytes: Buffer.from(await remote.arrayBuffer()),
+    contentType: remote.headers.get("content-type") || "application/octet-stream",
+    fileName: fileUrl.split("/").pop() || "script",
+  };
+}
 
 const FAILURE_CAUSES = ["THEORY_GAP", "EXECUTION_GAP", "BREADTH_OMISSION", "MECHANICS_FAILURE"] as const;
 type FailureCause = (typeof FAILURE_CAUSES)[number];
@@ -300,7 +505,54 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Sign in to run a diagnostic." }, { status: 401 });
   }
 
-  const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
+  const contentType = request.headers.get("content-type") || "";
+  const body = contentType.includes("multipart/form-data")
+    ? null
+    : ((await request.json().catch(() => null)) as Record<string, unknown> | null);
+
+  try {
+    const uploaded = await loadUploadedScript(request, body);
+    if (uploaded) {
+      const paperName = uploaded.paperName || String(body?.paper_name || "").trim();
+      if (!paperName) {
+        return NextResponse.json({ error: "Enter the paper name or select a past paper." }, { status: 400 });
+      }
+      if (!uploaded.bytes.length) {
+        return NextResponse.json({ error: "The uploaded script file is empty." }, { status: 400 });
+      }
+      const isPdf = uploaded.contentType.includes("pdf") || uploaded.bytes.subarray(0, 4).toString() === "%PDF";
+      const isImage = SCRIPT_IMAGE_TYPES.has(uploaded.contentType.toLowerCase());
+      if (!isPdf && !isImage) {
+        return NextResponse.json({ error: "Upload a script PDF or image (JPEG, PNG, WebP, or GIF)." }, { status: 400 });
+      }
+
+      const [pages, context] = await Promise.all([
+        scriptPagesFromBytes(uploaded.bytes, uploaded.contentType),
+        fetchExamContext(paperName),
+      ]);
+      if (!pages.length) {
+        return NextResponse.json({ error: "Could not read any pages from the script file." }, { status: 400 });
+      }
+
+      const evaluation = await evaluateScriptWithClaude({
+        paperName,
+        pages,
+        markConfiguration: context.markConfiguration,
+        coachingRules: context.coachingRules,
+        saicaSolution: context.saicaSolution,
+      });
+      return NextResponse.json({
+        success: true,
+        evaluation,
+        paper_name: paperName,
+        page_count: pages.length,
+      });
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Could not evaluate the uploaded script.";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+
   const paper_id = String(body?.paper_id || "").trim();
   const mappedPaper = findPastPaper(paper_id);
   if (paper_id && !mappedPaper) {
