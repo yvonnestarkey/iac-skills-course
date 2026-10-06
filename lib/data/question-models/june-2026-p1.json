@@ -1,6 +1,6 @@
 {
   "paper_id": "iac-2026-p1",
-  "status": "draft — Q1(a) classified with Yvonne 6 Oct 2026; other requirements pending",
+  "status": "draft — Q1(a) and Q1(d) classified with Yvonne 6 Oct 2026; other requirements pending",
   "notes": [
     "Question Type is part of the pre-calibrated Question Model, set once per requirement (not guessed per student).",
     "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
@@ -181,7 +181,46 @@
     },
     "P1Q1_d": {
       "question_type": "Discussion",
-      "proximity_items": []
+      "proximity_items": [
+        {
+          "row": 94,
+          "proximity": "direct",
+          "note": "Case summarises the concept of Goal 6; marked point (alternative water sources are a good thing) is the gist. Report row merges two solution thoughts; classified by the marked thought. See source_discrepancies."
+        },
+        {
+          "row": 95,
+          "proximity": "direct",
+          "note": "Case states the water is for washing and flushing toilets, not drinking; sanitation is given."
+        },
+        {
+          "row": 96,
+          "proximity": "direct",
+          "note": "Case summarises the concept of Goal 7; marked point is alternative power source = good thing. Report row merges two solution thoughts; see source_discrepancies."
+        },
+        {
+          "row": 97,
+          "proximity": "direct",
+          "note": "LED lighting and efficient climate control stated in the case."
+        },
+        {
+          "row": 98,
+          "proximity": "direct",
+          "note": "Insulated warehouses stated in the case."
+        },
+        {
+          "row": 99,
+          "proximity": "indirect",
+          "note": "Draft: renewable versus depletable (sun versus Eskom coal) is theory the student brings. Pending Yvonne: by the 'gist' logic this may be Direct."
+        },
+        {
+          "row": 100,
+          "proximity": "thinking",
+          "note": "Resources, raw materials and battery disposal are not in the case; student must generate."
+        }
+      ],
+      "source_discrepancies": [
+        "Marker's report rows 94 and 96 each combine a goal-concept statement with a first marked point; the official solution allocates marks for two separate thoughts in each. The marker's report is the numbering authority, so each row is one item. Yvonne to decide how marks are handled (SAICA inconsistency)."
+      ]
     },
     "P1Q2_e": {
       "question_type": "Discussion",
