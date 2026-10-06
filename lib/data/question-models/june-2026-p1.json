@@ -1,20 +1,207 @@
 {
   "paper_id": "iac-2026-p1",
-  "status": "draft — question types proposed, proximity items not yet classified",
+  "status": "draft — Q1(a) classified with Yvonne 6 Oct 2026; other requirements pending",
   "notes": [
     "Question Type is part of the pre-calibrated Question Model, set once per requirement (not guessed per student).",
     "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
-    "technical marks exclude professional marks (Z structure marks, Comm marks, Y marks)."
+    "technical marks exclude professional marks (Z structure marks, Comm marks, Y marks).",
+    "Test (Yvonne): Direct = little or no jump from the case indicator to the marked point. If the indicator is in the case but the point needs inference it is Indirect; several steps or generated ideas are Thinking. Bold in the marker's report is NOT the test."
   ],
   "requirements": {
-    "P1Q1_a": { "question_type": "Discussion", "proximity_items": [] },
-    "P1Q1_b": { "question_type": "Discussion", "proximity_items": [] },
-    "P1Q1_c": { "question_type": "Non-discussion", "proximity_items": [] },
-    "P1Q1_d": { "question_type": "Discussion", "proximity_items": [] },
-    "P1Q2_e": { "question_type": "Discussion", "proximity_items": [] },
-    "P1Q2_f": { "question_type": "Discussion", "proximity_items": [] },
-    "P1Q2_g1": { "question_type": "Discussion", "proximity_items": [] },
-    "P1Q2_g2": { "question_type": "Discussion", "proximity_items": [] },
-    "P1Q2_h": { "question_type": "Discussion", "proximity_items": [] }
+    "P1Q1_a": {
+      "question_type": "Discussion",
+      "proximity_items": [
+        {
+          "row": 5,
+          "proximity": "direct"
+        },
+        {
+          "row": 6,
+          "proximity": "indirect"
+        },
+        {
+          "row": 7,
+          "proximity": "direct"
+        },
+        {
+          "row": 8,
+          "proximity": "direct"
+        },
+        {
+          "row": 9,
+          "proximity": "direct"
+        },
+        {
+          "row": 10,
+          "proximity": "thinking",
+          "note": "Divisions listed in case; student must generate the diversification opportunity"
+        },
+        {
+          "row": 11,
+          "proximity": "indirect"
+        },
+        {
+          "row": 12,
+          "proximity": "direct"
+        },
+        {
+          "row": 13,
+          "proximity": "direct"
+        },
+        {
+          "row": 14,
+          "proximity": "indirect",
+          "note": "Liquidity indicator is stated; impact on ability to raise funding needs a step"
+        },
+        {
+          "row": 15,
+          "proximity": "indirect"
+        },
+        {
+          "row": 16,
+          "proximity": "direct"
+        },
+        {
+          "row": 17,
+          "proximity": "indirect"
+        },
+        {
+          "row": 18,
+          "proximity": "thinking",
+          "note": "Indicator clear (government guarantee); uncertainty of funding is several steps away"
+        },
+        {
+          "row": 19,
+          "proximity": "thinking",
+          "note": "Indicator clear (locomotives idle six years); management competence is several steps away"
+        },
+        {
+          "row": 20,
+          "proximity": "indirect"
+        },
+        {
+          "row": 21,
+          "proximity": "indirect"
+        },
+        {
+          "row": 22,
+          "proximity": "thinking",
+          "note": "Not on the solution; case clue sits in section 3, which the requirement excludes"
+        },
+        {
+          "row": 23,
+          "proximity": "thinking",
+          "note": "Not on the solution; case clue sits in section 3, which the requirement excludes"
+        },
+        {
+          "row": 24,
+          "proximity": "thinking",
+          "note": "Clue sits in section 3, which the requirement excludes"
+        },
+        {
+          "row": 25,
+          "proximity": "indirect"
+        },
+        {
+          "row": 26,
+          "proximity": "indirect",
+          "note": "Oil, rand and inflation stated; impact on trading environment needs a step"
+        },
+        {
+          "row": 27,
+          "proximity": "indirect",
+          "note": "Electricity constraints stated; impact needs a step"
+        },
+        {
+          "row": 28,
+          "proximity": "indirect"
+        },
+        {
+          "row": 29,
+          "proximity": "direct"
+        },
+        {
+          "row": 30,
+          "proximity": "indirect"
+        },
+        {
+          "row": 31,
+          "proximity": "direct"
+        },
+        {
+          "row": 32,
+          "proximity": "direct"
+        },
+        {
+          "row": 33,
+          "proximity": "direct"
+        },
+        {
+          "row": 34,
+          "proximity": "direct"
+        },
+        {
+          "row": 35,
+          "proximity": "direct"
+        },
+        {
+          "row": 36,
+          "proximity": "direct"
+        },
+        {
+          "row": 37,
+          "proximity": "indirect"
+        },
+        {
+          "row": 38,
+          "proximity": "indirect"
+        },
+        {
+          "row": 39,
+          "proximity": "indirect"
+        },
+        {
+          "row": 40,
+          "proximity": "indirect"
+        },
+        {
+          "row": 41,
+          "proximity": "thinking",
+          "note": "Indicator clear (political pressure); governance and ethics risk is several steps away"
+        }
+      ]
+    },
+    "P1Q1_b": {
+      "question_type": "Discussion",
+      "proximity_items": []
+    },
+    "P1Q1_c": {
+      "question_type": "Non-discussion",
+      "proximity_items": []
+    },
+    "P1Q1_d": {
+      "question_type": "Discussion",
+      "proximity_items": []
+    },
+    "P1Q2_e": {
+      "question_type": "Discussion",
+      "proximity_items": []
+    },
+    "P1Q2_f": {
+      "question_type": "Discussion",
+      "proximity_items": []
+    },
+    "P1Q2_g1": {
+      "question_type": "Discussion",
+      "proximity_items": []
+    },
+    "P1Q2_g2": {
+      "question_type": "Discussion",
+      "proximity_items": []
+    },
+    "P1Q2_h": {
+      "question_type": "Discussion",
+      "proximity_items": []
+    }
   }
 }
