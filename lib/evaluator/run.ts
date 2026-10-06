@@ -87,6 +87,7 @@ export async function runEvaluation(attemptId: string, options: RunOptions = {})
       bmcr: bmcrRows.find((row) => row.code === requirement.code),
       officialText,
       usage,
+      paperId: attempt.paper_id,
     });
   });
 

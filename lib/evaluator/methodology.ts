@@ -29,6 +29,7 @@ Core principles (non-negotiable):
 export function stage1Methodology(): string {
   return [
     OBSERVATION_PRINCIPLES,
+    block("Calibration decisions (these override older notes where they conflict)", doc("calibration-decisions")),
     block("Evaluator architecture", doc("evaluator-architecture")),
     block("Working principles", doc("working-principles")),
     block("BMCR", doc("bmcr")),
@@ -57,6 +58,7 @@ export function stage2Methodology(): string {
   const mapping = ruleDocs.find((item) => item.id === "starter-mapping")?.content.trim() || "";
   return [
     OBSERVATION_PRINCIPLES,
+    block("Calibration decisions", doc("calibration-decisions")),
     block("Evaluator architecture", doc("evaluator-architecture")),
     block("Working principles", doc("working-principles")),
     block("Eve rules (confirmed by the coach)", ruleText),

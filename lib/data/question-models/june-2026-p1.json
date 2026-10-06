@@ -1,0 +1,20 @@
+{
+  "paper_id": "iac-2026-p1",
+  "status": "draft — question types proposed, proximity items not yet classified",
+  "notes": [
+    "Question Type is part of the pre-calibrated Question Model, set once per requirement (not guessed per student).",
+    "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
+    "technical marks exclude professional marks (Z structure marks, Comm marks, Y marks)."
+  ],
+  "requirements": {
+    "P1Q1_a": { "question_type": "Discussion", "proximity_items": [] },
+    "P1Q1_b": { "question_type": "Discussion", "proximity_items": [] },
+    "P1Q1_c": { "question_type": "Non-discussion", "proximity_items": [] },
+    "P1Q1_d": { "question_type": "Discussion", "proximity_items": [] },
+    "P1Q2_e": { "question_type": "Discussion", "proximity_items": [] },
+    "P1Q2_f": { "question_type": "Discussion", "proximity_items": [] },
+    "P1Q2_g1": { "question_type": "Discussion", "proximity_items": [] },
+    "P1Q2_g2": { "question_type": "Discussion", "proximity_items": [] },
+    "P1Q2_h": { "question_type": "Discussion", "proximity_items": [] }
+  }
+}

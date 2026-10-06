@@ -14,6 +14,19 @@ export type CommunicationRating = (typeof COMMUNICATION_RATINGS)[number];
 export const QUESTION_TYPES = ["Discussion", "Non-discussion"] as const;
 export type QuestionType = (typeof QUESTION_TYPES)[number];
 
+export type BmcrVerdict =
+  | "no_basic_marks"
+  | "not_enough_theory" // Basic marks < 50% of total marks
+  | "enough_theory_converting" // Basic >= 50% of total and >= 70% of Basic marks converted
+  | "enough_theory_not_converting"; // Basic >= 50% of total but < 70% converted ("something else", not theory)
+
+export type ProximityItemEvidence = {
+  /** Marker's report row number. */
+  row: number;
+  seen: boolean;
+  awarded: boolean;
+};
+
 export type ProximityBucket = {
   /** Marks of this proximity kind the official solution makes available. */
   available: number;
@@ -64,6 +77,8 @@ export type RequirementEvaluation = {
   question_type_basis: string;
   competency: { topic: string; basis: string };
   bmcr: { student_known: number | null; available: number | null };
+  /** Item-level evidence against the pre-calibrated question model. Buckets are aggregated in code. */
+  buried_treasure_items: ProximityItemEvidence[] | null;
   buried_treasure: { direct: ProximityBucket; indirect: ProximityBucket; thinking: ProximityBucket } | null;
   volume: { attempts: number; note: string } | null;
   components: { available: boolean; recognised: boolean; exploited: boolean; evidence: string } | null;
@@ -96,6 +111,7 @@ export type RequirementEvaluation = {
 export type RequirementMetrics = {
   code: string;
   bmcr_conversion: number | null; // technical_awarded / student_known
+  bmcr_verdict: BmcrVerdict;
   bmcr_known_pct: number | null; // student_known / total_marks
   actual_pct: number | null; // technical_awarded / total_marks
   accuracy: number | null; // technical_awarded / volume attempts

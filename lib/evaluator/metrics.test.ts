@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { applyNotAttemptedRule, computeMetrics, validateRequirement } from "./metrics";
+import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, computeMetrics, validateRequirement } from "./metrics";
+import { toolsFor, type RequirementModel } from "./question-model";
 import type { RequirementEvaluation } from "./types";
 
 function base(overrides: Partial<RequirementEvaluation> = {}): RequirementEvaluation {
@@ -15,6 +16,7 @@ function base(overrides: Partial<RequirementEvaluation> = {}): RequirementEvalua
     question_type_basis: "",
     competency: { topic: "Strategy", basis: "" },
     bmcr: { student_known: 15, available: 15 },
+    buried_treasure_items: null,
     buried_treasure: {
       direct: { available: 21, seen: 6, awarded: 5 },
       indirect: { available: 0, seen: 0, awarded: 0 },
@@ -51,4 +53,44 @@ test("not attempted: answer-based measures are discarded, BMCR/type/competency r
 test("validation flags impossible values", () => {
   const warnings = validateRequirement(base({ technical_awarded: 20 }));
   assert.ok(warnings.some((w) => w.includes("outside 0–15")));
+});
+
+test("BMCR verdicts use fixed 50% / 70% thresholds, exactly 50% counts as enough theory", () => {
+  assert.equal(bmcrVerdict(7, 15, 22), "enough_theory_not_converting"); // Q1(a): 68% basic, 47% converted
+  assert.equal(bmcrVerdict(0, 3, 6), "enough_theory_not_converting"); // Q1(d): exactly 50% basic
+  assert.equal(bmcrVerdict(0, 7, 11), "enough_theory_not_converting"); // Q1(b): not attempted, still has a BMCR
+  assert.equal(bmcrVerdict(7, 10, 20), "enough_theory_converting"); // exactly 70% converts
+  assert.equal(bmcrVerdict(2, 5, 20), "not_enough_theory");
+  assert.equal(bmcrVerdict(0, 0, 20), "no_basic_marks");
+  assert.equal(bmcrVerdict(null, null, 20), "no_basic_marks");
+});
+
+test("tool gating: discussion runs the full set, calculation and not-attempted do not", () => {
+  assert.equal(toolsFor("Discussion", true).components, true);
+  assert.equal(toolsFor("Discussion", true).volumeAccuracy, true);
+  assert.equal(toolsFor("Non-discussion", true).volumeAccuracy, false);
+  assert.equal(toolsFor("Non-discussion", true).coreIssue, false);
+  assert.equal(toolsFor("Discussion", false).buriedTreasure, false);
+});
+
+test("proximity aggregation uses the pre-calibrated model, with Available as denominator", () => {
+  const model: RequirementModel = {
+    question_type: "Discussion",
+    proximity_items: [
+      { row: 12, proximity: "direct" },
+      { row: 14, proximity: "direct" },
+      { row: 21, proximity: "indirect" },
+      { row: 30, proximity: "thinking" },
+    ],
+  };
+  const out = aggregateProximity(model, [
+    { row: 12, seen: true, awarded: true },
+    { row: 14, seen: true, awarded: false },
+    { row: 21, seen: false, awarded: false },
+    { row: 99, seen: true, awarded: true }, // not in the model: ignored
+  ]);
+  assert.deepEqual(out?.direct, { available: 2, seen: 2, awarded: 1 });
+  assert.deepEqual(out?.indirect, { available: 1, seen: 0, awarded: 0 });
+  assert.deepEqual(out?.thinking, { available: 1, seen: 0, awarded: 0 });
+  assert.equal(aggregateProximity({ question_type: "Discussion", proximity_items: [] }, []), null);
 });

@@ -18,8 +18,8 @@ export function renderCalibrationMarkdown(result: RunResult): string {
   lines.push("");
   lines.push("## Requirements × measures");
   lines.push("");
-  lines.push("| Req | Attempted | Marks (tech/avail) | BMCR known | BMCR conv. | Direct conv. | Indirect conv. | Thinking conv. | Volume | Accuracy | Components (avail/rec/expl) | Core issue | RTFQ (shape/dir/lens) | Comm. | Type | Competency |");
-  lines.push("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|");
+  lines.push("| Req | Attempted | Marks (tech/avail) | BMCR known | BMCR conv. | BMCR verdict | Direct conv. | Indirect conv. | Thinking conv. | Volume | Accuracy | Components (avail/rec/expl) | Core issue | RTFQ (shape/dir/lens) | Comm. | Type | Competency |");
+  lines.push("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|");
   for (const req of dataset.requirements) {
     const m = dataset.metrics.find((x) => x.code === req.code);
     const yn = (v: boolean) => (v ? "Y" : "N");
@@ -30,6 +30,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
         `${req.technical_awarded ?? "?"}/${req.total_marks}`,
         req.bmcr.student_known ?? "?",
         pct(m?.bmcr_conversion ?? null),
+        m?.bmcr_verdict ?? "—",
         pct(m?.proximity_conversion.direct ?? null),
         pct(m?.proximity_conversion.indirect ?? null),
         pct(m?.proximity_conversion.thinking ?? null),
