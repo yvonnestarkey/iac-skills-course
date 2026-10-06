@@ -13,3 +13,6 @@ Run a calibration:
 `npm run calibrate:evaluator -- --attempt=<uuid> --only=P1Q1_b` → writes dataset.json, report.json, review.md under `calibration-output/`.
 Add `--save` to store the run in `evaluator_runs` (run `supabase/evaluator-runs.sql` first).
 Env: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, ANTHROPIC_API_KEY, optional EVALUATOR_MODEL (default claude-sonnet-5-5).
+
+## Calibrate without spending API tokens
+`npm run export:attempt -- --attempt=<uuid> --out="/path/to/vault/calibration"` downloads the page images, the BMCR, the marking report and the official source texts (no AI calls). Calibrate the tool definitions in a chat, refine the vault notes, refresh `lib/data/eve-tools/tools.json`, then use `calibrate:evaluator` as a paid regression check.
