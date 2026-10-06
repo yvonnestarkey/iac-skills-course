@@ -37,7 +37,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
         req.volume?.attempts ?? "—",
         pct(m?.accuracy ?? null),
         req.components ? req.components.layers.map((l) => `${l.layer} ${l.recognised}/${l.available}`).join("; ") || "—" : "—",
-        req.core_issue?.alignment ?? "—",
+        req.core_issue ? `${req.core_issue.higher_covered}/${req.core_issue.higher_total} higher` : "—",
         req.rtfq ? `${yn(req.rtfq.delivered_shape)}/${yn(req.rtfq.delivered_directions)}/${yn(req.rtfq.delivered_lens)}` : "—",
         req.communication?.rating ?? "—",
         req.question_type,
@@ -49,6 +49,15 @@ export function renderCalibrationMarkdown(result: RunResult): string {
   lines.push("## Quick comment per requirement (observation, with certainty)");
   for (const req of dataset.requirements) {
     lines.push(`- **${req.label}** (${req.quick_comment.certainty}): ${req.quick_comment.main_issue ?? "no single issue supported"} — _${req.quick_comment.evidence}_`);
+  }
+  const withCore = dataset.requirements.filter((req) => req.core_issue?.components.length);
+  if (withCore.length) {
+    lines.push("");
+    lines.push("## Core Issue (which components deserved more of your time)");
+    for (const req of withCore) {
+      lines.push("", `**${req.label}**: ${req.core_issue!.higher_covered} of ${req.core_issue!.higher_total} higher-priority components covered (${req.core_issue!.alignment ?? "n/a"})`, "", "| Component | Priority | Clue the case gave | Your statements | Depth |", "|---|---|---|---|---|");
+      for (const c of req.core_issue!.components) lines.push(`| ${c.component} | ${c.priority} | ${c.clue} | ${c.attempts} | ${c.depth} |`);
+    }
   }
   const withComponents = dataset.requirements.filter((req) => req.components?.layers.length);
   if (withComponents.length) {

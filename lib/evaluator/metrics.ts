@@ -1,5 +1,5 @@
-import { proximityAvailable, type RequirementModel } from "./question-model";
-import type { BmcrVerdict, ProximityBucket, RequirementEvaluation, RequirementMetrics } from "./types";
+import { proximityAvailable, type CoreIssueComponent, type RequirementModel } from "./question-model";
+import type { BmcrVerdict, CoreIssueEvidence, ProximityBucket, RequirementEvaluation, RequirementMetrics } from "./types";
 
 /** Taught thresholds (kept deliberately simple so students can reproduce them without discretion). */
 export const BMCR_THEORY_THRESHOLD = 0.5; // Basic marks as a share of total marks
@@ -113,4 +113,35 @@ export function applyNotAttemptedRule(requirement: RequirementEvaluation): Requi
     communication: null,
     technical_awarded: requirement.technical_awarded ?? 0,
   };
+}
+
+export type RawCoreIssue = {
+  components: { component: string; attempts: number; depth: "none" | "surface" | "developed" }[];
+  evidence: string;
+};
+
+/**
+ * Merge the pre-calibrated Core Issue components with what the student did.
+ * Priority and clue come from the question model; the evaluating model only reports attempts and depth.
+ * Alignment is computed here: coverage of the higher-priority components.
+ */
+export function buildCoreIssue(model: CoreIssueComponent[] | undefined, raw: RawCoreIssue | null): CoreIssueEvidence | null {
+  if (!model || !model.length || !raw) return null;
+  const components = model.map((entry) => {
+    const found = raw.components.find((c) => c.component.trim().toLowerCase() === entry.component.trim().toLowerCase());
+    const attempts = found && Number.isFinite(found.attempts) && found.attempts > 0 ? Math.floor(found.attempts) : 0;
+    return {
+      layer: entry.layer,
+      component: entry.component,
+      priority: entry.priority,
+      clue_type: entry.clue_type,
+      clue: entry.clue,
+      attempts,
+      depth: attempts === 0 ? ("none" as const) : found?.depth === "none" ? ("surface" as const) : found?.depth ?? ("surface" as const),
+    };
+  });
+  const higher = components.filter((c) => c.priority === "higher");
+  const covered = higher.filter((c) => c.attempts > 0).length;
+  const alignment = higher.length === 0 ? null : covered === higher.length ? "aligned" : covered === 0 ? "misaligned" : "partly";
+  return { components, higher_total: higher.length, higher_covered: covered, alignment, evidence: raw.evidence };
 }

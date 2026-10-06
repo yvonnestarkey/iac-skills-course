@@ -1,6 +1,6 @@
 import { callStructured, fetchPageImages, imageBlocks } from "./anthropic";
 import { stage1Methodology } from "./methodology";
-import { aggregateProximity, applyNotAttemptedRule, validateRequirement } from "./metrics";
+import { aggregateProximity, applyNotAttemptedRule, buildCoreIssue, validateRequirement, type RawCoreIssue } from "./metrics";
 import { questionModelFor, toolsFor } from "./question-model";
 import { requirementLabel } from "./pagemap";
 import { COMMUNICATION_RATINGS, QUESTION_TYPES, type BmcrRow, type RequirementEvaluation, type RequirementPageMap, type UsageTally } from "./types";
@@ -44,7 +44,26 @@ const REQUIREMENT_SCHEMA = {
       },
       required: ["layers", "evidence"],
     },
-    core_issue: { type: ["object", "null"], properties: { case_signal: { type: "string" }, student_weighting: { type: "string" }, alignment: { type: "string", enum: ["aligned", "partly", "misaligned"] }, evidence: { type: "string" } }, required: ["case_signal", "student_weighting", "alignment", "evidence"] },
+    core_issue: {
+      type: ["object", "null"],
+      description: "Only the components listed in the prompt. Report how many statements the student wrote on each and how deep they went. Do not set priority; it is pre-calibrated.",
+      properties: {
+        components: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              component: { type: "string" },
+              attempts: { type: "integer", minimum: 0 },
+              depth: { type: "string", enum: ["none", "surface", "developed"] },
+            },
+            required: ["component", "attempts", "depth"],
+          },
+        },
+        evidence: { type: "string" },
+      },
+      required: ["components", "evidence"],
+    },
     rtfq: { type: ["object", "null"], properties: { required_shape: { type: "string" }, hidden_directions: { type: "string" }, subject_lens: { type: "string" }, delivered_shape: { type: "boolean" }, delivered_directions: { type: "boolean" }, delivered_lens: { type: "boolean" }, evidence: { type: "string" } }, required: ["required_shape", "hidden_directions", "subject_lens", "delivered_shape", "delivered_directions", "delivered_lens", "evidence"] },
     communication: { type: ["object", "null"], properties: { rating: { type: "string", enum: [...COMMUNICATION_RATINGS] }, evidence: { type: "string" } }, required: ["rating", "evidence"] },
     quick_comment: {
@@ -80,7 +99,7 @@ export async function evaluateRequirement(input: {
   const reportSelected = input.reportPages.filter((page) => pageMap.report_pages.includes(page.page));
   const [scriptImages, reportImages] = await Promise.all([fetchPageImages(scriptSelected), fetchPageImages(reportSelected)]);
 
-  const raw = await callStructured<Omit<RequirementEvaluation, "code" | "label" | "total_marks" | "bmcr" | "buried_treasure">>({
+  const raw = await callStructured<Omit<RequirementEvaluation, "code" | "label" | "total_marks" | "bmcr" | "buried_treasure" | "core_issue"> & { core_issue: RawCoreIssue | null }>({
     system: `${stage1Methodology()}\n\nYou are Stage 1 of the Script Evaluator for ONE requirement. Record observations only. Do not explain why the student behaved as they did. Report counts and flags; never calculate percentages. If the requirement was not attempted, set attempted=false and set the answer-based measures to null (only Question Type, Competency and the marker's marks are returned).`,
     userContent: [
       {
@@ -99,6 +118,9 @@ export async function evaluateRequirement(input: {
             : "No pre-calibrated proximity items exist for this requirement. Return buried_treasure_items as null. Do NOT invent a classification.",
           "The marker's report is the ONLY authority for marks awarded. Students may write their own notes, ticks or \"1 mark\" annotations on the script before uploading it; these are never marks. Use them only as evidence of what the student wrote, never to set awarded values.",
           "Components: report one entry per layer of structure (required structure such as SWOT buckets or named goals; case sections; underlying theory). For each layer give counts available / recognised / exploited and a super-brief note. Recognised needs evidence the student used the structure to hunt; generic topic discussion or words that merely resemble the mark plan do NOT count. Exclude any case section the requirement tells students not to discuss from the available count.",
+          model?.core_issue?.length
+            ? `Core Issue components (pre-calibrated; priority is NOT yours to judge). For each, report attempts (statements the student wrote on it, one per statement) and depth (none / surface / developed):\n${model.core_issue.map((c) => `- ${c.component} [${c.layer}]`).join("\n")}`
+            : "No pre-calibrated Core Issue components exist for this requirement. Return core_issue as null. Do NOT invent priorities.",
           "technical_awarded excludes professional marks (Z structure marks, Comm marks, Y marks); record those in pvaa_awarded.",
           `Student's own BMCR for this requirement: marks available ${input.bmcr?.available ?? "unknown"}, marks the student believed they knew ${input.bmcr?.student_known ?? "unknown"}.`,
           "",
@@ -119,6 +141,7 @@ export async function evaluateRequirement(input: {
   });
 
   const warnings: string[] = [];
+  if (gate.coreIssue && !model?.core_issue?.length) warnings.push(`${label}: no pre-calibrated Core Issue components; Core Issue not scored.`);
   if (gate.buriedTreasure && !model?.proximity_items.length) warnings.push(`${label}: no pre-calibrated proximity items; Buried Treasure not scored.`);
   const buriedTreasure = gate.buriedTreasure ? aggregateProximity(model, raw.buried_treasure_items ?? null) : null;
 
@@ -134,7 +157,7 @@ export async function evaluateRequirement(input: {
     buried_treasure: buriedTreasure,
     volume: gate.volumeAccuracy ? raw.volume ?? null : null,
     components: gate.components ? raw.components ?? null : null,
-    core_issue: gate.coreIssue ? raw.core_issue ?? null : null,
+    core_issue: gate.coreIssue ? buildCoreIssue(model?.core_issue, raw.core_issue ?? null) : null,
     rtfq: gate.rtfq ? raw.rtfq ?? null : null,
     communication: gate.communication ? raw.communication ?? null : null,
     uncertainties: raw.uncertainties || [],

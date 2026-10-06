@@ -11,9 +11,29 @@ export type ProximityItem = {
   note?: string;
 };
 
+export const CLUE_TYPES = ["breadth", "materiality", "topic_proximity", "density", "risk", "judgement", "low_relevance", "other"] as const;
+export type ClueType = (typeof CLUE_TYPES)[number];
+
+/**
+ * Core Issue works on the Components, never on free-floating topics. For each component (a layer entry such as
+ * a case section) the question model records whether the case signals it as a HIGHER or LOWER priority and the
+ * clue a student could have seen in the exam. No ranking among the higher ones: the tool is for deciding where
+ * to put limited time, not for ordering.
+ */
+export type CoreIssueComponent = {
+  /** Same layer name used in Components, e.g. "Case sections". */
+  layer: string;
+  component: string;
+  priority: "higher" | "lower";
+  clue_type: ClueType;
+  /** The clue in plain words: why the case signals this weight. */
+  clue: string;
+};
+
 export type RequirementModel = {
   question_type: QuestionType;
   proximity_items: ProximityItem[];
+  core_issue?: CoreIssueComponent[];
 };
 
 type PaperModel = { paper_id: string; requirements: Record<string, RequirementModel> };

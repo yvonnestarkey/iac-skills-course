@@ -5,7 +5,8 @@
     "Question Type is part of the pre-calibrated Question Model, set once per requirement (not guessed per student).",
     "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
     "technical marks exclude professional marks (Z structure marks, Comm marks, Y marks).",
-    "Test (Yvonne): Direct = little or no jump from the case indicator to the marked point. If the indicator is in the case but the point needs inference it is Indirect; several steps or generated ideas are Thinking. Bold in the marker's report is NOT the test."
+    "Test (Yvonne): Direct = little or no jump from the case indicator to the marked point. If the indicator is in the case but the point needs inference it is Indirect; several steps or generated ideas are Thinking. Bold in the marker's report is NOT the test.",
+    "core_issue: per requirement, pre-calibrated priority (higher/lower, no ranking among higher) and the student-visible clue for each component. Q1(a) case sections set by Yvonne 6 Oct 2026; SWOT-bucket layer not yet confirmed; Q1(d) pending."
   ],
   "requirements": {
     "P1Q1_a": {
@@ -168,6 +169,43 @@
           "row": 41,
           "proximity": "thinking",
           "note": "Indicator clear (political pressure); governance and ethics risk is several steps away"
+        }
+      ],
+      "core_issue": [
+        {
+          "layer": "Case sections",
+          "component": "Section 1: Background",
+          "priority": "higher",
+          "clue_type": "breadth",
+          "clue": "Many diverse facts and a long list of problems: marks are available even if each is addressed only once."
+        },
+        {
+          "layer": "Case sections",
+          "component": "Section 2: Debt covenants",
+          "priority": "higher",
+          "clue_type": "topic_proximity",
+          "clue": "Closely tied to going concern, which the requirement names."
+        },
+        {
+          "layer": "Case sections",
+          "component": "Section 4: Damaged locomotives",
+          "priority": "higher",
+          "clue_type": "materiality",
+          "clue": "Only one item, but material and significant: idle for six years, lost revenue for the company, customers and government."
+        },
+        {
+          "layer": "Case sections",
+          "component": "Section 5: Green initiatives",
+          "priority": "lower",
+          "clue_type": "low_relevance",
+          "clue": "Little link to going concern."
+        },
+        {
+          "layer": "Case sections",
+          "component": "Section 6: Governance and assurance",
+          "priority": "lower",
+          "clue_type": "low_relevance",
+          "clue": "Mostly relevant to Part II, little link to going concern."
         }
       ]
     },

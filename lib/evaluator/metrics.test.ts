@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, computeMetrics, validateRequirement } from "./metrics";
-import { toolsFor, type RequirementModel } from "./question-model";
+import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, validateRequirement } from "./metrics";
+import { questionModelFor, toolsFor, type RequirementModel } from "./question-model";
 import type { RequirementEvaluation } from "./types";
 
 function base(overrides: Partial<RequirementEvaluation> = {}): RequirementEvaluation {
@@ -110,4 +110,24 @@ test("components layers: recognised cannot exceed available, exploited cannot ex
     components: { layers: [{ layer: "Goals", source: "required", available: 2, recognised: 3, exploited: 3, note: "" }], evidence: "" },
   });
   assert.equal(validateRequirement(bad).length, 1 + 0);
+});
+
+test("core issue: priority comes from the model; alignment is coverage of higher-priority components", () => {
+  const model = questionModelFor("iac-2026-p1", "P1Q1_a")!.core_issue!;
+  const out = buildCoreIssue(model, {
+    components: [
+      { component: "Section 1: Background", attempts: 15, depth: "surface" },
+      { component: "Section 2: Debt covenants", attempts: 7, depth: "surface" },
+      { component: "Section 4: Damaged locomotives", attempts: 0, depth: "none" },
+      { component: "Section 5: Green initiatives", attempts: 3, depth: "surface" },
+    ],
+    evidence: "",
+  })!;
+  assert.equal(out.higher_total, 3);
+  assert.equal(out.higher_covered, 2);
+  assert.equal(out.alignment, "partly");
+  assert.equal(out.components.find((c) => c.component.startsWith("Section 6"))!.attempts, 0); // missing from model output = 0
+  assert.equal(buildCoreIssue(undefined, { components: [], evidence: "" }), null);
+  const none = buildCoreIssue(model, { components: [], evidence: "" })!;
+  assert.equal(none.alignment, "misaligned");
 });

@@ -50,6 +50,28 @@ export type ComponentsEvidence = {
   evidence: string;
 };
 
+export type CoreIssueComponentEvidence = {
+  layer: string;
+  component: string;
+  /** Pre-calibrated in the question model, never set by the evaluating model. */
+  priority: "higher" | "lower";
+  clue_type: string;
+  clue: string;
+  /** Statements the student wrote on this component (Volume rule: one per statement). */
+  attempts: number;
+  depth: "none" | "surface" | "developed";
+};
+
+export type CoreIssueEvidence = {
+  components: CoreIssueComponentEvidence[];
+  higher_total: number;
+  /** Higher-priority components with at least one attempt. */
+  higher_covered: number;
+  /** Computed in code: all higher covered = aligned, some = partly, none = misaligned. Null when no higher components. */
+  alignment: "aligned" | "partly" | "misaligned" | null;
+  evidence: string;
+};
+
 export type ProximityBucket = {
   /** Marks of this proximity kind the official solution makes available. */
   available: number;
@@ -105,12 +127,7 @@ export type RequirementEvaluation = {
   buried_treasure: { direct: ProximityBucket; indirect: ProximityBucket; thinking: ProximityBucket } | null;
   volume: { attempts: number; note: string } | null;
   components: ComponentsEvidence | null;
-  core_issue: {
-    case_signal: string;
-    student_weighting: string;
-    alignment: "aligned" | "partly" | "misaligned";
-    evidence: string;
-  } | null;
+  core_issue: CoreIssueEvidence | null;
   rtfq: {
     required_shape: string;
     hidden_directions: string;
