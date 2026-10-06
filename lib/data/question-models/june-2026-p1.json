@@ -1,6 +1,6 @@
 {
   "paper_id": "iac-2026-p1",
-  "status": "draft — Q1(a) and Q1(d) classified with Yvonne 6 Oct 2026; other requirements pending",
+  "status": "draft — Q1(a), Q1(b), Q1(d) classified with Yvonne 6 Oct 2026; other requirements pending",
   "notes": [
     "Question Type is part of the pre-calibrated Question Model, set once per requirement (not guessed per student).",
     "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
@@ -173,7 +173,117 @@
     },
     "P1Q1_b": {
       "question_type": "Discussion",
-      "proximity_items": []
+      "proximity_items": [
+        {
+          "row": 45,
+          "proximity": "indirect"
+        },
+        {
+          "row": 46,
+          "proximity": "indirect"
+        },
+        {
+          "row": 47,
+          "proximity": "indirect"
+        },
+        {
+          "row": 48,
+          "proximity": "direct",
+          "note": "Case: the guarantee 'would be used to raise further debt'; effect on debt and interest follows closely."
+        },
+        {
+          "row": 49,
+          "proximity": "thinking",
+          "note": "Case says covenants are at risk, not what they restrict; the restriction on new debt is several steps away."
+        },
+        {
+          "row": 50,
+          "proximity": "indirect"
+        },
+        {
+          "row": 51,
+          "proximity": "indirect"
+        },
+        {
+          "row": 52,
+          "proximity": "thinking",
+          "note": "Comparison to historic strategy and capital structure is not prompted by the case."
+        },
+        {
+          "row": 53,
+          "proximity": "thinking",
+          "note": "Broader government perspectives are not signalled in the case."
+        },
+        {
+          "row": 54,
+          "proximity": "thinking",
+          "note": "Case gives political pressure; the public-scrutiny and justification point is several steps away."
+        },
+        {
+          "row": 55,
+          "proximity": "indirect",
+          "note": "Mark is for 'pursue regardless of option', which is not a direct answer to the question; stays Indirect."
+        },
+        {
+          "row": 56,
+          "proximity": "indirect"
+        },
+        {
+          "row": 57,
+          "proximity": "direct",
+          "note": "Equity for shares and a guarantee are stated; dual objectives are in the case."
+        },
+        {
+          "row": 58,
+          "proximity": "direct",
+          "note": "Case: lenders will not lend without a guarantee; liquidity deterioration stated."
+        },
+        {
+          "row": 59,
+          "proximity": "indirect"
+        },
+        {
+          "row": 60,
+          "proximity": "indirect",
+          "note": "The 60/40 split is Direct, but the mark earner is the management compromise discussion, so the row is Indirect."
+        },
+        {
+          "row": 61,
+          "proximity": "direct",
+          "note": "Case: private investors would inject capital and bring the experience required."
+        },
+        {
+          "row": 62,
+          "proximity": "indirect"
+        },
+        {
+          "row": 63,
+          "proximity": "indirect"
+        },
+        {
+          "row": 64,
+          "proximity": "indirect"
+        },
+        {
+          "row": 65,
+          "proximity": "thinking",
+          "note": "Not signalled in the case."
+        },
+        {
+          "row": 66,
+          "proximity": "indirect"
+        },
+        {
+          "row": 67,
+          "proximity": "thinking",
+          "note": "Asset transfer is stated; the tax impact is a few steps from the obvious."
+        },
+        {
+          "row": 68,
+          "proximity": "thinking",
+          "note": "The time factor is not stated anywhere in the case; a major inference."
+        }
+      ]
     },
     "P1Q1_c": {
       "question_type": "Non-discussion",
