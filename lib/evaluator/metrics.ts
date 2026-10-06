@@ -92,6 +92,10 @@ export function validateRequirement(requirement: RequirementEvaluation): string[
       if (bucket.seen > bucket.available && bucket.available > 0) warnings.push(`${code}: ${name} seen exceeds available.`);
     }
   }
+  if (requirement.rtfq) {
+    const names = new Set(requirement.rtfq.dimensions.map((d) => d.dimension));
+    if (requirement.rtfq.dimensions.length !== 3 || names.size !== 3) warnings.push(`${code}: RTFQ should have exactly one entry each for shape, directions and lens.`);
+  }
   for (const layer of requirement.components?.layers ?? []) {
     if (layer.recognised > layer.available) warnings.push(`${code}: Components "${layer.layer}" recognised exceeds available.`);
     if (layer.exploited > layer.recognised) warnings.push(`${code}: Components "${layer.layer}" exploited exceeds recognised.`);

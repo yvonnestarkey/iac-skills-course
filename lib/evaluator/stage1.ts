@@ -64,7 +64,27 @@ const REQUIREMENT_SCHEMA = {
       },
       required: ["components", "evidence"],
     },
-    rtfq: { type: ["object", "null"], properties: { required_shape: { type: "string" }, hidden_directions: { type: "string" }, subject_lens: { type: "string" }, delivered_shape: { type: "boolean" }, delivered_directions: { type: "boolean" }, delivered_lens: { type: "boolean" }, evidence: { type: "string" } }, required: ["required_shape", "hidden_directions", "subject_lens", "delivered_shape", "delivered_directions", "delivered_lens", "evidence"] },
+    rtfq: {
+      type: ["object", "null"],
+      properties: {
+        dimensions: {
+          type: "array",
+          description: "Exactly three entries: shape, directions, lens.",
+          items: {
+            type: "object",
+            properties: {
+              dimension: { type: "string", enum: ["shape", "directions", "lens"] },
+              required: { type: "string" },
+              delivered: { type: "string", enum: ["yes", "partly", "no"] },
+              note: { type: "string" },
+            },
+            required: ["dimension", "required", "delivered", "note"],
+          },
+        },
+        evidence: { type: "string" },
+      },
+      required: ["dimensions", "evidence"],
+    },
     communication: { type: ["object", "null"], properties: { rating: { type: "string", enum: [...COMMUNICATION_RATINGS] }, evidence: { type: "string" } }, required: ["rating", "evidence"] },
     quick_comment: {
       type: "object",
@@ -121,6 +141,7 @@ export async function evaluateRequirement(input: {
           model?.core_issue?.length
             ? `Core Issue components (pre-calibrated; priority, including any dominant component, is NOT yours to judge). For each, report attempts (statements the student wrote on it, one per statement) and depth (none / surface / developed):\n${model.core_issue.map((c) => `- ${c.component} [${c.layer}]`).join("\n")}`
             : "No pre-calibrated Core Issue components exist for this requirement. Return core_issue as null. Do NOT invent priorities.",
+          "RTFQ: return three dimensions. shape = the instruction word and its shape (discuss, calculate, evaluate, journal, recommend...); directions = hidden required, named entities, headings, exclusions, required perspective; lens = the actual issue or framework the required asks about. For each say what the required asked for, whether the answer delivered it (yes / partly / no) and a one-line note of the evidence on the page. Use partly when the answer is on the right track but only some of it was delivered. Record delivery only; never explain why the student did or did not deliver.",
           "technical_awarded excludes professional marks (Z structure marks, Comm marks, Y marks); record those in pvaa_awarded.",
           `Student's own BMCR for this requirement: marks available ${input.bmcr?.available ?? "unknown"}, marks the student believed they knew ${input.bmcr?.student_known ?? "unknown"}.`,
           "",

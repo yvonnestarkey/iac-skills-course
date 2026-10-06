@@ -18,7 +18,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
   lines.push("");
   lines.push("## Requirements × measures");
   lines.push("");
-  lines.push("| Req | Attempted | Marks (tech/avail) | BMCR known | BMCR conv. | BMCR verdict | Direct conv. | Indirect conv. | Thinking conv. | Volume | Accuracy | Components (avail/rec/expl) | Core issue | RTFQ (shape/dir/lens) | Comm. | Type | Competency |");
+  lines.push("| Req | Attempted | Marks (tech/avail) | BMCR known | BMCR conv. | BMCR verdict | Direct conv. | Indirect conv. | Thinking conv. | Volume | Accuracy | Components (avail/rec/expl) | Core issue | RTFQ (shape/directions/lens) | Comm. | Type | Competency |");
   lines.push("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|");
   for (const req of dataset.requirements) {
     const m = dataset.metrics.find((x) => x.code === req.code);
@@ -38,7 +38,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
         pct(m?.accuracy ?? null),
         req.components ? req.components.layers.map((l) => `${l.layer} ${l.recognised}/${l.available}`).join("; ") || "—" : "—",
         req.core_issue ? `${req.core_issue.higher_covered}/${req.core_issue.higher_total} higher` : "—",
-        req.rtfq ? `${yn(req.rtfq.delivered_shape)}/${yn(req.rtfq.delivered_directions)}/${yn(req.rtfq.delivered_lens)}` : "—",
+        req.rtfq ? req.rtfq.dimensions.map((d) => d.delivered).join("/") || "—" : "—",
         req.communication?.rating ?? "—",
         req.question_type,
         req.competency.topic,
@@ -57,6 +57,15 @@ export function renderCalibrationMarkdown(result: RunResult): string {
     for (const req of withCore) {
       lines.push("", `**${req.label}**: ${req.core_issue!.higher_covered} of ${req.core_issue!.higher_total} higher-priority components covered (${req.core_issue!.alignment ?? "n/a"})${req.core_issue!.dominant_covered === false ? "; the dominant component was not covered" : ""}`, "", "| Component | Priority | Clue the case gave | Your statements | Depth |", "|---|---|---|---|---|");
       for (const c of req.core_issue!.components) lines.push(`| ${c.component} | ${c.priority} | ${c.clue} | ${c.attempts} | ${c.depth} |`);
+    }
+  }
+  const withRtfq = dataset.requirements.filter((req) => req.rtfq?.dimensions.length);
+  if (withRtfq.length) {
+    lines.push("");
+    lines.push("## RTFQ (what the required asked for, and what was delivered)");
+    for (const req of withRtfq) {
+      lines.push("", `**${req.label}**`, "", "| Dimension | What the required asked for | Delivered? | Note |", "|---|---|---|---|");
+      for (const d of req.rtfq!.dimensions) lines.push(`| ${d.dimension} | ${d.required} | ${d.delivered} | ${d.note} |`);
     }
   }
   const withComponents = dataset.requirements.filter((req) => req.components?.layers.length);

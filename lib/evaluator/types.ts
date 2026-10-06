@@ -75,6 +75,29 @@ export type CoreIssueEvidence = {
   evidence: string;
 };
 
+export const RTFQ_DIMENSIONS = ["shape", "directions", "lens"] as const;
+export type RtfqDimensionName = (typeof RTFQ_DIMENSIONS)[number];
+export const RTFQ_DELIVERED = ["yes", "partly", "no"] as const;
+export type RtfqDelivered = (typeof RTFQ_DELIVERED)[number];
+
+/**
+ * RTFQ: did the answer deliver what the required asked for? Subjective by nature, so "partly" is a first-class
+ * outcome. It records delivery only, never why the student did or did not deliver.
+ */
+export type RtfqDimension = {
+  dimension: RtfqDimensionName;
+  /** What the required asked for on this dimension, in plain words. */
+  required: string;
+  delivered: RtfqDelivered;
+  /** One line: the evidence on the page. */
+  note: string;
+};
+
+export type RtfqEvidence = {
+  dimensions: RtfqDimension[];
+  evidence: string;
+};
+
 export type ProximityBucket = {
   /** Marks of this proximity kind the official solution makes available. */
   available: number;
@@ -131,15 +154,7 @@ export type RequirementEvaluation = {
   volume: { attempts: number; note: string } | null;
   components: ComponentsEvidence | null;
   core_issue: CoreIssueEvidence | null;
-  rtfq: {
-    required_shape: string;
-    hidden_directions: string;
-    subject_lens: string;
-    delivered_shape: boolean;
-    delivered_directions: boolean;
-    delivered_lens: boolean;
-    evidence: string;
-  } | null;
+  rtfq: RtfqEvidence | null;
   communication: { rating: CommunicationRating; evidence: string } | null;
   quick_comment: {
     /** Best-supported main thing between the student and the marks, or null if the evidence does not support one. */

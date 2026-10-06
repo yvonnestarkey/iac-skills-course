@@ -151,3 +151,19 @@ test("core issue: a dominant component is optional and reported when present", (
   const q1a = buildCoreIssue(questionModelFor("iac-2026-p1", "P1Q1_a")!.core_issue!, { components: [], evidence: "" })!;
   assert.equal(q1a.dominant_covered, null); // Q1(a) has no dominant component
 });
+
+test("rtfq: three dimensions with yes/partly/no; duplicates or gaps are flagged", () => {
+  const ok = base({
+    rtfq: {
+      dimensions: [
+        { dimension: "shape", required: "Discuss", delivered: "no", note: "" },
+        { dimension: "directions", required: "Goals 6 and 7", delivered: "no", note: "" },
+        { dimension: "lens", required: "Alignment with the goals", delivered: "partly", note: "" },
+      ],
+      evidence: "",
+    },
+  });
+  assert.deepEqual(validateRequirement(ok), []);
+  const bad = base({ rtfq: { dimensions: [{ dimension: "shape", required: "", delivered: "yes", note: "" }], evidence: "" } });
+  assert.equal(validateRequirement(bad).length, 1);
+});
