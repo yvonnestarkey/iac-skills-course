@@ -22,7 +22,28 @@ const REQUIREMENT_SCHEMA = {
       items: { type: "object", properties: { row: { type: "number" }, seen: { type: "boolean" }, awarded: { type: "boolean" } }, required: ["row", "seen", "awarded"] },
     },
     volume: { type: ["object", "null"], properties: { attempts: { type: "number" }, note: { type: "string" } }, required: ["attempts", "note"] },
-    components: { type: ["object", "null"], properties: { available: { type: "boolean" }, recognised: { type: "boolean" }, exploited: { type: "boolean" }, evidence: { type: "string" } }, required: ["available", "recognised", "exploited", "evidence"] },
+    components: {
+      type: ["object", "null"],
+      properties: {
+        layers: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              layer: { type: "string" },
+              source: { type: "string", enum: ["required", "case_sections", "theory", "other"] },
+              available: { type: "integer", minimum: 0 },
+              recognised: { type: "integer", minimum: 0 },
+              exploited: { type: "integer", minimum: 0 },
+              note: { type: "string" },
+            },
+            required: ["layer", "source", "available", "recognised", "exploited", "note"],
+          },
+        },
+        evidence: { type: "string" },
+      },
+      required: ["layers", "evidence"],
+    },
     core_issue: { type: ["object", "null"], properties: { case_signal: { type: "string" }, student_weighting: { type: "string" }, alignment: { type: "string", enum: ["aligned", "partly", "misaligned"] }, evidence: { type: "string" } }, required: ["case_signal", "student_weighting", "alignment", "evidence"] },
     rtfq: { type: ["object", "null"], properties: { required_shape: { type: "string" }, hidden_directions: { type: "string" }, subject_lens: { type: "string" }, delivered_shape: { type: "boolean" }, delivered_directions: { type: "boolean" }, delivered_lens: { type: "boolean" }, evidence: { type: "string" } }, required: ["required_shape", "hidden_directions", "subject_lens", "delivered_shape", "delivered_directions", "delivered_lens", "evidence"] },
     communication: { type: ["object", "null"], properties: { rating: { type: "string", enum: [...COMMUNICATION_RATINGS] }, evidence: { type: "string" } }, required: ["rating", "evidence"] },
@@ -77,6 +98,7 @@ export async function evaluateRequirement(input: {
             ? `Pre-calibrated proximity items (marker's report row numbers). Return one buried_treasure_items entry per row:\n${model.proximity_items.map((item) => `- row ${item.row}: ${item.proximity}${item.note ? ` — ${item.note}` : ""}`).join("\n")}`
             : "No pre-calibrated proximity items exist for this requirement. Return buried_treasure_items as null. Do NOT invent a classification.",
           "The marker's report is the ONLY authority for marks awarded. Students may write their own notes, ticks or \"1 mark\" annotations on the script before uploading it; these are never marks. Use them only as evidence of what the student wrote, never to set awarded values.",
+          "Components: report one entry per layer of structure (required structure such as SWOT buckets or named goals; case sections; underlying theory). For each layer give counts available / recognised / exploited and a super-brief note. Recognised needs evidence the student used the structure to hunt; generic topic discussion or words that merely resemble the mark plan do NOT count. Exclude any case section the requirement tells students not to discuss from the available count.",
           "technical_awarded excludes professional marks (Z structure marks, Comm marks, Y marks); record those in pvaa_awarded.",
           `Student's own BMCR for this requirement: marks available ${input.bmcr?.available ?? "unknown"}, marks the student believed they knew ${input.bmcr?.student_known ?? "unknown"}.`,
           "",

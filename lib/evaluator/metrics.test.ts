@@ -94,3 +94,20 @@ test("proximity aggregation uses the pre-calibrated model, with Available as den
   assert.deepEqual(out?.thinking, { available: 1, seen: 0, awarded: 0 });
   assert.equal(aggregateProximity({ question_type: "Discussion", proximity_items: [] }, []), null);
 });
+
+test("components layers: recognised cannot exceed available, exploited cannot exceed recognised", () => {
+  const ok = base({
+    components: {
+      layers: [
+        { layer: "SWOT buckets", source: "required", available: 4, recognised: 4, exploited: 4, note: "all four used" },
+        { layer: "Case sections", source: "case_sections", available: 5, recognised: 2, exploited: 2, note: "sections 1 and 2" },
+      ],
+      evidence: "",
+    },
+  });
+  assert.deepEqual(validateRequirement(ok), []);
+  const bad = base({
+    components: { layers: [{ layer: "Goals", source: "required", available: 2, recognised: 3, exploited: 3, note: "" }], evidence: "" },
+  });
+  assert.equal(validateRequirement(bad).length, 1 + 0);
+});

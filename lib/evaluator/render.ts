@@ -36,7 +36,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
         pct(m?.proximity_conversion.thinking ?? null),
         req.volume?.attempts ?? "—",
         pct(m?.accuracy ?? null),
-        req.components ? `${yn(req.components.available)}/${yn(req.components.recognised)}/${yn(req.components.exploited)}` : "—",
+        req.components ? req.components.layers.map((l) => `${l.layer} ${l.recognised}/${l.available}`).join("; ") || "—" : "—",
         req.core_issue?.alignment ?? "—",
         req.rtfq ? `${yn(req.rtfq.delivered_shape)}/${yn(req.rtfq.delivered_directions)}/${yn(req.rtfq.delivered_lens)}` : "—",
         req.communication?.rating ?? "—",
@@ -49,6 +49,15 @@ export function renderCalibrationMarkdown(result: RunResult): string {
   lines.push("## Quick comment per requirement (observation, with certainty)");
   for (const req of dataset.requirements) {
     lines.push(`- **${req.label}** (${req.quick_comment.certainty}): ${req.quick_comment.main_issue ?? "no single issue supported"} — _${req.quick_comment.evidence}_`);
+  }
+  const withComponents = dataset.requirements.filter((req) => req.components?.layers.length);
+  if (withComponents.length) {
+    lines.push("");
+    lines.push("## Components (available -> recognised -> exploited)");
+    for (const req of withComponents) {
+      lines.push("", `**${req.label}**`, "", "| Layer | Available | Recognised | Exploited | Note |", "|---|---|---|---|---|");
+      for (const l of req.components!.layers) lines.push(`| ${l.layer} | ${l.available} | ${l.recognised} | ${l.exploited} | ${l.note} |`);
+    }
   }
   if (dataset.warnings.length) {
     lines.push("");

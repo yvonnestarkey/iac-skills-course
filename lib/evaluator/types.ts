@@ -27,6 +27,29 @@ export type ProximityItemEvidence = {
   awarded: boolean;
 };
 
+export const COMPONENT_SOURCES = ["required", "case_sections", "theory", "other"] as const;
+export type ComponentSource = (typeof COMPONENT_SOURCES)[number];
+
+/**
+ * One layer of search-space structure: available -> recognised -> exploited, as counts.
+ * Recognition needs evidence the student used the structure to hunt; generic topic talk does not count.
+ */
+export type ComponentLayer = {
+  /** e.g. "SWOT buckets", "Case sections", "Goal 6 / Goal 7". */
+  layer: string;
+  source: ComponentSource;
+  available: number;
+  recognised: number;
+  exploited: number;
+  /** Super-brief: which ones, and the evidence. */
+  note: string;
+};
+
+export type ComponentsEvidence = {
+  layers: ComponentLayer[];
+  evidence: string;
+};
+
 export type ProximityBucket = {
   /** Marks of this proximity kind the official solution makes available. */
   available: number;
@@ -81,7 +104,7 @@ export type RequirementEvaluation = {
   buried_treasure_items: ProximityItemEvidence[] | null;
   buried_treasure: { direct: ProximityBucket; indirect: ProximityBucket; thinking: ProximityBucket } | null;
   volume: { attempts: number; note: string } | null;
-  components: { available: boolean; recognised: boolean; exploited: boolean; evidence: string } | null;
+  components: ComponentsEvidence | null;
   core_issue: {
     case_signal: string;
     student_weighting: string;

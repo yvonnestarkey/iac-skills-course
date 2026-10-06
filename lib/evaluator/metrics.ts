@@ -92,6 +92,10 @@ export function validateRequirement(requirement: RequirementEvaluation): string[
       if (bucket.seen > bucket.available && bucket.available > 0) warnings.push(`${code}: ${name} seen exceeds available.`);
     }
   }
+  for (const layer of requirement.components?.layers ?? []) {
+    if (layer.recognised > layer.available) warnings.push(`${code}: Components "${layer.layer}" recognised exceeds available.`);
+    if (layer.exploited > layer.recognised) warnings.push(`${code}: Components "${layer.layer}" exploited exceeds recognised.`);
+  }
   return warnings;
 }
 
