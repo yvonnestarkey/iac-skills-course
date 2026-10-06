@@ -167,3 +167,23 @@ test("rtfq: three dimensions with yes/partly/no; duplicates or gaps are flagged"
   const bad = base({ rtfq: { dimensions: [{ dimension: "shape", required: "", delivered: "yes", note: "" }], evidence: "" } });
   assert.equal(validateRequirement(bad).length, 1);
 });
+
+test("communication: per-point categories; trend must not be quantified; points should match Volume", () => {
+  const ok = base({
+    volume: { attempts: 2, note: "" },
+    communication: {
+      points: [
+        { n: 1, statement: "Steps aligned with the UN goals", category: "Underdeveloped", note: "" },
+        { n: 2, statement: "More aligned with...", category: "Unclear", note: "sentence stops" },
+      ],
+      trend: "Mostly underdeveloped, with one unfinished sentence.",
+      evidence: "",
+    },
+  });
+  assert.deepEqual(validateRequirement(ok), []);
+  const bad = base({
+    volume: { attempts: 6, note: "" },
+    communication: { points: [{ n: 1, statement: "x", category: "Complete", note: "" }], trend: "4 of 6 were underdeveloped", evidence: "" },
+  });
+  assert.equal(validateRequirement(bad).length, 2);
+});

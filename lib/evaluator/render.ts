@@ -2,6 +2,13 @@ import type { RunResult } from "./run";
 
 const pct = (value: number | null) => (value === null ? "—" : `${Math.round(value * 100)}%`);
 
+function mostCommon(values: string[]): string {
+  if (!values.length) return "—";
+  const counts = new Map<string, number>();
+  for (const v of values) counts.set(v, (counts.get(v) ?? 0) + 1);
+  return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+}
+
 /**
  * Review sheet for calibration: requirements as rows, measures as columns, so recurring weak patterns
  * are visible at a glance. Then the generated report, for Yvonne to compare with her own evaluation.
@@ -39,7 +46,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
         req.components ? req.components.layers.map((l) => `${l.layer} ${l.recognised}/${l.available}`).join("; ") || "—" : "—",
         req.core_issue ? `${req.core_issue.higher_covered}/${req.core_issue.higher_total} higher` : "—",
         req.rtfq ? req.rtfq.dimensions.map((d) => d.delivered).join("/") || "—" : "—",
-        req.communication?.rating ?? "—",
+        req.communication ? mostCommon(req.communication.points.map((p) => p.category)) : "—",
         req.question_type,
         req.competency.topic,
       ].join(" | ").replace(/^/, "| ").replace(/$/, " |")
@@ -57,6 +64,15 @@ export function renderCalibrationMarkdown(result: RunResult): string {
     for (const req of withCore) {
       lines.push("", `**${req.label}**: ${req.core_issue!.higher_covered} of ${req.core_issue!.higher_total} higher-priority components covered (${req.core_issue!.alignment ?? "n/a"})${req.core_issue!.dominant_covered === false ? "; the dominant component was not covered" : ""}`, "", "| Component | Priority | Clue the case gave | Your statements | Depth |", "|---|---|---|---|---|");
       for (const c of req.core_issue!.components) lines.push(`| ${c.component} | ${c.priority} | ${c.clue} | ${c.attempts} | ${c.depth} |`);
+    }
+  }
+  const withComm = dataset.requirements.filter((req) => req.communication?.points.length);
+  if (withComm.length) {
+    lines.push("");
+    lines.push("## Communication (coach view: point by point; students see the trend only)");
+    for (const req of withComm) {
+      lines.push("", `**${req.label}**: ${req.communication!.trend}`, "", "| # | Statement | Category | Note |", "|---|---|---|---|");
+      for (const p of req.communication!.points) lines.push(`| ${p.n} | ${p.statement} | ${p.category} | ${p.note} |`);
     }
   }
   const withRtfq = dataset.requirements.filter((req) => req.rtfq?.dimensions.length);

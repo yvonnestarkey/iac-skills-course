@@ -92,6 +92,12 @@ export function validateRequirement(requirement: RequirementEvaluation): string[
       if (bucket.seen > bucket.available && bucket.available > 0) warnings.push(`${code}: ${name} seen exceeds available.`);
     }
   }
+  if (requirement.communication && requirement.volume && requirement.communication.points.length !== requirement.volume.attempts) {
+    warnings.push(`${code}: Communication points (${requirement.communication.points.length}) differ from Volume attempts (${requirement.volume.attempts}); they should be the same statements.`);
+  }
+  if (requirement.communication && /\d/.test(requirement.communication.trend)) {
+    warnings.push(`${code}: Communication trend contains numbers; Communication is not quantified for students.`);
+  }
   if (requirement.rtfq) {
     const names = new Set(requirement.rtfq.dimensions.map((d) => d.dimension));
     if (requirement.rtfq.dimensions.length !== 3 || names.size !== 3) warnings.push(`${code}: RTFQ should have exactly one entry each for shape, directions and lens.`);

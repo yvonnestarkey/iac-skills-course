@@ -85,7 +85,28 @@ const REQUIREMENT_SCHEMA = {
       },
       required: ["dimensions", "evidence"],
     },
-    communication: { type: ["object", "null"], properties: { rating: { type: "string", enum: [...COMMUNICATION_RATINGS] }, evidence: { type: "string" } }, required: ["rating", "evidence"] },
+    communication: {
+      type: ["object", "null"],
+      properties: {
+        points: {
+          type: "array",
+          description: "One entry per statement the student wrote, in order (the same unit as Volume).",
+          items: {
+            type: "object",
+            properties: {
+              n: { type: "integer", minimum: 1 },
+              statement: { type: "string" },
+              category: { type: "string", enum: [...COMMUNICATION_RATINGS] },
+              note: { type: "string" },
+            },
+            required: ["n", "statement", "category", "note"],
+          },
+        },
+        trend: { type: "string", description: "The trend across the points in plain words. No numbers, counts or percentages." },
+        evidence: { type: "string" },
+      },
+      required: ["points", "trend", "evidence"],
+    },
     quick_comment: {
       type: "object",
       properties: {
@@ -142,6 +163,7 @@ export async function evaluateRequirement(input: {
             ? `Core Issue components (pre-calibrated; priority, including any dominant component, is NOT yours to judge). For each, report attempts (statements the student wrote on it, one per statement) and depth (none / surface / developed):\n${model.core_issue.map((c) => `- ${c.component} [${c.layer}]`).join("\n")}`
             : "No pre-calibrated Core Issue components exist for this requirement. Return core_issue as null. Do NOT invent priorities.",
           "RTFQ: return three dimensions. shape = the instruction word and its shape (discuss, calculate, evaluate, journal, recommend...); directions = hidden required, named entities, headings, exclusions, required perspective; lens = the actual issue or framework the required asks about. For each say what the required asked for, whether the answer delivered it (yes / partly / no) and a one-line note of the evidence on the page. Use partly when the answer is on the right track but only some of it was delivered. Record delivery only; never explain why the student did or did not deliver.",
+          "Communication: judge only what is on the page, never what was in the student's head. Categorise EACH statement (the same unit as Volume, one per statement): Complete, Underdeveloped, Unclear or Miscommunicated. Discussion shape is fact -> implication -> relevance. A thin tail such as \"thus creating more value\" is Underdeveloped (the student should have continued). A sentence that stops mid-way, or illegible wording, is Unclear. A mark not awarded is NOT automatically a Communication problem. Then write the trend in plain words with no numbers.",
           "technical_awarded excludes professional marks (Z structure marks, Comm marks, Y marks); record those in pvaa_awarded.",
           `Student's own BMCR for this requirement: marks available ${input.bmcr?.available ?? "unknown"}, marks the student believed they knew ${input.bmcr?.student_known ?? "unknown"}.`,
           "",

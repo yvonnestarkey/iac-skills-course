@@ -98,6 +98,28 @@ export type RtfqEvidence = {
   evidence: string;
 };
 
+export type CommunicationPoint = {
+  /** Same unit as Volume: one statement, in the order written. */
+  n: number;
+  /** Short quote or paraphrase so the coach can find it on the page. */
+  statement: string;
+  category: CommunicationRating;
+  /** One line, only when it helps (e.g. "sentence stops mid-way"). */
+  note: string;
+};
+
+/**
+ * Communication judges only what made it onto the page. Point-level categories are kept for the coach and for
+ * evidence; the student sees the trend sentence (plus a couple of examples), never counts.
+ * A mark not awarded is NOT automatically a Communication problem.
+ */
+export type CommunicationEvidence = {
+  points: CommunicationPoint[];
+  /** Qualitative trend in plain words, no numbers or percentages. */
+  trend: string;
+  evidence: string;
+};
+
 export type ProximityBucket = {
   /** Marks of this proximity kind the official solution makes available. */
   available: number;
@@ -155,7 +177,7 @@ export type RequirementEvaluation = {
   components: ComponentsEvidence | null;
   core_issue: CoreIssueEvidence | null;
   rtfq: RtfqEvidence | null;
-  communication: { rating: CommunicationRating; evidence: string } | null;
+  communication: CommunicationEvidence | null;
   quick_comment: {
     /** Best-supported main thing between the student and the marks, or null if the evidence does not support one. */
     main_issue: string | null;
