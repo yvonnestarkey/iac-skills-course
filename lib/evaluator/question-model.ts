@@ -17,14 +17,15 @@ export type ClueType = (typeof CLUE_TYPES)[number];
 /**
  * Core Issue works on the Components, never on free-floating topics. For each component (a layer entry such as
  * a case section) the question model records whether the case signals it as a HIGHER or LOWER priority and the
- * clue a student could have seen in the exam. No ranking among the higher ones: the tool is for deciding where
- * to put limited time, not for ordering.
+ * clue a student could have seen in the exam. "dominant" is used ONLY when the case makes one component obviously
+ * first (e.g. the valuation assertion when auditing consumable goods). Often there is no dominant one: several
+ * components share the higher tier, as in Q1(a). Never force a ranking where the case does not show one.
  */
 export type CoreIssueComponent = {
   /** Same layer name used in Components, e.g. "Case sections". */
   layer: string;
   component: string;
-  priority: "higher" | "lower";
+  priority: "dominant" | "higher" | "lower";
   clue_type: ClueType;
   /** The clue in plain words: why the case signals this weight. */
   clue: string;

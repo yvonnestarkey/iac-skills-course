@@ -53,8 +53,8 @@ export type ComponentsEvidence = {
 export type CoreIssueComponentEvidence = {
   layer: string;
   component: string;
-  /** Pre-calibrated in the question model, never set by the evaluating model. */
-  priority: "higher" | "lower";
+  /** Pre-calibrated in the question model, never set by the evaluating model. "dominant" only when the case makes one obviously first. */
+  priority: "dominant" | "higher" | "lower";
   clue_type: string;
   clue: string;
   /** Statements the student wrote on this component (Volume rule: one per statement). */
@@ -64,9 +64,12 @@ export type CoreIssueComponentEvidence = {
 
 export type CoreIssueEvidence = {
   components: CoreIssueComponentEvidence[];
+  /** Count of higher-priority components, dominant included. */
   higher_total: number;
-  /** Higher-priority components with at least one attempt. */
+  /** Higher-priority components (dominant included) with at least one attempt. */
   higher_covered: number;
+  /** Null when the case shows no dominant component; otherwise whether the student wrote on it. */
+  dominant_covered: boolean | null;
   /** Computed in code: all higher covered = aligned, some = partly, none = misaligned. Null when no higher components. */
   alignment: "aligned" | "partly" | "misaligned" | null;
   evidence: string;

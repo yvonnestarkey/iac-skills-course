@@ -140,8 +140,9 @@ export function buildCoreIssue(model: CoreIssueComponent[] | undefined, raw: Raw
       depth: attempts === 0 ? ("none" as const) : found?.depth === "none" ? ("surface" as const) : found?.depth ?? ("surface" as const),
     };
   });
-  const higher = components.filter((c) => c.priority === "higher");
+  const higher = components.filter((c) => c.priority === "higher" || c.priority === "dominant");
+  const dominant = components.find((c) => c.priority === "dominant");
   const covered = higher.filter((c) => c.attempts > 0).length;
   const alignment = higher.length === 0 ? null : covered === higher.length ? "aligned" : covered === 0 ? "misaligned" : "partly";
-  return { components, higher_total: higher.length, higher_covered: covered, alignment, evidence: raw.evidence };
+  return { components, higher_total: higher.length, higher_covered: covered, dominant_covered: dominant ? dominant.attempts > 0 : null, alignment, evidence: raw.evidence };
 }

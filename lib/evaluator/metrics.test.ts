@@ -131,3 +131,23 @@ test("core issue: priority comes from the model; alignment is coverage of higher
   const none = buildCoreIssue(model, { components: [], evidence: "" })!;
   assert.equal(none.alignment, "misaligned");
 });
+
+test("core issue: a dominant component is optional and reported when present", () => {
+  const model = [
+    { layer: "Assertions", component: "Valuation", priority: "dominant" as const, clue_type: "materiality" as const, clue: "" },
+    { layer: "Assertions", component: "Existence", priority: "higher" as const, clue_type: "risk" as const, clue: "" },
+    { layer: "Assertions", component: "Presentation", priority: "lower" as const, clue_type: "low_relevance" as const, clue: "" },
+  ];
+  const out = buildCoreIssue(model, {
+    components: [
+      { component: "Existence", attempts: 4, depth: "surface" },
+      { component: "Valuation", attempts: 0, depth: "none" },
+    ],
+    evidence: "",
+  })!;
+  assert.equal(out.higher_total, 2);
+  assert.equal(out.dominant_covered, false);
+  assert.equal(out.alignment, "partly");
+  const q1a = buildCoreIssue(questionModelFor("iac-2026-p1", "P1Q1_a")!.core_issue!, { components: [], evidence: "" })!;
+  assert.equal(q1a.dominant_covered, null); // Q1(a) has no dominant component
+});

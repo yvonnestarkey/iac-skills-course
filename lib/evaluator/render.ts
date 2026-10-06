@@ -55,7 +55,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
     lines.push("");
     lines.push("## Core Issue (which components deserved more of your time)");
     for (const req of withCore) {
-      lines.push("", `**${req.label}**: ${req.core_issue!.higher_covered} of ${req.core_issue!.higher_total} higher-priority components covered (${req.core_issue!.alignment ?? "n/a"})`, "", "| Component | Priority | Clue the case gave | Your statements | Depth |", "|---|---|---|---|---|");
+      lines.push("", `**${req.label}**: ${req.core_issue!.higher_covered} of ${req.core_issue!.higher_total} higher-priority components covered (${req.core_issue!.alignment ?? "n/a"})${req.core_issue!.dominant_covered === false ? "; the dominant component was not covered" : ""}`, "", "| Component | Priority | Clue the case gave | Your statements | Depth |", "|---|---|---|---|---|");
       for (const c of req.core_issue!.components) lines.push(`| ${c.component} | ${c.priority} | ${c.clue} | ${c.attempts} | ${c.depth} |`);
     }
   }
