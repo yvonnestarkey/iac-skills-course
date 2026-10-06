@@ -6,7 +6,8 @@
     "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
     "technical marks exclude professional marks (Z structure marks, Comm marks, Y marks).",
     "Test (Yvonne): Direct = little or no jump from the case indicator to the marked point. If the indicator is in the case but the point needs inference it is Indirect; several steps or generated ideas are Thinking. Bold in the marker's report is NOT the test.",
-    "core_issue: per requirement, pre-calibrated priority (dominant only when the case makes one obviously first, otherwise higher/lower) and the student-visible clue for each component. Q1(a) case sections set by Yvonne 6 Oct 2026; SWOT-bucket layer not yet confirmed; Q1(d) pending."
+    "core_issue: per requirement, pre-calibrated priority (dominant only when the case makes one obviously first, otherwise higher/lower) and the student-visible clue for each component. Q1(a) case sections set by Yvonne 6 Oct 2026; SWOT-bucket layer not yet confirmed; Q1(d) pending.",
+    "Q1(d) Core Issue set by Yvonne 6 Oct 2026: volume of case information per goal is the clue. No dominant component; Goal 6 is lower, not skippable (the requirement names it)."
   ],
   "requirements": {
     "P1Q1_a": {
@@ -368,6 +369,22 @@
       ],
       "source_discrepancies": [
         "Marker's report rows 94 and 96 each combine a goal-concept statement with a first marked point; the official solution allocates marks for two separate thoughts. Decision (Yvonne): each report row is one mark and one item (it is the student's mark), and where a row merges thoughts it is classified Indirect (benefit of the doubt)."
+      ],
+      "core_issue": [
+        {
+          "layer": "Goal 6 / Goal 7",
+          "component": "Goal 7: Affordable and clean energy",
+          "priority": "higher",
+          "clue_type": "density",
+          "clue": "The case gives energy the longer paragraph and more initiatives: solar panels, less reliance on Eskom, LED lighting, insulation, energy-efficient climate control, lower monthly energy cost."
+        },
+        {
+          "layer": "Goal 6 / Goal 7",
+          "component": "Goal 6: Clean water and sanitation",
+          "priority": "lower",
+          "clue_type": "density",
+          "clue": "A shorter paragraph with one initiative (rainwater harvesting). The requirement still names Goal 6, so cover it, with less time."
+        }
       ]
     },
     "P1Q2_e": {
