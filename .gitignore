@@ -20,3 +20,4 @@ test-results/
 .thinkific-chrome/
 .thinkific-scrape-go
 .thinkific-inspect.json
+calibration-output/

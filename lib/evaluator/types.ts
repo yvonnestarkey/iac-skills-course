@@ -1,0 +1,153 @@
+/**
+ * Script Evaluator v2 — types.
+ *
+ * Architecture (from the Eve vault): Pre-calibrated Question Model → Full Evaluation Dataset →
+ * Synthesised Student Report. "Collect intensely; report lightly."
+ *
+ * Stage 1 outputs OBSERVATIONS only. Interpretation lives in Stage 2 and is always framed as a
+ * working hypothesis with a probe, never as a root-cause diagnosis.
+ */
+
+export const COMMUNICATION_RATINGS = ["Complete", "Underdeveloped", "Unclear", "Miscommunicated"] as const;
+export type CommunicationRating = (typeof COMMUNICATION_RATINGS)[number];
+
+export const QUESTION_TYPES = ["Discussion", "Non-discussion"] as const;
+export type QuestionType = (typeof QUESTION_TYPES)[number];
+
+export type ProximityBucket = {
+  /** Marks of this proximity kind the official solution makes available. */
+  available: number;
+  /** Opportunities the candidate visibly saw/used (indicator), whether or not awarded. */
+  seen: number;
+  /** Marks actually awarded in this bucket. */
+  awarded: number;
+};
+
+/** Page ranges are 1-based and refer to the stored PDF page numbers. */
+export type RequirementPageMap = {
+  code: string;
+  label: string;
+  script_pages: number[];
+  report_pages: number[];
+  /** Candidate wrote an answer for this requirement. */
+  attempted: boolean;
+  /** Mapping was by explicit label ("Required (d)") or by content matching. */
+  mapped_by: "label" | "content" | "none";
+  uncertain: boolean;
+  note?: string;
+};
+
+export type PageMap = {
+  requirements: RequirementPageMap[];
+  /** Order the candidate actually answered in (labels). Never use sequence to assign requirements. */
+  answer_order: string[];
+};
+
+export type BmcrRow = {
+  code: string;
+  available: number | null;
+  student_known: number | null;
+  /** Student's own calculation as written on the sheet, if present. */
+  student_percentage: number | null;
+};
+
+export type RequirementEvaluation = {
+  code: string;
+  label: string;
+  attempted: boolean;
+  /** Official mark plan total for this requirement. */
+  total_marks: number;
+  /** Technical marks awarded per the marking report (PVAA marks separate). */
+  technical_awarded: number | null;
+  pvaa_awarded: number | null;
+  question_type: QuestionType;
+  question_type_basis: string;
+  competency: { topic: string; basis: string };
+  bmcr: { student_known: number | null; available: number | null };
+  buried_treasure: { direct: ProximityBucket; indirect: ProximityBucket; thinking: ProximityBucket } | null;
+  volume: { attempts: number; note: string } | null;
+  components: { available: boolean; recognised: boolean; exploited: boolean; evidence: string } | null;
+  core_issue: {
+    case_signal: string;
+    student_weighting: string;
+    alignment: "aligned" | "partly" | "misaligned";
+    evidence: string;
+  } | null;
+  rtfq: {
+    required_shape: string;
+    hidden_directions: string;
+    subject_lens: string;
+    delivered_shape: boolean;
+    delivered_directions: boolean;
+    delivered_lens: boolean;
+    evidence: string;
+  } | null;
+  communication: { rating: CommunicationRating; evidence: string } | null;
+  quick_comment: {
+    /** Best-supported main thing between the student and the marks, or null if the evidence does not support one. */
+    main_issue: string | null;
+    certainty: "supported" | "uncertain";
+    evidence: string;
+  };
+  uncertainties: string[];
+};
+
+/** Computed in code (never by the model). */
+export type RequirementMetrics = {
+  code: string;
+  bmcr_conversion: number | null; // technical_awarded / student_known
+  bmcr_known_pct: number | null; // student_known / total_marks
+  actual_pct: number | null; // technical_awarded / total_marks
+  accuracy: number | null; // technical_awarded / volume attempts
+  proximity_conversion: { direct: number | null; indirect: number | null; thinking: number | null };
+};
+
+export type EvaluationDataset = {
+  version: 1;
+  attempt_id: string;
+  sitting_id: string;
+  paper_id: string;
+  generated_at: string;
+  model: string;
+  page_map: PageMap;
+  bmcr_rows: BmcrRow[];
+  requirements: RequirementEvaluation[];
+  metrics: RequirementMetrics[];
+  source_notes: string[];
+  warnings: string[];
+};
+
+export type ReportPattern = {
+  /** Plain student-facing title. No theory jargon. */
+  title: string;
+  what_we_see: string;
+  evidence: string[]; // references to requirements/measures, e.g. "Q1(a) Volume 7 attempts"
+  why_it_matters: string;
+  relevant_tool: string;
+  /** Working hypotheses with the evidence that would confirm/reject them. Never presented as fact. */
+  working_hypotheses: { hypothesis: string; would_confirm: string; would_reject: string }[];
+  probe_question: string;
+  next_step: string;
+  confidence: "supported" | "tentative";
+};
+
+export type EvaluationReport = {
+  version: 1;
+  attempt_id: string;
+  generated_at: string;
+  model: string;
+  headline: string;
+  patterns: ReportPattern[];
+  /** One line per requirement, "quick comment" style, derived from dataset. */
+  requirement_comments: { code: string; comment: string; certainty: "supported" | "uncertain" }[];
+  technical_gaps: string[];
+  still_to_investigate: string[];
+  /** Cues for the human coach. Never shown to the student. */
+  coach_flags: { type: "wellbeing" | "quit_risk" | "data_quality" | "other"; note: string }[];
+};
+
+export type UsageTally = {
+  input_tokens: number;
+  output_tokens: number;
+  calls: number;
+};
