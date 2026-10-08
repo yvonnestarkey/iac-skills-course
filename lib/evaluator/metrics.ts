@@ -67,12 +67,13 @@ export function computeMetrics(requirement: RequirementEvaluation): RequirementM
 }
 
 /**
- * Draft thresholds (to be confirmed by Yvonne). Volume is an issue when the student wrote fewer statements than this
- * share of the marks available; accuracy is an issue when fewer than this share of statements earned a mark.
- * The "one point per mark" rule of thumb is taught in the course.
+ * Volume and Accuracy work together (Yvonne, 8 Oct 2026). Students should write about as many points as there are marks.
+ * Volume = statements / marks available. Accuracy = marks earned / statements. Volume x Accuracy = marks earned / marks
+ * available. The lower the accuracy, the higher the volume has to be: 80% volume at 80% accuracy is 64% and passes;
+ * 80% volume at 50% accuracy is 40% and does not. So the verdict looks at the pair, not at each alone.
+ * The pass mark is a draft constant, to be confirmed.
  */
-export const VOLUME_MIN_SHARE = 0.75;
-export const ACCURACY_MIN_SHARE = 0.5;
+export const PASS_SHARE = 0.5;
 
 /** Quantifier for the Communication diagnosis, from the share of statements in a category (draft thresholds). */
 export function quantifier(share: number): "Most" | "Many" | "Some" | "A few" | null {
@@ -91,20 +92,23 @@ function joinNames(names: string[]): string {
 /** Plain, uniform diagnosis sentences composed in code so every report reads the same way. */
 export function diagnose(requirement: RequirementEvaluation): RequirementDiagnoses {
   let volume_accuracy: RequirementDiagnoses["volume_accuracy"] = null;
-  if (requirement.attempted && requirement.volume) {
+  if (requirement.attempted && requirement.volume && requirement.total_marks > 0) {
     const attempts = requirement.volume.attempts;
     const awarded = requirement.technical_awarded ?? 0;
-    const volume_issue = attempts < requirement.total_marks * VOLUME_MIN_SHARE;
-    const accuracy_issue = attempts > 0 && awarded / attempts < ACCURACY_MIN_SHARE;
-    const text =
-      volume_issue && accuracy_issue
-        ? "Both volume and accuracy are issues here."
-        : volume_issue
-          ? "Volume was a problem here."
-          : accuracy_issue
-            ? "Accuracy was a problem here."
-            : "Neither volume nor accuracy was a problem here.";
-    volume_accuracy = { volume_issue, accuracy_issue, text };
+    const volume = attempts / requirement.total_marks;
+    const accuracy = attempts > 0 ? awarded / attempts : null;
+    const combined = accuracy === null ? null : volume * accuracy;
+    const passes = combined !== null && combined >= PASS_SHARE;
+    const needed_volume = accuracy && accuracy > 0 ? PASS_SHARE / accuracy : null;
+    const needed_accuracy = volume > 0 ? PASS_SHARE / volume : null;
+    const pct = (value: number) => `${Math.round(value * 100)}%`;
+    let text: string;
+    if (accuracy === null) text = "No points were written, so there was nothing to earn marks from.";
+    else if (passes) text = `Volume ${pct(volume)}, Accuracy ${pct(accuracy)}. Together these were enough to reach the pass mark here.`;
+    else if (needed_volume === null) text = `Volume ${pct(volume)}, Accuracy ${pct(accuracy)}. None of your points earned a mark, so writing more of the same would not help: accuracy is the problem here.`;
+    else
+      text = `Volume ${pct(volume)}, Accuracy ${pct(accuracy)}. At your accuracy you would have needed to write about ${pct(needed_volume)} as many points as there were marks to reach the pass mark. Either write more points, or write fewer but make sure more of them earn marks (at your volume you needed an accuracy of ${pct(needed_accuracy ?? 0)}).`;
+    volume_accuracy = { volume, accuracy, combined, passes, needed_volume, needed_accuracy, text };
   }
 
   let core_issue: RequirementDiagnoses["core_issue"] = null;

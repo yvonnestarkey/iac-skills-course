@@ -238,13 +238,20 @@ test("coach hypotheses: need two distinct valid requirements to be supported; un
   assert.deepEqual(out[2].evidence_requirements, ["P1Q1_a"]);
 });
 
-test("diagnoses: volume and accuracy verdicts (draft thresholds)", () => {
-  const q1a = diagnose(base({ total_marks: 22, technical_awarded: 7, volume: { attempts: 20, note: "" } }));
-  assert.equal(q1a.volume_accuracy!.text, "Accuracy was a problem here.");
-  const q1d = diagnose(base({ total_marks: 6, technical_awarded: 0, volume: { attempts: 4, note: "" } }));
-  assert.equal(q1d.volume_accuracy!.text, "Both volume and accuracy are issues here.");
-  assert.equal(diagnose(base({ total_marks: 10, technical_awarded: 2, volume: { attempts: 3, note: "" } })).volume_accuracy!.text, "Volume was a problem here.");
-  assert.equal(diagnose(base({ total_marks: 10, technical_awarded: 8, volume: { attempts: 10, note: "" } })).volume_accuracy!.text, "Neither volume nor accuracy was a problem here.");
+test("diagnoses: volume and accuracy are judged together against the pass mark (draft)", () => {
+  const q1a = diagnose(base({ total_marks: 22, technical_awarded: 7, volume: { attempts: 20, note: "" } })).volume_accuracy!;
+  assert.equal(q1a.passes, false);
+  assert.equal(Math.round(q1a.needed_volume! * 100), 143);
+  assert.equal(Math.round(q1a.needed_accuracy! * 100), 55);
+  assert.match(q1a.text, /^Volume 91%, Accuracy 35%\. At your accuracy you would have needed to write about 143%/);
+  // The worked example from the course: 80% volume at 80% accuracy passes, 80% volume at 50% accuracy does not.
+  assert.equal(diagnose(base({ total_marks: 10, technical_awarded: 6.4, volume: { attempts: 8, note: "" } })).volume_accuracy!.passes, true);
+  const half = diagnose(base({ total_marks: 10, technical_awarded: 4, volume: { attempts: 8, note: "" } })).volume_accuracy!;
+  assert.equal(half.passes, false);
+  assert.equal(Math.round(half.needed_volume! * 100), 100);
+  const zero = diagnose(base({ total_marks: 6, technical_awarded: 0, volume: { attempts: 4, note: "" } })).volume_accuracy!;
+  assert.equal(zero.needed_volume, null);
+  assert.match(zero.text, /None of your points earned a mark/);
   assert.equal(diagnose(base({ volume: null })).volume_accuracy, null);
 });
 

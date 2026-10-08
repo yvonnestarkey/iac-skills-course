@@ -238,7 +238,20 @@ export type RequirementMetrics = {
 };
 
 export type RequirementDiagnoses = {
-  volume_accuracy: { volume_issue: boolean; accuracy_issue: boolean; text: string } | null;
+  volume_accuracy: {
+    /** Statements as a share of the marks available, e.g. 0.91. */
+    volume: number;
+    /** Marks earned as a share of statements, e.g. 0.35. Null when nothing was written. */
+    accuracy: number | null;
+    /** volume x accuracy = marks earned as a share of marks available. */
+    combined: number | null;
+    passes: boolean;
+    /** Volume needed at the current accuracy to reach the pass mark. Null when accuracy is zero. */
+    needed_volume: number | null;
+    /** Accuracy needed at the current volume to reach the pass mark. Null when nothing was written. */
+    needed_accuracy: number | null;
+    text: string;
+  } | null;
   core_issue: { core_issues_text: string; reflects: "yes" | "partly" | "no"; reflection_text: string } | null;
   communication: { counts: Record<CommunicationRating, number>; text: string } | null;
 };
