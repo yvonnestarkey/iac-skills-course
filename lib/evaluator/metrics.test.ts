@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, enforceCoachHypothesisEvidence, finalizeCommunication, validateRequirement } from "./metrics";
+import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, enforceCoachHypothesisEvidence, finalizeCommunication, rtfqGate, validateRequirement } from "./metrics";
 import { questionModelFor, toolsFor, type RequirementModel } from "./question-model";
 import type { RequirementEvaluation } from "./types";
 
@@ -72,6 +72,18 @@ test("tool gating: discussion runs the full set, calculation and not-attempted d
   assert.equal(toolsFor("Non-discussion", true).volumeAccuracy, false);
   assert.equal(toolsFor("Non-discussion", true).coreIssue, false);
   assert.equal(toolsFor("Discussion", false).buriedTreasure, false);
+  // RTFQ is pervasive: it runs on every attempted requirement, calculation included, never on a skipped one.
+  assert.equal(toolsFor("Non-discussion", true).rtfq, true);
+  assert.equal(toolsFor("Discussion", false).rtfq, false);
+});
+
+test("rtfq gate: a misread shape or lens makes the other tools provisional", () => {
+  const dim = (dimension: "shape" | "directions" | "lens", delivered: "yes" | "partly" | "no") => ({ dimension, required: "", delivered, note: "" });
+  assert.equal(rtfqGate({ dimensions: [dim("shape", "yes"), dim("directions", "partly"), dim("lens", "partly")], evidence: "" }), "clear");
+  assert.equal(rtfqGate({ dimensions: [dim("shape", "no"), dim("directions", "yes"), dim("lens", "yes")], evidence: "" }), "caution");
+  assert.equal(rtfqGate({ dimensions: [dim("shape", "yes"), dim("directions", "yes"), dim("lens", "no")], evidence: "" }), "caution");
+  assert.equal(rtfqGate({ dimensions: [dim("shape", "yes"), dim("directions", "no"), dim("lens", "yes")], evidence: "" }), "clear");
+  assert.equal(rtfqGate(null), null);
 });
 
 test("proximity aggregation uses the pre-calibrated model, with Available as denominator", () => {

@@ -59,7 +59,7 @@ export function proximityAvailable(model: RequirementModel | null): { direct: nu
  * Which tools run, by question type (Yvonne, 6 Oct 2026):
  * Volume, Accuracy, Components and Core Issue run only on discussion questions. Calculation questions are
  * easy for students to self-diagnose; they are looked at briefly after the discussion tools are calibrated.
- * Until then, non-discussion requirements get BMCR, Question Type, Competency and the marker's marks only.
+ * Until then, non-discussion requirements get BMCR, Question Type, Competency, RTFQ and the marker's marks only.
  */
 export function toolsFor(questionType: QuestionType, attempted: boolean): {
   buriedTreasure: boolean;
@@ -70,6 +70,9 @@ export function toolsFor(questionType: QuestionType, attempted: boolean): {
   communication: boolean;
 } {
   const none = { buriedTreasure: false, volumeAccuracy: false, components: false, coreIssue: false, rtfq: false, communication: false };
-  if (!attempted || questionType !== "Discussion") return none;
+  if (!attempted) return none;
+  // RTFQ runs on EVERY attempted requirement (Yvonne, 8 Oct 2026): a student who misread the question, e.g. wrote a
+  // calculation where a discussion was required, makes every other tool's reading provisional.
+  if (questionType !== "Discussion") return { ...none, rtfq: true };
   return { buriedTreasure: true, volumeAccuracy: true, components: true, coreIssue: true, rtfq: true, communication: true };
 }

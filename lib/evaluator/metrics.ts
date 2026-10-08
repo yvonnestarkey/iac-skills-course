@@ -1,5 +1,5 @@
 import { proximityAvailable, type CoreIssueComponent, type RequirementModel } from "./question-model";
-import type { BmcrVerdict, CoachHypothesis, CommunicationEvidence, CoreIssueEvidence, DiscussionBasis, ProximityBucket, RequirementEvaluation, RequirementMetrics } from "./types";
+import type { BmcrVerdict, CoachHypothesis, CommunicationEvidence, CoreIssueEvidence, DiscussionBasis, ProximityBucket, RequirementEvaluation, RequirementMetrics, RtfqEvidence } from "./types";
 
 /** Taught thresholds (kept deliberately simple so students can reproduce them without discretion). */
 export const BMCR_THEORY_THRESHOLD = 0.5; // Basic marks as a share of total marks
@@ -200,4 +200,15 @@ export function enforceCoachHypothesisEvidence(items: CoachHypothesis[], validCo
     const codes = [...new Set(item.evidence_requirements.filter((code) => validCodes.includes(code)))];
     return { ...item, evidence_requirements: codes, confidence: codes.length < 2 ? ("tentative" as const) : item.confidence };
   });
+}
+
+/**
+ * RTFQ is the first lens on a script. If the shape (e.g. a calculation given where a discussion was required) or the
+ * lens (the actual issue asked about) was not delivered, every other tool's result for that requirement is
+ * provisional: it measures an answer to a different question. Missed directions alone do not trigger the caution.
+ */
+export function rtfqGate(rtfq: RtfqEvidence | null): "clear" | "caution" | null {
+  if (!rtfq || !rtfq.dimensions.length) return null;
+  const missed = rtfq.dimensions.some((d) => (d.dimension === "shape" || d.dimension === "lens") && d.delivered === "no");
+  return missed ? "caution" : "clear";
 }

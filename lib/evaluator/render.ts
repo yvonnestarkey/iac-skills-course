@@ -1,3 +1,4 @@
+import { rtfqGate } from "./metrics";
 import type { RunResult } from "./run";
 
 const pct = (value: number | null) => (value === null ? "—" : `${Math.round(value * 100)}%`);
@@ -84,7 +85,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
     lines.push("");
     lines.push("## RTFQ (what the required asked for, and what was delivered)");
     for (const req of withRtfq) {
-      lines.push("", `**${req.label}**`, "", "| Dimension | What the required asked for | Delivered? | Note |", "|---|---|---|---|");
+      lines.push("", `**${req.label}**${rtfqGate(req.rtfq) === "caution" ? " — CAUTION: shape or lens not delivered, so this requirement's other tool results are provisional" : ""}`, "", "| Dimension | What the required asked for | Delivered? | Note |", "|---|---|---|---|");
       for (const d of req.rtfq!.dimensions) lines.push(`| ${d.dimension} | ${d.required} | ${d.delivered} | ${d.note} |`);
     }
   }
