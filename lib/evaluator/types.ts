@@ -326,6 +326,11 @@ export type EvaluationReport = {
   coach_flags: { type: "wellbeing" | "quit_risk" | "data_quality" | "other"; note: string }[];
   /** Coach-only whole-script skill gaps and hypotheses. Absent on reports generated before this layer existed. */
   coach_hypotheses?: CoachHypothesis[];
+  /**
+   * Short "What it shows" lines for the uniform student report, one per Part per step (see student-report.ts).
+   * Tables are built in code; the model writes only these lines. Absent on reports generated before the rebuild.
+   */
+  tool_shows?: { part: string; step: string; line: string }[];
 };
 
 export type UsageTally = {

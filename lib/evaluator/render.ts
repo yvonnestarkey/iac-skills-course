@@ -1,4 +1,5 @@
 import { rtfqGate } from "./metrics";
+import { buildStudentReports } from "./student-report";
 import type { RunResult } from "./run";
 
 const pct = (value: number | null) => (value === null ? "—" : `${Math.round(value * 100)}%`);
@@ -93,7 +94,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
     lines.push("");
     lines.push("## RTFQ (what the required asked for, and what was delivered)");
     for (const req of withRtfq) {
-      lines.push("", `**${req.label}**${rtfqGate(req.rtfq) === "caution" ? " — MISREAD: shape or lens not delivered. Other tools below read the answer as if the question had been read correctly" : ""}`, "", "| Dimension | What the required asked for | Delivered? | Note |", "|---|---|---|---|");
+      lines.push("", `**${req.label}**${rtfqGate(req.rtfq) === "misread" ? " — MISREAD: shape or lens not delivered. Other tools below read the answer as if the question had been read correctly" : ""}`, "", "| Dimension | What the required asked for | Delivered? | Note |", "|---|---|---|---|");
       for (const d of req.rtfq!.dimensions) lines.push(`| ${d.dimension} | ${d.required} | ${d.delivered} | ${d.note} |`);
     }
   }
@@ -112,6 +113,10 @@ export function renderCalibrationMarkdown(result: RunResult): string {
     for (const w of dataset.warnings) lines.push(`- ${w}`);
   }
   if (report) {
+    const shows: Record<string, string> = {};
+    for (const t of report.tool_shows ?? []) shows[`${t.part}:${t.step}`] = t.line;
+    lines.push("", "# Student report (tables built in code; 'What it shows' lines written by the model; steps 9 and 10 held as drafts)");
+    for (const r of buildStudentReports(dataset, shows)) lines.push("", r.markdown);
     lines.push("");
     lines.push("## Generated report");
     lines.push(`**${report.headline}**`);

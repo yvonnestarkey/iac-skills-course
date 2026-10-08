@@ -1,6 +1,7 @@
 import { callStructured } from "./anthropic";
 import { stage2Methodology } from "./methodology";
 import { enforceCoachHypothesisEvidence } from "./metrics";
+import { REPORT_STEPS, partKeyOf } from "./student-report";
 import type { EvaluationDataset, EvaluationReport, UsageTally } from "./types";
 
 const REPORT_SCHEMA = {
@@ -54,6 +55,15 @@ const REPORT_SCHEMA = {
         required: ["skill_gap", "pattern", "evidence_requirements", "evidence", "working_hypothesis", "would_confirm", "would_reject", "probe", "skill_to_train", "confidence"],
       },
     },
+    tool_shows: {
+      type: "array",
+      description: "One short 'What it shows' line per Part per step for the student report. Tables are built in code.",
+      items: {
+        type: "object",
+        properties: { part: { type: "string", description: "Part key such as P1Q1 or P1Q2." }, step: { type: "string", enum: [...REPORT_STEPS] }, line: { type: "string" } },
+        required: ["part", "step", "line"],
+      },
+    },
     technical_gaps: { type: "array", items: { type: "string" } },
     still_to_investigate: { type: "array", items: { type: "string" } },
     coach_flags: {
@@ -61,7 +71,7 @@ const REPORT_SCHEMA = {
       items: { type: "object", properties: { type: { type: "string", enum: ["wellbeing", "quit_risk", "data_quality", "other"] }, note: { type: "string" } }, required: ["type", "note"] },
     },
   },
-  required: ["headline", "patterns", "requirement_comments", "coach_hypotheses", "technical_gaps", "still_to_investigate", "coach_flags"],
+  required: ["headline", "patterns", "requirement_comments", "coach_hypotheses", "tool_shows", "technical_gaps", "still_to_investigate", "coach_flags"],
 };
 
 export async function synthesiseReport(input: { dataset: EvaluationDataset; usage: UsageTally; model: string }): Promise<EvaluationReport> {
@@ -80,6 +90,7 @@ You are Stage 2 of the Script Evaluator: you turn an observation-only evaluation
 - RTFQ comes first. When a requirement's RTFQ shape or lens is "no" the student misread the question. Say so plainly first, in the form: "you earned little here because the question was misread, but look at the skills your answer shows; this is what you can do when you do read it properly". The other tool results still stand as evidence of the skills used (they were run as if the question had been read correctly). Do not treat the lost marks as evidence of a skill gap, and do not blame the other tools for them.
 - Volume, Accuracy, Components and Core Issue only exist for discussion questions; calculation questions carry fewer measures by design, so absent measures are not evidence of anything.
 - coach_hypotheses are COACH-ONLY and look across the WHOLE script. The student will never see this question again, so name transferable skills that will help them pass (hunting the case for signals, sizing an answer to the case, finishing a thought, converting marks, recognising what the requirement asks for), not comments on this question's content. Use the tools as the observable evidence, and consider patterns that repeat across requirements or across tools. Each needs a working hypothesis in Eve's lens, what would confirm it, what would reject it, a probe the coach can ask, and the skill or tool to train. Never state a psychological cause as fact; one script is never enough. Do not invent a hypothesis for a pattern that appears in only one requirement unless you mark it tentative. Compare discussion styles (compliance rules vs non-compliance tools) when both appear. Generic or panicked answers are an observation (what is on the page); do not claim why.
+- tool_shows: the student report is built from tables in code, one report per Part (the Part key is the code before the underscore, e.g. P1Q1 or P1Q2) with the same eight steps each time. For every Part and every step that has data, write ONE short plain line (max 35 words) under "What it shows": what the result means for the student, using only the numbers and diagnoses already in the dataset. Do not restate the table. Do not introduce new numbers. Communication: describe the diagnosis only, never counts. Do not write steps 9 or 10. Where RTFQ shows a misread, say it plainly first.
 - Requirement comments are a one-line "main thing between the student and the marks", allowing "uncertain".`,
     userContent: [
       {
@@ -103,6 +114,7 @@ You are Stage 2 of the Script Evaluator: you turn an observation-only evaluation
     generated_at: new Date().toISOString(),
     model: input.model,
     ...raw,
+    tool_shows: (raw.tool_shows ?? []).filter((t) => (REPORT_STEPS as readonly string[]).includes(t.step) && input.dataset.requirements.some((r) => partKeyOf(r.code) === t.part)),
     coach_hypotheses: enforceCoachHypothesisEvidence(raw.coach_hypotheses ?? [], input.dataset.requirements.map((r) => r.code)),
   };
 }
