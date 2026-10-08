@@ -1,6 +1,6 @@
 {
   "paper_id": "iac-2026-p1",
-  "status": "draft — Q1(a), Q1(b), Q1(d), Q2(e), Q2(f), Q2(g1), Q2(g2) classified with Yvonne; other requirements pending",
+  "status": "draft — Q1(a), Q1(b), Q1(d), Q2(e), Q2(f), Q2(g1), Q2(g2), Q2(h) classified with Yvonne; other requirements pending",
   "notes": [
     "Question Type is part of the pre-calibrated Question Model, set once per requirement (not guessed per student).",
     "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
@@ -956,7 +956,139 @@
     },
     "P1Q2_h": {
       "question_type": "Discussion",
-      "proximity_items": []
+      "proximity_items": [
+        {
+          "row": 121,
+          "proximity": "thinking",
+          "note": "Thinking (Yvonne): the representation letter is not mentioned in the case."
+        },
+        {
+          "row": 122,
+          "proximity": "direct",
+          "note": "Direct (Yvonne): a document, meeting or thing mentioned in the case, so checking it is straightforward. Minutes and turnaround plans."
+        },
+        {
+          "row": 123,
+          "proximity": "direct",
+          "note": "Direct (Yvonne): a document, meeting or thing mentioned in the case, so checking it is straightforward. The cash flow forecast."
+        },
+        {
+          "row": 124,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
+        },
+        {
+          "row": 125,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
+        },
+        {
+          "row": 126,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
+        },
+        {
+          "row": 127,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
+        },
+        {
+          "row": 128,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
+        },
+        {
+          "row": 129,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
+        },
+        {
+          "row": 130,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
+        },
+        {
+          "row": 131,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
+        },
+        {
+          "row": 132,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
+        },
+        {
+          "row": 133,
+          "proximity": "direct",
+          "note": "Direct (Yvonne): a document, meeting or thing mentioned in the case, so checking it is straightforward. Loan and guarantee agreements."
+        },
+        {
+          "row": 134,
+          "proximity": "indirect",
+          "note": "Board minutes: a document, but the liquidity and forecast-approval angle is not mentioned in the case."
+        },
+        {
+          "row": 135,
+          "proximity": "indirect",
+          "note": "The Wuoche dispute is stated; legal confirmation is one step."
+        },
+        {
+          "row": 136,
+          "proximity": "direct",
+          "note": "The turnaround strategies are stated in the case."
+        },
+        {
+          "row": 137,
+          "proximity": "direct",
+          "note": "Direct (Yvonne): a document, meeting or thing mentioned in the case, so checking it is straightforward. The R47bn guarantee."
+        },
+        {
+          "row": 138,
+          "proximity": "direct",
+          "note": "Direct (Yvonne): a document, meeting or thing mentioned in the case, so checking it is straightforward. The equity injection."
+        },
+        {
+          "row": 139,
+          "proximity": "indirect",
+          "note": "The exemption request is stated; confirming its outcome is one step."
+        },
+        {
+          "row": 140,
+          "proximity": "indirect",
+          "note": "Privatisation is stated; enquiring about its status and timing is one step."
+        },
+        {
+          "row": 141,
+          "proximity": "thinking",
+          "note": "Needs PFMA knowledge."
+        },
+        {
+          "row": 142,
+          "proximity": "thinking",
+          "note": "Knowledge-driven; no clue in the case."
+        },
+        {
+          "row": 143,
+          "proximity": "thinking",
+          "note": "Thinking (Yvonne): unions do not appear in the case."
+        },
+        {
+          "row": 144,
+          "proximity": "direct",
+          "note": "Direct (Yvonne): a document, meeting or thing mentioned in the case, so checking it is straightforward. Privatisation arrangements."
+        },
+        {
+          "row": 145,
+          "proximity": "thinking",
+          "note": "Needs knowledge of the regulators."
+        },
+        {
+          "row": 146,
+          "proximity": "direct",
+          "note": "Direct (Yvonne): a document, meeting or thing mentioned in the case, so checking it is straightforward. Liquidity and solvency ratios."
+        }
+      ],
+      "discussion_basis": "non_compliance"
     }
   }
 }
