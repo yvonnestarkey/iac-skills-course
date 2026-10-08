@@ -1,5 +1,5 @@
 import { proximityAvailable, type CoreIssueComponent, type RequirementModel } from "./question-model";
-import type { BmcrVerdict, CoachHypothesis, CommunicationEvidence, CoreIssueEvidence, DiscussionBasis, ProximityBucket, RequirementEvaluation, RequirementMetrics, RtfqEvidence } from "./types";
+import type { BmcrVerdict, CoachHypothesis, CommunicationEvidence, CommunicationRating, RequirementDiagnoses, CoreIssueEvidence, DiscussionBasis, ProximityBucket, RequirementEvaluation, RequirementMetrics, RtfqEvidence } from "./types";
 
 /** Taught thresholds (kept deliberately simple so students can reproduce them without discretion). */
 export const BMCR_THEORY_THRESHOLD = 0.5; // Basic marks as a share of total marks
@@ -62,7 +62,88 @@ export function computeMetrics(requirement: RequirementEvaluation): RequirementM
       indirect: bucketConversion(bt?.indirect),
       thinking: bucketConversion(bt?.thinking),
     },
+    diagnoses: diagnose(requirement),
   };
+}
+
+/**
+ * Draft thresholds (to be confirmed by Yvonne). Volume is an issue when the student wrote fewer statements than this
+ * share of the marks available; accuracy is an issue when fewer than this share of statements earned a mark.
+ * The "one point per mark" rule of thumb is taught in the course.
+ */
+export const VOLUME_MIN_SHARE = 0.75;
+export const ACCURACY_MIN_SHARE = 0.5;
+
+/** Quantifier for the Communication diagnosis, from the share of statements in a category (draft thresholds). */
+export function quantifier(share: number): "Most" | "Many" | "Some" | "A few" | null {
+  if (share > 0.5) return "Most";
+  if (share >= 0.3) return "Many";
+  if (share >= 0.1) return "Some";
+  if (share > 0) return "A few";
+  return null;
+}
+
+function joinNames(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? "";
+  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+}
+
+/** Plain, uniform diagnosis sentences composed in code so every report reads the same way. */
+export function diagnose(requirement: RequirementEvaluation): RequirementDiagnoses {
+  let volume_accuracy: RequirementDiagnoses["volume_accuracy"] = null;
+  if (requirement.attempted && requirement.volume) {
+    const attempts = requirement.volume.attempts;
+    const awarded = requirement.technical_awarded ?? 0;
+    const volume_issue = attempts < requirement.total_marks * VOLUME_MIN_SHARE;
+    const accuracy_issue = attempts > 0 && awarded / attempts < ACCURACY_MIN_SHARE;
+    const text =
+      volume_issue && accuracy_issue
+        ? "Both volume and accuracy are issues here."
+        : volume_issue
+          ? "Volume was a problem here."
+          : accuracy_issue
+            ? "Accuracy was a problem here."
+            : "Neither volume nor accuracy was a problem here.";
+    volume_accuracy = { volume_issue, accuracy_issue, text };
+  }
+
+  let core_issue: RequirementDiagnoses["core_issue"] = null;
+  const ci = requirement.core_issue;
+  if (requirement.attempted && ci && ci.components.length) {
+    const core = ci.components.filter((c) => c.priority === "dominant" || c.priority === "higher");
+    if (core.length) {
+      const names = core.map((c) => c.component.replace(/^Section \d+: /, ""));
+      const core_issues_text = `${joinNames(names)} ${core.length === 1 ? "was the core issue" : "were the core issues"} here.`;
+      const missed = core.filter((c) => c.attempts === 0).map((c) => c.component.replace(/^Section \d+: /, ""));
+      const surface = core.filter((c) => c.attempts > 0 && c.depth === "surface").map((c) => c.component.replace(/^Section \d+: /, ""));
+      const reflects = missed.length === core.length ? "no" : missed.length === 0 && surface.length === 0 ? "yes" : "partly";
+      const details = [missed.length ? `${joinNames(missed)} ${missed.length === 1 ? "was" : "were"} not reached` : "", surface.length ? `${joinNames(surface)} got only a surface treatment` : ""].filter(Boolean);
+      const reflection_text =
+        reflects === "yes"
+          ? "Your answer reflects the core issues."
+          : reflects === "no"
+            ? "Your answer does not reflect the core issues."
+            : `Your answer partly reflects the core issues: ${details.join("; ")}.`;
+      core_issue = { core_issues_text, reflects, reflection_text };
+    }
+  }
+
+  let communication: RequirementDiagnoses["communication"] = null;
+  const comm = requirement.communication;
+  if (requirement.attempted && comm && comm.points.length) {
+    const counts = { Complete: 0, Underdeveloped: 0, Unclear: 0, Miscommunicated: 0 } as Record<CommunicationRating, number>;
+    for (const p of comm.points) counts[p.category] += 1;
+    const total = comm.points.length;
+    const sentences: string[] = [];
+    const complete = quantifier(counts.Complete / total);
+    sentences.push(complete ? `${complete} of your points were complete and well communicated.` : "None of your points were complete and well communicated.");
+    for (const category of ["Underdeveloped", "Unclear", "Miscommunicated"] as const) {
+      const q = quantifier(counts[category] / total);
+      if (q) sentences.push(`${q} were ${category.toLowerCase()}.`);
+    }
+    communication = { counts, text: sentences.join(" ") };
+  }
+  return { volume_accuracy, core_issue, communication };
 }
 
 /**

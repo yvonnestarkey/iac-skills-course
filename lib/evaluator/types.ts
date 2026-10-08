@@ -233,6 +233,14 @@ export type RequirementMetrics = {
   actual_pct: number | null; // technical_awarded / total_marks
   accuracy: number | null; // technical_awarded / volume attempts
   proximity_conversion: { direct: number | null; indirect: number | null; thinking: number | null };
+  /** One plain sentence per tool, composed in code from the evidence so every report reads the same way. */
+  diagnoses: RequirementDiagnoses;
+};
+
+export type RequirementDiagnoses = {
+  volume_accuracy: { volume_issue: boolean; accuracy_issue: boolean; text: string } | null;
+  core_issue: { core_issues_text: string; reflects: "yes" | "partly" | "no"; reflection_text: string } | null;
+  communication: { counts: Record<CommunicationRating, number>; text: string } | null;
 };
 
 export type EvaluationDataset = {

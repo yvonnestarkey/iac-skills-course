@@ -58,6 +58,14 @@ export function renderCalibrationMarkdown(result: RunResult): string {
   for (const req of dataset.requirements) {
     lines.push(`- **${req.label}** (${req.quick_comment.certainty}): ${req.quick_comment.main_issue ?? "no single issue supported"} — _${req.quick_comment.evidence}_`);
   }
+  const withDiag = dataset.metrics.filter((m) => m.diagnoses && (m.diagnoses.volume_accuracy || m.diagnoses.core_issue || m.diagnoses.communication));
+  if (withDiag.length) {
+    lines.push("", "## Diagnoses (composed in code, same wording for every student)");
+    for (const m of withDiag) {
+      const d = m.diagnoses;
+      lines.push(`- **${dataset.requirements.find((r) => r.code === m.code)?.label ?? m.code}:** ${[d.volume_accuracy?.text, d.core_issue ? `${d.core_issue.core_issues_text} ${d.core_issue.reflection_text}` : "", d.communication?.text].filter(Boolean).join(" ")}`);
+    }
+  }
   const withCore = dataset.requirements.filter((req) => req.core_issue?.components.length);
   if (withCore.length) {
     lines.push("");

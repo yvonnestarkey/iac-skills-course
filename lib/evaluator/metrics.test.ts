@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, enforceCoachHypothesisEvidence, finalizeCommunication, rtfqGate, validateRequirement } from "./metrics";
+import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, diagnose, enforceCoachHypothesisEvidence, finalizeCommunication, rtfqGate, validateRequirement } from "./metrics";
 import { questionModelFor, toolsFor, type RequirementModel } from "./question-model";
 import type { RequirementEvaluation } from "./types";
 
@@ -236,4 +236,46 @@ test("coach hypotheses: need two distinct valid requirements to be supported; un
   );
   assert.deepEqual(out.map((x) => x.confidence), ["tentative", "supported", "tentative"]);
   assert.deepEqual(out[2].evidence_requirements, ["P1Q1_a"]);
+});
+
+test("diagnoses: volume and accuracy verdicts (draft thresholds)", () => {
+  const q1a = diagnose(base({ total_marks: 22, technical_awarded: 7, volume: { attempts: 20, note: "" } }));
+  assert.equal(q1a.volume_accuracy!.text, "Accuracy was a problem here.");
+  const q1d = diagnose(base({ total_marks: 6, technical_awarded: 0, volume: { attempts: 4, note: "" } }));
+  assert.equal(q1d.volume_accuracy!.text, "Both volume and accuracy are issues here.");
+  assert.equal(diagnose(base({ total_marks: 10, technical_awarded: 2, volume: { attempts: 3, note: "" } })).volume_accuracy!.text, "Volume was a problem here.");
+  assert.equal(diagnose(base({ total_marks: 10, technical_awarded: 8, volume: { attempts: 10, note: "" } })).volume_accuracy!.text, "Neither volume nor accuracy was a problem here.");
+  assert.equal(diagnose(base({ volume: null })).volume_accuracy, null);
+});
+
+test("diagnoses: communication sentence is composed from the counts", () => {
+  const pts = (cats: string[]) => cats.map((category, i) => ({ n: i + 1, statement: "x", category: category as "Complete", note: "" }));
+  const a = diagnose(base({ communication: { overall: null, points: pts([...Array(11).fill("Complete"), ...Array(7).fill("Underdeveloped"), ...Array(2).fill("Unclear")]), trend: "", evidence: "" } }));
+  assert.equal(a.communication!.text, "Most of your points were complete and well communicated. Many were underdeveloped. Some were unclear.");
+  assert.equal(a.communication!.counts.Underdeveloped, 7);
+  const d = diagnose(base({ communication: { overall: null, points: pts(["Complete", "Complete", "Underdeveloped", "Unclear"]), trend: "", evidence: "" } }));
+  assert.equal(d.communication!.text, "Many of your points were complete and well communicated. Some were underdeveloped. Some were unclear.");
+});
+
+test("diagnoses: core issues are named and the reflection follows coverage and depth", () => {
+  const model = questionModelFor("iac-2026-p1", "P1Q1_a")!.core_issue!;
+  const raw = (rows: Record<string, [number, "none" | "surface" | "developed"]>) => ({
+    components: Object.entries(rows).map(([component, [attempts, depth]]) => ({ component, attempts, depth })),
+    evidence: "",
+  });
+  const names = {
+    bg: "Section 1: Background",
+    debt: "Section 2: Debt covenants",
+    loco: "Section 4: Damaged locomotives",
+  };
+  const partly = diagnose(base({ core_issue: buildCoreIssue(model, raw({ [names.bg]: [12, "developed"], [names.debt]: [4, "developed"], [names.loco]: [1, "surface"] })) })).core_issue!;
+  assert.equal(partly.core_issues_text, "Background, Debt covenants and Damaged locomotives were the core issues here.");
+  assert.equal(partly.reflects, "partly");
+  assert.equal(partly.reflection_text, "Your answer partly reflects the core issues: Damaged locomotives got only a surface treatment.");
+  const none = diagnose(base({ core_issue: buildCoreIssue(model, raw({})) })).core_issue!;
+  assert.equal(none.reflects, "no");
+  const yes = diagnose(base({ core_issue: buildCoreIssue(model, raw({ [names.bg]: [3, "developed"], [names.debt]: [2, "developed"], [names.loco]: [2, "developed"] })) })).core_issue!;
+  assert.equal(yes.reflection_text, "Your answer reflects the core issues.");
+  const q1d = diagnose(base({ core_issue: buildCoreIssue(questionModelFor("iac-2026-p1", "P1Q1_d")!.core_issue!, raw({})) })).core_issue!;
+  assert.equal(q1d.core_issues_text, "Goal 7: Affordable and clean energy was the core issue here.");
 });
