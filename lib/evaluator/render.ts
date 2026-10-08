@@ -62,6 +62,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
     lines.push("");
     lines.push("## Core Issue (which components deserved more of your time)");
     for (const req of withCore) {
+      if (req.core_issue!.off_plan_note) lines.push("", `_Expanded or contracted differently from the case (valid points, not wrong): ${req.core_issue!.off_plan_note}_`);
       lines.push("", `**${req.label}**: ${req.core_issue!.higher_covered} of ${req.core_issue!.higher_total} higher-priority components covered (${req.core_issue!.alignment ?? "n/a"})${req.core_issue!.dominant_covered === false ? "; the dominant component was not covered" : ""}`, "", "| Component | Priority | Clue the case gave | Your statements | Depth |", "|---|---|---|---|---|");
       for (const c of req.core_issue!.components) lines.push(`| ${c.component} | ${c.priority} | ${c.clue} | ${c.attempts} | ${c.depth} |`);
     }
@@ -71,7 +72,10 @@ export function renderCalibrationMarkdown(result: RunResult): string {
     lines.push("");
     lines.push("## Communication (coach view: point by point; students see the trend only)");
     for (const req of withComm) {
-      lines.push("", `**${req.label}**: ${req.communication!.trend}`, "", "| # | Statement | Category | Note |", "|---|---|---|---|");
+      const o = req.communication!.overall;
+      lines.push("", `**${req.label}**${req.discussion_basis ? ` (${req.discussion_basis === "compliance" ? "rules" : "tools"})` : ""}: ${req.communication!.trend}`);
+      if (o) lines.push("", `Overall: introduction ${o.introduction.replace("_", " ")}${o.introduction_note ? ` (${o.introduction_note})` : ""}; knowledge ${o.knowledge}, application ${o.application}, so what ${o.so_what}; arrangement ${o.arrangement.replace("_", " ")}. ${o.note}`);
+      lines.push("", "| # | Statement | Category | Note |", "|---|---|---|---|");
       for (const p of req.communication!.points) lines.push(`| ${p.n} | ${p.statement} | ${p.category} | ${p.note} |`);
     }
   }

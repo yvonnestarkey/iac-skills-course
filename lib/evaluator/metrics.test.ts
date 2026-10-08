@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, validateRequirement } from "./metrics";
+import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, finalizeCommunication, validateRequirement } from "./metrics";
 import { questionModelFor, toolsFor, type RequirementModel } from "./question-model";
 import type { RequirementEvaluation } from "./types";
 
@@ -13,6 +13,7 @@ function base(overrides: Partial<RequirementEvaluation> = {}): RequirementEvalua
     technical_awarded: 7,
     pvaa_awarded: 1,
     question_type: "Discussion",
+    discussion_basis: "non_compliance",
     question_type_basis: "",
     competency: { topic: "Strategy", basis: "" },
     bmcr: { student_known: 15, available: 15 },
@@ -172,6 +173,7 @@ test("communication: per-point categories; trend must not be quantified; points 
   const ok = base({
     volume: { attempts: 2, note: "" },
     communication: {
+      overall: { introduction: "absent", introduction_note: "", knowledge: "partly", application: "yes", so_what: "partly", arrangement: "mixed", note: "" },
       points: [
         { n: 1, statement: "Steps aligned with the UN goals", category: "Underdeveloped", note: "" },
         { n: 2, statement: "More aligned with...", category: "Unclear", note: "sentence stops" },
@@ -183,7 +185,22 @@ test("communication: per-point categories; trend must not be quantified; points 
   assert.deepEqual(validateRequirement(ok), []);
   const bad = base({
     volume: { attempts: 6, note: "" },
-    communication: { points: [{ n: 1, statement: "x", category: "Complete", note: "" }], trend: "4 of 6 were underdeveloped", evidence: "" },
+    communication: { overall: null, points: [{ n: 1, statement: "x", category: "Complete", note: "" }], trend: "4 of 6 were underdeveloped", evidence: "" },
   });
-  assert.equal(validateRequirement(bad).length, 2);
+  assert.equal(validateRequirement(bad).length, 3);
+});
+
+test("communication introduction: expected from 10 marks, not expected below (decided in code)", () => {
+  const overall = { introduction: "present", introduction_note: "", knowledge: "yes", application: "yes", so_what: "yes", arrangement: "interleaved", note: "" } as const;
+  const comm = { overall, points: [], trend: "", evidence: "" };
+  assert.equal(finalizeCommunication(comm, 6)!.overall!.introduction, "not_expected");
+  assert.equal(finalizeCommunication(comm, 10)!.overall!.introduction, "present");
+  assert.equal(finalizeCommunication({ ...comm, overall: { ...overall, introduction: "not_expected" } }, 22)!.overall!.introduction, "absent");
+  assert.equal(finalizeCommunication(null, 22), null);
+});
+
+test("question model: discussion_basis is calibrated for Q1(a), (b), (d) and absent for non-discussion", () => {
+  assert.equal(questionModelFor("iac-2026-p1", "P1Q1_a")!.discussion_basis, "non_compliance");
+  assert.equal(questionModelFor("iac-2026-p1", "P1Q1_d")!.discussion_basis, "compliance");
+  assert.equal(questionModelFor("iac-2026-p1", "P1Q1_c")!.discussion_basis ?? null, null);
 });

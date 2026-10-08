@@ -1,9 +1,9 @@
 import { callStructured, fetchPageImages, imageBlocks } from "./anthropic";
 import { stage1Methodology } from "./methodology";
-import { aggregateProximity, applyNotAttemptedRule, buildCoreIssue, validateRequirement, type RawCoreIssue } from "./metrics";
+import { aggregateProximity, applyNotAttemptedRule, buildCoreIssue, finalizeCommunication, validateRequirement, type RawCoreIssue } from "./metrics";
 import { questionModelFor, toolsFor } from "./question-model";
 import { requirementLabel } from "./pagemap";
-import { COMMUNICATION_RATINGS, QUESTION_TYPES, type BmcrRow, type RequirementEvaluation, type RequirementPageMap, type UsageTally } from "./types";
+import { ARRANGEMENTS, DISCUSSION_BASES, COMMUNICATION_RATINGS, INTRO_STATUSES, QUESTION_TYPES, RTFQ_DELIVERED, type BmcrRow, type RequirementEvaluation, type RequirementPageMap, type UsageTally } from "./types";
 
 type PageRef = { page: number; url: string };
 
@@ -14,6 +14,7 @@ const REQUIREMENT_SCHEMA = {
     technical_awarded: { type: ["number", "null"], description: "Technical marks the marker awarded (excluding PVAA)." },
     pvaa_awarded: { type: ["number", "null"] },
     question_type: { type: "string", enum: [...QUESTION_TYPES], description: "Echo the question type given in the prompt." },
+    discussion_basis: { type: ["string", "null"], enum: [...DISCUSSION_BASES, null], description: "Echo the discussion basis given in the prompt, or null." },
     question_type_basis: { type: "string" },
     competency: { type: "object", properties: { topic: { type: "string" }, basis: { type: "string" } }, required: ["topic", "basis"] },
     buried_treasure_items: {
@@ -60,9 +61,10 @@ const REQUIREMENT_SCHEMA = {
             required: ["component", "attempts", "depth"],
           },
         },
+        off_plan_note: { type: "string", description: "Valid points the student made that are not on the mark plan (they are not wrong): say briefly where the answer was expanded or contracted differently from what the case signalled. Empty string if none." },
         evidence: { type: "string" },
       },
-      required: ["components", "evidence"],
+      required: ["components", "off_plan_note", "evidence"],
     },
     rtfq: {
       type: ["object", "null"],
@@ -88,6 +90,20 @@ const REQUIREMENT_SCHEMA = {
     communication: {
       type: ["object", "null"],
       properties: {
+        overall: {
+          type: "object",
+          description: "Assessment of the WHOLE answer, not point by point. Some students write the theory first and apply it at the end; that is fine.",
+          properties: {
+            introduction: { type: "string", enum: [...INTRO_STATUSES], description: "present = the answer opens by naming the knowledge base and the objective; absent = it jumps into detail." },
+            introduction_note: { type: "string" },
+            knowledge: { type: "string", enum: [...RTFQ_DELIVERED], description: "Across the answer, was the knowledge base (should be / framework) stated?" },
+            application: { type: "string", enum: [...RTFQ_DELIVERED], description: "Across the answer, were case facts applied to it (is)?" },
+            so_what: { type: "string", enum: [...RTFQ_DELIVERED], description: "Across the answer, were conclusions or consequences for the client drawn (so what)?" },
+            arrangement: { type: "string", enum: [...ARRANGEMENTS], description: "interleaved = knowledge, application and so-what stay together; theory_first = theory written first and applied later; mixed = no clear pattern." },
+            note: { type: "string" },
+          },
+          required: ["introduction", "introduction_note", "knowledge", "application", "so_what", "arrangement", "note"],
+        },
         points: {
           type: "array",
           description: "One entry per statement the student wrote, in order (the same unit as Volume).",
@@ -105,7 +121,7 @@ const REQUIREMENT_SCHEMA = {
         trend: { type: "string", description: "The trend across the points in plain words. No numbers, counts or percentages." },
         evidence: { type: "string" },
       },
-      required: ["points", "trend", "evidence"],
+      required: ["overall", "points", "trend", "evidence"],
     },
     quick_comment: {
       type: "object",
@@ -135,6 +151,7 @@ export async function evaluateRequirement(input: {
   const label = requirementLabel(requirement.code);
   const model = questionModelFor(input.paperId, requirement.code);
   const questionType = model?.question_type ?? null;
+  const discussionBasis = questionType === "Discussion" ? model?.discussion_basis ?? null : null;
   const gate = toolsFor(questionType ?? "Discussion", pageMap.attempted);
   const scriptSelected = input.scriptPages.filter((page) => pageMap.script_pages.includes(page.page));
   const reportSelected = input.reportPages.filter((page) => pageMap.report_pages.includes(page.page));
@@ -149,6 +166,9 @@ export async function evaluateRequirement(input: {
           `Requirement: ${label} (${requirement.code}) — ${requirement.title}. Total marks: ${requirement.total_marks}.`,
           `Attempted per page map: ${pageMap.attempted}${pageMap.uncertain ? " (mapping uncertain)" : ""}.`,
           questionType ? `Question type (pre-calibrated, do not change): ${questionType}.` : "Question type is not pre-calibrated; classify it.",
+          discussionBasis
+            ? `Discussion basis (pre-calibrated, do not change): ${discussionBasis === "compliance" ? "compliance, a discussion that applies RULES (a standard, Act or law). Expected shape: should be -> is -> so what, opened by an introduction naming the knowledge base and the objective" : "non-compliance, a discussion that applies TOOLS (a framework such as SWOT, strategy or risk models). Expected shape: framework bucket -> case fact -> so what, opened by an introduction naming the tool and the objective"}.`
+            : "Discussion basis is not pre-calibrated; return discussion_basis as null.",
           `Tools to run for this requirement: ${
             [gate.buriedTreasure && "Buried Treasure", gate.volumeAccuracy && "Volume", gate.components && "Components", gate.coreIssue && "Core Issue", gate.rtfq && "RTFQ", gate.communication && "Communication"]
               .filter(Boolean)
@@ -160,10 +180,10 @@ export async function evaluateRequirement(input: {
           "The marker's report is the ONLY authority for marks awarded. Students may write their own notes, ticks or \"1 mark\" annotations on the script before uploading it; these are never marks. Use them only as evidence of what the student wrote, never to set awarded values.",
           "Components: report one entry per layer of structure (required structure such as SWOT buckets or named goals; case sections; underlying theory). For each layer give counts available / recognised / exploited and a super-brief note. Recognised needs evidence the student used the structure to hunt; generic topic discussion or words that merely resemble the mark plan do NOT count. Exclude any case section the requirement tells students not to discuss from the available count.",
           model?.core_issue?.length
-            ? `Core Issue components (pre-calibrated; priority, including any dominant component, is NOT yours to judge). For each, report attempts (statements the student wrote on it, one per statement) and depth (none / surface / developed):\n${model.core_issue.map((c) => `- ${c.component} [${c.layer}]`).join("\n")}`
+            ? `Core Issue components (pre-calibrated; priority, including any dominant component, is NOT yours to judge). For each, report attempts (statements the student wrote on it, one per statement) and depth (none / surface / developed). A valid point that is not on the mark plan is NOT wrong: if the student spent time on points the case did not signal, or too little on what it did, say so in off_plan_note as incorrect expansion or contraction relative to the case:\n${model.core_issue.map((c) => `- ${c.component} [${c.layer}]`).join("\n")}`
             : "No pre-calibrated Core Issue components exist for this requirement. Return core_issue as null. Do NOT invent priorities.",
           "RTFQ: return three dimensions. shape = the instruction word and its shape (discuss, calculate, evaluate, journal, recommend...); directions = hidden required, named entities, headings, exclusions, required perspective; lens = the actual issue or framework the required asks about. For each say what the required asked for, whether the answer delivered it (yes / partly / no) and a one-line note of the evidence on the page. Use partly when the answer is on the right track but only some of it was delivered. Record delivery only; never explain why the student did or did not deliver.",
-          "Communication: judge only what is on the page, never what was in the student's head. Categorise EACH statement (the same unit as Volume, one per statement): Complete, Underdeveloped, Unclear or Miscommunicated. Discussion shape is fact -> implication -> relevance. A thin tail such as \"thus creating more value\" is Underdeveloped (the student should have continued). A sentence that stops mid-way, or illegible wording, is Unclear. A mark not awarded is NOT automatically a Communication problem. Then write the trend in plain words with no numbers.",
+          "Communication: judge only what is on the page, never what was in the student's head. Categorise EACH statement (the same unit as Volume, one per statement): Complete, Underdeveloped, Unclear or Miscommunicated. Discussion shape is fact -> implication -> relevance. A thin tail such as \"thus creating more value\" is Underdeveloped (the student should have continued). A sentence that stops mid-way, or illegible wording, is Unclear. A mark not awarded is NOT automatically a Communication problem. Communication ignores whether a point is on the mark plan; a valid point missing from the mark plan is not a Communication problem. Then give an OVERALL assessment of the whole answer (not point by point; some students write the theory first and apply it at the end): introduction (present only if the answer opens by naming the knowledge base or tool and the objective; absent if it jumps into detail; the system sets not_expected for requirements under 10 marks), whether knowledge, application and so-what were each delivered somewhere in the answer (yes / partly / no), and the arrangement (interleaved, theory_first or mixed). Then write the trend in plain words with no numbers.",
           "technical_awarded excludes professional marks (Z structure marks, Comm marks, Y marks); record those in pvaa_awarded.",
           `Student's own BMCR for this requirement: marks available ${input.bmcr?.available ?? "unknown"}, marks the student believed they knew ${input.bmcr?.student_known ?? "unknown"}.`,
           "",
@@ -191,6 +211,7 @@ export async function evaluateRequirement(input: {
   const evaluation: RequirementEvaluation = applyNotAttemptedRule({
     ...raw,
     question_type: questionType ?? raw.question_type,
+    discussion_basis: discussionBasis,
     attempted: Boolean(raw.attempted) && pageMap.attempted,
     code: requirement.code,
     label,
@@ -202,7 +223,7 @@ export async function evaluateRequirement(input: {
     components: gate.components ? raw.components ?? null : null,
     core_issue: gate.coreIssue ? buildCoreIssue(model?.core_issue, raw.core_issue ?? null) : null,
     rtfq: gate.rtfq ? raw.rtfq ?? null : null,
-    communication: gate.communication ? raw.communication ?? null : null,
+    communication: gate.communication ? finalizeCommunication(raw.communication ?? null, requirement.total_marks) : null,
     uncertainties: raw.uncertainties || [],
   });
   return { evaluation, warnings: [...warnings, ...validateRequirement(evaluation)] };

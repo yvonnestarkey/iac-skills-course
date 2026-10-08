@@ -1,5 +1,5 @@
 import { proximityAvailable, type CoreIssueComponent, type RequirementModel } from "./question-model";
-import type { BmcrVerdict, CoreIssueEvidence, ProximityBucket, RequirementEvaluation, RequirementMetrics } from "./types";
+import type { BmcrVerdict, CommunicationEvidence, CoreIssueEvidence, ProximityBucket, RequirementEvaluation, RequirementMetrics } from "./types";
 
 /** Taught thresholds (kept deliberately simple so students can reproduce them without discretion). */
 export const BMCR_THEORY_THRESHOLD = 0.5; // Basic marks as a share of total marks
@@ -98,6 +98,12 @@ export function validateRequirement(requirement: RequirementEvaluation): string[
   if (requirement.communication && /\d/.test(requirement.communication.trend)) {
     warnings.push(`${code}: Communication trend contains numbers; Communication is not quantified for students.`);
   }
+  if (requirement.communication) {
+    const overall = requirement.communication.overall;
+    if (!overall) warnings.push(`${code}: Communication has no overall assessment.`);
+    else if (requirement.total_marks < 10 && overall.introduction !== "not_expected") warnings.push(`${code}: introduction should be not_expected under 10 marks.`);
+    else if (requirement.total_marks >= 10 && overall.introduction === "not_expected") warnings.push(`${code}: introduction is expected at 10 marks or more.`);
+  }
   if (requirement.rtfq) {
     const names = new Set(requirement.rtfq.dimensions.map((d) => d.dimension));
     if (requirement.rtfq.dimensions.length !== 3 || names.size !== 3) warnings.push(`${code}: RTFQ should have exactly one entry each for shape, directions and lens.`);
@@ -127,6 +133,7 @@ export function applyNotAttemptedRule(requirement: RequirementEvaluation): Requi
 
 export type RawCoreIssue = {
   components: { component: string; attempts: number; depth: "none" | "surface" | "developed" }[];
+  off_plan_note?: string;
   evidence: string;
 };
 
@@ -154,5 +161,17 @@ export function buildCoreIssue(model: CoreIssueComponent[] | undefined, raw: Raw
   const dominant = components.find((c) => c.priority === "dominant");
   const covered = higher.filter((c) => c.attempts > 0).length;
   const alignment = higher.length === 0 ? null : covered === higher.length ? "aligned" : covered === 0 ? "misaligned" : "partly";
-  return { components, higher_total: higher.length, higher_covered: covered, dominant_covered: dominant ? dominant.attempts > 0 : null, alignment, evidence: raw.evidence };
+  return { components, higher_total: higher.length, higher_covered: covered, dominant_covered: dominant ? dominant.attempts > 0 : null, alignment, off_plan_note: raw.off_plan_note?.trim() ?? "", evidence: raw.evidence };
+}
+
+/**
+ * The introduction is worth 1-2 marks in discussions of 10 marks or more; under that it is not expected.
+ * Decided in code from the requirement's total marks, never by the evaluating model.
+ */
+export function finalizeCommunication(communication: CommunicationEvidence | null, totalMarks: number): CommunicationEvidence | null {
+  if (!communication) return null;
+  if (!communication.overall) return communication;
+  const expected = totalMarks >= 10;
+  const introduction = expected ? (communication.overall.introduction === "not_expected" ? "absent" : communication.overall.introduction) : "not_expected";
+  return { ...communication, overall: { ...communication.overall, introduction } };
 }

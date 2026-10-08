@@ -1,5 +1,5 @@
 import june2026p1 from "@/lib/data/question-models/june-2026-p1.json";
-import type { QuestionType } from "./types";
+import type { DiscussionBasis, QuestionType } from "./types";
 
 export type Proximity = "direct" | "indirect" | "thinking";
 
@@ -33,6 +33,8 @@ export type CoreIssueComponent = {
 
 export type RequirementModel = {
   question_type: QuestionType;
+  /** Compliance (rules) or non_compliance (tools) for Discussion requirements; omitted until calibrated. */
+  discussion_basis?: DiscussionBasis | null;
   proximity_items: ProximityItem[];
   core_issue?: CoreIssueComponent[];
 };

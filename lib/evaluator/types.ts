@@ -11,6 +11,15 @@
 export const COMMUNICATION_RATINGS = ["Complete", "Underdeveloped", "Unclear", "Miscommunicated"] as const;
 export type CommunicationRating = (typeof COMMUNICATION_RATINGS)[number];
 
+/**
+ * Discussion style (Yvonne, 8 Oct 2026). Compliance discussions apply rules (IFRS, Companies Act, ISAs, tax law):
+ * should be -> is -> so what, with an introduction naming the knowledge base. Non-compliance discussions apply
+ * tools (SWOT, strategy, risk, governance models): framework bucket -> case fact -> so what.
+ * Kept separate from question_type (which gates the tools) so trends can be compared by style.
+ */
+export const DISCUSSION_BASES = ["compliance", "non_compliance"] as const;
+export type DiscussionBasis = (typeof DISCUSSION_BASES)[number];
+
 export const QUESTION_TYPES = ["Discussion", "Non-discussion"] as const;
 export type QuestionType = (typeof QUESTION_TYPES)[number];
 
@@ -72,6 +81,11 @@ export type CoreIssueEvidence = {
   dominant_covered: boolean | null;
   /** Computed in code: all higher covered = aligned, some = partly, none = misaligned. Null when no higher components. */
   alignment: "aligned" | "partly" | "misaligned" | null;
+  /**
+   * Valid points that are not on the mark plan are NOT wrong: they show the answer was expanded or contracted
+   * differently from what the case signalled (a Core Issue matter, not Communication). Empty string when none.
+   */
+  off_plan_note: string;
   evidence: string;
 };
 
@@ -113,7 +127,29 @@ export type CommunicationPoint = {
  * evidence; the student sees the trend sentence (plus a couple of examples), never counts.
  * A mark not awarded is NOT automatically a Communication problem.
  */
+export const INTRO_STATUSES = ["present", "absent", "not_expected"] as const;
+export type IntroStatus = (typeof INTRO_STATUSES)[number];
+export const ARRANGEMENTS = ["interleaved", "theory_first", "mixed"] as const;
+export type Arrangement = (typeof ARRANGEMENTS)[number];
+
+/**
+ * Overall assessment of the whole answer (no point-by-point should-be/is/so-what check: some students write the
+ * theory first and apply it at the end). Communication ignores whether a point is on the mark plan.
+ */
+export type CommunicationOverall = {
+  /** Introduction naming the knowledge base and the objective. Set to not_expected in code when the requirement is under 10 marks. */
+  introduction: IntroStatus;
+  introduction_note: string;
+  /** Across the whole answer: was the knowledge (should be / framework), the application (is / case facts) and the so-what delivered? */
+  knowledge: RtfqDelivered;
+  application: RtfqDelivered;
+  so_what: RtfqDelivered;
+  arrangement: Arrangement;
+  note: string;
+};
+
 export type CommunicationEvidence = {
+  overall: CommunicationOverall | null;
   points: CommunicationPoint[];
   /** Qualitative trend in plain words, no numbers or percentages. */
   trend: string;
@@ -167,6 +203,8 @@ export type RequirementEvaluation = {
   technical_awarded: number | null;
   pvaa_awarded: number | null;
   question_type: QuestionType;
+  /** Rules (compliance) or tools (non-compliance); null for non-discussion or when not yet calibrated. */
+  discussion_basis: DiscussionBasis | null;
   question_type_basis: string;
   competency: { topic: string; basis: string };
   bmcr: { student_known: number | null; available: number | null };
