@@ -1,6 +1,6 @@
 {
   "paper_id": "iac-2026-p1",
-  "status": "draft — Q1(a), Q1(b), Q1(d) classified with Yvonne 6 Oct 2026; other requirements pending",
+  "status": "draft — Q1(a), Q1(b), Q1(d), Q2(e) classified with Yvonne; other requirements pending",
   "notes": [
     "Question Type is part of the pre-calibrated Question Model, set once per requirement (not guessed per student).",
     "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
@@ -8,7 +8,8 @@
     "Test (Yvonne): Direct = little or no jump from the case indicator to the marked point. If the indicator is in the case but the point needs inference it is Indirect; several steps or generated ideas are Thinking. Bold in the marker's report is NOT the test.",
     "core_issue: per requirement, pre-calibrated priority (dominant only when the case makes one obviously first, otherwise higher/lower) and the student-visible clue for each component. Q1(a) case sections set by Yvonne 6 Oct 2026; SWOT-bucket layer not yet confirmed; Q1(d) pending.",
     "Q1(d) Core Issue set by Yvonne 6 Oct 2026: volume of case information per goal is the clue. No dominant component; Goal 6 is lower, not skippable (the requirement names it).",
-    "discussion_basis (Yvonne, 8 Oct 2026): Discussion splits into compliance (applies rules: IFRS, Acts, ISAs) and non_compliance (applies tools: SWOT, strategy, risk). Kept separate from question_type, which gates the tools. Q1(a)/(b) non_compliance; Q1(d) set to non_compliance by Yvonne 8 Oct 2026 (conceptual guidelines, no definition or set of rules to match the initiatives against); Q2 pending."
+    "discussion_basis (Yvonne, 8 Oct 2026): Discussion splits into compliance (applies rules: IFRS, Acts, ISAs) and non_compliance (applies tools: SWOT, strategy, risk). Kept separate from question_type, which gates the tools. Q1(a)/(b) non_compliance; Q1(d) set to non_compliance by Yvonne 8 Oct 2026 (conceptual guidelines, no definition or set of rules to match the initiatives against); Q2 pending.",
+    "Q2(e) classified with Yvonne 8 Oct 2026 (rows 3-35 of the marker's report; rows 1-2 are the I2 and Comms marks). Compliance discussion: rules to match against (King IV, the Code, the Companies Act). Each report row is one item, so row 35 (safeguards, up to 3 marks) counts once; any mark on a row, including a part mark, counts as awarded. Tests for knowledge-recall rows: the requirement naming a concept (safeguards) does not make the specific points Direct if the specifics are not in the information."
   ],
   "requirements": {
     "P1Q1_a": {
@@ -393,7 +394,164 @@
     },
     "P1Q2_e": {
       "question_type": "Discussion",
-      "proximity_items": []
+      "discussion_basis": "compliance",
+      "proximity_items": [
+        {
+          "row": 3,
+          "proximity": "indirect"
+        },
+        {
+          "row": 4,
+          "proximity": "indirect"
+        },
+        {
+          "row": 5,
+          "proximity": "indirect"
+        },
+        {
+          "row": 6,
+          "proximity": "indirect",
+          "note": "Debt exposure is in the case; the step to integrity under King IV RP1a is the inference."
+        },
+        {
+          "row": 7,
+          "proximity": "indirect",
+          "note": "Case mentions irregular tenders and corruption; reportable irregularities under the Auditing Professions Act is one step away (Yvonne)."
+        },
+        {
+          "row": 8,
+          "proximity": "indirect",
+          "note": "Case mentions irregular tenders and corruption; NOCLAR is one step away (Yvonne)."
+        },
+        {
+          "row": 9,
+          "proximity": "direct",
+          "note": "Management's alleged impact of a modified opinion is stated in the case; the question itself says 'alleged impact'."
+        },
+        {
+          "row": 10,
+          "proximity": "indirect"
+        },
+        {
+          "row": 11,
+          "proximity": "indirect"
+        },
+        {
+          "row": 12,
+          "proximity": "indirect"
+        },
+        {
+          "row": 13,
+          "proximity": "thinking",
+          "note": "Constitution and Public Audit Act are not signalled."
+        },
+        {
+          "row": 14,
+          "proximity": "thinking",
+          "note": "Agency theory is not signalled."
+        },
+        {
+          "row": 15,
+          "proximity": "thinking",
+          "note": "Fiduciary duty / stakeholder theory is not signalled."
+        },
+        {
+          "row": 16,
+          "proximity": "indirect",
+          "note": "Case is clear about possible management manipulation; directors' fiduciary duty is a common company law issue (Yvonne)."
+        },
+        {
+          "row": 17,
+          "proximity": "direct",
+          "note": "The dilemma between management's wishes and an appropriate opinion is the whole setup."
+        },
+        {
+          "row": 18,
+          "proximity": "direct",
+          "note": "Case states default makes debt payable and triggers the government guarantee."
+        },
+        {
+          "row": 19,
+          "proximity": "thinking",
+          "note": "The alternative use of the money (service delivery) is nowhere in the case (Yvonne)."
+        },
+        {
+          "row": 20,
+          "proximity": "direct",
+          "note": "Sovereign downgrade is stated in the case."
+        },
+        {
+          "row": 21,
+          "proximity": "indirect",
+          "note": "Needs the Auditing Profession Act sections."
+        },
+        {
+          "row": 22,
+          "proximity": "thinking",
+          "note": "No consequence management is not signalled."
+        },
+        {
+          "row": 23,
+          "proximity": "thinking",
+          "note": "Corporate citizen duty is not signalled."
+        },
+        {
+          "row": 24,
+          "proximity": "thinking",
+          "note": "The audit committee's role is not signalled."
+        },
+        {
+          "row": 25,
+          "proximity": "direct",
+          "note": "NKT is the audit firm and the requirement asks for professional ethical considerations."
+        },
+        {
+          "row": 26,
+          "proximity": "indirect"
+        },
+        {
+          "row": 27,
+          "proximity": "direct",
+          "note": "The case makes clear that management does not want a modified opinion, which is the intimidation threat (Yvonne)."
+        },
+        {
+          "row": 28,
+          "proximity": "indirect"
+        },
+        {
+          "row": 29,
+          "proximity": "indirect"
+        },
+        {
+          "row": 30,
+          "proximity": "indirect"
+        },
+        {
+          "row": 31,
+          "proximity": "thinking",
+          "note": "Disrepute from association with the client is not signalled."
+        },
+        {
+          "row": 32,
+          "proximity": "thinking",
+          "note": "ISA 220, 450 and 700 are not signalled."
+        },
+        {
+          "row": 33,
+          "proximity": "direct",
+          "note": "Political pressure to report favourable results is in the case."
+        },
+        {
+          "row": 34,
+          "proximity": "thinking",
+          "note": "The public interest concept is not entirely obvious from the case (Yvonne)."
+        },
+        {
+          "row": 35,
+          "proximity": "thinking",
+          "note": "The requirement asks for safeguards, but the marks are for the actual safeguards, which are not in the information (Yvonne)."
+        }
+      ]
     },
     "P1Q2_f": {
       "question_type": "Discussion",

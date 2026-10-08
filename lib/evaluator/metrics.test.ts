@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, diagnose, enforceCoachHypothesisEvidence, finalizeCommunication, rtfqGate, validateRequirement } from "./metrics";
-import { questionModelFor, toolsFor, type RequirementModel } from "./question-model";
+import { proximityAvailable, questionModelFor, toolsFor, type RequirementModel } from "./question-model";
 import type { RequirementEvaluation } from "./types";
 
 function base(overrides: Partial<RequirementEvaluation> = {}): RequirementEvaluation {
@@ -285,4 +285,10 @@ test("diagnoses: core issues are named and the reflection follows coverage and d
   assert.equal(yes.reflection_text, "Your answer reflects the core issues.");
   const q1d = diagnose(base({ core_issue: buildCoreIssue(questionModelFor("iac-2026-p1", "P1Q1_d")!.core_issue!, raw({})) })).core_issue!;
   assert.equal(q1d.core_issues_text, "Goal 7: Affordable and clean energy was the core issue here.");
+});
+
+test("question model: Q2(e) is a compliance discussion with 33 classified rows (7 direct, 15 indirect, 11 thinking)", () => {
+  const model = questionModelFor("iac-2026-p1", "P1Q2_e")!;
+  assert.equal(model.discussion_basis, "compliance");
+  assert.deepEqual(proximityAvailable(model), { direct: 7, indirect: 15, thinking: 11 });
 });
