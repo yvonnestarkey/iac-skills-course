@@ -199,8 +199,8 @@ test("communication introduction: expected from 10 marks, not expected below (de
   assert.equal(finalizeCommunication(null, 22), null);
 });
 
-test("question model: discussion_basis is calibrated for Q1(a), (b), (d) and absent for non-discussion", () => {
+test("question model: discussion_basis is calibrated (all non_compliance for Q1(a), (b), (d)) and absent for non-discussion", () => {
   assert.equal(questionModelFor("iac-2026-p1", "P1Q1_a")!.discussion_basis, "non_compliance");
-  assert.equal(questionModelFor("iac-2026-p1", "P1Q1_d")!.discussion_basis, "compliance");
+  assert.equal(questionModelFor("iac-2026-p1", "P1Q1_d")!.discussion_basis, "non_compliance");
   assert.equal(questionModelFor("iac-2026-p1", "P1Q1_c")!.discussion_basis ?? null, null);
 });

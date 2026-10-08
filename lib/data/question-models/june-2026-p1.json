@@ -8,7 +8,7 @@
     "Test (Yvonne): Direct = little or no jump from the case indicator to the marked point. If the indicator is in the case but the point needs inference it is Indirect; several steps or generated ideas are Thinking. Bold in the marker's report is NOT the test.",
     "core_issue: per requirement, pre-calibrated priority (dominant only when the case makes one obviously first, otherwise higher/lower) and the student-visible clue for each component. Q1(a) case sections set by Yvonne 6 Oct 2026; SWOT-bucket layer not yet confirmed; Q1(d) pending.",
     "Q1(d) Core Issue set by Yvonne 6 Oct 2026: volume of case information per goal is the clue. No dominant component; Goal 6 is lower, not skippable (the requirement names it).",
-    "discussion_basis (Yvonne, 8 Oct 2026): Discussion splits into compliance (applies rules: IFRS, Acts, ISAs) and non_compliance (applies tools: SWOT, strategy, risk). Kept separate from question_type, which gates the tools. Q1(a)/(b) non_compliance; Q1(d) compliance is a DRAFT awaiting Yvonne's confirmation; Q2 pending."
+    "discussion_basis (Yvonne, 8 Oct 2026): Discussion splits into compliance (applies rules: IFRS, Acts, ISAs) and non_compliance (applies tools: SWOT, strategy, risk). Kept separate from question_type, which gates the tools. Q1(a)/(b) non_compliance; Q1(d) set to non_compliance by Yvonne 8 Oct 2026 (conceptual guidelines, no definition or set of rules to match the initiatives against); Q2 pending."
   ],
   "requirements": {
     "P1Q1_a": {
@@ -333,7 +333,7 @@
     },
     "P1Q1_d": {
       "question_type": "Discussion",
-      "discussion_basis": "compliance",
+      "discussion_basis": "non_compliance",
       "proximity_items": [
         {
           "row": 94,
