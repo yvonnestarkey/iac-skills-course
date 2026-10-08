@@ -77,3 +77,12 @@ test("not attempted requirement appears in BMCR and type only", () => {
   assert.ok(md.slice(md.indexOf("### Step 1"), md.indexOf("### Step 2")).includes("Q1(a)"));
   assert.ok(md.slice(md.indexOf("### Step 3"), md.indexOf("### Step 4")).includes("Not attempted"));
 });
+
+test("step 2 shows three categories: compliance discussion, non-compliance discussion, and the third kind", () => {
+  const md = buildStudentReports(dataset([req({ discussion_basis: "compliance" }), req({ code: "P1Q1_d", label: "Q1(d)" }), req({ code: "P1Q1_c", label: "Q1(c)", question_type: "Non-discussion", discussion_basis: null })]))[0].markdown;
+  const step2 = md.slice(md.indexOf("### Step 2"), md.indexOf("### Step 3"));
+  assert.ok(step2.includes("Discussion: compliance (rules)"));
+  assert.ok(step2.includes("Discussion: non-compliance (tools)"));
+  assert.ok(step2.includes("Non-discussion"));
+  assert.ok(!step2.includes("Calculation"));
+});

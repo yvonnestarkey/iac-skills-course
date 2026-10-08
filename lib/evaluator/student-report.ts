@@ -130,8 +130,12 @@ export function buildPartReport(
   }
   // 2 Question type and topic
   {
-    const body = ["| Requirement | Question type | Discussion style | Topic |", "|---|---|---|---|"];
-    for (const r of reqs) body.push(row([r.label, r.question_type, r.discussion_basis ? (r.discussion_basis === "compliance" ? "Rules" : "Tools") : "—", r.competency.topic]));
+    // Three categories (Yvonne, 8 Oct 2026): discussion on rules (compliance), discussion on tools (non-compliance), and the
+    // third kind. "Calculation" is the wrong word for that third kind; its final name is still to be decided.
+    const typeLabel = (r: RequirementEvaluation) =>
+      r.question_type !== "Discussion" ? "Non-discussion" : r.discussion_basis === "compliance" ? "Discussion: compliance (rules)" : r.discussion_basis === "non_compliance" ? "Discussion: non-compliance (tools)" : "Discussion";
+    const body = ["| Requirement | Type | Topic |", "|---|---|---|"];
+    for (const r of reqs) body.push(row([r.label, typeLabel(r), r.competency.topic]));
     lines.push(...section("question_type", 2, body, show("question_type")));
   }
   // 3 RTFQ (every attempted requirement)
