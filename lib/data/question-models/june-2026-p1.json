@@ -1,6 +1,6 @@
 {
   "paper_id": "iac-2026-p1",
-  "status": "draft — Q1(a), Q1(b), Q1(d), Q2(e) classified with Yvonne; other requirements pending",
+  "status": "draft — Q1(a), Q1(b), Q1(d), Q2(e), Q2(f) classified with Yvonne; other requirements pending",
   "notes": [
     "Question Type is part of the pre-calibrated Question Model, set once per requirement (not guessed per student).",
     "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
@@ -9,7 +9,8 @@
     "core_issue: per requirement, pre-calibrated priority (dominant only when the case makes one obviously first, otherwise higher/lower) and the student-visible clue for each component. Q1(a) case sections set by Yvonne 6 Oct 2026; SWOT-bucket layer not yet confirmed; Q1(d) pending.",
     "Q1(d) Core Issue set by Yvonne 6 Oct 2026: volume of case information per goal is the clue. No dominant component; Goal 6 is lower, not skippable (the requirement names it).",
     "discussion_basis (Yvonne, 8 Oct 2026): Discussion splits into compliance (applies rules: IFRS, Acts, ISAs) and non_compliance (applies tools: SWOT, strategy, risk). Kept separate from question_type, which gates the tools. Q1(a)/(b) non_compliance; Q1(d) set to non_compliance by Yvonne 8 Oct 2026 (conceptual guidelines, no definition or set of rules to match the initiatives against); Q2 pending.",
-    "Q2(e) classified with Yvonne 8 Oct 2026 (rows 3-35 of the marker's report; rows 1-2 are the I2 and Comms marks). Compliance discussion: rules to match against (King IV, the Code, the Companies Act). Each report row is one item, so row 35 (safeguards, up to 3 marks) counts once; any mark on a row, including a part mark, counts as awarded. Tests for knowledge-recall rows: the requirement naming a concept (safeguards) does not make the specific points Direct if the specifics are not in the information."
+    "Q2(e) classified with Yvonne 8 Oct 2026 (rows 3-35 of the marker's report; rows 1-2 are the I2 and Comms marks). Compliance discussion: rules to match against (King IV, the Code, the Companies Act). Each report row is one item, so row 35 (safeguards, up to 3 marks) counts once; any mark on a row, including a part mark, counts as awarded. Tests for knowledge-recall rows: the requirement naming a concept (safeguards) does not make the specific points Direct if the specifics are not in the information.",
+    "Q2(f) classified with Yvonne 8 Oct 2026 (rows 39-78; rows 37-38 are the X1 and Comms marks). Rows 74-78 (the 'additional issues if (e) was not interpreted appropriately') are INCLUDED: the exam arbitrarily splits one discussion, a student may not have connected an issue to debt covenants in (e) or may have run out of time, so earning the point in (f) is fine. Rows 39 and 48 carry a heading plus the first point in the marker's report."
   ],
   "requirements": {
     "P1Q1_a": {
@@ -555,7 +556,206 @@
     },
     "P1Q2_f": {
       "question_type": "Discussion",
-      "proximity_items": []
+      "discussion_basis": "compliance",
+      "proximity_items": [
+        {
+          "row": 39,
+          "proximity": "direct",
+          "note": "Case lists crime, theft, irregular tender processes and corruption."
+        },
+        {
+          "row": 40,
+          "proximity": "indirect"
+        },
+        {
+          "row": 41,
+          "proximity": "indirect",
+          "note": "Political pressure is in the case; the step to management integrity and manipulation of results is the inference."
+        },
+        {
+          "row": 42,
+          "proximity": "indirect"
+        },
+        {
+          "row": 43,
+          "proximity": "indirect",
+          "note": "Case says NKT provided some accounting services in the past five years; the Companies Act s90(2) cooling-off rule is the step."
+        },
+        {
+          "row": 44,
+          "proximity": "indirect",
+          "note": "Merged row (audit committee independence or the 35-year previous auditor); benefit of the doubt."
+        },
+        {
+          "row": 45,
+          "proximity": "thinking",
+          "note": "Recent performance audits are not in the case."
+        },
+        {
+          "row": 46,
+          "proximity": "thinking",
+          "note": "Prior-year audit reports are not in the case."
+        },
+        {
+          "row": 47,
+          "proximity": "thinking",
+          "note": "Past unauthorised, irregular, fruitless and wasteful expenditure is not in the case."
+        },
+        {
+          "row": 48,
+          "proximity": "direct",
+          "note": "1860 and the turnaround strategies are stated in the case."
+        },
+        {
+          "row": 49,
+          "proximity": "direct",
+          "note": "King IV adoption is stated in the case."
+        },
+        {
+          "row": 50,
+          "proximity": "direct",
+          "note": "Green initiatives are stated in the case."
+        },
+        {
+          "row": 51,
+          "proximity": "direct",
+          "note": "NKT is the audit firm, so the Code applies (Yvonne, matches Q2(e) row 25)."
+        },
+        {
+          "row": 52,
+          "proximity": "indirect",
+          "note": "Case says 'some accounting services'; the s90(2) independence evaluation is the step."
+        },
+        {
+          "row": 53,
+          "proximity": "direct",
+          "note": "Case says the audit will bring a significant amount of revenue."
+        },
+        {
+          "row": 54,
+          "proximity": "indirect",
+          "note": "Significant revenue is stated; the 15% rule and quality reviewer are knowledge."
+        },
+        {
+          "row": 55,
+          "proximity": "direct",
+          "note": "Case says NKT provided some accounting services in the past five years."
+        },
+        {
+          "row": 56,
+          "proximity": "indirect",
+          "note": "Same issue and same distance as rows 57 and 58 (Yvonne)."
+        },
+        {
+          "row": 57,
+          "proximity": "indirect",
+          "note": "Same issue and same distance as rows 56 and 58 (Yvonne)."
+        },
+        {
+          "row": 58,
+          "proximity": "indirect",
+          "note": "Same issue and same distance as rows 56 and 57 (Yvonne)."
+        },
+        {
+          "row": 59,
+          "proximity": "direct",
+          "note": "Case says the audit will bring significant revenue to NKT."
+        },
+        {
+          "row": 60,
+          "proximity": "indirect"
+        },
+        {
+          "row": 61,
+          "proximity": "indirect",
+          "note": "Case lists corruption and irregular tenders; NOCLAR is the step (matches Q2(e) rows 7 and 8)."
+        },
+        {
+          "row": 62,
+          "proximity": "thinking",
+          "note": "Association-with-corruption threat is not signalled."
+        },
+        {
+          "row": 63,
+          "proximity": "thinking",
+          "note": "The public interest concept is not obvious (matches Q2(e) row 34)."
+        },
+        {
+          "row": 64,
+          "proximity": "thinking",
+          "note": "The safeguards themselves are not in the information (matches Q2(e) row 35)."
+        },
+        {
+          "row": 65,
+          "proximity": "direct",
+          "note": "Case states NKT is medium-sized and Inpahla has six divisions and widespread operations."
+        },
+        {
+          "row": 66,
+          "proximity": "indirect",
+          "note": "Bonds, forex and going concern are in the case; the expertise consideration is the step."
+        },
+        {
+          "row": 67,
+          "proximity": "indirect",
+          "note": "Case says Inpahla is state-owned; the SOE legislation knowledge consideration is the step."
+        },
+        {
+          "row": 68,
+          "proximity": "indirect",
+          "note": "Case says BAC Inc. was replaced; the communication with the previous auditor is the rule step."
+        },
+        {
+          "row": 69,
+          "proximity": "direct",
+          "note": "Going concern issues for an audit client are seriously obvious (Yvonne)."
+        },
+        {
+          "row": 70,
+          "proximity": "thinking",
+          "note": "The IFRS and PFMA conflict is not signalled."
+        },
+        {
+          "row": 71,
+          "proximity": "indirect",
+          "note": "Case says the AGSA opted not to perform the audit under the Public Audit Act; the appointment process is the step."
+        },
+        {
+          "row": 72,
+          "proximity": "thinking",
+          "note": "AGSA consent and reporting deadlines are not in the case."
+        },
+        {
+          "row": 73,
+          "proximity": "direct",
+          "note": "Board resolved that no new engagement letter is needed; the case states the decision."
+        },
+        {
+          "row": 74,
+          "proximity": "indirect",
+          "note": "Contingent row (credit if the point was not made in (e)). Management concealing a covenant breach: matches Q2(e) row 3."
+        },
+        {
+          "row": 75,
+          "proximity": "indirect",
+          "note": "Contingent row. Failure to report irregularities: matches Q2(e) rows 7 and 8."
+        },
+        {
+          "row": 76,
+          "proximity": "direct",
+          "note": "Contingent row. Emotional blackmail to influence the opinion: matches Q2(e) row 9."
+        },
+        {
+          "row": 77,
+          "proximity": "direct",
+          "note": "Contingent row. Management's stated view that a modified opinion would cause default is in the case."
+        },
+        {
+          "row": 78,
+          "proximity": "direct",
+          "note": "Contingent row. Intimidation threat from management not wanting a modified opinion: matches Q2(e) row 27."
+        }
+      ]
     },
     "P1Q2_g1": {
       "question_type": "Discussion",
