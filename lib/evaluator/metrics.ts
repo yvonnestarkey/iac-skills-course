@@ -203,12 +203,14 @@ export function enforceCoachHypothesisEvidence(items: CoachHypothesis[], validCo
 }
 
 /**
- * RTFQ is the first lens on a script. If the shape (e.g. a calculation given where a discussion was required) or the
- * lens (the actual issue asked about) was not delivered, every other tool's result for that requirement is
- * provisional: it measures an answer to a different question. Missed directions alone do not trigger the caution.
+ * RTFQ is the first lens on a script (Yvonne, 8 Oct 2026). When the shape (e.g. a calculation given where a discussion
+ * was required) or the lens (the actual issue asked about) was not delivered, the student misread the question. The
+ * other tools STILL run, on the assumption that the question was read correctly, so the student can see the skills
+ * their answer shows. The report states the misread plainly first: the marks lost are a reading problem, not a
+ * measure of those skills. Missed directions alone do not count as a misread.
  */
-export function rtfqGate(rtfq: RtfqEvidence | null): "clear" | "caution" | null {
+export function rtfqGate(rtfq: RtfqEvidence | null): "clear" | "misread" | null {
   if (!rtfq || !rtfq.dimensions.length) return null;
   const missed = rtfq.dimensions.some((d) => (d.dimension === "shape" || d.dimension === "lens") && d.delivered === "no");
-  return missed ? "caution" : "clear";
+  return missed ? "misread" : "clear";
 }

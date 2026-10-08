@@ -77,11 +77,11 @@ test("tool gating: discussion runs the full set, calculation and not-attempted d
   assert.equal(toolsFor("Discussion", false).rtfq, false);
 });
 
-test("rtfq gate: a misread shape or lens makes the other tools provisional", () => {
+test("rtfq gate: a missed shape or lens is a misread; the other tools still run", () => {
   const dim = (dimension: "shape" | "directions" | "lens", delivered: "yes" | "partly" | "no") => ({ dimension, required: "", delivered, note: "" });
   assert.equal(rtfqGate({ dimensions: [dim("shape", "yes"), dim("directions", "partly"), dim("lens", "partly")], evidence: "" }), "clear");
-  assert.equal(rtfqGate({ dimensions: [dim("shape", "no"), dim("directions", "yes"), dim("lens", "yes")], evidence: "" }), "caution");
-  assert.equal(rtfqGate({ dimensions: [dim("shape", "yes"), dim("directions", "yes"), dim("lens", "no")], evidence: "" }), "caution");
+  assert.equal(rtfqGate({ dimensions: [dim("shape", "no"), dim("directions", "yes"), dim("lens", "yes")], evidence: "" }), "misread");
+  assert.equal(rtfqGate({ dimensions: [dim("shape", "yes"), dim("directions", "yes"), dim("lens", "no")], evidence: "" }), "misread");
   assert.equal(rtfqGate({ dimensions: [dim("shape", "yes"), dim("directions", "no"), dim("lens", "yes")], evidence: "" }), "clear");
   assert.equal(rtfqGate(null), null);
 });
