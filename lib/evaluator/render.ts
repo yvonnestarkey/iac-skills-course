@@ -117,6 +117,14 @@ export function renderCalibrationMarkdown(result: RunResult): string {
       lines.push(`- **Probe:** ${p.probe_question}`);
       lines.push(`- **Next step:** ${p.next_step}`);
     }
+    if (report.coach_hypotheses?.length) {
+      lines.push("", "### Coach hypotheses: whole-script skill gaps (not for the student)");
+      for (const h of report.coach_hypotheses) {
+        lines.push("", `**${h.skill_gap}** _(${h.confidence}; ${h.evidence_requirements.join(", ") || "no requirement evidence"})_`);
+        lines.push(`- **Pattern:** ${h.pattern}`, `- **Evidence:** ${h.evidence.join("; ")}`, `- **Working hypothesis:** ${h.working_hypothesis}`);
+        lines.push(`- **Confirm if:** ${h.would_confirm}`, `- **Reject if:** ${h.would_reject}`, `- **Probe:** ${h.probe}`, `- **Train:** ${h.skill_to_train}`);
+      }
+    }
     if (report.technical_gaps.length) lines.push("", "### Technical gaps", ...report.technical_gaps.map((g) => `- ${g}`));
     if (report.still_to_investigate.length) lines.push("", "### Still to investigate", ...report.still_to_investigate.map((g) => `- ${g}`));
     if (report.coach_flags.length) lines.push("", "### Coach flags (not for the student)", ...report.coach_flags.map((f) => `- [${f.type}] ${f.note}`));

@@ -110,7 +110,12 @@ export async function runEvaluation(attemptId: string, options: RunOptions = {})
   };
 
   let report: EvaluationReport | null = null;
-  if (!options.datasetOnly) {
+  if (options.datasetOnly) {
+    // dataset only
+  } else if (options.only?.length) {
+    // The coach layer looks across the whole script; a partial run would give misleading patterns.
+    log("Stage 2 skipped: partial run (--only). Run the full script for whole-script patterns.");
+  } else {
     log("Stage 2: synthesising report…");
     report = await synthesiseReport({ dataset, usage, model: evaluatorModel() });
   }

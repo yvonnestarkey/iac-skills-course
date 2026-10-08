@@ -264,6 +264,31 @@ export type ReportPattern = {
   confidence: "supported" | "tentative";
 };
 
+/**
+ * Coach-only, whole-script layer (Yvonne, 8 Oct 2026). The student will never see this question again, so the unit is a
+ * transferable SKILL GAP seen across the script, not a comment on one answer. Never shown to students. Always a working
+ * hypothesis with what would confirm or reject it and a probe the coach can use; one script is never a firm conclusion.
+ */
+export type CoachHypothesis = {
+  /** The transferable skill gap in plain coaching language, e.g. "Hunting the case for what it signals before writing". */
+  skill_gap: string;
+  /** What is observable across the script, tied to the tools (not to this question's content). */
+  pattern: string;
+  /** Requirement codes that show the pattern. Fewer than two distinct codes forces confidence to tentative (in code). */
+  evidence_requirements: string[];
+  /** Specific measures behind the pattern, e.g. "Q1(a) Core Issue partly aligned". */
+  evidence: string[];
+  /** Eve-lens explanation, in coach language; a hypothesis, never a diagnosis. */
+  working_hypothesis: string;
+  would_confirm: string;
+  would_reject: string;
+  /** A question the coach can ask the student. */
+  probe: string;
+  /** What to practise next: the course tool or skill that trains this gap. */
+  skill_to_train: string;
+  confidence: "supported" | "tentative";
+};
+
 export type EvaluationReport = {
   version: 1;
   attempt_id: string;
@@ -277,6 +302,8 @@ export type EvaluationReport = {
   still_to_investigate: string[];
   /** Cues for the human coach. Never shown to the student. */
   coach_flags: { type: "wellbeing" | "quit_risk" | "data_quality" | "other"; note: string }[];
+  /** Coach-only whole-script skill gaps and hypotheses. Absent on reports generated before this layer existed. */
+  coach_hypotheses?: CoachHypothesis[];
 };
 
 export type UsageTally = {

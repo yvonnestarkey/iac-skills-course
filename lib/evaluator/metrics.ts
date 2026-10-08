@@ -1,5 +1,5 @@
 import { proximityAvailable, type CoreIssueComponent, type RequirementModel } from "./question-model";
-import type { BmcrVerdict, CommunicationEvidence, CoreIssueEvidence, DiscussionBasis, ProximityBucket, RequirementEvaluation, RequirementMetrics } from "./types";
+import type { BmcrVerdict, CoachHypothesis, CommunicationEvidence, CoreIssueEvidence, DiscussionBasis, ProximityBucket, RequirementEvaluation, RequirementMetrics } from "./types";
 
 /** Taught thresholds (kept deliberately simple so students can reproduce them without discretion). */
 export const BMCR_THEORY_THRESHOLD = 0.5; // Basic marks as a share of total marks
@@ -189,4 +189,15 @@ export function finalizeCommunication(communication: CommunicationEvidence | nul
       so_what: compliance ? so_what ?? null : null,
     },
   };
+}
+
+/**
+ * One script is never a firm conclusion: a hypothesis needs at least two distinct valid requirements behind it to be
+ * "supported". Codes the dataset does not contain are dropped. Decided in code, never by the model.
+ */
+export function enforceCoachHypothesisEvidence(items: CoachHypothesis[], validCodes: string[]): CoachHypothesis[] {
+  return items.map((item) => {
+    const codes = [...new Set(item.evidence_requirements.filter((code) => validCodes.includes(code)))];
+    return { ...item, evidence_requirements: codes, confidence: codes.length < 2 ? ("tentative" as const) : item.confidence };
+  });
 }

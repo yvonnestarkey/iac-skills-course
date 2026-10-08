@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, finalizeCommunication, validateRequirement } from "./metrics";
+import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, enforceCoachHypothesisEvidence, finalizeCommunication, validateRequirement } from "./metrics";
 import { questionModelFor, toolsFor, type RequirementModel } from "./question-model";
 import type { RequirementEvaluation } from "./types";
 
@@ -210,4 +210,18 @@ test("question model: discussion_basis is calibrated (all non_compliance for Q1(
   assert.equal(questionModelFor("iac-2026-p1", "P1Q1_a")!.discussion_basis, "non_compliance");
   assert.equal(questionModelFor("iac-2026-p1", "P1Q1_d")!.discussion_basis, "non_compliance");
   assert.equal(questionModelFor("iac-2026-p1", "P1Q1_c")!.discussion_basis ?? null, null);
+});
+
+test("coach hypotheses: need two distinct valid requirements to be supported; unknown codes dropped", () => {
+  const h = { skill_gap: "g", pattern: "p", evidence: [], working_hypothesis: "w", would_confirm: "c", would_reject: "r", probe: "q", skill_to_train: "t" };
+  const out = enforceCoachHypothesisEvidence(
+    [
+      { ...h, evidence_requirements: ["P1Q1_a", "P1Q1_a"], confidence: "supported" },
+      { ...h, evidence_requirements: ["P1Q1_a", "P1Q1_d"], confidence: "supported" },
+      { ...h, evidence_requirements: ["P1Q1_a", "NOPE"], confidence: "supported" },
+    ],
+    ["P1Q1_a", "P1Q1_d"]
+  );
+  assert.deepEqual(out.map((x) => x.confidence), ["tentative", "supported", "tentative"]);
+  assert.deepEqual(out[2].evidence_requirements, ["P1Q1_a"]);
 });
