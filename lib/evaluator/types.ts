@@ -253,6 +253,7 @@ export type RequirementDiagnoses = {
     text: string;
   } | null;
   core_issue: { core_issues_text: string; reflects: "yes" | "partly" | "no"; reflection_text: string } | null;
+  /** counts are COACH-ONLY (students see the diagnosis text, never the numbers). */
   communication: { counts: Record<CommunicationRating, number>; text: string } | null;
 };
 
