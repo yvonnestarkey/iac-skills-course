@@ -299,3 +299,9 @@ test("question model: Q2(f) is a compliance discussion with 40 classified rows i
   assert.deepEqual(proximityAvailable(model), { direct: 14, indirect: 18, thinking: 8 });
   assert.ok(model.proximity_items.some((item) => item.row === 78));
 });
+
+test("question model: Q2(g)(i) is a non-compliance discussion with 19 classified rows (8 direct, 8 indirect, 3 thinking)", () => {
+  const model = questionModelFor("iac-2026-p1", "P1Q2_g1")!;
+  assert.equal(model.discussion_basis, "non_compliance");
+  assert.deepEqual(proximityAvailable(model), { direct: 8, indirect: 8, thinking: 3 });
+});

@@ -1,6 +1,6 @@
 {
   "paper_id": "iac-2026-p1",
-  "status": "draft — Q1(a), Q1(b), Q1(d), Q2(e), Q2(f) classified with Yvonne; other requirements pending",
+  "status": "draft — Q1(a), Q1(b), Q1(d), Q2(e), Q2(f), Q2(g1) classified with Yvonne; other requirements pending",
   "notes": [
     "Question Type is part of the pre-calibrated Question Model, set once per requirement (not guessed per student).",
     "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
@@ -759,7 +759,104 @@
     },
     "P1Q2_g1": {
       "question_type": "Discussion",
-      "proximity_items": []
+      "proximity_items": [
+        {
+          "row": 82,
+          "proximity": "indirect",
+          "note": "Bond listing is stated; the manipulation incentive is the inference."
+        },
+        {
+          "row": 83,
+          "proximity": "direct",
+          "note": "Debt covenants are stated; the immediate-repayment consequence is in the case."
+        },
+        {
+          "row": 84,
+          "proximity": "direct",
+          "note": "Direct (Yvonne): once the downgrade is stated, the incentive is just 'hide the bad'; it does not need to be a specific incentive."
+        },
+        {
+          "row": 85,
+          "proximity": "indirect",
+          "note": "Fraud and tender irregularities are stated; the step to a weakened control environment is the inference."
+        },
+        {
+          "row": 86,
+          "proximity": "indirect",
+          "note": "Links the Part I non-compliance (s76, s90, PFMA exemption) to a concealment incentive."
+        },
+        {
+          "row": 87,
+          "proximity": "indirect",
+          "note": "The new appointment is stated; the opening-balance risk is one step."
+        },
+        {
+          "row": 88,
+          "proximity": "thinking",
+          "note": "Nothing in the case points to inconsistent accounting policies; it comes from knowing first-audit risks."
+        },
+        {
+          "row": 89,
+          "proximity": "direct",
+          "note": "Direct (Yvonne): the divisions are listed in the case and aggregation risk is extremely common."
+        },
+        {
+          "row": 90,
+          "proximity": "direct",
+          "note": "Going concern for an audit client is seriously obvious (as Q2(f) row 69). Max 3 of the sub-points; counts once."
+        },
+        {
+          "row": 91,
+          "proximity": "direct",
+          "note": "Political pressure is stated in the case."
+        },
+        {
+          "row": 92,
+          "proximity": "indirect",
+          "note": "The partnership is stated; the incentive to overstate is inferred."
+        },
+        {
+          "row": 93,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): related-party risk is a common issue; government entities are stated."
+        },
+        {
+          "row": 94,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): related-party disclosure is a common issue."
+        },
+        {
+          "row": 95,
+          "proximity": "thinking",
+          "note": "Thinking (Yvonne): the standards are mentioned but their complexity is not, and specific IFRS issues are usually assertion-level risk, whereas this asks about financial-statement-level risk. Max 2."
+        },
+        {
+          "row": 96,
+          "proximity": "direct",
+          "note": "The turnaround strategies are stated in the case."
+        },
+        {
+          "row": 97,
+          "proximity": "direct",
+          "note": "Government as sole shareholder and the guarantee are stated."
+        },
+        {
+          "row": 98,
+          "proximity": "indirect",
+          "note": "Audit committee involvement is stated; its mitigating effect is one step."
+        },
+        {
+          "row": 99,
+          "proximity": "direct",
+          "note": "King IV adoption is stated (same fact as Q2(f) row 49)."
+        },
+        {
+          "row": 100,
+          "proximity": "thinking",
+          "note": "Thinking (Yvonne): many risk questions have no conclusion, so it is not a standard expected point."
+        }
+      ],
+      "discussion_basis": "non_compliance"
     },
     "P1Q2_g2": {
       "question_type": "Discussion",
