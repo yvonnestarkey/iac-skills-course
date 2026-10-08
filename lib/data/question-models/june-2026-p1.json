@@ -1,6 +1,6 @@
 {
   "paper_id": "iac-2026-p1",
-  "status": "draft — Q1(a), Q1(b), Q1(d), Q2(e), Q2(f), Q2(g1) classified with Yvonne; other requirements pending",
+  "status": "draft — Q1(a), Q1(b), Q1(d), Q2(e), Q2(f), Q2(g1), Q2(g2) classified with Yvonne; other requirements pending",
   "notes": [
     "Question Type is part of the pre-calibrated Question Model, set once per requirement (not guessed per student).",
     "proximity_items are the mark-plan opportunities classified Direct/Indirect/Thinking, using the marker's report row numbers as the canonical numbering. Empty until classified with Yvonne.",
@@ -860,7 +860,99 @@
     },
     "P1Q2_g2": {
       "question_type": "Discussion",
-      "proximity_items": []
+      "proximity_items": [
+        {
+          "row": 102,
+          "proximity": "thinking",
+          "note": "Thinking (Yvonne): the student must weigh all the risks together and then select the approach; it is not a direct consequence of any one fact."
+        },
+        {
+          "row": 103,
+          "proximity": "thinking",
+          "note": "Generic response; selected after weighing the risks together."
+        },
+        {
+          "row": 104,
+          "proximity": "direct",
+          "note": "Direct (Yvonne): the new audit is specifically mentioned in the case."
+        },
+        {
+          "row": 105,
+          "proximity": "thinking",
+          "note": "Generic response; no clue in the case."
+        },
+        {
+          "row": 106,
+          "proximity": "indirect",
+          "note": "The divisions are stated; scaling up the testing across them is one step."
+        },
+        {
+          "row": 107,
+          "proximity": "direct",
+          "note": "Going concern risk is established in (i); focusing on it is obvious (as Q2(f) row 69)."
+        },
+        {
+          "row": 108,
+          "proximity": "indirect",
+          "note": "Indirect (Yvonne): irregular tenders are stated, but 'compliance with laws' is a standard audit area the student must select."
+        },
+        {
+          "row": 109,
+          "proximity": "indirect",
+          "note": "Fraud and political pressure are stated; the management-override link is an inference."
+        },
+        {
+          "row": 110,
+          "proximity": "indirect",
+          "note": "The Wuoche dispute is stated; the disclosure angle is one step."
+        },
+        {
+          "row": 111,
+          "proximity": "indirect",
+          "note": "Irregular tenders are stated; the public-sector expenditure term is knowledge, so Indirect not Direct."
+        },
+        {
+          "row": 112,
+          "proximity": "thinking",
+          "note": "Needs the Public Audit Act; nothing in the case triggers it."
+        },
+        {
+          "row": 113,
+          "proximity": "thinking",
+          "note": "Generic response; no clue in the case (Yvonne)."
+        },
+        {
+          "row": 114,
+          "proximity": "thinking",
+          "note": "Generic response; no clue in the case (Yvonne)."
+        },
+        {
+          "row": 115,
+          "proximity": "thinking",
+          "note": "Generic response; no clue in the case (Yvonne)."
+        },
+        {
+          "row": 116,
+          "proximity": "thinking",
+          "note": "Generic response; no clue in the case (Yvonne)."
+        },
+        {
+          "row": 117,
+          "proximity": "thinking",
+          "note": "Engagement quality reviewer: same as the Q2(e) safeguards ruling; no clue in the case."
+        },
+        {
+          "row": 118,
+          "proximity": "thinking",
+          "note": "Generic response; no clue in the case (Yvonne)."
+        },
+        {
+          "row": 119,
+          "proximity": "indirect",
+          "note": "State-owned status is stated; the need for public-sector specialists is one step."
+        }
+      ],
+      "discussion_basis": "non_compliance"
     },
     "P1Q2_h": {
       "question_type": "Discussion",
