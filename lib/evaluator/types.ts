@@ -129,22 +129,21 @@ export type CommunicationPoint = {
  */
 export const INTRO_STATUSES = ["present", "absent", "not_expected"] as const;
 export type IntroStatus = (typeof INTRO_STATUSES)[number];
-export const ARRANGEMENTS = ["interleaved", "theory_first", "mixed"] as const;
-export type Arrangement = (typeof ARRANGEMENTS)[number];
-
 /**
- * Overall assessment of the whole answer (no point-by-point should-be/is/so-what check: some students write the
- * theory first and apply it at the end). Communication ignores whether a point is on the mark plan.
+ * Overall assessment of the whole answer. Communication ignores whether a point is on the mark plan.
+ * - Introduction applies to every discussion of 10 marks or more (names the knowledge base or tool, and the objective).
+ * - knowledge / application / so_what apply ONLY to compliance discussions, where "knowledge" is the theory
+ *   (rules) underpinning the discussion. Not to be confused with Components (the structure of the answer).
+ *   They are null for non-compliance discussions, which rely on the per-statement categories and the trend.
+ * No "arrangement" field: it means nothing to students (some write the theory first and apply it at the end).
  */
 export type CommunicationOverall = {
-  /** Introduction naming the knowledge base and the objective. Set to not_expected in code when the requirement is under 10 marks. */
+  /** Set to not_expected in code when the requirement is under 10 marks. */
   introduction: IntroStatus;
   introduction_note: string;
-  /** Across the whole answer: was the knowledge (should be / framework), the application (is / case facts) and the so-what delivered? */
-  knowledge: RtfqDelivered;
-  application: RtfqDelivered;
-  so_what: RtfqDelivered;
-  arrangement: Arrangement;
+  knowledge: RtfqDelivered | null;
+  application: RtfqDelivered | null;
+  so_what: RtfqDelivered | null;
   note: string;
 };
 

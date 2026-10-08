@@ -74,7 +74,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
     for (const req of withComm) {
       const o = req.communication!.overall;
       lines.push("", `**${req.label}**${req.discussion_basis ? ` (${req.discussion_basis === "compliance" ? "rules" : "tools"})` : ""}: ${req.communication!.trend}`);
-      if (o) lines.push("", `Overall: introduction ${o.introduction.replace("_", " ")}${o.introduction_note ? ` (${o.introduction_note})` : ""}; knowledge ${o.knowledge}, application ${o.application}, so what ${o.so_what}; arrangement ${o.arrangement.replace("_", " ")}. ${o.note}`);
+      if (o) lines.push("", `Overall: introduction ${o.introduction.replace("_", " ")}${o.introduction_note ? ` (${o.introduction_note})` : ""}${o.knowledge ? `; theory ${o.knowledge}, application ${o.application}, so what ${o.so_what}` : ""}. ${o.note}`);
       lines.push("", "| # | Statement | Category | Note |", "|---|---|---|---|");
       for (const p of req.communication!.points) lines.push(`| ${p.n} | ${p.statement} | ${p.category} | ${p.note} |`);
     }

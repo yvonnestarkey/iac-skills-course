@@ -3,7 +3,7 @@ import { stage1Methodology } from "./methodology";
 import { aggregateProximity, applyNotAttemptedRule, buildCoreIssue, finalizeCommunication, validateRequirement, type RawCoreIssue } from "./metrics";
 import { questionModelFor, toolsFor } from "./question-model";
 import { requirementLabel } from "./pagemap";
-import { ARRANGEMENTS, DISCUSSION_BASES, COMMUNICATION_RATINGS, INTRO_STATUSES, QUESTION_TYPES, RTFQ_DELIVERED, type BmcrRow, type RequirementEvaluation, type RequirementPageMap, type UsageTally } from "./types";
+import { DISCUSSION_BASES, COMMUNICATION_RATINGS, INTRO_STATUSES, QUESTION_TYPES, RTFQ_DELIVERED, type BmcrRow, type RequirementEvaluation, type RequirementPageMap, type UsageTally } from "./types";
 
 type PageRef = { page: number; url: string };
 
@@ -96,13 +96,12 @@ const REQUIREMENT_SCHEMA = {
           properties: {
             introduction: { type: "string", enum: [...INTRO_STATUSES], description: "present = the answer opens by naming the knowledge base and the objective; absent = it jumps into detail." },
             introduction_note: { type: "string" },
-            knowledge: { type: "string", enum: [...RTFQ_DELIVERED], description: "Across the answer, was the knowledge base (should be / framework) stated?" },
-            application: { type: "string", enum: [...RTFQ_DELIVERED], description: "Across the answer, were case facts applied to it (is)?" },
-            so_what: { type: "string", enum: [...RTFQ_DELIVERED], description: "Across the answer, were conclusions or consequences for the client drawn (so what)?" },
-            arrangement: { type: "string", enum: [...ARRANGEMENTS], description: "interleaved = knowledge, application and so-what stay together; theory_first = theory written first and applied later; mixed = no clear pattern." },
+            knowledge: { type: ["string", "null"], enum: [...RTFQ_DELIVERED, null], description: "COMPLIANCE discussions only: was the theory underpinning the discussion (the rules, e.g. the standard or Act) stated? Null for non-compliance." },
+            application: { type: ["string", "null"], enum: [...RTFQ_DELIVERED, null], description: "COMPLIANCE only: were the case facts applied to the rules? Null for non-compliance." },
+            so_what: { type: ["string", "null"], enum: [...RTFQ_DELIVERED, null], description: "COMPLIANCE only: were conclusions for the client drawn? Null for non-compliance." },
             note: { type: "string" },
           },
-          required: ["introduction", "introduction_note", "knowledge", "application", "so_what", "arrangement", "note"],
+          required: ["introduction", "introduction_note", "knowledge", "application", "so_what", "note"],
         },
         points: {
           type: "array",
@@ -183,7 +182,7 @@ export async function evaluateRequirement(input: {
             ? `Core Issue components (pre-calibrated; priority, including any dominant component, is NOT yours to judge). For each, report attempts (statements the student wrote on it, one per statement) and depth (none / surface / developed). A valid point that is not on the mark plan is NOT wrong: if the student spent time on points the case did not signal, or too little on what it did, say so in off_plan_note as incorrect expansion or contraction relative to the case:\n${model.core_issue.map((c) => `- ${c.component} [${c.layer}]`).join("\n")}`
             : "No pre-calibrated Core Issue components exist for this requirement. Return core_issue as null. Do NOT invent priorities.",
           "RTFQ: return three dimensions. shape = the instruction word and its shape (discuss, calculate, evaluate, journal, recommend...); directions = hidden required, named entities, headings, exclusions, required perspective; lens = the actual issue or framework the required asks about. For each say what the required asked for, whether the answer delivered it (yes / partly / no) and a one-line note of the evidence on the page. Use partly when the answer is on the right track but only some of it was delivered. Record delivery only; never explain why the student did or did not deliver.",
-          "Communication: judge only what is on the page, never what was in the student's head. Categorise EACH statement (the same unit as Volume, one per statement): Complete, Underdeveloped, Unclear or Miscommunicated. Discussion shape is fact -> implication -> relevance. A thin tail such as \"thus creating more value\" is Underdeveloped (the student should have continued). A sentence that stops mid-way, or illegible wording, is Unclear. A mark not awarded is NOT automatically a Communication problem. Communication ignores whether a point is on the mark plan; a valid point missing from the mark plan is not a Communication problem. Then give an OVERALL assessment of the whole answer (not point by point; some students write the theory first and apply it at the end): introduction (present only if the answer opens by naming the knowledge base or tool and the objective; absent if it jumps into detail; the system sets not_expected for requirements under 10 marks), whether knowledge, application and so-what were each delivered somewhere in the answer (yes / partly / no), and the arrangement (interleaved, theory_first or mixed). Then write the trend in plain words with no numbers.",
+          "Communication: judge only what is on the page, never what was in the student's head. Categorise EACH statement (the same unit as Volume, one per statement): Complete, Underdeveloped, Unclear or Miscommunicated. Discussion shape is fact -> implication -> relevance. A thin tail such as \"thus creating more value\" is Underdeveloped (the student should have continued). A sentence that stops mid-way, or illegible wording, is Unclear. A mark not awarded is NOT automatically a Communication problem. Communication ignores whether a point is on the mark plan; a valid point missing from the mark plan is not a Communication problem. Then give a short OVERALL read: the introduction (present only if the answer opens by naming the knowledge base or tool and the objective; absent if it jumps into detail; the system sets not_expected under 10 marks). For a COMPLIANCE discussion only, also say whether the knowledge (the theory or rules underpinning the discussion, not the structure of the answer), the application of case facts to it, and the so-what were delivered somewhere in the answer (yes / partly / no); some students write the theory first and apply it at the end, which is fine. For a NON-COMPLIANCE discussion return null for knowledge, application and so_what: the per-statement categories and the trend carry the judgement. Then write the trend in plain words with no numbers.",
           "technical_awarded excludes professional marks (Z structure marks, Comm marks, Y marks); record those in pvaa_awarded.",
           `Student's own BMCR for this requirement: marks available ${input.bmcr?.available ?? "unknown"}, marks the student believed they knew ${input.bmcr?.student_known ?? "unknown"}.`,
           "",
@@ -223,7 +222,7 @@ export async function evaluateRequirement(input: {
     components: gate.components ? raw.components ?? null : null,
     core_issue: gate.coreIssue ? buildCoreIssue(model?.core_issue, raw.core_issue ?? null) : null,
     rtfq: gate.rtfq ? raw.rtfq ?? null : null,
-    communication: gate.communication ? finalizeCommunication(raw.communication ?? null, requirement.total_marks) : null,
+    communication: gate.communication ? finalizeCommunication(raw.communication ?? null, requirement.total_marks, discussionBasis) : null,
     uncertainties: raw.uncertainties || [],
   });
   return { evaluation, warnings: [...warnings, ...validateRequirement(evaluation)] };

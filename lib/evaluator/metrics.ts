@@ -1,5 +1,5 @@
 import { proximityAvailable, type CoreIssueComponent, type RequirementModel } from "./question-model";
-import type { BmcrVerdict, CommunicationEvidence, CoreIssueEvidence, ProximityBucket, RequirementEvaluation, RequirementMetrics } from "./types";
+import type { BmcrVerdict, CommunicationEvidence, CoreIssueEvidence, DiscussionBasis, ProximityBucket, RequirementEvaluation, RequirementMetrics } from "./types";
 
 /** Taught thresholds (kept deliberately simple so students can reproduce them without discretion). */
 export const BMCR_THEORY_THRESHOLD = 0.5; // Basic marks as a share of total marks
@@ -101,6 +101,8 @@ export function validateRequirement(requirement: RequirementEvaluation): string[
   if (requirement.communication) {
     const overall = requirement.communication.overall;
     if (!overall) warnings.push(`${code}: Communication has no overall assessment.`);
+    else if (requirement.discussion_basis === "compliance" && (!overall.knowledge || !overall.application || !overall.so_what)) warnings.push(`${code}: compliance discussion should have knowledge, application and so-what assessed.`);
+    else if (requirement.discussion_basis !== "compliance" && (overall.knowledge || overall.application || overall.so_what)) warnings.push(`${code}: knowledge, application and so-what apply to compliance discussions only.`);
     else if (requirement.total_marks < 10 && overall.introduction !== "not_expected") warnings.push(`${code}: introduction should be not_expected under 10 marks.`);
     else if (requirement.total_marks >= 10 && overall.introduction === "not_expected") warnings.push(`${code}: introduction is expected at 10 marks or more.`);
   }
@@ -168,10 +170,22 @@ export function buildCoreIssue(model: CoreIssueComponent[] | undefined, raw: Raw
  * The introduction is worth 1-2 marks in discussions of 10 marks or more; under that it is not expected.
  * Decided in code from the requirement's total marks, never by the evaluating model.
  */
-export function finalizeCommunication(communication: CommunicationEvidence | null, totalMarks: number): CommunicationEvidence | null {
+export function finalizeCommunication(communication: CommunicationEvidence | null, totalMarks: number, basis: DiscussionBasis | null): CommunicationEvidence | null {
   if (!communication) return null;
   if (!communication.overall) return communication;
   const expected = totalMarks >= 10;
   const introduction = expected ? (communication.overall.introduction === "not_expected" ? "absent" : communication.overall.introduction) : "not_expected";
-  return { ...communication, overall: { ...communication.overall, introduction } };
+  const compliance = basis === "compliance";
+  const { knowledge, application, so_what } = communication.overall;
+  return {
+    ...communication,
+    overall: {
+      ...communication.overall,
+      introduction,
+      // Only compliance discussions get the knowledge / application / so-what read; non-compliance relies on the per-statement categories.
+      knowledge: compliance ? knowledge ?? null : null,
+      application: compliance ? application ?? null : null,
+      so_what: compliance ? so_what ?? null : null,
+    },
+  };
 }
