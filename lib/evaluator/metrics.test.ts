@@ -173,7 +173,7 @@ test("communication: per-point categories; trend must not be quantified; points 
   const ok = base({
     volume: { attempts: 2, note: "" },
     communication: {
-      overall: { introduction: "absent", introduction_note: "", knowledge: null, application: null, so_what: null, note: "" },
+      overall: { introduction: "not_expected", introduction_note: "", knowledge: null, application: null, so_what: null, note: "" },
       points: [
         { n: 1, statement: "Steps aligned with the UN goals", category: "Underdeveloped", note: "" },
         { n: 2, statement: "More aligned with...", category: "Unclear", note: "sentence stops" },
@@ -199,9 +199,11 @@ test("communication overall: introduction from 10 marks; knowledge/application/s
   assert.equal(finalizeCommunication(comm, 22, "compliance")!.overall!.application, "partly");
   const tools = finalizeCommunication(comm, 22, "non_compliance")!.overall!;
   assert.deepEqual([tools.knowledge, tools.application, tools.so_what], [null, null, null]);
+  assert.equal(tools.introduction, "not_expected");
   assert.equal(finalizeCommunication(null, 22, null), null);
   const bad = base({ discussion_basis: "non_compliance", total_marks: 22, volume: { attempts: 0, note: "" }, communication: { overall, points: [], trend: "", evidence: "" } });
   assert.equal(validateRequirement(bad).length, 1);
+  assert.equal(validateRequirement(base({ ...bad, communication: { overall: { ...overall, introduction: "not_expected", knowledge: null, application: null, so_what: null }, points: [], trend: "", evidence: "" } })).length, 0);
 });
 
 test("question model: discussion_basis is calibrated (all non_compliance for Q1(a), (b), (d)) and absent for non-discussion", () => {
