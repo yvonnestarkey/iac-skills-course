@@ -317,3 +317,12 @@ test("question model: Q2(h) is a non-compliance discussion with 26 classified ro
   assert.equal(model.discussion_basis, "non_compliance");
   assert.deepEqual(proximityAvailable(model), { direct: 8, indirect: 13, thinking: 5 });
 });
+
+test("the 'why' test counts statements that name an item and stop at the what, coach-only and not in the student text", () => {
+  const point = (n: number, explains_why: "yes" | "no" | "not_applicable") => ({ n, statement: "", category: "Complete" as const, note: "", explains_why });
+  const m = computeMetrics(base({ communication: { overall: null, points: [point(1, "no"), point(2, "no"), point(3, "yes"), point(4, "not_applicable")], trend: "", evidence: "" } }));
+  assert.deepEqual(m.diagnoses.communication?.why, { named: 3, omitted: 2 });
+  assert.ok(!/why|threat/i.test(m.diagnoses.communication!.text));
+  const old = computeMetrics(base({ communication: { overall: null, points: [{ n: 1, statement: "", category: "Complete", note: "" }], trend: "", evidence: "" } }));
+  assert.deepEqual(old.diagnoses.communication?.why, { named: 0, omitted: 0 });
+});

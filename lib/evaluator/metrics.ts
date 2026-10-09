@@ -145,7 +145,13 @@ export function diagnose(requirement: RequirementEvaluation): RequirementDiagnos
       const q = quantifier(counts[category] / total);
       if (q) sentences.push(`${q} were ${category.toLowerCase()}.`);
     }
-    communication = { counts, text: sentences.join(" ") };
+    let named = 0;
+    let omitted = 0;
+    for (const p of comm.points) {
+      if (p.explains_why === "yes" || p.explains_why === "no") named += 1;
+      if (p.explains_why === "no") omitted += 1;
+    }
+    communication = { counts, why: { named, omitted }, text: sentences.join(" ") };
   }
   return { volume_accuracy, core_issue, communication };
 }

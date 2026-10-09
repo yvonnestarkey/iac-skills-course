@@ -85,8 +85,10 @@ export function renderCalibrationMarkdown(result: RunResult): string {
       const o = req.communication!.overall;
       lines.push("", `**${req.label}**${req.discussion_basis ? ` (${req.discussion_basis === "compliance" ? "rules" : "tools"})` : ""}: ${req.communication!.trend}`);
       if (o) lines.push("", `Overall: introduction ${o.introduction.replace("_", " ")}${o.introduction_note ? ` (${o.introduction_note})` : ""}${o.knowledge ? `; theory ${o.knowledge}, application ${o.application}, so what ${o.so_what}` : ""}. ${o.note}`);
-      lines.push("", "| # | Statement | Category | Note |", "|---|---|---|---|");
-      for (const p of req.communication!.points) lines.push(`| ${p.n} | ${p.statement} | ${p.category} | ${p.note} |`);
+      const why = dataset.metrics.find((m) => m.code === req.code)?.diagnoses?.communication?.why;
+      if (why && why.named) lines.push("", `The 'why' test (coach only): ${why.named} statements named a threat, risk, weakness or issue; ${why.omitted} stopped at the what without explaining why or how it is a problem.`);
+      lines.push("", "| # | Statement | Category | Explains why? | Note |", "|---|---|---|---|---|");
+      for (const p of req.communication!.points) lines.push(`| ${p.n} | ${p.statement} | ${p.category} | ${p.explains_why ?? "n/a"} | ${p.note} |`);
     }
   }
   const withRtfq = dataset.requirements.filter((req) => req.rtfq?.dimensions.length);

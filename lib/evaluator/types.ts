@@ -120,6 +120,13 @@ export type CommunicationPoint = {
   category: CommunicationRating;
   /** One line, only when it helps (e.g. "sentence stops mid-way"). */
   note: string;
+  /**
+   * COACH-ONLY: the "why" test (Yvonne, 9 Oct 2026). For statements that NAME something (a threat, a risk, a control
+   * weakness, a misstatement, an issue), did the student also explain WHY it is a problem and HOW it could cause harm?
+   * "no" = stops at the what. "not_applicable" = the statement does not name such an item (a definition, a procedure,
+   * a conclusion). Absent on older datasets (treated as not_applicable).
+   */
+  explains_why?: "yes" | "no" | "not_applicable";
 };
 
 /**
@@ -254,7 +261,12 @@ export type RequirementDiagnoses = {
   } | null;
   core_issue: { core_issues_text: string; reflects: "yes" | "partly" | "no"; reflection_text: string } | null;
   /** counts are COACH-ONLY (students see the diagnosis text, never the numbers). */
-  communication: { counts: Record<CommunicationRating, number>; text: string } | null;
+  communication: {
+    counts: Record<CommunicationRating, number>;
+    /** COACH-ONLY: statements that name a threat/risk/weakness/issue, and how many of those stop at the what. */
+    why: { named: number; omitted: number };
+    text: string;
+  } | null;
 };
 
 export type EvaluationDataset = {
