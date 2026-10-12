@@ -174,6 +174,26 @@ export function buildPartReport(
       body.push(`**${r.label}**`, "", "| Layer | Available | Found | Developed | Note |", "|---|---|---|---|---|");
       for (const l of r.components!.layers) body.push(row([l.layer, l.available, l.recognised, l.exploited, l.note]));
       body.push("");
+      const beyond = (r.components!.nodes ?? []).filter((node) => !node.basic_theory);
+      if (beyond.length) {
+        const reached = beyond.filter((node) => node.recognised);
+        body.push(
+          `**Beyond the basics (not counted as missed):** ${beyond.length} parts of this question needed specialist knowledge${reached.length ? `; you reached ${reached.length} of them (${reached.map((node) => node.label).join("; ")})` : ""}. They did not decide the result: the basic theory was enough to pass.`,
+          ""
+        );
+      }
+      const chain = r.components!.code_chain ?? [];
+      if (chain.length) {
+        const mark = (v: string) => (v === "yes" ? "✓" : v === "partly" ? "~" : "✗");
+        body.push(
+          "**The Code chain, applied to every Code issue.** Each issue needs the whole chain: indicator, threat, principle, explanation, significance, safeguard. ✓ = dealt with, ~ = partly, ✗ = missing.",
+          "",
+          "| Issue in your answer | Indicator | Threat | Principle | Explanation | Significance | Safeguard |",
+          "|---|---|---|---|---|---|---|"
+        );
+        for (const issue of chain) body.push(row([issue.issue, mark(issue.indicator), mark(issue.threat), mark(issue.principle), mark(issue.explanation), mark(issue.significance), mark(issue.safeguard)]));
+        body.push("");
+      }
     }
     lines.push(...section("components", 6, body.length ? body : ["Not applicable to this Part."], show("components")));
   }

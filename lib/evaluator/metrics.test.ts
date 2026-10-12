@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, diagnose, enforceCoachHypothesisEvidence, finalizeCommunication, rtfqGate, validateRequirement } from "./metrics";
+import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildComponents, buildCoreIssue, computeMetrics, diagnose, enforceCoachHypothesisEvidence, finalizeCommunication, rtfqGate, validateRequirement } from "./metrics";
 import { componentTreeSummary, proximityAvailable, questionModelFor, toolsFor, type RequirementModel } from "./question-model";
 import type { RequirementEvaluation } from "./types";
 
@@ -352,4 +352,38 @@ test("component trees for Q2(e), (g)(i), (g)(ii) and (h): sizes, beyond-the-basi
   assert.deepEqual([g2.available, g2.beyond_basics], [16, 2]);
   const h = componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_h"))!;
   assert.deepEqual([h.available, h.beyond_basics], [18, 9]);
+});
+
+test("buildComponents merges the layered tree: exploited implies recognised, beyond-the-basics nodes are not counted as available, layers are computed in code", () => {
+  const model = questionModelFor("iac-2026-p1", "P1Q2_f")!;
+  const tree = model.component_tree!;
+  const idOf = (label: string) => `n${tree.findIndex((node) => node.label.startsWith(label)) + 1}`;
+  const evidence = buildComponents(model, {
+    nodes: [
+      { id: idOf("Enough staff"), recognised: false, exploited: true, note: "" },
+      { id: idOf("Accounting expertise"), recognised: true, exploited: false, note: "" },
+      { id: idOf("Knowledge of state-owned"), recognised: true, exploited: false, note: "PFMA mentioned" },
+    ],
+    code_chain: [{ issue: "Accounting services", indicator: "yes", threat: "yes", principle: "partly" }],
+    evidence: "",
+  })!;
+  assert.equal(evidence.nodes!.length, 32);
+  const staff = evidence.nodes!.find((node) => node.label.startsWith("Enough staff"))!;
+  assert.deepEqual([staff.recognised, staff.exploited], [true, true]);
+  const competence = evidence.layers.find((layer) => layer.layer.includes("competence"))!;
+  assert.deepEqual([competence.available, competence.recognised, competence.exploited], [2, 2, 1]);
+  assert.ok(!evidence.layers.some((layer) => layer.layer.includes("Public-sector")));
+  const beyond = evidence.nodes!.filter((node) => !node.basic_theory);
+  assert.equal(beyond.length, 4);
+  assert.equal(evidence.layers.reduce((sum, layer) => sum + layer.available, 0), 28);
+  assert.deepEqual(evidence.code_chain, [{ issue: "Accounting services", indicator: "yes", threat: "yes", principle: "partly", explanation: "no", significance: "no", safeguard: "no" }]);
+});
+
+test("buildComponents keeps the model's flat layers when the requirement has no tree, and has no Code chain without Code issues", () => {
+  const flat = buildComponents(questionModelFor("iac-2026-p1", "P1Q1_a"), { layers: [{ layer: "SWOT buckets", source: "required", available: 4, recognised: 4, exploited: 3, note: "" }], evidence: "e" })!;
+  assert.equal(flat.layers.length, 1);
+  assert.equal(flat.nodes, undefined);
+  const g1 = buildComponents(questionModelFor("iac-2026-p1", "P1Q2_g1"), { nodes: [], evidence: "" })!;
+  assert.equal(g1.code_chain, undefined);
+  assert.equal(buildComponents(questionModelFor("iac-2026-p1", "P1Q1_a"), null), null);
 });

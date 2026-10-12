@@ -86,3 +86,18 @@ test("step 2 shows three categories: compliance discussion, non-compliance discu
   assert.ok(step2.includes("Non-discussion"));
   assert.ok(!step2.includes("Calculation"));
 });
+
+test("Step 6 shows the beyond-the-basics line and the Code chain table when the tree has them", () => {
+  const layers = [{ layer: "ISA 220: ethics and independence", source: "theory" as const, available: 9, recognised: 2, exploited: 1, note: "" }];
+  const nodes = [
+    { id: "n1", path: ["Public-sector law"], label: "Public Audit Act appointment", source: "theory" as const, basic_theory: false, recognised: false, exploited: false, note: "" },
+    { id: "n2", path: ["ISA 220"], label: "Competence", source: "case" as const, basic_theory: true, recognised: true, exploited: true, note: "" },
+  ];
+  const code_chain = [{ issue: "Accounting services", indicator: "yes" as const, threat: "yes" as const, principle: "yes" as const, explanation: "partly" as const, significance: "no" as const, safeguard: "no" as const }];
+  const md = buildStudentReports(dataset([req({ components: { layers, nodes, code_chain, evidence: "" } })]))[0].markdown;
+  const step6 = md.slice(md.indexOf("### Step 6"), md.indexOf("### Step 7"));
+  assert.ok(step6.includes("Beyond the basics (not counted as missed)"));
+  assert.ok(step6.includes("| Accounting services | ✓ | ✓ | ✓ | ~ | ✗ | ✗ |"));
+  const plain = buildStudentReports(dataset([req()]))[0].markdown;
+  assert.ok(!plain.slice(plain.indexOf("### Step 6"), plain.indexOf("### Step 7")).includes("Beyond the basics"));
+});

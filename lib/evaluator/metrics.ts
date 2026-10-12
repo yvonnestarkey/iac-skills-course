@@ -1,4 +1,5 @@
 import { proximityAvailable, type CoreIssueComponent, type RequirementModel } from "./question-model";
+import { CODE_CHAIN_STEPS, type CodeChainIssue, type CodeChainResult, type ComponentLayer, type ComponentNodeEvidence, type ComponentsEvidence } from "./types";
 import type { BmcrVerdict, CoachHypothesis, CommunicationEvidence, CommunicationRating, RequirementDiagnoses, CoreIssueEvidence, DiscussionBasis, ProximityBucket, RequirementEvaluation, RequirementMetrics, RtfqEvidence } from "./types";
 
 /** Taught thresholds (kept deliberately simple so students can reproduce them without discretion). */
@@ -304,4 +305,77 @@ export function rtfqGate(rtfq: RtfqEvidence | null): "clear" | "misread" | null 
   if (!rtfq || !rtfq.dimensions.length) return null;
   const missed = rtfq.dimensions.some((d) => (d.dimension === "shape" || d.dimension === "lens") && d.delivered === "no");
   return missed ? "misread" : "clear";
+}
+
+
+export type RawComponents = {
+  layers?: ComponentLayer[];
+  nodes?: { id: string; recognised: boolean; exploited: boolean; note?: string }[];
+  code_chain?: ({ issue: string } & Partial<Record<(typeof CODE_CHAIN_STEPS)[number], CodeChainResult>>)[];
+  evidence: string;
+};
+
+/** Node ids are positional: n1, n2, ... in the order of the question model's component_tree. */
+export const componentNodeId = (index: number) => `n${index + 1}`;
+
+/**
+ * Merge the pre-calibrated layered tree with what the student did. Without a tree the model's flat layers are kept.
+ * Rules set here, not by the evaluating model: exploited implies recognised; only basic-theory nodes count as available
+ * (beyond-the-basics nodes are listed and never counted as missed); layer counts are computed from the nodes.
+ */
+export function buildComponents(model: RequirementModel | null, raw: RawComponents | null): ComponentsEvidence | null {
+  const tree = model?.component_tree;
+  if (!tree || !tree.length) {
+    return raw ? { layers: raw.layers ?? [], evidence: raw.evidence } : null;
+  }
+  const found = new Map((raw?.nodes ?? []).map((entry) => [entry.id, entry]));
+  const nodes: ComponentNodeEvidence[] = tree.map((node, index) => {
+    const entry = found.get(componentNodeId(index));
+    const exploited = Boolean(entry?.exploited);
+    return {
+      id: componentNodeId(index),
+      path: node.path,
+      label: node.label,
+      source: node.source,
+      basic_theory: node.basic_theory,
+      ...(node.chain ? { chain: node.chain } : {}),
+      recognised: Boolean(entry?.recognised) || exploited,
+      exploited,
+      note: entry?.note?.trim() ?? "",
+    };
+  });
+  const order: string[] = [];
+  const groups = new Map<string, ComponentNodeEvidence[]>();
+  for (const node of nodes) {
+    if (!node.basic_theory) continue;
+    const key = node.path[0];
+    if (!groups.has(key)) {
+      groups.set(key, []);
+      order.push(key);
+    }
+    groups.get(key)!.push(node);
+  }
+  const layers: ComponentLayer[] = order.map((key) => {
+    const group = groups.get(key)!;
+    const sources = new Set(group.map((node) => node.source));
+    const source = sources.size === 1 ? (sources.has("required") ? "required" : sources.has("case") ? "case_sections" : "theory") : "other";
+    const missed = group.filter((node) => !node.recognised).map((node) => node.label);
+    return {
+      layer: key,
+      source,
+      available: group.length,
+      recognised: group.filter((node) => node.recognised).length,
+      exploited: group.filter((node) => node.exploited).length,
+      note: missed.length ? `Not reached: ${missed.slice(0, 3).join("; ")}${missed.length > 3 ? `; and ${missed.length - 3} more` : ""}` : "All reached.",
+    };
+  });
+  const hasChain = tree.some((node) => node.chain === "cpc");
+  const code_chain: CodeChainIssue[] | undefined = hasChain
+    ? (raw?.code_chain ?? []).map((issue) => {
+        const result = { issue: issue.issue } as CodeChainIssue;
+        for (const step of CODE_CHAIN_STEPS) result[step] = issue[step] ?? "no";
+        return result;
+      })
+    : undefined;
+  return { layers, nodes, ...(code_chain ? { code_chain } : {}), evidence: raw?.evidence ?? "" };
 }

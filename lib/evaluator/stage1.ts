@@ -1,6 +1,6 @@
 import { callStructured, fetchPageImages, imageBlocks } from "./anthropic";
 import { stage1Methodology } from "./methodology";
-import { aggregateProximity, applyNotAttemptedRule, buildCoreIssue, finalizeCommunication, validateRequirement, type RawCoreIssue } from "./metrics";
+import { aggregateProximity, applyNotAttemptedRule, buildComponents, buildCoreIssue, componentNodeId, finalizeCommunication, validateRequirement, type RawComponents, type RawCoreIssue } from "./metrics";
 import { questionModelFor, toolsFor } from "./question-model";
 import { requirementLabel } from "./pagemap";
 import { DISCUSSION_BASES, COMMUNICATION_RATINGS, INTRO_STATUSES, QUESTION_TYPES, RTFQ_DELIVERED, type BmcrRow, type RequirementEvaluation, type RequirementPageMap, type UsageTally } from "./types";
@@ -39,6 +39,37 @@ const REQUIREMENT_SCHEMA = {
               note: { type: "string" },
             },
             required: ["layer", "source", "available", "recognised", "exploited", "note"],
+          },
+        },
+        nodes: {
+          type: "array",
+          description: "Only when a layered component tree is given in the prompt: one entry per node id.",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "string" },
+              recognised: { type: "boolean", description: "The student used the structure to hunt for this (evidence on the page); generic topic talk does not count." },
+              exploited: { type: "boolean", description: "The marker awarded a mark that came from this node." },
+              note: { type: "string", description: "Very brief evidence." },
+            },
+            required: ["id", "recognised", "exploited", "note"],
+          },
+        },
+        code_chain: {
+          type: "array",
+          description: "Only when the tree has Code of Professional Conduct issues: one entry per Code issue the student raised, checked against the whole chain.",
+          items: {
+            type: "object",
+            properties: {
+              issue: { type: "string" },
+              indicator: { type: "string", enum: ["yes", "partly", "no"] },
+              threat: { type: "string", enum: ["yes", "partly", "no"] },
+              principle: { type: "string", enum: ["yes", "partly", "no"] },
+              explanation: { type: "string", enum: ["yes", "partly", "no"] },
+              significance: { type: "string", enum: ["yes", "partly", "no"] },
+              safeguard: { type: "string", enum: ["yes", "partly", "no"] },
+            },
+            required: ["issue", "indicator", "threat", "principle", "explanation", "significance", "safeguard"],
           },
         },
         evidence: { type: "string" },
@@ -157,7 +188,7 @@ export async function evaluateRequirement(input: {
   const reportSelected = input.reportPages.filter((page) => pageMap.report_pages.includes(page.page));
   const [scriptImages, reportImages] = await Promise.all([fetchPageImages(scriptSelected), fetchPageImages(reportSelected)]);
 
-  const raw = await callStructured<Omit<RequirementEvaluation, "code" | "label" | "total_marks" | "bmcr" | "buried_treasure" | "core_issue"> & { core_issue: RawCoreIssue | null }>({
+  const raw = await callStructured<Omit<RequirementEvaluation, "code" | "label" | "total_marks" | "bmcr" | "buried_treasure" | "core_issue" | "components"> & { core_issue: RawCoreIssue | null; components: RawComponents | null }>({
     system: `${stage1Methodology()}\n\nYou are Stage 1 of the Script Evaluator for ONE requirement. Record observations only. Do not explain why the student behaved as they did. Report counts and flags; never calculate percentages. If the requirement was not attempted, set attempted=false and set the answer-based measures to null (only Question Type, Competency and the marker's marks are returned).`,
     userContent: [
       {
@@ -178,53 +209,6 @@ export async function evaluateRequirement(input: {
             ? `Pre-calibrated proximity items (marker's report row numbers). Return one buried_treasure_items entry per row:\n${model.proximity_items.map((item) => `- row ${item.row}: ${item.proximity}${item.note ? ` — ${item.note}` : ""}`).join("\n")}`
             : "No pre-calibrated proximity items exist for this requirement. Return buried_treasure_items as null. Do NOT invent a classification.",
           "The marker's report is the ONLY authority for marks awarded. Students may write their own notes, ticks or \"1 mark\" annotations on the script before uploading it; these are never marks. Use them only as evidence of what the student wrote, never to set awarded values.",
-          "Components: report one entry per layer of structure (required structure such as SWOT buckets or named goals; case sections; underlying theory). For each layer give counts available / recognised / exploited and a super-brief note. Recognised needs evidence the student used the structure to hunt; generic topic discussion or words that merely resemble the mark plan do NOT count. Exclude any case section the requirement tells students not to discuss from the available count.",
-          model?.core_issue?.length
-            ? `Core Issue components (pre-calibrated; priority, including any dominant component, is NOT yours to judge). For each, report attempts (statements the student wrote on it, one per statement) and depth (none / surface / developed). A valid point that is not on the mark plan is NOT wrong: if the student spent time on points the case did not signal, or too little on what it did, say so in off_plan_note as incorrect expansion or contraction relative to the case:\n${model.core_issue.map((c) => `- ${c.component} [${c.layer}]`).join("\n")}`
-            : "No pre-calibrated Core Issue components exist for this requirement. Return core_issue as null. Do NOT invent priorities.",
-          "RTFQ runs first and on every attempted requirement, calculations included. Run every other tool as if the student had read the question correctly, judging the skills shown in what they wrote. If the student answered a different kind of question than the one asked (a calculation where a discussion was required, or the reverse) shape is no. RTFQ: return three dimensions. shape = the instruction word and its shape (discuss, calculate, evaluate, journal, recommend...). An 'assess' or 'evaluate' requirement needs BOTH sides (for example factors that raise the risk and factors that lower it, or advantages and disadvantages) and a conclusion; many students give only one side, so shape is partly when only one side is given; directions = hidden required, named entities, headings, exclusions, required perspective; lens = the actual issue or framework the required asks about. Judge delivery against the SPECIFIC things the required names, never against the general area: a student who is in the right general area but deals with none of the named items (for example neither of two named goals) did not answer the question, so delivered = no. Use partly only when some of the named items were dealt with properly and others were missing or vague. For each say what the required asked for, whether the answer delivered it (yes / partly / no) and a one-line note of the evidence on the page. Use partly when the answer is on the right track but only some of it was delivered. Record delivery only; never explain why the student did or did not deliver.",
-          "Communication: judge only what is on the page, never what was in the student's head. Also set explains_why on EACH statement (coach-only, never shown to the student): when the statement names a threat, a risk, a control weakness, a misstatement or an issue, did it also say WHY that is a problem and HOW it could cause harm (yes), or stop at naming it (no)? Naming 'a self-interest threat to objectivity' or 'a risk of fraud' without saying what the actual worry is counts as no. Use not_applicable for statements that name no such item. Categorise EACH statement (the same unit as Volume, one per statement): Complete, Underdeveloped, Unclear or Miscommunicated. Discussion shape is fact -> implication -> relevance. A thin tail such as \"thus creating more value\" is Underdeveloped (the student should have continued). A sentence that stops mid-way, or illegible wording, is Unclear. A mark not awarded is NOT automatically a Communication problem. Communication ignores whether a point is on the mark plan; a valid point missing from the mark plan is not a Communication problem. Then give a short OVERALL read: the introduction (present only if the answer opens by naming the knowledge base or tool and the objective; absent if it jumps into detail; the system sets not_expected for non-compliance discussions and for requirements under 10 marks). For a COMPLIANCE discussion only, also say whether the knowledge (the theory or rules underpinning the discussion, not the structure of the answer), the application of case facts to it, and the so-what were delivered somewhere in the answer (yes / partly / no); some students write the theory first and apply it at the end, which is fine. For a NON-COMPLIANCE discussion return null for knowledge, application and so_what: the per-statement categories and the trend carry the judgement. Then write the trend in plain words with no numbers.",
-          "technical_awarded excludes professional marks (Z structure marks, Comm marks, Y marks); record those in pvaa_awarded.",
-          `Student's own BMCR for this requirement: marks available ${input.bmcr?.available ?? "unknown"}, marks the student believed they knew ${input.bmcr?.student_known ?? "unknown"}.`,
-          "",
-          "Official question, solution/mark plan, commentary and competency material:",
-          input.officialText,
-          "",
-          "Candidate's script pages for this requirement, then the marker's report pages for it, follow.",
-        ].join("\n"),
-      },
-      ...imageBlocks("Script", scriptImages),
-      ...imageBlocks("Marking report", reportImages),
-    ],
-    toolName: "return_requirement_evaluation",
-    toolDescription: "Return the observation-only evaluation for this requirement.",
-    schema: REQUIREMENT_SCHEMA,
-    usage: input.usage,
-    maxTokens: 6000,
-  });
-
-  const warnings: string[] = [];
-  if (gate.coreIssue && !model?.core_issue?.length) warnings.push(`${label}: no pre-calibrated Core Issue components; Core Issue not scored.`);
-  if (gate.buriedTreasure && !model?.proximity_items.length) warnings.push(`${label}: no pre-calibrated proximity items; Buried Treasure not scored.`);
-  const buriedTreasure = gate.buriedTreasure ? aggregateProximity(model, raw.buried_treasure_items ?? null) : null;
-
-  const evaluation: RequirementEvaluation = applyNotAttemptedRule({
-    ...raw,
-    question_type: questionType ?? raw.question_type,
-    discussion_basis: discussionBasis,
-    attempted: Boolean(raw.attempted) && pageMap.attempted,
-    code: requirement.code,
-    label,
-    total_marks: requirement.total_marks,
-    bmcr: { student_known: input.bmcr?.student_known ?? null, available: input.bmcr?.available ?? null },
-    buried_treasure_items: gate.buriedTreasure ? raw.buried_treasure_items ?? null : null,
-    buried_treasure: buriedTreasure,
-    volume: gate.volumeAccuracy ? raw.volume ?? null : null,
-    components: gate.components ? raw.components ?? null : null,
-    core_issue: gate.coreIssue ? buildCoreIssue(model?.core_issue, raw.core_issue ?? null) : null,
-    rtfq: gate.rtfq ? raw.rtfq ?? null : null,
-    communication: gate.communication ? finalizeCommunication(raw.communication ?? null, requirement.total_marks, discussionBasis) : null,
-    uncertainties: raw.uncertainties || [],
-  });
-  return { evaluation, warnings: [...warnings, ...validateRequirement(evaluation)] };
-}
+          model?.component_tree?.length
+            ? `Components (pre-calibrated layered tree; do not invent nodes). Return layers as an empty array. Return one nodes entry per id below. recognised = the student used this structure to hunt for points (evidence on the page; generic topic discussion or wording that merely resembles the mark plan does NOT count). exploited = the marker awarded a mark from it (marker's report only). Judge every node, including those marked beyond the basics.${model.component_tree.some((n) => n.chain === "cpc") ? " The Code of Professional Conduct chain applies ONLY to issues about the Code: for each Code issue the student raised (in their own words), return a code_chain entry saying whether the answer dealt with each step (yes / partly / no): indicator (the case fact that signals the issue), threat (the named threat), principle (the fundamental principle affected), explanation (what the student is actually worried about, i.e. WHY it matters), significance (how significant the threat is in this case), safeguard. Other ethics issues do not follow the chain." : ""}\n${model.component_tree.map((n, i) => `- ${componentNodeId(i)} [${n.path.join(" > ")}] ${n.label}${n.chain ? " (Code issue)" : ""}${n.basic_theory ? "" : " (beyond the basics)"}`).join("\n")}`
+            : "Components: report one entry per layer of structure (required structure such as SWOT buckets or named goals; case sections; underlying theory). For each layer give counts available / recognised / exploited and a super-brief note. Recognised needs evidence the student used the structure to hunt; generic topic discussion or words that merely resemble the mark plan do NOT count. Exclude any case section the requirement tells students not to discuss from the available count.",

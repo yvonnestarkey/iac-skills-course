@@ -54,8 +54,36 @@ export type ComponentLayer = {
   note: string;
 };
 
+/** One node of a layered tree (pre-calibrated in the question model), with what the student did on it. */
+export type ComponentNodeEvidence = {
+  id: string;
+  path: string[];
+  label: string;
+  source: "required" | "case" | "theory";
+  /** False = beyond the basics: listed, never counted as available or missed. */
+  basic_theory: boolean;
+  chain?: "cpc";
+  /** The student used the structure to hunt for this (evidence on the page). */
+  recognised: boolean;
+  /** The marker awarded a mark from it. Implies recognised. */
+  exploited: boolean;
+  note: string;
+};
+
+export const CODE_CHAIN_STEPS = ["indicator", "threat", "principle", "explanation", "significance", "safeguard"] as const;
+export type CodeChainStepName = (typeof CODE_CHAIN_STEPS)[number];
+export type CodeChainResult = "yes" | "partly" | "no";
+
+/** One Code of Professional Conduct issue the student raised, checked against the whole chain. */
+export type CodeChainIssue = { issue: string } & Record<CodeChainStepName, CodeChainResult>;
+
 export type ComponentsEvidence = {
+  /** Flat layers. For a layered tree these are computed in code from `nodes` (Layer 1 groups, basic nodes only). */
   layers: ComponentLayer[];
+  /** Present when the requirement has a pre-calibrated tree. */
+  nodes?: ComponentNodeEvidence[];
+  /** Present when the tree has Code of Professional Conduct issues. */
+  code_chain?: CodeChainIssue[];
   evidence: string;
 };
 
