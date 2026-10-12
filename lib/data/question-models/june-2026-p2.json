@@ -1,10 +1,10 @@
 {
   "paper_id": "iac-2026-p2",
-  "status": "draft — Buried Treasure classified row by row with Yvonne, 12 Oct 2026 (21:24); Q1(a) cluster grouping still to be ruled on.",
+  "status": "draft — Buried Treasure classified row by row with Yvonne, 12 Oct 2026 (21:30); Q1(a) rebuilt on the case notes.",
   "notes": [
     "Technical marks exclude professional marks (X1, Y1, Y2, Y3).",
     "Component trees use the marker's report rows as solution_ref. Each node carries its marks; core_marks lists the components at the deepest layer where marks sit.",
-    "Q1(a): Layer 1 = the statement lines, Layer 2 = the transactions and information that trigger what goes where (Yvonne, 12 Oct). Core by fair share over the 15 transaction components.",
+    "Q1(a): components are the case's own numbered notes (Yvonne, 12 Oct 2026, 21:54), plus 'Information from the AFS (no note)' (operating expenses, inventories, payables, interest, tax: no notes) and 'Statement lines (presentation)'. The statement lines are a separate layer that forms the structure of the answer but are not divided into Layer 1 / Layer 2 columns. Notes 10, 12, 13, 15, 16 carry no Q1(a) marks; note 11 (interest) belongs to the AFS component; note 14 limits other current liabilities (note 9).",
     "Q2(b) was written 'Not attempted' on the page.",
     "Tax spine = the Acts' own structure (Yvonne, 12 Oct).",
     "Q2(e): 22 marks available (Yvonne, 12 Oct 2026: the solution's 21 is an error; marker rows 47 and 48 are separate marks)."
@@ -271,738 +271,722 @@
       "component_tree": [
         {
           "path": [
-            "Cash receipts from customers",
             "Statement lines (presentation)"
           ],
           "label": "Cash receipts from customers (line)",
           "source": "required",
           "basic_theory": true,
           "solution_ref": "row 3",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash receipts from customers"
         },
         {
           "path": [
-            "Cash receipts from customers",
-            "Revenue, receivables and ECL"
+            "Note 1: Revenue, receivables, ECL and payments in advance"
           ],
           "label": "Revenue per the statement of profit or loss",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 4",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash receipts from customers"
         },
         {
           "path": [
-            "Cash receipts from customers",
-            "Revenue, receivables and ECL"
+            "Note 1: Revenue, receivables, ECL and payments in advance"
           ],
           "label": "Decrease in trade receivables",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 5",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash receipts from customers"
         },
         {
           "path": [
-            "Cash receipts from customers",
-            "Revenue, receivables and ECL"
+            "Note 1: Revenue, receivables, ECL and payments in advance"
           ],
           "label": "Expected credit losses",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 6",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash receipts from customers"
         },
         {
           "path": [
-            "Cash receipts from customers",
-            "Contract liabilities: payments in advance"
+            "Note 1: Revenue, receivables, ECL and payments in advance"
           ],
           "label": "Decrease in contract liabilities on payments received in advance",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 7",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash receipts from customers"
         },
         {
           "path": [
-            "Cash receipts from customers",
-            "Patient loyalty programme (IFRS 15)"
+            "Note 2: Patient loyalty programme"
           ],
           "label": "Stand-alone selling price of products sold",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 8",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash receipts from customers"
         },
         {
           "path": [
-            "Cash receipts from customers",
-            "Patient loyalty programme (IFRS 15)"
+            "Note 2: Patient loyalty programme"
           ],
           "label": "Stand-alone selling price of the HealthMulas",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 9",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash receipts from customers"
         },
         {
           "path": [
-            "Cash receipts from customers",
-            "Patient loyalty programme (IFRS 15)"
+            "Note 2: Patient loyalty programme"
           ],
           "label": "Transaction price allocated to the HealthMulas",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 10",
-          "marks": 2
+          "marks": 2,
+          "note": "Statement line: Cash receipts from customers"
         },
         {
           "path": [
-            "Cash receipts from customers",
-            "Patient loyalty programme (IFRS 15)"
+            "Note 2: Patient loyalty programme"
           ],
           "label": "Contract liability at year end",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 11",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash receipts from customers"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
             "Statement lines (presentation)"
           ],
           "label": "Cash paid to suppliers and employees (line)",
           "source": "required",
           "basic_theory": true,
           "solution_ref": "row 12",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Operating expenses, inventories and payables"
+            "Information from the AFS (no note)"
           ],
           "label": "Operating expenses and ECL",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 13",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Share appreciation rights (IFRS 2)"
+            "Note 3: Share appreciation rights (SARs)"
           ],
           "label": "SARs liability at 31 Dec 2025",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 14",
-          "marks": 3
+          "marks": 3,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Share appreciation rights (IFRS 2)"
+            "Note 3: Share appreciation rights (SARs)"
           ],
           "label": "SARs liability at 31 Dec 2024",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 15",
-          "marks": 4
+          "marks": 4,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Share appreciation rights (IFRS 2)"
+            "Note 3: Share appreciation rights (SARs)"
           ],
           "label": "Settlement of the SARs",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 16",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Lease (IFRS 16)"
+            "Note 4: Lease (including the installation costs)"
           ],
           "label": "Lease: present value of the payments",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 17",
-          "marks": 2.5
+          "marks": 2.5,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Lease (IFRS 16)"
+            "Note 4: Lease (including the installation costs)"
           ],
           "label": "Lease: initial direct costs",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 18",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Lease (IFRS 16)"
+            "Note 4: Lease (including the installation costs)"
           ],
           "label": "Lease: depreciation of the right-of-use asset",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 19",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Depreciation"
+            "Note 5: Depreciation"
           ],
           "label": "Depreciation of the rest of the PPE",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 20",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Vehicle disposal"
+            "Note 7: Vehicle sold"
           ],
           "label": "Profit on sale of the old vehicle",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 21",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Lawsuit provision (IAS 37, IAS 10)"
+            "Note 9: Lawsuit"
           ],
           "label": "Other current liabilities: opening balance",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 22",
-          "marks": 0.5
+          "marks": 0.5,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Contract liabilities: payments in advance"
+            "Note 1: Revenue, receivables, ECL and payments in advance"
           ],
           "label": "Decrease in contract liabilities (payments in advance)",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 23",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Patient loyalty programme (IFRS 15)"
+            "Note 2: Patient loyalty programme"
           ],
           "label": "Increase in contract liabilities on the loyalty programme",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 24",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Share appreciation rights (IFRS 2)"
+            "Note 3: Share appreciation rights (SARs)"
           ],
           "label": "Decrease in the SARs liability",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 25",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Lease (IFRS 16)"
+            "Note 4: Lease (including the installation costs)"
           ],
           "label": "Lease: current portion of the lease liability",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 26",
-          "marks": 1.5
+          "marks": 1.5,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Lease (IFRS 16)"
+            "Note 4: Lease (including the installation costs)"
           ],
           "label": "Lease: current portion (amortisation)",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 27",
-          "marks": 0.5
+          "marks": 0.5,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Lawsuit provision (IAS 37, IAS 10)"
+            "Note 9: Lawsuit"
           ],
           "label": "Other current liabilities: closing balance",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 28",
-          "marks": 0.5
+          "marks": 0.5,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Operating expenses, inventories and payables"
+            "Information from the AFS (no note)"
           ],
           "label": "Decrease in inventories",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 29",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Cash paid to suppliers and employees",
-            "Operating expenses, inventories and payables"
+            "Information from the AFS (no note)"
           ],
           "label": "Decrease in trade payables",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 30",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Cash paid to suppliers and employees"
         },
         {
           "path": [
-            "Interest income received",
-            "Interest income"
+            "Information from the AFS (no note)"
           ],
           "label": "Interest income received",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 31",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Interest income received"
         },
         {
           "path": [
-            "Finance costs paid",
             "Statement lines (presentation)"
           ],
           "label": "Finance costs paid (line)",
           "source": "required",
           "basic_theory": true,
           "solution_ref": "row 32",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Finance costs paid"
         },
         {
           "path": [
-            "Finance costs paid",
-            "Borrowing costs capitalised (IAS 23)"
+            "Information from the AFS (no note)"
           ],
           "label": "Interest expense per the statement",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 33",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Finance costs paid"
         },
         {
           "path": [
-            "Finance costs paid",
-            "Borrowing costs capitalised (IAS 23)"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "Interest expense capitalised",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 34",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Finance costs paid"
         },
         {
           "path": [
-            "Taxation paid",
             "Statement lines (presentation)"
           ],
           "label": "Taxation paid (line)",
           "source": "required",
           "basic_theory": true,
           "solution_ref": "row 35",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Taxation paid"
         },
         {
           "path": [
-            "Taxation paid",
-            "Tax paid (IAS 12)"
+            "Information from the AFS (no note)"
           ],
           "label": "Opening current tax liability",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 36",
-          "marks": 0.5
+          "marks": 0.5,
+          "note": "Statement line: Taxation paid"
         },
         {
           "path": [
-            "Taxation paid",
-            "Tax paid (IAS 12)"
+            "Information from the AFS (no note)"
           ],
           "label": "Opening deferred tax liability",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 37",
-          "marks": 0.5
+          "marks": 0.5,
+          "note": "Statement line: Taxation paid"
         },
         {
           "path": [
-            "Taxation paid",
-            "Tax paid (IAS 12)"
+            "Information from the AFS (no note)"
           ],
           "label": "Current year tax expense",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 38",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Taxation paid"
         },
         {
           "path": [
-            "Taxation paid",
-            "Tax paid (IAS 12)"
+            "Information from the AFS (no note)"
           ],
           "label": "Closing current tax asset",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 39",
-          "marks": 0.5
+          "marks": 0.5,
+          "note": "Statement line: Taxation paid"
         },
         {
           "path": [
-            "Taxation paid",
-            "Tax paid (IAS 12)"
+            "Information from the AFS (no note)"
           ],
           "label": "Closing deferred tax asset",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 40",
-          "marks": 0.5
+          "marks": 0.5,
+          "note": "Statement line: Taxation paid"
         },
         {
           "path": [
-            "Taxation paid",
-            "Tax paid (IAS 12)"
+            "Information from the AFS (no note)"
           ],
           "label": "Closing deferred tax liability",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 41",
-          "marks": 0.5
+          "marks": 0.5,
+          "note": "Statement line: Taxation paid"
         },
         {
           "path": [
-            "Additions to PPE for expansion",
-            "New clinics: purchase and renovation"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "Expansion: purchase price of the buildings",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 42a",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for expansion"
         },
         {
           "path": [
-            "Additions to PPE for expansion",
-            "New clinics: purchase and renovation"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "Expansion: renovation costs paid",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 42b",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for expansion"
         },
         {
           "path": [
-            "Additions to PPE for expansion",
-            "New clinics: purchase and renovation"
+            "Note 4: Lease (including the installation costs)"
           ],
           "label": "Expansion: initial direct costs of the lease",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 42c",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for expansion"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
             "Statement lines (presentation)"
           ],
           "label": "Additions to PPE for maintenance (line)",
           "source": "required",
           "basic_theory": true,
           "solution_ref": "row 43",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Proceeds from disposal of PPE",
-            "Vehicle disposal"
+            "Note 7: Vehicle sold"
           ],
           "label": "Proceeds from disposal of PPE",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 44",
-          "marks": 2
+          "marks": 2,
+          "note": "Statement line: Proceeds from disposal of PPE"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "PPE opening and closing balances"
+            "Note 8: Replacements of property, plant and equipment"
           ],
           "label": "PPE: opening balance",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 45",
-          "marks": 0.5
+          "marks": 0.5,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Lease (IFRS 16)"
+            "Note 4: Lease (including the installation costs)"
           ],
           "label": "Acquisition of the right-of-use asset",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 46",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Lease (IFRS 16)"
+            "Note 4: Lease (including the installation costs)"
           ],
           "label": "Capitalisation of the lease reassessment",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 47",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "New clinics: purchase and renovation"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "Purchase price paid of the properties",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 48",
-          "marks": 2
+          "marks": 2,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "New clinics: purchase and renovation"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "Renovation costs paid in cash",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 49",
-          "marks": 2
+          "marks": 2,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Borrowing costs capitalised (IAS 23)"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "Newcastle loan: number of periods",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 50a",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Borrowing costs capitalised (IAS 23)"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "Newcastle loan: payment",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 50b",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Borrowing costs capitalised (IAS 23)"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "Newcastle loan: future value",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 50c",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Borrowing costs capitalised (IAS 23)"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "Newcastle loan: present value net of the initiation fee",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 50d",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Borrowing costs capitalised (IAS 23)"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "Newcastle interest capitalised",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 51",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Borrowing costs capitalised (IAS 23)"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "QwaQwa loan: number of periods",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 52a",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Borrowing costs capitalised (IAS 23)"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "QwaQwa loan: present value",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 52b",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Borrowing costs capitalised (IAS 23)"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "QwaQwa loan: monthly interest rate",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 52c",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Borrowing costs capitalised (IAS 23)"
+            "Note 6: New clinics: buildings, renovations, loans and capitalised interest"
           ],
           "label": "QwaQwa interest capitalised",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 53",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Depreciation"
+            "Note 5: Depreciation"
           ],
           "label": "Depreciation deducted from the PPE",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 54",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "Vehicle disposal"
+            "Note 7: Vehicle sold"
           ],
           "label": "Carrying amount of the old vehicle",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 55",
-          "marks": 1
+          "marks": 1,
+          "note": "Statement line: Additions to PPE for maintenance"
         },
         {
           "path": [
-            "Additions to PPE for maintenance",
-            "PPE opening and closing balances"
+            "Note 8: Replacements of property, plant and equipment"
           ],
           "label": "PPE: closing balance",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 56",
-          "marks": 0.5
+          "marks": 0.5,
+          "note": "Statement line: Additions to PPE for maintenance"
         }
       ],
       "core_marks": {
         "max": 67,
         "components": [
           {
-            "label": "Revenue, receivables and ECL",
-            "marks": 3
+            "label": "Statement lines (presentation)",
+            "marks": 5
           },
           {
-            "label": "Contract liabilities: payments in advance",
-            "marks": 2
+            "label": "Note 1: Revenue, receivables, ECL and payments in advance",
+            "marks": 5
           },
           {
-            "label": "Patient loyalty programme (IFRS 15)",
+            "label": "Note 2: Patient loyalty programme",
             "marks": 6
           },
           {
-            "label": "Share appreciation rights (IFRS 2)",
-            "marks": 9
-          },
-          {
-            "label": "Lease (IFRS 16)",
+            "label": "Information from the AFS (no note)",
             "marks": 8.5
           },
           {
-            "label": "Depreciation",
+            "label": "Note 3: Share appreciation rights (SARs)",
+            "marks": 9
+          },
+          {
+            "label": "Note 4: Lease (including the installation costs)",
+            "marks": 9.5
+          },
+          {
+            "label": "Note 5: Depreciation",
             "marks": 2
           },
           {
-            "label": "Vehicle disposal",
+            "label": "Note 7: Vehicle sold",
             "marks": 4
           },
           {
-            "label": "Lawsuit provision (IAS 37, IAS 10)",
+            "label": "Note 9: Lawsuit",
             "marks": 1.0
           },
           {
-            "label": "Operating expenses, inventories and payables",
-            "marks": 3
+            "label": "Note 6: New clinics: buildings, renovations, loans and capitalised interest",
+            "marks": 16
           },
           {
-            "label": "Borrowing costs capitalised (IAS 23)",
-            "marks": 11
-          },
-          {
-            "label": "New clinics: purchase and renovation",
-            "marks": 7
-          },
-          {
-            "label": "Tax paid (IAS 12)",
-            "marks": 3.5
-          },
-          {
-            "label": "PPE opening and closing balances",
+            "label": "Note 8: Replacements of property, plant and equipment",
             "marks": 1.0
-          },
-          {
-            "label": "Interest income",
-            "marks": 1
-          },
-          {
-            "label": "Statement lines (presentation)",
-            "marks": 5
           }
         ]
       }
