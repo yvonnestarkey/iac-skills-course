@@ -7,7 +7,7 @@
     "Q1(a): Layer 1 = the statement lines, Layer 2 = the transactions and information that trigger what goes where (Yvonne, 12 Oct). Core by fair share over the 15 transaction components.",
     "Q2(b) was written 'Not attempted' on the page.",
     "Tax spine = the Acts' own structure (Yvonne, 12 Oct).",
-    "Q2(e): the solution's available count is 21, the marker rows 47 and 48 show two separate marks."
+    "Q2(e): 22 marks available (Yvonne, 12 Oct 2026: the solution's 21 is an error; marker rows 47 and 48 are separate marks)."
   ],
   "requirements": {
     "P2Q1_a": {
@@ -1243,12 +1243,22 @@
             "Buildings and renovations",
             "Income Tax Act"
           ],
-          "label": "No capital allowances (not new and unused; renovations not in use)",
+          "label": "No capital allowance on the buildings (not new and unused)",
           "source": "theory",
           "basic_theory": true,
-          "solution_ref": "2.1.3 and 2.1.4",
-          "marks": 1,
-          "note": "Marker rows 47 and 48 are separate; the solution gives one mark. To confirm."
+          "solution_ref": "2.1.3",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Buildings and renovations",
+            "Income Tax Act"
+          ],
+          "label": "No capital allowance on the renovations (not brought into use)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "2.1.4",
+          "marks": 1
         },
         {
           "path": [
@@ -1392,7 +1402,7 @@
           },
           {
             "label": "Buildings and renovations > Income Tax Act",
-            "marks": 3
+            "marks": 4
           },
           {
             "label": "Initiation fees > VAT Act",
