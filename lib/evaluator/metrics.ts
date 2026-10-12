@@ -76,11 +76,11 @@ export function computeMetrics(requirement: RequirementEvaluation): RequirementM
  */
 export const PASS_SHARE = 0.5;
 
-/** Quantifier for the Communication diagnosis, from the share of statements in a category (draft thresholds). */
+/** Quantifier for the Communication diagnosis, from the share of points in a category (draft, 12 Oct 2026). */
 export function quantifier(share: number): "Most" | "Many" | "Some" | "A few" | null {
-  if (share > 0.5) return "Most";
-  if (share >= 0.3) return "Many";
-  if (share >= 0.1) return "Some";
+  if (share > 0.6) return "Most";
+  if (share >= 0.4) return "Many";
+  if (share >= 0.2) return "Some";
   if (share > 0) return "A few";
   return null;
 }
@@ -136,16 +136,21 @@ export function diagnose(requirement: RequirementEvaluation): RequirementDiagnos
   let communication: RequirementDiagnoses["communication"] = null;
   const comm = requirement.communication;
   if (requirement.attempted && comm && comm.points.length) {
-    const counts = { Complete: 0, Underdeveloped: 0, Unclear: 0, Miscommunicated: 0 } as Record<CommunicationRating, number>;
+    const counts = { Complete: 0, Underdeveloped: 0, Unclear: 0, Miscommunicated: 0, Unreadable: 0 } as Record<CommunicationRating, number>;
     for (const p of comm.points) counts[p.category] += 1;
-    const total = comm.points.length;
+    // Points that could not be read reliably are a reading problem, not a writing one: they are reported separately and left out of the shares.
+    const total = comm.points.length - counts.Unreadable;
     const sentences: string[] = [];
-    const complete = quantifier(counts.Complete / total);
-    sentences.push(complete ? `${complete} of your points were complete and well communicated.` : "None of your points were complete and well communicated.");
-    for (const category of ["Underdeveloped", "Unclear", "Miscommunicated"] as const) {
-      const q = quantifier(counts[category] / total);
-      if (q) sentences.push(`${q} were ${category.toLowerCase()}.`);
+    if (total > 0) {
+      const complete = quantifier(counts.Complete / total);
+      sentences.push(complete ? `${complete} of your points were complete and well communicated.` : "None of your points were complete and well communicated.");
+      for (const category of ["Underdeveloped", "Unclear", "Miscommunicated"] as const) {
+        const q = quantifier(counts[category] / total);
+        if (q) sentences.push(`${q} were ${category.toLowerCase()}.`);
+      }
     }
+    const unreadable = quantifier(counts.Unreadable / comm.points.length);
+    if (unreadable) sentences.push(`${unreadable} of your points could not be read reliably (watch your handwriting).`);
     let named = 0;
     let omitted = 0;
     for (const p of comm.points) {

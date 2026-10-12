@@ -135,7 +135,7 @@ const TOOL_SEEDS: Array<{
     toolCode: "EVE_EVAL_COMMUNICATION",
     documentId: "communication",
     outcome: "COMMUNICATION_TREND",
-    routine: "Score what made it onto the page as Complete, Underdeveloped, Unclear, or Miscommunicated. A mark not awarded is not automatically a Communication problem.",
+    routine: "Score each point for what made it onto the page: Complete, Underdeveloped (partial, thought not finished), Miscommunicated (the intent is visible but it did not land, e.g. theory stated instead of applied), Unclear (no idea what was meant), or Unreadable (the handwriting could not be read reliably: a reading problem, left out of the shares). Ignore the mark plan. A mark not awarded is not automatically a Communication problem.",
     trigger: { requires_answer_evidence: true, skip_when_not_attempted: true },
   },
 ];

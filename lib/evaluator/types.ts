@@ -8,7 +8,7 @@
  * working hypothesis with a probe, never as a root-cause diagnosis.
  */
 
-export const COMMUNICATION_RATINGS = ["Complete", "Underdeveloped", "Unclear", "Miscommunicated"] as const;
+export const COMMUNICATION_RATINGS = ["Complete", "Underdeveloped", "Unclear", "Miscommunicated", "Unreadable"] as const;
 export type CommunicationRating = (typeof COMMUNICATION_RATINGS)[number];
 
 /**

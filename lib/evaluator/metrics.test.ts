@@ -258,10 +258,13 @@ test("diagnoses: volume and accuracy are judged together against the pass mark (
 test("diagnoses: communication sentence is composed from the counts", () => {
   const pts = (cats: string[]) => cats.map((category, i) => ({ n: i + 1, statement: "x", category: category as "Complete", note: "" }));
   const a = diagnose(base({ communication: { overall: null, points: pts([...Array(11).fill("Complete"), ...Array(7).fill("Underdeveloped"), ...Array(2).fill("Unclear")]), trend: "", evidence: "" } }));
-  assert.equal(a.communication!.text, "Most of your points were complete and well communicated. Many were underdeveloped. Some were unclear.");
+  assert.equal(a.communication!.text, "Many of your points were complete and well communicated. Some were underdeveloped. A few were unclear.");
   assert.equal(a.communication!.counts.Underdeveloped, 7);
   const d = diagnose(base({ communication: { overall: null, points: pts(["Complete", "Complete", "Underdeveloped", "Unclear"]), trend: "", evidence: "" } }));
   assert.equal(d.communication!.text, "Many of your points were complete and well communicated. Some were underdeveloped. Some were unclear.");
+  // 12 Oct: Most is over 60%; unreadable points are reported on their own and left out of the shares.
+  const u = diagnose(base({ communication: { overall: null, points: pts([...Array(6).fill("Complete"), ...Array(4).fill("Underdeveloped"), "Unreadable"]), trend: "", evidence: "" } }));
+  assert.equal(u.communication!.text, "Many of your points were complete and well communicated. Many were underdeveloped. A few of your points could not be read reliably (watch your handwriting).");
 });
 
 test("diagnoses: core issues are named and the reflection follows coverage and depth", () => {
