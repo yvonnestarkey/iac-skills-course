@@ -346,8 +346,8 @@ test("component trees for Q2(e), (g)(i), (g)(ii) and (h): sizes, beyond-the-basi
   assert.deepEqual([e.available, e.beyond_basics, e.cpc_issues], [28, 3, 2]);
   assert.deepEqual(e.by_layer1.map((entry) => entry.layer1), ["Business ethics", "Professional ethics (applies to CAs)", "Safeguards (max 3 marks)"]);
   const g1 = componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_g1"))!;
-  assert.deepEqual([g1.available, g1.beyond_basics], [22, 0]);
-  assert.deepEqual(g1.by_layer1.map((entry) => entry.layer1), ["Factors that raise the risk", "Factors that lower the risk", "Conclusion"]);
+  assert.deepEqual([g1.available, g1.beyond_basics], [21, 0]);
+  assert.deepEqual(g1.by_layer1.map((entry) => entry.layer1), ["Factors that raise the risk", "Factors that lower the risk"]);
   const g2 = componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_g2"))!;
   assert.deepEqual([g2.available, g2.beyond_basics], [16, 2]);
   const h = componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_h"))!;

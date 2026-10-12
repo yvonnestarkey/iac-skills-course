@@ -1588,7 +1588,7 @@
         {
           "path": [
             "Factors that raise the risk",
-            "First-time audit"
+            "Complexity and uncertainty"
           ],
           "label": "New auditors: opening balances may be misstated",
           "source": "case",
@@ -1598,7 +1598,7 @@
         {
           "path": [
             "Factors that raise the risk",
-            "First-time audit"
+            "Complexity and uncertainty"
           ],
           "label": "New auditors: accounting policies may not be consistently applied",
           "source": "case",
@@ -1726,15 +1726,6 @@
           "source": "case",
           "basic_theory": true,
           "solution_ref": "16"
-        },
-        {
-          "path": [
-            "Conclusion"
-          ],
-          "label": "Conclusion: the risk of material misstatement at financial statement level is high",
-          "source": "required",
-          "basic_theory": true,
-          "solution_ref": "17"
         }
       ]
     },
