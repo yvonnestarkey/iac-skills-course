@@ -425,3 +425,17 @@ test("Q2(e): the Code is one component (applies, issues, principles together)", 
   assert.equal(code.length, 8);
   assert.equal(code.filter((n) => n.chain === "cpc").length, 2);
 });
+
+test("Paper 2 Question Model: marks reconcile and core by fair share", () => {
+  const a = questionModelFor("iac-2026-p2", "P2Q1_a");
+  assert.ok(a && a.core_marks);
+  assert.equal(a.core_marks!.max, 67);
+  assert.equal(a.core_marks!.components.reduce((s, c) => s + c.marks, 0), 67);
+  const core = coreComponents(a)!.filter((c) => c.core).map((c) => c.label);
+  assert.deepEqual(core, ["Share appreciation rights (IFRS 2)", "Lease (IFRS 16)", "Borrowing costs capitalised (IAS 23)"]);
+  for (const code of ["P2Q2_b", "P2Q2_c", "P2Q2_d", "P2Q2_e", "P2Q2_f"]) {
+    const m = questionModelFor("iac-2026-p2", code)!;
+    assert.ok(m.component_tree && m.component_tree.length > 0, code);
+    assert.equal(coreComponents(m)!.filter((c) => c.core).length, 0, code);
+  }
+});

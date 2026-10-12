@@ -1,4 +1,5 @@
 import june2026p1 from "@/lib/data/question-models/june-2026-p1.json";
+import june2026p2 from "@/lib/data/question-models/june-2026-p2.json";
 import type { DiscussionBasis, QuestionType } from "./types";
 
 export type Proximity = "direct" | "indirect" | "thinking";
@@ -48,6 +49,8 @@ export type ComponentNode = {
   chain?: "cpc";
   /** Carried over from another requirement; still a real opportunity (the exam splits one discussion). */
   contingent?: boolean;
+  /** Marks this node carries in the marker's report (technical marks), where recorded. */
+  marks?: number;
   note?: string;
 };
 
@@ -64,7 +67,7 @@ export type RequirementModel = {
 
 type PaperModel = { paper_id: string; requirements: Record<string, RequirementModel> };
 
-const MODELS: PaperModel[] = [june2026p1 as unknown as PaperModel];
+const MODELS: PaperModel[] = [june2026p1 as unknown as PaperModel, june2026p2 as unknown as PaperModel];
 
 /** Pre-calibrated Question Model lookup. Returns null when the requirement has not been modelled. */
 export function questionModelFor(paperId: string, code: string): RequirementModel | null {
