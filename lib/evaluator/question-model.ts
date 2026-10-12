@@ -78,13 +78,19 @@ export function proximityAvailable(model: RequirementModel | null): { direct: nu
   return counts;
 }
 
-/** A component is a core issue when the marks available from it are at least this share of the requirement's technical maximum (12 Oct 2026: draft constant, 50%). */
-export const CORE_SHARE = 0.5;
-
-export function coreComponents(model: RequirementModel | null): { label: string; marks: number; share: number; core: boolean }[] | null {
+/**
+ * A component is a core issue when it is weighted more heavily than its neighbours: the marks available from it
+ * (capped where the solution states a maximum) are more than this many. A student aims for about three points
+ * per component, so a component worth more than three marks carries more than its fair share
+ * (Yvonne, 12 Oct 2026: draft constant, "more than three marks for now"; to be reviewed once it has been run on more questions).
+ */
+/** A component is core when it carries at least this many marks more than its fair share (max / number of components). */
+export const CORE_EXTRA_MARKS = 3;
+export function coreComponents(model: RequirementModel | null): { label: string; marks: number; fair: number; core: boolean }[] | null {
   const cm = model?.core_marks;
-  if (!cm || !cm.max) return null;
-  return cm.components.map((c) => ({ label: c.label, marks: c.marks, share: c.marks / cm.max, core: c.marks / cm.max >= CORE_SHARE }));
+  if (!cm || !cm.max || cm.components.length === 0) return null;
+  const fair = cm.max / cm.components.length;
+  return cm.components.map((c) => ({ label: c.label, marks: c.marks, fair, core: c.marks - fair >= CORE_EXTRA_MARKS }));
 }
 
 /** Counts for a layered Components tree. Only basic-theory nodes count as available; the rest are "beyond the basics". */

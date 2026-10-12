@@ -388,13 +388,17 @@ test("buildComponents keeps the model's flat layers when the requirement has no 
   assert.equal(buildComponents(questionModelFor("iac-2026-p1", "P1Q1_a"), null), null);
 });
 
-test("core issues are decided by the volume of marks available: Q2(e) has the Code as core and safeguards (max 3) not", () => {
+test("core issues are components carrying 3+ marks above their fair share: Q2(e) has the Code as core and safeguards (max 3) not", () => {
   const core = (code: string) => (coreComponents(questionModelFor("iac-2026-p1", code)) ?? []).filter((c) => c.core).map((c) => c.label);
   const e = coreComponents(questionModelFor("iac-2026-p1", "P1Q2_e"))!;
   assert.equal(e.find((c) => c.label === "Code of Professional Conduct")!.core, true);
   assert.equal(e.find((c) => c.label === "Safeguards (max 3 marks)")!.core, false);
   assert.deepEqual(core("P1Q2_e").sort(), ["Code of Professional Conduct", "King IV P1: ethical leadership", "NKT's dilemma"].sort());
-  assert.equal(core("P1Q2_g1").includes("Complexity and uncertainty"), true);
+  // fair share = max / components; core = at least 3 marks above it
+  assert.deepEqual(core("P1Q2_g1").sort(), ["Complexity and uncertainty", "Incentives and pressure"].sort());
+  assert.deepEqual(core("P1Q2_g2"), ["ISA 300 para 2: attention to important areas of the audit"]);
+  assert.deepEqual(core("P1Q2_f").sort(), ["ISA 210: preconditions for the audit", "ISA 220: ethics and independence", "ISA 220: integrity of owners, management and those charged with governance"].sort());
+  assert.deepEqual(core("P1Q2_h").sort(), ["16(b): feasibility of management's plans", "16(c): cash flow forecast"].sort());
   assert.equal(coreComponents(questionModelFor("iac-2026-p1", "P1Q1_a")), null);
 });
 
