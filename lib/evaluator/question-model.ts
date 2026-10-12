@@ -58,6 +58,8 @@ export type RequirementModel = {
   proximity_items: ProximityItem[];
   core_issue?: CoreIssueComponent[];
   component_tree?: ComponentNode[];
+  /** Marks the suggested solution makes available per component (capped where the solution states a maximum), against the requirement's technical maximum. Core Issue is decided from this volume of marks. */
+  core_marks?: { max: number; components: { label: string; marks: number }[] };
 };
 
 type PaperModel = { paper_id: string; requirements: Record<string, RequirementModel> };
@@ -74,6 +76,15 @@ export function proximityAvailable(model: RequirementModel | null): { direct: nu
   const counts = { direct: 0, indirect: 0, thinking: 0 };
   for (const item of model.proximity_items) counts[item.proximity] += 1;
   return counts;
+}
+
+/** A component is a core issue when the marks available from it are at least this share of the requirement's technical maximum (12 Oct 2026: draft constant, 50%). */
+export const CORE_SHARE = 0.5;
+
+export function coreComponents(model: RequirementModel | null): { label: string; marks: number; share: number; core: boolean }[] | null {
+  const cm = model?.core_marks;
+  if (!cm || !cm.max) return null;
+  return cm.components.map((c) => ({ label: c.label, marks: c.marks, share: c.marks / cm.max, core: c.marks / cm.max >= CORE_SHARE }));
 }
 
 /** Counts for a layered Components tree. Only basic-theory nodes count as available; the rest are "beyond the basics". */

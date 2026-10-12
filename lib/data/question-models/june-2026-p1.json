@@ -777,7 +777,7 @@
         {
           "path": [
             "Professional ethics (applies to CAs)",
-            "Code issue"
+            "Code of Professional Conduct"
           ],
           "label": "Intimidation threat: pressure to issue an unmodified opinion",
           "source": "case",
@@ -788,7 +788,7 @@
         {
           "path": [
             "Professional ethics (applies to CAs)",
-            "Code issue"
+            "Code of Professional Conduct"
           ],
           "label": "Interim review also performed by NKT (self-review threat)",
           "source": "required",
@@ -800,7 +800,7 @@
         {
           "path": [
             "Professional ethics (applies to CAs)",
-            "Code: fundamental principles"
+            "Code of Professional Conduct"
           ],
           "label": "Integrity (dishonesty: knowingly associated with misleading statements)",
           "source": "theory",
@@ -810,7 +810,7 @@
         {
           "path": [
             "Professional ethics (applies to CAs)",
-            "Code: fundamental principles"
+            "Code of Professional Conduct"
           ],
           "label": "Objectivity (judgement compromised by emotional blackmail)",
           "source": "theory",
@@ -820,7 +820,7 @@
         {
           "path": [
             "Professional ethics (applies to CAs)",
-            "Code: fundamental principles"
+            "Code of Professional Conduct"
           ],
           "label": "Professional behaviour (breach of the Act; bringing the profession into disrepute)",
           "source": "theory",
@@ -830,7 +830,7 @@
         {
           "path": [
             "Professional ethics (applies to CAs)",
-            "Code: fundamental principles"
+            "Code of Professional Conduct"
           ],
           "label": "Professional competence and due care (ISA 220, 450, 700)",
           "source": "theory",
@@ -882,7 +882,44 @@
           "basic_theory": true,
           "solution_ref": "5.4.5"
         }
-      ]
+      ],
+      "core_marks": {
+        "max": 13,
+        "components": [
+          {
+            "label": "King IV P1: ethical leadership",
+            "marks": 8
+          },
+          {
+            "label": "Management actions",
+            "marks": 2
+          },
+          {
+            "label": "Ethical theories",
+            "marks": 2
+          },
+          {
+            "label": "Companies Act",
+            "marks": 1
+          },
+          {
+            "label": "NKT's dilemma",
+            "marks": 8
+          },
+          {
+            "label": "Auditing Profession Act and IRBA",
+            "marks": 2
+          },
+          {
+            "label": "Code of Professional Conduct",
+            "marks": 12.5
+          },
+          {
+            "label": "Safeguards (max 3 marks)",
+            "marks": 3
+          }
+        ]
+      }
     },
     "P1Q2_f": {
       "question_type": "Discussion",
@@ -1412,7 +1449,36 @@
           "basic_theory": true,
           "solution_ref": "7.1"
         }
-      ]
+      ],
+      "core_marks": {
+        "max": 10,
+        "components": [
+          {
+            "label": "ISA 220: integrity of owners, management and those charged with governance",
+            "marks": 9
+          },
+          {
+            "label": "ISA 220: significant matters from previous audits",
+            "marks": 4
+          },
+          {
+            "label": "ISA 220: ethics and independence",
+            "marks": 20.5
+          },
+          {
+            "label": "ISA 220: competence, capabilities, time and resources",
+            "marks": 4
+          },
+          {
+            "label": "ISA 210: preconditions for the audit",
+            "marks": 5
+          },
+          {
+            "label": "ISA 210: terms of the engagement",
+            "marks": 1
+          }
+        ]
+      }
     },
     "P1Q2_g1": {
       "question_type": "Discussion",
@@ -1727,7 +1793,28 @@
           "basic_theory": true,
           "solution_ref": "16"
         }
-      ]
+      ],
+      "core_marks": {
+        "max": 12,
+        "components": [
+          {
+            "label": "Incentives and pressure",
+            "marks": 6
+          },
+          {
+            "label": "Control environment",
+            "marks": 1
+          },
+          {
+            "label": "Complexity and uncertainty",
+            "marks": 10
+          },
+          {
+            "label": "Factors that lower the risk",
+            "marks": 4
+          }
+        ]
+      }
     },
     "P1Q2_g2": {
       "question_type": "Discussion",
@@ -1989,7 +2076,32 @@
           "basic_theory": true,
           "solution_ref": "4.1"
         }
-      ]
+      ],
+      "core_marks": {
+        "max": 6,
+        "components": [
+          {
+            "label": "ISA 300 para 2: attention to important areas of the audit",
+            "marks": 7
+          },
+          {
+            "label": "ISA 300 para 7-8: overall audit strategy (scope, timing and direction)",
+            "marks": 4
+          },
+          {
+            "label": "ISA 300 para 2 and 8(e): selecting the team and assigning the work",
+            "marks": 3
+          },
+          {
+            "label": "ISA 300 para 11: direction, supervision and review",
+            "marks": 2
+          },
+          {
+            "label": "Other overall responses to risk (not in ISA 300; ISA 330 and ISA 240)",
+            "marks": 2
+          }
+        ]
+      }
     },
     "P1Q2_h": {
       "question_type": "Discussion",
@@ -2402,7 +2514,40 @@
           "basic_theory": true,
           "solution_ref": "3.7"
         }
-      ]
+      ],
+      "core_marks": {
+        "max": 10,
+        "components": [
+          {
+            "label": "ISA 570: evaluate management's assessment",
+            "marks": 2
+          },
+          {
+            "label": "Request an assessment",
+            "marks": 1
+          },
+          {
+            "label": "16(b): feasibility of management's plans",
+            "marks": 11
+          },
+          {
+            "label": "16(c): cash flow forecast",
+            "marks": 7
+          },
+          {
+            "label": "16(d): facts since the assessment",
+            "marks": 1
+          },
+          {
+            "label": "16(e): written representations",
+            "marks": 1
+          },
+          {
+            "label": "Case-driven procedures",
+            "marks": 3
+          }
+        ]
+      }
     }
   }
 }

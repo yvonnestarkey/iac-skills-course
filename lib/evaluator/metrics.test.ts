@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildComponents, buildCoreIssue, computeMetrics, diagnose, enforceCoachHypothesisEvidence, finalizeCommunication, rtfqGate, validateRequirement } from "./metrics";
-import { componentTreeSummary, proximityAvailable, questionModelFor, toolsFor, type RequirementModel } from "./question-model";
+import { coreComponents, componentTreeSummary, proximityAvailable, questionModelFor, toolsFor, type RequirementModel } from "./question-model";
 import type { RequirementEvaluation } from "./types";
 
 function base(overrides: Partial<RequirementEvaluation> = {}): RequirementEvaluation {
@@ -386,4 +386,21 @@ test("buildComponents keeps the model's flat layers when the requirement has no 
   const g1 = buildComponents(questionModelFor("iac-2026-p1", "P1Q2_g1"), { nodes: [], evidence: "" })!;
   assert.equal(g1.code_chain, undefined);
   assert.equal(buildComponents(questionModelFor("iac-2026-p1", "P1Q1_a"), null), null);
+});
+
+test("core issues are decided by the volume of marks available: Q2(e) has the Code as core and safeguards (max 3) not", () => {
+  const core = (code: string) => (coreComponents(questionModelFor("iac-2026-p1", code)) ?? []).filter((c) => c.core).map((c) => c.label);
+  const e = coreComponents(questionModelFor("iac-2026-p1", "P1Q2_e"))!;
+  assert.equal(e.find((c) => c.label === "Code of Professional Conduct")!.core, true);
+  assert.equal(e.find((c) => c.label === "Safeguards (max 3 marks)")!.core, false);
+  assert.deepEqual(core("P1Q2_e").sort(), ["Code of Professional Conduct", "King IV P1: ethical leadership", "NKT's dilemma"].sort());
+  assert.equal(core("P1Q2_g1").includes("Complexity and uncertainty"), true);
+  assert.equal(coreComponents(questionModelFor("iac-2026-p1", "P1Q1_a")), null);
+});
+
+test("Q2(e): the Code is one component (applies, issues, principles together)", () => {
+  const tree = questionModelFor("iac-2026-p1", "P1Q2_e")!.component_tree!;
+  const code = tree.filter((n) => n.path[1] === "Code of Professional Conduct");
+  assert.equal(code.length, 8);
+  assert.equal(code.filter((n) => n.chain === "cpc").length, 2);
 });
