@@ -728,7 +728,279 @@
     },
     "P1Q1_c": {
       "question_type": "Non-discussion",
-      "proximity_items": []
+      "proximity_items": [],
+      "component_tree": [
+        {
+          "path": [
+            "Contribution and fixed costs"
+          ],
+          "label": "Contribution and fixed costs in the correct period",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.1"
+        },
+        {
+          "path": [
+            "Contribution and fixed costs"
+          ],
+          "label": "Contribution earned",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.2"
+        },
+        {
+          "path": [
+            "Contribution and fixed costs"
+          ],
+          "label": "Fixed costs",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.3"
+        },
+        {
+          "path": [
+            "Leaving out what does not belong"
+          ],
+          "label": "Additional tax revenues and mining royalties excluded (not earned by Inpahla)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.1"
+        },
+        {
+          "path": [
+            "Leaving out what does not belong"
+          ],
+          "label": "Original cost of the locomotive is irrelevant",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.2"
+        },
+        {
+          "path": [
+            "Leaving out what does not belong"
+          ],
+          "label": "Interest on debt not included (it is in the discount rate)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.3"
+        },
+        {
+          "path": [
+            "Inflation at 5%"
+          ],
+          "label": "Inflation applied to contribution and fixed costs",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3.1"
+        },
+        {
+          "path": [
+            "Opportunity cost of not selling the locomotive"
+          ],
+          "label": "Opportunity cost of R12 million at the start",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.1"
+        },
+        {
+          "path": [
+            "Redesign and repair component"
+          ],
+          "label": "Redesign cost",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "5.1"
+        },
+        {
+          "path": [
+            "Redesign and repair component"
+          ],
+          "label": "Repair component, including the exchange rate effect",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "5.2"
+        },
+        {
+          "path": [
+            "Market value at the end"
+          ],
+          "label": "Market value of the locomotive at the end",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "6.1"
+        },
+        {
+          "path": [
+            "Working capital"
+          ],
+          "label": "Initial working capital",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "7.1"
+        },
+        {
+          "path": [
+            "Working capital"
+          ],
+          "label": "Annual increases for inflation",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "7.2"
+        },
+        {
+          "path": [
+            "Working capital"
+          ],
+          "label": "Recovery at the end",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "7.3"
+        },
+        {
+          "path": [
+            "Tax"
+          ],
+          "label": "Taxation at 27% in the budget",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.1"
+        },
+        {
+          "path": [
+            "Tax"
+          ],
+          "label": "Redesign cost deduction",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.2"
+        },
+        {
+          "path": [
+            "Tax"
+          ],
+          "label": "Repair component wear and tear",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.3"
+        },
+        {
+          "path": [
+            "Tax"
+          ],
+          "label": "Exchange loss on the repair component",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.4"
+        },
+        {
+          "path": [
+            "Tax"
+          ],
+          "label": "Wear and tear on the locomotive",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.5"
+        },
+        {
+          "path": [
+            "Tax"
+          ],
+          "label": "Recoupment on the sale of the locomotive",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.6"
+        },
+        {
+          "path": [
+            "Tax"
+          ],
+          "label": "Operating cash flows",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.7"
+        },
+        {
+          "path": [
+            "Tax"
+          ],
+          "label": "Tax at 27% on the taxable cash flows",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.8"
+        },
+        {
+          "path": [
+            "Discounting and NPV"
+          ],
+          "label": "Processing mark: discounting the cash flows",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "9.1"
+        },
+        {
+          "path": [
+            "Discounting and NPV"
+          ],
+          "label": "Net present value at 13%",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "9.2"
+        },
+        {
+          "path": [
+            "Conclusion"
+          ],
+          "label": "Conclude: do not go ahead, because the NPV is negative",
+          "source": "required",
+          "basic_theory": true,
+          "solution_ref": "10.1"
+        }
+      ],
+      "core_marks": {
+        "max": 27,
+        "components": [
+          {
+            "label": "Contribution and fixed costs",
+            "marks": 3
+          },
+          {
+            "label": "Leaving out what does not belong",
+            "marks": 3
+          },
+          {
+            "label": "Inflation at 5%",
+            "marks": 1
+          },
+          {
+            "label": "Opportunity cost of not selling the locomotive",
+            "marks": 1
+          },
+          {
+            "label": "Redesign and repair component",
+            "marks": 3
+          },
+          {
+            "label": "Market value at the end",
+            "marks": 1
+          },
+          {
+            "label": "Working capital",
+            "marks": 3
+          },
+          {
+            "label": "Tax",
+            "marks": 11
+          },
+          {
+            "label": "Discounting and NPV",
+            "marks": 2
+          },
+          {
+            "label": "Conclusion",
+            "marks": 1
+          }
+        ]
+      }
     },
     "P1Q1_d": {
       "question_type": "Discussion",

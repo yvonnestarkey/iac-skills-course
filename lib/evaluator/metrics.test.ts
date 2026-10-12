@@ -341,7 +341,7 @@ test("Q2(f) component tree: basic-theory nodes count as available, public-sector
   assert.equal(layer1.length, 6);
   const competence = summary.by_layer1.find((entry) => entry.layer1.includes("competence"));
   assert.deepEqual(competence, { layer1: "ISA 220: competence, capabilities, time and resources", available: 2, beyond_basics: 2 });
-  assert.equal(componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q1_c")), null);
+  assert.equal(componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q1_b")), null);
 });
 
 test("component trees for Q2(e), (g)(i), (g)(ii) and (h): sizes, beyond-the-basics nodes and Code-chain issues", () => {
@@ -383,12 +383,12 @@ test("buildComponents merges the layered tree: exploited implies recognised, bey
 });
 
 test("buildComponents keeps the model's flat layers when the requirement has no tree, and has no Code chain without Code issues", () => {
-  const flat = buildComponents(questionModelFor("iac-2026-p1", "P1Q1_c"), { layers: [{ layer: "SWOT buckets", source: "required", available: 4, recognised: 4, exploited: 3, note: "" }], evidence: "e" })!;
+  const flat = buildComponents(questionModelFor("iac-2026-p1", "P1Q1_b"), { layers: [{ layer: "SWOT buckets", source: "required", available: 4, recognised: 4, exploited: 3, note: "" }], evidence: "e" })!;
   assert.equal(flat.layers.length, 1);
   assert.equal(flat.nodes, undefined);
   const g1 = buildComponents(questionModelFor("iac-2026-p1", "P1Q2_g1"), { nodes: [], evidence: "" })!;
   assert.equal(g1.code_chain, undefined);
-  assert.equal(buildComponents(questionModelFor("iac-2026-p1", "P1Q1_c"), null), null);
+  assert.equal(buildComponents(questionModelFor("iac-2026-p1", "P1Q1_b"), null), null);
 });
 
 test("core issues are components carrying 3+ marks above their fair share: Q2(e) has the Code as core and safeguards (max 3) not", () => {
@@ -402,7 +402,9 @@ test("core issues are components carrying 3+ marks above their fair share: Q2(e)
   assert.deepEqual(core("P1Q2_g2"), ["ISA 300 para 2: attention to important areas of the audit"]);
   assert.deepEqual(core("P1Q2_f").sort(), ["ISA 210: preconditions for the audit", "ISA 220: ethics and independence", "ISA 220: integrity of owners, management and those charged with governance"].sort());
   assert.deepEqual(core("P1Q2_h").sort(), ["16(b): feasibility of management's plans", "16(c): cash flow forecast"].sort());
-  assert.equal(coreComponents(questionModelFor("iac-2026-p1", "P1Q1_c")), null);
+  assert.equal(coreComponents(questionModelFor("iac-2026-p1", "P1Q1_b")), null);
+  // Q1(c): calculation; 10 components, fair share 27 / 10 = 2.7, core from 5.7 marks: tax (11) only
+  assert.deepEqual(core("P1Q1_c"), ["Tax"]);
   // Q1(a): SWOT is Layer 1, the case section is Layer 2; 10 components, fair share 20 / 10 = 2, core from 5 marks
   assert.deepEqual(core("P1Q1_a").sort(), ["Strengths: Background", "Threats: Background", "Weaknesses: Background"].sort());
   // Q1(d): fair share 3, core from 6 marks
