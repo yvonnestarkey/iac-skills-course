@@ -306,9 +306,9 @@ test("question model: Q2(g)(i) is a non-compliance discussion with 19 classified
   assert.deepEqual(proximityAvailable(model), { direct: 8, indirect: 8, thinking: 3 });
 });
 
-test("question model: Q2(g)(ii) is a non-compliance discussion with 18 classified rows (2 direct, 6 indirect, 10 thinking)", () => {
+test("question model: Q2(g)(ii) is a compliance discussion (ISA 300 spine, Yvonne 12 Oct) with 18 classified rows (2 direct, 6 indirect, 10 thinking)", () => {
   const model = questionModelFor("iac-2026-p1", "P1Q2_g2")!;
-  assert.equal(model.discussion_basis, "non_compliance");
+  assert.equal(model.discussion_basis, "compliance");
   assert.deepEqual(proximityAvailable(model), { direct: 2, indirect: 6, thinking: 10 });
 });
 
