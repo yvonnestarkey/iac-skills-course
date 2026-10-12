@@ -755,6 +755,333 @@
           "proximity": "direct",
           "note": "Contingent row. Intimidation threat from management not wanting a modified opinion: matches Q2(e) row 27."
         }
+      ],
+      "component_tree": [
+        {
+          "path": [
+            "ISA 220: integrity of owners, management and those charged with governance",
+            "Crime, theft, irregular tenders and corruption"
+          ],
+          "label": "Crime, theft, irregular tenders and corruption reported",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.1.1"
+        },
+        {
+          "path": [
+            "ISA 220: integrity of owners, management and those charged with governance",
+            "Credit rating"
+          ],
+          "label": "Downgrade by the debt rating agencies reflects on management and governance",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.1.2"
+        },
+        {
+          "path": [
+            "ISA 220: integrity of owners, management and those charged with governance",
+            "Political pressure"
+          ],
+          "label": "Political pressure to show improved results could lead to manipulation",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.1.3"
+        },
+        {
+          "path": [
+            "ISA 220: integrity of owners, management and those charged with governance",
+            "Regulatory compliance"
+          ],
+          "label": "Management's request for exemption from the PFMA and other regulations",
+          "source": "case",
+          "basic_theory": false,
+          "solution_ref": "1.1.4",
+          "note": "Public-sector law: beyond the basics (Yvonne, 12 Oct 2026)."
+        },
+        {
+          "path": [
+            "ISA 220: integrity of owners, management and those charged with governance",
+            "Companies Act"
+          ],
+          "label": "Section 90 cooling-off period (2 financial years) not yet passed since the accounting services",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.1.5"
+        },
+        {
+          "path": [
+            "ISA 220: integrity of owners, management and those charged with governance",
+            "Audit committee"
+          ],
+          "label": "Audit committee's nomination of an independent auditor; the previous firm held the position for 35 years",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.1.6"
+        },
+        {
+          "path": [
+            "ISA 220: integrity of owners, management and those charged with governance",
+            "Positive signs"
+          ],
+          "label": "In operation since 1860; turnaround plans",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.5"
+        },
+        {
+          "path": [
+            "ISA 220: integrity of owners, management and those charged with governance",
+            "Positive signs"
+          ],
+          "label": "King IV recommended practices adopted",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.6"
+        },
+        {
+          "path": [
+            "ISA 220: integrity of owners, management and those charged with governance",
+            "Positive signs"
+          ],
+          "label": "Investment in green initiatives",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.7"
+        },
+        {
+          "path": [
+            "ISA 220: significant matters from previous audits"
+          ],
+          "label": "Outcomes of recent performance audits",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.2"
+        },
+        {
+          "path": [
+            "ISA 220: significant matters from previous audits"
+          ],
+          "label": "Material irregularities in prior years' audit reports",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3"
+        },
+        {
+          "path": [
+            "ISA 220: significant matters from previous audits"
+          ],
+          "label": "Past unauthorised, irregular, fruitless and wasteful expenditure",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.4"
+        },
+        {
+          "path": [
+            "ISA 220: significant matters from previous audits"
+          ],
+          "label": "Communication with the previous auditors",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "4.5"
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Code of Professional Conduct"
+          ],
+          "label": "The Code applies to NKT (Parts 1, 3, 4A)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "2.1"
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Companies Act"
+          ],
+          "label": "Section 90(2): accounting services in the past two years",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "2.2"
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Fee dependence"
+          ],
+          "label": "Size of the audit fee and its effect on NKT's fee structure",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.3"
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Fee dependence"
+          ],
+          "label": "Fee above 15% of NKT's audit fee income: quality reviewer required",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "2.4"
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Code issue"
+          ],
+          "label": "Issue 1: accounting services rendered (self-review and other threats)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3.1",
+          "chain": "cpc"
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Code issue"
+          ],
+          "label": "Issue 2: significant revenue from the audit (self-interest)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3.2",
+          "chain": "cpc"
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Code issue"
+          ],
+          "label": "Issue 3: NOCLAR (crime, theft, corruption; intimidation or self-interest)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3.3",
+          "chain": "cpc"
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Code issue (carried over from (e))"
+          ],
+          "label": "Management hiding a covenant breach",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "add-1",
+          "contingent": true
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Code issue (carried over from (e))"
+          ],
+          "label": "Auditors failing to report reportable or material irregularities",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "add-2",
+          "chain": "cpc",
+          "contingent": true
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Code issue (carried over from (e))"
+          ],
+          "label": "Management trying to influence the opinion through the impact of a modified opinion",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "add-3",
+          "contingent": true
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Code issue (carried over from (e))"
+          ],
+          "label": "Intimidation threat to objectivity or integrity from the modified-opinion argument",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "add-4",
+          "chain": "cpc",
+          "contingent": true
+        },
+        {
+          "path": [
+            "ISA 220: ethics and independence",
+            "Roundabout ethics"
+          ],
+          "label": "Ability to pay the audit fee (cannot recover costs, shortcuts, falling professionalism)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "5.1",
+          "note": "Roundabout business-ethics issue loosely connected to ethics. Not a CPC chain issue (Yvonne, 12 Oct 2026)."
+        },
+        {
+          "path": [
+            "ISA 220: competence, capabilities, time and resources"
+          ],
+          "label": "Enough staff with time, given six divisions and widespread operations",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.1"
+        },
+        {
+          "path": [
+            "ISA 220: competence, capabilities, time and resources"
+          ],
+          "label": "Accounting expertise: bonds, forex, going concern, estimation uncertainty",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.2"
+        },
+        {
+          "path": [
+            "ISA 220: competence, capabilities, time and resources"
+          ],
+          "label": "Knowledge of state-owned entities: PFMA, Public Audit Act",
+          "source": "theory",
+          "basic_theory": false,
+          "solution_ref": "4.3",
+          "note": "Beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 220: competence, capabilities, time and resources"
+          ],
+          "label": "Knowledge of government support and guarantees in the going-concern assessment",
+          "source": "theory",
+          "basic_theory": false,
+          "solution_ref": "4.4",
+          "note": "Beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 210: preconditions for the audit",
+            "Financial reporting framework"
+          ],
+          "label": "IFRS permitted; conflict with the PFMA",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "6.1"
+        },
+        {
+          "path": [
+            "ISA 210: preconditions for the audit",
+            "Public-sector law"
+          ],
+          "label": "Public Audit Act appointment process, AGSA consent, reporting deadline",
+          "source": "theory",
+          "basic_theory": false,
+          "solution_ref": "6.2",
+          "note": "Separate public-sector law source; beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 210: terms of the engagement"
+          ],
+          "label": "New engagement letter needed: scope, responsibilities and nature of the service have changed",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "7.1"
+        }
       ]
     },
     "P1Q2_g1": {

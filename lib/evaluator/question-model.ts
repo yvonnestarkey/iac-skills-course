@@ -31,12 +31,33 @@ export type CoreIssueComponent = {
   clue: string;
 };
 
+/**
+ * One node of a layered Components tree (Yvonne, 9 and 12 Oct 2026). `path` runs Layer 1 > Layer 2 > Layer 3
+ * (shorter paths are fine). Components are triggers for valid points: "what do I need to think of here?".
+ */
+export type ComponentNode = {
+  path: string[];
+  label: string;
+  /** required: named in the requirement; case: a fact or event in the case; theory: from a standard, act or framework. */
+  source: "required" | "case" | "theory";
+  /** Could the student reach it with the basic theory? False = beyond the basics: listed, never counted as missed. */
+  basic_theory: boolean;
+  /** Reference to the official solution item, e.g. "3.1". */
+  solution_ref: string;
+  /** "cpc": a Code of Professional Conduct issue, checked against the whole chain (indicator, threat, principle, explanation, significance, safeguard). */
+  chain?: "cpc";
+  /** Carried over from another requirement; still a real opportunity (the exam splits one discussion). */
+  contingent?: boolean;
+  note?: string;
+};
+
 export type RequirementModel = {
   question_type: QuestionType;
   /** Compliance (rules) or non_compliance (tools) for Discussion requirements; omitted until calibrated. */
   discussion_basis?: DiscussionBasis | null;
   proximity_items: ProximityItem[];
   core_issue?: CoreIssueComponent[];
+  component_tree?: ComponentNode[];
 };
 
 type PaperModel = { paper_id: string; requirements: Record<string, RequirementModel> };
@@ -53,6 +74,39 @@ export function proximityAvailable(model: RequirementModel | null): { direct: nu
   const counts = { direct: 0, indirect: 0, thinking: 0 };
   for (const item of model.proximity_items) counts[item.proximity] += 1;
   return counts;
+}
+
+/** Counts for a layered Components tree. Only basic-theory nodes count as available; the rest are "beyond the basics". */
+export function componentTreeSummary(model: RequirementModel | null): {
+  available: number;
+  beyond_basics: number;
+  cpc_issues: number;
+  by_layer1: { layer1: string; available: number; beyond_basics: number }[];
+} | null {
+  const tree = model?.component_tree;
+  if (!tree || !tree.length) return null;
+  const order: string[] = [];
+  const map = new Map<string, { available: number; beyond_basics: number }>();
+  let available = 0;
+  let beyond = 0;
+  let cpc = 0;
+  for (const node of tree) {
+    const key = node.path[0];
+    if (!map.has(key)) {
+      map.set(key, { available: 0, beyond_basics: 0 });
+      order.push(key);
+    }
+    const entry = map.get(key)!;
+    if (node.basic_theory) {
+      entry.available += 1;
+      available += 1;
+      if (node.chain === "cpc") cpc += 1;
+    } else {
+      entry.beyond_basics += 1;
+      beyond += 1;
+    }
+  }
+  return { available, beyond_basics: beyond, cpc_issues: cpc, by_layer1: order.map((layer1) => ({ layer1, ...map.get(layer1)! })) };
 }
 
 /**

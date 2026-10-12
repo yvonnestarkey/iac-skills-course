@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { aggregateProximity, applyNotAttemptedRule, bmcrVerdict, buildCoreIssue, computeMetrics, diagnose, enforceCoachHypothesisEvidence, finalizeCommunication, rtfqGate, validateRequirement } from "./metrics";
-import { proximityAvailable, questionModelFor, toolsFor, type RequirementModel } from "./question-model";
+import { componentTreeSummary, proximityAvailable, questionModelFor, toolsFor, type RequirementModel } from "./question-model";
 import type { RequirementEvaluation } from "./types";
 
 function base(overrides: Partial<RequirementEvaluation> = {}): RequirementEvaluation {
@@ -325,4 +325,18 @@ test("the 'why' test counts statements that name an item and stop at the what, c
   assert.ok(!/why|threat/i.test(m.diagnoses.communication!.text));
   const old = computeMetrics(base({ communication: { overall: null, points: [{ n: 1, statement: "", category: "Complete", note: "" }], trend: "", evidence: "" } }));
   assert.deepEqual(old.diagnoses.communication?.why, { named: 0, omitted: 0 });
+});
+
+test("Q2(f) component tree: basic-theory nodes count as available, public-sector nodes are beyond the basics", () => {
+  const summary = componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_f"));
+  assert.ok(summary);
+  assert.equal(summary.available + summary.beyond_basics, 32);
+  assert.equal(summary.beyond_basics, 4);
+  assert.equal(summary.available, 28);
+  assert.equal(summary.cpc_issues, 5);
+  const layer1 = summary.by_layer1.map((entry) => entry.layer1);
+  assert.equal(layer1.length, 6);
+  const competence = summary.by_layer1.find((entry) => entry.layer1.includes("competence"));
+  assert.deepEqual(competence, { layer1: "ISA 220: competence, capabilities, time and resources", available: 2, beyond_basics: 2 });
+  assert.equal(componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_e")), null);
 });
