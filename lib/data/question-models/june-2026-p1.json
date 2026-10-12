@@ -552,6 +552,336 @@
           "proximity": "thinking",
           "note": "The requirement asks for safeguards, but the marks are for the actual safeguards, which are not in the information (Yvonne)."
         }
+      ],
+      "component_tree": [
+        {
+          "path": [
+            "Business ethics",
+            "Applies to non-CAs (management, directors)",
+            "King IV P1: ethical leadership"
+          ],
+          "label": "Transparency: management concealing the breach (RP1f)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.1.1"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to non-CAs (management, directors)",
+            "King IV P1: ethical leadership"
+          ],
+          "label": "Fairness towards the public and government (RP1e); loss of public trust",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.1.3, 2.1.4"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to non-CAs (management, directors)",
+            "King IV P1: ethical leadership"
+          ],
+          "label": "Integrity: manipulating the statements to hide high debt (RP1a)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.1.4, 2.1.2"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to non-CAs (management, directors)",
+            "King IV P1: ethical leadership"
+          ],
+          "label": "Responsibility and accountability: diverting blame for misstatements (RP1c, RP1d)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "2.1.3"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to non-CAs (management, directors)",
+            "King IV P3"
+          ],
+          "label": "Compliance with the Constitution and the Public Audit Act (RP12)",
+          "source": "theory",
+          "basic_theory": false,
+          "solution_ref": "2.1.5",
+          "note": "Public-sector law: beyond the basics."
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to non-CAs (management, directors)",
+            "Management actions"
+          ],
+          "label": "Dubious or fraudulent actions to conceal misstatements and avoid a modified opinion",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.1.2"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to non-CAs (management, directors)",
+            "Management actions"
+          ],
+          "label": "Undue influence on the auditor through emotional blackmail about the impact",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.1.1"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to non-CAs (management, directors)",
+            "Ethical theories"
+          ],
+          "label": "Agency theory: management protecting its own image",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "2.2.1"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to non-CAs (management, directors)",
+            "Ethical theories"
+          ],
+          "label": "Stakeholder theory and the directors' duty to safeguard taxpayer money",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "2.2.2"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to non-CAs (management, directors)",
+            "Companies Act"
+          ],
+          "label": "Section 76: directors' fiduciary duty (lack of good faith)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "2.3.1"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to CAs (NKT, the auditor)",
+            "NKT's dilemma"
+          ],
+          "label": "Balancing the client's interests against an appropriate opinion",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3.1"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to CAs (NKT, the auditor)",
+            "NKT's dilemma"
+          ],
+          "label": "Bad for others: covenant breach, job losses, government support, taxpayer money, country credit rating",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3.2, 3.3"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to CAs (NKT, the auditor)",
+            "NKT's dilemma"
+          ],
+          "label": "Bad for self: a false opinion means improper conduct under the Auditing Profession Act",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "3.4",
+          "note": "The idea is basic; section numbers are not needed."
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to CAs (NKT, the auditor)",
+            "NKT's dilemma"
+          ],
+          "label": "No consequence management for the fraud; not in the public interest",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3.5"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to CAs (NKT, the auditor)",
+            "NKT's dilemma"
+          ],
+          "label": "Duty as a corporate citizen to all stakeholders",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "3.6"
+        },
+        {
+          "path": [
+            "Business ethics",
+            "Applies to CAs (NKT, the auditor)",
+            "NKT's dilemma"
+          ],
+          "label": "Effective functioning of the audit committee reduces the pressure",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3.7"
+        },
+        {
+          "path": [
+            "Professional ethics (applies to CAs)",
+            "Auditing Profession Act and IRBA"
+          ],
+          "label": "Failing to identify and report reportable and material irregularities",
+          "source": "theory",
+          "basic_theory": false,
+          "solution_ref": "1.2.1",
+          "note": "Auditing Profession Act and IRBA sections: beyond the basics (Yvonne, 12 Oct 2026)."
+        },
+        {
+          "path": [
+            "Professional ethics (applies to CAs)",
+            "Auditing Profession Act and IRBA"
+          ],
+          "label": "Improper conduct under the IRBA Rules for failing to adhere to the Act (s44)",
+          "source": "theory",
+          "basic_theory": false,
+          "solution_ref": "4.2",
+          "note": "Beyond the basics."
+        },
+        {
+          "path": [
+            "Professional ethics (applies to CAs)",
+            "Code of Professional Conduct"
+          ],
+          "label": "The Code applies to NKT and the team (Parts 1, 2, 3 and 4A)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "4.1"
+        },
+        {
+          "path": [
+            "Professional ethics (applies to CAs)",
+            "Code of Professional Conduct"
+          ],
+          "label": "NOCLAR if suspected or actual non-compliance with financial reporting legislation",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.2.2"
+        },
+        {
+          "path": [
+            "Professional ethics (applies to CAs)",
+            "Code issue"
+          ],
+          "label": "Intimidation threat: pressure to issue an unmodified opinion",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "5.1",
+          "chain": "cpc"
+        },
+        {
+          "path": [
+            "Professional ethics (applies to CAs)",
+            "Code issue"
+          ],
+          "label": "Interim review also performed by NKT (self-review threat)",
+          "source": "required",
+          "basic_theory": true,
+          "solution_ref": "none",
+          "chain": "cpc",
+          "note": "Named in the requirement's assumption; the solution develops only the intimidation threat."
+        },
+        {
+          "path": [
+            "Professional ethics (applies to CAs)",
+            "Code: fundamental principles"
+          ],
+          "label": "Integrity (dishonesty: knowingly associated with misleading statements)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "5.1.1"
+        },
+        {
+          "path": [
+            "Professional ethics (applies to CAs)",
+            "Code: fundamental principles"
+          ],
+          "label": "Objectivity (judgement compromised by emotional blackmail)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "5.1.2"
+        },
+        {
+          "path": [
+            "Professional ethics (applies to CAs)",
+            "Code: fundamental principles"
+          ],
+          "label": "Professional behaviour (breach of the Act; bringing the profession into disrepute)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "5.1.3"
+        },
+        {
+          "path": [
+            "Professional ethics (applies to CAs)",
+            "Code: fundamental principles"
+          ],
+          "label": "Professional competence and due care (ISA 220, 450, 700)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "5.1.4"
+        },
+        {
+          "path": [
+            "Safeguards (max 3 marks)"
+          ],
+          "label": "Report undue pressure to the audit committee, AGSA or IRBA",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "5.4.1"
+        },
+        {
+          "path": [
+            "Safeguards (max 3 marks)"
+          ],
+          "label": "Seek guidance from the firm's policy",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "5.4.2"
+        },
+        {
+          "path": [
+            "Safeguards (max 3 marks)"
+          ],
+          "label": "Appoint a quality reviewer",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "5.4.3"
+        },
+        {
+          "path": [
+            "Safeguards (max 3 marks)"
+          ],
+          "label": "Document all decisions, discussions and information",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "5.4.4"
+        },
+        {
+          "path": [
+            "Safeguards (max 3 marks)"
+          ],
+          "label": "Include more experienced team members",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "5.4.5"
+        }
       ]
     },
     "P1Q2_f": {
@@ -1183,7 +1513,230 @@
           "note": "Thinking (Yvonne): many risk questions have no conclusion, so it is not a standard expected point."
         }
       ],
-      "discussion_basis": "non_compliance"
+      "discussion_basis": "non_compliance",
+      "component_tree": [
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Incentives and pressure"
+          ],
+          "label": "Bonds listed on the JSE: manipulate to meet JSE and shareholder expectations",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Incentives and pressure"
+          ],
+          "label": "Covenant ratios: incentive to manipulate to avoid repayment",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Incentives and pressure"
+          ],
+          "label": "Credit rating downgrade: incentive to present a better position",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Incentives and pressure"
+          ],
+          "label": "Non-compliance with the Companies Act (s76, s90) and the PFMA: incentive to conceal",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "5"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Incentives and pressure"
+          ],
+          "label": "Political pressure to report favourable results",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "9"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Incentives and pressure"
+          ],
+          "label": "Possible private-sector partnership: incentive to overstate assets and income",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "10"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Control environment"
+          ],
+          "label": "Reported fraud, irregular tenders and governance deficiencies: weakened control environment",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "First-time audit"
+          ],
+          "label": "New auditors: opening balances may be misstated",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "6.1"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "First-time audit"
+          ],
+          "label": "New auditors: accounting policies may not be consistently applied",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "6.2"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Complexity and uncertainty"
+          ],
+          "label": "Multiple divisions: aggregation and elimination of interdivisional transactions",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "7"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Complexity and uncertainty"
+          ],
+          "label": "Related party transactions: concealment and IAS 24 disclosure",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "11"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Complexity and uncertainty"
+          ],
+          "label": "Significant judgements and technical complexity in IFRS (IFRS 9, IAS 21, IAS 36; max 2)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "12",
+          "note": "Specific IFRS issues are usually assertion-level risk; the requirement asks for financial-statement level (Yvonne, 8 Oct 2026)."
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Complexity and uncertainty",
+            "Going concern (max 3)"
+          ],
+          "label": "Liquidity deterioration and growing losses in the interim results",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.1"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Complexity and uncertainty",
+            "Going concern (max 3)"
+          ],
+          "label": "External pressures: oil price, loadshedding, exchange rate",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.2"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Complexity and uncertainty",
+            "Going concern (max 3)"
+          ],
+          "label": "Operating challenges: ageing infrastructure, collisions, derailments",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.3"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Complexity and uncertainty",
+            "Going concern (max 3)"
+          ],
+          "label": "Covenant breach would make the long-term debt repayable immediately",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.4"
+        },
+        {
+          "path": [
+            "Factors that raise the risk",
+            "Complexity and uncertainty",
+            "Going concern (max 3)"
+          ],
+          "label": "Legal dispute with the supplier (Wuoche)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "8.5"
+        },
+        {
+          "path": [
+            "Factors that lower the risk"
+          ],
+          "label": "Turnaround strategies (government funding, privatisation) mitigate the going-concern risk",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "13"
+        },
+        {
+          "path": [
+            "Factors that lower the risk"
+          ],
+          "label": "Government as sole shareholder could provide financial support",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "14"
+        },
+        {
+          "path": [
+            "Factors that lower the risk"
+          ],
+          "label": "Audit committee involved in appointing NKT: commitment to reliable reporting",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "15"
+        },
+        {
+          "path": [
+            "Factors that lower the risk"
+          ],
+          "label": "King IV adopted: good governance and control environment",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "16"
+        },
+        {
+          "path": [
+            "Conclusion"
+          ],
+          "label": "Conclusion: the risk of material misstatement at financial statement level is high",
+          "source": "required",
+          "basic_theory": true,
+          "solution_ref": "17"
+        }
+      ]
     },
     "P1Q2_g2": {
       "question_type": "Discussion",
@@ -1279,7 +1832,173 @@
           "note": "State-owned status is stated; the need for public-sector specialists is one step."
         }
       ],
-      "discussion_basis": "non_compliance"
+      "discussion_basis": "non_compliance",
+      "component_tree": [
+        {
+          "path": [
+            "Overall approach"
+          ],
+          "label": "More substantive approach, less reliance on controls",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1"
+        },
+        {
+          "path": [
+            "Overall approach"
+          ],
+          "label": "Nature: more detailed testing, less reliance on analytical procedures",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.1"
+        },
+        {
+          "path": [
+            "Overall approach"
+          ],
+          "label": "Focus on opening balances (first-time audit)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.2"
+        },
+        {
+          "path": [
+            "Overall approach"
+          ],
+          "label": "Lower overall and performance materiality",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3"
+        },
+        {
+          "path": [
+            "Overall approach"
+          ],
+          "label": "Increase sample sizes and locations tested",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.4"
+        },
+        {
+          "path": [
+            "Areas needing specific attention"
+          ],
+          "label": "Going concern appropriateness",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.1"
+        },
+        {
+          "path": [
+            "Areas needing specific attention"
+          ],
+          "label": "Compliance with laws and regulations (irregular tenders)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.2"
+        },
+        {
+          "path": [
+            "Areas needing specific attention"
+          ],
+          "label": "Management override and fraudulent reporting",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "2.3"
+        },
+        {
+          "path": [
+            "Areas needing specific attention"
+          ],
+          "label": "Legal disputes and note disclosure",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.4"
+        },
+        {
+          "path": [
+            "Areas needing specific attention"
+          ],
+          "label": "Unauthorised, irregular, fruitless and wasteful expenditure",
+          "source": "theory",
+          "basic_theory": false,
+          "solution_ref": "2.5",
+          "note": "Public-sector concept: beyond the basics."
+        },
+        {
+          "path": [
+            "Areas needing specific attention"
+          ],
+          "label": "Material irregularities under the Public Audit Act",
+          "source": "theory",
+          "basic_theory": false,
+          "solution_ref": "2.6",
+          "note": "Public-sector law: beyond the basics."
+        },
+        {
+          "path": [
+            "Direction and control"
+          ],
+          "label": "More professional scepticism and judgement",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "3.1"
+        },
+        {
+          "path": [
+            "Direction and control"
+          ],
+          "label": "Element of unpredictability in the items and procedures",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "3.2"
+        },
+        {
+          "path": [
+            "Team and review"
+          ],
+          "label": "Less reliance on management representation letters; more persuasive evidence",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "4.1"
+        },
+        {
+          "path": [
+            "Team and review"
+          ],
+          "label": "More experienced staff, fraud experts and senior staff",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "4.2"
+        },
+        {
+          "path": [
+            "Team and review"
+          ],
+          "label": "More direction, supervision and review",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "4.3"
+        },
+        {
+          "path": [
+            "Team and review"
+          ],
+          "label": "Engagement quality control reviewer",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "4.4"
+        },
+        {
+          "path": [
+            "Team and review"
+          ],
+          "label": "Experts or specialists within NKT with public-sector audit expertise",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "4.5"
+        }
+      ]
     },
     "P1Q2_h": {
       "question_type": "Discussion",
@@ -1415,7 +2134,284 @@
           "note": "Direct (Yvonne): a document, meeting or thing mentioned in the case, so checking it is straightforward. Liquidity and solvency ratios."
         }
       ],
-      "discussion_basis": "non_compliance"
+      "discussion_basis": "compliance",
+      "component_tree": [
+        {
+          "path": [
+            "ISA 570: evaluate management's assessment"
+          ],
+          "label": "Period covered is appropriate and at least twelve months (para 13)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3.2"
+        },
+        {
+          "path": [
+            "ISA 570: evaluate management's assessment"
+          ],
+          "label": "Inspect board minutes: liquidity and solvency assessment and approval of the forecast (para 12)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.5"
+        },
+        {
+          "path": [
+            "ISA 570: evaluate management's assessment"
+          ],
+          "label": "Inquire about events or conditions beyond the period (para 15)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "none",
+          "note": "ISA 570 requirement; not on the mark plan."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "Request an assessment"
+          ],
+          "label": "Where management has not performed an assessment, request one (para 16(a))",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "none",
+          "note": "ISA 570 requirement; not on the mark plan."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): feasibility of management's plans"
+          ],
+          "label": "Inspect board meetings and discuss with management whether the plans overcome the problems",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.2"
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): feasibility of management's plans"
+          ],
+          "label": "Inspect shareholder and director minutes supporting the turnaround strategies",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.1"
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): feasibility of management's plans"
+          ],
+          "label": "Confirm the R47 billion guarantee and its conditions directly with government",
+          "source": "case",
+          "basic_theory": false,
+          "solution_ref": "2.2.1",
+          "note": "Specific government end: beyond the basics (Yvonne, 12 Oct 2026)."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): feasibility of management's plans"
+          ],
+          "label": "Confirm the equity injection: amount, conditions and date",
+          "source": "case",
+          "basic_theory": false,
+          "solution_ref": "2.2.2",
+          "note": "Beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): feasibility of management's plans"
+          ],
+          "label": "Confirm the outcome of the request for PFMA procurement exemption",
+          "source": "case",
+          "basic_theory": false,
+          "solution_ref": "2.2.3",
+          "note": "Beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): privatisation"
+          ],
+          "label": "Enquire from the minister about the privatisation status and conditions",
+          "source": "case",
+          "basic_theory": false,
+          "solution_ref": "3.1",
+          "note": "Privatisation procedures: beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): privatisation"
+          ],
+          "label": "Enquire whether PFMA legislative approval was granted",
+          "source": "case",
+          "basic_theory": false,
+          "solution_ref": "3.2",
+          "note": "Beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): privatisation"
+          ],
+          "label": "Inspect the MOI for restrictions on partnerships or selling a stake",
+          "source": "case",
+          "basic_theory": false,
+          "solution_ref": "3.3",
+          "note": "Beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): privatisation"
+          ],
+          "label": "Discuss the impact on unions and stakeholders, including industrial action",
+          "source": "case",
+          "basic_theory": false,
+          "solution_ref": "3.4",
+          "note": "Beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): privatisation"
+          ],
+          "label": "Inspect the privatisation documents and the procedures to be followed",
+          "source": "case",
+          "basic_theory": false,
+          "solution_ref": "3.5",
+          "note": "Beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(b): privatisation"
+          ],
+          "label": "Enquire whether National Treasury and the Competition Commission would oversee the transaction",
+          "source": "case",
+          "basic_theory": false,
+          "solution_ref": "3.6",
+          "note": "Beyond the basics."
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(c): cash flow forecast"
+          ],
+          "label": "Recalculate and cast the forecast",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3.1"
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(c): cash flow forecast"
+          ],
+          "label": "Inspect for obvious errors and omissions",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3.3"
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(c): cash flow forecast"
+          ],
+          "label": "Compare the prior-year forecast with actual results: reliability of management's forecasting",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3.5"
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(c): cash flow forecast"
+          ],
+          "label": "Assess the competence of the people who prepared the forecast",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3.6"
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(c): cash flow forecast"
+          ],
+          "label": "Assess indicators of management bias (ISA 540)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3.7"
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(c): cash flow forecast"
+          ],
+          "label": "Assess and address estimation uncertainty (ISA 540)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3.8, 1.3.9"
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(c): cash flow forecast"
+          ],
+          "label": "Consider the reasonableness of the assumptions",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3.10"
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(d): facts since the assessment"
+          ],
+          "label": "Compare the forecast with events after the reporting date",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.3.4"
+        },
+        {
+          "path": [
+            "ISA 570: additional procedures when events or conditions exist",
+            "16(e): written representations"
+          ],
+          "label": "Management representation letter on going concern and the turnaround plans",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "1.1"
+        },
+        {
+          "path": [
+            "Case-driven procedures"
+          ],
+          "label": "Inspect loan and guarantee agreements: existence, enforceability and the lenders' ability to fund",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.4"
+        },
+        {
+          "path": [
+            "Case-driven procedures"
+          ],
+          "label": "Obtain legal confirmation on pending lawsuits and possible outflows",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.6"
+        },
+        {
+          "path": [
+            "Case-driven procedures"
+          ],
+          "label": "Recalculate the liquidity and solvency ratios from draft results",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "3.7"
+        }
+      ]
     }
   }
 }

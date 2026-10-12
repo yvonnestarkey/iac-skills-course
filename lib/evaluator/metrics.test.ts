@@ -312,9 +312,9 @@ test("question model: Q2(g)(ii) is a non-compliance discussion with 18 classifie
   assert.deepEqual(proximityAvailable(model), { direct: 2, indirect: 6, thinking: 10 });
 });
 
-test("question model: Q2(h) is a non-compliance discussion with 26 classified rows (8 direct, 13 indirect, 5 thinking)", () => {
+test("question model: Q2(h) is a compliance discussion (ISA 570, Yvonne 12 Oct) with 26 classified rows (8 direct, 13 indirect, 5 thinking)", () => {
   const model = questionModelFor("iac-2026-p1", "P1Q2_h")!;
-  assert.equal(model.discussion_basis, "non_compliance");
+  assert.equal(model.discussion_basis, "compliance");
   assert.deepEqual(proximityAvailable(model), { direct: 8, indirect: 13, thinking: 5 });
 });
 
@@ -338,5 +338,18 @@ test("Q2(f) component tree: basic-theory nodes count as available, public-sector
   assert.equal(layer1.length, 6);
   const competence = summary.by_layer1.find((entry) => entry.layer1.includes("competence"));
   assert.deepEqual(competence, { layer1: "ISA 220: competence, capabilities, time and resources", available: 2, beyond_basics: 2 });
-  assert.equal(componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_e")), null);
+  assert.equal(componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q1_a")), null);
+});
+
+test("component trees for Q2(e), (g)(i), (g)(ii) and (h): sizes, beyond-the-basics nodes and Code-chain issues", () => {
+  const e = componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_e"))!;
+  assert.deepEqual([e.available, e.beyond_basics, e.cpc_issues], [28, 3, 2]);
+  assert.deepEqual(e.by_layer1.map((entry) => entry.layer1), ["Business ethics", "Professional ethics (applies to CAs)", "Safeguards (max 3 marks)"]);
+  const g1 = componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_g1"))!;
+  assert.deepEqual([g1.available, g1.beyond_basics], [22, 0]);
+  assert.deepEqual(g1.by_layer1.map((entry) => entry.layer1), ["Factors that raise the risk", "Factors that lower the risk", "Conclusion"]);
+  const g2 = componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_g2"))!;
+  assert.deepEqual([g2.available, g2.beyond_basics], [16, 2]);
+  const h = componentTreeSummary(questionModelFor("iac-2026-p1", "P1Q2_h"))!;
+  assert.deepEqual([h.available, h.beyond_basics], [18, 9]);
 });
