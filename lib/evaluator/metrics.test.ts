@@ -439,3 +439,17 @@ test("Paper 2 Question Model: marks reconcile and core by fair share", () => {
     assert.equal(coreComponents(m)!.filter((c) => c.core).length, 0, code);
   }
 });
+
+test("Paper 2 Question Model: Buried Treasure classification (Yvonne, 12 Oct 2026)", () => {
+  const expected: Record<string, { direct: number; indirect: number; thinking: number }> = {
+    P2Q1_a: { direct: 29, indirect: 24, thinking: 8 },
+    P2Q2_b: { direct: 4, indirect: 5, thinking: 4 },
+    P2Q2_c: { direct: 2, indirect: 5, thinking: 0 },
+    P2Q2_d: { direct: 3, indirect: 2, thinking: 1 },
+    P2Q2_e: { direct: 4, indirect: 11, thinking: 6 },
+    P2Q2_f: { direct: 1, indirect: 4, thinking: 2 },
+  };
+  for (const [code, counts] of Object.entries(expected)) {
+    assert.deepEqual(proximityAvailable(questionModelFor("iac-2026-p2", code)), counts, code);
+  }
+});

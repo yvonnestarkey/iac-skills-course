@@ -1,6 +1,6 @@
 {
   "paper_id": "iac-2026-p2",
-  "status": "draft — first proposal 12 Oct 2026 (19:55), for Yvonne's ruling. proximity_items empty until classified.",
+  "status": "draft — Buried Treasure classified row by row with Yvonne, 12 Oct 2026 (21:30); Q1(a) cluster grouping still to be ruled on.",
   "notes": [
     "Technical marks exclude professional marks (X1, Y1, Y2, Y3).",
     "Component trees use the marker's report rows as solution_ref. Each node carries its marks; core_marks lists the components at the deepest layer where marks sit.",
@@ -12,7 +12,262 @@
   "requirements": {
     "P2Q1_a": {
       "question_type": "Non-discussion",
-      "proximity_items": [],
+      "proximity_items": [
+        {
+          "row": 3,
+          "proximity": "direct"
+        },
+        {
+          "row": 4,
+          "proximity": "direct"
+        },
+        {
+          "row": 5,
+          "proximity": "direct"
+        },
+        {
+          "row": 6,
+          "proximity": "direct"
+        },
+        {
+          "row": 7,
+          "proximity": "indirect"
+        },
+        {
+          "row": 8,
+          "proximity": "direct"
+        },
+        {
+          "row": 9,
+          "proximity": "indirect"
+        },
+        {
+          "row": 10,
+          "proximity": "indirect"
+        },
+        {
+          "row": 11,
+          "proximity": "indirect"
+        },
+        {
+          "row": 12,
+          "proximity": "direct"
+        },
+        {
+          "row": 13,
+          "proximity": "direct"
+        },
+        {
+          "row": 14,
+          "proximity": "indirect"
+        },
+        {
+          "row": 15,
+          "proximity": "indirect"
+        },
+        {
+          "row": 16,
+          "proximity": "indirect"
+        },
+        {
+          "row": 17,
+          "proximity": "indirect"
+        },
+        {
+          "row": 18,
+          "proximity": "direct"
+        },
+        {
+          "row": 19,
+          "proximity": "indirect"
+        },
+        {
+          "row": 20,
+          "proximity": "direct"
+        },
+        {
+          "row": 21,
+          "proximity": "direct"
+        },
+        {
+          "row": 22,
+          "proximity": "indirect"
+        },
+        {
+          "row": 23,
+          "proximity": "indirect"
+        },
+        {
+          "row": 24,
+          "proximity": "thinking"
+        },
+        {
+          "row": 25,
+          "proximity": "thinking"
+        },
+        {
+          "row": 26,
+          "proximity": "thinking"
+        },
+        {
+          "row": 27,
+          "proximity": "thinking"
+        },
+        {
+          "row": 28,
+          "proximity": "indirect"
+        },
+        {
+          "row": 29,
+          "proximity": "direct"
+        },
+        {
+          "row": 30,
+          "proximity": "direct"
+        },
+        {
+          "row": 31,
+          "proximity": "direct"
+        },
+        {
+          "row": 32,
+          "proximity": "direct"
+        },
+        {
+          "row": 33,
+          "proximity": "direct"
+        },
+        {
+          "row": 34,
+          "proximity": "thinking"
+        },
+        {
+          "row": 35,
+          "proximity": "direct"
+        },
+        {
+          "row": 36,
+          "proximity": "direct"
+        },
+        {
+          "row": 37,
+          "proximity": "direct"
+        },
+        {
+          "row": 38,
+          "proximity": "direct"
+        },
+        {
+          "row": 39,
+          "proximity": "direct"
+        },
+        {
+          "row": 40,
+          "proximity": "direct"
+        },
+        {
+          "row": 41,
+          "proximity": "direct"
+        },
+        {
+          "row": 42.1,
+          "proximity": "indirect",
+          "note": "Row 42 sub-mark: buildings purchase price (2m + 3.4m)"
+        },
+        {
+          "row": 42.2,
+          "proximity": "indirect",
+          "note": "Row 42 sub-mark: renovation costs (3m + 2.5m)"
+        },
+        {
+          "row": 42.3,
+          "proximity": "direct",
+          "note": "Row 42 sub-mark: initial direct costs (given)"
+        },
+        {
+          "row": 43,
+          "proximity": "direct"
+        },
+        {
+          "row": 44,
+          "proximity": "direct"
+        },
+        {
+          "row": 45,
+          "proximity": "direct"
+        },
+        {
+          "row": 46,
+          "proximity": "indirect"
+        },
+        {
+          "row": 47,
+          "proximity": "thinking"
+        },
+        {
+          "row": 48,
+          "proximity": "indirect"
+        },
+        {
+          "row": 49,
+          "proximity": "indirect"
+        },
+        {
+          "row": 50.1,
+          "proximity": "indirect",
+          "note": "Row 50 sub-mark: Newcastle RMD loan N = 60"
+        },
+        {
+          "row": 50.2,
+          "proximity": "indirect",
+          "note": "Row 50 sub-mark: payment 3m x 11.75%/12"
+        },
+        {
+          "row": 50.3,
+          "proximity": "direct",
+          "note": "Row 50 sub-mark: future value 3m (given)"
+        },
+        {
+          "row": 50.4,
+          "proximity": "indirect",
+          "note": "Row 50 sub-mark: PV net of the initiation fee"
+        },
+        {
+          "row": 51,
+          "proximity": "thinking"
+        },
+        {
+          "row": 52.1,
+          "proximity": "indirect",
+          "note": "Row 52 sub-mark: QwaQwa RMD loan N = 60"
+        },
+        {
+          "row": 52.2,
+          "proximity": "direct",
+          "note": "Row 52 sub-mark: PV 5m (given)"
+        },
+        {
+          "row": 52.3,
+          "proximity": "indirect",
+          "note": "Row 52 sub-mark: monthly rate 12.25%/12"
+        },
+        {
+          "row": 53,
+          "proximity": "thinking"
+        },
+        {
+          "row": 54,
+          "proximity": "indirect"
+        },
+        {
+          "row": 55,
+          "proximity": "indirect"
+        },
+        {
+          "row": 56,
+          "proximity": "direct"
+        }
+      ],
       "component_tree": [
         {
           "path": [
@@ -755,7 +1010,60 @@
     "P2Q2_b": {
       "question_type": "Discussion",
       "discussion_basis": "compliance",
-      "proximity_items": [],
+      "proximity_items": [
+        {
+          "row": 3,
+          "proximity": "direct"
+        },
+        {
+          "row": 4,
+          "proximity": "direct"
+        },
+        {
+          "row": 5,
+          "proximity": "indirect"
+        },
+        {
+          "row": 6,
+          "proximity": "indirect"
+        },
+        {
+          "row": 7,
+          "proximity": "direct"
+        },
+        {
+          "row": 8,
+          "proximity": "thinking"
+        },
+        {
+          "row": 9,
+          "proximity": "thinking"
+        },
+        {
+          "row": 10,
+          "proximity": "direct"
+        },
+        {
+          "row": 11,
+          "proximity": "indirect"
+        },
+        {
+          "row": 12,
+          "proximity": "indirect"
+        },
+        {
+          "row": 13,
+          "proximity": "thinking"
+        },
+        {
+          "row": 14,
+          "proximity": "thinking"
+        },
+        {
+          "row": 15,
+          "proximity": "indirect"
+        }
+      ],
       "component_tree": [
         {
           "path": [
@@ -946,7 +1254,36 @@
     "P2Q2_c": {
       "question_type": "Discussion",
       "discussion_basis": "compliance",
-      "proximity_items": [],
+      "proximity_items": [
+        {
+          "row": 19,
+          "proximity": "indirect"
+        },
+        {
+          "row": 20,
+          "proximity": "indirect"
+        },
+        {
+          "row": 21,
+          "proximity": "direct"
+        },
+        {
+          "row": 22,
+          "proximity": "indirect"
+        },
+        {
+          "row": 23,
+          "proximity": "direct"
+        },
+        {
+          "row": 24,
+          "proximity": "indirect"
+        },
+        {
+          "row": 25,
+          "proximity": "indirect"
+        }
+      ],
       "component_tree": [
         {
           "path": [
@@ -1062,7 +1399,32 @@
     "P2Q2_d": {
       "question_type": "Discussion",
       "discussion_basis": "compliance",
-      "proximity_items": [],
+      "proximity_items": [
+        {
+          "row": 27,
+          "proximity": "direct"
+        },
+        {
+          "row": 28,
+          "proximity": "indirect"
+        },
+        {
+          "row": 29,
+          "proximity": "indirect"
+        },
+        {
+          "row": 30,
+          "proximity": "direct"
+        },
+        {
+          "row": 31,
+          "proximity": "direct"
+        },
+        {
+          "row": 32,
+          "proximity": "thinking"
+        }
+      ],
       "component_tree": [
         {
           "path": [
@@ -1159,7 +1521,92 @@
     "P2Q2_e": {
       "question_type": "Discussion",
       "discussion_basis": "compliance",
-      "proximity_items": [],
+      "proximity_items": [
+        {
+          "row": 36,
+          "proximity": "direct"
+        },
+        {
+          "row": 37,
+          "proximity": "indirect"
+        },
+        {
+          "row": 38,
+          "proximity": "indirect"
+        },
+        {
+          "row": 39,
+          "proximity": "direct"
+        },
+        {
+          "row": 40,
+          "proximity": "direct"
+        },
+        {
+          "row": 41,
+          "proximity": "indirect"
+        },
+        {
+          "row": 42,
+          "proximity": "thinking"
+        },
+        {
+          "row": 43,
+          "proximity": "indirect"
+        },
+        {
+          "row": 44,
+          "proximity": "direct"
+        },
+        {
+          "row": 45,
+          "proximity": "thinking"
+        },
+        {
+          "row": 46,
+          "proximity": "indirect"
+        },
+        {
+          "row": 47,
+          "proximity": "indirect"
+        },
+        {
+          "row": 48,
+          "proximity": "indirect"
+        },
+        {
+          "row": 49,
+          "proximity": "indirect"
+        },
+        {
+          "row": 50,
+          "proximity": "indirect"
+        },
+        {
+          "row": 51,
+          "proximity": "thinking"
+        },
+        {
+          "row": 52,
+          "proximity": "thinking"
+        },
+        {
+          "row": 53,
+          "proximity": "thinking"
+        },
+        {
+          "row": 54,
+          "proximity": "indirect"
+        },
+        {
+          "row": 55,
+          "proximity": "thinking"
+        },
+        {
+          "row": 56,
+          "proximity": "indirect"
+        }
+      ],
       "component_tree": [
         {
           "path": [
@@ -1430,7 +1877,36 @@
     "P2Q2_f": {
       "question_type": "Discussion",
       "discussion_basis": "compliance",
-      "proximity_items": [],
+      "proximity_items": [
+        {
+          "row": 58,
+          "proximity": "indirect"
+        },
+        {
+          "row": 59,
+          "proximity": "indirect"
+        },
+        {
+          "row": 60,
+          "proximity": "direct"
+        },
+        {
+          "row": 61,
+          "proximity": "indirect"
+        },
+        {
+          "row": 62,
+          "proximity": "thinking"
+        },
+        {
+          "row": 63,
+          "proximity": "thinking"
+        },
+        {
+          "row": 64,
+          "proximity": "indirect"
+        }
+      ],
       "component_tree": [
         {
           "path": [
