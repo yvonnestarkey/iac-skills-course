@@ -87,12 +87,16 @@ export function proximityAvailable(model: RequirementModel | null): { direct: nu
  * per component, so a component worth more than three marks carries more than its fair share
  * (Yvonne, 12 Oct 2026: draft constant, "more than three marks for now"; to be reviewed once it has been run on more questions).
  */
-/** A component is core when it carries at least this many marks more than its fair share (max / number of components). */
+/**
+ * A component is core when it carries at least this many marks more than its fair share. Fair share is the question's
+ * total (the cap, not the plan's available marks) divided by the number of components, rounded to the nearest whole mark
+ * (Yvonne, 12 Oct 2026: "if the core is that close, make it core"; a student plans in whole points).
+ */
 export const CORE_EXTRA_MARKS = 3;
 export function coreComponents(model: RequirementModel | null): { label: string; marks: number; fair: number; core: boolean }[] | null {
   const cm = model?.core_marks;
   if (!cm || !cm.max || cm.components.length === 0) return null;
-  const fair = cm.max / cm.components.length;
+  const fair = Math.round(cm.max / cm.components.length);
   return cm.components.map((c) => ({ label: c.label, marks: c.marks, fair, core: c.marks - fair >= CORE_EXTRA_MARKS }));
 }
 

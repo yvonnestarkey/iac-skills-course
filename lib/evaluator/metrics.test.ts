@@ -397,9 +397,9 @@ test("core issues are components carrying 3+ marks above their fair share: Q2(e)
   assert.equal(e.find((c) => c.label === "Code of Professional Conduct")!.core, true);
   assert.equal(e.find((c) => c.label === "Safeguards (max 3 marks)")!.core, false);
   assert.deepEqual(core("P1Q2_e").sort(), ["Code of Professional Conduct", "King IV P1: ethical leadership", "NKT's dilemma"].sort());
-  // fair share = max / components; core = at least 3 marks above it
+  // fair share = total (cap) / components, rounded to the nearest whole mark; core = at least 3 marks above it (12 Oct 2026)
   assert.deepEqual(core("P1Q2_g1").sort(), ["Complexity and uncertainty", "Incentives and pressure"].sort());
-  assert.deepEqual(core("P1Q2_g2"), ["ISA 300 para 2: attention to important areas of the audit"]);
+  assert.deepEqual(core("P1Q2_g2").sort(), ["ISA 300 para 2: attention to important areas of the audit", "ISA 300 para 7-8: overall audit strategy (scope, timing and direction)"].sort());
   assert.deepEqual(core("P1Q2_f").sort(), ["ISA 210: preconditions for the audit", "ISA 220: ethics and independence", "ISA 220: integrity of owners, management and those charged with governance"].sort());
   assert.deepEqual(core("P1Q2_h").sort(), ["16(b): feasibility of management's plans", "16(c): cash flow forecast"].sort());
   assert.equal(coreComponents(questionModelFor("iac-2026-p1", "P1Q1_b")), null);
@@ -432,7 +432,7 @@ test("Paper 2 Question Model: marks reconcile and core by fair share", () => {
   assert.equal(a.core_marks!.max, 67);
   assert.equal(a.core_marks!.components.reduce((s, c) => s + c.marks, 0), 67);
   const core = coreComponents(a)!.filter((c) => c.core).map((c) => c.label);
-  assert.deepEqual(core, ["Note 4: Lease (including the installation costs)", "Note 6: New clinics: buildings, renovations, loans and capitalised interest"]);
+  assert.deepEqual(core.sort(), ["Note 3: Share appreciation rights (SARs)", "Note 4: Lease (including the installation costs)", "Note 6: New clinics: buildings, renovations, loans and capitalised interest"].sort());
   for (const code of ["P2Q2_b", "P2Q2_c", "P2Q2_d", "P2Q2_e", "P2Q2_f"]) {
     const m = questionModelFor("iac-2026-p2", code)!;
     assert.ok(m.component_tree && m.component_tree.length > 0, code);
