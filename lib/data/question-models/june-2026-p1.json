@@ -212,7 +212,404 @@
           "clue_type": "low_relevance",
           "clue": "Mostly relevant to Part II, little link to going concern."
         }
-      ]
+      ],
+      "component_tree": [
+        {
+          "path": [
+            "Strengths",
+            "Background"
+          ],
+          "label": "Primary provider, asset base and market position",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.1"
+        },
+        {
+          "path": [
+            "Strengths",
+            "Background"
+          ],
+          "label": "Essential part of the mining supply chain",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.2"
+        },
+        {
+          "path": [
+            "Strengths",
+            "Background"
+          ],
+          "label": "State owned: access to resources and synergies",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.3"
+        },
+        {
+          "path": [
+            "Strengths",
+            "Green initiatives"
+          ],
+          "label": "Green initiatives",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.4"
+        },
+        {
+          "path": [
+            "Strengths",
+            "Background"
+          ],
+          "label": "Established in 1860",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.5"
+        },
+        {
+          "path": [
+            "Strengths",
+            "Background"
+          ],
+          "label": "Diversified revenue through the divisions",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.6"
+        },
+        {
+          "path": [
+            "Weaknesses",
+            "Background"
+          ],
+          "label": "State ownership: no profit-only motive",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.1"
+        },
+        {
+          "path": [
+            "Weaknesses",
+            "Background"
+          ],
+          "label": "Deteriorated profit, eroded equity, debt servicing",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.2"
+        },
+        {
+          "path": [
+            "Weaknesses",
+            "Background"
+          ],
+          "label": "Financial distress",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.3"
+        },
+        {
+          "path": [
+            "Weaknesses",
+            "Background"
+          ],
+          "label": "Liquidity deterioration and cash interest cover of 1,93",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.4"
+        },
+        {
+          "path": [
+            "Weaknesses",
+            "Debt covenants"
+          ],
+          "label": "Going concern risk and covenant defaults",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.5"
+        },
+        {
+          "path": [
+            "Weaknesses",
+            "Background"
+          ],
+          "label": "Ageing infrastructure and collisions",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.6"
+        },
+        {
+          "path": [
+            "Weaknesses",
+            "Debt covenants"
+          ],
+          "label": "Emphasis of matter on the review report",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.7"
+        },
+        {
+          "path": [
+            "Weaknesses",
+            "Debt covenants"
+          ],
+          "label": "Reliance on government financial support",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.8"
+        },
+        {
+          "path": [
+            "Weaknesses",
+            "Damaged locomotives"
+          ],
+          "label": "Damaged locomotives idle for six years",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.9"
+        },
+        {
+          "path": [
+            "Weaknesses",
+            "Background"
+          ],
+          "label": "Irregular tenders and corruption",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.10"
+        },
+        {
+          "path": [
+            "Opportunities",
+            "Debt covenants"
+          ],
+          "label": "Government as shareholder: access to resources",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3.1"
+        },
+        {
+          "path": [
+            "Opportunities",
+            "Damaged locomotives"
+          ],
+          "label": "Underutilised assets",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "3.3"
+        },
+        {
+          "path": [
+            "Threats",
+            "Debt covenants"
+          ],
+          "label": "Government in financial distress, rating downgrades",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.1"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Macro-economic variables: oil, rand, inflation",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.2"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Electricity constraints",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.3"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Interest rate increases",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.4"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Community unrest",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.5"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Restrictive local procurement requirements",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.6"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Local suppliers cannot supply spares",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.7"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Ageing infrastructure: collisions and derailments",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.8"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Theft, crime and vandalism",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.9"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Adverse weather",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.10"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Decline in mining operations",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.11"
+        },
+        {
+          "path": [
+            "Threats",
+            "Background"
+          ],
+          "label": "Volatility of commodity exports",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.12"
+        },
+        {
+          "path": [
+            "Threats",
+            "Damaged locomotives"
+          ],
+          "label": "German supplier: unproven reliability",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.13"
+        },
+        {
+          "path": [
+            "Threats",
+            "Damaged locomotives"
+          ],
+          "label": "Euro purchases: foreign exchange risk",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.14"
+        },
+        {
+          "path": [
+            "Threats",
+            "Damaged locomotives"
+          ],
+          "label": "Corruption allegations relating to the train supplier",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.15"
+        },
+        {
+          "path": [
+            "Threats",
+            "Damaged locomotives"
+          ],
+          "label": "Dispute could last five more years",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.16"
+        },
+        {
+          "path": [
+            "Threats",
+            "Debt covenants"
+          ],
+          "label": "Government pressure to report favourable results",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "4.17"
+        }
+      ],
+      "core_marks": {
+        "max": 20,
+        "components": [
+          {
+            "label": "Strengths: Background",
+            "marks": 5
+          },
+          {
+            "label": "Strengths: Green initiatives",
+            "marks": 1
+          },
+          {
+            "label": "Weaknesses: Background",
+            "marks": 6
+          },
+          {
+            "label": "Weaknesses: Debt covenants",
+            "marks": 3
+          },
+          {
+            "label": "Weaknesses: Damaged locomotives",
+            "marks": 1
+          },
+          {
+            "label": "Opportunities: Debt covenants",
+            "marks": 1
+          },
+          {
+            "label": "Opportunities: Damaged locomotives",
+            "marks": 1
+          },
+          {
+            "label": "Threats: Debt covenants",
+            "marks": 2
+          },
+          {
+            "label": "Threats: Background",
+            "marks": 11
+          },
+          {
+            "label": "Threats: Damaged locomotives",
+            "marks": 4
+          }
+        ]
+      }
     },
     "P1Q1_b": {
       "question_type": "Discussion",
@@ -391,7 +788,103 @@
           "clue_type": "density",
           "clue": "A shorter paragraph with one initiative (rainwater harvesting). The requirement still names Goal 6, so cover it, with less time."
         }
-      ]
+      ],
+      "component_tree": [
+        {
+          "path": [
+            "Goal 6: clean water and sanitation"
+          ],
+          "label": "Goal 6 is about access to water and water security",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1"
+        },
+        {
+          "path": [
+            "Goal 6: clean water and sanitation"
+          ],
+          "label": "Alternative water sources such as rainwater harvesting mitigate water scarcity",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.1"
+        },
+        {
+          "path": [
+            "Goal 6: clean water and sanitation"
+          ],
+          "label": "Rainwater is not drinkable, but serves sanitation (washing and toilets)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "1.2"
+        },
+        {
+          "path": [
+            "Goal 7: affordable and clean energy"
+          ],
+          "label": "Goal 7 is about access to clean and affordable energy",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2"
+        },
+        {
+          "path": [
+            "Goal 7: affordable and clean energy"
+          ],
+          "label": "Rooftop solar panels: renewable share, lower carbon footprint",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.1"
+        },
+        {
+          "path": [
+            "Goal 7: affordable and clean energy"
+          ],
+          "label": "LED lighting and climate control: lower electricity use",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.2"
+        },
+        {
+          "path": [
+            "Goal 7: affordable and clean energy"
+          ],
+          "label": "Insulation of the warehouses: less energy for climate control",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.3"
+        },
+        {
+          "path": [
+            "Goal 7: affordable and clean energy"
+          ],
+          "label": "Sun's energy cannot be depleted, unlike coal used by Eskom",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.5"
+        },
+        {
+          "path": [
+            "Goal 7: affordable and clean energy"
+          ],
+          "label": "Solar has its own environmental costs (panels, lithium batteries)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "2.6"
+        }
+      ],
+      "core_marks": {
+        "max": 6,
+        "components": [
+          {
+            "label": "Goal 6: clean water and sanitation",
+            "marks": 3
+          },
+          {
+            "label": "Goal 7: affordable and clean energy",
+            "marks": 6
+          }
+        ]
+      }
     },
     "P1Q2_e": {
       "question_type": "Discussion",
