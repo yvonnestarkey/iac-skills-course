@@ -1052,7 +1052,7 @@
         {
           "path": [
             "VAT consequences",
-            "Output tax on the services supplied"
+            "Output tax (income side)"
           ],
           "label": "Output tax on the preventative health check services",
           "source": "case",
@@ -1063,7 +1063,7 @@
         {
           "path": [
             "VAT consequences",
-            "Output tax on the services supplied"
+            "Output tax (income side)"
           ],
           "label": "Output tax calculated (R500 000 x 15%)",
           "source": "case",
@@ -1074,7 +1074,7 @@
         {
           "path": [
             "VAT consequences",
-            "Issue of the HealthMulas"
+            "Output tax (income side)"
           ],
           "label": "No VAT on the issue of the HealthMulas (a token or voucher, no consideration, s10(18))",
           "source": "theory",
@@ -1085,7 +1085,7 @@
         {
           "path": [
             "VAT consequences",
-            "HealthMulas utilised"
+            "Output tax (income side)"
           ],
           "label": "Utilised HealthMulas are consideration not in money, market value (s10(3)(b))",
           "source": "theory",
@@ -1096,7 +1096,7 @@
         {
           "path": [
             "VAT consequences",
-            "HealthMulas utilised"
+            "Output tax (income side)"
           ],
           "label": "Output tax R45 000 (R300 000 x 15%)",
           "source": "case",
@@ -1107,7 +1107,7 @@
         {
           "path": [
             "VAT consequences",
-            "Time of supply"
+            "Output tax (income side)"
           ],
           "label": "General time of supply for both amounts",
           "source": "theory",
@@ -1118,7 +1118,7 @@
         {
           "path": [
             "VAT consequences",
-            "Input tax"
+            "Input tax (expense side)"
           ],
           "label": "Input tax on the costs of providing the services",
           "source": "theory",
@@ -1129,7 +1129,7 @@
         {
           "path": [
             "Normal tax",
-            "Gross income"
+            "Income"
           ],
           "label": "R500 000 included in gross income",
           "source": "case",
@@ -1140,7 +1140,7 @@
         {
           "path": [
             "Normal tax",
-            "Issue of the points"
+            "Deductions"
           ],
           "label": "Issue of the points is not expenditure actually incurred",
           "source": "theory",
@@ -1151,7 +1151,7 @@
         {
           "path": [
             "Normal tax",
-            "Redemption of the points"
+            "Deductions"
           ],
           "label": "Redemption is deductible under s11(a)",
           "source": "theory",
@@ -1162,9 +1162,9 @@
         {
           "path": [
             "Normal tax",
-            "Allowance for future expenditure"
+            "Deductions"
           ],
-          "label": "Future expenditure on the contracts (s24C)",
+          "label": "Allowance for future expenditure on the contracts (s24C)",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "2.4",
@@ -1173,7 +1173,7 @@
         {
           "path": [
             "Normal tax",
-            "Allowance for future expenditure"
+            "Deductions"
           ],
           "label": "Two separate contracts, not inextricably linked (Clicks Retailers)",
           "source": "theory",
@@ -1184,7 +1184,7 @@
         {
           "path": [
             "Normal tax",
-            "Allowance for future expenditure"
+            "Deductions"
           ],
           "label": "Conclusion: no s24C allowance (or an allowance on the alternative reading)",
           "source": "theory",
@@ -1197,40 +1197,20 @@
         "max": 9,
         "components": [
           {
-            "label": "VAT consequences > Output tax on the services supplied",
-            "marks": 2
+            "label": "VAT consequences > Output tax (income side)",
+            "marks": 6
           },
           {
-            "label": "VAT consequences > Issue of the HealthMulas",
+            "label": "VAT consequences > Input tax (expense side)",
             "marks": 1
           },
           {
-            "label": "VAT consequences > HealthMulas utilised",
-            "marks": 2
-          },
-          {
-            "label": "VAT consequences > Time of supply",
+            "label": "Normal tax > Income",
             "marks": 1
           },
           {
-            "label": "VAT consequences > Input tax",
-            "marks": 1
-          },
-          {
-            "label": "Normal tax > Gross income",
-            "marks": 1
-          },
-          {
-            "label": "Normal tax > Issue of the points",
-            "marks": 1
-          },
-          {
-            "label": "Normal tax > Redemption of the points",
-            "marks": 1
-          },
-          {
-            "label": "Normal tax > Allowance for future expenditure",
-            "marks": 3
+            "label": "Normal tax > Deductions",
+            "marks": 5
           }
         ]
       }
