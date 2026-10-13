@@ -6,7 +6,7 @@
     "Component trees use the marker's report rows as solution_ref. Each node carries its marks; core_marks lists the components at the deepest layer where marks sit.",
     "Q1(a): components are the case's own numbered notes (Yvonne, 12 Oct 2026, 21:54), plus 'Information from the AFS (no note)' (operating expenses, inventories, payables, interest, tax: no notes) and 'Statement lines (presentation)'. The statement lines are a separate layer that forms the structure of the answer but are not divided into Layer 1 / Layer 2 columns. Notes 10, 12, 13, 15, 16 carry no Q1(a) marks; note 11 (interest) belongs to the AFS component; note 14 limits other current liabilities (note 9).",
     "Q2(b) was written 'Not attempted' on the page.",
-    "Tax spine = the Acts' own structure (Yvonne, 12 Oct).",
+    "Tax spine = the Acts' own structure (Yvonne, 12 Oct). Component rulings (13 Oct 2026): Q2(b) Layer 1 VAT / normal tax, Layer 2 income and expense sides; Q2(c) one layer (BHealth, employees 2025, employees 2026); Q2(d) and Q2(f) have no components (know the section); Q2(e) transactions, each split into VAT and normal tax.",
     "Q2(e): 22 marks available (Yvonne, 12 Oct 2026: the solution's 21 is an error; marker rows 47 and 48 are separate marks)."
   ],
   "requirements": {
@@ -1251,8 +1251,7 @@
       "component_tree": [
         {
           "path": [
-            "BHealth",
-            "No deduction"
+            "BHealth"
           ],
           "label": "Cash-settled SAR benefit is not expenditure for BHealth (no unconditional obligation)",
           "source": "theory",
@@ -1262,8 +1261,7 @@
         },
         {
           "path": [
-            "Employees: 2025 year of assessment",
-            "Section 8C"
+            "Employees: 2025 year of assessment"
           ],
           "label": "SARs are equity instruments (s8C(7))",
           "source": "theory",
@@ -1273,8 +1271,7 @@
         },
         {
           "path": [
-            "Employees: 2025 year of assessment",
-            "Section 8C"
+            "Employees: 2025 year of assessment"
           ],
           "label": "Granted by virtue of employment (s8C(1))",
           "source": "case",
@@ -1284,8 +1281,7 @@
         },
         {
           "path": [
-            "Employees: 2025 year of assessment",
-            "Restricted instrument"
+            "Employees: 2025 year of assessment"
           ],
           "label": "Restricted instrument at grant, s10(1)(nD) exemption",
           "source": "theory",
@@ -1295,8 +1291,7 @@
         },
         {
           "path": [
-            "Employees: 2025 year of assessment",
-            "Restricted instrument"
+            "Employees: 2025 year of assessment"
           ],
           "label": "Resignation is not a vesting event (s8C(3)(b))",
           "source": "theory",
@@ -1306,8 +1301,7 @@
         },
         {
           "path": [
-            "Employees: 2026 year of assessment",
-            "Vesting"
+            "Employees: 2026 year of assessment"
           ],
           "label": "Doubled SARs at vesting included in income (R15 million target met)",
           "source": "case",
@@ -1317,8 +1311,7 @@
         },
         {
           "path": [
-            "Employees: 2026 year of assessment",
-            "Vesting"
+            "Employees: 2026 year of assessment"
           ],
           "label": "Gain is market value at vesting less consideration (s8C(2)(a)(ii))",
           "source": "theory",
@@ -1328,8 +1321,7 @@
         },
         {
           "path": [
-            "Employees: 2026 year of assessment",
-            "Vesting"
+            "Employees: 2026 year of assessment"
           ],
           "label": "Cash payment is remuneration, PAYE withheld; no base cost",
           "source": "theory",
@@ -1342,19 +1334,15 @@
         "max": 7,
         "components": [
           {
-            "label": "BHealth > No deduction",
+            "label": "BHealth",
             "marks": 1
           },
           {
-            "label": "Employees: 2025 year of assessment > Section 8C",
-            "marks": 2
+            "label": "Employees: 2025 year of assessment",
+            "marks": 4
           },
           {
-            "label": "Employees: 2025 year of assessment > Restricted instrument",
-            "marks": 2
-          },
-          {
-            "label": "Employees: 2026 year of assessment > Vesting",
+            "label": "Employees: 2026 year of assessment",
             "marks": 3
           }
         ]
@@ -1388,99 +1376,7 @@
           "row": 32,
           "proximity": "thinking"
         }
-      ],
-      "component_tree": [
-        {
-          "path": [
-            "Requirements to register separately",
-            "BHealth's position"
-          ],
-          "label": "BHealth already a vendor; no new application",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "1",
-          "marks": 1
-        },
-        {
-          "path": [
-            "Requirements to register separately",
-            "Application"
-          ],
-          "label": "Branches may apply in writing under s50(1); s23(2A) not applicable",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "2",
-          "marks": 1
-        },
-        {
-          "path": [
-            "Requirements to register separately",
-            "Conclusion"
-          ],
-          "label": "Each clinic may register separately",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "3",
-          "marks": 1
-        },
-        {
-          "path": [
-            "Requirements to register separately",
-            "Conditions (s50(2))"
-          ],
-          "label": "Own independent accounting system",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "3.1",
-          "marks": 1
-        },
-        {
-          "path": [
-            "Requirements to register separately",
-            "Conditions (s50(2))"
-          ],
-          "label": "Separately identifiable by location",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "3.2",
-          "marks": 1
-        },
-        {
-          "path": [
-            "Consequence of default"
-          ],
-          "label": "s50(5): liability reverts to BHealth if a branch fails",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "4",
-          "marks": 1
-        }
-      ],
-      "core_marks": {
-        "max": 6,
-        "components": [
-          {
-            "label": "Requirements to register separately > BHealth's position",
-            "marks": 1
-          },
-          {
-            "label": "Requirements to register separately > Application",
-            "marks": 1
-          },
-          {
-            "label": "Requirements to register separately > Conclusion",
-            "marks": 1
-          },
-          {
-            "label": "Requirements to register separately > Conditions (s50(2))",
-            "marks": 2
-          },
-          {
-            "label": "Consequence of default",
-            "marks": 1
-          }
-        ]
-      }
+      ]
     },
     "P2Q2_e": {
       "question_type": "Discussion",
@@ -1870,104 +1766,7 @@
           "row": 64,
           "proximity": "indirect"
         }
-      ],
-      "component_tree": [
-        {
-          "path": [
-            "Why the fee looks abnormal"
-          ],
-          "label": "Fee above market, possibly to use the assessed loss: wholly for trade?",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "1",
-          "marks": 1
-        },
-        {
-          "path": [
-            "The arrangement"
-          ],
-          "label": "There is an agreement for the management fee",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "2",
-          "marks": 1
-        },
-        {
-          "path": [
-            "The arrangement"
-          ],
-          "label": "Income accrues to Med4Me under the agreement",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "3",
-          "marks": 1
-        },
-        {
-          "path": [
-            "The tax benefit"
-          ],
-          "label": "Assessed loss used to shift profits from taxpaying group companies",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "4",
-          "marks": 1
-        },
-        {
-          "path": [
-            "The tax benefit"
-          ],
-          "label": "Tax benefit; sole or main purpose cannot be shown",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "5",
-          "marks": 1
-        },
-        {
-          "path": [
-            "The Commissioner's view (s80A, s80G)"
-          ],
-          "label": "May be an impermissible tax avoidance arrangement (s80A, presumption s80G)",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "6",
-          "marks": 1
-        },
-        {
-          "path": [
-            "Consequences"
-          ],
-          "label": "Expenditure may be disallowed; Med4Me includes the full fee in gross income",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "7",
-          "marks": 1
-        }
-      ],
-      "core_marks": {
-        "max": 6,
-        "components": [
-          {
-            "label": "Why the fee looks abnormal",
-            "marks": 1
-          },
-          {
-            "label": "The arrangement",
-            "marks": 2
-          },
-          {
-            "label": "The tax benefit",
-            "marks": 2
-          },
-          {
-            "label": "The Commissioner's view (s80A, s80G)",
-            "marks": 1
-          },
-          {
-            "label": "Consequences",
-            "marks": 1
-          }
-        ]
-      }
+      ]
     }
   }
 }

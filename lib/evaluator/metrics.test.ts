@@ -436,10 +436,17 @@ test("Paper 2 Question Model: marks reconcile and core by fair share", () => {
   // Q2(b): Layer 1 = VAT / normal tax, Layer 2 = the income and expense sides; fair share 9 / 4 = 2, core from 5 marks
   const b = coreComponents(questionModelFor("iac-2026-p2", "P2Q2_b"))!;
   assert.deepEqual(b.filter((c) => c.core).map((c) => c.label).sort(), ["Normal tax > Deductions", "VAT consequences > Output tax (income side)"]);
-  for (const code of ["P2Q2_c", "P2Q2_d", "P2Q2_e", "P2Q2_f"]) {
+  for (const code of ["P2Q2_c", "P2Q2_e"]) {
     const m = questionModelFor("iac-2026-p2", code)!;
     assert.ok(m.component_tree && m.component_tree.length > 0, code);
     assert.equal(coreComponents(m)!.filter((c) => c.core).length, 0, code);
+  }
+  // Q2(c): one layer (BHealth, employees 2025, employees 2026); Q2(d) and Q2(f): no components (know the section)
+  assert.equal(coreComponents(questionModelFor("iac-2026-p2", "P2Q2_c"))!.length, 3);
+  for (const code of ["P2Q2_d", "P2Q2_f"]) {
+    const m = questionModelFor("iac-2026-p2", code)!;
+    assert.equal(m.component_tree, undefined, code);
+    assert.equal(coreComponents(m), null, code);
   }
 });
 
