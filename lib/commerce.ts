@@ -85,6 +85,21 @@ export function canStackDiscounts(): boolean {
   return false;
 }
 
+export function referralCodeForUserId(userId: string): string {
+  return `JAN27-${userId.replace(/-/g, "").slice(0, 8).toUpperCase()}`;
+}
+
+export async function ensureReferralCode(userId: string): Promise<string> {
+  const code = referralCodeForUserId(userId);
+  const client = getServiceSupabase();
+  if (!client || !userId) return code;
+  const { error } = await client
+    .from("referral_codes")
+    .upsert({ user_id: userId, code }, { onConflict: "user_id", ignoreDuplicates: true });
+  if (error && !commerceTableMissing(error.message)) console.error(error.message);
+  return code;
+}
+
 export async function getCourseProduct(productId = DEFAULT_PRODUCT_ID): Promise<CourseProduct> {
   const client = getServiceSupabase();
   if (!client) return FALLBACK_PRODUCT;
@@ -155,6 +170,7 @@ export async function grantPreviewEntitlement(userId: string) {
     { onConflict: "user_id,product_id", ignoreDuplicates: true }
   );
   if (error) throw new Error(error.message);
+  await ensureReferralCode(userId);
 }
 
 export async function ensureCommerceAccount(user: StudentUser) {
@@ -164,8 +180,7 @@ export async function ensureCommerceAccount(user: StudentUser) {
     { user_id: user.id, product_id: DEFAULT_PRODUCT_ID, status: "free_preview", source: "signup", updated_at: new Date().toISOString() },
     { onConflict: "user_id,product_id", ignoreDuplicates: true }
   );
-  const code = `JAN27-${user.id.replace(/-/g, "").slice(0, 8).toUpperCase()}`;
-  await client.from("referral_codes").upsert({ user_id: user.id, code }, { onConflict: "user_id", ignoreDuplicates: true });
+  await ensureReferralCode(user.id);
 }
 
 export async function grantFullEntitlement(userId: string, source: "stripe" | "admin") {
@@ -182,6 +197,7 @@ export async function grantFullEntitlement(userId: string, source: "stripe" | "a
     { onConflict: "user_id,product_id" }
   );
   if (error) throw new Error(error.message);
+  await ensureReferralCode(userId);
 }
 
 export type LessonContentAccess = {

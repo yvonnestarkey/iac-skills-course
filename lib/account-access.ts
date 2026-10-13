@@ -25,12 +25,19 @@ export function accountAccessCopy(
   }
   if (entitlement === "free_preview") {
     return {
-      title: "Free preview",
-      body: "You can open the designated preview lessons. Unlock the full course to continue on this same account.",
+      title: "Free preview — not registered",
+      body: "You have not paid or registered for the full IAC Skills Course yet. Preview lessons stay open on this account. Unlock the full course here when you are ready.",
     };
   }
   return {
     title: "Course access",
     body: "Course access is loading.",
   };
+}
+
+export function unpaidPreviewReferralNote(
+  entitlement: EntitlementStatus | "staff" | null | undefined
+): string | null {
+  if (entitlement === "full" || entitlement === "staff") return null;
+  return "You have not paid or registered for the full course yet. Share this code anyway — referrals are stored on this account until you register.";
 }

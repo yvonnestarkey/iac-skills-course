@@ -1,11 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { accountAccessCopy, unpaidPreviewReferralNote } from "./account-access";
 import {
   FALLBACK_PRODUCT,
   canStackDiscounts,
   discountCents,
   refereeDiscountCents,
   refereePerInstallmentCents,
+  referralCodeForUserId,
   referrerCreditCents,
   selectedOptionTotalCents,
   stripProtectedLesson,
@@ -16,6 +18,14 @@ test("once-off and plan prices stay in USD cents", () => {
   assert.equal(FALLBACK_PRODUCT.plan_amount_cents, 6000);
   assert.equal(FALLBACK_PRODUCT.plan_count, 6);
   assert.notEqual(FALLBACK_PRODUCT.plan_amount_cents * FALLBACK_PRODUCT.plan_count, FALLBACK_PRODUCT.once_off_amount_cents);
+});
+
+test("preview accounts get an affiliate code before they register", () => {
+  assert.equal(referralCodeForUserId("2435cdf0-c68c-4afb-be36-4cde05e6370a"), "JAN27-2435CDF0");
+  assert.equal(accountAccessCopy("free_preview", "signup").title, "Free preview — not registered");
+  assert.match(accountAccessCopy("free_preview", "signup").body, /not paid or registered/i);
+  assert.match(unpaidPreviewReferralNote("free_preview") || "", /stored on this account until you register/i);
+  assert.equal(unpaidPreviewReferralNote("full"), null);
 });
 
 test("referral percentages are USD-based and do not stack", () => {
