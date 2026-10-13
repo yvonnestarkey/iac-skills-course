@@ -2,10 +2,13 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { formatSastDateTime, isoToSastDateAndTime, sastDateAndTimeToIso } from "./dates";
 import {
+  canAccessAllLiveSessionLinks,
   emptyLiveSessionWrite,
+  firstLiveSessionId,
   liveSessionIsRecorded,
   liveSessionToWrite,
   liveSessionWriteRow,
+  sanitizeLiveSessionsForAccess,
   sessionFromRow,
 } from "./live-sessions";
 
@@ -90,4 +93,43 @@ test("row mapping and recorded flag match the student page", () => {
   assert.equal(write.date, "2026-09-22");
   assert.equal(write.time, "18:00");
   assert.equal(write.recordingUrl, "https://vimeo.com/sept");
+});
+
+test("preview students only keep the first session recording", () => {
+  const first = sessionFromRow({
+    id: "first",
+    title: "22 September",
+    session_at: "2026-09-22T16:00:00.000Z",
+    status: "completed",
+    zoom_url: "https://zoom.us/j/first",
+    recording_url: "https://vimeo.com/first",
+    summary_pdf_url: "https://example.com/summary.pdf",
+    notes_pdf_url: "https://example.com/scribbles.pdf",
+  });
+  const later = sessionFromRow({
+    id: "later",
+    title: "October",
+    session_at: "2026-10-20T16:00:00.000Z",
+    status: "upcoming",
+    zoom_url: "https://zoom.us/j/later",
+    recording_url: "https://vimeo.com/later",
+    summary_pdf_url: "https://example.com/oct.pdf",
+    notes_pdf_url: null,
+  });
+  assert.equal(firstLiveSessionId([later, first]), "first");
+  assert.equal(canAccessAllLiveSessionLinks("free_preview"), false);
+  assert.equal(canAccessAllLiveSessionLinks("full"), true);
+  assert.equal(canAccessAllLiveSessionLinks("staff"), true);
+
+  const preview = sanitizeLiveSessionsForAccess([first, later], "free_preview");
+  assert.equal(preview[0].recordingUrl, "https://vimeo.com/first");
+  assert.equal(preview[0].zoomUrl, null);
+  assert.equal(preview[0].summaryPdfUrl, null);
+  assert.equal(preview[0].notesPdfUrl, null);
+  assert.equal(preview[1].recordingUrl, null);
+  assert.equal(preview[1].zoomUrl, null);
+
+  const full = sanitizeLiveSessionsForAccess([first, later], "full");
+  assert.equal(full[1].zoomUrl, "https://zoom.us/j/later");
+  assert.equal(full[0].summaryPdfUrl, "https://example.com/summary.pdf");
 });

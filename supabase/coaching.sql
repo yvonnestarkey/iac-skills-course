@@ -111,11 +111,30 @@ create index if not exists live_sessions_session_at_idx
 
 alter table public.live_sessions enable row level security;
 
+create or replace function public.has_full_course_access()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select
+    public.is_course_staff()
+    or exists (
+      select 1
+      from public.course_entitlements
+      where user_id = auth.uid()
+        and product_id = 'jan27-iac'
+        and status = 'full'
+    );
+$$;
+
 drop policy if exists "students read live sessions" on public.live_sessions;
-create policy "students read live sessions"
+drop policy if exists "full course reads live sessions" on public.live_sessions;
+create policy "full course reads live sessions"
   on public.live_sessions for select
   to authenticated
-  using (true);
+  using (public.has_full_course_access());
 
 drop policy if exists "staff manage live sessions" on public.live_sessions;
 create policy "staff manage live sessions"

@@ -1,7 +1,7 @@
 import { formatSastDateTime, isoToSastDateAndTime, sastDateAndTimeToIso } from "./dates";
 import { getSupabase } from "./supabase";
 
-export const LIVE_SESSIONS_SQL_HINT = "Paste supabase/coaching.sql in the Supabase SQL editor, then try again.";
+export const LIVE_SESSIONS_SQL_HINT = "Paste supabase/live-sessions-access.sql in the Supabase SQL editor, then try again.";
 
 export type LiveSessionWrite = {
   id?: string;
@@ -138,7 +138,44 @@ export function liveSessionIsRecorded(session: LiveSession): boolean {
   return session.status === "completed" || Boolean(session.recordingUrl);
 }
 
+export function canAccessAllLiveSessionLinks(entitlement: string | null | undefined): boolean {
+  return entitlement === "full" || entitlement === "staff";
+}
+
+export function firstLiveSessionId(sessions: LiveSession[]): string | null {
+  const ordered = [...sessions].sort((left, right) => {
+    const byTime = (left.sessionAt || "").localeCompare(right.sessionAt || "");
+    return byTime || left.id.localeCompare(right.id);
+  });
+  return ordered[0]?.id || null;
+}
+
+/** Preview students keep the first session's recording only. Full/staff keep every link. */
+export function sanitizeLiveSessionLinks(
+  session: LiveSession,
+  input: { fullAccess: boolean; firstSessionId: string | null }
+): LiveSession {
+  if (input.fullAccess) return session;
+  return {
+    ...session,
+    zoomUrl: null,
+    summaryPdfUrl: null,
+    notesPdfUrl: null,
+    recordingUrl: session.id === input.firstSessionId ? session.recordingUrl : null,
+  };
+}
+
+export function sanitizeLiveSessionsForAccess(sessions: LiveSession[], entitlement: string | null | undefined): LiveSession[] {
+  const firstSessionId = firstLiveSessionId(sessions);
+  const fullAccess = canAccessAllLiveSessionLinks(entitlement);
+  return sessions.map((session) => sanitizeLiveSessionLinks(session, { fullAccess, firstSessionId }));
+}
+
 export async function fetchLiveSessions(): Promise<LiveSession[]> {
+  const client = getSupabase();
+  if (!client) return [];
+  const rpc = await client.rpc("list_live_sessions_for_student");
+  if (!rpc.error) return ((rpc.data || []) as Record<string, unknown>[]).map(sessionFromRow);
   const listed = await listLiveSessions();
   return listed.ok ? listed.sessions : [];
 }

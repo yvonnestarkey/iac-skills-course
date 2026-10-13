@@ -1,33 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DEFAULT_COACHING_CONFIG, fetchCoachingPageConfig, type CoachingPageConfig } from "@/lib/coaching";
 import {
+  canAccessAllLiveSessionLinks,
   fetchLiveSessions,
   formatLiveSessionAt,
   liveSessionIsRecorded,
+  sanitizeLiveSessionsForAccess,
   type LiveSession,
 } from "@/lib/live-sessions";
 import InfoTooltip from "@/components/ui/InfoTooltip";
+import PurchaseCta from "@/components/commerce/PurchaseCta";
+import { useStudentSession } from "@/lib/student-session";
 
-function DescriptionBlock({ text }: { text: string }) {
-  const paragraphs = text
-    .split(/\n+/)
-    .map((part) => part.trim())
-    .filter(Boolean);
-  if (!paragraphs.length) return null;
-  return (
-    <div className="coaching-description">
-      {paragraphs.map((paragraph) => (
-        <p key={paragraph}>{paragraph}</p>
-      ))}
-    </div>
-  );
-}
-
-function SessionRow({ session }: { session: LiveSession }) {
+function SessionRow({ session, fullAccess }: { session: LiveSession; fullAccess: boolean }) {
   const recorded = liveSessionIsRecorded(session);
   const when = formatLiveSessionAt(session.sessionAt);
+  const locked = !fullAccess && !session.recordingUrl && !session.zoomUrl;
 
   return (
     <article className="live-session-row">
@@ -35,6 +25,7 @@ function SessionRow({ session }: { session: LiveSession }) {
       <div className="live-session-copy">
         <strong>{session.title}</strong>
         {session.description ? <p>{session.description}</p> : null}
+        {locked ? <p>Unlock the full course to join live Zoom sessions and later recordings.</p> : null}
       </div>
       <div className="live-session-actions">
         {recorded ? (
@@ -64,9 +55,15 @@ function SessionRow({ session }: { session: LiveSession }) {
 }
 
 export default function StudentLiveSessionsPage() {
+  const { ready: sessionReady, entitlement } = useStudentSession();
   const [config, setConfig] = useState<CoachingPageConfig>(DEFAULT_COACHING_CONFIG);
   const [sessions, setSessions] = useState<LiveSession[]>([]);
   const [ready, setReady] = useState(false);
+  const fullAccess = canAccessAllLiveSessionLinks(entitlement);
+  const visibleSessions = useMemo(
+    () => sanitizeLiveSessionsForAccess(sessions, entitlement),
+    [sessions, entitlement]
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -81,7 +78,7 @@ export default function StudentLiveSessionsPage() {
     };
   }, []);
 
-  if (!ready) return <p className="student-loading">Loading live sessions…</p>;
+  if (!ready || !sessionReady) return <p className="student-loading">Loading live sessions…</p>;
 
   return (
     <article className="lesson-body wide live-sessions-page">
@@ -89,9 +86,11 @@ export default function StudentLiveSessionsPage() {
         <p className="kicker">Live sessions</p>
         <h1>Live Coaching & Group Sessions</h1>
         <p className="lead">
-          Access upcoming Zoom links, past meeting recordings, summaries, and scribbles from the session.
+          {fullAccess
+            ? "Access upcoming Zoom links, past meeting recordings, summaries, and scribbles from the session."
+            : "Free preview includes the first live session recording. Unlock the full course for Zoom links and later sessions."}
         </p>
-        {config.live_calendar_ics_url ? (
+        {fullAccess && config.live_calendar_ics_url ? (
           <div className="live-sessions-ics">
             <a
               className="primary coaching-book-btn"
@@ -106,10 +105,10 @@ export default function StudentLiveSessionsPage() {
         ) : null}
       </section>
 
-      {sessions.length ? (
+      {visibleSessions.length ? (
         <section className="live-session-list" aria-label="Live sessions">
-          {sessions.map((session) => (
-            <SessionRow key={session.id} session={session} />
+          {visibleSessions.map((session) => (
+            <SessionRow key={session.id} session={session} fullAccess={fullAccess} />
           ))}
         </section>
       ) : (
@@ -117,6 +116,7 @@ export default function StudentLiveSessionsPage() {
           No upcoming live sessions scheduled.
         </div>
       )}
+      {fullAccess ? null : <PurchaseCta compact />}
     </article>
   );
 }
