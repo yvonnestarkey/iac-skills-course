@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import AskCoachThread from "@/components/coach/AskCoachThread";
 import AccountActivationBadge from "@/components/coach/AccountActivationBadge";
 import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
 import SetTemporaryPasswordPanel from "@/components/coach/SetTemporaryPasswordPanel";
@@ -10,8 +9,6 @@ import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
-import AuditThread from "@/components/comms/AuditThread";
-import { commsForStudent } from "@/lib/comms";
 import { cohortName, initials, lastActiveLabel } from "@/lib/course";
 import { formatSastDateTime, longDate, parseISO, today } from "@/lib/dates";
 import { completionProgress } from "@/lib/metrics";
@@ -21,7 +18,7 @@ import { fetchStudentSubmissions, type StudentSubmission } from "@/lib/student-s
 import { useStore } from "@/lib/store";
 
 export default function StudentProfile({ studentId }: { studentId: string }) {
-  const { data, setNotifyDraft, notice } = useStore();
+  const { data, notice } = useStore();
   const router = useRouter();
   const [note, setNote] = useState("");
   const [live, setLive] = useState<Student | null>(null);
@@ -126,17 +123,11 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           <button className="primary" type="button" onClick={() => router.push(`/coach/students/${student.id}/surveys`)}>
             Surveys
           </button>
-          <button
-            className="ghost"
-            onClick={() =>
-              setNotifyDraft({
-                audience: "student",
-                audienceLabel: student.name,
-                recipientIds: [student.id],
-              })
-            }
-          >
-            Send notification
+          <button className="ghost" type="button" onClick={() => router.push(`/coach/students/${student.id}/messages`)}>
+            Messages
+          </button>
+          <button className="ghost" type="button" onClick={() => router.push(`/coach/students/${student.id}/notifications`)}>
+            Notifications
           </button>
           {canSendPasswordSetupLink(student.accountActivation) ? (
             <button
@@ -301,38 +292,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       </section>
 
       <BmcrEvaluationsPanel studentId={student.id} />
-
-      <section className="card">
-        <div className="panel-head">
-          <div>
-            <h2>Notifications</h2>
-            <p className="muted small">Announcements sent to {student.name.split(" ")[0]}, and their replies.</p>
-          </div>
-          <button
-            className="ghost"
-            onClick={() =>
-              setNotifyDraft({
-                audience: "student",
-                audienceLabel: student.name,
-                recipientIds: [student.id],
-              })
-            }
-          >
-            Send notification
-          </button>
-        </div>
-        <div className="work-list">
-          {commsForStudent(data, student.id).length ? (
-            commsForStudent(data, student.id).map((comm) => (
-              <AuditThread key={comm.id} comm={comm} readerId="coach" readerRole="coach" />
-            ))
-          ) : (
-            <p className="empty">No notifications to this student yet.</p>
-          )}
-        </div>
-      </section>
-
-      <AskCoachThread student={student} />
     </div>
   );
 }

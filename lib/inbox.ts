@@ -141,20 +141,20 @@ export async function fetchInboxMessages(studentEmail?: string): Promise<{ ok: b
   return { ok: true, data: ((data || []) as InboxRow[]).map(fromRow) };
 }
 
-function notificationRowToMessage(row: Record<string, unknown>, fallbackEmail: string): InboxMessage | null {
+/** Legacy Ask-the-Coach questions may live only in notifications. Coach replies and announcements are copies of inbox/notification rows and must not join the thread. */
+export function notificationRowToMessage(row: Record<string, unknown>, fallbackEmail: string): InboxMessage | null {
   const id = row.id != null ? String(row.id) : "";
   if (!id) return null;
   const kindRaw = String(row.kind || row.type || "");
-  const from: InboxRole = row.from_role === "student" || kindRaw === "question" ? "student" : "coach";
-  const kind: InboxKind = kindRaw === "question" || kindRaw === "feedback" ? kindRaw : "reply";
+  if (kindRaw !== "question") return null;
   const body = String(row.body || row.message || row.title || "").trim();
   if (!body) return null;
   return {
     id,
     studentId: row.student_id ? String(row.student_id) : row.user_id ? String(row.user_id) : null,
     studentEmail: String(row.student_email || fallbackEmail),
-    from,
-    kind,
+    from: "student",
+    kind: "question",
     body,
     context: row.context || row.title ? String(row.context || row.title) : null,
     lessonId: row.lesson_id ? String(row.lesson_id) : null,
@@ -174,11 +174,21 @@ function matchesStudent(row: Record<string, unknown>, student: { id: string; ema
   return false;
 }
 
-function mergeThread(rows: InboxMessage[]): InboxMessage[] {
+export function threadContentKey(row: InboxMessage): string {
+  return `${row.from}|${row.body.trim()}|${(row.createdAt || "").slice(0, 16)}`;
+}
+
+export function mergeThread(rows: InboxMessage[]): InboxMessage[] {
   const unique = new Map<string, InboxMessage>();
-  rows.forEach((row) => {
-    if (row?.id) unique.set(row.id, row);
-  });
+  const seen = new Set<string>();
+  for (const row of rows) {
+    if (!row) continue;
+    if (row.id && unique.has(row.id)) continue;
+    const content = threadContentKey(row);
+    if (seen.has(content)) continue;
+    unique.set(row.id || content, row);
+    seen.add(content);
+  }
   return [...unique.values()].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 }
 
@@ -190,7 +200,7 @@ export function studentRowMatches(
   return matchesStudent(row, student);
 }
 
-/** Coach student-detail thread from notifications (and inbox_messages if present). */
+/** Coach student-detail thread: inbox first, plus leftover question notifications. */
 export async function fetchCoachStudentThread(student: {
   id: string;
   email: string;
@@ -202,6 +212,13 @@ export async function fetchCoachStudentThread(student: {
   const merged: InboxMessage[] = [];
 
   try {
+    let inboxQuery = client.from("inbox_messages").select("*").order("created_at", { ascending: true });
+    if (email) inboxQuery = inboxQuery.eq("student_email", email);
+    else if (isUserId(student.id)) inboxQuery = inboxQuery.eq("student_id", student.id);
+    const inbox = await inboxQuery;
+    if (inbox.error) console.error("inbox_messages query failed", inbox.error);
+    else (inbox.data || []).forEach((row) => merged.push(fromRow(row as InboxRow)));
+
     if (email) {
       const byEmail = await client
         .from("notifications")
@@ -231,13 +248,6 @@ export async function fetchCoachStudentThread(student: {
         });
       }
     }
-
-    let inboxQuery = client.from("inbox_messages").select("*").order("created_at", { ascending: true });
-    if (email) inboxQuery = inboxQuery.eq("student_email", email);
-    else if (isUserId(student.id)) inboxQuery = inboxQuery.eq("student_id", student.id);
-    const inbox = await inboxQuery;
-    if (inbox.error) console.error("inbox_messages query failed", inbox.error);
-    else (inbox.data || []).forEach((row) => merged.push(fromRow(row as InboxRow)));
   } catch (error) {
     console.error("fetchCoachStudentThread failed", error);
     return {

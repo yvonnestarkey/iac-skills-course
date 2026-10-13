@@ -131,6 +131,56 @@ export async function fetchOwnNotifications(): Promise<{
   }
 }
 
+export async function fetchStudentNotifications(student: {
+  id: string;
+  email: string;
+}): Promise<{ ok: boolean; error?: string; data: StudentNotification[] }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
+
+  const email = student.email.trim();
+  const seen = new Set<string>();
+  const merged: StudentNotification[] = [];
+
+  const add = (rows: unknown[]) => {
+    asNotificationList(rows).forEach((item) => {
+      if (seen.has(item.id)) return;
+      seen.add(item.id);
+      merged.push(item);
+    });
+  };
+
+  try {
+    if (email) {
+      const byEmail = await client
+        .from("notifications")
+        .select("*")
+        .eq("student_email", email)
+        .order("created_at", { ascending: false });
+      if (byEmail.error) console.error("notifications email query failed", byEmail.error);
+      else add(byEmail.data || []);
+    }
+
+    if (isUserId(student.id)) {
+      const byId = await client
+        .from("notifications")
+        .select("*")
+        .or(`student_id.eq.${student.id},user_id.eq.${student.id}`)
+        .order("created_at", { ascending: false });
+      if (byId.error) console.error("notifications student_id query failed", byId.error);
+      else add(byId.data || []);
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Could not load this student's notifications.",
+      data: merged.sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+    };
+  }
+
+  return { ok: true, data: merged.sort((a, b) => b.createdAt.localeCompare(a.createdAt)) };
+}
+
 export async function fetchUnreadNotifications(userId: string): Promise<{
   ok: boolean;
   error?: string;
