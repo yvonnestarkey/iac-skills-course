@@ -111,6 +111,46 @@ export function onboardingStatus(student: { onboardingCompleted?: boolean; onboa
   return "pending";
 }
 
+export function onboardingSurveyAnswers(student: {
+  onboardingCompleted?: boolean;
+  onboardingSkipped?: boolean;
+  phone?: string | null;
+  accountabilityEmail?: string | null;
+  country?: string | null;
+  ctaUniversity?: string | null;
+  ctaYear?: string | null;
+  ctaAttempts?: string | null;
+  iacAttempts?: string | null;
+  repeatStudent?: boolean;
+  coachingGoals?: string | null;
+  struggleAreas?: string | null;
+  additionalNotes?: string | null;
+}): { label: string; value: string; type: "short_text" | "long_text" }[] {
+  const rows: { label: string; value: string; type: "short_text" | "long_text" }[] = [];
+  const push = (label: string, value: string | null | undefined, type: "short_text" | "long_text" = "short_text") => {
+    const text = (value || "").trim();
+    if (text) rows.push({ label, value: text, type });
+  };
+  const status = onboardingStatus(student);
+  if (student.onboardingCompleted || student.onboardingSkipped || student.country || student.coachingGoals || student.struggleAreas) {
+    push("Onboarding", onboardingStatusLabel(status));
+  }
+  if (student.onboardingCompleted) {
+    push("Written the IAC exam before", student.repeatStudent ? "Yes" : "No");
+  }
+  push("IAC attempts", student.iacAttempts);
+  push("Country", student.country);
+  push("CTA / PGDA institution", student.ctaUniversity);
+  push("Year CTA / PGDA passed", student.ctaYear);
+  push("CTA / PGDA attempts", student.ctaAttempts);
+  push("Where they struggle", student.struggleAreas, "long_text");
+  push("What they want from coaching", student.coachingGoals, "long_text");
+  push("Additional notes", student.additionalNotes, "long_text");
+  push("Phone", student.phone);
+  push("Accountability email", student.accountabilityEmail);
+  return rows;
+}
+
 export function onboardingStatusLabel(status: "completed" | "skipped" | "pending"): string {
   if (status === "completed") return "Completed";
   if (status === "skipped") return "Skipped";
@@ -270,10 +310,12 @@ export interface RosterOnboardingFields {
   country: string | null;
   ctaUniversity: string | null;
   ctaYear: string | null;
+  ctaAttempts: string | null;
   iacAttempts: string | null;
   repeatStudent: boolean;
   coachingGoals: string | null;
   struggleAreas: string | null;
+  additionalNotes: string | null;
   onboardingCompleted: boolean;
   onboardingSkipped: boolean;
 }
@@ -285,6 +327,7 @@ export function parseRosterOnboarding(row: Record<string, unknown>): RosterOnboa
     country: pickText(row.country, demo.country),
     ctaUniversity: pickText(row.cta_university, row.cta_institution, demo.cta_institution, demo.cta_university),
     ctaYear: pickText(row.cta_year, row.cta_year_passed, demo.cta_year, demo.cta_year_passed),
+    ctaAttempts: pickText(row.cta_attempts, demo.cta_attempts),
     iacAttempts: pickText(row.iac_attempts, row.exam_attempts, demo.exam_attempts, demo.iac_attempt_count),
     repeatStudent: pickBool(
       row.repeat_student,
@@ -294,6 +337,7 @@ export function parseRosterOnboarding(row: Record<string, unknown>): RosterOnboa
     ),
     coachingGoals: pickText(row.coaching_goals, notes.coaching_goals, notes.coaching_hopes),
     struggleAreas: pickText(row.struggle_areas, notes.struggle_areas, notes.struggling_areas),
+    additionalNotes: pickText(row.additional_notes, notes.additional_notes),
     onboardingCompleted: pickBool(row.onboarding_completed),
     onboardingSkipped: pickBool(row.onboarding_skipped),
   };

@@ -9,6 +9,7 @@ import SetTemporaryPasswordPanel from "@/components/coach/SetTemporaryPasswordPa
 import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
+import { onboardingSurveyAnswers } from "@/lib/roster";
 import type { Student } from "@/lib/types";
 import AuditThread from "@/components/comms/AuditThread";
 import { commsForStudent } from "@/lib/comms";
@@ -65,8 +66,10 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         });
       });
       setLessonTitles(titles);
-      setSurveyPacks(
-        packs.map((pack) => ({
+      const onboardingAnswers = onboardingSurveyAnswers(found || {});
+      setSurveyPacks([
+        ...(onboardingAnswers.length ? [{ title: "Onboarding", answers: onboardingAnswers }] : []),
+        ...packs.map((pack) => ({
           title: pack.survey.title,
           answers: pack.survey.questions
             .filter((question) => questionCollectsAnswer(question.type) && !isInfoBlock(question.type) && !isBmcrBlock(question.type))
@@ -76,8 +79,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
               type: question.type,
             }))
             .filter((item) => formatSurveyAnswer(item.value, item.type)),
-        }))
-      );
+        })),
+      ]);
       setLoadingLive(false);
     });
     return () => {
@@ -329,7 +332,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       <BmcrEvaluationsPanel studentId={student.id} />
 
       <section className="card">
-        <h2>Survey responses</h2>
+        <h2>Surveys</h2>
+        <p className="muted small">Onboarding details and background, then any later survey responses.</p>
         {surveyPacks.length ? (
           <div className="work-list">
             {surveyPacks.map((pack) => (
