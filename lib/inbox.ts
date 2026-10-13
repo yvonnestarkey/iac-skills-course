@@ -410,6 +410,7 @@ export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean
         title: draft.context || "Coach reply",
         message: body,
         kind: "reply",
+        audience: "student",
       });
     }
   }

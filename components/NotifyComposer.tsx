@@ -55,13 +55,14 @@ export default function NotifyComposer() {
     const targets = await resolveNotificationTargets({
       audience: notifyDraft.audience,
       recipientIds: notifyDraft.recipientIds,
-      students: data.students.map((student) => ({ id: student.id, email: student.email })),
+      students: data.students.map((student) => ({ id: student.id, email: student.email, cohort: student.cohort })),
     });
     const rows = notificationRowsForStudents({
       students: targets,
       title: subject,
       message: body,
       kind: "announcement",
+      audience: notifyDraft.audience,
     });
 
     if (!rows.length) {

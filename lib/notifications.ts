@@ -1,3 +1,4 @@
+import { normalizeCohortId } from "./cohorts";
 import { getSupabase } from "./supabase";
 import { fetchStudentProfiles } from "./profiles";
 import type { CommunicationAudience } from "./types";
@@ -239,6 +240,11 @@ export async function markOwnNotificationsRead(ids?: string[]): Promise<{ ok: bo
 export interface NotificationTarget {
   id: string;
   email: string;
+  cohort?: string;
+}
+
+function asTarget(row: { id: string; email: string; cohort?: string | null }): NotificationTarget {
+  return { id: row.id, email: row.email, cohort: normalizeCohortId(row.cohort) };
 }
 
 export function notificationRowsForStudents(input: {
@@ -246,9 +252,14 @@ export function notificationRowsForStudents(input: {
   title: string;
   message: string;
   kind: NotificationType;
+  audience?: CommunicationAudience;
+  broadcastId?: string;
 }) {
   const title = input.title.trim();
   const message = input.message.trim();
+  const announcement = input.kind === "announcement";
+  const audience = input.audience || (announcement && input.students.length > 1 ? "cohort" : "student");
+  const broadcastId = announcement ? input.broadcastId || crypto.randomUUID() : null;
   return input.students.filter((student) => isUserId(student.id)).map((student) => ({
     user_id: student.id,
     student_id: student.id,
@@ -260,20 +271,23 @@ export function notificationRowsForStudents(input: {
     message,
     body: message,
     read: false,
+    audience,
+    cohort: student.cohort || null,
+    broadcast_id: broadcastId,
   }));
 }
 
 export async function resolveNotificationTargets(input: {
   audience: CommunicationAudience;
   recipientIds: string[];
-  students?: { id: string; email: string }[];
+  students?: { id: string; email: string; cohort?: string }[];
 }): Promise<NotificationTarget[]> {
   const roster = await fetchStudentProfiles();
   const live = roster.data || [];
-  const byId = new Map(live.map((row) => [row.id, { id: row.id, email: row.email }]));
-  const byEmail = new Map(live.map((row) => [row.email.toLowerCase(), { id: row.id, email: row.email }]));
+  const byId = new Map(live.map((row) => [row.id, asTarget(row)]));
+  const byEmail = new Map(live.map((row) => [row.email.toLowerCase(), asTarget(row)]));
 
-  if (input.audience === "all") return live.map((row) => ({ id: row.id, email: row.email }));
+  if (input.audience === "all") return live.map((row) => asTarget(row));
 
   const matched = new Map<string, NotificationTarget>();
   input.recipientIds.forEach((id) => {
@@ -287,7 +301,7 @@ export async function resolveNotificationTargets(input: {
   });
 
   if (!matched.size && (input.audience === "cohort" || input.audience === "filtered")) {
-    return live.map((row) => ({ id: row.id, email: row.email }));
+    return live.map((row) => asTarget(row));
   }
   return [...matched.values()];
 }
@@ -301,6 +315,7 @@ export async function insertCoachNotifications(input: {
   title: string;
   message: string;
   kind: NotificationType;
+  audience?: CommunicationAudience;
 }): Promise<{ ok: boolean; count: number; error?: string }> {
   const client = getSupabase();
   if (!client) return { ok: false, count: 0, error: "Supabase is not configured." };
@@ -364,6 +379,7 @@ export async function notifyAssignmentFeedback(input: {
     title: input.title,
     message: input.message,
     kind: "assignment_feedback",
+    audience: "student",
   });
 }
 
@@ -381,5 +397,6 @@ export async function deliverAnnouncement(input: {
     title: input.title,
     message: input.message,
     kind: "announcement",
+    audience: input.audience,
   });
 }

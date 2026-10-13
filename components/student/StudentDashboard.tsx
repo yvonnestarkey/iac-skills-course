@@ -121,7 +121,7 @@ export default function StudentDashboard() {
         </Link>
         <Link href={notifyHref} className="student-hub-card">
           <strong>Notifications</strong>
-          <p>Course announcements and coach notes.</p>
+          <p>Course announcements, including anything sent to your cohort before you joined.</p>
           {unreadCount ? <span className="pill">{unreadCount} unread</span> : null}
         </Link>
         <Link href="/student/planner" className="student-hub-card">
