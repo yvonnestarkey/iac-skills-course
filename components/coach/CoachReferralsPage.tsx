@@ -84,7 +84,9 @@ export default function CoachReferralsPage() {
         <>
           <section className="card">
             <h2>Professional colleagues</h2>
-            <p className="muted small">Roelien is first. Her code is 15% of the course price, paid separately.</p>
+            <p className="muted small">
+              Roelien is first. Students who use her code get 5% off. She is owed 15% of the course price, paid separately.
+            </p>
             <div className="work-list">
               {data.partners.map((partner) => (
                 <article className="work-item" key={partner.id}>
@@ -96,7 +98,7 @@ export default function CoachReferralsPage() {
                     Code <strong>{partner.code}</strong>
                   </p>
                   <p className="muted small">
-                    {partner.rate_bps / 100}% of course price · {money(partner.owed_cents)} owed · pay separately
+                    Student 5% off · {partner.rate_bps / 100}% of course price owed to {partner.name} · {money(partner.owed_cents)} · pay separately
                   </p>
                 </article>
               ))}

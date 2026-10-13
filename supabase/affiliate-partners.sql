@@ -1,5 +1,6 @@
 -- Professional colleague affiliate codes (Roelien first).
--- Student referral credit stays on referral_codes. Colleague payouts are a record only.
+-- Students who use a colleague code still get 5% off at checkout.
+-- Colleague payouts (15% of course price) are a record only — pay separately.
 -- Safe to re-run.
 
 create table if not exists public.affiliate_partners (

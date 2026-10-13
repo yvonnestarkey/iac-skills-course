@@ -79,7 +79,7 @@ export async function GET() {
       amount_cents: Number(row.amount_cents || 0),
       payout: professional ? "external" : "credit",
       status: String(row.status),
-      rate_label: professional ? "15% of course price · pay separately" : "10% course credit",
+      rate_label: professional ? "Student 5% off · 15% of course price owed · pay separately" : "Student 5% off · 10% course credit",
     };
   });
 

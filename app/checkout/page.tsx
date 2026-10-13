@@ -57,7 +57,7 @@ export default function CheckoutPage() {
         <label className="student-notes-label" htmlFor="referral">
           Referral code
         </label>
-        <input id="referral" value={referral} onChange={(event) => setReferral(event.target.value)} placeholder="JAN27-XXXXXXXX" />
+        <input id="referral" value={referral} onChange={(event) => setReferral(event.target.value)} placeholder="JAN27-XXXXXXXX or ROELIENJ21HD27" />
         <label className="student-notes-label" htmlFor="promo">
           Promotional code
         </label>

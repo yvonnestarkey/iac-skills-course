@@ -301,6 +301,7 @@ export function checkoutDiscount(params: {
   if (params.referralCode && params.promoPercent && !canStackDiscounts()) {
     throw new Error("Referral and promotional discounts cannot be combined.");
   }
+  // Student and professional codes (including Roelien) all give the purchaser 5% off.
   if (params.referralCode) return refereePerInstallmentCents(params.option, params.product);
   if (params.promoPercent) {
     const base = params.option === "plan_6" ? params.product.plan_amount_cents : params.product.once_off_amount_cents;

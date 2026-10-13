@@ -7,15 +7,29 @@ import {
   professionalPayoutCents,
   ROELIEN_AFFILIATE,
 } from "./affiliate-partners";
-import { FALLBACK_PRODUCT, referrerCreditCents } from "./commerce";
+import { FALLBACK_PRODUCT, refereePerInstallmentCents, referrerCreditCents } from "./commerce";
+import { checkoutDiscount } from "./stripe-commerce";
 
 test("Roelien's professional code is 15% of the course price and is paid separately", () => {
   assert.equal(ROELIEN_AFFILIATE.code, "ROELIENJ21HD27");
   assert.equal(ROELIEN_AFFILIATE.rate_bps, 1500);
+  assert.equal(ROELIEN_AFFILIATE.referee_bps, 500);
   assert.equal(ROELIEN_AFFILIATE.payout, "external");
   assert.equal(professionalPayoutCents(ROELIEN_AFFILIATE.rate_bps), 4905);
   assert.equal(findSeededProfessionalAffiliate("roelienj21hd27")?.name, "Roelien");
   assert.equal(referrerCreditCents("once_off", FALLBACK_PRODUCT), 3270);
+});
+
+test("a student using Roelien's code still gets 5% off", () => {
+  assert.equal(
+    checkoutDiscount({ option: "once_off", product: FALLBACK_PRODUCT, referralCode: ROELIEN_AFFILIATE.code }),
+    refereePerInstallmentCents("once_off", FALLBACK_PRODUCT)
+  );
+  assert.equal(
+    checkoutDiscount({ option: "plan_6", product: FALLBACK_PRODUCT, referralCode: ROELIEN_AFFILIATE.code }),
+    refereePerInstallmentCents("plan_6", FALLBACK_PRODUCT)
+  );
+  assert.equal(checkoutDiscount({ option: "once_off", product: FALLBACK_PRODUCT, referralCode: ROELIEN_AFFILIATE.code }), 1635);
 });
 
 test("coach tools expose Referrals instead of Waitlist", () => {

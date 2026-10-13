@@ -11,6 +11,7 @@ export interface ProfessionalAffiliate {
   code: string;
   kind: "professional";
   rate_bps: number;
+  referee_bps: number;
   payout: "external";
 }
 
@@ -20,6 +21,7 @@ export const ROELIEN_AFFILIATE: ProfessionalAffiliate = {
   code: "ROELIENJ21HD27",
   kind: "professional",
   rate_bps: 1500,
+  referee_bps: 500,
   payout: "external",
 };
 
@@ -72,6 +74,7 @@ export async function ensureProfessionalAffiliates(): Promise<ProfessionalAffili
       code: normalizeAffiliateCode(String(row.code || "")),
       kind: "professional" as const,
       rate_bps: Number(row.rate_bps || 1500),
+      referee_bps: 500,
       payout: "external" as const,
     }))
     .filter((row) => row.code);
