@@ -70,11 +70,11 @@ export default function StudentDashboard() {
           </p>
           <Link href="/coach" className="student-hub-card">
             <strong>Coach tools</strong>
-            <p>Waitlist, Add Student, student lists, payments, and course admin.</p>
+            <p>Referrals, Add Student, student lists, payments, and course admin.</p>
           </Link>
-          <Link href="/coach/waitlist" className="student-hub-card">
-            <strong>Waitlist</strong>
-            <p>See who is waiting and send one invitation at a time.</p>
+          <Link href="/coach/referrals" className="student-hub-card">
+            <strong>Referrals</strong>
+            <p>Successful student and professional colleague referrals.</p>
           </Link>
           <Link href="/coach/students/new" className="student-hub-card">
             <strong>Add Student</strong>
