@@ -106,11 +106,8 @@ export function parsePortalTimestamp(value: string | Date | null | undefined): D
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
-/** Example: "Sep 22, 2026 @ 18:00 SAST" — identical for every browser timezone. */
-export function formatSastDateTime(value: string | Date | null | undefined): string {
-  const date = parsePortalTimestamp(value);
-  if (!date) return "";
-  const parts = new Intl.DateTimeFormat("en-US", {
+function sastParts(date: Date): Intl.DateTimeFormatPart[] {
+  return new Intl.DateTimeFormat("en-US", {
     timeZone: SAST_TIMEZONE,
     year: "numeric",
     month: "short",
@@ -120,6 +117,51 @@ export function formatSastDateTime(value: string | Date | null | undefined): str
     hour12: false,
     hourCycle: "h23",
   }).formatToParts(date);
+}
+
+function sastNumericParts(date: Date): Intl.DateTimeFormatPart[] {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: SAST_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    hourCycle: "h23",
+  }).formatToParts(date);
+}
+
+/** Wall-clock SAST date + time → UTC ISO. Empty or invalid values return null. */
+export function sastDateAndTimeToIso(date: string, time: string): string | null {
+  const day = date.trim();
+  const clock = time.trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return null;
+  const match = clock.match(/^(\d{1,2}):(\d{2})$/);
+  if (!match) return null;
+  const hour = match[1].padStart(2, "0");
+  return parsePortalTimestamp(`${day}T${hour}:${match[2]}:00`)?.toISOString() || null;
+}
+
+/** UTC ISO → date (`YYYY-MM-DD`) and time (`HH:mm`) in SAST for form fields. */
+export function isoToSastDateAndTime(value: string | Date | null | undefined): { date: string; time: string } {
+  const parsed = parsePortalTimestamp(value);
+  if (!parsed) return { date: "", time: "" };
+  const parts = sastNumericParts(parsed);
+  const year = partValue(parts, "year");
+  const month = partValue(parts, "month").padStart(2, "0");
+  const day = partValue(parts, "day").padStart(2, "0");
+  const hour = partValue(parts, "hour").padStart(2, "0");
+  const minute = partValue(parts, "minute").padStart(2, "0");
+  if (!year || !month || !day) return { date: "", time: "" };
+  return { date: `${year}-${month}-${day}`, time: `${hour}:${minute}` };
+}
+
+/** Example: "Sep 22, 2026 @ 18:00 SAST" — identical for every browser timezone. */
+export function formatSastDateTime(value: string | Date | null | undefined): string {
+  const date = parsePortalTimestamp(value);
+  if (!date) return "";
+  const parts = sastParts(date);
   const month = partValue(parts, "month");
   const day = partValue(parts, "day");
   const year = partValue(parts, "year");

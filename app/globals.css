@@ -6825,3 +6825,58 @@ a.live-session-watch:hover {
   font-size: 14px;
 }
 
+.live-session-manager {
+  margin-top: 18px;
+}
+
+.live-session-when-fields {
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.live-session-when-fields .plan-field {
+  flex: 1;
+  min-width: 140px;
+}
+
+.live-session-when-fields input[type="date"],
+.live-session-when-fields input[type="time"] {
+  width: 100%;
+}
+
+.live-session-file {
+  margin-top: 8px;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.live-session-admin-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.live-session-admin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.live-session-admin-row strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.live-session-admin-row .actions {
+  margin-top: 0;
+  flex-shrink: 0;
+}
+

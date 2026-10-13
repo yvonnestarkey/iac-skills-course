@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import ContentManager from "@/components/coach/ContentManager";
+import LiveSessionsManager from "@/components/coach/LiveSessionsManager";
 
 export default function CourseCreatorPage() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function CourseCreatorPage() {
         ← Coach home
       </button>
       <ContentManager />
+      <LiveSessionsManager />
     </div>
   );
 }

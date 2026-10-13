@@ -1,5 +1,20 @@
-import { formatSastDateTime } from "./dates";
+import { formatSastDateTime, isoToSastDateAndTime, sastDateAndTimeToIso } from "./dates";
 import { getSupabase } from "./supabase";
+
+export const LIVE_SESSIONS_SQL_HINT = "Paste supabase/coaching.sql in the Supabase SQL editor, then try again.";
+
+export type LiveSessionWrite = {
+  id?: string;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  status: LiveSessionStatus;
+  zoomUrl: string;
+  recordingUrl: string;
+  summaryPdfUrl: string;
+  notesPdfUrl: string;
+};
 
 export type LiveSessionStatus = "upcoming" | "completed" | "cancelled";
 
@@ -39,7 +54,14 @@ function tableMissing(message: string): boolean {
   return /does not exist|schema cache|could not find/i.test(message);
 }
 
-function sessionFromRow(row: Record<string, unknown>): LiveSession {
+function liveSessionError(message: string): string {
+  if (tableMissing(message) || /row-level security|not allowed|policy|unauthorized|403/i.test(message)) {
+    return LIVE_SESSIONS_SQL_HINT;
+  }
+  return message || "Could not save that live session.";
+}
+
+export function sessionFromRow(row: Record<string, unknown>): LiveSession {
   return {
     id: String(row.id),
     title: asText(row.title) || "Live session",
@@ -53,6 +75,61 @@ function sessionFromRow(row: Record<string, unknown>): LiveSession {
   };
 }
 
+export function emptyLiveSessionWrite(): LiveSessionWrite {
+  return {
+    title: "",
+    description: "",
+    date: "",
+    time: "18:00",
+    status: "upcoming",
+    zoomUrl: "",
+    recordingUrl: "",
+    summaryPdfUrl: "",
+    notesPdfUrl: "",
+  };
+}
+
+export function liveSessionToWrite(session: LiveSession): LiveSessionWrite {
+  const when = isoToSastDateAndTime(session.sessionAt);
+  return {
+    id: session.id,
+    title: session.title,
+    description: session.description,
+    date: when.date,
+    time: when.time || "18:00",
+    status: session.status,
+    zoomUrl: session.zoomUrl || "",
+    recordingUrl: session.recordingUrl || "",
+    summaryPdfUrl: session.summaryPdfUrl || "",
+    notesPdfUrl: session.notesPdfUrl || "",
+  };
+}
+
+/** Build the live_sessions row. Recording URL marks the session completed unless cancelled. */
+export function liveSessionWriteRow(input: LiveSessionWrite): { ok: true; row: Record<string, unknown> } | { ok: false; error: string } {
+  const title = input.title.trim();
+  if (!title) return { ok: false, error: "Give the session a title." };
+  const sessionAt = sastDateAndTimeToIso(input.date, input.time);
+  if (!sessionAt) return { ok: false, error: "Set the date and time in SAST." };
+  const recordingUrl = asText(input.recordingUrl);
+  const status: LiveSessionStatus =
+    input.status === "cancelled" ? "cancelled" : recordingUrl ? "completed" : asStatus(input.status);
+  return {
+    ok: true,
+    row: {
+      title,
+      description: input.description.trim(),
+      session_at: sessionAt,
+      status,
+      zoom_url: asText(input.zoomUrl),
+      recording_url: recordingUrl,
+      summary_pdf_url: asText(input.summaryPdfUrl),
+      notes_pdf_url: asText(input.notesPdfUrl),
+      updated_at: new Date().toISOString(),
+    },
+  };
+}
+
 export function formatLiveSessionAt(iso: string | Date | null | undefined): string {
   return formatSastDateTime(iso);
 }
@@ -62,12 +139,53 @@ export function liveSessionIsRecorded(session: LiveSession): boolean {
 }
 
 export async function fetchLiveSessions(): Promise<LiveSession[]> {
+  const listed = await listLiveSessions();
+  return listed.ok ? listed.sessions : [];
+}
+
+export async function listLiveSessions(): Promise<{ ok: true; sessions: LiveSession[] } | { ok: false; error: string }> {
   const client = getSupabase();
-  if (!client) return [];
+  if (!client) return { ok: false, error: "Supabase is not configured." };
   const { data, error } = await client.from("live_sessions").select("*").order("session_at", { ascending: true });
-  if (error) {
-    if (!tableMissing(error.message)) console.error("live_sessions", error.message);
-    return [];
+  if (error) return { ok: false, error: liveSessionError(error.message) };
+  return { ok: true, sessions: ((data || []) as Record<string, unknown>[]).map(sessionFromRow) };
+}
+
+export async function saveLiveSession(input: LiveSessionWrite): Promise<{ ok: true; session: LiveSession } | { ok: false; error: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const built = liveSessionWriteRow(input);
+  if (built.ok === false) return { ok: false, error: built.error };
+  const query = input.id
+    ? client.from("live_sessions").update(built.row).eq("id", input.id).select("*").maybeSingle()
+    : client.from("live_sessions").insert(built.row).select("*").maybeSingle();
+  const { data, error } = await query;
+  if (error || !data) return { ok: false, error: liveSessionError(error?.message || "Could not save that live session.") };
+  return { ok: true, session: sessionFromRow(data as Record<string, unknown>) };
+}
+
+export async function deleteLiveSession(id: string): Promise<{ ok: true } | { ok: false; error: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const { error } = await client.from("live_sessions").delete().eq("id", id);
+  if (error) return { ok: false, error: liveSessionError(error.message) };
+  return { ok: true };
+}
+
+export async function uploadLiveSessionPdf(file: File, kind: "summary" | "notes"): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const name = file.name.toLowerCase();
+  if (!file.type.includes("pdf") && !name.endsWith(".pdf")) {
+    return { ok: false, error: "Please upload a PDF file." };
   }
-  return ((data || []) as Record<string, unknown>[]).map(sessionFromRow);
+  const path = `live-sessions/${kind}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.pdf`;
+  const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
+    upsert: true,
+    contentType: file.type || "application/pdf",
+  });
+  if (uploaded.error) return { ok: false, error: "Could not upload that PDF. Paste a public PDF URL instead." };
+  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
+  if (!data?.publicUrl) return { ok: false, error: "Could not get a public URL for that PDF." };
+  return { ok: true, url: data.publicUrl };
 }
