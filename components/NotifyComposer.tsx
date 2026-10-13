@@ -124,58 +124,64 @@ export default function NotifyComposer() {
   return (
     <div className="modal-backdrop">
       <section className="modal notify-modal" role="dialog" aria-label="Send a course announcement">
-        <h2>Send a notification</h2>
-        <p>
-          To <strong>{notifyDraft.audienceLabel}</strong>
-          {notifyDraft.audience !== "student" ? (
-            <span className="muted"> · {audienceCopy(notifyDraft.audience, count)}</span>
-          ) : null}
-        </p>
-        {notifyDraft.audience !== "student" && recipients.length ? (
-          <p className="muted small">{recipients.map((s) => s.name).join(", ")}</p>
-        ) : null}
-        <div className="plan-field">
-          <label htmlFor="notify-subject">
-            <strong>Subject</strong>
-          </label>
-          <input
-            id="notify-subject"
-            type="text"
-            className="select-line"
-            placeholder="Thursday live session"
-            value={subject}
-            onChange={(event) => setSubject(event.target.value)}
-            autoFocus
-          />
+        <div className="notify-modal-head">
+          <div>
+            <h2>Send a notification</h2>
+            <p>
+              To <strong>{notifyDraft.audienceLabel}</strong>
+              {notifyDraft.audience !== "student" ? (
+                <span className="muted"> · {audienceCopy(notifyDraft.audience, count)}</span>
+              ) : null}
+            </p>
+          </div>
+          <div className="notify-modal-actions">
+            <button className="primary" onClick={send} disabled={!subject.trim() || !body.trim() || !count || busy}>
+              {busy ? "Sending…" : "Send notification"}
+            </button>
+            <button className="ghost" onClick={() => setNotifyDraft(null)}>
+              Cancel
+            </button>
+          </div>
         </div>
-        <div className="plan-field">
-          <label htmlFor="notify-body">
-            <strong>Message</strong>
-          </label>
-          <ComposerBox
-            id="notify-body"
-            value={body}
-            onChange={setBody}
-            placeholder="What should they know? Paste a lesson URL or insert a link."
-            rows={5}
-            disabled={busy}
-          />
-          {body.trim() ? (
-            <div className="notify-preview">
-              <p className="muted small">Preview</p>
-              <p className="notice-body">
-                <LinkedText text={body} />
-              </p>
-            </div>
+        <div className="notify-modal-body">
+          {notifyDraft.audience !== "student" && recipients.length ? (
+            <p className="muted small">{recipients.map((s) => s.name).join(", ")}</p>
           ) : null}
-        </div>
-        <div className="modal-actions">
-          <button className="primary" onClick={send} disabled={!subject.trim() || !body.trim() || !count || busy}>
-            {busy ? "Sending…" : "Send notification"}
-          </button>
-          <button className="ghost" onClick={() => setNotifyDraft(null)}>
-            Cancel
-          </button>
+          <div className="plan-field">
+            <label htmlFor="notify-subject">
+              <strong>Subject</strong>
+            </label>
+            <input
+              id="notify-subject"
+              type="text"
+              className="select-line"
+              placeholder="Thursday live session"
+              value={subject}
+              onChange={(event) => setSubject(event.target.value)}
+              autoFocus
+            />
+          </div>
+          <div className="plan-field">
+            <label htmlFor="notify-body">
+              <strong>Message</strong>
+            </label>
+            <ComposerBox
+              id="notify-body"
+              value={body}
+              onChange={setBody}
+              placeholder="What should they know? Paste a lesson URL or insert a link."
+              rows={5}
+              disabled={busy}
+            />
+            {body.trim() ? (
+              <div className="notify-preview">
+                <p className="muted small">Preview</p>
+                <p className="notice-body">
+                  <LinkedText text={body} />
+                </p>
+              </div>
+            ) : null}
+          </div>
         </div>
       </section>
     </div>

@@ -2801,11 +2801,42 @@ input[type="tel"]:focus {
 
 .notify-modal {
   max-width: 560px;
-  overflow: visible;
+  max-height: min(90vh, 820px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.notify-modal .modal-actions {
-  margin-top: 20px;
+.notify-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.notify-modal-head h2 {
+  margin-bottom: 4px;
+}
+
+.notify-modal-head p {
+  margin: 0;
+}
+
+.notify-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.notify-modal-body {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-top: 14px;
 }
 
 .notify-send-row {
@@ -4214,6 +4245,8 @@ a.live-session-watch:hover {
   border: 1px dashed var(--line);
   border-radius: 12px;
   background: #f4f8f7;
+  max-height: min(36vh, 280px);
+  overflow-y: auto;
 }
 
 .notify-preview .muted {
