@@ -81,3 +81,56 @@ test("student profile surveys include onboarding details and background", () => 
   assert.equal(answers.find((row) => row.label === "Additional notes")?.value, "Works full time");
   assert.equal(answers.find((row) => row.label === "Phone")?.value, "082 000 0000");
 });
+
+test("student survey page packs onboarding ahead of later surveys", async () => {
+  const { studentSurveyPacksFrom } = await import("./student-survey-packs");
+  const packs = studentSurveyPacksFrom(
+    {
+      id: "s1",
+      name: "Ada",
+      email: "ada@example.com",
+      cohort: "jan-2027",
+      status: "active",
+      onboardingCompleted: true,
+      country: "Namibia",
+      coachingGoals: "Pass in January",
+    },
+    [
+      {
+        survey: {
+          id: "sv1",
+          title: "Task 1 survey",
+          description: "",
+          slug: "task-1",
+          isActive: true,
+          isAssignment: false,
+          requiresGrade: false,
+          pdfUrl: "",
+          questions: [{ id: "q1", type: "short_text", label: "Biggest win", helperText: "", required: false, options: [], resourceUrl: "" }],
+          createdAt: "",
+          updatedAt: "",
+        },
+        response: {
+          id: "r1",
+          surveyId: "sv1",
+          studentId: "s1",
+          studentName: "Ada",
+          studentEmail: "ada@example.com",
+          answers: { q1: "Time" },
+          status: "submitted",
+          grade: null,
+          feedback: "",
+          feedbackFileUrl: "",
+          gradedBy: "",
+          gradedByName: "",
+          gradedAt: "",
+          createdAt: "",
+          updatedAt: "",
+        },
+      },
+    ]
+  );
+  assert.equal(packs[0].title, "Onboarding");
+  assert.equal(packs[1].title, "Task 1 survey");
+  assert.equal(packs[1].answers[0].value, "Time");
+});
