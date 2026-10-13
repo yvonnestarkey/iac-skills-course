@@ -1,0 +1,2340 @@
+{
+  "paper_id": "iac-2026-p3",
+  "status": "draft — Buried Treasure classified row by row with Yvonne, 13 Oct 2026 (12:25 to 13:49); components proposed from the case sections and the solution headings.",
+  "notes": [
+    "Technical marks exclude professional marks (X1, Y1, Y2, Y3).",
+    "Row numbers are the marker's report rows. Q1(a) rows 5 to 49 are the risks, Q1(b) rows 55 to 99, Q2(c) rows 1 to 19, Q2(d) rows 23 to 41, Q2(e) rows 45 to 67. Where one row holds sub-marks of different classes they are rows N.1 and N.2.",
+    "Q1(a): components are the six sections of the case (proposed 13 Oct 2026); insurance (rows 25 and 41) sits under Section 2. Marker row 19 (1.7.2, dividend reduces retained funds) is omitted from the official solution, so it carries no marks in the model.",
+    "Q1(b): four steps of the solution; plan marks per row are read from the updated solution (labour capacity rows 79 and 80 carry marks in the updated solution; the printed available is 46.5 and the row split here sums to 46).",
+    "Q2(c): the solution's four headings. The solution's 3.3 (safeguards for conflicts) has no marker row and is left out, so the plan sums to 21 against the printed 22.",
+    "Q2(d): five headings of the solution. 'Other' is capped at 3 in the solution, so it carries 3 marks.",
+    "Q2(e): five sections of the solution; 33 marks available against a cap of 23. Audit-procedure principle: a document or thing mentioned in the case is Direct; one step off is Indirect; no document or thing is Thinking.",
+    "Q2(e) discussion_basis is compliance (Companies Act s40 and s46, the MOI); proposed."
+  ],
+  "requirements": {
+    "P3Q1_a": {
+      "question_type": "Discussion",
+      "proximity_items": [
+        {
+          "row": 5,
+          "proximity": "direct"
+        },
+        {
+          "row": 6.1,
+          "proximity": "indirect"
+        },
+        {
+          "row": 6.2,
+          "proximity": "thinking"
+        },
+        {
+          "row": 7.1,
+          "proximity": "direct"
+        },
+        {
+          "row": 7.2,
+          "proximity": "indirect"
+        },
+        {
+          "row": 8,
+          "proximity": "thinking"
+        },
+        {
+          "row": 9.1,
+          "proximity": "direct"
+        },
+        {
+          "row": 9.2,
+          "proximity": "indirect"
+        },
+        {
+          "row": 10,
+          "proximity": "thinking"
+        },
+        {
+          "row": 11,
+          "proximity": "indirect"
+        },
+        {
+          "row": 12,
+          "proximity": "indirect"
+        },
+        {
+          "row": 13,
+          "proximity": "thinking"
+        },
+        {
+          "row": 14,
+          "proximity": "indirect"
+        },
+        {
+          "row": 15.1,
+          "proximity": "indirect"
+        },
+        {
+          "row": 15.2,
+          "proximity": "direct"
+        },
+        {
+          "row": 16.1,
+          "proximity": "indirect"
+        },
+        {
+          "row": 16.2,
+          "proximity": "indirect"
+        },
+        {
+          "row": 17,
+          "proximity": "indirect"
+        },
+        {
+          "row": 18,
+          "proximity": "indirect"
+        },
+        {
+          "row": 19,
+          "proximity": "indirect"
+        },
+        {
+          "row": 20,
+          "proximity": "direct"
+        },
+        {
+          "row": 21,
+          "proximity": "indirect"
+        },
+        {
+          "row": 22,
+          "proximity": "indirect"
+        },
+        {
+          "row": 23.1,
+          "proximity": "direct"
+        },
+        {
+          "row": 23.2,
+          "proximity": "indirect"
+        },
+        {
+          "row": 24,
+          "proximity": "indirect"
+        },
+        {
+          "row": 25,
+          "proximity": "thinking"
+        },
+        {
+          "row": 26,
+          "proximity": "indirect"
+        },
+        {
+          "row": 27,
+          "proximity": "indirect"
+        },
+        {
+          "row": 28,
+          "proximity": "thinking"
+        },
+        {
+          "row": 29,
+          "proximity": "indirect"
+        },
+        {
+          "row": 30,
+          "proximity": "direct"
+        },
+        {
+          "row": 31,
+          "proximity": "indirect"
+        },
+        {
+          "row": 32,
+          "proximity": "indirect"
+        },
+        {
+          "row": 33,
+          "proximity": "indirect"
+        },
+        {
+          "row": 34,
+          "proximity": "thinking"
+        },
+        {
+          "row": 35,
+          "proximity": "indirect"
+        },
+        {
+          "row": 36,
+          "proximity": "indirect"
+        },
+        {
+          "row": 37,
+          "proximity": "indirect"
+        },
+        {
+          "row": 38,
+          "proximity": "thinking"
+        },
+        {
+          "row": 39,
+          "proximity": "indirect"
+        },
+        {
+          "row": 40.1,
+          "proximity": "direct"
+        },
+        {
+          "row": 40.2,
+          "proximity": "indirect"
+        },
+        {
+          "row": 41,
+          "proximity": "thinking"
+        },
+        {
+          "row": 42,
+          "proximity": "indirect"
+        },
+        {
+          "row": 43,
+          "proximity": "indirect"
+        },
+        {
+          "row": 44,
+          "proximity": "indirect"
+        },
+        {
+          "row": 45,
+          "proximity": "indirect"
+        },
+        {
+          "row": 46,
+          "proximity": "indirect"
+        },
+        {
+          "row": 47,
+          "proximity": "indirect"
+        },
+        {
+          "row": 48,
+          "proximity": "indirect"
+        },
+        {
+          "row": 49,
+          "proximity": "indirect"
+        }
+      ],
+      "component_tree": [
+        {
+          "path": [
+            "Section 1: Introduction (NPO, PBO, CDC, the directors)"
+          ],
+          "label": "CDC incentives lost once no longer an NPO",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 5",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 1: Introduction (NPO, PBO, CDC, the directors)"
+          ],
+          "label": "Asset transfer from the PBO: tax-exempt status, CGT, donations tax, transfer duty",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 6",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 1: Introduction (NPO, PBO, CDC, the directors)"
+          ],
+          "label": "Breach of the CDC criteria",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 30",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 1: Introduction (NPO, PBO, CDC, the directors)"
+          ],
+          "label": "Directors lack management experience",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 43",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 2: Background (rent, equipment, salaries, key staff, insurance)"
+          ],
+          "label": "Salary increase once sales cover costs",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 22",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 2: Background (rent, equipment, salaries, key staff, insurance)"
+          ],
+          "label": "Rent rises to market; higher cost base",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 23",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 2: Background (rent, equipment, salaries, key staff, insurance)"
+          ],
+          "label": "Floor space limits growth",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 24",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 2: Background (rent, equipment, salaries, key staff, insurance)"
+          ],
+          "label": "Assets not insured",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 25",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 2: Background (rent, equipment, salaries, key staff, insurance)"
+          ],
+          "label": "No factory insurance",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 41",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 2: Background (rent, equipment, salaries, key staff, insurance)"
+          ],
+          "label": "Rented space and a small workforce limit capacity",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 45",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 2: Background (rent, equipment, salaries, key staff, insurance)"
+          ],
+          "label": "Dependence on Joseph and Fulani",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 49",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "No investment in new equipment: rising maintenance",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 27",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "Second-hand equipment: breakdowns",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 44",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "Pallets at R10 lost once no longer a PBO",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 20",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "Raw-material cost not recoverable in the price",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 21",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "No third-party cover on the borrowed vehicle",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 26",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "No delivery vehicle",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 42",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "Quality of output against competitors",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 31",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "Established competitors",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 37",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "Trained staff not retained",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 39",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "New wood treatment not tested",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 32",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "Reputational risk from inferior quality",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 33",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "Warranty and damage claims",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 34",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 3: Growth (equipment, pallets, trainees, treatment)"
+          ],
+          "label": "No market research",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 38",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Fewer donations as a for-profit; liquidity and solvency if funding is badly structured",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 7",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Donations repayable without a s18A certificate",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 8",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Reputation and misrepresentation: the NPO name retained for the donors",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 9",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Donors change the terms of earlier donations",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 10",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Shares issued: consideration and the Companies Act",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 11",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Failure to secure bank debt",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 12",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Low equity value limits funding",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 13",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "50% profit share reduces retained profit",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 14",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Profit share only after six months: new staff below minimum wage, union action",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 16",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Incentives drive short-term behaviour",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 17",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Dividend without a liquidity test",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 18",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Infrequent repeat purchases from the Swallows Group",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 28",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)"
+          ],
+          "label": "Transition to for-profit lowers community contribution",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 40",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 5: Audit and internal control"
+          ],
+          "label": "Auditors performing management functions",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 36",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 5: Audit and internal control"
+          ],
+          "label": "Zolani inexperienced, little review",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 46",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 5: Audit and internal control"
+          ],
+          "label": "Zolani split between finance and HR",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 47",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 5: Audit and internal control"
+          ],
+          "label": "No segregation of duties at director level",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 48",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 6: Other information (pallet supplier, minimum wage)"
+          ],
+          "label": "No supplier vetting or financial governance",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 29",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Section 6: Other information (pallet supplier, minimum wage)"
+          ],
+          "label": "Stolen goods and corruption",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 35",
+          "marks": 1.5
+        },
+        {
+          "path": [
+            "Section 6: Other information (pallet supplier, minimum wage)"
+          ],
+          "label": "Paid below the minimum wage: unsustainable model, labour-law non-compliance",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 15",
+          "marks": 3
+        }
+      ],
+      "core_marks": {
+        "max": 31,
+        "components": [
+          {
+            "label": "Section 1: Introduction (NPO, PBO, CDC, the directors)",
+            "marks": 7.5
+          },
+          {
+            "label": "Section 2: Background (rent, equipment, salaries, key staff, insurance)",
+            "marks": 16.5
+          },
+          {
+            "label": "Section 3: Growth (equipment, pallets, trainees, treatment)",
+            "marks": 21.0
+          },
+          {
+            "label": "Section 4: Incorporation (NPO transfer, shares, profit share, dividend, donations, loans)",
+            "marks": 27.0
+          },
+          {
+            "label": "Section 5: Audit and internal control",
+            "marks": 6.0
+          },
+          {
+            "label": "Section 6: Other information (pallet supplier, minimum wage)",
+            "marks": 7.5
+          }
+        ]
+      },
+      "discussion_basis": "non_compliance"
+    },
+    "P3Q1_b": {
+      "question_type": "Non-discussion",
+      "proximity_items": [
+        {
+          "row": 55,
+          "proximity": "direct"
+        },
+        {
+          "row": 56,
+          "proximity": "direct"
+        },
+        {
+          "row": 57,
+          "proximity": "direct"
+        },
+        {
+          "row": 58,
+          "proximity": "indirect"
+        },
+        {
+          "row": 59,
+          "proximity": "indirect"
+        },
+        {
+          "row": 60,
+          "proximity": "indirect"
+        },
+        {
+          "row": 61,
+          "proximity": "indirect"
+        },
+        {
+          "row": 62,
+          "proximity": "direct"
+        },
+        {
+          "row": 63,
+          "proximity": "direct"
+        },
+        {
+          "row": 64,
+          "proximity": "direct"
+        },
+        {
+          "row": 65,
+          "proximity": "direct"
+        },
+        {
+          "row": 66,
+          "proximity": "indirect"
+        },
+        {
+          "row": 67,
+          "proximity": "indirect"
+        },
+        {
+          "row": 68,
+          "proximity": "direct"
+        },
+        {
+          "row": 69,
+          "proximity": "direct"
+        },
+        {
+          "row": 70,
+          "proximity": "direct"
+        },
+        {
+          "row": 71,
+          "proximity": "direct"
+        },
+        {
+          "row": 72,
+          "proximity": "direct"
+        },
+        {
+          "row": 73,
+          "proximity": "direct"
+        },
+        {
+          "row": 74,
+          "proximity": "direct"
+        },
+        {
+          "row": 75,
+          "proximity": "indirect"
+        },
+        {
+          "row": 76,
+          "proximity": "indirect"
+        },
+        {
+          "row": 77,
+          "proximity": "direct"
+        },
+        {
+          "row": 78,
+          "proximity": "indirect"
+        },
+        {
+          "row": 79,
+          "proximity": "indirect"
+        },
+        {
+          "row": 80,
+          "proximity": "indirect"
+        },
+        {
+          "row": 81,
+          "proximity": "indirect"
+        },
+        {
+          "row": 82,
+          "proximity": "indirect"
+        },
+        {
+          "row": 83,
+          "proximity": "indirect"
+        },
+        {
+          "row": 84,
+          "proximity": "indirect"
+        },
+        {
+          "row": 85,
+          "proximity": "indirect"
+        },
+        {
+          "row": 86,
+          "proximity": "indirect"
+        },
+        {
+          "row": 87,
+          "proximity": "indirect"
+        },
+        {
+          "row": 88,
+          "proximity": "indirect"
+        },
+        {
+          "row": 89,
+          "proximity": "indirect"
+        },
+        {
+          "row": 90,
+          "proximity": "indirect"
+        },
+        {
+          "row": 91,
+          "proximity": "indirect"
+        },
+        {
+          "row": 92,
+          "proximity": "indirect"
+        },
+        {
+          "row": 93,
+          "proximity": "indirect"
+        },
+        {
+          "row": 94,
+          "proximity": "direct"
+        },
+        {
+          "row": 95,
+          "proximity": "indirect"
+        },
+        {
+          "row": 96,
+          "proximity": "indirect"
+        },
+        {
+          "row": 97,
+          "proximity": "indirect"
+        },
+        {
+          "row": 98,
+          "proximity": "indirect"
+        },
+        {
+          "row": 99,
+          "proximity": "indirect"
+        }
+      ],
+      "component_tree": [
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Selling prices",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 55",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Pallets, table (4,5 x R80)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 56",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Pallets, bench (2 x R80)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 57",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Indirect materials per plank, table",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 58",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Indirect materials per plank, bench",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 59",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Planks used in October (2 380)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 60",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "R10,10 per plank",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 61",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Treatment, table: sunlight planks",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 62",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Treatment, table: other planks",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 63",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Treatment, bench: sunlight planks",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 64",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Treatment, bench: other planks",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 65",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Lubricants: variable R8 per pallet and per unit",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 66",
+          "marks": 6
+        },
+        {
+          "path": [
+            "Step 1: Contribution per product"
+          ],
+          "label": "Contribution per unit",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 67",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Fulani at the market salary",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 68",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Joseph at the market salary",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 69",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Treatment operator",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 70",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Carpenters (10 x R4 000)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 71",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Trainees (5 x R3 200)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 72",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Rent (200 x R150)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 73",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Depreciation (R250 000 / 6 / 12)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 74",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Lubricants and cleaning, fixed portion",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 75",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Repairs average, excluding the compressor",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 76",
+          "marks": 2
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Treatment machine rental",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 77",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 2: Fixed costs"
+          ],
+          "label": "Total fixed costs",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 78",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Labour capacity: carpenters",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 79",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Labour capacity: trainees and total",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 80",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Carpentry machines: 1 000 pallets",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 81",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Treatment machines: 600 hours",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 82",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Capacity if extensive sunlight treatment",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 83",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Capacity if normal treatment",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 84",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Conclusion on the constraint",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 85",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Machine hours per table",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 86",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Machine hours per bench",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 87",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Contribution per machine hour, table",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 88",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Contribution per machine hour, bench",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 89",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 3: Constraints and the product to make"
+          ],
+          "label": "Tables are the better product",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 90",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 4: Breakeven"
+          ],
+          "label": "Contribution per table",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 91",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 4: Breakeven"
+          ],
+          "label": "Breakeven tables (66,88)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 92",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 4: Breakeven"
+          ],
+          "label": "Rounded up to 67",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 93",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 4: Breakeven"
+          ],
+          "label": "Tables and benches sold in October (13 and 30)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 94",
+          "marks": 2
+        },
+        {
+          "path": [
+            "Step 4: Breakeven"
+          ],
+          "label": "Sales mix 13:30",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 95",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 4: Breakeven"
+          ],
+          "label": "Weighted contribution",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 96",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 4: Breakeven"
+          ],
+          "label": "Breakeven batches",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 97",
+          "marks": 0.5
+        },
+        {
+          "path": [
+            "Step 4: Breakeven"
+          ],
+          "label": "Tables",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 98",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Step 4: Breakeven"
+          ],
+          "label": "Benches",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 99",
+          "marks": 1
+        }
+      ],
+      "core_marks": {
+        "max": 41,
+        "components": [
+          {
+            "label": "Step 1: Contribution per product",
+            "marks": 18
+          },
+          {
+            "label": "Step 2: Fixed costs",
+            "marks": 9.0
+          },
+          {
+            "label": "Step 3: Constraints and the product to make",
+            "marks": 11.0
+          },
+          {
+            "label": "Step 4: Breakeven",
+            "marks": 8.0
+          }
+        ]
+      }
+    },
+    "P3Q2_c": {
+      "question_type": "Discussion",
+      "proximity_items": [
+        {
+          "row": 1,
+          "proximity": "direct"
+        },
+        {
+          "row": 2,
+          "proximity": "direct"
+        },
+        {
+          "row": 3,
+          "proximity": "direct"
+        },
+        {
+          "row": 4,
+          "proximity": "direct"
+        },
+        {
+          "row": 5,
+          "proximity": "indirect"
+        },
+        {
+          "row": 6,
+          "proximity": "direct"
+        },
+        {
+          "row": 7,
+          "proximity": "direct"
+        },
+        {
+          "row": 8,
+          "proximity": "direct"
+        },
+        {
+          "row": 9,
+          "proximity": "direct"
+        },
+        {
+          "row": 10,
+          "proximity": "indirect"
+        },
+        {
+          "row": 11,
+          "proximity": "direct"
+        },
+        {
+          "row": 12,
+          "proximity": "indirect"
+        },
+        {
+          "row": 13,
+          "proximity": "indirect"
+        },
+        {
+          "row": 14.1,
+          "proximity": "direct"
+        },
+        {
+          "row": 14.2,
+          "proximity": "thinking"
+        },
+        {
+          "row": 15,
+          "proximity": "indirect"
+        },
+        {
+          "row": 16,
+          "proximity": "direct"
+        },
+        {
+          "row": 17,
+          "proximity": "direct"
+        },
+        {
+          "row": 18,
+          "proximity": "direct"
+        },
+        {
+          "row": 19,
+          "proximity": "indirect"
+        }
+      ],
+      "component_tree": [
+        {
+          "path": [
+            "Non-compliance with laws and regulations"
+          ],
+          "label": "Payment below the minimum wage (illegal)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 1",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Non-compliance with laws and regulations"
+          ],
+          "label": "Exemption only if asked: dishonest, unfair",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 2",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Non-compliance with laws and regulations"
+          ],
+          "label": "Pallets: possible stolen goods, corrupt activities",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 3",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Non-compliance with laws and regulations"
+          ],
+          "label": "Auditors do management work, s90",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 6",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Non-compliance with laws and regulations"
+          ],
+          "label": "Dividends without a liquidity test",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 12",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Non-compliance with laws and regulations"
+          ],
+          "label": "Transfer of NPO assets (3 marks)",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 14",
+          "marks": 3
+        },
+        {
+          "path": [
+            "Non-compliance with laws and regulations"
+          ],
+          "label": "No UIF or SDL",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 15",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Non-compliance with laws and regulations"
+          ],
+          "label": "No HR department, missing contract",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 16",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Conflicts of interest"
+          ],
+          "label": "Dino and the pallets: boyfriend's commission, s75",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 4",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Conflicts of interest"
+          ],
+          "label": "Abuse of position, fiduciary duty",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 5",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Conflicts of interest"
+          ],
+          "label": "Siphiwe's brother as audit partner",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 7",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Conflicts of interest"
+          ],
+          "label": "Auditor lacks skills and staff",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 8",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Conflicts of interest"
+          ],
+          "label": "Continued donations: the NPO name kept",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 9",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Conflicts of interest"
+          ],
+          "label": "Suppliers not told of the change",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 10",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Competence and due care"
+          ],
+          "label": "Zolani appointed without the skills",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 11",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Competence and due care"
+          ],
+          "label": "Dividends while applying for a loan",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 13",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Competence and due care"
+          ],
+          "label": "Directors lack knowledge and experience",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 19",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Integrity and fair business dealings"
+          ],
+          "label": "Zolani at a very low salary",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 17",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Integrity and fair business dealings"
+          ],
+          "label": "NPO closed for a profit company",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 18",
+          "marks": 1
+        }
+      ],
+      "core_marks": {
+        "max": 10,
+        "components": [
+          {
+            "label": "Non-compliance with laws and regulations",
+            "marks": 10
+          },
+          {
+            "label": "Conflicts of interest",
+            "marks": 6
+          },
+          {
+            "label": "Competence and due care",
+            "marks": 3
+          },
+          {
+            "label": "Integrity and fair business dealings",
+            "marks": 2
+          }
+        ]
+      },
+      "discussion_basis": "compliance"
+    },
+    "P3Q2_d": {
+      "question_type": "Discussion",
+      "proximity_items": [
+        {
+          "row": 23,
+          "proximity": "direct"
+        },
+        {
+          "row": 24,
+          "proximity": "indirect"
+        },
+        {
+          "row": 25,
+          "proximity": "indirect"
+        },
+        {
+          "row": 26,
+          "proximity": "direct"
+        },
+        {
+          "row": 27,
+          "proximity": "direct"
+        },
+        {
+          "row": 28,
+          "proximity": "direct"
+        },
+        {
+          "row": 29,
+          "proximity": "indirect"
+        },
+        {
+          "row": 30,
+          "proximity": "thinking"
+        },
+        {
+          "row": 31,
+          "proximity": "indirect"
+        },
+        {
+          "row": 32,
+          "proximity": "direct"
+        },
+        {
+          "row": 33,
+          "proximity": "indirect"
+        },
+        {
+          "row": 34,
+          "proximity": "indirect"
+        },
+        {
+          "row": 35,
+          "proximity": "indirect"
+        },
+        {
+          "row": 36,
+          "proximity": "thinking"
+        },
+        {
+          "row": 37,
+          "proximity": "indirect"
+        },
+        {
+          "row": 38,
+          "proximity": "indirect"
+        },
+        {
+          "row": 39,
+          "proximity": "indirect"
+        },
+        {
+          "row": 40,
+          "proximity": "indirect"
+        },
+        {
+          "row": 41,
+          "proximity": "indirect"
+        }
+      ],
+      "component_tree": [
+        {
+          "path": [
+            "The wage rate"
+          ],
+          "label": "R25 below the minimum wage of R28,79",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 23",
+          "marks": 1
+        },
+        {
+          "path": [
+            "NOCLAR (SAICA Code)"
+          ],
+          "label": "Fezile must comply with Code parts 1, 3 and 4A",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 24",
+          "marks": 1
+        },
+        {
+          "path": [
+            "NOCLAR (SAICA Code)"
+          ],
+          "label": "Consider NOCLAR, s360",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 25",
+          "marks": 1
+        },
+        {
+          "path": [
+            "NOCLAR (SAICA Code)"
+          ],
+          "label": "R25 is non-compliance, fundamental to the business",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 26",
+          "marks": 1
+        },
+        {
+          "path": [
+            "NOCLAR (SAICA Code)"
+          ],
+          "label": "Intentional: a clear instruction",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 27",
+          "marks": 1
+        },
+        {
+          "path": [
+            "NOCLAR (SAICA Code)"
+          ],
+          "label": "The CEO gave the instruction",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 28",
+          "marks": 1
+        },
+        {
+          "path": [
+            "NOCLAR (SAICA Code)"
+          ],
+          "label": "Possible NOCLAR: react and report",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 29",
+          "marks": 1
+        },
+        {
+          "path": [
+            "NOCLAR (SAICA Code)"
+          ],
+          "label": "Self-interest threat if he fears losing the client",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 30",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Reportable irregularity (Auditing Profession Act)"
+          ],
+          "label": "Unlawful act under the BCEA",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 31",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Reportable irregularity (Auditing Profession Act)"
+          ],
+          "label": "Communicated by the CEO, a member of management",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 32",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Reportable irregularity (Auditing Profession Act)"
+          ],
+          "label": "Material breach of fiduciary duty",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 33",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Reportable irregularity (Auditing Profession Act)"
+          ],
+          "label": "Fine or penalty, financial loss",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 34",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Reportable irregularity (Auditing Profession Act)"
+          ],
+          "label": "Therefore a reportable irregularity, s45",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 35",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Auditing Profession Act s44"
+          ],
+          "label": "Unqualified report not issued while a reportable irregularity is open",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 36",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Other (impact on the audit)"
+          ],
+          "label": "ISA 250: direct effect on the financial statements",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 37",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Other (impact on the audit)"
+          ],
+          "label": "Client integrity and continuing the engagement",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 38",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Other (impact on the audit)"
+          ],
+          "label": "Risk assessment and audit approach",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 39",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Other (impact on the audit)"
+          ],
+          "label": "Going concern: reputation and fines",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 40",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Other (impact on the audit)"
+          ],
+          "label": "Missing contract: payroll controls and control environment",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 41",
+          "marks": 1
+        }
+      ],
+      "core_marks": {
+        "max": 9,
+        "components": [
+          {
+            "label": "The wage rate",
+            "marks": 1
+          },
+          {
+            "label": "NOCLAR (SAICA Code)",
+            "marks": 7
+          },
+          {
+            "label": "Reportable irregularity (Auditing Profession Act)",
+            "marks": 5
+          },
+          {
+            "label": "Auditing Profession Act s44",
+            "marks": 1
+          },
+          {
+            "label": "Other (impact on the audit)",
+            "marks": 3
+          }
+        ]
+      },
+      "discussion_basis": "compliance"
+    },
+    "P3Q2_e": {
+      "question_type": "Discussion",
+      "proximity_items": [
+        {
+          "row": 45,
+          "proximity": "indirect"
+        },
+        {
+          "row": 46,
+          "proximity": "direct"
+        },
+        {
+          "row": 47,
+          "proximity": "indirect"
+        },
+        {
+          "row": 48,
+          "proximity": "indirect"
+        },
+        {
+          "row": 49,
+          "proximity": "thinking"
+        },
+        {
+          "row": 50,
+          "proximity": "direct"
+        },
+        {
+          "row": 51,
+          "proximity": "direct"
+        },
+        {
+          "row": 52,
+          "proximity": "direct"
+        },
+        {
+          "row": 53,
+          "proximity": "indirect"
+        },
+        {
+          "row": 54,
+          "proximity": "indirect"
+        },
+        {
+          "row": 55.1,
+          "proximity": "direct"
+        },
+        {
+          "row": 55.2,
+          "proximity": "indirect"
+        },
+        {
+          "row": 56,
+          "proximity": "direct"
+        },
+        {
+          "row": 57,
+          "proximity": "indirect"
+        },
+        {
+          "row": 58,
+          "proximity": "indirect"
+        },
+        {
+          "row": 59,
+          "proximity": "indirect"
+        },
+        {
+          "row": 60,
+          "proximity": "direct"
+        },
+        {
+          "row": 61,
+          "proximity": "direct"
+        },
+        {
+          "row": 62,
+          "proximity": "indirect"
+        },
+        {
+          "row": 63,
+          "proximity": "direct"
+        },
+        {
+          "row": 64,
+          "proximity": "indirect"
+        },
+        {
+          "row": 65.1,
+          "proximity": "indirect"
+        },
+        {
+          "row": 65.2,
+          "proximity": "direct"
+        },
+        {
+          "row": 66,
+          "proximity": "thinking"
+        },
+        {
+          "row": 67,
+          "proximity": "thinking"
+        }
+      ],
+      "component_tree": [
+        {
+          "path": [
+            "1 General procedures"
+          ],
+          "label": "Securities register against journals, GL, TB and the statements",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 45",
+          "marks": 1
+        },
+        {
+          "path": [
+            "1 General procedures"
+          ],
+          "label": "Dividend schedule against journals, GL, TB and the statements",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 46",
+          "marks": 1
+        },
+        {
+          "path": [
+            "1 General procedures"
+          ],
+          "label": "Reperform casting of the schedule and register",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 47",
+          "marks": 1
+        },
+        {
+          "path": [
+            "1 General procedures"
+          ],
+          "label": "Scrutinise the schedule and register for unusual items",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 48",
+          "marks": 2
+        },
+        {
+          "path": [
+            "1 General procedures"
+          ],
+          "label": "Follow up discrepancies with management",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 49",
+          "marks": 1
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "MOI: authorised 150 000 shares",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 50",
+          "marks": 1
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "MOI: prohibitions on issuing shares",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 51",
+          "marks": 1
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "Founding directors: board minutes and book-value consideration",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 52",
+          "marks": 2
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "Fixed asset register before the shares were issued",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 53",
+          "marks": 1
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "Share register: 37 500 each at incorporation",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 54",
+          "marks": 1
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "Joseph and Fulani: 3 July minutes, approval and R0,01",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 55.1",
+          "marks": 3
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "Share valuations support the R0,01",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 55.2",
+          "marks": 1
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "Recalculate the unissued shares",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 56",
+          "marks": 1
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "Bank statement: two deposits of R125, s40",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 57",
+          "marks": 1
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "Securities register at 31 December",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 58",
+          "marks": 1
+        },
+        {
+          "path": [
+            "2 Issue of shares"
+          ],
+          "label": "Share certificates",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 59",
+          "marks": 1
+        },
+        {
+          "path": [
+            "3 Dividend payments"
+          ],
+          "label": "MOI allows dividends",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 60",
+          "marks": 1
+        },
+        {
+          "path": [
+            "3 Dividend payments"
+          ],
+          "label": "4 December minutes: approval, R0,20, solvency and liquidity test",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 61",
+          "marks": 3
+        },
+        {
+          "path": [
+            "3 Dividend payments"
+          ],
+          "label": "Shareholders qualify; schedule to register",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 62",
+          "marks": 2
+        },
+        {
+          "path": [
+            "3 Dividend payments"
+          ],
+          "label": "Recalculate R0,20 x shares",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 63",
+          "marks": 1
+        },
+        {
+          "path": [
+            "3 Dividend payments"
+          ],
+          "label": "Bank statements: amounts and the 30 December date",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 64",
+          "marks": 2
+        },
+        {
+          "path": [
+            "4 Solvency and liquidity test"
+          ],
+          "label": "Records used for the test",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 65.1",
+          "marks": 1
+        },
+        {
+          "path": [
+            "4 Solvency and liquidity test"
+          ],
+          "label": "Reperform the solvency and liquidity test",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 65.2",
+          "marks": 1
+        },
+        {
+          "path": [
+            "5 Dividends withholding tax"
+          ],
+          "label": "Reperform the dividends withholding tax (20%)",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 66",
+          "marks": 1
+        },
+        {
+          "path": [
+            "5 Dividends withholding tax"
+          ],
+          "label": "Payment and SARS returns for the withholding tax",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 67",
+          "marks": 1
+        }
+      ],
+      "core_marks": {
+        "max": 23,
+        "components": [
+          {
+            "label": "1 General procedures",
+            "marks": 6
+          },
+          {
+            "label": "2 Issue of shares",
+            "marks": 14
+          },
+          {
+            "label": "3 Dividend payments",
+            "marks": 9
+          },
+          {
+            "label": "4 Solvency and liquidity test",
+            "marks": 2
+          },
+          {
+            "label": "5 Dividends withholding tax",
+            "marks": 2
+          }
+        ]
+      },
+      "discussion_basis": "compliance"
+    }
+  }
+}

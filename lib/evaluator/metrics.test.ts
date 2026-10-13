@@ -463,3 +463,34 @@ test("Paper 2 Question Model: Buried Treasure classification (Yvonne, 12 Oct 202
     assert.deepEqual(proximityAvailable(questionModelFor("iac-2026-p2", code)), counts, code);
   }
 });
+
+test("Paper 3 Question Model: Buried Treasure classification (Yvonne, 13 Oct 2026)", () => {
+  const expected: Record<string, { direct: number; indirect: number; thinking: number }> = {
+    P3Q1_a: { direct: 8, indirect: 35, thinking: 9 },
+    P3Q1_b: { direct: 16, indirect: 29, thinking: 0 },
+    P3Q2_c: { direct: 13, indirect: 6, thinking: 1 },
+    P3Q2_d: { direct: 5, indirect: 12, thinking: 2 },
+    P3Q2_e: { direct: 10, indirect: 12, thinking: 3 },
+  };
+  for (const [code, counts] of Object.entries(expected)) {
+    assert.deepEqual(proximityAvailable(questionModelFor("iac-2026-p3", code)), counts, code);
+  }
+});
+
+test("Paper 3 Question Model: components and core by rounded fair share", () => {
+  const core = (code: string) => coreComponents(questionModelFor("iac-2026-p3", code))!.filter((c) => c.core).map((c) => c.label.split(":")[0]);
+  // Q1(a): six case sections, cap 31, fair share 5, core from 8 marks
+  assert.deepEqual(core("P3Q1_a").sort(), ["Section 2", "Section 3", "Section 4"]);
+  // Q1(b): four steps, cap 41, fair share 10, core from 13 marks
+  assert.deepEqual(core("P3Q1_b"), ["Step 1"]);
+  // Q2(c): four headings, cap 10, fair share 3 (2,5 rounds up), core from 6 marks
+  assert.deepEqual(core("P3Q2_c").sort(), ["Conflicts of interest", "Non-compliance with laws and regulations"]);
+  // Q2(d): five headings, cap 9, fair share 2; 'Other' is capped at 3 so it is not core
+  assert.deepEqual(core("P3Q2_d").sort(), ["NOCLAR (SAICA Code)", "Reportable irregularity (Auditing Profession Act)"]);
+  // Q2(e): five sections, cap 23, fair share 5, core from 8 marks
+  assert.deepEqual(core("P3Q2_e").sort(), ["2 Issue of shares", "3 Dividend payments"]);
+  const a = questionModelFor("iac-2026-p3", "P3Q1_a")!;
+  assert.equal(a.core_marks!.components.reduce((s, c) => s + c.marks, 0), 85.5);
+  const e = questionModelFor("iac-2026-p3", "P3Q2_e")!;
+  assert.equal(e.core_marks!.components.reduce((s, c) => s + c.marks, 0), 33);
+});
