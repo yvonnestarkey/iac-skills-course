@@ -6,7 +6,7 @@
     "Row numbers are the marker's report rows. Q1(a) rows 5 to 49 are the risks, Q1(b) rows 55 to 99, Q2(c) rows 1 to 19, Q2(d) rows 23 to 41, Q2(e) rows 45 to 67. Where one row holds sub-marks of different classes they are rows N.1 and N.2.",
     "Q1(a): components are the six sections of the case (proposed 13 Oct 2026); insurance (rows 25 and 41) sits under Section 2. Marker row 19 (1.7.2, dividend reduces retained funds) is omitted from the official solution, so it carries no marks in the model.",
     "Q1(b): four steps of the solution; plan marks per row are read from the updated solution (labour capacity rows 79 and 80 carry marks in the updated solution; the printed available is 46.5 and the row split here sums to 46).",
-    "Q2(c): the solution's four headings. The solution's 3.3 (safeguards for conflicts) has no marker row and is left out, so the plan sums to 21 against the printed 22.",
+    "Q2(c): components are the case indicators a student could see (the minimum wage, the pallet supplier, the auditor appointment, the name and donors, the transfer of the NPO, the dividend, Zolani, the directors overall), not the solution headings (Yvonne, 13 Oct 2026). Marks sit in various solution sections; the trigger is the case indicator. The solution's 3.3 (safeguards for conflicts) has no marker row and is left out, so the plan sums to 21 against the printed 22.",
     "Q2(d): five headings of the solution. 'Other' is capped at 3 in the solution, so it carries 3 marks.",
     "Q2(e): five sections of the solution; 33 marks available against a cap of 23. Audit-procedure principle: a document or thing mentioned in the case is Direct; one step off is Indirect; no document or thing is Thinking.",
     "Q2(e) discussion_basis is compliance (Companies Act s40 and s46, the MOI); proposed."
@@ -1442,7 +1442,7 @@
       "component_tree": [
         {
           "path": [
-            "Non-compliance with laws and regulations"
+            "Minimum wage and employment practices (WhatsApp, appendix)"
           ],
           "label": "Payment below the minimum wage (illegal)",
           "source": "case",
@@ -1452,7 +1452,7 @@
         },
         {
           "path": [
-            "Non-compliance with laws and regulations"
+            "Minimum wage and employment practices (WhatsApp, appendix)"
           ],
           "label": "Exemption only if asked: dishonest, unfair",
           "source": "case",
@@ -1462,47 +1462,7 @@
         },
         {
           "path": [
-            "Non-compliance with laws and regulations"
-          ],
-          "label": "Pallets: possible stolen goods, corrupt activities",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "row 3",
-          "marks": 1
-        },
-        {
-          "path": [
-            "Non-compliance with laws and regulations"
-          ],
-          "label": "Auditors do management work, s90",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "row 6",
-          "marks": 1
-        },
-        {
-          "path": [
-            "Non-compliance with laws and regulations"
-          ],
-          "label": "Dividends without a liquidity test",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "row 12",
-          "marks": 1
-        },
-        {
-          "path": [
-            "Non-compliance with laws and regulations"
-          ],
-          "label": "Transfer of NPO assets (3 marks)",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "row 14",
-          "marks": 3
-        },
-        {
-          "path": [
-            "Non-compliance with laws and regulations"
+            "Minimum wage and employment practices (WhatsApp, appendix)"
           ],
           "label": "No UIF or SDL",
           "source": "case",
@@ -1512,7 +1472,7 @@
         },
         {
           "path": [
-            "Non-compliance with laws and regulations"
+            "Minimum wage and employment practices (WhatsApp, appendix)"
           ],
           "label": "No HR department, missing contract",
           "source": "case",
@@ -1522,9 +1482,19 @@
         },
         {
           "path": [
-            "Conflicts of interest"
+            "The pallet supplier (Dino's boyfriend)"
           ],
-          "label": "Dino and the pallets: boyfriend's commission, s75",
+          "label": "Pallets: possible stolen goods, corrupt activities",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 3",
+          "marks": 1
+        },
+        {
+          "path": [
+            "The pallet supplier (Dino's boyfriend)"
+          ],
+          "label": "Dino's conflict: boyfriend's commission, s75",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 4",
@@ -1532,7 +1502,7 @@
         },
         {
           "path": [
-            "Conflicts of interest"
+            "The pallet supplier (Dino's boyfriend)"
           ],
           "label": "Abuse of position, fiduciary duty",
           "source": "case",
@@ -1542,7 +1512,17 @@
         },
         {
           "path": [
-            "Conflicts of interest"
+            "The auditor appointment (Siphiwe's brother, the firm's other work)"
+          ],
+          "label": "Auditors do management work, s90",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 6",
+          "marks": 1
+        },
+        {
+          "path": [
+            "The auditor appointment (Siphiwe's brother, the firm's other work)"
           ],
           "label": "Siphiwe's brother as audit partner",
           "source": "case",
@@ -1552,7 +1532,7 @@
         },
         {
           "path": [
-            "Conflicts of interest"
+            "The auditor appointment (Siphiwe's brother, the firm's other work)"
           ],
           "label": "Auditor lacks skills and staff",
           "source": "case",
@@ -1562,7 +1542,7 @@
         },
         {
           "path": [
-            "Conflicts of interest"
+            "The name and the donors (Beita name kept, R500 rent, R10 pallets)"
           ],
           "label": "Continued donations: the NPO name kept",
           "source": "case",
@@ -1572,7 +1552,7 @@
         },
         {
           "path": [
-            "Conflicts of interest"
+            "The name and the donors (Beita name kept, R500 rent, R10 pallets)"
           ],
           "label": "Suppliers not told of the change",
           "source": "case",
@@ -1582,17 +1562,37 @@
         },
         {
           "path": [
-            "Competence and due care"
+            "The transfer of the NPO to the company (assets at book value)"
           ],
-          "label": "Zolani appointed without the skills",
+          "label": "Transfer of NPO assets (3 marks)",
           "source": "case",
           "basic_theory": true,
-          "solution_ref": "row 11",
+          "solution_ref": "row 14",
+          "marks": 3
+        },
+        {
+          "path": [
+            "The transfer of the NPO to the company (assets at book value)"
+          ],
+          "label": "NPO closed for a profit company",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 18",
           "marks": 1
         },
         {
           "path": [
-            "Competence and due care"
+            "The dividend (solvency test only, loan application)"
+          ],
+          "label": "Dividends without a liquidity test",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 12",
+          "marks": 1
+        },
+        {
+          "path": [
+            "The dividend (solvency test only, loan application)"
           ],
           "label": "Dividends while applying for a loan",
           "source": "case",
@@ -1602,17 +1602,17 @@
         },
         {
           "path": [
-            "Competence and due care"
+            "Zolani's appointment (no experience, low salary)"
           ],
-          "label": "Directors lack knowledge and experience",
+          "label": "Zolani appointed without the skills",
           "source": "case",
           "basic_theory": true,
-          "solution_ref": "row 19",
+          "solution_ref": "row 11",
           "marks": 1
         },
         {
           "path": [
-            "Integrity and fair business dealings"
+            "Zolani's appointment (no experience, low salary)"
           ],
           "label": "Zolani at a very low salary",
           "source": "case",
@@ -1622,12 +1622,12 @@
         },
         {
           "path": [
-            "Integrity and fair business dealings"
+            "The directors overall (no single indicator)"
           ],
-          "label": "NPO closed for a profit company",
+          "label": "Directors lack knowledge and experience",
           "source": "case",
           "basic_theory": true,
-          "solution_ref": "row 18",
+          "solution_ref": "row 19",
           "marks": 1
         }
       ],
@@ -1635,20 +1635,36 @@
         "max": 10,
         "components": [
           {
-            "label": "Non-compliance with laws and regulations",
-            "marks": 10
+            "label": "Minimum wage and employment practices (WhatsApp, appendix)",
+            "marks": 4
           },
           {
-            "label": "Conflicts of interest",
-            "marks": 6
-          },
-          {
-            "label": "Competence and due care",
+            "label": "The pallet supplier (Dino's boyfriend)",
             "marks": 3
           },
           {
-            "label": "Integrity and fair business dealings",
+            "label": "The auditor appointment (Siphiwe's brother, the firm's other work)",
+            "marks": 3
+          },
+          {
+            "label": "The name and the donors (Beita name kept, R500 rent, R10 pallets)",
             "marks": 2
+          },
+          {
+            "label": "The transfer of the NPO to the company (assets at book value)",
+            "marks": 4
+          },
+          {
+            "label": "The dividend (solvency test only, loan application)",
+            "marks": 2
+          },
+          {
+            "label": "Zolani's appointment (no experience, low salary)",
+            "marks": 2
+          },
+          {
+            "label": "The directors overall (no single indicator)",
+            "marks": 1
           }
         ]
       },

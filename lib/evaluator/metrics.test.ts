@@ -483,8 +483,9 @@ test("Paper 3 Question Model: components and core by rounded fair share", () => 
   assert.deepEqual(core("P3Q1_a").sort(), ["Section 2", "Section 3", "Section 4"]);
   // Q1(b): four steps, cap 41, fair share 10, core from 13 marks
   assert.deepEqual(core("P3Q1_b"), ["Step 1"]);
-  // Q2(c): four headings, cap 10, fair share 3 (2,5 rounds up), core from 6 marks
-  assert.deepEqual(core("P3Q2_c").sort(), ["Conflicts of interest", "Non-compliance with laws and regulations"]);
+  // Q2(c): eight case indicators (not the solution headings), cap 10, fair share 1, core from 4 marks
+  assert.equal(coreComponents(questionModelFor("iac-2026-p3", "P3Q2_c"))!.length, 8);
+  assert.deepEqual(core("P3Q2_c").sort(), ["Minimum wage and employment practices (WhatsApp, appendix)", "The transfer of the NPO to the company (assets at book value)"]);
   // Q2(d): five headings, cap 9, fair share 2; 'Other' is capped at 3 so it is not core
   assert.deepEqual(core("P3Q2_d").sort(), ["NOCLAR (SAICA Code)", "Reportable irregularity (Auditing Profession Act)"]);
   // Q2(e): five sections, cap 23, fair share 5, core from 8 marks
