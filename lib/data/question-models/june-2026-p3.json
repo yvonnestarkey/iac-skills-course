@@ -8,7 +8,7 @@
     "Q1(b): four steps of the solution; plan marks per row are read from the updated solution (labour capacity rows 79 and 80 carry marks in the updated solution; the printed available is 46.5 and the row split here sums to 46).",
     "Q2(c): components are the case indicators a student could see (the minimum wage, the pallet supplier, the auditor appointment, the name and donors, the transfer of the NPO, the dividend, Zolani, the directors overall), not the solution headings (Yvonne, 13 Oct 2026). Marks sit in various solution sections; the trigger is the case indicator. The solution's 3.3 (safeguards for conflicts) has no marker row and is left out, so the plan sums to 21 against the printed 22.",
     "Q2(d): two layers. Layer 1 is the two issues a student can see: the minimum wage (rows 23 to 40) and the missing employment contract (row 41, one mark). Layer 2 under the wage is the theory it triggers: the wage itself, NOCLAR, reportable irregularity, reporting implications, reputation, risk assessment. Components are the Layer 2 rows (as in the other papers). The solution caps 'Other' (rows 37 to 41) at 3; the plan marks are kept uncapped (19 against a cap of 9).",
-    "Q2(e): five sections of the solution; 33 marks available against a cap of 23. Audit-procedure principle: a document or thing mentioned in the case is Direct; one step off is Indirect; no document or thing is Thinking.",
+    "Q2(e): Layer 1 is what the question requires (general procedures, the share issue, the dividend; the solvency test and the withholding tax sit under the dividend). Layer 2 is the transaction assertion (Occurrence, Accuracy, Cut-off, Completeness; Classification has no procedures), ruled by Yvonne on 14 Oct 2026: occurrence is the first risk for these transactions, accuracy next, cut-off, classification and completeness low. Rows 62 and 64 split across two assertions. 33 marks available against a cap of 23. Audit-procedure principle: a document or thing mentioned in the case is Direct; one step off is Indirect; no document or thing is Thinking.",
     "Q2(e) discussion_basis is compliance (Companies Act s40 and s46, the MOI); proposed."
   ],
   "requirements": {
@@ -2103,37 +2103,8 @@
       "component_tree": [
         {
           "path": [
-            "1 General procedures"
-          ],
-          "label": "Securities register against journals, GL, TB and the statements",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "row 45",
-          "marks": 1
-        },
-        {
-          "path": [
-            "1 General procedures"
-          ],
-          "label": "Dividend schedule against journals, GL, TB and the statements",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "row 46",
-          "marks": 1
-        },
-        {
-          "path": [
-            "1 General procedures"
-          ],
-          "label": "Reperform casting of the schedule and register",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "row 47",
-          "marks": 1
-        },
-        {
-          "path": [
-            "1 General procedures"
+            "General procedures",
+            "Occurrence"
           ],
           "label": "Scrutinise the schedule and register for unusual items",
           "source": "theory",
@@ -2143,7 +2114,8 @@
         },
         {
           "path": [
-            "1 General procedures"
+            "General procedures",
+            "Occurrence"
           ],
           "label": "Follow up discrepancies with management",
           "source": "theory",
@@ -2153,7 +2125,41 @@
         },
         {
           "path": [
-            "2 Issue of shares"
+            "General procedures",
+            "Accuracy"
+          ],
+          "label": "Securities register against journals, GL, TB and the statements",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 45",
+          "marks": 1
+        },
+        {
+          "path": [
+            "General procedures",
+            "Accuracy"
+          ],
+          "label": "Dividend schedule against journals, GL, TB and the statements",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 46",
+          "marks": 1
+        },
+        {
+          "path": [
+            "General procedures",
+            "Accuracy"
+          ],
+          "label": "Reperform casting of the schedule and register",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 47",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Issue of shares",
+            "Occurrence"
           ],
           "label": "MOI: authorised 150 000 shares",
           "source": "case",
@@ -2163,7 +2169,8 @@
         },
         {
           "path": [
-            "2 Issue of shares"
+            "Issue of shares",
+            "Occurrence"
           ],
           "label": "MOI: prohibitions on issuing shares",
           "source": "case",
@@ -2173,7 +2180,8 @@
         },
         {
           "path": [
-            "2 Issue of shares"
+            "Issue of shares",
+            "Occurrence"
           ],
           "label": "Founding directors: board minutes and book-value consideration",
           "source": "case",
@@ -2183,7 +2191,8 @@
         },
         {
           "path": [
-            "2 Issue of shares"
+            "Issue of shares",
+            "Occurrence"
           ],
           "label": "Fixed asset register before the shares were issued",
           "source": "theory",
@@ -2193,17 +2202,8 @@
         },
         {
           "path": [
-            "2 Issue of shares"
-          ],
-          "label": "Share register: 37 500 each at incorporation",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "row 54",
-          "marks": 1
-        },
-        {
-          "path": [
-            "2 Issue of shares"
+            "Issue of shares",
+            "Occurrence"
           ],
           "label": "Joseph and Fulani: 3 July minutes, approval and R0,01",
           "source": "case",
@@ -2213,27 +2213,8 @@
         },
         {
           "path": [
-            "2 Issue of shares"
-          ],
-          "label": "Share valuations support the R0,01",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "row 55.2",
-          "marks": 1
-        },
-        {
-          "path": [
-            "2 Issue of shares"
-          ],
-          "label": "Recalculate the unissued shares",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "row 56",
-          "marks": 1
-        },
-        {
-          "path": [
-            "2 Issue of shares"
+            "Issue of shares",
+            "Occurrence"
           ],
           "label": "Bank statement: two deposits of R125, s40",
           "source": "theory",
@@ -2243,17 +2224,41 @@
         },
         {
           "path": [
-            "2 Issue of shares"
+            "Issue of shares",
+            "Accuracy"
           ],
-          "label": "Securities register at 31 December",
+          "label": "Share register: 37 500 each at incorporation",
           "source": "theory",
           "basic_theory": true,
-          "solution_ref": "row 58",
+          "solution_ref": "row 54",
           "marks": 1
         },
         {
           "path": [
-            "2 Issue of shares"
+            "Issue of shares",
+            "Accuracy"
+          ],
+          "label": "Share valuations support the R0,01",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 55.2",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Issue of shares",
+            "Accuracy"
+          ],
+          "label": "Recalculate the unissued shares",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 56",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Issue of shares",
+            "Accuracy"
           ],
           "label": "Share certificates",
           "source": "theory",
@@ -2263,7 +2268,19 @@
         },
         {
           "path": [
-            "3 Dividend payments"
+            "Issue of shares",
+            "Completeness"
+          ],
+          "label": "Securities register at 31 December",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 58",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Dividend payments",
+            "Occurrence"
           ],
           "label": "MOI allows dividends",
           "source": "case",
@@ -2273,7 +2290,8 @@
         },
         {
           "path": [
-            "3 Dividend payments"
+            "Dividend payments",
+            "Occurrence"
           ],
           "label": "4 December minutes: approval, R0,20, solvency and liquidity test",
           "source": "case",
@@ -2283,47 +2301,19 @@
         },
         {
           "path": [
-            "3 Dividend payments"
+            "Dividend payments",
+            "Occurrence"
           ],
-          "label": "Shareholders qualify; schedule to register",
+          "label": "Shareholders qualify as at 4 December",
           "source": "theory",
           "basic_theory": true,
           "solution_ref": "row 62",
-          "marks": 2
-        },
-        {
-          "path": [
-            "3 Dividend payments"
-          ],
-          "label": "Recalculate R0,20 x shares",
-          "source": "case",
-          "basic_theory": true,
-          "solution_ref": "row 63",
           "marks": 1
         },
         {
           "path": [
-            "3 Dividend payments"
-          ],
-          "label": "Bank statements: amounts and the 30 December date",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "row 64",
-          "marks": 2
-        },
-        {
-          "path": [
-            "4 Solvency and liquidity test"
-          ],
-          "label": "Records used for the test",
-          "source": "theory",
-          "basic_theory": true,
-          "solution_ref": "row 65.1",
-          "marks": 1
-        },
-        {
-          "path": [
-            "4 Solvency and liquidity test"
+            "Dividend payments",
+            "Occurrence"
           ],
           "label": "Reperform the solvency and liquidity test",
           "source": "case",
@@ -2333,7 +2323,52 @@
         },
         {
           "path": [
-            "5 Dividends withholding tax"
+            "Dividend payments",
+            "Accuracy"
+          ],
+          "label": "Schedule shares to register",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 62",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Dividend payments",
+            "Accuracy"
+          ],
+          "label": "Recalculate R0,20 x shares",
+          "source": "case",
+          "basic_theory": true,
+          "solution_ref": "row 63",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Dividend payments",
+            "Accuracy"
+          ],
+          "label": "Bank statements: amounts paid",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 64",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Dividend payments",
+            "Accuracy"
+          ],
+          "label": "Records used for the solvency and liquidity test",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 65.1",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Dividend payments",
+            "Accuracy"
           ],
           "label": "Reperform the dividends withholding tax (20%)",
           "source": "theory",
@@ -2343,7 +2378,19 @@
         },
         {
           "path": [
-            "5 Dividends withholding tax"
+            "Dividend payments",
+            "Cut-off"
+          ],
+          "label": "Bank statements: paid on 30 December, within 120 business days",
+          "source": "theory",
+          "basic_theory": true,
+          "solution_ref": "row 64",
+          "marks": 1
+        },
+        {
+          "path": [
+            "Dividend payments",
+            "Completeness"
           ],
           "label": "Payment and SARS returns for the withholding tax",
           "source": "theory",
@@ -2356,24 +2403,40 @@
         "max": 23,
         "components": [
           {
-            "label": "1 General procedures",
-            "marks": 6
+            "label": "General procedures > Occurrence",
+            "marks": 3
           },
           {
-            "label": "2 Issue of shares",
-            "marks": 14
+            "label": "General procedures > Accuracy",
+            "marks": 3
           },
           {
-            "label": "3 Dividend payments",
+            "label": "Issue of shares > Occurrence",
             "marks": 9
           },
           {
-            "label": "4 Solvency and liquidity test",
-            "marks": 2
+            "label": "Issue of shares > Accuracy",
+            "marks": 4
           },
           {
-            "label": "5 Dividends withholding tax",
-            "marks": 2
+            "label": "Issue of shares > Completeness",
+            "marks": 1
+          },
+          {
+            "label": "Dividend payments > Occurrence",
+            "marks": 6
+          },
+          {
+            "label": "Dividend payments > Accuracy",
+            "marks": 5
+          },
+          {
+            "label": "Dividend payments > Cut-off",
+            "marks": 1
+          },
+          {
+            "label": "Dividend payments > Completeness",
+            "marks": 1
           }
         ]
       },

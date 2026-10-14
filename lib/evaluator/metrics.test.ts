@@ -489,8 +489,9 @@ test("Paper 3 Question Model: components and core by rounded fair share", () => 
   // Q2(d): seven Layer 2 components (two Layer 1 issues), cap 9, fair share 1, core from 4 marks
   assert.equal(coreComponents(questionModelFor("iac-2026-p3", "P3Q2_d"))!.length, 7);
   assert.deepEqual(core("P3Q2_d").sort(), ["The minimum wage (R25 against R28,79) > NOCLAR (SAICA Code)", "The minimum wage (R25 against R28,79) > Reportable irregularity (Auditing Profession Act)"]);
-  // Q2(e): five sections, cap 23, fair share 5, core from 8 marks
-  assert.deepEqual(core("P3Q2_e").sort(), ["2 Issue of shares", "3 Dividend payments"]);
+  // Q2(e): Layer 1 required (general, shares, dividend) > Layer 2 assertion; nine components, cap 23, fair share 3, core from 6 marks
+  assert.equal(coreComponents(questionModelFor("iac-2026-p3", "P3Q2_e"))!.length, 9);
+  assert.deepEqual(core("P3Q2_e").sort(), ["Dividend payments > Occurrence", "Issue of shares > Occurrence"]);
   const a = questionModelFor("iac-2026-p3", "P3Q1_a")!;
   assert.equal(a.core_marks!.components.reduce((s, c) => s + c.marks, 0), 85.5);
   const e = questionModelFor("iac-2026-p3", "P3Q2_e")!;
