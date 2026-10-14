@@ -7,7 +7,7 @@
     "Q1(a): components are the six sections of the case (proposed 13 Oct 2026); insurance (rows 25 and 41) sits under Section 2. Marker row 19 (1.7.2, dividend reduces retained funds) is omitted from the official solution, so it carries no marks in the model.",
     "Q1(b): four steps of the solution; plan marks per row are read from the updated solution (labour capacity rows 79 and 80 carry marks in the updated solution; the printed available is 46.5 and the row split here sums to 46).",
     "Q2(c): components are the case indicators a student could see (the minimum wage, the pallet supplier, the auditor appointment, the name and donors, the transfer of the NPO, the dividend, Zolani, the directors overall), not the solution headings (Yvonne, 13 Oct 2026). Marks sit in various solution sections; the trigger is the case indicator. The solution's 3.3 (safeguards for conflicts) has no marker row and is left out, so the plan sums to 21 against the printed 22.",
-    "Q2(d): five headings of the solution. 'Other' is capped at 3 in the solution, so it carries 3 marks.",
+    "Q2(d): two components a student can see: the minimum wage (rows 23 to 40: NOCLAR, reportable irregularity, reporting implications, reputation, risk assessment) and the missing employment contract (row 41, one mark). The solution caps 'Other' (rows 37 to 41) at 3, so the wage component carries 16 and the contract 1 (Yvonne, 14 Oct 2026).",
     "Q2(e): five sections of the solution; 33 marks available against a cap of 23. Audit-procedure principle: a document or thing mentioned in the case is Direct; one step off is Indirect; no document or thing is Thinking.",
     "Q2(e) discussion_basis is compliance (Companies Act s40 and s46, the MOI); proposed."
   ],
@@ -1753,7 +1753,7 @@
       "component_tree": [
         {
           "path": [
-            "The wage rate"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "R25 below the minimum wage of R28,79",
           "source": "case",
@@ -1763,7 +1763,7 @@
         },
         {
           "path": [
-            "NOCLAR (SAICA Code)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Fezile must comply with Code parts 1, 3 and 4A",
           "source": "theory",
@@ -1773,7 +1773,7 @@
         },
         {
           "path": [
-            "NOCLAR (SAICA Code)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Consider NOCLAR, s360",
           "source": "theory",
@@ -1783,7 +1783,7 @@
         },
         {
           "path": [
-            "NOCLAR (SAICA Code)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "R25 is non-compliance, fundamental to the business",
           "source": "case",
@@ -1793,7 +1793,7 @@
         },
         {
           "path": [
-            "NOCLAR (SAICA Code)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Intentional: a clear instruction",
           "source": "case",
@@ -1803,7 +1803,7 @@
         },
         {
           "path": [
-            "NOCLAR (SAICA Code)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "The CEO gave the instruction",
           "source": "case",
@@ -1813,7 +1813,7 @@
         },
         {
           "path": [
-            "NOCLAR (SAICA Code)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Possible NOCLAR: react and report",
           "source": "theory",
@@ -1823,7 +1823,7 @@
         },
         {
           "path": [
-            "NOCLAR (SAICA Code)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Self-interest threat if he fears losing the client",
           "source": "theory",
@@ -1833,7 +1833,7 @@
         },
         {
           "path": [
-            "Reportable irregularity (Auditing Profession Act)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Unlawful act under the BCEA",
           "source": "theory",
@@ -1843,7 +1843,7 @@
         },
         {
           "path": [
-            "Reportable irregularity (Auditing Profession Act)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Communicated by the CEO, a member of management",
           "source": "case",
@@ -1853,7 +1853,7 @@
         },
         {
           "path": [
-            "Reportable irregularity (Auditing Profession Act)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Material breach of fiduciary duty",
           "source": "theory",
@@ -1863,7 +1863,7 @@
         },
         {
           "path": [
-            "Reportable irregularity (Auditing Profession Act)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Fine or penalty, financial loss",
           "source": "theory",
@@ -1873,7 +1873,7 @@
         },
         {
           "path": [
-            "Reportable irregularity (Auditing Profession Act)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Therefore a reportable irregularity, s45",
           "source": "theory",
@@ -1883,7 +1883,7 @@
         },
         {
           "path": [
-            "Auditing Profession Act s44"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Unqualified report not issued while a reportable irregularity is open",
           "source": "theory",
@@ -1893,7 +1893,7 @@
         },
         {
           "path": [
-            "Other (impact on the audit)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "ISA 250: direct effect on the financial statements",
           "source": "theory",
@@ -1903,7 +1903,7 @@
         },
         {
           "path": [
-            "Other (impact on the audit)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Client integrity and continuing the engagement",
           "source": "theory",
@@ -1913,7 +1913,7 @@
         },
         {
           "path": [
-            "Other (impact on the audit)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Risk assessment and audit approach",
           "source": "theory",
@@ -1923,7 +1923,7 @@
         },
         {
           "path": [
-            "Other (impact on the audit)"
+            "The minimum wage (R25 against R28,79)"
           ],
           "label": "Going concern: reputation and fines",
           "source": "theory",
@@ -1933,9 +1933,9 @@
         },
         {
           "path": [
-            "Other (impact on the audit)"
+            "The missing employment contract"
           ],
-          "label": "Missing contract: payroll controls and control environment",
+          "label": "Missing contract: labour law, control environment, risk and audit response",
           "source": "case",
           "basic_theory": true,
           "solution_ref": "row 41",
@@ -1946,24 +1946,12 @@
         "max": 9,
         "components": [
           {
-            "label": "The wage rate",
+            "label": "The minimum wage (R25 against R28,79)",
+            "marks": 16
+          },
+          {
+            "label": "The missing employment contract",
             "marks": 1
-          },
-          {
-            "label": "NOCLAR (SAICA Code)",
-            "marks": 7
-          },
-          {
-            "label": "Reportable irregularity (Auditing Profession Act)",
-            "marks": 5
-          },
-          {
-            "label": "Auditing Profession Act s44",
-            "marks": 1
-          },
-          {
-            "label": "Other (impact on the audit)",
-            "marks": 3
           }
         ]
       },
