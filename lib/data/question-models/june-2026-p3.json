@@ -7,7 +7,7 @@
     "Q1(a): components are the six sections of the case (proposed 13 Oct 2026); insurance (rows 25 and 41) sits under Section 2. Marker row 19 (1.7.2, dividend reduces retained funds) is omitted from the official solution, so it carries no marks in the model.",
     "Q1(b): four steps of the solution; plan marks per row are read from the updated solution (labour capacity rows 79 and 80 carry marks in the updated solution; the printed available is 46.5 and the row split here sums to 46).",
     "Q2(c): components are the case indicators a student could see (the minimum wage, the pallet supplier, the auditor appointment, the name and donors, the transfer of the NPO, the dividend, Zolani, the directors overall), not the solution headings (Yvonne, 13 Oct 2026). Marks sit in various solution sections; the trigger is the case indicator. The solution's 3.3 (safeguards for conflicts) has no marker row and is left out, so the plan sums to 21 against the printed 22.",
-    "Q2(d): two layers. Layer 1 is the two issues a student can see: the minimum wage (rows 23 to 40) and the missing employment contract (row 41, one mark). Layer 2 under the wage is the theory it triggers: the wage itself, NOCLAR, reportable irregularity, reporting implications, reputation, risk assessment. The solution caps 'Other' (rows 37 to 41) at 3, so the wage component carries 16 and the contract 1 (Yvonne, 14 Oct 2026).",
+    "Q2(d): two layers. Layer 1 is the two issues a student can see: the minimum wage (rows 23 to 40) and the missing employment contract (row 41, one mark). Layer 2 under the wage is the theory it triggers: the wage itself, NOCLAR, reportable irregularity, reporting implications, reputation, risk assessment. Components are the Layer 2 rows (as in the other papers). The solution caps 'Other' (rows 37 to 41) at 3; the plan marks are kept uncapped (19 against a cap of 9).",
     "Q2(e): five sections of the solution; 33 marks available against a cap of 23. Audit-procedure principle: a document or thing mentioned in the case is Direct; one step off is Indirect; no document or thing is Thinking.",
     "Q2(e) discussion_basis is compliance (Companies Act s40 and s46, the MOI); proposed."
   ],
@@ -1965,11 +1965,31 @@
         "max": 9,
         "components": [
           {
-            "label": "The minimum wage (R25 against R28,79)",
-            "marks": 16
+            "label": "The minimum wage (R25 against R28,79) > The wage itself",
+            "marks": 1
           },
           {
-            "label": "The missing employment contract",
+            "label": "The minimum wage (R25 against R28,79) > NOCLAR (SAICA Code)",
+            "marks": 7
+          },
+          {
+            "label": "The minimum wage (R25 against R28,79) > Reportable irregularity (Auditing Profession Act)",
+            "marks": 5
+          },
+          {
+            "label": "The minimum wage (R25 against R28,79) > Reporting implications",
+            "marks": 2
+          },
+          {
+            "label": "The minimum wage (R25 against R28,79) > Reputation",
+            "marks": 2
+          },
+          {
+            "label": "The minimum wage (R25 against R28,79) > Risk assessment",
+            "marks": 1
+          },
+          {
+            "label": "The missing employment contract > Labour law, control, risk and audit response",
             "marks": 1
           }
         ]
