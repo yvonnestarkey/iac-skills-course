@@ -10,7 +10,8 @@
     "Q1(d) Core Issue set by Yvonne 6 Oct 2026: volume of case information per goal is the clue. No dominant component; Goal 6 is lower, not skippable (the requirement names it).",
     "discussion_basis (Yvonne, 8 Oct 2026): Discussion splits into compliance (applies rules: IFRS, Acts, ISAs) and non_compliance (applies tools: SWOT, strategy, risk). Kept separate from question_type, which gates the tools. Q1(a)/(b) non_compliance; Q1(d) set to non_compliance by Yvonne 8 Oct 2026 (conceptual guidelines, no definition or set of rules to match the initiatives against); Q2 pending.",
     "Q2(e) classified with Yvonne 8 Oct 2026 (rows 3-35 of the marker's report; rows 1-2 are the I2 and Comms marks). Compliance discussion: rules to match against (King IV, the Code, the Companies Act). Each report row is one item, so row 35 (safeguards, up to 3 marks) counts once; any mark on a row, including a part mark, counts as awarded. Tests for knowledge-recall rows: the requirement naming a concept (safeguards) does not make the specific points Direct if the specifics are not in the information.",
-    "Q2(f) classified with Yvonne 8 Oct 2026 (rows 39-78; rows 37-38 are the X1 and Comms marks). Rows 74-78 (the 'additional issues if (e) was not interpreted appropriately') are INCLUDED: the exam arbitrarily splits one discussion, a student may not have connected an issue to debt covenants in (e) or may have run out of time, so earning the point in (f) is fine. Rows 39 and 48 carry a heading plus the first point in the marker's report."
+    "Q2(f) classified with Yvonne 8 Oct 2026 (rows 39-78; rows 37-38 are the X1 and Comms marks). Rows 74-78 (the 'additional issues if (e) was not interpreted appropriately') are INCLUDED: the exam arbitrarily splits one discussion, a student may not have connected an issue to debt covenants in (e) or may have run out of time, so earning the point in (f) is fine. Rows 39 and 48 carry a heading plus the first point in the marker's report.",
+    "Q2(h) re-judged under the audit-procedure principle (Yvonne, 9 Oct; applied 14 Oct 2026): a document or thing mentioned in the case is Direct, one step off is Indirect, no thing is Thinking. No cash flow forecast, minutes or lawyers appear in the case, so the forecast and minutes procedures are Indirect (rows 123, 136) and the ISA 540 estimation-uncertainty and bias procedures are Thinking (129 to 131); the PFMA procurement request and the privatisation proposal are in the case, so rows 139 and 140 are Direct; the privatisation documents are one step off (row 144, Indirect)."
   ],
   "requirements": {
     "P1Q1_a": {
@@ -2879,7 +2880,7 @@
         },
         {
           "row": 123,
-          "proximity": "direct",
+          "proximity": "indirect",
           "note": "Direct (Yvonne): a document, meeting or thing mentioned in the case, so checking it is straightforward. The cash flow forecast."
         },
         {
@@ -2909,17 +2910,17 @@
         },
         {
           "row": 129,
-          "proximity": "indirect",
+          "proximity": "thinking",
           "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
         },
         {
           "row": 130,
-          "proximity": "indirect",
+          "proximity": "thinking",
           "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
         },
         {
           "row": 131,
-          "proximity": "indirect",
+          "proximity": "thinking",
           "note": "Indirect (Yvonne): other checks done on a document that is mentioned (the forecast), not themselves mentioned in the case."
         },
         {
@@ -2944,7 +2945,7 @@
         },
         {
           "row": 136,
-          "proximity": "direct",
+          "proximity": "indirect",
           "note": "The turnaround strategies are stated in the case."
         },
         {
@@ -2959,12 +2960,12 @@
         },
         {
           "row": 139,
-          "proximity": "indirect",
+          "proximity": "direct",
           "note": "The exemption request is stated; confirming its outcome is one step."
         },
         {
           "row": 140,
-          "proximity": "indirect",
+          "proximity": "direct",
           "note": "Privatisation is stated; enquiring about its status and timing is one step."
         },
         {
@@ -2984,7 +2985,7 @@
         },
         {
           "row": 144,
-          "proximity": "direct",
+          "proximity": "indirect",
           "note": "Direct (Yvonne): a document, meeting or thing mentioned in the case, so checking it is straightforward. Privatisation arrangements."
         },
         {

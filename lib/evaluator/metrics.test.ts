@@ -315,10 +315,10 @@ test("question model: Q2(g)(ii) is a compliance discussion (ISA 300 spine, Yvonn
   assert.deepEqual(proximityAvailable(model), { direct: 2, indirect: 6, thinking: 10 });
 });
 
-test("question model: Q2(h) is a compliance discussion (ISA 570, Yvonne 12 Oct) with 26 classified rows (8 direct, 13 indirect, 5 thinking)", () => {
+test("question model: Q2(h) is a compliance discussion (ISA 570, Yvonne 12 Oct) with 26 classified rows (7 direct, 11 indirect, 8 thinking, re-judged under the audit-procedure principle 14 Oct)", () => {
   const model = questionModelFor("iac-2026-p1", "P1Q2_h")!;
   assert.equal(model.discussion_basis, "compliance");
-  assert.deepEqual(proximityAvailable(model), { direct: 8, indirect: 13, thinking: 5 });
+  assert.deepEqual(proximityAvailable(model), { direct: 7, indirect: 11, thinking: 8 });
 });
 
 test("the 'why' test counts statements that name an item and stop at the what, coach-only and not in the student text", () => {
