@@ -255,6 +255,16 @@ test("diagnoses: volume and accuracy are judged together against the pass mark (
   const q2f = diagnose(base({ total_marks: 11, technical_awarded: 9, volume: { attempts: 16, note: "" } })).volume_accuracy!;
   assert.equal(q2f.passes, true);
   assert.equal(q2f.signal, true);
+  assert.equal(q2f.accuracy_signal, true);
+  assert.equal(q2f.volume_signal, false);
+  // 97% volume at exactly 60% accuracy: the pair is 58% and does not pass, but neither volume nor accuracy is a signal.
+  const p2q1a = diagnose(base({ total_marks: 67, technical_awarded: 39, volume: { attempts: 65, note: "" } })).volume_accuracy!;
+  assert.equal(p2q1a.passes, false);
+  assert.equal(p2q1a.signal, false);
+  // Short on volume and on accuracy: both signals.
+  const both = diagnose(base({ total_marks: 46, technical_awarded: 8, volume: { attempts: 27, note: "" } })).volume_accuracy!;
+  assert.equal(both.volume_signal, true);
+  assert.equal(both.accuracy_signal, true);
   const zero = diagnose(base({ total_marks: 6, technical_awarded: 0, volume: { attempts: 4, note: "" } })).volume_accuracy!;
   assert.equal(zero.needed_volume, null);
   assert.match(zero.text, /None of your points earned a mark/);
