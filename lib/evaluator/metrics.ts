@@ -72,9 +72,10 @@ export function computeMetrics(requirement: RequirementEvaluation): RequirementM
  * Volume = statements / marks available. Accuracy = marks earned / statements. Volume x Accuracy = marks earned / marks
  * available. The lower the accuracy, the higher the volume has to be: 80% volume at 80% accuracy is 64% and passes;
  * 80% volume at 50% accuracy is 40% and does not. So the verdict looks at the pair, not at each alone.
- * The pass mark is a draft constant, to be confirmed.
+ * The pass mark is 60% (Yvonne, 15 Oct 2026): 50% left no margin for error. A signal is given when volume, accuracy or the
+ * combination is below it.
  */
-export const PASS_SHARE = 0.5;
+export const PASS_SHARE = 0.6;
 
 /** Quantifier for the Communication diagnosis, from the share of points in a category (draft, 12 Oct 2026). */
 export function quantifier(share: number): "Most" | "Many" | "Some" | "A few" | null {
@@ -109,7 +110,8 @@ export function diagnose(requirement: RequirementEvaluation): RequirementDiagnos
     else if (needed_volume === null) text = `Volume ${pct(volume)}, Accuracy ${pct(accuracy)}. None of your points earned a mark, so writing more of the same would not help: accuracy is the problem here.`;
     else
       text = `Volume ${pct(volume)}, Accuracy ${pct(accuracy)}. At your accuracy you would have needed to write about ${pct(needed_volume)} as many points as there were marks to reach the pass mark. Either write more points, or write fewer but make sure more of them earn marks (at your volume you needed an accuracy of ${pct(needed_accuracy ?? 0)}).`;
-    volume_accuracy = { volume, accuracy, combined, passes, needed_volume, needed_accuracy, text };
+    const signal = accuracy === null || volume < PASS_SHARE || accuracy < PASS_SHARE || (combined ?? 0) < PASS_SHARE;
+    volume_accuracy = { volume, accuracy, combined, passes, signal, needed_volume, needed_accuracy, text };
   }
 
   let core_issue: RequirementDiagnoses["core_issue"] = null;

@@ -241,14 +241,20 @@ test("coach hypotheses: need two distinct valid requirements to be supported; un
 test("diagnoses: volume and accuracy are judged together against the pass mark (draft)", () => {
   const q1a = diagnose(base({ total_marks: 22, technical_awarded: 7, volume: { attempts: 20, note: "" } })).volume_accuracy!;
   assert.equal(q1a.passes, false);
-  assert.equal(Math.round(q1a.needed_volume! * 100), 143);
-  assert.equal(Math.round(q1a.needed_accuracy! * 100), 55);
-  assert.match(q1a.text, /^Volume 91%, Accuracy 35%\. At your accuracy you would have needed to write about 143%/);
-  // The worked example from the course: 80% volume at 80% accuracy passes, 80% volume at 50% accuracy does not.
+  assert.equal(Math.round(q1a.needed_volume! * 100), 171);
+  assert.equal(Math.round(q1a.needed_accuracy! * 100), 66);
+  assert.equal(q1a.signal, true);
+  assert.match(q1a.text, /^Volume 91%, Accuracy 35%\. At your accuracy you would have needed to write about 171%/);
+  // The worked example from the course: 80% volume at 80% accuracy passes, 80% volume at 50% accuracy does not (pass mark 60%).
   assert.equal(diagnose(base({ total_marks: 10, technical_awarded: 6.4, volume: { attempts: 8, note: "" } })).volume_accuracy!.passes, true);
   const half = diagnose(base({ total_marks: 10, technical_awarded: 4, volume: { attempts: 8, note: "" } })).volume_accuracy!;
   assert.equal(half.passes, false);
-  assert.equal(Math.round(half.needed_volume! * 100), 100);
+  assert.equal(Math.round(half.needed_volume! * 100), 120);
+  assert.equal(half.signal, true);
+  // 145% volume at 56% accuracy passes on the pair (82%) but still gives a signal: accuracy is below 60%.
+  const q2f = diagnose(base({ total_marks: 11, technical_awarded: 9, volume: { attempts: 16, note: "" } })).volume_accuracy!;
+  assert.equal(q2f.passes, true);
+  assert.equal(q2f.signal, true);
   const zero = diagnose(base({ total_marks: 6, technical_awarded: 0, volume: { attempts: 4, note: "" } })).volume_accuracy!;
   assert.equal(zero.needed_volume, null);
   assert.match(zero.text, /None of your points earned a mark/);

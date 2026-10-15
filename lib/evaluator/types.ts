@@ -285,6 +285,8 @@ export type RequirementDiagnoses = {
     needed_volume: number | null;
     /** Accuracy needed at the current volume to reach the pass mark. Null when nothing was written. */
     needed_accuracy: number | null;
+    /** True when volume, accuracy or the combination is below the pass share. */
+    signal: boolean;
     text: string;
   } | null;
   core_issue: { core_issues_text: string; reflects: "yes" | "partly" | "no"; reflection_text: string } | null;
