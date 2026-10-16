@@ -104,3 +104,9 @@ export const PILLARS = [
   { name: "Taxation", weight: "15% to 25%" },
 ] as const;
 export const PVAA_ROW = { name: "Effective Communication & PVAAs", weight: "5% to 7.5%" } as const;
+
+/** Case-study names for the report headers, by paper id (June 2026 sitting). */
+export const PAPER_NAMES: Record<string, string> = { "iac-2026-p1": "Inpahla", "iac-2026-p2": "Med4Me", "iac-2026-p3": "Beita" };
+
+/** Brand (Yvonne, 16 Oct 2026): teal step headings, dark red part headings, Arial, logo watermark on every page. */
+export const BRAND = { teal: "#124f5c", red: "#980000", text: "#212121" } as const;
