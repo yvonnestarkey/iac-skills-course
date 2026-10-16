@@ -1,6 +1,11 @@
 import { normalizeCohortId } from "./cohorts";
 import { getSupabase } from "./supabase";
-import { fetchStudentProfiles } from "./profiles";
+import { fetchStudentProfiles, profileDisplayName } from "./profiles";
+import {
+  requestClassroomEmails,
+  type ClassroomEmailKind,
+  type ClassroomEmailRecipient,
+} from "./student-classroom-email";
 import type { CommunicationAudience } from "./types";
 
 export type NotificationType = "announcement" | "assignment_feedback" | "question" | "reply";
@@ -241,10 +246,48 @@ export interface NotificationTarget {
   id: string;
   email: string;
   cohort?: string;
+  name?: string;
 }
 
-function asTarget(row: { id: string; email: string; cohort?: string | null }): NotificationTarget {
-  return { id: row.id, email: row.email, cohort: normalizeCohortId(row.cohort) };
+function asTarget(row: {
+  id: string;
+  email: string;
+  cohort?: string | null;
+  full_name?: string | null;
+  name?: string;
+}): NotificationTarget {
+  return {
+    id: row.id,
+    email: row.email,
+    cohort: normalizeCohortId(row.cohort),
+    name: (row.name || "").trim() || profileDisplayName(row.email, row.full_name),
+  };
+}
+
+function classroomKindFromNotification(kind: NotificationType): ClassroomEmailKind | null {
+  if (kind === "announcement") return "announcement";
+  if (kind === "assignment_feedback") return "assignment_feedback";
+  if (kind === "reply") return "message";
+  return null;
+}
+
+function classroomRecipients(
+  students: NotificationTarget[],
+  inserted: Array<{ id?: string; user_id?: string; student_email?: string }> | null | undefined
+): ClassroomEmailRecipient[] {
+  const byUser = new Map(
+    (inserted || [])
+      .filter((row) => row.user_id)
+      .map((row) => [String(row.user_id), String(row.id || "")])
+  );
+  return students
+    .filter((student) => student.email.includes("@"))
+    .map((student, index) => ({
+      email: student.email,
+      name: student.name || profileDisplayName(student.email),
+      userId: student.id,
+      recordId: byUser.get(student.id) || inserted?.[index]?.id || null,
+    }));
 }
 
 export function notificationRowsForStudents(input: {
@@ -280,7 +323,7 @@ export function notificationRowsForStudents(input: {
 export async function resolveNotificationTargets(input: {
   audience: CommunicationAudience;
   recipientIds: string[];
-  students?: { id: string; email: string; cohort?: string }[];
+  students?: { id: string; email: string; cohort?: string; name?: string }[];
 }): Promise<NotificationTarget[]> {
   const roster = await fetchStudentProfiles();
   const live = roster.data || [];
@@ -338,7 +381,10 @@ export async function insertCoachNotifications(input: {
   }
 
   const first = await client.from("notifications").insert(rows).select("id");
-  if (!first.error) return { ok: true, count: first.data?.length || rows.length };
+  if (!first.error) {
+    await emailInsertedNotifications(input.kind, title, message, input.students, first.data);
+    return { ok: true, count: first.data?.length || rows.length };
+  }
 
   logInsertError(first.error, rows);
 
@@ -352,10 +398,30 @@ export async function insertCoachNotifications(input: {
       body: row.body,
     }))
   ).select("id");
-  if (!fallback.error) return { ok: true, count: fallback.data?.length || rows.length };
+  if (!fallback.error) {
+    await emailInsertedNotifications(input.kind, title, message, input.students, fallback.data);
+    return { ok: true, count: fallback.data?.length || rows.length };
+  }
 
   logInsertError(fallback.error, rows);
   return { ok: false, count: 0, error: describe(fallback.error) };
+}
+
+async function emailInsertedNotifications(
+  kind: NotificationType,
+  title: string,
+  message: string,
+  students: NotificationTarget[],
+  inserted: Array<{ id?: string; user_id?: string; student_email?: string }> | null | undefined
+) {
+  const classroomKind = classroomKindFromNotification(kind);
+  if (!classroomKind) return;
+  await requestClassroomEmails({
+    kind: classroomKind,
+    title,
+    message,
+    recipients: classroomRecipients(students, inserted),
+  });
 }
 
 /** One-student assignment feedback from the coach inbox. */
