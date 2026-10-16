@@ -173,14 +173,21 @@ export async function grantPreviewEntitlement(userId: string) {
   await ensureReferralCode(userId);
 }
 
-export async function ensureCommerceAccount(user: StudentUser) {
+export async function ensureCommerceAccount(user: StudentUser): Promise<boolean> {
   const client = getServiceSupabase();
-  if (!client || isCoachAccount(user)) return;
+  if (!client || isCoachAccount(user)) return false;
+  const existing = await client
+    .from("course_entitlements")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .eq("product_id", DEFAULT_PRODUCT_ID)
+    .maybeSingle();
   await client.from("course_entitlements").upsert(
     { user_id: user.id, product_id: DEFAULT_PRODUCT_ID, status: "free_preview", source: "signup", updated_at: new Date().toISOString() },
     { onConflict: "user_id,product_id", ignoreDuplicates: true }
   );
   await ensureReferralCode(user.id);
+  return !existing.data && !existing.error;
 }
 
 export async function grantFullEntitlement(userId: string, source: "stripe" | "admin") {

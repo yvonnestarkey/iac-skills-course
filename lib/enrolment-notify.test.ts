@@ -4,10 +4,14 @@ import { resolve } from "node:path";
 import test from "node:test";
 import {
   buildEnrolmentNotifyEmail,
+  buildPreviewSignupEmail,
   enrolmentNotifyIdempotencyKey,
   enrolmentNotifySubject,
+  notifyYvonneOfPreviewSignup,
   notifyYvonneOfSuccessfulEnrolment,
+  previewSignupNotifyIdempotencyKey,
   shouldNotifyYvonneOfEnrolment,
+  shouldNotifyYvonneOfPreviewSignup,
 } from "./enrolment-notify";
 
 test("once-off enrolment notifies Yvonne", async () => {
@@ -65,6 +69,7 @@ test("instalment-plan enrolment is the first of 6 payments", async () => {
   assert.match(email.text, /first of 6 payments/);
   assert.match(email.text, /2 instalments remain/);
   assert.match(email.text, /Referral code JAN27-TEST/);
+  assert.match(email.text, /Access: Full course/);
 });
 
 test("Stripe webhook retry does not send a duplicate enrolment email", async () => {
@@ -131,7 +136,49 @@ test("later instalments do not send a new enrolment email", () => {
   );
 });
 
-test("Free Preview registration does not send an enrolment email", () => {
+test("preview signup emails Yvonne once when a new free-preview account is created", async () => {
+  assert.equal(shouldNotifyYvonneOfPreviewSignup({ created: true }), true);
+  assert.equal(shouldNotifyYvonneOfPreviewSignup({ created: false }), false);
+  assert.equal(shouldNotifyYvonneOfPreviewSignup({ created: true, isCoach: true }), false);
+  const email = buildPreviewSignupEmail({
+    studentName: "Preview Student",
+    studentEmail: "preview@example.com",
+    enrolledAt: new Date("2026-09-28T10:00:00.000Z"),
+  });
+  assert.equal(enrolmentNotifySubject("Preview Student", "preview"), "New IAC preview signup — Preview Student");
+  assert.match(email.text, /Free preview/);
+  assert.match(email.text, /preview@example.com/);
+  assert.doesNotMatch(email.text, /Once-off|US\$/);
+  const sent: string[] = [];
+  const result = await notifyYvonneOfPreviewSignup(
+    {
+      userId: "student-preview",
+      studentName: "Preview Student",
+      studentEmail: "preview@example.com",
+      enrolledAt: new Date("2026-09-28T10:00:00.000Z"),
+    },
+    async (payload) => {
+      sent.push(payload.subject);
+      assert.equal(payload.idempotencyKey, previewSignupNotifyIdempotencyKey("student-preview"));
+      assert.match(payload.text, /Free preview/);
+      return { id: "email-preview" };
+    }
+  );
+  assert.equal(result.sent, true);
+  assert.equal(sent[0], "New IAC preview signup — Preview Student");
+});
+
+test("student outline and account bootstrap send the preview signup notice", () => {
+  const outline = readFileSync(resolve("app/api/student/outline/route.ts"), "utf8");
+  const referrals = readFileSync(resolve("app/api/referrals/route.ts"), "utf8");
+  const invites = readFileSync(resolve("lib/coach-invites-admin.ts"), "utf8");
+  assert.match(outline, /provisionStudentCommerceAccount/);
+  assert.match(referrals, /provisionStudentCommerceAccount/);
+  assert.equal(invites.includes("notifyYvonneOfPreviewSignup"), false);
+  assert.equal(invites.includes("provisionStudentCommerceAccount"), false);
+});
+
+test("Free Preview registration does not send a paid enrolment email", () => {
   assert.equal(
     shouldNotifyYvonneOfEnrolment({
       entitlementStatus: "free_preview",

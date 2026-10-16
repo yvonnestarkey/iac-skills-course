@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRequestUser } from "@/lib/auth-server";
-import { ensureCommerceAccount, getEntitlementRecord, listPreviewLessonIds } from "@/lib/commerce";
+import { getEntitlementRecord, listPreviewLessonIds } from "@/lib/commerce";
+import { provisionStudentCommerceAccount } from "@/lib/enrolment-notify";
 import { fetchCourseOutline } from "@/lib/student-lesson";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +9,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const user = await getRequestUser();
   if (!user) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
-  await ensureCommerceAccount(user);
+  await provisionStudentCommerceAccount(user);
   const [outline, entitlement, previewIds] = await Promise.all([
     fetchCourseOutline(),
     getEntitlementRecord(user.id),

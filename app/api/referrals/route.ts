@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRequestUser } from "@/lib/auth-server";
-import { ensureCommerceAccount, getCourseProduct, referralCodeForUserId, referrerCreditCents } from "@/lib/commerce";
+import { getCourseProduct, referralCodeForUserId, referrerCreditCents } from "@/lib/commerce";
+import { provisionStudentCommerceAccount } from "@/lib/enrolment-notify";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import { applyReferralAttribution } from "@/lib/stripe-commerce";
 
@@ -9,7 +10,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const user = await getRequestUser();
   if (!user) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
-  await ensureCommerceAccount(user);
+  await provisionStudentCommerceAccount(user);
   const client = getServiceSupabase();
   const product = await getCourseProduct();
   if (!client) {
