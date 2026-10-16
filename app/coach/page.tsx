@@ -20,9 +20,9 @@ export default function CoachHomePage() {
             <strong>Student course</strong>
             <span className="muted">The live student dashboard, lessons, live sessions, and Script Evaluator</span>
           </button>
-          <button onClick={() => router.push("/coach/waitlist")}>
-            <strong>Waitlist</strong>
-            <span className="muted">See who is waiting, then send one free-preview invitation at a time</span>
+          <button onClick={() => router.push("/coach/referrals")}>
+            <strong>Referrals</strong>
+            <span className="muted">Successful student and professional colleague referrals, including payout records</span>
           </button>
           <button onClick={() => router.push("/coach/students/new")}>
             <strong>Add Student</strong>
@@ -55,7 +55,7 @@ export default function CoachHomePage() {
           </button>
           <button onClick={() => router.push("/coach/builder")}>
             <strong>Course creator</strong>
-            <span className="muted">Add lessons and import CSV content</span>
+            <span className="muted">Add lessons, live Zoom sessions, and import CSV content</span>
           </button>
         </div>
       </section>

@@ -342,17 +342,40 @@ h1 {
 }
 
 .notify-panel-item {
-  padding: 10px 0;
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  padding: 10px 6px;
+  border: 0;
   border-bottom: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.notify-panel-item:hover {
+  background: var(--light);
 }
 
 .notify-panel-item:first-child {
-  padding-top: 0;
+  padding-top: 6px;
 }
 
 .notify-panel-item strong {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
+}
+
+.notify-inbox-item {
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
 }
 
 .notify-panel .ghost {
@@ -2801,11 +2824,42 @@ input[type="tel"]:focus {
 
 .notify-modal {
   max-width: 560px;
-  overflow: visible;
+  max-height: min(90vh, 820px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.notify-modal .modal-actions {
-  margin-top: 20px;
+.notify-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.notify-modal-head h2 {
+  margin-bottom: 4px;
+}
+
+.notify-modal-head p {
+  margin: 0;
+}
+
+.notify-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.notify-modal-body {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-top: 14px;
 }
 
 .notify-send-row {
@@ -4214,6 +4268,8 @@ a.live-session-watch:hover {
   border: 1px dashed var(--line);
   border-radius: 12px;
   background: #f4f8f7;
+  max-height: min(36vh, 280px);
+  overflow-y: auto;
 }
 
 .notify-preview .muted {
@@ -6823,5 +6879,60 @@ a.live-session-watch:hover {
   align-items: flex-start;
   margin: 8px 0 12px;
   font-size: 14px;
+}
+
+.live-session-manager {
+  margin-top: 18px;
+}
+
+.live-session-when-fields {
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.live-session-when-fields .plan-field {
+  flex: 1;
+  min-width: 140px;
+}
+
+.live-session-when-fields input[type="date"],
+.live-session-when-fields input[type="time"] {
+  width: 100%;
+}
+
+.live-session-file {
+  margin-top: 8px;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.live-session-admin-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.live-session-admin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.live-session-admin-row strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.live-session-admin-row .actions {
+  margin-top: 0;
+  flex-shrink: 0;
 }
 

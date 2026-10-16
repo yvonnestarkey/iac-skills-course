@@ -17,6 +17,7 @@ export interface StudentInboxValue {
   inboxWaiting: number;
   notifications: StudentNotification[];
   unreadCount: number;
+  ready: boolean;
   markAllRead: () => Promise<void>;
   markNotificationsRead: (ids?: string[]) => Promise<void>;
 }
@@ -27,10 +28,12 @@ function useStudentInboxState(): StudentInboxValue {
   const { user } = useStudentSession();
   const [messages, setMessages] = useState<InboxMessage[]>([]);
   const [notifications, setNotifications] = useState<StudentNotification[]>([]);
+  const [ready, setReady] = useState(false);
   const items = useMemo(() => asNotificationList(notifications), [notifications]);
 
   useEffect(() => {
     if (!user?.id) return;
+    setReady(false);
     const client = getSupabase();
     let cancelled = false;
 
@@ -42,11 +45,21 @@ function useStudentInboxState(): StudentInboxValue {
         const nextNotes = asNotificationList(notes.data);
         setMessages(nextMessages);
         setNotifications(nextNotes);
+        const catchup = await fetch("/api/student/notifications/catch-up", { method: "POST" });
+        if (!cancelled && catchup.ok) {
+          const payload = (await catchup.json().catch(() => ({}))) as { inserted?: number };
+          if (payload.inserted) {
+            const refreshed = await fetchOwnNotifications();
+            if (!cancelled) setNotifications(asNotificationList(refreshed.data));
+          }
+        }
       } catch {
         if (!cancelled) {
           setMessages([]);
           setNotifications([]);
         }
+      } finally {
+        if (!cancelled) setReady(true);
       }
     };
 
@@ -128,6 +141,7 @@ function useStudentInboxState(): StudentInboxValue {
     inboxWaiting,
     notifications: items,
     unreadCount,
+    ready,
     markAllRead,
     markNotificationsRead,
   };

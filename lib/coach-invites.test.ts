@@ -255,8 +255,12 @@ test("waitlist invitation produces free-preview access, not paid access", async 
 test("referral display renders US$32.70", () => {
   assert.equal(formatUsdCents(3270), "US$32.70");
   const card = readFileSync(resolve("components/commerce/ReferralCard.tsx"), "utf8");
+  const account = readFileSync(resolve("components/student/StudentAccount.tsx"), "utf8");
   assert.match(card, /formatUsdCents/);
   assert.equal(/toFixed\(0\)/.test(card), false);
+  assert.match(account, /ReferralCard/);
+  assert.match(card, /unpaidPreviewReferralNote/);
+  assert.doesNotMatch(card, /if \(!data\) return null/);
 });
 
 test("instalment payment-date statement is prominent magenta, not grey fine print", () => {

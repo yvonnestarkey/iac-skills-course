@@ -37,7 +37,7 @@ export async function GET(_request: Request, context: { params: Promise<{ lesson
   const product = await getCourseProduct();
   const lesson = await protectLessonResourceFields(data as Record<string, unknown>, {
     canRead: composed.canReadBody,
-    preview: commercial.preview,
+    keepStoredTeachingUrls: commercial.keepStoredTeachingUrls,
   });
   if (!composed.canReadBody) {
     return NextResponse.json({

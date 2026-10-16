@@ -1,5 +1,11 @@
+import { normalizeCohortId } from "./cohorts";
 import { getSupabase } from "./supabase";
-import { fetchStudentProfiles } from "./profiles";
+import { fetchStudentProfiles, profileDisplayName } from "./profiles";
+import {
+  requestClassroomEmails,
+  type ClassroomEmailKind,
+  type ClassroomEmailRecipient,
+} from "./student-classroom-email";
 import type { CommunicationAudience } from "./types";
 
 export type NotificationType = "announcement" | "assignment_feedback" | "question" | "reply";
@@ -131,6 +137,56 @@ export async function fetchOwnNotifications(): Promise<{
   }
 }
 
+export async function fetchStudentNotifications(student: {
+  id: string;
+  email: string;
+}): Promise<{ ok: boolean; error?: string; data: StudentNotification[] }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
+
+  const email = student.email.trim();
+  const seen = new Set<string>();
+  const merged: StudentNotification[] = [];
+
+  const add = (rows: unknown[]) => {
+    asNotificationList(rows).forEach((item) => {
+      if (seen.has(item.id)) return;
+      seen.add(item.id);
+      merged.push(item);
+    });
+  };
+
+  try {
+    if (email) {
+      const byEmail = await client
+        .from("notifications")
+        .select("*")
+        .eq("student_email", email)
+        .order("created_at", { ascending: false });
+      if (byEmail.error) console.error("notifications email query failed", byEmail.error);
+      else add(byEmail.data || []);
+    }
+
+    if (isUserId(student.id)) {
+      const byId = await client
+        .from("notifications")
+        .select("*")
+        .or(`student_id.eq.${student.id},user_id.eq.${student.id}`)
+        .order("created_at", { ascending: false });
+      if (byId.error) console.error("notifications student_id query failed", byId.error);
+      else add(byId.data || []);
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Could not load this student's notifications.",
+      data: merged.sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+    };
+  }
+
+  return { ok: true, data: merged.sort((a, b) => b.createdAt.localeCompare(a.createdAt)) };
+}
+
 export async function fetchUnreadNotifications(userId: string): Promise<{
   ok: boolean;
   error?: string;
@@ -189,6 +245,49 @@ export async function markOwnNotificationsRead(ids?: string[]): Promise<{ ok: bo
 export interface NotificationTarget {
   id: string;
   email: string;
+  cohort?: string;
+  name?: string;
+}
+
+function asTarget(row: {
+  id: string;
+  email: string;
+  cohort?: string | null;
+  full_name?: string | null;
+  name?: string;
+}): NotificationTarget {
+  return {
+    id: row.id,
+    email: row.email,
+    cohort: normalizeCohortId(row.cohort),
+    name: (row.name || "").trim() || profileDisplayName(row.email, row.full_name),
+  };
+}
+
+function classroomKindFromNotification(kind: NotificationType): ClassroomEmailKind | null {
+  if (kind === "announcement") return "announcement";
+  if (kind === "assignment_feedback") return "assignment_feedback";
+  if (kind === "reply") return "message";
+  return null;
+}
+
+function classroomRecipients(
+  students: NotificationTarget[],
+  inserted: Array<{ id?: string; user_id?: string; student_email?: string }> | null | undefined
+): ClassroomEmailRecipient[] {
+  const byUser = new Map(
+    (inserted || [])
+      .filter((row) => row.user_id)
+      .map((row) => [String(row.user_id), String(row.id || "")])
+  );
+  return students
+    .filter((student) => student.email.includes("@"))
+    .map((student, index) => ({
+      email: student.email,
+      name: student.name || profileDisplayName(student.email),
+      userId: student.id,
+      recordId: byUser.get(student.id) || inserted?.[index]?.id || null,
+    }));
 }
 
 export function notificationRowsForStudents(input: {
@@ -196,9 +295,14 @@ export function notificationRowsForStudents(input: {
   title: string;
   message: string;
   kind: NotificationType;
+  audience?: CommunicationAudience;
+  broadcastId?: string;
 }) {
   const title = input.title.trim();
   const message = input.message.trim();
+  const announcement = input.kind === "announcement";
+  const audience = input.audience || (announcement && input.students.length > 1 ? "cohort" : "student");
+  const broadcastId = announcement ? input.broadcastId || crypto.randomUUID() : null;
   return input.students.filter((student) => isUserId(student.id)).map((student) => ({
     user_id: student.id,
     student_id: student.id,
@@ -210,20 +314,23 @@ export function notificationRowsForStudents(input: {
     message,
     body: message,
     read: false,
+    audience,
+    cohort: student.cohort || null,
+    broadcast_id: broadcastId,
   }));
 }
 
 export async function resolveNotificationTargets(input: {
   audience: CommunicationAudience;
   recipientIds: string[];
-  students?: { id: string; email: string }[];
+  students?: { id: string; email: string; cohort?: string; name?: string }[];
 }): Promise<NotificationTarget[]> {
   const roster = await fetchStudentProfiles();
   const live = roster.data || [];
-  const byId = new Map(live.map((row) => [row.id, { id: row.id, email: row.email }]));
-  const byEmail = new Map(live.map((row) => [row.email.toLowerCase(), { id: row.id, email: row.email }]));
+  const byId = new Map(live.map((row) => [row.id, asTarget(row)]));
+  const byEmail = new Map(live.map((row) => [row.email.toLowerCase(), asTarget(row)]));
 
-  if (input.audience === "all") return live.map((row) => ({ id: row.id, email: row.email }));
+  if (input.audience === "all") return live.map((row) => asTarget(row));
 
   const matched = new Map<string, NotificationTarget>();
   input.recipientIds.forEach((id) => {
@@ -237,7 +344,7 @@ export async function resolveNotificationTargets(input: {
   });
 
   if (!matched.size && (input.audience === "cohort" || input.audience === "filtered")) {
-    return live.map((row) => ({ id: row.id, email: row.email }));
+    return live.map((row) => asTarget(row));
   }
   return [...matched.values()];
 }
@@ -251,6 +358,7 @@ export async function insertCoachNotifications(input: {
   title: string;
   message: string;
   kind: NotificationType;
+  audience?: CommunicationAudience;
 }): Promise<{ ok: boolean; count: number; error?: string }> {
   const client = getSupabase();
   if (!client) return { ok: false, count: 0, error: "Supabase is not configured." };
@@ -273,7 +381,10 @@ export async function insertCoachNotifications(input: {
   }
 
   const first = await client.from("notifications").insert(rows).select("id");
-  if (!first.error) return { ok: true, count: first.data?.length || rows.length };
+  if (!first.error) {
+    await emailInsertedNotifications(input.kind, title, message, input.students, first.data);
+    return { ok: true, count: first.data?.length || rows.length };
+  }
 
   logInsertError(first.error, rows);
 
@@ -287,10 +398,30 @@ export async function insertCoachNotifications(input: {
       body: row.body,
     }))
   ).select("id");
-  if (!fallback.error) return { ok: true, count: fallback.data?.length || rows.length };
+  if (!fallback.error) {
+    await emailInsertedNotifications(input.kind, title, message, input.students, fallback.data);
+    return { ok: true, count: fallback.data?.length || rows.length };
+  }
 
   logInsertError(fallback.error, rows);
   return { ok: false, count: 0, error: describe(fallback.error) };
+}
+
+async function emailInsertedNotifications(
+  kind: NotificationType,
+  title: string,
+  message: string,
+  students: NotificationTarget[],
+  inserted: Array<{ id?: string; user_id?: string; student_email?: string }> | null | undefined
+) {
+  const classroomKind = classroomKindFromNotification(kind);
+  if (!classroomKind) return;
+  await requestClassroomEmails({
+    kind: classroomKind,
+    title,
+    message,
+    recipients: classroomRecipients(students, inserted),
+  });
 }
 
 /** One-student assignment feedback from the coach inbox. */
@@ -314,6 +445,7 @@ export async function notifyAssignmentFeedback(input: {
     title: input.title,
     message: input.message,
     kind: "assignment_feedback",
+    audience: "student",
   });
 }
 
@@ -331,5 +463,6 @@ export async function deliverAnnouncement(input: {
     title: input.title,
     message: input.message,
     kind: "announcement",
+    audience: input.audience,
   });
 }

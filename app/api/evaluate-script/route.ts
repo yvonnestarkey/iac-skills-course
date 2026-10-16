@@ -35,6 +35,8 @@ import {
 import { evaluateCompetencyBreakdown, formatCompetencyBreakdown } from "@/lib/competency-evaluator";
 import { BURIED_TREASURE_FRAMEWORK_PROMPT, BURIED_TREASURE_SYSTEM_PROMPT } from "@/lib/prompts/buried-treasure";
 import type { BuriedTreasureAnalysis, TierScore } from "@/types/evaluation";
+import { isCoachAccount } from "@/lib/roles";
+import { scriptEvaluationPreview, sendClassroomEmails } from "@/lib/student-classroom-email";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
@@ -62,6 +64,43 @@ const CASE_STUDY_PROXIMITY_OUTPUT = `You MUST respond with a single JSON object 
 }
 
 Evaluate the handwritten script pages: read the writing, extract qualitative facts the student used, and compare those facts and workings against the SAICA solution / mark plan and Eve coaching rules supplied in the user message.`;
+
+async function emailScriptEvaluationToStudent(input: {
+  user: { id: string; email?: string | null; user_metadata?: Record<string, unknown> | null };
+  paperName: string;
+  evaluation: Record<string, unknown>;
+  evaluationId?: string | null;
+  attemptId?: string | null;
+}) {
+  try {
+    if (isCoachAccount(input.user)) return;
+    const email = String(input.user.email || "").trim();
+    if (!email.includes("@")) return;
+    const fullName = input.user.user_metadata?.full_name;
+    await sendClassroomEmails({
+      kind: "script_evaluation",
+      title: `Your script evaluation is ready — ${input.paperName}`,
+      message: scriptEvaluationPreview({
+        paperName: input.paperName,
+        headline: String(input.evaluation.diagnosticHeadline || input.evaluation.knowledge_summary || ""),
+        takeaways: asStringList(input.evaluation.keyTakeaways),
+        actionPlan: asStringList(input.evaluation.actionPlan || input.evaluation.coaching_recommendation),
+        fullReport: String(input.evaluation.fullReportMarkdown || ""),
+      }),
+      recipients: [
+        {
+          email,
+          name: typeof fullName === "string" ? fullName : null,
+          userId: input.user.id,
+          recordId: input.evaluationId || null,
+          attemptId: input.attemptId || null,
+        },
+      ],
+    });
+  } catch (error) {
+    console.error("classroom-email", error);
+  }
+}
 
 function serviceSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -707,6 +746,14 @@ export async function POST(request: NextRequest) {
           .eq("user_id", user.id);
       }
 
+      await emailScriptEvaluationToStudent({
+        user,
+        paperName,
+        evaluation,
+        evaluationId: saved?.id || null,
+        attemptId: attemptId || null,
+      });
+
       return NextResponse.json({
         success: true,
         evaluation,
@@ -932,7 +979,7 @@ export async function POST(request: NextRequest) {
   report.primary_blocker = blockerFromCause(evaluation.primaryFailureCause);
   const stored = reportToStorage(report);
 
-  const { error } = await supabase
+  const { data: saved, error } = await supabase
     .from("script_evaluations")
     .insert({
       user_id: user.id,
@@ -942,11 +989,20 @@ export async function POST(request: NextRequest) {
         buried_treasure: evaluation,
         competency_breakdown: competencyBreakdown,
       },
-    });
+    })
+    .select("id")
+    .maybeSingle();
 
   if (error) {
     throw new Error(error.message);
   }
+
+  await emailScriptEvaluationToStudent({
+    user,
+    paperName: paper_name,
+    evaluation: evaluation as unknown as Record<string, unknown>,
+    evaluationId: saved?.id || null,
+  });
 
   return NextResponse.json({ success: true, evaluation });
   } catch (err) {

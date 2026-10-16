@@ -3,26 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Bell } from "lucide-react";
-import LinkedText from "@/components/ui/LinkedText";
 import { formatInboxTime } from "@/lib/inbox";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 
+function itemTitle(title: string, message: string): string {
+  const heading = title.trim();
+  if (heading) return heading;
+  return message.replace(/\s+/g, " ").trim().slice(0, 80) || "Notification";
+}
+
 export default function StudentNotifyMenu() {
-  const { notifications, unreadCount, markNotificationsRead } = useStudentInbox();
+  const { notifications, unreadCount } = useStudentInbox();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
-  const recent = notifications.slice(0, 6);
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
-
-  useEffect(() => {
-    if (!open || unreadCount === 0) return;
-    void markNotificationsRead();
-  }, [open, unreadCount, markNotificationsRead]);
 
   useEffect(() => {
     if (!open) return;
@@ -47,19 +46,23 @@ export default function StudentNotifyMenu() {
       </button>
       {open ? (
         <div className="notify-panel" role="dialog" aria-label="Course notifications">
-          {recent.length ? (
-            recent.map((item) => (
-              <article className={`notify-panel-item ${item.read ? "" : "notice-unread"}`} key={item.id}>
-                <strong>
-                  <LinkedText text={item.title || "Notification"} />
-                </strong>
-                {item.message ? (
-                  <p className="notice-body">
-                    <LinkedText text={item.message} />
-                  </p>
-                ) : null}
-                <span className="muted small">{formatInboxTime(item.createdAt)}</span>
-              </article>
+          {notifications.length ? (
+            notifications.map((item) => (
+              <button
+                className={`notify-panel-item ${item.read ? "" : "notice-unread"}`}
+                type="button"
+                key={item.id}
+                onClick={() => {
+                  setOpen(false);
+                  router.push(`/student/notifications/${item.id}`);
+                }}
+              >
+                <strong>{itemTitle(item.title || "", item.message || "")}</strong>
+                <span className="muted small">
+                  {formatInboxTime(item.createdAt)}
+                  {item.read ? "" : " · unread"}
+                </span>
+              </button>
             ))
           ) : (
             <p className="empty">No notifications yet.</p>
@@ -72,7 +75,7 @@ export default function StudentNotifyMenu() {
               router.push("/student/notifications");
             }}
           >
-            View all notifications
+            Open notifications
           </button>
         </div>
       ) : null}

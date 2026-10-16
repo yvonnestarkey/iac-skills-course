@@ -5,11 +5,7 @@ import { useEffect, useState } from "react";
 import ComposerBox from "@/components/ui/ComposerBox";
 import LinkedText from "@/components/ui/LinkedText";
 import { audienceCopy, postAnnouncement } from "@/lib/comms";
-import {
-  notificationRowsForStudents,
-  resolveNotificationTargets,
-} from "@/lib/notifications";
-import { getSupabase } from "@/lib/supabase";
+import { insertCoachNotifications, resolveNotificationTargets } from "@/lib/notifications";
 import { useStore } from "@/lib/store";
 
 export default function NotifyComposer() {
@@ -33,76 +29,28 @@ export default function NotifyComposer() {
     if (!subject.trim() || !body.trim() || !count || busy) return;
     setBusy(true);
 
-    const client = getSupabase();
-    if (!client) {
-      const error = "Supabase is not configured.";
-      console.error(error);
-      alert(error);
-      setBusy(false);
-      return;
-    }
-
-    const { data: sessionData, error: sessionError } = await client.auth.getUser();
-    if (sessionError || !sessionData.user) {
-      const error =
-        "Sign in at /student/login with your coach account before sending. The demo coach switcher is not a Supabase session.";
-      console.error(error, sessionError);
-      alert(error);
-      setBusy(false);
-      return;
-    }
-
     const targets = await resolveNotificationTargets({
       audience: notifyDraft.audience,
       recipientIds: notifyDraft.recipientIds,
-      students: data.students.map((student) => ({ id: student.id, email: student.email })),
+      students: data.students.map((student) => ({
+        id: student.id,
+        email: student.email,
+        cohort: student.cohort,
+        name: student.name,
+      })),
     });
-    const rows = notificationRowsForStudents({
+    const result = await insertCoachNotifications({
       students: targets,
       title: subject,
       message: body,
       kind: "announcement",
+      audience: notifyDraft.audience,
     });
-
-    if (!rows.length) {
-      const error = "No registered students to notify. Demo roster IDs are not saved to Supabase.";
+    if (!result.ok) {
+      const error = result.error || "Could not save notifications.";
       console.error(error, { recipientIds: notifyDraft.recipientIds, targets });
       alert(error);
-      setBusy(false);
-      return;
-    }
-
-    const { data: inserted, error } = await client.from("notifications").insert(rows).select("id");
-    if (error) {
-      console.error("Supabase notifications insert failed", error, rows);
-      const fallback = await client.from("notifications").insert(
-        rows.map((row) => ({
-          user_id: row.user_id,
-          student_id: row.student_id,
-          student_email: row.student_email,
-          from_role: row.from_role,
-          kind: row.kind,
-          body: row.body,
-        }))
-      ).select("id");
-      if (fallback.error) {
-        console.error("Supabase notifications insert fallback failed", fallback.error, rows);
-        alert(`Could not save notifications: ${fallback.error.message}`);
-        setNotice(`Could not save notifications: ${fallback.error.message}`);
-        setBusy(false);
-        return;
-      }
-      mutate((draft) => {
-        postAnnouncement(draft, {
-          subject,
-          body,
-          audience: notifyDraft.audience,
-          audienceLabel: notifyDraft.audienceLabel,
-          recipientIds: notifyDraft.recipientIds,
-        });
-      });
-      setNotice(`Sent to ${audienceCopy(notifyDraft.audience, fallback.data?.length || rows.length)}.`);
-      setNotifyDraft(null);
+      setNotice(error);
       setBusy(false);
       return;
     }
@@ -116,7 +64,7 @@ export default function NotifyComposer() {
         recipientIds: notifyDraft.recipientIds,
       });
     });
-    setNotice(`Sent to ${audienceCopy(notifyDraft.audience, inserted?.length || rows.length)}.`);
+    setNotice(`Sent to ${audienceCopy(notifyDraft.audience, result.count)}.`);
     setNotifyDraft(null);
     setBusy(false);
   };
@@ -124,58 +72,64 @@ export default function NotifyComposer() {
   return (
     <div className="modal-backdrop">
       <section className="modal notify-modal" role="dialog" aria-label="Send a course announcement">
-        <h2>Send a notification</h2>
-        <p>
-          To <strong>{notifyDraft.audienceLabel}</strong>
-          {notifyDraft.audience !== "student" ? (
-            <span className="muted"> · {audienceCopy(notifyDraft.audience, count)}</span>
-          ) : null}
-        </p>
-        {notifyDraft.audience !== "student" && recipients.length ? (
-          <p className="muted small">{recipients.map((s) => s.name).join(", ")}</p>
-        ) : null}
-        <div className="plan-field">
-          <label htmlFor="notify-subject">
-            <strong>Subject</strong>
-          </label>
-          <input
-            id="notify-subject"
-            type="text"
-            className="select-line"
-            placeholder="Thursday live session"
-            value={subject}
-            onChange={(event) => setSubject(event.target.value)}
-            autoFocus
-          />
+        <div className="notify-modal-head">
+          <div>
+            <h2>Send a notification</h2>
+            <p>
+              To <strong>{notifyDraft.audienceLabel}</strong>
+              {notifyDraft.audience !== "student" ? (
+                <span className="muted"> · {audienceCopy(notifyDraft.audience, count)}</span>
+              ) : null}
+            </p>
+          </div>
+          <div className="notify-modal-actions">
+            <button className="primary" onClick={send} disabled={!subject.trim() || !body.trim() || !count || busy}>
+              {busy ? "Sending…" : "Send notification"}
+            </button>
+            <button className="ghost" onClick={() => setNotifyDraft(null)}>
+              Cancel
+            </button>
+          </div>
         </div>
-        <div className="plan-field">
-          <label htmlFor="notify-body">
-            <strong>Message</strong>
-          </label>
-          <ComposerBox
-            id="notify-body"
-            value={body}
-            onChange={setBody}
-            placeholder="What should they know? Paste a lesson URL or insert a link."
-            rows={5}
-            disabled={busy}
-          />
-          {body.trim() ? (
-            <div className="notify-preview">
-              <p className="muted small">Preview</p>
-              <p className="notice-body">
-                <LinkedText text={body} />
-              </p>
-            </div>
+        <div className="notify-modal-body">
+          {notifyDraft.audience !== "student" && recipients.length ? (
+            <p className="muted small">{recipients.map((s) => s.name).join(", ")}</p>
           ) : null}
-        </div>
-        <div className="modal-actions">
-          <button className="primary" onClick={send} disabled={!subject.trim() || !body.trim() || !count || busy}>
-            {busy ? "Sending…" : "Send notification"}
-          </button>
-          <button className="ghost" onClick={() => setNotifyDraft(null)}>
-            Cancel
-          </button>
+          <div className="plan-field">
+            <label htmlFor="notify-subject">
+              <strong>Subject</strong>
+            </label>
+            <input
+              id="notify-subject"
+              type="text"
+              className="select-line"
+              placeholder="Thursday live session"
+              value={subject}
+              onChange={(event) => setSubject(event.target.value)}
+              autoFocus
+            />
+          </div>
+          <div className="plan-field">
+            <label htmlFor="notify-body">
+              <strong>Message</strong>
+            </label>
+            <ComposerBox
+              id="notify-body"
+              value={body}
+              onChange={setBody}
+              placeholder="What should they know? Paste a lesson URL or insert a link."
+              rows={5}
+              disabled={busy}
+            />
+            {body.trim() ? (
+              <div className="notify-preview">
+                <p className="muted small">Preview</p>
+                <p className="notice-body">
+                  <LinkedText text={body} />
+                </p>
+              </div>
+            ) : null}
+          </div>
         </div>
       </section>
     </div>

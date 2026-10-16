@@ -85,6 +85,21 @@ export function canStackDiscounts(): boolean {
   return false;
 }
 
+export function referralCodeForUserId(userId: string): string {
+  return `JAN27-${userId.replace(/-/g, "").slice(0, 8).toUpperCase()}`;
+}
+
+export async function ensureReferralCode(userId: string): Promise<string> {
+  const code = referralCodeForUserId(userId);
+  const client = getServiceSupabase();
+  if (!client || !userId) return code;
+  const { error } = await client
+    .from("referral_codes")
+    .upsert({ user_id: userId, code }, { onConflict: "user_id", ignoreDuplicates: true });
+  if (error && !commerceTableMissing(error.message)) console.error(error.message);
+  return code;
+}
+
 export async function getCourseProduct(productId = DEFAULT_PRODUCT_ID): Promise<CourseProduct> {
   const client = getServiceSupabase();
   if (!client) return FALLBACK_PRODUCT;
@@ -155,17 +170,24 @@ export async function grantPreviewEntitlement(userId: string) {
     { onConflict: "user_id,product_id", ignoreDuplicates: true }
   );
   if (error) throw new Error(error.message);
+  await ensureReferralCode(userId);
 }
 
-export async function ensureCommerceAccount(user: StudentUser) {
+export async function ensureCommerceAccount(user: StudentUser): Promise<boolean> {
   const client = getServiceSupabase();
-  if (!client || isCoachAccount(user)) return;
+  if (!client || isCoachAccount(user)) return false;
+  const existing = await client
+    .from("course_entitlements")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .eq("product_id", DEFAULT_PRODUCT_ID)
+    .maybeSingle();
   await client.from("course_entitlements").upsert(
     { user_id: user.id, product_id: DEFAULT_PRODUCT_ID, status: "free_preview", source: "signup", updated_at: new Date().toISOString() },
     { onConflict: "user_id,product_id", ignoreDuplicates: true }
   );
-  const code = `JAN27-${user.id.replace(/-/g, "").slice(0, 8).toUpperCase()}`;
-  await client.from("referral_codes").upsert({ user_id: user.id, code }, { onConflict: "user_id", ignoreDuplicates: true });
+  await ensureReferralCode(user.id);
+  return !existing.data && !existing.error;
 }
 
 export async function grantFullEntitlement(userId: string, source: "stripe" | "admin") {
@@ -182,13 +204,34 @@ export async function grantFullEntitlement(userId: string, source: "stripe" | "a
     { onConflict: "user_id,product_id" }
   );
   if (error) throw new Error(error.message);
+  await ensureReferralCode(userId);
 }
 
 export type LessonContentAccess = {
   canReadBody: boolean;
   entitlement: EntitlementStatus | "staff" | "anonymous";
   preview: boolean;
+  keepStoredTeachingUrls: boolean;
 };
+
+/** Paid and staff accounts keep stored PDFs/downloads. `preview` is only the designated preview-lesson flag. */
+export function teachingUrlPolicy(input: {
+  entitlement: EntitlementStatus | "staff" | "anonymous";
+  isPreviewLesson: boolean;
+}): Pick<LessonContentAccess, "canReadBody" | "preview" | "keepStoredTeachingUrls"> {
+  if (input.entitlement === "staff" || input.entitlement === "full") {
+    return {
+      canReadBody: true,
+      preview: input.isPreviewLesson,
+      keepStoredTeachingUrls: true,
+    };
+  }
+  return {
+    canReadBody: input.isPreviewLesson,
+    preview: input.isPreviewLesson,
+    keepStoredTeachingUrls: input.isPreviewLesson,
+  };
+}
 
 export async function resolveLessonContentAccess(
   user: StudentUser | null,
@@ -197,15 +240,15 @@ export async function resolveLessonContentAccess(
 ): Promise<LessonContentAccess> {
   const view = options?.staffView ?? "override";
   if (user && (staffOverrideApplies(user, view) || (options?.overrideLocks && isCoachAccount(user)))) {
-    return { canReadBody: true, entitlement: "staff", preview: true };
+    return { entitlement: "staff", ...teachingUrlPolicy({ entitlement: "staff", isPreviewLesson: true }) };
   }
-  if (!user) return { canReadBody: false, entitlement: "anonymous", preview: false };
+  if (!user) {
+    return { entitlement: "anonymous", ...teachingUrlPolicy({ entitlement: "anonymous", isPreviewLesson: false }) };
+  }
   const [entitlement, previewIds] = await Promise.all([getEntitlement(user.id), listPreviewLessonIds()]);
-  if (entitlement === "full") return { canReadBody: true, entitlement, preview: previewIds.includes(lessonId) };
   return {
-    canReadBody: previewIds.includes(lessonId),
     entitlement,
-    preview: previewIds.includes(lessonId),
+    ...teachingUrlPolicy({ entitlement, isPreviewLesson: previewIds.includes(lessonId) }),
   };
 }
 

@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import AskCoachThread from "@/components/coach/AskCoachThread";
 import AccountActivationBadge from "@/components/coach/AccountActivationBadge";
 import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
 import SetTemporaryPasswordPanel from "@/components/coach/SetTemporaryPasswordPanel";
@@ -10,27 +9,16 @@ import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
-import AuditThread from "@/components/comms/AuditThread";
-import { commsForStudent } from "@/lib/comms";
 import { cohortName, initials, lastActiveLabel } from "@/lib/course";
-import {
-  fetchStudentSurveyPacks,
-  formatSurveyAnswer,
-  isBmcrBlock,
-  isInfoBlock,
-  questionCollectsAnswer,
-  type SurveyQuestionType,
-} from "@/lib/custom-surveys";
 import { formatSastDateTime, longDate, parseISO, today } from "@/lib/dates";
 import { completionProgress } from "@/lib/metrics";
 import { planCapacity, planStatus, slotLabel } from "@/lib/planner";
 import { fetchCourseOutline } from "@/lib/student-lesson";
 import { fetchStudentSubmissions, type StudentSubmission } from "@/lib/student-submissions";
 import { useStore } from "@/lib/store";
-import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
 
 export default function StudentProfile({ studentId }: { studentId: string }) {
-  const { data, setNotifyDraft, notice } = useStore();
+  const { data, notice } = useStore();
   const router = useRouter();
   const [note, setNote] = useState("");
   const [live, setLive] = useState<Student | null>(null);
@@ -38,9 +26,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const [lessonIds, setLessonIds] = useState<string[]>([]);
   const [submissions, setSubmissions] = useState<StudentSubmission[]>([]);
   const [lessonTitles, setLessonTitles] = useState<Record<string, string>>({});
-  const [surveyPacks, setSurveyPacks] = useState<
-    { title: string; answers: { label: string; value: string; type: SurveyQuestionType }[] }[]
-  >([]);
   const [setupBusy, setSetupBusy] = useState(false);
   const [setupNotice, setSetupNotice] = useState("");
 
@@ -52,8 +37,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       fetchLiveLessonIds(),
       fetchStudentSubmissions(studentId),
       fetchCourseOutline(),
-      fetchStudentSurveyPacks(studentId),
-    ]).then(([found, ids, submitted, outline, packs]) => {
+    ]).then(([found, ids, submitted, outline]) => {
       if (cancelled) return;
       setLive(found);
       setLessonIds(ids);
@@ -65,19 +49,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         });
       });
       setLessonTitles(titles);
-      setSurveyPacks(
-        packs.map((pack) => ({
-          title: pack.survey.title,
-          answers: pack.survey.questions
-            .filter((question) => questionCollectsAnswer(question.type) && !isInfoBlock(question.type) && !isBmcrBlock(question.type))
-            .map((question) => ({
-              label: question.label,
-              value: pack.response.answers[question.id] || "",
-              type: question.type,
-            }))
-            .filter((item) => formatSurveyAnswer(item.value, item.type)),
-        }))
-      );
       setLoadingLive(false);
     });
     return () => {
@@ -149,17 +120,14 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
             {student.status === "paused" ? "Paused" : "Active"}
           </span>
           <span className="muted small">Last active {lastActiveLabel(student)}</span>
-          <button
-            className="primary"
-            onClick={() =>
-              setNotifyDraft({
-                audience: "student",
-                audienceLabel: student.name,
-                recipientIds: [student.id],
-              })
-            }
-          >
-            Send notification
+          <button className="primary" type="button" onClick={() => router.push(`/coach/students/${student.id}/surveys`)}>
+            Surveys
+          </button>
+          <button className="ghost" type="button" onClick={() => router.push(`/coach/students/${student.id}/messages`)}>
+            Messages
+          </button>
+          <button className="ghost" type="button" onClick={() => router.push(`/coach/students/${student.id}/notifications`)}>
+            Notifications
           </button>
           {canSendPasswordSetupLink(student.accountActivation) ? (
             <button
@@ -208,9 +176,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           </span>
           <span>
             {submissions.length} assignment submission{submissions.length === 1 ? "" : "s"}
-          </span>
-          <span>
-            {surveyPacks.length} survey response{surveyPacks.length === 1 ? "" : "s"}
           </span>
         </div>
       </section>
@@ -327,63 +292,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       </section>
 
       <BmcrEvaluationsPanel studentId={student.id} />
-
-      <section className="card">
-        <h2>Survey responses</h2>
-        {surveyPacks.length ? (
-          <div className="work-list">
-            {surveyPacks.map((pack) => (
-              <div className="work-item" key={pack.title}>
-                <div className="work-head">
-                  <strong>{pack.title}</strong>
-                </div>
-                {pack.answers.map((item) => (
-                  <div className="score-row" key={item.label}>
-                    <span>{item.label}</span>
-                    <b>
-                      <SurveyAnswerValue value={item.value} type={item.type} />
-                    </b>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="empty">No survey responses submitted yet.</p>
-        )}
-      </section>
-
-      <section className="card">
-        <div className="panel-head">
-          <div>
-            <h2>Notifications</h2>
-            <p className="muted small">Announcements sent to {student.name.split(" ")[0]}, and their replies.</p>
-          </div>
-          <button
-            className="ghost"
-            onClick={() =>
-              setNotifyDraft({
-                audience: "student",
-                audienceLabel: student.name,
-                recipientIds: [student.id],
-              })
-            }
-          >
-            Send notification
-          </button>
-        </div>
-        <div className="work-list">
-          {commsForStudent(data, student.id).length ? (
-            commsForStudent(data, student.id).map((comm) => (
-              <AuditThread key={comm.id} comm={comm} readerId="coach" readerRole="coach" />
-            ))
-          ) : (
-            <p className="empty">No notifications to this student yet.</p>
-          )}
-        </div>
-      </section>
-
-      <AskCoachThread student={student} />
     </div>
   );
 }

@@ -1,11 +1,12 @@
 import { SMOKE_TEST_METADATA_VALUE } from "@/lib/checkout-smoke-test";
 import type { EntitlementSource } from "@/lib/account-access";
-import type { EntitlementStatus, PurchaseOption } from "@/lib/commerce";
+import { ensureCommerceAccount, type EntitlementStatus, type PurchaseOption } from "@/lib/commerce";
 import { formatSastDateTime } from "@/lib/dates";
 import { futurePlanInstallmentDates } from "@/lib/plan-installments";
 import { sendResendEmail } from "@/lib/resend";
 import { REGISTRATION_CONTACT_EMAIL } from "@/lib/sales-copy";
 import { getServiceSupabase } from "@/lib/supabase-admin";
+import type { StudentUser } from "@/lib/student-lesson";
 
 export const ENROLMENT_NOTIFY_TO = REGISTRATION_CONTACT_EMAIL;
 export const ENROLMENT_COURSE_NAME = "January 2027 IAC Skills Course";
@@ -19,6 +20,8 @@ export type EnrolmentNotifyDecisionInput = {
   eventType?: string | null;
 };
 
+export type EnrolmentNotifyKind = "paid" | "preview";
+
 export type EnrolmentNotifyContent = {
   studentName: string;
   studentEmail: string;
@@ -29,6 +32,12 @@ export type EnrolmentNotifyContent = {
   referralCode?: string | null;
   promoCode?: string | null;
   creditAppliedCents?: number;
+  enrolledAt: Date;
+};
+
+export type PreviewSignupNotifyContent = {
+  studentName: string;
+  studentEmail: string;
   enrolledAt: Date;
 };
 
@@ -53,12 +62,21 @@ export function purchaseOptionLabel(option: PurchaseOption): string {
   return option === "plan_6" ? "6-payment plan" : "Once-off";
 }
 
-export function enrolmentNotifySubject(studentName: string): string {
-  return `New IAC enrolment — ${studentName.trim() || "Student"}`;
+export function enrolmentNotifySubject(studentName: string, kind: EnrolmentNotifyKind = "paid"): string {
+  const name = studentName.trim() || "Student";
+  return kind === "preview" ? `New IAC preview signup — ${name}` : `New IAC enrolment — ${name}`;
 }
 
 export function enrolmentNotifyIdempotencyKey(purchaseId: string): string {
   return `iac-enrolment-${purchaseId}`;
+}
+
+export function previewSignupNotifyIdempotencyKey(userId: string): string {
+  return `iac-preview-signup-${userId}`;
+}
+
+export function shouldNotifyYvonneOfPreviewSignup(input: { created: boolean; isCoach?: boolean }): boolean {
+  return Boolean(input.created) && !input.isCoach;
 }
 
 export function buildEnrolmentNotifyEmail(content: EnrolmentNotifyContent): {
@@ -92,12 +110,34 @@ export function buildEnrolmentNotifyEmail(content: EnrolmentNotifyContent): {
     content.creditAppliedCents ? `Course credit ${formatUsdCents(content.creditAppliedCents)}` : "",
   ].filter(Boolean);
   lines.push(`Referral/discount: ${discountBits.join("; ") || "None"}`);
+  lines.push(`Access: Full course`);
   lines.push(`Date/time of enrolment: ${formatSastDateTime(content.enrolledAt)}`);
 
   const text = lines.join("\n");
   const html = `<p>${lines.map((line) => escapeHtml(line)).join("<br />")}</p>`;
   return {
-    subject: enrolmentNotifySubject(content.studentName),
+    subject: enrolmentNotifySubject(content.studentName, "paid"),
+    text,
+    html,
+  };
+}
+
+export function buildPreviewSignupEmail(content: PreviewSignupNotifyContent): {
+  subject: string;
+  text: string;
+  html: string;
+} {
+  const lines = [
+    `Student name: ${content.studentName}`,
+    `Student email: ${content.studentEmail}`,
+    `Course: ${ENROLMENT_COURSE_NAME}`,
+    `Access: Free preview`,
+    `Date/time of signup: ${formatSastDateTime(content.enrolledAt)}`,
+  ];
+  const text = lines.join("\n");
+  const html = `<p>${lines.map((line) => escapeHtml(line)).join("<br />")}</p>`;
+  return {
+    subject: enrolmentNotifySubject(content.studentName, "preview"),
     text,
     html,
   };
@@ -188,4 +228,65 @@ export async function notifyYvonneOfSuccessfulEnrolment(
     console.error("enrolment-notify", error);
     return { sent: false, reason: error instanceof Error ? error.message : "email_failed" };
   }
+}
+
+export async function notifyYvonneOfPreviewSignup(
+  params: {
+    userId: string;
+    studentName?: string | null;
+    studentEmail?: string | null;
+    enrolledAt?: Date;
+  },
+  sendEmail: typeof sendResendEmail = sendResendEmail
+): Promise<{ sent: boolean; reason?: string }> {
+  try {
+    let studentName = params.studentName?.trim() || "";
+    let studentEmail = params.studentEmail?.trim() || "";
+    if (!studentName || !studentEmail) {
+      const client = getServiceSupabase();
+      if (client) {
+        const { data } = await client.from("profiles").select("full_name, email").eq("id", params.userId).maybeSingle();
+        studentName = studentName || String(data?.full_name || "").trim();
+        studentEmail = studentEmail || String(data?.email || "").trim();
+      }
+    }
+    if (!studentEmail) return { sent: false, reason: "missing_student_email" };
+    if (!studentName) studentName = studentEmail;
+
+    const email = buildPreviewSignupEmail({
+      studentName,
+      studentEmail,
+      enrolledAt: params.enrolledAt || new Date(),
+    });
+    await sendEmail({
+      to: ENROLMENT_NOTIFY_TO,
+      subject: email.subject,
+      text: email.text,
+      html: email.html,
+      idempotencyKey: previewSignupNotifyIdempotencyKey(params.userId),
+    });
+    return { sent: true };
+  } catch (error) {
+    console.error("enrolment-notify", error);
+    return { sent: false, reason: error instanceof Error ? error.message : "email_failed" };
+  }
+}
+
+export async function provisionStudentCommerceAccount(
+  user: StudentUser,
+  sendEmail: typeof sendResendEmail = sendResendEmail
+): Promise<{ created: boolean; notified: boolean }> {
+  const created = await ensureCommerceAccount(user);
+  if (!shouldNotifyYvonneOfPreviewSignup({ created })) {
+    return { created, notified: false };
+  }
+  const result = await notifyYvonneOfPreviewSignup(
+    {
+      userId: user.id,
+      studentName: user.full_name,
+      studentEmail: user.email,
+    },
+    sendEmail
+  );
+  return { created, notified: result.sent };
 }

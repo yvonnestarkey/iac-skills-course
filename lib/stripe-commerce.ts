@@ -12,6 +12,11 @@ import {
   type CourseProduct,
   type PurchaseOption,
 } from "@/lib/commerce";
+import {
+  ensureProfessionalAffiliates,
+  findSeededProfessionalAffiliate,
+  professionalPayoutCents,
+} from "@/lib/affiliate-partners";
 import { futurePlanInvoiceDrafts, voidActionForInvoiceStatus } from "@/lib/plan-installments";
 
 export function stripeSecretKeyError(key: string | undefined): string | null {
@@ -53,11 +58,41 @@ export function siteUrl(): string {
   return (process.env.NEXT_PUBLIC_SITE_URL || "https://iac.accountingstudyadvice.com").replace(/\/$/, "");
 }
 
-export async function findReferralCode(code: string) {
+export type FoundReferralCode = {
+  code: string;
+  kind: "student" | "professional";
+  user_id: string | null;
+  partner_id: string | null;
+  name?: string;
+  rate_bps?: number;
+  payout?: "credit" | "external";
+};
+
+export async function findReferralCode(code: string): Promise<FoundReferralCode | null> {
   const client = getServiceSupabase();
   if (!client) return null;
-  const { data } = await client.from("referral_codes").select("user_id, code").eq("code", code.trim().toUpperCase()).maybeSingle();
-  return data;
+  const normalized = code.trim().toUpperCase();
+  if (!normalized) return null;
+
+  const student = await client.from("referral_codes").select("user_id, code").eq("code", normalized).maybeSingle();
+  if (student.data?.user_id) {
+    return { code: String(student.data.code), kind: "student", user_id: String(student.data.user_id), partner_id: null, payout: "credit" };
+  }
+
+  const partners = await ensureProfessionalAffiliates();
+  const partner = partners.find((row) => row.code === normalized) || findSeededProfessionalAffiliate(normalized);
+  if (partner) {
+    return {
+      code: partner.code,
+      kind: "professional",
+      user_id: null,
+      partner_id: partner.id,
+      name: partner.name,
+      rate_bps: partner.rate_bps,
+      payout: "external",
+    };
+  }
+  return null;
 }
 
 export async function findPromoCode(code: string) {
@@ -75,9 +110,15 @@ export async function findPromoCode(code: string) {
 export async function availableCreditCents(userId: string): Promise<number> {
   const client = getServiceSupabase();
   if (!client) return 0;
-  const { data } = await client.from("referral_rewards").select("amount_cents, status").eq("referrer_user_id", userId);
-  return (data || [])
-    .filter((row) => row.status === "earned")
+  const withKind = await client
+    .from("referral_rewards")
+    .select("amount_cents, status, payout_kind")
+    .eq("referrer_user_id", userId);
+  const rows = withKind.error
+    ? ((await client.from("referral_rewards").select("amount_cents, status").eq("referrer_user_id", userId)).data || [])
+    : withKind.data || [];
+  return rows
+    .filter((row) => row.status === "earned" && String((row as { payout_kind?: string }).payout_kind || "credit") !== "external")
     .reduce((sum, row) => sum + Number(row.amount_cents || 0), 0);
 }
 
@@ -130,39 +171,70 @@ export async function earnReferralReward(params: {
 }) {
   const client = getServiceSupabase();
   if (!client) return;
-  const { data: attribution } = await client
+  let attributionQuery = await client
     .from("referral_attributions")
-    .select("referrer_user_id, referee_user_id")
+    .select("referrer_user_id, referee_user_id, partner_id, code")
     .eq("referee_user_id", params.refereeUserId)
     .maybeSingle();
+  if (attributionQuery.error) {
+    attributionQuery = await client
+      .from("referral_attributions")
+      .select("referrer_user_id, referee_user_id, code")
+      .eq("referee_user_id", params.refereeUserId)
+      .maybeSingle();
+  }
+  const attribution = attributionQuery.data;
   if (!attribution) return;
-  const amount = referrerCreditCents(params.option, params.product);
+  const found = attribution.code ? await findReferralCode(String(attribution.code)) : null;
+  const attributionPartnerId =
+    "partner_id" in attribution ? String(attribution.partner_id || "") || null : null;
+  const professional = found?.kind === "professional" || Boolean(attributionPartnerId);
+  const amount = professional
+    ? professionalPayoutCents(found?.rate_bps || 1500, params.product)
+    : referrerCreditCents(params.option, params.product);
   const { data: existing } = await client
     .from("referral_rewards")
     .select("id")
     .eq("purchase_id", params.purchaseId)
     .maybeSingle();
   if (existing) return;
-  const { data: reward, error } = await client
-    .from("referral_rewards")
-    .insert({
-      referrer_user_id: attribution.referrer_user_id,
-      referee_user_id: params.refereeUserId,
-      purchase_id: params.purchaseId,
-      amount_cents: amount,
-      currency: "usd",
-      status: "earned",
-    })
-    .select("id")
-    .maybeSingle();
-  if (error || !reward) return;
-  await client.from("referral_ledger").insert({
-    user_id: attribution.referrer_user_id,
-    reward_id: reward.id,
-    entry_type: "earned",
+  const payload = {
+    referrer_user_id: professional ? null : attribution.referrer_user_id,
+    partner_id: professional ? found?.partner_id || attributionPartnerId : null,
+    referee_user_id: params.refereeUserId,
+    purchase_id: params.purchaseId,
     amount_cents: amount,
-    note: "Qualifying referred purchase",
-  });
+    currency: "usd",
+    status: "earned",
+    payout_kind: professional ? "external" : "credit",
+  };
+  let { data: reward, error } = await client.from("referral_rewards").insert(payload).select("id").maybeSingle();
+  if (error && !professional) {
+    const fallback = await client
+      .from("referral_rewards")
+      .insert({
+        referrer_user_id: attribution.referrer_user_id,
+        referee_user_id: params.refereeUserId,
+        purchase_id: params.purchaseId,
+        amount_cents: amount,
+        currency: "usd",
+        status: "earned",
+      })
+      .select("id")
+      .maybeSingle();
+    reward = fallback.data;
+    error = fallback.error;
+  }
+  if (error || !reward) return;
+  if (payload.referrer_user_id) {
+    await client.from("referral_ledger").insert({
+      user_id: payload.referrer_user_id,
+      reward_id: reward.id,
+      entry_type: "earned",
+      amount_cents: amount,
+      note: "Qualifying referred purchase",
+    });
+  }
 }
 
 export async function reverseUnredeemedRewards(purchaseId: string) {
@@ -199,14 +271,24 @@ export async function applyReferralAttribution(refereeUserId: string, rawCode: s
   if (!code) return { ok: false, error: "Enter a referral code." };
   const found = await findReferralCode(code);
   if (!found) return { ok: false, error: "That referral code was not found." };
-  if (found.user_id === refereeUserId) return { ok: false, error: "You cannot use your own referral code." };
+  if (found.user_id && found.user_id === refereeUserId) {
+    return { ok: false, error: "You cannot use your own referral code." };
+  }
   const client = getServiceSupabase();
   if (!client) return { ok: false, error: "Referrals are not configured yet." };
-  const { error } = await client.from("referral_attributions").upsert(
+  const row = {
+    referee_user_id: refereeUserId,
+    referrer_user_id: found.user_id,
+    partner_id: found.partner_id,
+    code,
+  };
+  const first = await client.from("referral_attributions").upsert(row, { onConflict: "referee_user_id" });
+  if (!first.error) return { ok: true };
+  const fallback = await client.from("referral_attributions").upsert(
     { referee_user_id: refereeUserId, referrer_user_id: found.user_id, code },
     { onConflict: "referee_user_id" }
   );
-  if (error) return { ok: false, error: error.message };
+  if (fallback.error) return { ok: false, error: fallback.error.message };
   return { ok: true };
 }
 
@@ -219,6 +301,7 @@ export function checkoutDiscount(params: {
   if (params.referralCode && params.promoPercent && !canStackDiscounts()) {
     throw new Error("Referral and promotional discounts cannot be combined.");
   }
+  // Student and professional codes (including Roelien) all give the purchaser 5% off.
   if (params.referralCode) return refereePerInstallmentCents(params.option, params.product);
   if (params.promoPercent) {
     const base = params.option === "plan_6" ? params.product.plan_amount_cents : params.product.once_off_amount_cents;

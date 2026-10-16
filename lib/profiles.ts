@@ -47,10 +47,12 @@ export function profileToStudent(
     country: onboarding.country,
     ctaUniversity: onboarding.ctaUniversity,
     ctaYear: onboarding.ctaYear,
+    ctaAttempts: onboarding.ctaAttempts,
     iacAttempts: onboarding.iacAttempts,
     repeatStudent: onboarding.repeatStudent,
     coachingGoals: onboarding.coachingGoals,
     struggleAreas: onboarding.struggleAreas,
+    additionalNotes: onboarding.additionalNotes,
     completed,
     courseAccess: extras.courseAccess === "full" ? "full" : "free_preview",
     accountActivation:

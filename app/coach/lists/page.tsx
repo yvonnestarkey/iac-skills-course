@@ -25,7 +25,7 @@ const TABS = [
   { id: "roster", label: "Student Roster", href: null },
   { id: "add-student", label: "Add Student", href: "/coach/students/new" },
   { id: "bmcr", label: "BMCR Analytics", href: null },
-  { id: "waitlist", label: "Waitlist", href: "/coach/waitlist" },
+  { id: "referrals", label: "Referrals", href: "/coach/referrals" },
   { id: "inbox", label: "Inbox", href: "/coach/inbox" },
 ] as const;
 
