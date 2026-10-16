@@ -989,7 +989,9 @@
             "marks": 1.0
           }
         ]
-      }
+      },
+      "pillar": "Financial Accounting / Reporting (FREP / IFRS)",
+      "pvaa_marks": 3
     },
     "P2Q2_b": {
       "question_type": "Discussion",
@@ -1213,7 +1215,9 @@
             "marks": 5
           }
         ]
-      }
+      },
+      "pillar": "Taxation",
+      "pvaa_marks": 1
     },
     "P2Q2_c": {
       "question_type": "Discussion",
@@ -1346,7 +1350,9 @@
             "marks": 3
           }
         ]
-      }
+      },
+      "pillar": "Taxation",
+      "pvaa_marks": 1
     },
     "P2Q2_d": {
       "question_type": "Discussion",
@@ -1376,7 +1382,9 @@
           "row": 32,
           "proximity": "thinking"
         }
-      ]
+      ],
+      "pillar": "Taxation",
+      "pvaa_marks": 0
     },
     "P2Q2_e": {
       "question_type": "Discussion",
@@ -1732,7 +1740,9 @@
             "marks": 3
           }
         ]
-      }
+      },
+      "pillar": "Taxation",
+      "pvaa_marks": 1
     },
     "P2Q2_f": {
       "question_type": "Discussion",
@@ -1766,7 +1776,9 @@
           "row": 64,
           "proximity": "indirect"
         }
-      ]
+      ],
+      "pillar": "Taxation",
+      "pvaa_marks": 0
     }
   }
 }

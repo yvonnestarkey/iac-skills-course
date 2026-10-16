@@ -610,7 +610,9 @@
             "marks": 4
           }
         ]
-      }
+      },
+      "pillar": "Strategy, Risk Management & Governance",
+      "pvaa_marks": 2
     },
     "P1Q1_b": {
       "question_type": "Discussion",
@@ -725,7 +727,9 @@
           "proximity": "thinking",
           "note": "The time factor is not stated anywhere in the case; a major inference."
         }
-      ]
+      ],
+      "pillar": "Management Accounting & Finance",
+      "pvaa_marks": 1
     },
     "P1Q1_c": {
       "question_type": "Non-discussion",
@@ -1001,7 +1005,9 @@
             "marks": 1
           }
         ]
-      }
+      },
+      "pillar": "Management Accounting & Finance",
+      "pvaa_marks": 0
     },
     "P1Q1_d": {
       "question_type": "Discussion",
@@ -1157,7 +1163,9 @@
             "marks": 6
           }
         ]
-      }
+      },
+      "pillar": "Strategy, Risk Management & Governance",
+      "pvaa_marks": 0
     },
     "P1Q2_e": {
       "question_type": "Discussion",
@@ -1681,7 +1689,9 @@
             "marks": 3
           }
         ]
-      }
+      },
+      "pillar": "Ethics (including CPC)",
+      "pvaa_marks": 1
     },
     "P1Q2_f": {
       "question_type": "Discussion",
@@ -2240,7 +2250,9 @@
             "marks": 1
           }
         ]
-      }
+      },
+      "pillar": "Audit & Assurance",
+      "pvaa_marks": 1
     },
     "P1Q2_g1": {
       "question_type": "Discussion",
@@ -2576,7 +2588,9 @@
             "marks": 4
           }
         ]
-      }
+      },
+      "pillar": "Audit & Assurance",
+      "pvaa_marks": 0
     },
     "P1Q2_g2": {
       "question_type": "Discussion",
@@ -2863,7 +2877,9 @@
             "marks": 2
           }
         ]
-      }
+      },
+      "pillar": "Audit & Assurance",
+      "pvaa_marks": 1
     },
     "P1Q2_h": {
       "question_type": "Discussion",
@@ -3309,7 +3325,9 @@
             "marks": 3
           }
         ]
-      }
+      },
+      "pillar": "Audit & Assurance",
+      "pvaa_marks": 0
     }
   }
 }

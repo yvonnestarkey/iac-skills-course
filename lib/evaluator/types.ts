@@ -67,6 +67,10 @@ export type ComponentNodeEvidence = {
   recognised: boolean;
   /** The marker awarded a mark from it. Implies recognised. */
   exploited: boolean;
+  /** Marks this node carries in the marker's report (from the question model), where recorded. */
+  marks?: number;
+  /** Marks the marker's report awarded from this node (the student's own result). */
+  marks_awarded?: number;
   note: string;
 };
 

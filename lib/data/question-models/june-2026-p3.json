@@ -695,7 +695,9 @@
           }
         ]
       },
-      "discussion_basis": "non_compliance"
+      "discussion_basis": "non_compliance",
+      "pillar": "Strategy, Risk Management & Governance",
+      "pvaa_marks": 2
     },
     "P3Q1_b": {
       "question_type": "Non-discussion",
@@ -1353,7 +1355,9 @@
             "marks": 8.0
           }
         ]
-      }
+      },
+      "pillar": "Management Accounting & Finance",
+      "pvaa_marks": 2
     },
     "P3Q2_c": {
       "question_type": "Discussion",
@@ -1668,7 +1672,9 @@
           }
         ]
       },
-      "discussion_basis": "compliance"
+      "discussion_basis": "compliance",
+      "pillar": "Ethics (including CPC)",
+      "pvaa_marks": 0
     },
     "P3Q2_d": {
       "question_type": "Discussion",
@@ -1994,7 +2000,9 @@
           }
         ]
       },
-      "discussion_basis": "compliance"
+      "discussion_basis": "compliance",
+      "pillar": "Audit & Assurance",
+      "pvaa_marks": 1
     },
     "P3Q2_e": {
       "question_type": "Discussion",
@@ -2440,7 +2448,9 @@
           }
         ]
       },
-      "discussion_basis": "compliance"
+      "discussion_basis": "compliance",
+      "pillar": "Audit & Assurance",
+      "pvaa_marks": 1
     }
   }
 }

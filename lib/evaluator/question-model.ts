@@ -64,6 +64,10 @@ export type RequirementModel = {
   component_tree?: ComponentNode[];
   /** Marks the suggested solution makes available per component (capped where the solution states a maximum), against the requirement's technical maximum. Core Issue is decided from this volume of marks. */
   core_marks?: { max: number; components: { label: string; marks: number }[] };
+  /** SAICA competency pillar, pre-calibrated (Yvonne, 14 Oct 2026). One of the names in report-text.ts PILLARS. */
+  pillar?: string;
+  /** Professional (PVAA) marks inside this requirement's mark-plan total. They are taken out of the requirement for the type and pillar tables and totalled in their own row. */
+  pvaa_marks?: number;
 };
 
 type PaperModel = { paper_id: string; requirements: Record<string, RequirementModel> };
@@ -74,6 +78,9 @@ const MODELS: PaperModel[] = [june2026p1 as unknown as PaperModel, june2026p2 as
 export function questionModelFor(paperId: string, code: string): RequirementModel | null {
   return MODELS.find((model) => model.paper_id === paperId)?.requirements[code] ?? null;
 }
+
+export const pillarFor = (paperId: string, code: string) => questionModelFor(paperId, code)?.pillar ?? null;
+export const pvaaMarksFor = (paperId: string, code: string) => questionModelFor(paperId, code)?.pvaa_marks ?? 0;
 
 export function proximityAvailable(model: RequirementModel | null): { direct: number; indirect: number; thinking: number } | null {
   if (!model || !model.proximity_items.length) return null;
@@ -152,6 +159,7 @@ export function toolsFor(questionType: QuestionType, attempted: boolean): {
   if (!attempted) return none;
   // RTFQ runs on EVERY attempted requirement (Yvonne, 8 Oct 2026): a student who misread the question, e.g. wrote a
   // calculation where a discussion was required, makes every other tool's reading provisional.
-  if (questionType !== "Discussion") return { ...none, rtfq: true };
+  // Calculations also get Buried Treasure and Components (their core issue and Coverage x Accuracy come from the component marks); 16 Oct 2026.
+  if (questionType !== "Discussion") return { ...none, rtfq: true, buriedTreasure: true, components: true };
   return { buriedTreasure: true, volumeAccuracy: true, components: true, coreIssue: true, rtfq: true, communication: true };
 }

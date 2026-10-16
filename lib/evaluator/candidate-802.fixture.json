@@ -1,0 +1,222 @@
+[
+ {
+  "paper": 1,
+  "code": "P1Q1_a",
+  "label": "Q1(a)",
+  "total": 22,
+  "technical": 7,
+  "pvaa": 2,
+  "known": 13,
+  "type": "non_compliance",
+  "attempted": true
+ },
+ {
+  "paper": 1,
+  "code": "P1Q1_b",
+  "label": "Q1(b)",
+  "total": 11,
+  "technical": 0,
+  "pvaa": 0,
+  "known": 6,
+  "type": "non_compliance",
+  "attempted": false
+ },
+ {
+  "paper": 1,
+  "code": "P1Q1_c",
+  "label": "Q1(c)",
+  "total": 27,
+  "technical": 10,
+  "pvaa": 0,
+  "known": 15,
+  "type": "calculation",
+  "attempted": true
+ },
+ {
+  "paper": 1,
+  "code": "P1Q1_d",
+  "label": "Q1(d)",
+  "total": 6,
+  "technical": 0,
+  "pvaa": 0,
+  "known": 4,
+  "type": "non_compliance",
+  "attempted": true
+ },
+ {
+  "paper": 1,
+  "code": "P1Q2_e",
+  "label": "Q2(e)",
+  "total": 14,
+  "technical": 4,
+  "pvaa": 0,
+  "known": 12,
+  "type": "compliance",
+  "attempted": true
+ },
+ {
+  "paper": 1,
+  "code": "P1Q2_f",
+  "label": "Q2(f)",
+  "total": 11,
+  "technical": 9,
+  "pvaa": 1,
+  "known": 17.5,
+  "type": "compliance",
+  "attempted": true
+ },
+ {
+  "paper": 1,
+  "code": "P1Q2_g1",
+  "label": "Q2(g)(i)",
+  "total": 12,
+  "technical": 9,
+  "pvaa": 0,
+  "known": 10,
+  "type": "non_compliance",
+  "attempted": true
+ },
+ {
+  "paper": 1,
+  "code": "P1Q2_g2",
+  "label": "Q2(g)(ii)",
+  "total": 7,
+  "technical": 6,
+  "pvaa": 1,
+  "known": 7,
+  "type": "compliance",
+  "attempted": true
+ },
+ {
+  "paper": 1,
+  "code": "P1Q2_h",
+  "label": "Q2(h)",
+  "total": 10,
+  "technical": 7,
+  "pvaa": 0,
+  "known": 8,
+  "type": "compliance",
+  "attempted": true
+ },
+ {
+  "paper": 2,
+  "code": "P2Q1_a",
+  "label": "Q1(a)",
+  "total": 70,
+  "technical": 39,
+  "pvaa": 3,
+  "known": 46,
+  "type": "calculation",
+  "attempted": true
+ },
+ {
+  "paper": 2,
+  "code": "P2Q2_b",
+  "label": "Q2(b)",
+  "total": 10,
+  "technical": 0,
+  "pvaa": 0,
+  "known": 4,
+  "type": "compliance",
+  "attempted": false
+ },
+ {
+  "paper": 2,
+  "code": "P2Q2_c",
+  "label": "Q2(c)",
+  "total": 8,
+  "technical": 1,
+  "pvaa": 0,
+  "known": 4,
+  "type": "compliance",
+  "attempted": true
+ },
+ {
+  "paper": 2,
+  "code": "P2Q2_d",
+  "label": "Q2(d)",
+  "total": 6,
+  "technical": 1,
+  "pvaa": 0,
+  "known": 3,
+  "type": "compliance",
+  "attempted": true
+ },
+ {
+  "paper": 2,
+  "code": "P2Q2_e",
+  "label": "Q2(e)",
+  "total": 20,
+  "technical": 7,
+  "pvaa": 1,
+  "known": 10,
+  "type": "compliance",
+  "attempted": true
+ },
+ {
+  "paper": 2,
+  "code": "P2Q2_f",
+  "label": "Q2(f)",
+  "total": 6,
+  "technical": 1,
+  "pvaa": 0,
+  "known": 2,
+  "type": "compliance",
+  "attempted": true
+ },
+ {
+  "paper": 3,
+  "code": "P3Q1_a",
+  "label": "Q1(a)",
+  "total": 33,
+  "technical": 10.5,
+  "pvaa": 2,
+  "known": 21.5,
+  "type": "non_compliance",
+  "attempted": true
+ },
+ {
+  "paper": 3,
+  "code": "P3Q1_b",
+  "label": "Q1(b)",
+  "total": 43,
+  "technical": 8,
+  "pvaa": 0,
+  "known": 22,
+  "type": "calculation",
+  "attempted": true
+ },
+ {
+  "paper": 3,
+  "code": "P3Q2_c",
+  "label": "Q2(c)",
+  "total": 10,
+  "technical": 1,
+  "pvaa": 0,
+  "known": 6,
+  "type": "compliance",
+  "attempted": true
+ },
+ {
+  "paper": 3,
+  "code": "P3Q2_d",
+  "label": "Q2(d)",
+  "total": 10,
+  "technical": 3,
+  "pvaa": 0,
+  "known": 6,
+  "type": "compliance",
+  "attempted": true
+ },
+ {
+  "paper": 3,
+  "code": "P3Q2_e",
+  "label": "Q2(e)",
+  "total": 24,
+  "technical": 9,
+  "pvaa": 1,
+  "known": 17,
+  "type": "compliance",
+  "attempted": true
+ }
+]

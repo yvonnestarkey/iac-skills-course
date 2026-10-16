@@ -320,7 +320,7 @@ export function rtfqGate(rtfq: RtfqEvidence | null): "clear" | "misread" | null 
 
 export type RawComponents = {
   layers?: ComponentLayer[];
-  nodes?: { id: string; recognised: boolean; exploited: boolean; note?: string }[];
+  nodes?: { id: string; recognised: boolean; exploited: boolean; marks_awarded?: number; note?: string }[];
   code_chain?: ({ issue: string } & Partial<Record<(typeof CODE_CHAIN_STEPS)[number], CodeChainResult>>)[];
   evidence: string;
 };
@@ -351,6 +351,8 @@ export function buildComponents(model: RequirementModel | null, raw: RawComponen
       ...(node.chain ? { chain: node.chain } : {}),
       recognised: Boolean(entry?.recognised) || exploited,
       exploited,
+      ...(node.marks !== undefined ? { marks: node.marks } : {}),
+      ...(typeof entry?.marks_awarded === "number" ? { marks_awarded: entry.marks_awarded } : {}),
       note: entry?.note?.trim() ?? "",
     };
   });

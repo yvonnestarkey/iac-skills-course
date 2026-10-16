@@ -1,5 +1,5 @@
 import { rtfqGate } from "./metrics";
-import { buildStudentReports } from "./student-report";
+import { buildPaperReport } from "./student-report";
 import type { RunResult } from "./run";
 
 const pct = (value: number | null) => (value === null ? "—" : `${Math.round(value * 100)}%`);
@@ -115,10 +115,7 @@ export function renderCalibrationMarkdown(result: RunResult): string {
     for (const w of dataset.warnings) lines.push(`- ${w}`);
   }
   if (report) {
-    const shows: Record<string, string> = {};
-    for (const t of report.tool_shows ?? []) shows[`${t.part}:${t.step}`] = t.line;
-    lines.push("", "# Student report (tables built in code; 'What it shows' lines written by the model; steps 9 and 10 held as drafts)");
-    for (const r of buildStudentReports(dataset, shows)) lines.push("", r.markdown);
+    lines.push("", "# Student report: Per Paper Report (tables built in code; the Overall Report pools all three papers, see overall-report.ts)", "", buildPaperReport(dataset));
     lines.push("");
     lines.push("## Generated report");
     lines.push(`**${report.headline}**`);
