@@ -18,12 +18,12 @@ Body:
   supabase/invite-user-email.html
 
 The activate button uses {{ .ConfirmationURL }}.
-First name uses {{ .Data.first_name }} when the coach invitation
-stored it; otherwise the greeting is “Hi there,”.
+Do not add other Supabase template expressions. The greeting is the
+static line “Hi there,”.
 
 Logo used:
   https://iac.accountingstudyadvice.com/asa-logo.png
-  (existing production site logo; do not upload a second logo)
+  (existing production site logo; publicly accessible HTTPS PNG)
 
 ============================================================
 2. Custom SMTP — required before students see our sender name
