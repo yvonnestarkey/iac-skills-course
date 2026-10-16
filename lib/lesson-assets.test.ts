@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isStudentUploadPath, parseCourseStorageRef } from "./lesson-assets";
+import { isStudentUploadPath, parseCourseStorageRef, resolvedTeachingUrl } from "./lesson-assets";
 
 test("parseCourseStorageRef reads public and signed teaching URLs", () => {
   assert.deepEqual(
@@ -12,6 +12,25 @@ test("parseCourseStorageRef reads public and signed teaching URLs", () => {
     { bucket: "course-teaching", path: "ch10/brief.pdf" }
   );
   assert.equal(parseCourseStorageRef("https://cdn.thinkific.com/lesson.pdf"), null);
+});
+
+test("a student who can read the lesson still gets the PDF if private signing fails", () => {
+  const stored = "https://example.supabase.co/storage/v1/object/public/course-pdfs/ch5-l6.pdf";
+  assert.equal(
+    resolvedTeachingUrl({ url: stored, canRead: true, keepStoredUrl: false, signedUrl: null }),
+    stored
+  );
+  assert.equal(
+    resolvedTeachingUrl({
+      url: stored,
+      canRead: true,
+      keepStoredUrl: false,
+      signedUrl: "https://example.supabase.co/storage/v1/object/sign/course-teaching/ch5-l6.pdf?token=ok",
+    }),
+    "https://example.supabase.co/storage/v1/object/sign/course-teaching/ch5-l6.pdf?token=ok"
+  );
+  assert.equal(resolvedTeachingUrl({ url: stored, canRead: false, keepStoredUrl: false, signedUrl: null }), null);
+  assert.equal(resolvedTeachingUrl({ url: stored, canRead: true, keepStoredUrl: true, signedUrl: null }), stored);
 });
 
 test("student upload prefixes stay on the public course-pdfs bucket", () => {

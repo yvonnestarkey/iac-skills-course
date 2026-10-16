@@ -123,21 +123,30 @@ async function signedTeachingUrl(path: string): Promise<string | null> {
   return data.signedUrl;
 }
 
+/** Paying students keep the stored file if a signed private URL cannot be created. */
+export function resolvedTeachingUrl(input: {
+  url: string;
+  canRead: boolean;
+  keepStoredUrl: boolean;
+  signedUrl?: string | null;
+}): string | null {
+  if (!input.canRead) return null;
+  if (input.keepStoredUrl) return input.url;
+  return input.signedUrl || input.url;
+}
+
 async function resolveTeachingUrl(url: string, options: { preview: boolean; canRead: boolean; previewKeys: Set<string> }): Promise<string | null> {
   const ref = parseCourseStorageRef(url);
-  if (!ref || isStudentUploadPath(ref.path)) {
-    return options.canRead ? url : null;
-  }
-  if (options.preview) {
-    return options.canRead ? url : null;
-  }
-  if (!(await privateTeachingBucketReady())) {
-    return options.canRead ? url : null;
-  }
-  const migrated = await migratePaidTeachingObject(ref.path, options.previewKeys);
+  const keepStoredUrl = !ref || isStudentUploadPath(ref.path) || options.preview;
   if (!options.canRead) return null;
-  if (!migrated) return null;
-  return (await signedTeachingUrl(ref.path)) || null;
+  if (keepStoredUrl) return url;
+  if (!(await privateTeachingBucketReady())) return url;
+  const migrated = await migratePaidTeachingObject(ref.path, options.previewKeys);
+  const signedUrl = migrated ? await signedTeachingUrl(ref.path) : null;
+  if (!signedUrl) {
+    console.error("lesson-assets", "Could not sign paid teaching file; keeping the stored URL.", ref.path);
+  }
+  return resolvedTeachingUrl({ url, canRead: true, keepStoredUrl: false, signedUrl });
 }
 
 function rewriteDownloadItem(item: unknown, nextUrl: string | null): unknown {
