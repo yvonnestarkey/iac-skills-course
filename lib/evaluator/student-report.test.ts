@@ -103,7 +103,7 @@ test("Signals: Direct and Indirect at half, Volume and Accuracy at 60%, separate
 test("Signals: the by-type RTFQ line appears only with 3 or more requirements of that type and a 75% trend", () => {
   const miss = { dimensions: [{ dimension: "shape" as const, required: "x", delivered: "no" as const, note: "" }], evidence: "" };
   const ok = { dimensions: [{ dimension: "shape" as const, required: "x", delivered: "yes" as const, note: "" }], evidence: "" };
-  const mk = (code: string, rtfq: typeof miss) => req({ code, label: code, rtfq });
+  const mk = (code: string, rtfq: RequirementEvaluation["rtfq"]) => req({ code, label: code, rtfq });
   const three = signalLines([dataset(1, [mk("P1Q1_a", miss), mk("P1Q1_d", miss), mk("P1Q2_g1", miss)])]);
   assert.ok(three.some((l) => l.signal.endsWith("Specifically for non-compliance discussion questions") && l.exam === "3 of 3"));
   const twoOnly = signalLines([dataset(1, [mk("P1Q1_a", miss), mk("P1Q1_d", miss)])]);
