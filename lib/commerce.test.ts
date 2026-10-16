@@ -11,6 +11,7 @@ import {
   referrerCreditCents,
   selectedOptionTotalCents,
   stripProtectedLesson,
+  teachingUrlPolicy,
 } from "./commerce";
 
 test("once-off and plan prices stay in USD cents", () => {
@@ -39,6 +40,24 @@ test("referral percentages are USD-based and do not stack", () => {
   assert.equal(referrerCreditCents("plan_6", FALLBACK_PRODUCT), 3270);
   assert.equal(canStackDiscounts(), false);
   assert.equal(discountCents(32700, 500), 1635);
+});
+
+test("paid students keep stored teaching files without treating every lesson as a preview", () => {
+  const paidPaidLesson = teachingUrlPolicy({ entitlement: "full", isPreviewLesson: false });
+  assert.equal(paidPaidLesson.canReadBody, true);
+  assert.equal(paidPaidLesson.preview, false);
+  assert.equal(paidPaidLesson.keepStoredTeachingUrls, true);
+
+  const paidPreviewLesson = teachingUrlPolicy({ entitlement: "full", isPreviewLesson: true });
+  assert.equal(paidPreviewLesson.preview, true);
+  assert.equal(paidPreviewLesson.keepStoredTeachingUrls, true);
+
+  const previewPaidLesson = teachingUrlPolicy({ entitlement: "free_preview", isPreviewLesson: false });
+  assert.equal(previewPaidLesson.canReadBody, false);
+  assert.equal(previewPaidLesson.keepStoredTeachingUrls, false);
+
+  const staff = teachingUrlPolicy({ entitlement: "staff", isPreviewLesson: true });
+  assert.equal(staff.keepStoredTeachingUrls, true);
 });
 
 test("stripProtectedLesson removes paid body and assets", () => {

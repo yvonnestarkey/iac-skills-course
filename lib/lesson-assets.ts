@@ -1,4 +1,5 @@
 import { listPreviewLessonIds, stripProtectedLesson } from "@/lib/commerce";
+import { getLessonPdfUrl } from "@/lib/getLessonPdf";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 
 export const PUBLIC_TEACHING_BUCKET = "course-pdfs";
@@ -135,9 +136,12 @@ export function resolvedTeachingUrl(input: {
   return input.signedUrl || input.url;
 }
 
-async function resolveTeachingUrl(url: string, options: { preview: boolean; canRead: boolean; previewKeys: Set<string> }): Promise<string | null> {
+async function resolveTeachingUrl(
+  url: string,
+  options: { keepStoredTeachingUrls: boolean; canRead: boolean; previewKeys: Set<string> }
+): Promise<string | null> {
   const ref = parseCourseStorageRef(url);
-  const keepStoredUrl = !ref || isStudentUploadPath(ref.path) || options.preview;
+  const keepStoredUrl = !ref || isStudentUploadPath(ref.path) || options.keepStoredTeachingUrls;
   if (!options.canRead) return null;
   if (keepStoredUrl) return url;
   if (!(await privateTeachingBucketReady())) return url;
@@ -166,24 +170,34 @@ function rewriteDownloadItem(item: unknown, nextUrl: string | null): unknown {
 
 export async function protectLessonResourceFields<T extends Record<string, unknown>>(
   lesson: T,
-  options: { canRead: boolean; preview: boolean }
+  options: { canRead: boolean; keepStoredTeachingUrls?: boolean; preview?: boolean }
 ): Promise<T> {
-  const previewKeys = options.preview ? new Set<string>() : await previewStorageKeys();
-  const pdfUrl = typeof lesson.pdf_url === "string" ? lesson.pdf_url : null;
-  const nextPdf = pdfUrl ? await resolveTeachingUrl(pdfUrl, { ...options, previewKeys }) : null;
+  const keepStoredTeachingUrls = options.keepStoredTeachingUrls ?? options.preview ?? false;
+  if (!options.canRead) {
+    return stripProtectedLesson({
+      ...lesson,
+      pdf_url: null,
+      resource_downloads: null,
+    });
+  }
+  const storedPdf = getLessonPdfUrl(lesson) || (typeof lesson.pdf_url === "string" ? lesson.pdf_url : null);
+  if (keepStoredTeachingUrls) {
+    return { ...lesson, pdf_url: storedPdf };
+  }
+  const previewKeys = await previewStorageKeys();
+  const nextPdf = storedPdf ? await resolveTeachingUrl(storedPdf, { canRead: true, keepStoredTeachingUrls: false, previewKeys }) : null;
   const downloads = asDownloadList(lesson.resource_downloads);
   const nextDownloads: unknown[] = [];
   for (const item of downloads) {
     const url = urlFromDownloadItem(item);
     if (!url) continue;
-    const resolved = await resolveTeachingUrl(url, { ...options, previewKeys });
+    const resolved = await resolveTeachingUrl(url, { canRead: true, keepStoredTeachingUrls: false, previewKeys });
     const rewritten = rewriteDownloadItem(item, resolved);
     if (rewritten) nextDownloads.push(rewritten);
   }
-  const withResolved = {
+  return {
     ...lesson,
     pdf_url: nextPdf,
-    resource_downloads: nextDownloads.length ? nextDownloads : null,
+    resource_downloads: nextDownloads.length ? nextDownloads : lesson.resource_downloads ?? null,
   };
-  return options.canRead ? withResolved : stripProtectedLesson(withResolved);
 }

@@ -204,7 +204,27 @@ export type LessonContentAccess = {
   canReadBody: boolean;
   entitlement: EntitlementStatus | "staff" | "anonymous";
   preview: boolean;
+  keepStoredTeachingUrls: boolean;
 };
+
+/** Paid and staff accounts keep stored PDFs/downloads. `preview` is only the designated preview-lesson flag. */
+export function teachingUrlPolicy(input: {
+  entitlement: EntitlementStatus | "staff" | "anonymous";
+  isPreviewLesson: boolean;
+}): Pick<LessonContentAccess, "canReadBody" | "preview" | "keepStoredTeachingUrls"> {
+  if (input.entitlement === "staff" || input.entitlement === "full") {
+    return {
+      canReadBody: true,
+      preview: input.isPreviewLesson,
+      keepStoredTeachingUrls: true,
+    };
+  }
+  return {
+    canReadBody: input.isPreviewLesson,
+    preview: input.isPreviewLesson,
+    keepStoredTeachingUrls: input.isPreviewLesson,
+  };
+}
 
 export async function resolveLessonContentAccess(
   user: StudentUser | null,
@@ -213,15 +233,15 @@ export async function resolveLessonContentAccess(
 ): Promise<LessonContentAccess> {
   const view = options?.staffView ?? "override";
   if (user && (staffOverrideApplies(user, view) || (options?.overrideLocks && isCoachAccount(user)))) {
-    return { canReadBody: true, entitlement: "staff", preview: true };
+    return { entitlement: "staff", ...teachingUrlPolicy({ entitlement: "staff", isPreviewLesson: true }) };
   }
-  if (!user) return { canReadBody: false, entitlement: "anonymous", preview: false };
+  if (!user) {
+    return { entitlement: "anonymous", ...teachingUrlPolicy({ entitlement: "anonymous", isPreviewLesson: false }) };
+  }
   const [entitlement, previewIds] = await Promise.all([getEntitlement(user.id), listPreviewLessonIds()]);
-  if (entitlement === "full") return { canReadBody: true, entitlement, preview: previewIds.includes(lessonId) };
   return {
-    canReadBody: previewIds.includes(lessonId),
     entitlement,
-    preview: previewIds.includes(lessonId),
+    ...teachingUrlPolicy({ entitlement, isPreviewLesson: previewIds.includes(lessonId) }),
   };
 }
 

@@ -69,7 +69,7 @@ export const getLessonData = cache(async (
   });
   const protectedLesson = await protectLessonResourceFields(lesson as unknown as Record<string, unknown>, {
     canRead: composed.canReadBody,
-    preview: content.preview,
+    keepStoredTeachingUrls: content.keepStoredTeachingUrls,
   });
   const visible = composed.canReadBody
     ? ({ ...lesson, ...protectedLesson } as StudentLesson)
