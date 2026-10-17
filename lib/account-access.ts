@@ -1,4 +1,4 @@
-import type { EntitlementStatus } from "@/lib/commerce";
+import type { CommercialAccess, EntitlementStatus } from "@/lib/commerce";
 
 export type EntitlementSource = "signup" | "stripe" | "admin";
 
@@ -8,9 +8,15 @@ export function normalizeEntitlementSource(value: unknown): EntitlementSource {
 }
 
 export function accountAccessCopy(
-  entitlement: EntitlementStatus | "staff" | null | undefined,
+  entitlement: EntitlementStatus | CommercialAccess | "staff" | null | undefined,
   source?: EntitlementSource | null
 ): { title: string; body: string } {
+  if (entitlement === "none") {
+    return {
+      title: "Course access ended",
+      body: "This account no longer has access to the IAC Skills Course. Your profile and work stay on file.",
+    };
+  }
   if (entitlement === "full" && source === "admin") {
     return {
       title: "Full course access — complimentary",
@@ -36,8 +42,8 @@ export function accountAccessCopy(
 }
 
 export function unpaidPreviewReferralNote(
-  entitlement: EntitlementStatus | "staff" | null | undefined
+  entitlement: EntitlementStatus | CommercialAccess | "staff" | null | undefined
 ): string | null {
-  if (entitlement === "full" || entitlement === "staff") return null;
+  if (entitlement === "full" || entitlement === "staff" || entitlement === "none") return null;
   return "You have not paid or registered for the full course yet. Share this code anyway — referrals are stored on this account until you register.";
 }

@@ -121,9 +121,8 @@ export default function StudentPlayer({
   const composed = composeLessonAvailability({
     commercialCanRead:
       skipLocks ||
-      entitlement === "full" ||
-      entitlement === "staff" ||
-      previewLessonIds.includes(lesson.id),
+      (entitlement !== "none" &&
+        (entitlement === "full" || entitlement === "staff" || previewLessonIds.includes(lesson.id))),
     isPreviewLesson: previewLessonIds.includes(lesson.id),
     pedagogical,
   });

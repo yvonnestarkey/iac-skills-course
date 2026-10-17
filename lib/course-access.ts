@@ -1,11 +1,12 @@
-import { DEFAULT_PRODUCT_ID, type EntitlementStatus } from "@/lib/commerce";
+import { DEFAULT_PRODUCT_ID, type CommercialAccess, type EntitlementStatus } from "@/lib/commerce";
 
-export type CourseAccessFilter = "all" | EntitlementStatus;
+export type CourseAccessFilter = "all" | EntitlementStatus | "deregistered";
 
 export const COURSE_ACCESS_FILTERS: { id: CourseAccessFilter; label: string }[] = [
   { id: "all", label: "All" },
   { id: "free_preview", label: "Free Preview" },
   { id: "full", label: "Full Course" },
+  { id: "deregistered", label: "Deregistered" },
 ];
 
 /** Display-only. Authoritative value is course_entitlements.status for jan27-iac. */
@@ -13,16 +14,23 @@ export function courseAccessFromEntitlementStatus(status: unknown): EntitlementS
   return status === "full" ? "full" : "free_preview";
 }
 
-export function courseAccessLabel(status: EntitlementStatus | null | undefined): "Free Preview" | "Full Course" {
+export function courseAccessLabel(
+  status: EntitlementStatus | CommercialAccess | null | undefined,
+  accessActive = true
+): "Free Preview" | "Full Course" | "Deregistered" {
+  if (status === "none" || accessActive === false) return "Deregistered";
   return courseAccessFromEntitlementStatus(status) === "full" ? "Full Course" : "Free Preview";
 }
 
-export function filterStudentsByCourseAccess<T extends { courseAccess?: EntitlementStatus | null }>(
+export function filterStudentsByCourseAccess<T extends { courseAccess?: EntitlementStatus | null; accessActive?: boolean }>(
   students: T[],
   filter: CourseAccessFilter
 ): T[] {
   if (filter === "all") return students;
-  return students.filter((student) => courseAccessFromEntitlementStatus(student.courseAccess) === filter);
+  if (filter === "deregistered") return students.filter((student) => student.accessActive === false);
+  return students.filter(
+    (student) => student.accessActive !== false && courseAccessFromEntitlementStatus(student.courseAccess) === filter
+  );
 }
 
 export function entitlementsByUserId(

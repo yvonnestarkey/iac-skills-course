@@ -23,7 +23,7 @@ import type { EntitlementStatus } from "./commerce";
 import { fetchStudentSubmissions, type StudentSubmission } from "./student-submissions";
 
 export type OnboardingGate = "unknown" | "needed" | "done";
-export type SessionEntitlement = EntitlementStatus | "staff" | null;
+export type SessionEntitlement = EntitlementStatus | "staff" | "none" | null;
 
 interface StudentSessionValue {
   ready: boolean;
@@ -70,7 +70,11 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       const response = await fetch("/api/student/outline");
       if (!response.ok) return;
       const data = await response.json();
-      setEntitlement(data.entitlement === "full" || data.entitlement === "free_preview" ? data.entitlement : "free_preview");
+      setEntitlement(
+        data.entitlement === "full" || data.entitlement === "free_preview" || data.entitlement === "none"
+          ? data.entitlement
+          : "free_preview"
+      );
       setEntitlementSource(
         data.entitlement_source === "admin" || data.entitlement_source === "stripe" || data.entitlement_source === "signup"
           ? data.entitlement_source

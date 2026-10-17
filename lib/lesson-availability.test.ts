@@ -69,6 +69,7 @@ test("dashboard buy CTA follows entitlement, not a stale sales card", () => {
   assert.equal(shouldShowBuyCourseCta("full"), false);
   assert.equal(shouldShowBuyCourseCta("staff"), false);
   assert.equal(shouldShowBuyCourseCta(null), false);
+  assert.equal(shouldShowBuyCourseCta("none"), false);
   assert.equal(shouldShowEnrolledAccess("full"), true);
   assert.equal(shouldShowEnrolledAccess("free_preview"), false);
   assert.equal(shouldShowEnrolledAccess("full", true), false);

@@ -1,5 +1,5 @@
 import type { AccessResult } from "@/lib/accessControl";
-import type { EntitlementStatus } from "@/lib/commerce";
+import type { CommercialAccess, EntitlementStatus } from "@/lib/commerce";
 
 export type LessonAccessLayer = "open" | "preview" | "purchase" | "progression";
 
@@ -47,14 +47,14 @@ export function composeLessonAvailability(input: {
 }
 
 export function shouldShowBuyCourseCta(
-  entitlement: EntitlementStatus | "staff" | null | undefined,
+  entitlement: EntitlementStatus | CommercialAccess | "staff" | null | undefined,
   bypass = false
 ): boolean {
   return !bypass && entitlement === "free_preview";
 }
 
 export function shouldShowEnrolledAccess(
-  entitlement: EntitlementStatus | "staff" | null | undefined,
+  entitlement: EntitlementStatus | CommercialAccess | "staff" | null | undefined,
   bypass = false
 ): boolean {
   return !bypass && entitlement === "full";

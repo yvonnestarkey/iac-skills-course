@@ -37,10 +37,11 @@ test("filtering returns the correct students", () => {
     { id: "a", courseAccess: "free_preview" as const },
     { id: "b", courseAccess: "full" as const },
     { id: "c", courseAccess: "free_preview" as const },
+    { id: "d", courseAccess: "full" as const, accessActive: false },
   ];
   assert.deepEqual(
     filterStudentsByCourseAccess(students, "all").map((row) => row.id),
-    ["a", "b", "c"]
+    ["a", "b", "c", "d"]
   );
   assert.deepEqual(
     filterStudentsByCourseAccess(students, "free_preview").map((row) => row.id),
@@ -50,6 +51,11 @@ test("filtering returns the correct students", () => {
     filterStudentsByCourseAccess(students, "full").map((row) => row.id),
     ["b"]
   );
+  assert.deepEqual(
+    filterStudentsByCourseAccess(students, "deregistered").map((row) => row.id),
+    ["d"]
+  );
+  assert.equal(courseAccessLabel("full", false), "Deregistered");
 });
 
 test("coach student report agrees with the Students list", () => {

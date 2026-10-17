@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import AccountActivationBadge from "@/components/coach/AccountActivationBadge";
 import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
+import StudentAccessPanel from "@/components/coach/StudentAccessPanel";
 import RosterFilterBuilder from "@/components/coach/RosterFilterBuilder";
 import { COURSE_COHORTS } from "@/lib/cohorts";
 import { labelForGroup } from "@/lib/comms";
@@ -78,7 +79,7 @@ function sortValue(row: RosterRow, column: RosterColumnId): string | number {
     case "name":
       return student.name;
     case "courseAccess":
-      return courseAccessLabel(student.courseAccess);
+      return courseAccessLabel(student.courseAccess, student.accessActive);
     case "email":
       return student.email;
     case "phone":
@@ -126,7 +127,7 @@ function plainCell(id: RosterColumnId, row: RosterRow, gradedTotal: number): str
     case "name":
       return student.name;
     case "courseAccess":
-      return courseAccessLabel(student.courseAccess);
+      return courseAccessLabel(student.courseAccess, student.accessActive);
     case "email":
       return student.email;
     case "phone":
@@ -202,6 +203,7 @@ export default function RosterTab({
   onOpenProfile,
 }: Props) {
   const { data, setNotifyDraft } = useStore();
+  const [accessPatch, setAccessPatch] = useState<Record<string, Partial<Student>>>({});
   const [selected, setSelected] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [rules, setRules] = useState<RosterFilterRule[]>([]);
@@ -241,7 +243,10 @@ export default function RosterTab({
         field.id === "cohort"
           ? (value) => cohortName(data, value)
           : field.id === "courseAccess"
-            ? (value) => courseAccessLabel(value === "full" ? "full" : "free_preview")
+            ? (value) =>
+                value === "deregistered"
+                  ? "Deregistered"
+                  : courseAccessLabel(value === "full" ? "full" : "free_preview")
             : undefined,
         field.id === "cohort"
           ? cohortDefaults
@@ -255,7 +260,8 @@ export default function RosterTab({
 
   const rows = useMemo(() => {
     const query = search.trim().toLowerCase();
-    const enriched: RosterRow[] = students.map((student) => {
+    const enriched: RosterRow[] = students.map((row) => {
+      const student = { ...row, ...accessPatch[row.id] };
       const progress = completionProgress(student.completed, lessonIds);
       return {
         student,
@@ -295,7 +301,7 @@ export default function RosterTab({
       if (typeof left === "number" && typeof right === "number") return (left - right) * direction;
       return compareText(String(left), String(right)) * direction;
     });
-  }, [data, lessonIds, logic, rules, search, sortDir, sortKey, students, submissionCounts, surveyCounts, surveyTotal]);
+  }, [accessPatch, data, lessonIds, logic, rules, search, sortDir, sortKey, students, submissionCounts, surveyCounts, surveyTotal]);
 
   const visible = columns.filter((id) => ROSTER_COLUMNS.some((column) => column.id === id));
   const visibleIds = rows.map((row) => row.student.id);
@@ -457,7 +463,11 @@ export default function RosterTab({
                     />
                   </td>
                   {visible.map((id) => (
-                    <td key={id}>{cellFor(id, row, row.submitted)}</td>
+                    <td key={id}>
+                      {cellFor(id, row, row.submitted, (next) =>
+                        setAccessPatch((current) => ({ ...current, [row.student.id]: { ...current[row.student.id], ...next } }))
+                      )}
+                    </td>
                   ))}
                   <td className="row-go">Open profile →</td>
                 </tr>
@@ -474,19 +484,26 @@ export default function RosterTab({
   );
 }
 
-function cellFor(id: RosterColumnId, row: RosterRow, gradedTotal: number) {
+function cellFor(
+  id: RosterColumnId,
+  row: RosterRow,
+  gradedTotal: number,
+  onAccessUpdated?: (next: Partial<Student>) => void
+) {
   const { student } = row;
   switch (id) {
     case "name":
       return (
         <span className="roster-name-access">
           <strong>{student.name}</strong>
-          <CourseAccessBadge access={student.courseAccess} />
+          <CourseAccessBadge access={student.courseAccess} accessActive={student.accessActive} />
           <AccountActivationBadge status={student.accountActivation} />
         </span>
       );
     case "courseAccess":
-      return <CourseAccessBadge access={student.courseAccess} />;
+      return (
+        <StudentAccessPanel student={student} compact onUpdated={onAccessUpdated} />
+      );
     case "email":
       return <span className="muted small">{student.email}</span>;
     case "phone":
