@@ -6881,6 +6881,45 @@ a.live-session-watch:hover {
   font-size: 14px;
 }
 
+.student-access-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 12px;
+}
+
+.student-access-actions {
+  display: grid;
+  gap: 8px;
+  max-width: 420px;
+}
+
+.student-access-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.student-access-row input[type="date"] {
+  min-width: 160px;
+}
+
+.student-access-compact {
+  display: grid;
+  gap: 8px;
+  min-width: 220px;
+}
+
+.student-access-compact .student-access-status {
+  margin-bottom: 0;
+}
+
+.student-access-compact .student-access-actions {
+  max-width: none;
+}
+
 .live-session-manager {
   margin-top: 18px;
 }

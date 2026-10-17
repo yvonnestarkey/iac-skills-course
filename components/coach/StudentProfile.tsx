@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import AccountActivationBadge from "@/components/coach/AccountActivationBadge";
 import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
 import SetTemporaryPasswordPanel from "@/components/coach/SetTemporaryPasswordPanel";
+import StudentAccessPanel from "@/components/coach/StudentAccessPanel";
 import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
@@ -108,7 +109,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         <div className="avatar">{initials(student.name)}</div>
         <div className="profile-id">
           <h1>
-            {student.name} <CourseAccessBadge access={student.courseAccess} />{" "}
+            {student.name} <CourseAccessBadge access={student.courseAccess} accessActive={student.accessActive} />{" "}
             <AccountActivationBadge status={student.accountActivation} />
           </h1>
           <p className="muted">
@@ -154,6 +155,11 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         </div>
       </div>
       {notice ? <div className="notice">{notice}</div> : null}
+
+      <StudentAccessPanel
+        student={student}
+        onUpdated={(next) => setLive((current) => (current ? { ...current, ...next } : current))}
+      />
 
       <SetTemporaryPasswordPanel userId={student.id} studentName={student.name} />
 

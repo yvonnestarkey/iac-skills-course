@@ -17,7 +17,7 @@ export async function GET() {
   ]);
   return NextResponse.json({
     outline,
-    entitlement: entitlement.status,
+    entitlement: entitlement.accessActive ? entitlement.status : "none",
     entitlement_source: entitlement.source,
     preview_lesson_ids: previewIds,
   });

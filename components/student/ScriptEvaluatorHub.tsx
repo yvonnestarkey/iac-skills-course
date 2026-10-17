@@ -18,7 +18,7 @@ import { hasTask1Submission, task1AssignmentFromOutline, task1LessonHref } from 
 import { useStudentSession } from "@/lib/student-session";
 
 export default function ScriptEvaluatorHub() {
-  const { ready, user, outline, submissions } = useStudentSession();
+  const { ready, user, outline, submissions, entitlement } = useStudentSession();
   const { unlocked } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
   const staff = isCoachAccount(user);
@@ -30,7 +30,7 @@ export default function ScriptEvaluatorHub() {
   const task1 = task1AssignmentFromOutline(outline);
   const unlockedByTask1 = hasTask1Submission(submissions, outline);
   const bypass = unlocked || bypassLocks;
-  const canUse = unlockedByTask1 || bypass;
+  const canUse = (entitlement !== "none" && unlockedByTask1) || bypass;
 
   useEffect(() => {
     if (!user?.id || !canUse) return;

@@ -1,11 +1,13 @@
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import { isCoachAccount } from "@/lib/roles";
 import { staffOverrideApplies, type StaffCourseView } from "@/lib/staff-access";
+import { isCourseAccessClosed } from "@/lib/student-registration";
 import type { StudentUser } from "@/lib/student-lesson";
 
 export const DEFAULT_PRODUCT_ID = "jan27-iac";
 
 export type EntitlementStatus = "free_preview" | "full";
+export type CommercialAccess = EntitlementStatus | "none";
 export type PurchaseOption = "once_off" | "plan_6";
 export type RewardStatus = "pending" | "earned" | "applied" | "refund_due" | "refunded" | "reversed";
 
@@ -132,28 +134,57 @@ export async function listPreviewLessonIds(productId = DEFAULT_PRODUCT_ID): Prom
 export type EntitlementRecord = {
   status: EntitlementStatus;
   source: "signup" | "stripe" | "admin";
+  accessExpiresOn: string | null;
+  deregisteredAt: string | null;
+  accessActive: boolean;
 };
+
+function entitlementFromRow(row: {
+  status?: unknown;
+  source?: unknown;
+  access_expires_on?: unknown;
+  deregistered_at?: unknown;
+} | null): EntitlementRecord {
+  const source = row?.source === "admin" || row?.source === "stripe" ? row.source : "signup";
+  const status: EntitlementStatus = row?.status === "full" ? "full" : "free_preview";
+  const accessExpiresOn = typeof row?.access_expires_on === "string" ? row.access_expires_on.slice(0, 10) : null;
+  const deregisteredAt = typeof row?.deregistered_at === "string" ? row.deregistered_at : null;
+  return {
+    status,
+    source,
+    accessExpiresOn,
+    deregisteredAt,
+    accessActive: !isCourseAccessClosed({ accessExpiresOn, deregisteredAt }),
+  };
+}
 
 export async function getEntitlementRecord(userId: string, productId = DEFAULT_PRODUCT_ID): Promise<EntitlementRecord> {
   const client = getServiceSupabase();
-  if (!client) return { status: "full", source: "signup" };
-  const { data, error } = await client
+  if (!client) return { ...entitlementFromRow({ status: "full", source: "signup" }), accessActive: true };
+  let query = await client
     .from("course_entitlements")
-    .select("status, source")
+    .select("status, source, access_expires_on, deregistered_at")
     .eq("user_id", userId)
     .eq("product_id", productId)
     .maybeSingle();
-  if (error) {
-    if (commerceTableMissing(error.message)) return { status: "full", source: "signup" };
-    return { status: "free_preview", source: "signup" };
+  if (query.error && /access_expires_on|deregistered_at|schema cache|column/i.test(query.error.message)) {
+    query = await client
+      .from("course_entitlements")
+      .select("status, source")
+      .eq("user_id", userId)
+      .eq("product_id", productId)
+      .maybeSingle();
   }
-  const source = data?.source === "admin" || data?.source === "stripe" ? data.source : "signup";
-  return { status: data?.status === "full" ? "full" : "free_preview", source };
+  if (query.error) {
+    if (commerceTableMissing(query.error.message)) return { ...entitlementFromRow({ status: "full", source: "signup" }), accessActive: true };
+    return entitlementFromRow({ status: "free_preview", source: "signup" });
+  }
+  return entitlementFromRow(query.data);
 }
 
-export async function getEntitlement(userId: string, productId = DEFAULT_PRODUCT_ID): Promise<EntitlementStatus> {
+export async function getEntitlement(userId: string, productId = DEFAULT_PRODUCT_ID): Promise<CommercialAccess> {
   const record = await getEntitlementRecord(userId, productId);
-  return record.status;
+  return record.accessActive ? record.status : "none";
 }
 
 export async function grantPreviewEntitlement(userId: string) {
@@ -193,32 +224,40 @@ export async function ensureCommerceAccount(user: StudentUser): Promise<boolean>
 export async function grantFullEntitlement(userId: string, source: "stripe" | "admin") {
   const client = getServiceSupabase();
   if (!client) throw new Error("Supabase is not configured.");
-  const { error } = await client.from("course_entitlements").upsert(
-    {
-      user_id: userId,
-      product_id: DEFAULT_PRODUCT_ID,
-      status: "full",
-      source,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: "user_id,product_id" }
-  );
+  const payload: Record<string, unknown> = {
+    user_id: userId,
+    product_id: DEFAULT_PRODUCT_ID,
+    status: "full",
+    source,
+    access_expires_on: null,
+    deregistered_at: null,
+    updated_at: new Date().toISOString(),
+  };
+  let { error } = await client.from("course_entitlements").upsert(payload, { onConflict: "user_id,product_id" });
+  if (error && /access_expires_on|deregistered_at|schema cache|column/i.test(error.message)) {
+    delete payload.access_expires_on;
+    delete payload.deregistered_at;
+    ({ error } = await client.from("course_entitlements").upsert(payload, { onConflict: "user_id,product_id" }));
+  }
   if (error) throw new Error(error.message);
   await ensureReferralCode(userId);
 }
 
 export type LessonContentAccess = {
   canReadBody: boolean;
-  entitlement: EntitlementStatus | "staff" | "anonymous";
+  entitlement: CommercialAccess | "staff" | "anonymous";
   preview: boolean;
   keepStoredTeachingUrls: boolean;
 };
 
 /** Paid and staff accounts keep stored PDFs/downloads. `preview` is only the designated preview-lesson flag. */
 export function teachingUrlPolicy(input: {
-  entitlement: EntitlementStatus | "staff" | "anonymous";
+  entitlement: EntitlementStatus | CommercialAccess | "staff" | "anonymous";
   isPreviewLesson: boolean;
 }): Pick<LessonContentAccess, "canReadBody" | "preview" | "keepStoredTeachingUrls"> {
+  if (input.entitlement === "none" || input.entitlement === "anonymous") {
+    return { canReadBody: false, preview: false, keepStoredTeachingUrls: false };
+  }
   if (input.entitlement === "staff" || input.entitlement === "full") {
     return {
       canReadBody: true,

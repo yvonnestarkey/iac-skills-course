@@ -58,6 +58,12 @@ test("paid students keep stored teaching files without treating every lesson as 
 
   const staff = teachingUrlPolicy({ entitlement: "staff", isPreviewLesson: true });
   assert.equal(staff.keepStoredTeachingUrls, true);
+
+  const closed = teachingUrlPolicy({ entitlement: "none", isPreviewLesson: true });
+  assert.equal(closed.canReadBody, false);
+  assert.equal(closed.preview, false);
+  assert.equal(closed.keepStoredTeachingUrls, false);
+  assert.equal(accountAccessCopy("none").title, "Course access ended");
 });
 
 test("stripProtectedLesson removes paid body and assets", () => {

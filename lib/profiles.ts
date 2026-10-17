@@ -5,6 +5,7 @@ import { courseAccessFromEntitlementStatus } from "./course-access";
 import { isoDate, today } from "./dates";
 import { parseRosterOnboarding } from "./roster";
 import { isCoachAccount } from "./roles";
+import { isCourseAccessClosed } from "./student-registration";
 import { getSupabase } from "./supabase";
 import type { Student } from "./types";
 import type { UserProfile } from "../types/database";
@@ -55,6 +56,9 @@ export function profileToStudent(
     additionalNotes: onboarding.additionalNotes,
     completed,
     courseAccess: extras.courseAccess === "full" ? "full" : "free_preview",
+    accessExpiresOn: typeof extras.accessExpiresOn === "string" ? extras.accessExpiresOn : null,
+    deregisteredAt: typeof extras.deregisteredAt === "string" ? extras.deregisteredAt : null,
+    accessActive: extras.accessActive !== false,
     accountActivation:
       extras.accountActivation === "activated" ||
       extras.accountActivation === "needs_activation" ||
@@ -193,20 +197,57 @@ export async function fetchAccountActivationByUser(): Promise<Record<string, Acc
   }
 }
 
-export async function fetchCourseAccessByUser(): Promise<Record<string, EntitlementStatus>> {
+export type CourseAccessRow = {
+  status: EntitlementStatus;
+  accessExpiresOn: string | null;
+  deregisteredAt: string | null;
+  accessActive: boolean;
+};
+
+export async function fetchCourseAccessByUser(): Promise<Record<string, CourseAccessRow>> {
   const client = getSupabase();
   if (!client) return {};
-  const { data, error } = await client
+  let rows: Array<{
+    user_id: unknown;
+    status: unknown;
+    product_id?: unknown;
+    access_expires_on?: unknown;
+    deregistered_at?: unknown;
+  }> = [];
+  const query = await client
     .from("course_entitlements")
-    .select("user_id, status, product_id")
+    .select("user_id, status, product_id, access_expires_on, deregistered_at")
     .eq("product_id", DEFAULT_PRODUCT_ID);
-  if (error) {
-    if (!commerceTableMissing(error.message)) console.error(error.message);
+  if (query.error && /access_expires_on|deregistered_at|schema cache|column/i.test(query.error.message)) {
+    const fallback = await client
+      .from("course_entitlements")
+      .select("user_id, status, product_id")
+      .eq("product_id", DEFAULT_PRODUCT_ID);
+    if (fallback.error) {
+      if (!commerceTableMissing(fallback.error.message)) console.error(fallback.error.message);
+      return {};
+    }
+    rows = fallback.data || [];
+  } else if (query.error) {
+    if (!commerceTableMissing(query.error.message)) console.error(query.error.message);
     return {};
+  } else {
+    rows = query.data || [];
   }
-  const map: Record<string, EntitlementStatus> = {};
-  (data || []).forEach((row) => {
-    map[String(row.user_id)] = courseAccessFromEntitlementStatus(row.status);
+  const map: Record<string, CourseAccessRow> = {};
+  rows.forEach((row) => {
+    const accessExpiresOn = typeof (row as { access_expires_on?: unknown }).access_expires_on === "string"
+      ? String((row as { access_expires_on?: string }).access_expires_on).slice(0, 10)
+      : null;
+    const deregisteredAt = typeof (row as { deregistered_at?: unknown }).deregistered_at === "string"
+      ? String((row as { deregistered_at?: string }).deregistered_at)
+      : null;
+    map[String(row.user_id)] = {
+      status: courseAccessFromEntitlementStatus(row.status),
+      accessExpiresOn,
+      deregisteredAt,
+      accessActive: !isCourseAccessClosed({ accessExpiresOn, deregisteredAt }),
+    };
   });
   return map;
 }
@@ -248,7 +289,10 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
     .map((row) =>
       profileToStudent(row, completed[row.id] || [], {
         ...(onboarding[row.id] || {}),
-        courseAccess: access[row.id] || "free_preview",
+        courseAccess: access[row.id]?.status || "free_preview",
+        accessExpiresOn: access[row.id]?.accessExpiresOn || null,
+        deregisteredAt: access[row.id]?.deregisteredAt || null,
+        accessActive: access[row.id]?.accessActive !== false,
         accountActivation: activation[row.id],
       })
     );
@@ -268,7 +312,10 @@ export async function fetchRosterStudent(id: string): Promise<Student | null> {
   const onboardingRow = onboarding[id] || {};
   const extras = {
     ...onboardingRow,
-    courseAccess: access[id] || "free_preview",
+    courseAccess: access[id]?.status || "free_preview",
+    accessExpiresOn: access[id]?.accessExpiresOn || null,
+    deregisteredAt: access[id]?.deregisteredAt || null,
+    accessActive: access[id]?.accessActive !== false,
     accountActivation: activation[id],
   };
   const { data } = await client.from("profiles").select("*").eq("id", id).maybeSingle();

@@ -87,6 +87,9 @@ export interface Student {
   status: "active" | "paused";
   /** Display-only. Derived from course_entitlements.status for jan27-iac. */
   courseAccess?: EntitlementStatus;
+  accessExpiresOn?: string | null;
+  deregisteredAt?: string | null;
+  accessActive?: boolean;
   /** Display-only. Derived from Auth has_password, not entitlement or onboarding. */
   accountActivation?: "activated" | "needs_activation" | "unavailable";
   joined?: string;

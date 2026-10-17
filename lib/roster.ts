@@ -213,6 +213,7 @@ export const ROSTER_CTA_YEAR_OPTIONS = ["2026", "2025", "2024", "2023", "2022"] 
 export const ROSTER_COURSE_ACCESS_OPTIONS = [
   { value: "full", label: "Full Course" },
   { value: "free_preview", label: "Free Preview" },
+  { value: "deregistered", label: "Deregistered" },
 ] as const;
 
 export const ROSTER_FILTER_DEFAULTS: Partial<Record<RosterFilterField, readonly string[]>> = {
@@ -350,6 +351,7 @@ export function rosterRuleValue(student: {
   accountabilityEmail?: string | null;
   cohort: string;
   courseAccess?: string | null;
+  accessActive?: boolean;
   onboardingCompleted?: boolean;
   country?: string | null;
   ctaYear?: string | null;
@@ -363,6 +365,7 @@ export function rosterRuleValue(student: {
     case "name":
       return student.name || "";
     case "courseAccess":
+      if (student.accessActive === false) return "deregistered";
       return student.courseAccess === "full" ? "full" : "free_preview";
     case "email":
       return student.email || "";

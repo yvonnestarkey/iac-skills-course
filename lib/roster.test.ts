@@ -50,6 +50,8 @@ test("roster course access distinguishes full and preview students", () => {
     matchRosterRule(full, { id: "r3", field: "courseAccess", operator: "is", values: ["full"] }),
     true
   );
+  assert.equal(rosterRuleValue({ ...full, accessActive: false }, "courseAccess"), "deregistered");
+  assert.equal(courseAccessLabel(full.courseAccess, false), "Deregistered");
 });
 
 test("student profile surveys include onboarding details and background", () => {

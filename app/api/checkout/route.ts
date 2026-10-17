@@ -50,10 +50,11 @@ export async function POST(request: Request) {
   let buyer = { id: user.id, email: user.email || "" };
   if (smokeTest.smokeTest) {
     const found = await findAuthUserByEmail(smokeTest.studentEmail);
+    const access = found ? await getEntitlement(found.id) : "free_preview";
     const target = validateSmokeTestStudent({
       found,
       isStaff: found ? isCoachAccount({ id: found.id, email: found.email }) : false,
-      entitlement: found ? await getEntitlement(found.id) : "free_preview",
+      entitlement: access === "full" ? "full" : "free_preview",
     });
     if (target.ok === false) return NextResponse.json({ error: target.error }, { status: target.status });
     buyer = { id: target.userId, email: target.email };

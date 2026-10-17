@@ -1,11 +1,17 @@
-import { courseAccessFromEntitlementStatus, courseAccessLabel } from "@/lib/course-access";
+import { courseAccessLabel } from "@/lib/course-access";
 import type { EntitlementStatus } from "@/lib/commerce";
 
-export default function CourseAccessBadge({ access }: { access?: EntitlementStatus | null }) {
-  const status = courseAccessFromEntitlementStatus(access);
+export default function CourseAccessBadge({
+  access,
+  accessActive = true,
+}: {
+  access?: EntitlementStatus | null;
+  accessActive?: boolean;
+}) {
+  const label = courseAccessLabel(access, accessActive);
   return (
-    <span className={`badge course-access-badge ${status === "full" ? "ok" : "warn"}`}>
-      {courseAccessLabel(status)}
+    <span className={`badge course-access-badge ${label === "Full Course" ? "ok" : "warn"}`}>
+      {label}
     </span>
   );
 }
