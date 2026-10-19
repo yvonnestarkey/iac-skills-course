@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { ImageBlockParam, Tool } from "@anthropic-ai/sdk/resources/messages";
+import { reviveStringifiedFields } from "./revive";
 import type { UsageTally } from "./types";
 
 export const DEFAULT_EVALUATOR_MODEL = "claude-sonnet-5-5";
@@ -96,7 +97,7 @@ export async function callStructured<T>(input: {
         const kinds = response.content.map((item) => item.type).join(", ") || "nothing";
         throw new Error(`Model returned no structured result (stop_reason ${response.stop_reason}; content: ${kinds}${text ? `; text: ${text}` : ""}).`);
       }
-      return block.input as T;
+      return reviveStringifiedFields(block.input) as T;
     } catch (error) {
       lastError = error;
       const status = (error as { status?: number }).status;
