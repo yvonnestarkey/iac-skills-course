@@ -243,6 +243,16 @@ export async function evaluateRequirement(input: {
     warnings.push(`${label}: the model returned Communication without its list of points; Communication is empty for this requirement.`);
     raw.communication = { ...raw.communication, points: [] };
   }
+  if (!raw.quick_comment) {
+    warnings.push(`${label}: the model returned no quick comment (coach layer only; nothing in the student report depends on it).`);
+    raw.quick_comment = { main_issue: null, certainty: "uncertain", evidence: "" };
+  }
+  if (!raw.competency) {
+    warnings.push(`${label}: the model returned no competency topic.`);
+    raw.competency = { topic: "", basis: "" };
+  }
+  if (!raw.question_type_basis) raw.question_type_basis = "";
+  if (!Array.isArray(raw.uncertainties)) raw.uncertainties = [];
   if (raw.rtfq && !Array.isArray(raw.rtfq.dimensions)) {
     warnings.push(`${label}: the model returned RTFQ without its dimensions; RTFQ is empty for this requirement.`);
     raw.rtfq = { ...raw.rtfq, dimensions: [] };

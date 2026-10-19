@@ -45,7 +45,12 @@ async function main() {
   mkdirSync(dir, { recursive: true });
   writeFileSync(path.join(dir, "dataset.json"), JSON.stringify(result.dataset, null, 2));
   if (result.report) writeFileSync(path.join(dir, "report.json"), JSON.stringify(result.report, null, 2));
-  writeFileSync(path.join(dir, "review.md"), renderCalibrationMarkdown(result));
+  try {
+    writeFileSync(path.join(dir, "review.md"), renderCalibrationMarkdown(result));
+  } catch (error) {
+    // The dataset is already saved; a rendering slip must not lose the run.
+    console.warn(`Could not build review.md (${error instanceof Error ? error.message : error}). dataset.json is saved; fix and run: npm run render:dataset -- --file=${path.join(dir, "dataset.json")}`);
+  }
   if (process.argv.includes("--save")) console.log("Saved run:", await saveEvaluationRun(attemptId, result));
   console.log(`Usage: ${result.usage.calls} calls, ${result.usage.input_tokens} in / ${result.usage.output_tokens} out tokens`);
   console.log(`Written to ${dir}`);

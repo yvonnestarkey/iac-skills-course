@@ -45,19 +45,20 @@ export function renderCalibrationMarkdown(result: RunResult): string {
         pct(m?.proximity_conversion.thinking ?? null),
         req.volume?.attempts ?? "—",
         pct(m?.accuracy ?? null),
-        req.components ? req.components.layers.map((l) => `${l.layer} ${l.recognised}/${l.available}`).join("; ") || "—" : "—",
+        req.components ? (req.components.layers ?? []).map((l) => `${l.layer} ${l.recognised}/${l.available}`).join("; ") || "—" : "—",
         req.core_issue ? `${req.core_issue.higher_covered}/${req.core_issue.higher_total} higher` : "—",
         req.rtfq ? req.rtfq.dimensions.map((d) => d.delivered).join("/") || "—" : "—",
         req.communication ? mostCommon(req.communication.points.map((p) => p.category)) : "—",
         req.question_type,
-        req.competency.topic,
+        req.competency?.topic ?? "—",
       ].join(" | ").replace(/^/, "| ").replace(/$/, " |")
     );
   }
   lines.push("");
   lines.push("## Quick comment per requirement (observation, with certainty)");
   for (const req of dataset.requirements) {
-    lines.push(`- **${req.label}** (${req.quick_comment.certainty}): ${req.quick_comment.main_issue ?? "no single issue supported"} — _${req.quick_comment.evidence}_`);
+    const q = req.quick_comment;
+    lines.push(`- **${req.label}** (${q?.certainty ?? "not returned"}): ${q?.main_issue ?? "no single issue supported"} — _${q?.evidence ?? ""}_`);
   }
   const withDiag = dataset.metrics.filter((m) => m.diagnoses && (m.diagnoses.volume_accuracy || m.diagnoses.core_issue || m.diagnoses.communication));
   if (withDiag.length) {
