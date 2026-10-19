@@ -1,7 +1,7 @@
 import { profileDisplayName } from "./profiles";
 import { attemptSourceForUser, STAFF_TEST_ATTEMPT_SOURCE, STUDENT_ATTEMPT_SOURCE } from "./staff-access";
 import { getSupabase } from "./supabase";
-import { findPastPaper } from "./past-papers";
+import { findPastPaper, findPastPaperSitting } from "./past-papers";
 
 export const EXAM_ATTEMPT_STATUSES = [
   "started",
@@ -14,7 +14,26 @@ export const EXAM_ATTEMPT_STATUSES = [
 ] as const;
 
 export type ExamAttemptStatus = (typeof EXAM_ATTEMPT_STATUSES)[number];
-export type ExamAttemptFileKind = "bmcr_worksheet" | "marked_script" | "marking_report";
+export type ExamAttemptFileKind =
+  | "bmcr_worksheet"
+  | "marked_script"
+  | "marked_script_p2"
+  | "marked_script_p3"
+  | "marking_report";
+
+export const EXAM_ATTEMPT_FILE_KINDS: ExamAttemptFileKind[] = [
+  "bmcr_worksheet",
+  "marked_script",
+  "marked_script_p2",
+  "marked_script_p3",
+  "marking_report",
+];
+
+export const EXAM_ATTEMPT_SCRIPT_KINDS: ExamAttemptFileKind[] = [
+  "marked_script",
+  "marked_script_p2",
+  "marked_script_p3",
+];
 
 export type ExamAttemptPageImage = {
   page: number;
@@ -38,6 +57,12 @@ export type ExamAttempt = {
   marked_script_path: string | null;
   marked_script_url: string | null;
   marked_script_name: string | null;
+  marked_script_p2_path: string | null;
+  marked_script_p2_url: string | null;
+  marked_script_p2_name: string | null;
+  marked_script_p3_path: string | null;
+  marked_script_p3_url: string | null;
+  marked_script_p3_name: string | null;
   marking_report_path: string | null;
   marking_report_url: string | null;
   marking_report_name: string | null;
@@ -52,9 +77,14 @@ export type ExamAttempt = {
 
 export const EXAM_ATTEMPT_FILE_LABELS: Record<ExamAttemptFileKind, string> = {
   bmcr_worksheet: "Completed BMCR worksheet",
-  marked_script: "Exam script",
+  marked_script: "Paper 1",
+  marked_script_p2: "Paper 2",
+  marked_script_p3: "Paper 3",
   marking_report: "Marking report",
 };
+
+export const EXAM_ATTEMPT_SCRIPT_PAPERS_SQL =
+  "Paste supabase/exam-attempt-script-papers.sql in the Supabase SQL editor, then try again.";
 
 export const EXAM_ATTEMPT_SQL_HINT =
   "Paste supabase/exam-attempts.sql in the Supabase SQL editor, then try again.";
@@ -83,15 +113,17 @@ export function attemptHasFile(attempt: ExamAttempt, kind: ExamAttemptFileKind):
 }
 
 export function attemptFileCount(attempt: ExamAttempt): number {
-  return (["bmcr_worksheet", "marked_script", "marking_report"] as ExamAttemptFileKind[]).filter((kind) =>
-    attemptHasFile(attempt, kind)
-  ).length;
+  return EXAM_ATTEMPT_FILE_KINDS.filter((kind) => attemptHasFile(attempt, kind)).length;
+}
+
+export function attemptHasAllRequiredFiles(attempt: ExamAttempt): boolean {
+  return attemptFileCount(attempt) >= EXAM_ATTEMPT_FILE_KINDS.length;
 }
 
 export function deriveAttemptStatus(attempt: Pick<ExamAttempt, "status"> & Partial<ExamAttempt>): ExamAttemptStatus {
   if (TERMINAL_STATUSES.includes(attempt.status)) return attempt.status;
   const count = attemptFileCount(attempt as ExamAttempt);
-  if (count >= 3) return "ready_to_submit";
+  if (count >= EXAM_ATTEMPT_FILE_KINDS.length) return "ready_to_submit";
   if (count > 0) return "awaiting_documents";
   return "started";
 }
@@ -154,7 +186,7 @@ function asPageImages(value: unknown): ExamAttempt["page_images"] {
   if (!value || typeof value !== "object" || Array.isArray(value)) return {};
   const row = value as JsonRow;
   const next: ExamAttempt["page_images"] = {};
-  for (const kind of ["bmcr_worksheet", "marked_script", "marking_report"] as ExamAttemptFileKind[]) {
+  for (const kind of EXAM_ATTEMPT_FILE_KINDS) {
     const list = row[kind];
     if (!Array.isArray(list)) continue;
     next[kind] = list
@@ -190,6 +222,12 @@ export function examAttemptFromRow(row: JsonRow): ExamAttempt {
     marked_script_path: row.marked_script_path ? String(row.marked_script_path) : null,
     marked_script_url: row.marked_script_url ? String(row.marked_script_url) : null,
     marked_script_name: row.marked_script_name ? String(row.marked_script_name) : null,
+    marked_script_p2_path: row.marked_script_p2_path ? String(row.marked_script_p2_path) : null,
+    marked_script_p2_url: row.marked_script_p2_url ? String(row.marked_script_p2_url) : null,
+    marked_script_p2_name: row.marked_script_p2_name ? String(row.marked_script_p2_name) : null,
+    marked_script_p3_path: row.marked_script_p3_path ? String(row.marked_script_p3_path) : null,
+    marked_script_p3_url: row.marked_script_p3_url ? String(row.marked_script_p3_url) : null,
+    marked_script_p3_name: row.marked_script_p3_name ? String(row.marked_script_p3_name) : null,
     marking_report_path: row.marking_report_path ? String(row.marking_report_path) : null,
     marking_report_url: row.marking_report_url ? String(row.marking_report_url) : null,
     marking_report_name: row.marking_report_name ? String(row.marking_report_name) : null,
@@ -289,14 +327,16 @@ export async function fetchExamAttempt(userId: string, attemptId: string): Promi
 export async function createExamAttempt(input: {
   userId: string;
   sittingId: string;
-  paperId: string;
+  paperId?: string;
 }): Promise<{ ok: true; attempt: ExamAttempt } | { ok: false; error: string; missingTable?: boolean }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
-  const mapped = findPastPaper(input.paperId);
-  if (!mapped || mapped.sitting.id !== input.sittingId) {
-    return { ok: false, error: "Choose a sitting and a paper from the exam list." };
+  const sitting = findPastPaperSitting(input.sittingId);
+  const mapped = input.paperId ? findPastPaper(input.paperId) : sitting ? findPastPaper(sitting.id) : null;
+  if (!sitting || !mapped || mapped.sitting.id !== input.sittingId) {
+    return { ok: false, error: "Choose a sitting from the exam list." };
   }
+  const wholeExam = !input.paperId;
   const now = new Date().toISOString();
   const { data: session } = await client.auth.getUser();
   const source = attemptSourceForUser(
@@ -308,10 +348,10 @@ export async function createExamAttempt(input: {
     user_id: input.userId,
     exam_body: "IAC",
     sitting_id: mapped.sitting.id,
-    paper_id: mapped.paper.id,
+    paper_id: wholeExam ? mapped.sitting.id : mapped.paper.id,
     sitting_label: mapped.sitting.label.replace(/ IAC Exam$/i, ""),
-    paper_title: mapped.paper.title,
-    paper_code: mapped.paper.code,
+    paper_title: wholeExam ? "Papers 1–3" : mapped.paper.title,
+    paper_code: wholeExam ? mapped.sitting.id : mapped.paper.code,
     status: "started",
     source,
     updated_at: now,
@@ -412,7 +452,12 @@ export async function uploadExamAttemptFile(input: {
     .select("*")
     .limit(1)
     .maybeSingle();
-  if (error || !data) return { ok: false, error: examAttemptTableError(error?.message || "Could not attach that file.") };
+  if (error || !data) {
+    if (error && /marked_script_p2|marked_script_p3|schema cache|column/i.test(error.message)) {
+      return { ok: false, error: EXAM_ATTEMPT_SCRIPT_PAPERS_SQL };
+    }
+    return { ok: false, error: examAttemptTableError(error?.message || "Could not attach that file.") };
+  }
   const attempt = examAttemptFromRow(data as JsonRow);
   if (input.kind === "marked_script" && attempt.marked_script_url) {
     void requestScriptEvaluation({
@@ -436,8 +481,8 @@ export async function markAttemptAnalysing(
   if (existing.ok === false) return { ok: false, error: existing.error };
   if (!existing.attempt) return { ok: false, error: "That exam attempt was not found." };
   if (isAttemptSubmitted(existing.attempt.status)) return { ok: true, attempt: existing.attempt };
-  if (attemptFileCount(existing.attempt) < 3) {
-    return { ok: false, error: "Upload the completed BMCR worksheet, exam script, and marking report first." };
+  if (!attemptHasAllRequiredFiles(existing.attempt)) {
+    return { ok: false, error: "Upload the completed BMCR worksheet, Paper 1, Paper 2, Paper 3, and the marking report first." };
   }
   const now = new Date().toISOString();
   const { data, error } = await client

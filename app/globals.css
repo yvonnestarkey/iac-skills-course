@@ -6578,10 +6578,53 @@ a.live-session-watch:hover {
   word-break: break-word;
 }
 
-.eval-upload-card input[type="file"] {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
+.eval-file-picker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.eval-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.eval-file-button {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.eval-file-picker:has(.eval-file-input:disabled) .eval-file-button {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.eval-script-slots {
+  display: grid;
+  gap: 12px;
+}
+
+.eval-script-slot {
+  display: grid;
+  gap: 6px;
+}
+
+.eval-script-slot-label {
+  font-weight: 700;
+  font-size: 14px;
 }
 
 .eval-upload-card.is-ready {

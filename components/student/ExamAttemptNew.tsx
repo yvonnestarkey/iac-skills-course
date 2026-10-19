@@ -26,7 +26,6 @@ export default function ExamAttemptNew() {
   const [sittingId, setSittingId] = useState(
     () => resolveBmcrSittingId(searchParams.get("sitting")) || DEFAULT_PAST_PAPER_SITTING_ID
   );
-  const [paperId, setPaperId] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -35,28 +34,24 @@ export default function ExamAttemptNew() {
     [sittingId]
   );
   const papers = sitting?.papers || [];
-  const selectedPaper = papers.find((paper) => paper.id === paperId) || papers[0];
   const worksheetReady = hasPrintableBmcrWorksheet(sitting.id);
-  const officialSpec = selectedPaper ? officialSourceSpec(sitting.id, selectedPaper.id) : null;
+  const officialSpec = papers[0] ? officialSourceSpec(sitting.id, papers[0].id) : null;
   const sourcesKnown = Boolean(officialSpec);
   const commentaryKnown = Boolean(officialSpec?.commentary.length);
   const returnTo = evaluatorContinueHref(`/student/evaluator/new?sitting=${sitting.id}`, sitting.id);
 
   function changeSitting(nextId: string) {
     setSittingId(nextId);
-    const next = PAST_PAPER_SITTINGS.find((item) => item.id === nextId);
-    setPaperId(next?.papers[0]?.id || "");
     router.replace(`/student/evaluator/new?sitting=${encodeURIComponent(nextId)}`, { scroll: false });
   }
 
   async function startAttempt() {
-    if (!user?.id || !sitting || !selectedPaper) return;
+    if (!user?.id || !sitting) return;
     setBusy(true);
     setError("");
     const created = await createExamAttempt({
       userId: user.id,
       sittingId: sitting.id,
-      paperId: selectedPaper.id,
     });
     setBusy(false);
     if (created.ok === false) {
@@ -96,10 +91,10 @@ export default function ExamAttemptNew() {
         <Link href="/student/evaluator">← Script evaluator</Link>
       </p>
       <p className="kicker">New exam attempt</p>
-      <h1>Sitting, then BMCR, then one paper</h1>
+      <h1>Sitting, then BMCR, then all three papers</h1>
       <p>
-        Print one BMCR for the whole sitting. After that, choose which paper&apos;s script this attempt is for. You
-        reuse the same worksheet for every paper from that sitting.
+        Print one BMCR for the whole sitting. Then upload Paper 1, Paper 2 and Paper 3 together on the next screen,
+        with that same worksheet and the marking report.
       </p>
 
       <ol className="eval-flow">
@@ -137,27 +132,6 @@ export default function ExamAttemptNew() {
           )}
         </li>
 
-        <li className="eval-flow-step">
-          <h2>3. Which paper&apos;s script is this attempt?</h2>
-          <p>
-            This only chooses the script you are uploading now. It does not create another BMCR. Each paper stays a
-            separate attempt.
-          </p>
-          <label className="eval-exam-picker">
-            Paper
-            <select
-              className="select-line"
-              value={selectedPaper?.id || ""}
-              onChange={(event) => setPaperId(event.target.value)}
-            >
-              {papers.map((paper) => (
-                <option key={paper.id} value={paper.id}>
-                  {paper.title} ({paper.total_marks} marks)
-                </option>
-              ))}
-            </select>
-          </label>
-        </li>
       </ol>
 
       {sitting.id === "june-2026" ? (
@@ -188,8 +162,8 @@ export default function ExamAttemptNew() {
       {error ? <p className="notice">{error}</p> : null}
 
       <p>
-        <button type="button" className="primary" disabled={busy || !user?.id || !selectedPaper} onClick={startAttempt}>
-          {busy ? "Starting…" : "4. Continue to uploads"}
+        <button type="button" className="primary" disabled={busy || !user?.id || !sitting} onClick={startAttempt}>
+          {busy ? "Starting…" : "3. Continue to uploads"}
         </button>
       </p>
     </article>

@@ -1,7 +1,7 @@
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import { ensureCompleteAttemptPageImages } from "@/lib/exam-analysis-pages";
 import {
-  attemptFileCount,
+  attemptHasAllRequiredFiles,
   examAttemptFromRow,
   type ExamAttempt,
   type ExamAttemptFileKind,
@@ -35,7 +35,7 @@ export type EvidenceReadiness = {
   prepared_at: string;
   sitting_id: string;
   paper_id: string;
-  files: Record<ExamAttemptFileKind, FileReadiness>;
+  files: Record<"bmcr_worksheet" | "marked_script" | "marking_report", FileReadiness>;
   official_sources: Record<string, unknown>;
   readable: boolean;
   notes: string[];
@@ -121,8 +121,8 @@ export async function prepareExamAttemptEvidence(attemptId: string): Promise<
   const { data, error } = await supabase.from("exam_attempts").select("*").eq("id", attemptId).limit(1).maybeSingle();
   if (error || !data) return { ok: false, error: error?.message || "That exam attempt was not found." };
   let attempt = examAttemptFromRow(data as { [key: string]: unknown });
-  if (attemptFileCount(attempt) < 3) {
-    return { ok: false, error: "This attempt is missing one of the three required PDFs." };
+  if (!attemptHasAllRequiredFiles(attempt)) {
+    return { ok: false, error: "This attempt is missing one of the required PDFs." };
   }
   try {
     const completed = await ensureCompleteAttemptPageImages(attemptId);

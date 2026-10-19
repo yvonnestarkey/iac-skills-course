@@ -2,7 +2,7 @@ import { after, NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { prepareExamAttemptEvidence } from "@/lib/exam-attempt-evidence";
 import {
-  attemptFileCount,
+  attemptHasAllRequiredFiles,
   attemptPaperName,
   examAttemptFromRow,
   isAttemptSubmitted,
@@ -60,9 +60,9 @@ export async function POST(
 
   const attempt = examAttemptFromRow(data as Record<string, unknown>);
   if (!isAttemptSubmitted(attempt.status)) {
-    if (attemptFileCount(attempt) < 3) {
+    if (!attemptHasAllRequiredFiles(attempt)) {
       return NextResponse.json(
-        { error: "Upload the completed BMCR worksheet, exam script, and marking report first." },
+        { error: "Upload the completed BMCR worksheet, Paper 1, Paper 2, Paper 3, and the marking report first." },
         { status: 400 }
       );
     }

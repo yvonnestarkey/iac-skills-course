@@ -96,8 +96,8 @@ export default function ScriptEvaluatorHub() {
       <p className="kicker">Script evaluator</p>
       <h1>Submit an exam attempt</h1>
       <p>
-        Choose a sitting, print one BMCR for all three papers, then submit each exam script as its own attempt with the
-        completed worksheet, the script, and the marking report.
+        Choose a sitting, print one BMCR for all three papers, then upload that worksheet with Paper 1, Paper 2, Paper 3,
+        and the marking report on one attempt.
       </p>
       <p className="muted small">
         Each attempt stays separate. If you have written IAC more than once, submit each sitting on its own.
@@ -116,7 +116,7 @@ export default function ScriptEvaluatorHub() {
         <h2 id="my-exam-attempts">{staff ? "Exam attempts" : "My exam attempts"}</h2>
         {loadError ? <p className="notice">{loadError}</p> : null}
         {loaded && !attempts.length && !loadError ? (
-          <p className="muted">No exam attempts yet. Start with one sitting and paper.</p>
+          <p className="muted">No exam attempts yet. Start with one sitting.</p>
         ) : null}
         {attempts.length ? (
           <ul className="eval-attempt-list">

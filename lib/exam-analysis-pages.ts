@@ -7,11 +7,13 @@ import {
 } from "@/lib/exam-attempts";
 import { countPdfPages, renderPdfPageJpegs } from "@/lib/pdf-page-images-server";
 
-export const ANALYSIS_FILE_KINDS: ExamAttemptFileKind[] = [
+export const ANALYSIS_FILE_KINDS = [
   "bmcr_worksheet",
   "marked_script",
   "marking_report",
-];
+] as const satisfies readonly ExamAttemptFileKind[];
+
+type AnalysisKind = (typeof ANALYSIS_FILE_KINDS)[number];
 
 export type AnalysisFilePages = {
   kind: ExamAttemptFileKind;
@@ -32,7 +34,7 @@ export type AttemptAnalysisPages = {
   paper_id: string;
   status: string;
   analysed: false;
-  files: Record<ExamAttemptFileKind, AnalysisFilePages>;
+  files: Record<AnalysisKind, AnalysisFilePages>;
   multimodal_inputs: { kind: ExamAttemptFileKind; page: number; image_url: string }[];
 };
 
@@ -87,7 +89,7 @@ export async function loadAttemptForAnalysis(attemptId: string): Promise<ExamAtt
 export async function getAttemptAnalysisPages(attemptId: string): Promise<AttemptAnalysisPages | null> {
   const attempt = await loadAttemptForAnalysis(attemptId);
   if (!attempt) return null;
-  const files = {} as Record<ExamAttemptFileKind, AnalysisFilePages>;
+  const files = {} as Record<AnalysisKind, AnalysisFilePages>;
   const multimodal_inputs: AttemptAnalysisPages["multimodal_inputs"] = [];
   for (const kind of ANALYSIS_FILE_KINDS) {
     let pdfPageCount: number | null = null;
@@ -116,7 +118,7 @@ export async function getAttemptAnalysisPages(attemptId: string): Promise<Attemp
 
 /** Render any PDF pages that were cut off or never imaged. Does not call a model. */
 export async function ensureCompleteAttemptPageImages(attemptId: string): Promise<
-  { ok: true; attempt: ExamAttempt; rendered: Record<ExamAttemptFileKind, number> } | { ok: false; error: string }
+  { ok: true; attempt: ExamAttempt; rendered: Record<AnalysisKind, number> } | { ok: false; error: string }
 > {
   const supabase = getServiceSupabase();
   if (!supabase) return { ok: false, error: "SUPABASE_SERVICE_ROLE_KEY is not set." };
@@ -124,7 +126,7 @@ export async function ensureCompleteAttemptPageImages(attemptId: string): Promis
   if (!attempt) return { ok: false, error: "That exam attempt was not found." };
 
   const pageImages = { ...attempt.page_images };
-  const rendered: Record<ExamAttemptFileKind, number> = {
+  const rendered: Record<AnalysisKind, number> = {
     bmcr_worksheet: 0,
     marked_script: 0,
     marking_report: 0,
