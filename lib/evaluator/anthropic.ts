@@ -50,8 +50,10 @@ export function imageBlocks(label: string, images: PageImage[]): (ImageBlockPara
 }
 
 /**
- * One structured call. The model must answer through a single forced tool so the output is JSON that
- * matches `schema`. Retries once on a transient failure.
+ * One structured call. The model answers by calling a single tool so the output is JSON that matches
+ * `schema`. Newer models reject a forced tool_choice ("tool"/"any"), so the tool is offered with
+ * tool_choice "auto" and the system prompt requires the call; a reply with no tool call is retried once.
+ * Retries once on a transient failure, but not on a 4xx request error (a retry cannot fix it).
  */
 export async function callStructured<T>(input: {
   system: string;
@@ -69,9 +71,9 @@ export async function callStructured<T>(input: {
       const response = await anthropic.messages.create({
         model: evaluatorModel(),
         max_tokens: input.maxTokens ?? 8000,
-        system: input.system,
+        system: `${input.system}\n\nYou must answer by calling the ${input.toolName} tool exactly once. Do not reply with plain text.`,
         tools: [{ name: input.toolName, description: input.toolDescription, input_schema: input.schema }],
-        tool_choice: { type: "tool", name: input.toolName },
+        tool_choice: { type: "auto" },
         messages: [{ role: "user", content: input.userContent }],
       });
       input.usage.calls += 1;
@@ -82,6 +84,8 @@ export async function callStructured<T>(input: {
       return block.input as T;
     } catch (error) {
       lastError = error;
+      const status = (error as { status?: number }).status;
+      if (typeof status === "number" && status >= 400 && status < 500 && status !== 429) break;
       await new Promise((resolve) => setTimeout(resolve, 1500));
     }
   }
