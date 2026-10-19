@@ -1,7 +1,7 @@
 /**
  * Run the v2 evaluator for one stored exam attempt and write the result to files for review.
  *
- *   npm run calibrate:evaluator -- --attempt=<uuid> [--only=P1Q1_b,P1Q1_a] [--dataset-only] [--save] [--out=calibration-output]
+ *   npm run calibrate:evaluator -- --attempt=<uuid> [--paper=iac-2026-p2] [--only=P1Q1_b,P1Q1_a] [--dataset-only] [--save] [--out=calibration-output]
  *
  * Needs NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, ANTHROPIC_API_KEY (and optionally EVALUATOR_MODEL)
  * in .env.local. Writes <out>/<attempt>/<timestamp>/dataset.json, report.json, report.md.
@@ -33,13 +33,15 @@ async function main() {
   const attemptId = arg("attempt");
   if (!attemptId) throw new Error("Pass --attempt=<uuid>");
   const only = arg("only")?.split(",").map((s) => s.trim()).filter(Boolean);
+  const paperId = arg("paper");
   const outRoot = arg("out") || "calibration-output";
   const result = await runEvaluation(attemptId, {
     only,
+    paperId,
     datasetOnly: process.argv.includes("--dataset-only"),
     onProgress: (message) => console.log(message),
   });
-  const dir = path.join(outRoot, attemptId, new Date().toISOString().replace(/[:.]/g, "-"));
+  const dir = path.join(outRoot, attemptId, paperId || "", new Date().toISOString().replace(/[:.]/g, "-"));
   mkdirSync(dir, { recursive: true });
   writeFileSync(path.join(dir, "dataset.json"), JSON.stringify(result.dataset, null, 2));
   if (result.report) writeFileSync(path.join(dir, "report.json"), JSON.stringify(result.report, null, 2));

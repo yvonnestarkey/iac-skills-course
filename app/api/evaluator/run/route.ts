@@ -10,7 +10,7 @@ export const maxDuration = 300;
 /**
  * Staff-only calibration endpoint. Runs the v2 evaluator for one attempt and stores the result in
  * evaluator_runs. Not wired to the student submit flow yet.
- * Body: { attempt_id, only?: string[], dataset_only?: boolean }
+ * Body: { attempt_id, paper_id?, only?: string[], dataset_only?: boolean }
  */
 export async function POST(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -25,11 +25,11 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
   if (!isCoachAccount(studentUserFromAuth(user))) return NextResponse.json({ error: "Staff only." }, { status: 403 });
 
-  const body = (await request.json().catch(() => ({}))) as { attempt_id?: string; only?: string[]; dataset_only?: boolean };
+  const body = (await request.json().catch(() => ({}))) as { attempt_id?: string; paper_id?: string; only?: string[]; dataset_only?: boolean };
   if (!body.attempt_id) return NextResponse.json({ error: "attempt_id is required." }, { status: 400 });
 
   try {
-    const result = await runEvaluation(body.attempt_id, { only: body.only, datasetOnly: body.dataset_only });
+    const result = await runEvaluation(body.attempt_id, { paperId: body.paper_id, only: body.only, datasetOnly: body.dataset_only });
     const runId = await saveEvaluationRun(body.attempt_id, result, "calibration");
     return NextResponse.json({ ok: true, run_id: runId, usage: result.usage, dataset: result.dataset, report: result.report });
   } catch (error) {

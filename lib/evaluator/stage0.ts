@@ -13,6 +13,13 @@ function capPages(pages: PageRef[], label: string, warnings: string[]): PageRef[
   return pages.slice(0, MAX_IMAGES_PER_CALL);
 }
 
+/** Whole-exam uploads share one marking report and one BMCR, so every prompt must name the paper it is about. */
+function paperNote(paperLabel?: string): string {
+  return paperLabel
+    ? `\nThis run is for ${paperLabel} ONLY. The marking report and BMCR may cover all three papers; the same labels (e.g. "Question 1(a)") appear in each paper. Use only the pages and rows that belong to ${paperLabel} and ignore the other papers.`
+    : "";
+}
+
 function expectedList(expected: ExpectedRequirement[]): string {
   return expected.map((item) => `- ${item.code} = ${requirementLabel(item.code)} — ${item.title}`).join("\n");
 }
@@ -43,6 +50,7 @@ const MAP_SCHEMA = {
 
 /** Map the candidate's script pages to requirements by their written labels, never by position. */
 export async function mapScriptPages(input: {
+  paperLabel?: string;
   expected: ExpectedRequirement[];
   scriptPages: PageRef[];
   questionText: string;
@@ -52,7 +60,7 @@ export async function mapScriptPages(input: {
   const pages = capPages(input.scriptPages, "Script", input.warnings);
   const images = await fetchPageImages(pages);
   const raw = await callStructured<unknown>({
-    system: `${stage1Methodology().slice(0, 4000)}\n\nYou are mapping a candidate's marked exam script to the paper's requirements.\nRules: use the candidate's own written requirement labels (e.g. "Required (d)", "(a)", "1A") to assign pages. The candidate may answer in any order. If a label is missing or messy, match by content to the question text and set mapped_by to "content" and uncertain to true. A requirement the candidate left blank is attempted=false with no pages. A requirement can span non-contiguous pages. Do NOT assign pages by sequence.`,
+    system: `${stage1Methodology().slice(0, 4000)}\n\nYou are mapping a candidate's marked exam script to the paper's requirements.\nRules: use the candidate's own written requirement labels (e.g. "Required (d)", "(a)", "1A") to assign pages. The candidate may answer in any order. If a label is missing or messy, match by content to the question text and set mapped_by to "content" and uncertain to true. A requirement the candidate left blank is attempted=false with no pages. A requirement can span non-contiguous pages. Do NOT assign pages by sequence.${paperNote(input.paperLabel)}`,
     userContent: [
       { type: "text", text: `Requirements for this paper:\n${expectedList(input.expected)}\n\nQuestion text (for content matching only):\n${input.questionText.slice(0, 30000)}\n\nCandidate script pages follow. Return the page map for every requirement. Leave report_pages empty.` },
       ...imageBlocks("Script", images),
@@ -70,6 +78,7 @@ export async function mapScriptPages(input: {
 
 /** Map the marking-report pages to requirements. */
 export async function mapReportPages(input: {
+  paperLabel?: string;
   expected: ExpectedRequirement[];
   reportPages: PageRef[];
   usage: UsageTally;
@@ -78,7 +87,7 @@ export async function mapReportPages(input: {
   const pages = capPages(input.reportPages, "Marking report", input.warnings);
   const images = await fetchPageImages(pages);
   const raw = await callStructured<{ requirements?: { code?: string; report_pages?: number[] }[] }>({
-    system: `You are mapping a marker's marking report to the paper's requirements. Return, for each requirement, the report page numbers that contain the marker's marks and comments for that requirement. A requirement may span several pages. Do not assess the student.`,
+    system: `You are mapping a marker's marking report to the paper's requirements. Return, for each requirement, the report page numbers that contain the marker's marks and comments for that requirement. A requirement may span several pages. Do not assess the student.${paperNote(input.paperLabel)}`,
     userContent: [
       { type: "text", text: `Requirements:\n${expectedList(input.expected)}\n\nMarking report pages follow.` },
       ...imageBlocks("Marking report", images),
@@ -109,6 +118,7 @@ export async function mapReportPages(input: {
 
 /** Read the student's own BMCR sheet: marks available and the marks they believed they knew. */
 export async function readBmcr(input: {
+  paperLabel?: string;
   expected: ExpectedRequirement[];
   bmcrPages: PageRef[];
   usage: UsageTally;
@@ -117,7 +127,7 @@ export async function readBmcr(input: {
   const pages = capPages(input.bmcrPages, "BMCR", input.warnings);
   const images = await fetchPageImages(pages);
   const raw = await callStructured<{ rows?: BmcrRow[] }>({
-    system: `You read a student's completed BMCR worksheet. Per requirement the sheet shows the marks available, the marks the student believes they knew or could reasonably have obtained, and the student's own percentage. Transcribe exactly what the student wrote. If a cell is blank or illegible return null. Do not correct the student's arithmetic.`,
+    system: `You read a student's completed BMCR worksheet. Per requirement the sheet shows the marks available, the marks the student believes they knew or could reasonably have obtained, and the student's own percentage. Transcribe exactly what the student wrote. If a cell is blank or illegible return null. Do not correct the student's arithmetic.${paperNote(input.paperLabel)}`,
     userContent: [
       { type: "text", text: `Requirements:\n${expectedList(input.expected)}` },
       ...imageBlocks("BMCR worksheet", images),
