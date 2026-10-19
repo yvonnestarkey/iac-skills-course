@@ -67,16 +67,21 @@ export async function callStructured<T>(input: {
   const anthropic = getClient();
   let lastError: unknown;
   let maxTokens = input.maxTokens ?? 8000;
-  for (let attempt = 0; attempt < 3; attempt++) {
+  // These are extraction calls, not reasoning problems. Thinking tokens count against max_tokens and made the
+  // answer run out of room, so it is switched off. If the model rejects that setting, it is dropped and the call retried.
+  let thinkingOff = true;
+  for (let attempt = 0; attempt < 4; attempt++) {
     try {
-      const response = await anthropic.messages.create({
+      // Streamed: the SDK refuses a plain request when max_tokens is large enough that it could run past 10 minutes.
+      const response = await anthropic.messages.stream({
         model: evaluatorModel(),
         max_tokens: maxTokens,
+        ...(thinkingOff ? { thinking: { type: "disabled" as const } } : {}),
         system: `${input.system}\n\nYou must answer by calling the ${input.toolName} tool exactly once. Do not reply with plain text.`,
         tools: [{ name: input.toolName, description: input.toolDescription, input_schema: input.schema }],
         tool_choice: { type: "auto" },
         messages: [{ role: "user", content: input.userContent }],
-      });
+      }).finalMessage();
       input.usage.calls += 1;
       input.usage.input_tokens += response.usage.input_tokens;
       input.usage.output_tokens += response.usage.output_tokens;
@@ -95,6 +100,10 @@ export async function callStructured<T>(input: {
     } catch (error) {
       lastError = error;
       const status = (error as { status?: number }).status;
+      if (status === 400 && thinkingOff && /thinking/i.test(error instanceof Error ? error.message : "")) {
+        thinkingOff = false;
+        continue;
+      }
       if (typeof status === "number" && status >= 400 && status < 500 && status !== 429) break;
       await new Promise((resolve) => setTimeout(resolve, 1500));
     }
