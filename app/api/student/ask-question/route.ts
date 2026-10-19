@@ -1,13 +1,8 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import OpenAI from "openai";
+import { getServiceSupabase } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -37,6 +32,11 @@ export async function POST(req: Request) {
 
     if (!question) {
       return NextResponse.json({ error: "Question is required." }, { status: 400 });
+    }
+
+    const supabase = getServiceSupabase();
+    if (!supabase) {
+      return NextResponse.json({ error: "Failed to get a response from Eve." }, { status: 503 });
     }
 
     // 1. Query matching coaching insights from Supabase based on question keyword/topic matching
