@@ -234,7 +234,7 @@ export async function evaluateRequirement(input: {
     toolDescription: "Return the observation-only evaluation for this requirement.",
     schema: REQUIREMENT_SCHEMA,
     usage: input.usage,
-    maxTokens: 6000,
+    maxTokens: 12000,
   });
 
   const warnings: string[] = [];

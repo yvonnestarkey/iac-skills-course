@@ -66,11 +66,12 @@ export async function callStructured<T>(input: {
 }): Promise<T> {
   const anthropic = getClient();
   let lastError: unknown;
-  for (let attempt = 0; attempt < 2; attempt++) {
+  let maxTokens = input.maxTokens ?? 8000;
+  for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const response = await anthropic.messages.create({
         model: evaluatorModel(),
-        max_tokens: input.maxTokens ?? 8000,
+        max_tokens: maxTokens,
         system: `${input.system}\n\nYou must answer by calling the ${input.toolName} tool exactly once. Do not reply with plain text.`,
         tools: [{ name: input.toolName, description: input.toolDescription, input_schema: input.schema }],
         tool_choice: { type: "auto" },
@@ -80,7 +81,16 @@ export async function callStructured<T>(input: {
       input.usage.input_tokens += response.usage.input_tokens;
       input.usage.output_tokens += response.usage.output_tokens;
       const block = response.content.find((item) => item.type === "tool_use");
-      if (!block || block.type !== "tool_use") throw new Error("Model returned no structured result.");
+      if (response.stop_reason === "max_tokens") {
+        // The answer was cut off (the model may have spent part of the budget thinking). Try again with more room.
+        maxTokens = Math.min(maxTokens * 2, 32000);
+        throw new Error(`The answer was cut off at ${response.usage.output_tokens} tokens (stop_reason max_tokens); retrying with ${maxTokens}.`);
+      }
+      if (!block || block.type !== "tool_use") {
+        const text = response.content.filter((item) => item.type === "text").map((item) => (item as { text: string }).text).join(" ").slice(0, 300);
+        const kinds = response.content.map((item) => item.type).join(", ") || "nothing";
+        throw new Error(`Model returned no structured result (stop_reason ${response.stop_reason}; content: ${kinds}${text ? `; text: ${text}` : ""}).`);
+      }
       return block.input as T;
     } catch (error) {
       lastError = error;
