@@ -4,9 +4,11 @@ import { getServiceSupabase } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function openaiClient() {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) return null;
+  return new OpenAI({ apiKey });
+}
 
 type ChatTurn = { role: "user" | "assistant" | "system"; content: string };
 
@@ -35,7 +37,8 @@ export async function POST(req: Request) {
     }
 
     const supabase = getServiceSupabase();
-    if (!supabase) {
+    const openai = openaiClient();
+    if (!supabase || !openai) {
       return NextResponse.json({ error: "Failed to get a response from Eve." }, { status: 503 });
     }
 
