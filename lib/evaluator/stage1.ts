@@ -238,6 +238,15 @@ export async function evaluateRequirement(input: {
   });
 
   const warnings: string[] = [];
+  // A paid answer must survive a missing list: later steps read these arrays, so default them and say so.
+  if (raw.communication && !Array.isArray(raw.communication.points)) {
+    warnings.push(`${label}: the model returned Communication without its list of points; Communication is empty for this requirement.`);
+    raw.communication = { ...raw.communication, points: [] };
+  }
+  if (raw.rtfq && !Array.isArray(raw.rtfq.dimensions)) {
+    warnings.push(`${label}: the model returned RTFQ without its dimensions; RTFQ is empty for this requirement.`);
+    raw.rtfq = { ...raw.rtfq, dimensions: [] };
+  }
   if (gate.coreIssue && !model?.core_issue?.length) warnings.push(`${label}: no pre-calibrated Core Issue components; Core Issue not scored.`);
   if (gate.buriedTreasure && !model?.proximity_items.length) warnings.push(`${label}: no pre-calibrated proximity items; Buried Treasure not scored.`);
   const buriedTreasure = gate.buriedTreasure ? aggregateProximity(model, raw.buried_treasure_items ?? null) : null;
@@ -260,5 +269,12 @@ export async function evaluateRequirement(input: {
     communication: gate.communication ? finalizeCommunication(raw.communication ?? null, requirement.total_marks, discussionBasis) : null,
     uncertainties: raw.uncertainties || [],
   });
-  return { evaluation, warnings: [...warnings, ...validateRequirement(evaluation)] };
+  let checks: string[];
+  try {
+    checks = validateRequirement(evaluation);
+  } catch (error) {
+    // A check must never throw away a model call that has already been paid for.
+    checks = [`${label}: validation failed (${error instanceof Error ? error.message : "unknown error"}); the result is kept unchecked.`];
+  }
+  return { evaluation, warnings: [...warnings, ...checks] };
 }

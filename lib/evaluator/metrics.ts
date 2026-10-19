@@ -194,7 +194,9 @@ export function validateRequirement(requirement: RequirementEvaluation): string[
       if (bucket.seen > bucket.available && bucket.available > 0) warnings.push(`${code}: ${name} seen exceeds available.`);
     }
   }
-  if (requirement.communication && requirement.volume && requirement.communication.points.length !== requirement.volume.attempts) {
+  if (requirement.communication && !Array.isArray(requirement.communication.points)) {
+    warnings.push(`${code}: Communication returned no list of points, so it cannot be checked against Volume.`);
+  } else if (requirement.communication && requirement.volume && requirement.communication.points.length !== requirement.volume.attempts) {
     warnings.push(`${code}: Communication points (${requirement.communication.points.length}) differ from Volume attempts (${requirement.volume.attempts}); they should be the same statements.`);
   }
   if (requirement.communication && /\d/.test(requirement.communication.trend)) {
@@ -209,8 +211,9 @@ export function validateRequirement(requirement: RequirementEvaluation): string[
     else if (requirement.total_marks >= 10 && requirement.discussion_basis === "compliance" && overall.introduction === "not_expected") warnings.push(`${code}: introduction is expected at 10 marks or more for compliance discussions.`);
   }
   if (requirement.rtfq) {
-    const names = new Set(requirement.rtfq.dimensions.map((d) => d.dimension));
-    if (requirement.rtfq.dimensions.length !== 3 || names.size !== 3) warnings.push(`${code}: RTFQ should have exactly one entry each for shape, directions and lens.`);
+    const dimensions = Array.isArray(requirement.rtfq.dimensions) ? requirement.rtfq.dimensions : [];
+    const names = new Set(dimensions.map((d) => d.dimension));
+    if (dimensions.length !== 3 || names.size !== 3) warnings.push(`${code}: RTFQ should have exactly one entry each for shape, directions and lens.`);
   }
   for (const layer of requirement.components?.layers ?? []) {
     if (layer.recognised > layer.available) warnings.push(`${code}: Components "${layer.layer}" recognised exceeds available.`);
