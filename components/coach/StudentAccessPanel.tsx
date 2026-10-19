@@ -15,11 +15,9 @@ function expiryLabel(value?: string | null): string {
 
 export default function StudentAccessPanel({
   student,
-  compact = false,
   onUpdated,
 }: {
   student: Student;
-  compact?: boolean;
   onUpdated?: (next: Partial<Student>) => void;
 }) {
   const [expiresOn, setExpiresOn] = useState(student.accessExpiresOn || "");
@@ -47,7 +45,7 @@ export default function StudentAccessPanel({
     }
     if (action === "deregister") {
       onUpdated?.({ accessActive: false, deregisteredAt: new Date().toISOString() });
-      setNotice("Student deregistered. Their profile stays on the list.");
+      setNotice("Student deregistered. Search the roster to find them again.");
       return;
     }
     if (action === "restore") {
@@ -112,14 +110,6 @@ export default function StudentAccessPanel({
       {notice ? <p className="muted small">{notice}</p> : null}
     </>
   );
-
-  if (compact) {
-    return (
-      <div className="student-access-compact" onClick={(event) => event.stopPropagation()}>
-        {body}
-      </div>
-    );
-  }
 
   return (
     <section className="card">

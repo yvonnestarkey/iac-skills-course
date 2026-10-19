@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getRequestUser, isStaffUser } from "@/lib/auth-server";
-import { updateStudentRegistration } from "@/lib/student-registration-admin";
+import { updateStudentRegistrations } from "@/lib/student-registration-admin";
 import type { RegistrationAction } from "@/lib/student-registration";
 
 export const dynamic = "force-dynamic";
@@ -13,17 +13,21 @@ export async function POST(request: Request) {
 
   const body = (await request.json().catch(() => null)) as {
     user_id?: string;
+    user_ids?: string[];
     action?: RegistrationAction;
     expires_on?: string;
   } | null;
   const action = body?.action;
   if (!action || !ACTIONS.has(action)) return NextResponse.json({ error: "Unknown registration action." }, { status: 400 });
 
-  const result = await updateStudentRegistration({
-    userId: String(body?.user_id || ""),
+  const userIds = Array.isArray(body?.user_ids)
+    ? body.user_ids.map((id) => String(id || ""))
+    : [String(body?.user_id || "")];
+  const result = await updateStudentRegistrations({
+    userIds,
     action,
     expiresOn: body?.expires_on,
   });
   if (!result.ok) return NextResponse.json({ error: result.error }, { status: 400 });
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, updated: result.updated });
 }

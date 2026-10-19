@@ -1630,6 +1630,29 @@ input[type="tel"]:focus {
   box-shadow: var(--shadow);
 }
 
+.roster-actions-panel {
+  left: auto;
+  right: 0;
+  max-height: none;
+  min-width: 240px;
+  display: grid;
+  gap: 4px;
+}
+
+.roster-action-item {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.roster-action-expiry {
+  display: grid;
+  gap: 6px;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
 .roster-check {
   display: flex;
   align-items: center;

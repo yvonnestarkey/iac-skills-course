@@ -8,6 +8,7 @@ import SetTemporaryPasswordPanel from "@/components/coach/SetTemporaryPasswordPa
 import StudentAccessPanel from "@/components/coach/StudentAccessPanel";
 import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
+import { accountStatusLabel } from "@/lib/student-registration";
 import { fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
 import { cohortName, initials, lastActiveLabel } from "@/lib/course";
@@ -117,8 +118,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           </p>
         </div>
         <div className="profile-tags">
-          <span className={`badge ${student.status === "paused" ? "warn" : "ok"}`}>
-            {student.status === "paused" ? "Paused" : "Active"}
+          <span className={`badge ${accountStatusLabel(student) === "Active" ? "ok" : "warn"}`}>
+            {accountStatusLabel(student)}
           </span>
           <span className="muted small">Last active {lastActiveLabel(student)}</span>
           <button className="primary" type="button" onClick={() => router.push(`/coach/students/${student.id}/surveys`)}>

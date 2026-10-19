@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import AccountActivationBadge from "@/components/coach/AccountActivationBadge";
 import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
-import StudentAccessPanel from "@/components/coach/StudentAccessPanel";
 import RosterFilterBuilder from "@/components/coach/RosterFilterBuilder";
 import { COURSE_COHORTS } from "@/lib/cohorts";
 import { labelForGroup } from "@/lib/comms";
@@ -16,6 +15,7 @@ import {
 import { daysAgo, isoDate, today } from "@/lib/dates";
 import { completionProgress } from "@/lib/metrics";
 import { courseAccessLabel } from "@/lib/course-access";
+import { accountStatusLabel, isCourseAccessClosed, showInactiveOnRoster } from "@/lib/student-registration";
 import {
   DEFAULT_ROSTER_COLUMNS,
   ROSTER_COLUMNS,
@@ -109,7 +109,7 @@ function sortValue(row: RosterRow, column: RosterColumnId): string | number {
     case "lastActive":
       return student.lastActive || "";
     case "status":
-      return student.status === "paused" ? 0 : 1;
+      return accountStatusLabel(student);
     case "submitted":
       return row.submitted;
     case "surveys":
@@ -157,7 +157,7 @@ function plainCell(id: RosterColumnId, row: RosterRow, gradedTotal: number): str
     case "lastActive":
       return lastActiveLabel(student);
     case "status":
-      return student.status === "paused" ? "Paused" : "Active";
+      return accountStatusLabel(student);
     case "submitted":
       return String(row.submitted);
     case "surveys":
@@ -212,7 +212,11 @@ export default function RosterTab({
   const [sortKey, setSortKey] = useState<RosterColumnId>("name");
   const [sortDir, setSortDir] = useState<RosterSortDir>("asc");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [bulkExpiresOn, setBulkExpiresOn] = useState("");
+  const [actionBusy, setActionBusy] = useState("");
+  const [actionNotice, setActionNotice] = useState("");
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const actionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchCoachRosterColumns().then((saved) => {
@@ -223,7 +227,9 @@ export default function RosterTab({
   useEffect(() => {
     if (!openMenu) return;
     const close = (event: PointerEvent) => {
-      if (toolbarRef.current && !toolbarRef.current.contains(event.target as Node)) setOpenMenu(null);
+      const target = event.target as Node;
+      if (toolbarRef.current?.contains(target) || actionsRef.current?.contains(target)) return;
+      setOpenMenu(null);
     };
     document.addEventListener("pointerdown", close);
     return () => document.removeEventListener("pointerdown", close);
@@ -288,6 +294,11 @@ export default function RosterTab({
       if (query) {
         const haystack = [student.name, student.email, student.phone || ""].join(" ").toLowerCase();
         if (!haystack.includes(query)) return false;
+      } else if (student.accessActive === false && !showInactiveOnRoster(search)) {
+        const asksClosed = activeRules.some(
+          (rule) => rule.field === "courseAccess" && (rule.values || []).includes("deregistered")
+        );
+        if (!asksClosed) return false;
       }
       if (!activeRules.length) return true;
       const matches = activeRules.map((rule) => matchRosterRule(student, rule));
@@ -317,28 +328,66 @@ export default function RosterTab({
     );
   };
 
-  const notifyFiltered = () => {
-    if (!rows.length) return;
+  const notifyStudents = () => {
+    const picked = selected.length
+      ? students.filter((student) => selected.includes(student.id)).map((student) => ({ ...student, ...accessPatch[student.id] }))
+      : rows.map((row) => row.student);
+    if (!picked.length) return;
+    setOpenMenu(null);
     setNotifyDraft({
-      audience: "filtered",
-      audienceLabel: labelForGroup(
-        data,
-        rows.map((row) => row.student),
-        "filtered",
-        "Roster"
-      ),
-      recipientIds: rows.map((row) => row.student.id),
+      audience: selected.length ? "selected" : "filtered",
+      audienceLabel: labelForGroup(data, picked, selected.length ? "selected" : "filtered", selected.length ? undefined : "Roster"),
+      recipientIds: picked.map((student) => student.id),
     });
   };
 
-  const notifySelected = () => {
-    const picked = rows.filter((row) => selected.includes(row.student.id)).map((row) => row.student);
-    if (!picked.length) return;
-    setNotifyDraft({
-      audience: "selected",
-      audienceLabel: labelForGroup(data, picked, "selected"),
-      recipientIds: picked.map((student) => student.id),
+  const applyRegistration = async (action: "deregister" | "set_expiry") => {
+    if (!selected.length) {
+      setActionNotice("Tick the students first.");
+      return;
+    }
+    if (action === "set_expiry" && !bulkExpiresOn) {
+      setActionNotice("Choose an expiry date.");
+      return;
+    }
+    setActionBusy(action);
+    setActionNotice("");
+    const response = await fetch("/api/coach/registration", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        user_ids: selected,
+        action,
+        expires_on: bulkExpiresOn,
+      }),
     });
+    const payload = (await response.json().catch(() => ({}))) as { error?: string };
+    setActionBusy("");
+    if (!response.ok) {
+      setActionNotice(payload.error || "Could not update course access.");
+      return;
+    }
+    const next =
+      action === "deregister"
+        ? { accessActive: false, deregisteredAt: new Date().toISOString() }
+        : {
+            accessActive: !isCourseAccessClosed({ accessExpiresOn: bulkExpiresOn, deregisteredAt: null }),
+            accessExpiresOn: bulkExpiresOn,
+            deregisteredAt: null,
+          };
+    setAccessPatch((current) => {
+      const patch = { ...current };
+      selected.forEach((id) => {
+        patch[id] = { ...patch[id], ...next };
+      });
+      return patch;
+    });
+    setActionNotice(
+      action === "deregister"
+        ? `${selected.length} student${selected.length === 1 ? "" : "s"} deregistered. Search to find them again.`
+        : `Expiry set for ${selected.length} student${selected.length === 1 ? "" : "s"}.`
+    );
+    setOpenMenu(null);
   };
 
   const setVisibleColumns = (next: RosterColumnId[]) => {
@@ -376,20 +425,65 @@ export default function RosterTab({
         <div>
           <h2>Student roster</h2>
           <p className="muted small">
-            {rows.length} of {students.length} student{students.length === 1 ? "" : "s"} · click a name for the
-            profile, or tick rows to notify a selection
+            {search.trim()
+              ? `${rows.length} of ${students.length} student${students.length === 1 ? "" : "s"}`
+              : `${rows.length} active student${rows.length === 1 ? "" : "s"}`}{" "}
+            · click a name for the profile, or use Actions for a selection
           </p>
+          {actionNotice ? <p className="muted small">{actionNotice}</p> : null}
         </div>
-        <div className="actions">
-          <button className="ghost" type="button" onClick={exportCsv} disabled={!rows.length}>
-            Export
-          </button>
-          <button className="primary" onClick={notifyFiltered} disabled={!rows.length}>
-            Notify this group ({rows.length})
-          </button>
-          <button className="ghost" onClick={notifySelected} disabled={!selected.length}>
-            Notify selected ({selected.length})
-          </button>
+        <div className="actions" ref={actionsRef}>
+          <div className="roster-menu">
+            <button
+              className="primary roster-menu-btn"
+              type="button"
+              aria-expanded={openMenu === "actions"}
+              onClick={() => setOpenMenu(openMenu === "actions" ? null : "actions")}
+            >
+              Actions
+            </button>
+            {openMenu === "actions" ? (
+              <div className="roster-menu-panel roster-actions-panel">
+                <button className="ghost roster-action-item" type="button" disabled={!rows.length && !selected.length} onClick={notifyStudents}>
+                  Notify
+                </button>
+                <button className="ghost roster-action-item" type="button" disabled={!rows.length} onClick={() => { exportCsv(); setOpenMenu(null); }}>
+                  Export
+                </button>
+                <button
+                  className="ghost roster-action-item"
+                  type="button"
+                  disabled={!selected.length || Boolean(actionBusy)}
+                  onClick={() => void applyRegistration("deregister")}
+                >
+                  {actionBusy === "deregister" ? "Deregistering…" : "Deregister"}
+                </button>
+                <div className="roster-action-expiry">
+                  <label className="student-notes-label" htmlFor="roster-bulk-expiry">
+                    Set expiry date
+                  </label>
+                  <div className="student-access-row">
+                    <input
+                      id="roster-bulk-expiry"
+                      type="date"
+                      className="select-line"
+                      value={bulkExpiresOn}
+                      onChange={(event) => setBulkExpiresOn(event.target.value)}
+                    />
+                    <button
+                      className="ghost"
+                      type="button"
+                      disabled={!selected.length || !bulkExpiresOn || Boolean(actionBusy)}
+                      onClick={() => void applyRegistration("set_expiry")}
+                    >
+                      {actionBusy === "set_expiry" ? "Saving…" : "Apply"}
+                    </button>
+                  </div>
+                </div>
+                {actionNotice ? <p className="muted small">{actionNotice}</p> : null}
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -463,11 +557,7 @@ export default function RosterTab({
                     />
                   </td>
                   {visible.map((id) => (
-                    <td key={id}>
-                      {cellFor(id, row, row.submitted, (next) =>
-                        setAccessPatch((current) => ({ ...current, [row.student.id]: { ...current[row.student.id], ...next } }))
-                      )}
-                    </td>
+                    <td key={id}>{cellFor(id, row, row.submitted)}</td>
                   ))}
                   <td className="row-go">Open profile →</td>
                 </tr>
@@ -484,12 +574,7 @@ export default function RosterTab({
   );
 }
 
-function cellFor(
-  id: RosterColumnId,
-  row: RosterRow,
-  gradedTotal: number,
-  onAccessUpdated?: (next: Partial<Student>) => void
-) {
+function cellFor(id: RosterColumnId, row: RosterRow, gradedTotal: number) {
   const { student } = row;
   switch (id) {
     case "name":
@@ -501,9 +586,7 @@ function cellFor(
         </span>
       );
     case "courseAccess":
-      return (
-        <StudentAccessPanel student={student} compact onUpdated={onAccessUpdated} />
-      );
+      return <CourseAccessBadge access={student.courseAccess} accessActive={student.accessActive} />;
     case "email":
       return <span className="muted small">{student.email}</span>;
     case "phone":
@@ -552,8 +635,8 @@ function cellFor(
       return <span className={`muted small ${row.stale ? "stale" : ""}`}>{lastActiveLabel(student)}</span>;
     case "status":
       return (
-        <span className={`badge ${student.status === "paused" ? "warn" : "ok"}`}>
-          {student.status === "paused" ? "Paused" : "Active"}
+        <span className={`badge ${accountStatusLabel(student) === "Active" ? "ok" : "warn"}`}>
+          {accountStatusLabel(student)}
         </span>
       );
     case "submitted":

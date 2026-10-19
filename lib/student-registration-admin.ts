@@ -50,3 +50,23 @@ export async function updateStudentRegistration(input: {
   if (error) return { ok: false, error: error.message };
   return { ok: true };
 }
+
+export async function updateStudentRegistrations(input: {
+  userIds: string[];
+  action: RegistrationAction;
+  expiresOn?: string | null;
+}): Promise<{ ok: boolean; error?: string; updated: number }> {
+  const userIds = [...new Set(input.userIds.map((id) => id.trim()).filter(Boolean))];
+  if (!userIds.length) return { ok: false, error: "Student required.", updated: 0 };
+  let updated = 0;
+  for (const userId of userIds) {
+    const result = await updateStudentRegistration({
+      userId,
+      action: input.action,
+      expiresOn: input.expiresOn,
+    });
+    if (!result.ok) return { ok: false, error: result.error, updated };
+    updated += 1;
+  }
+  return { ok: true, updated };
+}

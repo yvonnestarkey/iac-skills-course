@@ -2,7 +2,13 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
-import { asAccessDate, isCourseAccessClosed, registrationLabel } from "./student-registration";
+import {
+  accountStatusLabel,
+  asAccessDate,
+  isCourseAccessClosed,
+  registrationLabel,
+  showInactiveOnRoster,
+} from "./student-registration";
 
 test("an expiry date keeps access through that SAST day and closes after it", () => {
   assert.equal(asAccessDate("2026-12-31"), "2026-12-31");
@@ -27,11 +33,23 @@ test("immediate deregister closes access and keeps the student record", () => {
   assert.doesNotMatch(sql, /delete from public\.profiles/i);
 });
 
-test("coach tools expose deregister and expiry on the list and profile", () => {
+test("account status is Deregistered and the default roster hides inactive students", () => {
+  assert.equal(accountStatusLabel({ status: "active", accessActive: false }), "Deregistered");
+  assert.equal(accountStatusLabel({ status: "paused", accessActive: true }), "Paused");
+  assert.equal(accountStatusLabel({ status: "active", accessActive: true }), "Active");
+  assert.equal(showInactiveOnRoster(""), false);
+  assert.equal(showInactiveOnRoster("akeel"), true);
+});
+
+test("coach tools expose deregister and expiry on the profile and roster Actions", () => {
   const roster = readFileSync(resolve("components/coach/RosterTab.tsx"), "utf8");
   const profile = readFileSync(resolve("components/coach/StudentProfile.tsx"), "utf8");
-  assert.match(roster, /StudentAccessPanel/);
+  assert.doesNotMatch(roster, /StudentAccessPanel/);
+  assert.match(roster, /Actions/);
+  assert.match(roster, /Deregister/);
+  assert.match(roster, /Set expiry date/);
   assert.match(profile, /StudentAccessPanel/);
-  assert.match(readFileSync(resolve("app/api/coach/registration/route.ts"), "utf8"), /deregister|set_expiry|restore/);
+  assert.match(profile, /accountStatusLabel/);
+  assert.match(readFileSync(resolve("app/api/coach/registration/route.ts"), "utf8"), /user_ids/);
   assert.match(readFileSync(resolve("app/api/student/outline/route.ts"), "utf8"), /accessActive/);
 });

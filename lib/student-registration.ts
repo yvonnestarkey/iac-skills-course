@@ -31,3 +31,16 @@ export function registrationLabel(input: {
   if (asAccessDate(input.accessExpiresOn)) return "Expires";
   return null;
 }
+
+export function accountStatusLabel(input: {
+  status?: "active" | "paused" | string | null;
+  accessActive?: boolean;
+}): "Deregistered" | "Paused" | "Active" {
+  if (input.accessActive === false) return "Deregistered";
+  if (input.status === "paused") return "Paused";
+  return "Active";
+}
+
+export function showInactiveOnRoster(search: string): boolean {
+  return Boolean(search.trim());
+}
