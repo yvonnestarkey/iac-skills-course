@@ -77,10 +77,24 @@ export const REPORT_CSS = `
 .eve-report th, .eve-report td { border: 1.2px solid #000; padding: 4pt 6pt; vertical-align: top; text-align: left; font-size: 9.5pt }
 .eve-report th { font-weight: bold } .eve-report tr { break-inside: avoid } .eve-report thead { display: table-header-group }
 .eve-report .hl { background: rgba(128,128,128,0.18) }
-@media print { .no-print { display: none !important } .eve-report { padding: 0; max-width: none } }
+@media print { .no-print { display: none !important } .eve-report { padding: 0 16mm; max-width: none } }
+/* Printing with no page margin stops the browser adding its own date, title and web address to every page. The page
+   margins come from a spacer header and footer that the browser repeats on every printed page instead. */
+@page { size: A4; margin: 0 }
+.eve-report table.pg { width: 100%; border: 0; margin: 0; break-inside: auto; border-collapse: collapse }
+.eve-report table.pg > thead > tr > td, .eve-report table.pg > tfoot > tr > td, .eve-report table.pg > tbody > tr > td { border: 0; padding: 0; font-size: inherit }
+.eve-report table.pg > tbody > tr { break-inside: auto }
+.eve-report .pg-space { height: 0 }
+@media print { .eve-report .pg-space { height: 16mm } }
 `;
 
 /** One document: the sections in order, page break between them, one watermark behind everything. */
 export function renderReportBody(sectionsMarkdown: string[], watermarkSrc = "/eve-watermark.png"): string {
-  return `<img class="wm" src="${esc(watermarkSrc)}" alt="" />` + sectionsMarkdown.map((md) => `<section class="sec">${markdownToHtml(md)}</section>`).join("\n");
+  const space = `<tr><td><div class="pg-space"></div></td></tr>`;
+  return (
+    `<img class="wm" src="${esc(watermarkSrc)}" alt="" />` +
+    sectionsMarkdown
+      .map((md) => `<section class="sec"><table class="pg"><thead>${space}</thead><tfoot>${space}</tfoot><tbody><tr><td>${markdownToHtml(md)}</td></tr></tbody></table></section>`)
+      .join("\n")
+  );
 }

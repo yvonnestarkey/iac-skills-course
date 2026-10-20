@@ -5,14 +5,53 @@ import { getRequestUser, isStaffUser } from "@/lib/auth-server";
 import { attemptReportSections, latestDatasetPerPaper } from "@/lib/evaluator/attempt-report";
 import { jobsForAttempt } from "@/lib/evaluator/jobs";
 import { renderReportBody, REPORT_CSS } from "@/lib/evaluator/report-html";
+import { courseDisplayName, reportFileTitle } from "@/lib/evaluator/report-naming";
 import type { EvaluationDataset } from "@/lib/evaluator/types";
-import { profileDisplayName } from "@/lib/profiles";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import PrintButton from "@/app/evaluator-preview/PrintButton";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-export const metadata: Metadata = { title: "Your Script Evaluator report", robots: { index: false, follow: false } };
+
+type AttemptOwner = { id: string; user_id: string; sitting_id: string; sitting_label: string; evaluator_report_released_at: string | null; name: string };
+
+/** The attempt and the student's name as the course shows it. */
+async function loadAttemptOwner(id: string): Promise<AttemptOwner | null> {
+  const supabase = getServiceSupabase();
+  if (!supabase) return null;
+  const { data } = await supabase
+    .from("exam_attempts")
+    .select("id, user_id, sitting_id, sitting_label, evaluator_report_released_at")
+    .eq("id", id)
+    .maybeSingle();
+  const attempt = data as Omit<AttemptOwner, "name"> | null;
+  if (!attempt) return null;
+  const { data: profile } = await supabase.from("profiles").select("email, full_name").eq("id", attempt.user_id).maybeSingle();
+  const p = profile as { email?: string; full_name?: string | null } | null;
+  let authFullName: string | null = null;
+  let email = p?.email ?? null;
+  if (!p?.full_name?.trim()) {
+    try {
+      const { data: auth } = await supabase.auth.admin.getUserById(attempt.user_id);
+      const meta = auth?.user?.user_metadata as { full_name?: unknown } | undefined;
+      authFullName = typeof meta?.full_name === "string" ? meta.full_name : null;
+      email = email ?? auth?.user?.email ?? null;
+    } catch {
+      // fall back to the email address
+    }
+  }
+  return { ...attempt, name: courseDisplayName({ profileFullName: p?.full_name, authFullName, email }) };
+}
+
+/** The page title is the file name the browser suggests when the report is saved as a PDF, e.g. "S4 Jun26 Script Evaluation". */
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const owner = await loadAttemptOwner(id).catch(() => null);
+  return {
+    title: owner ? reportFileTitle(owner.name, owner.sitting_id, owner.sitting_label) : "Script Evaluation",
+    robots: { index: false, follow: false },
+  };
+}
 
 function Message({ children }: { children: ReactNode }) {
   return (
@@ -37,12 +76,7 @@ export default async function EvaluatorReportPage({ params }: { params: Promise<
   const supabase = getServiceSupabase();
   if (!supabase) return <Message><p>The report is not available right now.</p></Message>;
 
-  const { data: attemptRow } = await supabase
-    .from("exam_attempts")
-    .select("id, user_id, sitting_label, evaluator_report_released_at")
-    .eq("id", id)
-    .maybeSingle();
-  const attempt = attemptRow as { id: string; user_id: string; sitting_label: string; evaluator_report_released_at: string | null } | null;
+  const attempt = await loadAttemptOwner(id);
   if (!attempt || (!staff && attempt.user_id !== user.id)) return <Message><p>That report was not found.</p></Message>;
   if (!staff && !attempt.evaluator_report_released_at) {
     return (
@@ -58,11 +92,7 @@ export default async function EvaluatorReportPage({ params }: { params: Promise<
   const { data: runs } = await supabase.from("evaluator_runs").select("created_at, dataset").in("id", runIds);
   const datasets = latestDatasetPerPaper((runs ?? []) as unknown as { created_at: string; dataset: EvaluationDataset }[]);
   if (!datasets.length) return <Message><p>The report is still being prepared.</p></Message>;
-
-  const { data: profile } = await supabase.from("profiles").select("email, full_name").eq("id", attempt.user_id).maybeSingle();
-  const p = profile as { email?: string; full_name?: string | null } | null;
-  const studentName = p ? profileDisplayName(p.email || "", p.full_name) : undefined;
-  const sections = attemptReportSections(datasets, studentName);
+  const sections = attemptReportSections(datasets, attempt.name);
 
   return (
     <>
@@ -74,7 +104,7 @@ export default async function EvaluatorReportPage({ params }: { params: Promise<
             Staff view. {attempt.evaluator_report_released_at ? "Released to the student." : "Not released yet."} <Link href="/coach/evaluator">Review list</Link>
           </span>
         ) : (
-          <span style={{ marginLeft: 12, fontSize: 13 }}>To keep a copy, choose Save as PDF and untick Headers and footers.</span>
+          <span style={{ marginLeft: 12, fontSize: 13 }}>To keep a copy, choose Save as PDF as the destination.</span>
         )}
       </div>
       <div className="eve-report" dangerouslySetInnerHTML={{ __html: renderReportBody(sections) }} />
