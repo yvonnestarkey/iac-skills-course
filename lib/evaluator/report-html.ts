@@ -15,15 +15,53 @@ const MARKS_FIGURE = /^\**\d[\d.]* of \d[\d.]* \(\d+%\)/;
 
 const cells = (line: string) => line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((c) => c.trim());
 
+/**
+ * Tables whose rows come in pairs (question numbers, then the figures): the label cells are merged over both rows so
+ * the figures read as belonging to that type or pillar (Yvonne, 20 Oct 2026). Keyed by the first header; the value
+ * lists the columns to merge. An empty cell in those columns joins the cell above it.
+ */
+const MERGE_DOWN: Record<string, number[]> = { "Type of question": [0], "SAICA exam pillar": [0, 1] };
+
 function table(lines: string[]): string {
   const head = cells(lines[0]);
   const rows = lines.slice(2).map(cells);
   const hl = head.map((h) => HIGHLIGHT_HEADERS.has(h));
   const th = head.map((h, i) => `<th${hl[i] ? ' class="hl"' : ""}>${inline(h)}</th>`).join("");
+  // rowspan[r][c] > 1 starts a merged cell; 0 means the cell is covered by the one above and is not drawn.
+  const span = rows.map((r) => r.map(() => 1));
+  // The total in the last column sits on the figures row with an empty cell above it: draw it once, over both rows.
+  if (MERGE_DOWN[head[0]]) {
+    const c = head.length - 1;
+    rows.forEach((r, ri) => {
+      const next = rows[ri + 1];
+      if (span[ri][c] && (r[c] ?? "") === "" && next && (next[c] ?? "") !== "" && (next[0] ?? "") === "") {
+        r[c] = next[c];
+        span[ri][c] = 2;
+        span[ri + 1][c] = 0;
+      }
+    });
+  }
+  for (const c of MERGE_DOWN[head[0]] ?? []) {
+    let anchor = -1;
+    rows.forEach((r, ri) => {
+      if ((r[c] ?? "") === "" && anchor >= 0) {
+        span[anchor][c] += 1;
+        span[ri][c] = 0;
+      } else anchor = ri;
+    });
+  }
   const body = rows
-    .map((r) => {
+    .map((r, ri) => {
       const rowShaded = /^\**Questions attempted/.test(r[0] ?? "");
-      return `<tr>${r.map((c, i) => `<td${hl[i] || rowShaded || MARKS_FIGURE.test(c) ? ' class="hl"' : ""}>${inline(c)}</td>`).join("")}</tr>`;
+      const tds = r
+        .map((c, i) => {
+          if (span[ri][i] === 0) return "";
+          const cls = hl[i] || rowShaded || MARKS_FIGURE.test(c) ? ' class="hl"' : "";
+          const rs = span[ri][i] > 1 ? ` rowspan="${span[ri][i]}" style="vertical-align: middle"` : "";
+          return `<td${cls}${rs}>${inline(c)}</td>`;
+        })
+        .join("");
+      return `<tr>${tds}</tr>`;
     })
     .join("");
   return `<table><thead><tr>${th}</tr></thead><tbody>${body}</tbody></table>`;

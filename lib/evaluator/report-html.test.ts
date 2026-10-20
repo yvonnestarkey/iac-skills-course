@@ -40,3 +40,15 @@ test("a caption directly above a table is kept with it", () => {
   assert.ok(markdownToHtml("**By pillar** (note)\n\n| A |\n|---|\n| 1 |").includes('<p class="cap">'));
   assert.ok(!markdownToHtml("Plain.\n\nNext paragraph.").includes('class="cap"'));
 });
+
+test("type and pillar tables merge the label over the question row and the figures row", () => {
+  const html = markdownToHtml("| Type of question | Paper 1 | All papers |\n|---|---|---|\n| Calculation | Q1(c) | |\n| | 10 of 27 (37%) | **10 of 27 (37%)** |");
+  assert.ok(html.includes('<td rowspan="2" style="vertical-align: middle">Calculation</td>'));
+  assert.equal((html.match(/<td/g) ?? []).length, 4);
+  assert.ok(html.includes('<td class="hl" rowspan="2" style="vertical-align: middle"><strong>10 of 27 (37%)</strong></td>'));
+  const pillar = markdownToHtml("| SAICA exam pillar | % of Exam | Paper 1 | Exam Total |\n|---|---|---|---|\n| Audit | 19% | Q2(f) | |\n| | | 31 of 38 (82%) | **31 of 38 (82%)** |");
+  assert.ok(pillar.includes('rowspan="2" style="vertical-align: middle">Audit</td>') && pillar.includes('rowspan="2" style="vertical-align: middle">19%</td>'));
+  // other tables are untouched: an empty first cell stays a cell
+  const other = markdownToHtml("| Layer 1 | Layer 2 |\n|---|---|\n| Strengths | Background |\n| | Green |");
+  assert.ok(!other.includes("rowspan"));
+});
