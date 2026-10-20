@@ -9,4 +9,5 @@ test("ask-question waits for a request before creating Supabase or OpenAI", () =
   assert.doesNotMatch(src, /const openai = new OpenAI/);
   assert.match(src, /getServiceSupabase/);
   assert.match(src, /openaiClient/);
+  assert.match(src, /ASK_QUESTION_ENABLED/);
 });

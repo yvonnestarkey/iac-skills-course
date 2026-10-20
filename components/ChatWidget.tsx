@@ -13,6 +13,7 @@ import AskQuestionDrawer from "@/components/student/AskQuestionDrawer";
 import EmojiPickerButton, { insertTextAtCursor } from "@/components/ui/EmojiPicker";
 import LinkInsertButton from "@/components/ui/LinkInsertButton";
 import LinkedText from "@/components/ui/LinkedText";
+import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
 
 function markEscalated(draft: CourseData, key: string, question: string, paragraphs: string[], escalated: boolean) {
   draft.chats = draft.chats || {};
@@ -28,6 +29,11 @@ function markEscalated(draft: CourseData, key: string, question: string, paragra
 }
 
 export default function ChatWidget() {
+  if (!ASK_QUESTION_ENABLED) return null;
+  return <CourseAssistantWidget />;
+}
+
+function CourseAssistantWidget() {
   const { ready, data, session, mutate, chatOpen, setChatOpen, setNotice } = useStore();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [text, setText] = useState("");

@@ -11,6 +11,7 @@ import { hasCoachReview } from "@/lib/custom-surveys";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
 import PurchaseCta from "@/components/commerce/PurchaseCta";
+import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
 import { isCoachAccount } from "@/lib/roles";
 
 export default function StudentDashboard() {
@@ -92,10 +93,12 @@ export default function StudentDashboard() {
           <strong>Script Evaluator</strong>
           <p>After Task 1, choose a sitting, print one BMCR for all three papers, then upload that worksheet with Paper 1, Paper 2, Paper 3, and the marking report.</p>
         </Link>
-        <button type="button" className="student-hub-card" onClick={() => window.dispatchEvent(new Event("open-ask-question"))}>
-          <strong>Ask a Question</strong>
-          <p>24/7 IAC Exam &amp; Skills Facilitator. Ask about a required, a mark leak, or how to use the study tools.</p>
-        </button>
+        {ASK_QUESTION_ENABLED ? (
+          <button type="button" className="student-hub-card" onClick={() => window.dispatchEvent(new Event("open-ask-question"))}>
+            <strong>Ask a Question</strong>
+            <p>24/7 IAC Exam &amp; Skills Facilitator. Ask about a required, a mark leak, or how to use the study tools.</p>
+          </button>
+        ) : null}
         <Link href="/student/coaching" className="student-hub-card">
           <strong>1-on-1 Coaching</strong>
           <p>Book a private session or access your meeting summaries and recordings.</p>

@@ -10,6 +10,7 @@ import CoachToolsBar from "@/components/coach/CoachToolsBar";
 import AskQuestionDrawer from "@/components/student/AskQuestionDrawer";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import StudentNotifyMenu from "@/components/student/StudentNotifyMenu";
+import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
 import { isCoachAccount } from "@/lib/roles";
 import { goToStudentLogin, safeStudentPath } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
@@ -49,6 +50,7 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
   }, [pathname, closeNav]);
 
   useEffect(() => {
+    if (!ASK_QUESTION_ENABLED) return;
     const openAsk = () => setAskOpen(true);
     window.addEventListener("open-ask-question", openAsk);
     return () => window.removeEventListener("open-ask-question", openAsk);
@@ -77,14 +79,16 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
       <header className="topbar">
         <BrandMark />
         <div className="topbar-right flex items-center gap-2 flex-wrap">
-          <button
-            className={`notify-btn ${askOpen ? "on" : ""}`}
-            type="button"
-            aria-label="Ask a question"
-            onClick={() => setAskOpen(true)}
-          >
-            <MessageCircle size={18} aria-hidden="true" />
-          </button>
+          {ASK_QUESTION_ENABLED ? (
+            <button
+              className={`notify-btn ${askOpen ? "on" : ""}`}
+              type="button"
+              aria-label="Ask a question"
+              onClick={() => setAskOpen(true)}
+            >
+              <MessageCircle size={18} aria-hidden="true" />
+            </button>
+          ) : null}
           <button
             className={`notify-btn ${pathname.startsWith("/student/inbox") ? "on" : ""}`}
             type="button"
@@ -133,7 +137,7 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
         </aside>
         <main className="main">{children}</main>
       </div>
-      <AskQuestionDrawer isOpen={askOpen} onClose={() => setAskOpen(false)} />
+      {ASK_QUESTION_ENABLED ? <AskQuestionDrawer isOpen={askOpen} onClose={() => setAskOpen(false)} /> : null}
     </div>
   );
 }

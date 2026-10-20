@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
+import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
@@ -28,6 +29,10 @@ function asChatHistory(value: unknown): ChatTurn[] {
 }
 
 export async function POST(req: Request) {
+  if (!ASK_QUESTION_ENABLED) {
+    return NextResponse.json({ error: "Ask Eve is temporarily unavailable." }, { status: 503 });
+  }
+
   try {
     const { question, user_id, messages } = await req.json();
     void user_id;
