@@ -61,10 +61,12 @@ test("Step 2 shows earned of available at three distances", () => {
   assert.ok(md.includes("| Q1(a) | 3 of 14 | 4 of 16 | 0 of 7 |"));
 });
 
-test("Step 3 shows volume points, accuracy and their product; communication shows the diagnosis, never counts", () => {
+test("Step 3 shows volume points and accuracy with no combined column; communication shows the diagnosis, never counts", () => {
   const md = buildPaperReport(dataset(1, [req()]));
   const s3 = md.slice(md.indexOf("## Step 3"), md.indexOf("## Step 4"));
-  assert.ok(s3.includes("| Q1(a) | 22 | 24 | 109% | 5 | 21% | 23% |"));
+  assert.ok(s3.includes("| Q1(a) | 22 | 24 | 109% | 5 | 21% |\n") || s3.includes("| Q1(a) | 22 | 24 | 109% | 5 | 21% |"));
+  assert.ok(!s3.includes("×"), "no combined Volume × Accuracy / Coverage × Accuracy column");
+  assert.ok(s3.includes("**Discussion questions (Volume and Accuracy)**"));
   const s5 = md.slice(md.indexOf("## Step 5"));
   assert.ok(s5.includes("- **Complete:**") && s5.includes("**Most** = more than 60%"));
   assert.ok(/\| Q1\(a\) \| \*\*.*(complete|underdeveloped)/.test(s5));

@@ -91,7 +91,7 @@ function buriedStep(parts: ReturnType<typeof groupByPart>): string[] {
   return out;
 }
 
-/** Marks in a requirement's components, for Coverage x Accuracy on calculations. */
+/** Marks in a requirement's components, for Coverage and Accuracy on calculations. */
 function coverage(dataset: EvaluationDataset, r: RequirementEvaluation) {
   const rows = componentRows(dataset.paper_id, r);
   if (!rows) return null;
@@ -108,16 +108,18 @@ function volumeStep(dataset: EvaluationDataset, parts: ReturnType<typeof groupBy
     const calc: (string | number)[][] = [];
     for (const r of part.requirements.filter((x) => x.attempted)) {
       const va = metricsFor(dataset, r.code)?.diagnoses?.volume_accuracy;
-      if (va && r.volume) disc.push([r.label, num(r.total_marks), r.volume.attempts, pct(va.volume, 1), num(r.technical_awarded), va.accuracy === null ? "-" : pct(va.accuracy, 1), va.combined === null ? "-" : pct(va.combined, 1)]);
+      if (va && r.volume) disc.push([r.label, num(r.total_marks), r.volume.attempts, pct(va.volume, 1), num(r.technical_awarded), va.accuracy === null ? "-" : pct(va.accuracy, 1)]);
       else if (r.question_type !== "Discussion") {
         const c = coverage(dataset, r);
-        if (c) calc.push([r.label, num(c.available), num(c.attempted), pct(c.attempted, c.available), num(c.earned), pct(c.earned, c.attempted), pct(c.earned, c.available)]);
+        if (c) calc.push([r.label, num(c.available), num(c.attempted), pct(c.attempted, c.available), num(c.earned), pct(c.earned, c.attempted)]);
       }
     }
     if (!disc.length && !calc.length) continue;
     out.push(`### ${part.title}`, "");
-    if (calc.length) out.push("**Calculation (Coverage × Accuracy)**", "", ...mdTable(["Requirement", "Marks available", "Marks in the components you attempted", "Coverage", "Marks earned", "Accuracy", "Coverage × Accuracy"], calc), "");
-    if (disc.length) out.push(...mdTable(["Requirement", "Total", "Volume points", "Volume", "Marks earned", "Accuracy", "Volume × Accuracy"], disc), "");
+    // Same two tables, same captions and same columns in every part of every paper. No combined column: Volume and Accuracy are
+    // separate signals, and a requirement low on both is simply a problem on both (Yvonne, 20 Oct 2026).
+    if (disc.length) out.push("**Discussion questions (Volume and Accuracy)**", "", ...mdTable(["Requirement", "Total", "Volume points", "Volume", "Marks earned", "Accuracy"], disc), "");
+    if (calc.length) out.push("**Calculation questions (Coverage and Accuracy)**", "", ...mdTable(["Requirement", "Marks available", "Marks in the components you attempted", "Coverage", "Marks earned", "Accuracy"], calc), "");
   }
   return out;
 }
