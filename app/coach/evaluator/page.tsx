@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { after } from "next/server";
 import { getRequestUser, isStaffUser } from "@/lib/auth-server";
 import { getEvaluatorMode, kickPendingJobs, type EvaluatorJob } from "@/lib/evaluator/jobs";
+import { EVALUATOR_READY_SITTINGS } from "@/lib/evaluator/ready-sittings";
 import { PAPER_NAMES } from "@/lib/evaluator/report-text";
 import { findPastPaper } from "@/lib/past-papers";
 import { profileDisplayName } from "@/lib/profiles";
@@ -51,6 +52,23 @@ export default async function CoachEvaluatorPage() {
   const { data: profileRows } = userIds.length ? await supabase.from("profiles").select("id, email, full_name").in("id", userIds) : { data: [] };
   const names = new Map(((profileRows ?? []) as { id: string; email: string; full_name: string | null }[]).map((p) => [p.id, profileDisplayName(p.email, p.full_name)]));
   const paperIds = [...new Set(jobs.map((j) => j.paper_id))].sort();
+
+  // Submitted whole-sitting attempts for evaluator-ready sittings that have not been through the new evaluator yet
+  // (for example submitted before it existed, or by an account the switch did not cover). Staff can start them by hand.
+  const { data: waitingRows } = await supabase
+    .from("exam_attempts")
+    .select("id, user_id, sitting_id, sitting_label, submitted_at, marked_script_p2_path, status")
+    .in("sitting_id", [...EVALUATOR_READY_SITTINGS])
+    .not("marked_script_p2_path", "is", null)
+    .in("status", ["analysing", "evidence_ready", "report_ready", "analysis_failed"])
+    .order("created_at", { ascending: false })
+    .limit(30);
+  const waiting = ((waitingRows ?? []) as (AttemptRow & { sitting_id: string })[]).filter((a) => !attemptIds.includes(a.id));
+  const waitingUserIds = [...new Set(waiting.map((a) => a.user_id))].filter((id) => !userIds.includes(id));
+  if (waitingUserIds.length) {
+    const { data: more } = await supabase.from("profiles").select("id, email, full_name").in("id", waitingUserIds);
+    for (const p of (more ?? []) as { id: string; email: string; full_name: string | null }[]) names.set(p.id, profileDisplayName(p.email, p.full_name));
+  }
 
   // Opening this page also restarts any paper whose work has stalled.
   const h = await headers();
@@ -137,6 +155,30 @@ export default async function CoachEvaluatorPage() {
               })}
           </tbody>
         </table>
+      ) : null}
+
+      {waiting.length ? (
+        <section style={{ marginTop: 28 }}>
+          <h3>Submitted, not on the new evaluator yet</h3>
+          <p className="muted">Starting one runs all three papers and uses Anthropic credit (about the same as three calibration runs).</p>
+          <table style={{ borderCollapse: "collapse", width: "100%" }}>
+            <tbody>
+              {waiting.map((a) => (
+                <tr key={a.id}>
+                  <td style={cell}>{names.get(a.user_id) ?? "Student"}<br /><span className="muted small">{a.sitting_label}</span></td>
+                  <td style={cell}>{a.submitted_at ? new Date(a.submitted_at).toLocaleString("en-ZA", { timeZone: "Africa/Johannesburg" }) : "-"}</td>
+                  <td style={cell}>
+                    <form method="post" action="/api/evaluator/review">
+                      <input type="hidden" name="action" value="start" />
+                      <input type="hidden" name="attempt_id" value={a.id} />
+                      <button type="submit" className="primary">Start the new evaluator</button>
+                    </form>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
       ) : null}
     </div>
   );

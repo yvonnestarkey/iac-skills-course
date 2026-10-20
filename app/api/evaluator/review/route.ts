@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { parseEvaluatorMode } from "@/lib/evaluator/job-rules";
-import { kickJob, retryJob, setEvaluatorMode } from "@/lib/evaluator/jobs";
+import { createJobsForAttempt, kickJob, retryJob, setEvaluatorMode } from "@/lib/evaluator/jobs";
+import { isEvaluatorReadySitting } from "@/lib/evaluator/ready-sittings";
 import { sendResendEmail } from "@/lib/resend";
 import { isCoachAccount } from "@/lib/roles";
 import { studentUserFromAuth } from "@/lib/student-lesson";
@@ -27,6 +28,16 @@ export async function POST(request: NextRequest) {
 
   if (action === "mode") {
     await setEvaluatorMode(parseEvaluatorMode(form.get("mode")));
+    return back;
+  }
+  if (action === "start") {
+    const attemptId = String(form.get("attempt_id") || "");
+    const { data: row } = await service.from("exam_attempts").select("id, sitting_id").eq("id", attemptId).maybeSingle();
+    const attempt = row as { id: string; sitting_id: string } | null;
+    if (attempt && isEvaluatorReadySitting(attempt.sitting_id)) {
+      const jobs = await createJobsForAttempt(attempt, request.nextUrl.origin);
+      await Promise.all(jobs.filter((job) => job.status !== "done").map((job) => kickJob(job, request.nextUrl.origin)));
+    }
     return back;
   }
   if (action === "retry") {
