@@ -140,10 +140,13 @@ export function attemptStatusLabel(status: ExamAttemptStatus): string {
   return "Analysis failed";
 }
 
-type WholeSittingFields = Partial<Pick<ExamAttempt, "marked_script_p2_path" | "marked_script_p3_path" | "marked_script_p2_name" | "marked_script_p3_name">>;
+type WholeSittingFields = Partial<
+  Pick<ExamAttempt, "marked_script_p2_path" | "marked_script_p3_path" | "marked_script_p2_name" | "marked_script_p3_name" | "paper_id" | "sitting_id">
+>;
 
-/** All three papers uploaded on one attempt (the whole-sitting upload). */
+/** A whole-sitting attempt: started as one attempt for all three papers, or with Paper 2 / Paper 3 uploaded on it. */
 export function attemptIsWholeSitting(attempt: WholeSittingFields): boolean {
+  if (attempt.paper_id && attempt.sitting_id && attempt.paper_id === attempt.sitting_id) return true;
   return Boolean(attempt.marked_script_p2_path || attempt.marked_script_p3_path || attempt.marked_script_p2_name || attempt.marked_script_p3_name);
 }
 
@@ -356,6 +359,20 @@ export async function createExamAttempt(input: {
     return { ok: false, error: "Choose a sitting from the exam list." };
   }
   const wholeExam = !input.paperId;
+  if (wholeExam) {
+    // One open attempt per sitting: clicking "Start an exam attempt" again picks up the unfinished one instead of
+    // adding another card (Yvonne, 20 Oct 2026).
+    const { data: open } = await client
+      .from("exam_attempts")
+      .select("*")
+      .eq("user_id", input.userId)
+      .eq("sitting_id", mapped.sitting.id)
+      .in("status", ["started", "awaiting_documents", "ready_to_submit"])
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (open) return { ok: true, attempt: examAttemptFromRow(open as JsonRow) };
+  }
   const now = new Date().toISOString();
   const { data: session } = await client.auth.getUser();
   const source = attemptSourceForUser(

@@ -123,7 +123,7 @@ export default function ExamAttemptSubmitted() {
         </>
       )}
 
-      <p>You don&apos;t need to wait here. You can return to the course and keep working.</p>
+      {v2?.released ? null : <p>You don&apos;t need to wait here. You can return to the course and keep working.</p>}
       <div className="eval-confirm-actions">
         <Link className="primary" href="/student/dashboard">
           Return to course
