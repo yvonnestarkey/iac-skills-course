@@ -82,7 +82,7 @@ function buriedStep(parts: ReturnType<typeof groupByPart>): string[] {
       if (!r.attempted) rows.push([r.label, "not attempted", "", ""]);
       else if (r.buried_treasure) {
         const b = r.buried_treasure;
-        const f = (x: { available: number; awarded: number }) => `${num(x.awarded)} of ${num(x.available)}`;
+        const f = (x: { available: number; awarded: number }) => (x.available > 0 ? `${num(x.awarded)} of ${num(x.available)}` : "none available");
         rows.push([r.label, f(b.direct), f(b.indirect), f(b.thinking)]);
       }
     }
