@@ -10,6 +10,23 @@ import { getServiceSupabase } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
 
+/** A course notification (the bell). Older notifications tables lack some columns, so retry with fewer. */
+async function notifyStudent(
+  service: NonNullable<ReturnType<typeof getServiceSupabase>>,
+  n: { userId: string; email: string | null; title: string; message: string }
+) {
+  const base = { user_id: n.userId, student_id: n.userId, student_email: n.email, from_role: "coach", kind: "announcement", body: n.message };
+  const attempts = [
+    { ...base, type: "announcement", title: n.title, message: n.message, read: false },
+    { ...base, title: n.title, message: n.message, read: false },
+    base,
+  ];
+  for (const payload of attempts) {
+    const { error } = await service.from("notifications").insert(payload);
+    if (!error) return;
+  }
+}
+
 /** Staff actions from Coach tools > Script Evaluator reports: release / hide a report, retry a paper, the switch. */
 export async function POST(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -48,24 +65,29 @@ export async function POST(request: NextRequest) {
   if (action === "release" || action === "unrelease") {
     const attemptId = String(form.get("attempt_id") || "");
     const release = action === "release";
+    const releasedAt = new Date().toISOString();
     const { data, error } = await service
       .from("exam_attempts")
-      .update({ evaluator_report_released_at: release ? new Date().toISOString() : null, evaluator_report_released_by: release ? user.id : null })
+      .update({ evaluator_report_released_at: release ? releasedAt : null, evaluator_report_released_by: release ? user.id : null })
       .eq("id", attemptId)
       .select("user_id, sitting_label")
       .maybeSingle();
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
     const row = data as { user_id?: string; sitting_label?: string } | null;
     if (release && row?.user_id) {
-      // Tell the student their report is ready. Best effort: the report shows on their Script Evaluator page either way.
+      // Tell the student: a notification in the course (the bell) and an email, both pointing to the Script Evaluator.
       const { data: profile } = await service.from("profiles").select("email, full_name").eq("id", row.user_id).maybeSingle();
       const p = profile as { email?: string; full_name?: string | null } | null;
+      const link = `${request.nextUrl.origin}/student/evaluator/attempt/${attemptId}/submitted`;
+      const title = "Your Script Evaluator report is ready";
+      const message = `Your report${row.sitting_label ? ` for ${row.sitting_label}` : ""} is ready. Open the Script Evaluator and click your exam attempt to view or download it.`;
+      await notifyStudent(service, { userId: row.user_id, email: p?.email ?? null, title, message });
       if (p?.email) {
         await sendResendEmail({
           to: p.email,
-          subject: "Your Script Evaluator report is ready",
-          text: `Hi ${p.full_name?.split(" ")[0] || "there"},\n\nYour Script Evaluator report${row.sitting_label ? ` for ${row.sitting_label}` : ""} is ready. Open it here:\n${request.nextUrl.origin}/evaluator-report/${attemptId}\n\nYvonne`,
-          idempotencyKey: `evaluator-released-${attemptId}`,
+          subject: title,
+          text: `Hi ${p.full_name?.split(" ")[0] || "there"},\n\n${message}\n\n${link}\n\nYvonne`,
+          idempotencyKey: `evaluator-released-${attemptId}-${releasedAt.slice(0, 16)}`,
         }).catch(() => undefined);
       }
     }

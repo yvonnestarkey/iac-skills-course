@@ -9,6 +9,7 @@ import { courseDisplayName, reportFileTitle } from "@/lib/evaluator/report-namin
 import type { EvaluationDataset } from "@/lib/evaluator/types";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import PrintButton from "@/app/evaluator-preview/PrintButton";
+import AutoPrint from "./AutoPrint";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -68,8 +69,16 @@ function Message({ children }: { children: ReactNode }) {
  * The student's report for one whole-sitting attempt. The student sees it once Yvonne has released it; staff can open
  * it at any time (that is the review step). Built from the saved datasets at view time: no model call, no cost.
  */
-export default async function EvaluatorReportPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EvaluatorReportPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ print?: string; embed?: string }>;
+}) {
   const { id } = await params;
+  const query = await searchParams;
+  const embed = query.embed === "1";
   const user = await getRequestUser();
   if (!user) return <Message><p>Please sign in to see your report.</p></Message>;
   const staff = isStaffUser(user);
@@ -97,6 +106,8 @@ export default async function EvaluatorReportPage({ params }: { params: Promise<
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: REPORT_CSS }} />
+      {query.print === "1" ? <AutoPrint /> : null}
+      {embed ? null : (
       <div className="no-print" style={{ padding: 12, fontFamily: "Arial", background: "#f2f2f2" }}>
         <PrintButton /> <Link href="/student/evaluator" style={{ marginLeft: 12 }}>Back to the Script Evaluator</Link>
         {staff ? (
@@ -107,6 +118,7 @@ export default async function EvaluatorReportPage({ params }: { params: Promise<
           <span style={{ marginLeft: 12, fontSize: 13 }}>To keep a copy, choose Save as PDF as the destination.</span>
         )}
       </div>
+      )}
       <div className="eve-report" dangerouslySetInnerHTML={{ __html: renderReportBody(sections) }} />
     </>
   );

@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import {
+  attemptCardStatus,
   attemptDisplayTitle,
-  attemptStatusLabel,
+  attemptIsWholeSitting,
   attemptStudentLabel,
   fetchAttemptStudentLabels,
   fetchEvaluatorAttempts,
@@ -129,13 +130,15 @@ export default function ScriptEvaluatorHub() {
                 <li key={attempt.id}>
                   <Link href={href} className="eval-attempt-card">
                     <strong className="eval-attempt-student">{student.name}</strong>
-                    <span className="pill">{attemptStatusLabel(attempt.status)}</span>
+                    <span className={`pill${attempt.evaluator_report_released_at ? " is-ready" : ""}`}>{attemptCardStatus(attempt)}</span>
                     <p className="eval-attempt-paper">{attemptDisplayTitle(attempt)}</p>
+                    {attempt.evaluator_report_released_at ? (
+                      <p className="eval-attempt-report">Your report is ready: open it to view or download it.</p>
+                    ) : null}
                     <p className="muted small">
-                      {student.email ? `${student.email} · ` : ""}
-                      {attempt.paper_code}
+                      {student.email || ""}
+                      {!attemptIsWholeSitting(attempt) && attempt.paper_code ? `${student.email ? " · " : ""}${attempt.paper_code}` : ""}
                     </p>
-                    <p className="muted small eval-attempt-id">Attempt {attempt.id}</p>
                   </Link>
                 </li>
               );

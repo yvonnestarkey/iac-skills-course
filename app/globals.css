@@ -7041,3 +7041,14 @@ a.live-session-watch:hover {
   flex-shrink: 0;
 }
 
+
+/* Script Evaluator: a released report stands out on the attempt card and the submitted page (20 Oct 2026). */
+.eval-attempt-card .pill.is-ready { background: #124f5c; color: #fff; }
+.eval-attempt-report { margin: 6px 0 2px; font-weight: 600; color: #124f5c; }
+.eval-report-ready { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; margin: 18px 0 24px; padding: 18px; border: 1px solid #d5dfdc; border-radius: 16px; background: #fff; }
+.eval-report-thumb { position: relative; width: 240px; height: 320px; overflow: hidden; border: 1px solid #c8d2cf; border-radius: 6px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); background: #fff; flex: none; }
+.eval-report-thumb iframe { width: 900px; height: 1200px; border: 0; transform: scale(0.2667); transform-origin: 0 0; pointer-events: none; }
+.eval-report-thumb a { position: absolute; inset: 0; }
+.eval-report-actions { display: flex; flex-direction: column; gap: 12px; min-width: 220px; }
+.eval-report-actions h2 { margin: 0; }
+.eval-report-actions .primary, .eval-report-actions .eval-secondary { text-align: center; }

@@ -65,6 +65,8 @@ export type ExamAttempt = {
   marked_script_p3_name: string | null;
   marking_report_path: string | null;
   marking_report_url: string | null;
+  /** Set when Yvonne releases the Script Evaluator report to the student. */
+  evaluator_report_released_at: string | null;
   marking_report_name: string | null;
   page_images: Partial<Record<ExamAttemptFileKind, ExamAttemptPageImage[]>>;
   evidence_pack: Record<string, unknown> | null;
@@ -138,8 +140,24 @@ export function attemptStatusLabel(status: ExamAttemptStatus): string {
   return "Analysis failed";
 }
 
-export function attemptDisplayTitle(attempt: Pick<ExamAttempt, "sitting_label" | "paper_title">): string {
-  return `${attempt.sitting_label} · ${attempt.paper_title}`;
+type WholeSittingFields = Partial<Pick<ExamAttempt, "marked_script_p2_path" | "marked_script_p3_path" | "marked_script_p2_name" | "marked_script_p3_name">>;
+
+/** All three papers uploaded on one attempt (the whole-sitting upload). */
+export function attemptIsWholeSitting(attempt: WholeSittingFields): boolean {
+  return Boolean(attempt.marked_script_p2_path || attempt.marked_script_p3_path || attempt.marked_script_p2_name || attempt.marked_script_p3_name);
+}
+
+export function attemptDisplayTitle(attempt: Pick<ExamAttempt, "sitting_label" | "paper_title"> & WholeSittingFields): string {
+  return attemptIsWholeSitting(attempt) ? `${attempt.sitting_label} · All three papers` : `${attempt.sitting_label} · ${attempt.paper_title}`;
+}
+
+/** The status shown on a student's attempt card: the report, once released, comes first. */
+export function attemptCardStatus(
+  attempt: Pick<ExamAttempt, "status"> & Partial<Pick<ExamAttempt, "evaluator_report_released_at">> & WholeSittingFields
+): string {
+  if (attempt.evaluator_report_released_at) return "Report available";
+  if (attemptIsWholeSitting(attempt) && isAttemptSubmitted(attempt.status)) return "Being evaluated";
+  return attemptStatusLabel(attempt.status);
 }
 
 export function attemptPaperName(
@@ -229,6 +247,7 @@ export function examAttemptFromRow(row: JsonRow): ExamAttempt {
     marked_script_p3_url: row.marked_script_p3_url ? String(row.marked_script_p3_url) : null,
     marked_script_p3_name: row.marked_script_p3_name ? String(row.marked_script_p3_name) : null,
     marking_report_path: row.marking_report_path ? String(row.marking_report_path) : null,
+    evaluator_report_released_at: row.evaluator_report_released_at ? String(row.evaluator_report_released_at) : null,
     marking_report_url: row.marking_report_url ? String(row.marking_report_url) : null,
     marking_report_name: row.marking_report_name ? String(row.marking_report_name) : null,
     page_images: asPageImages(row.page_images),

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { attemptDisplayTitle, attemptStatusLabel, fetchExamAttempt, type ExamAttempt } from "@/lib/exam-attempts";
+import { attemptCardStatus, attemptDisplayTitle, fetchExamAttempt, type ExamAttempt } from "@/lib/exam-attempts";
 import { useStudentSession } from "@/lib/student-session";
 
 type PaperStatus = { paper_id: string; title: string; status: "waiting" | "working" | "done" | "checking"; done: number; total: number };
@@ -70,18 +70,30 @@ export default function ExamAttemptSubmitted() {
       <h1>{v2?.released ? "Your report is ready" : "Your script is in!"}</h1>
       {attempt ? (
         <p className="muted">
-          {attemptDisplayTitle(attempt)} · {attemptStatusLabel(attempt.status)}
+          {attemptDisplayTitle(attempt)} · {v2?.released ? "Report available" : attemptCardStatus(attempt)}
         </p>
       ) : null}
 
       {v2 ? (
         <>
           {v2.released && v2.report_url ? (
-            <p>
-              <a className="primary" href={v2.report_url}>
-                Open your report
-              </a>
-            </p>
+            <section className="eval-report-ready">
+              <div className="eval-report-thumb" aria-hidden="true">
+                <iframe src={`${v2.report_url}?embed=1`} title="Report preview" tabIndex={-1} loading="lazy" />
+                <a href={v2.report_url} tabIndex={-1} aria-label="Open your report" />
+              </div>
+              <div className="eval-report-actions">
+                <h2>Your Script Evaluator report</h2>
+                <p className="muted">The Overall Report and one report per paper, in one document.</p>
+                <a className="primary" href={v2.report_url}>
+                  Open your report
+                </a>
+                <a className="eval-secondary" href={`${v2.report_url}?print=1`}>
+                  Download as PDF
+                </a>
+                <p className="muted small">Download opens the report and your browser&apos;s print window: choose Save as PDF.</p>
+              </div>
+            </section>
           ) : (
             <>
               <p>
