@@ -79,6 +79,11 @@ export function questionModelFor(paperId: string, code: string): RequirementMode
   return MODELS.find((model) => model.paper_id === paperId)?.requirements[code] ?? null;
 }
 
+/** True when a Question Model exists for this paper (the evaluator only runs on modelled papers). */
+export function hasQuestionModel(paperId: string): boolean {
+  return MODELS.some((model) => model.paper_id === paperId);
+}
+
 export const pillarFor = (paperId: string, code: string) => questionModelFor(paperId, code)?.pillar ?? null;
 export const pvaaMarksFor = (paperId: string, code: string) => questionModelFor(paperId, code)?.pvaa_marks ?? 0;
 

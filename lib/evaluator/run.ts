@@ -1,13 +1,8 @@
-import { examAttemptFromRow } from "@/lib/exam-attempts";
-import { findPastPaper } from "@/lib/past-papers";
 import { getServiceSupabase } from "@/lib/supabase-admin";
-import { evaluatorModel, newUsage } from "./anthropic";
-import { computeMetrics } from "./metrics";
-import { loadSources, sourcesAsPromptText } from "./sources";
-import { mapReportPages, mapScriptPages, readBmcr } from "./stage0";
-import { evaluateRequirement } from "./stage1";
+import { evaluatorModel } from "./anthropic";
 import { synthesiseReport } from "./stage2";
-import type { EvaluationDataset, EvaluationReport, RequirementEvaluation, UsageTally } from "./types";
+import { assembleDataset, emptyProgress, loadPaperContext, runRequirementStep, runStage0 } from "./steps";
+import type { EvaluationDataset, EvaluationReport, UsageTally } from "./types";
 
 export type RunOptions = {
   /** Which paper of a whole-sitting attempt to evaluate, e.g. "iac-2026-p2". Defaults to the attempt's own paper_id. */
@@ -39,85 +34,34 @@ async function mapLimit<T, R>(items: T[], limit: number, fn: (item: T) => Promis
 
 export async function runEvaluation(attemptId: string, options: RunOptions = {}): Promise<RunResult> {
   const log = options.onProgress || (() => {});
-  const supabase = getServiceSupabase();
-  if (!supabase) throw new Error("SUPABASE_SERVICE_ROLE_KEY is not set.");
-  const { data, error } = await supabase.from("exam_attempts").select("*").eq("id", attemptId).limit(1).maybeSingle();
-  if (error || !data) throw new Error(error?.message || "Exam attempt not found.");
-  const attempt = examAttemptFromRow(data as { [key: string]: unknown });
-
-  const paperId = options.paperId || attempt.paper_id;
-  const mapped = findPastPaper(paperId);
-  if (!mapped) throw new Error(`Paper ${paperId} is not in the past-paper registry.`);
-  if (mapped.sitting.id !== attempt.sitting_id) throw new Error(`Paper ${paperId} does not belong to this attempt's sitting (${attempt.sitting_id}).`);
-  const paperLabel = mapped.paper.title;
-  const requirements = mapped.paper.questions.map((q) => ({ code: q.code, title: q.title, total_marks: q.marks }));
-  const expected = requirements.map((r) => ({ code: r.code, title: r.title }));
-
-  const usage = newUsage();
-  const warnings: string[] = [];
-
   log("Loading official sources…");
-  const sources = await loadSources(attempt.sitting_id, paperId);
-  if (sources.missing.includes("question") || sources.missing.includes("solution")) {
-    throw new Error(`Official sources incomplete (missing: ${sources.missing.join(", ")}). Evaluation not started.`);
-  }
-  const questionText = sourcesAsPromptText(sources, ["question"]);
-  const officialText = sourcesAsPromptText(sources, ["question", "solution", "commentary", "competency"]);
-
-  // A whole-sitting attempt keeps Paper 1 in marked_script and Papers 2 and 3 in their own slots.
-  // An older single-paper attempt keeps its one script in marked_script whichever paper it was.
-  const paperIndex = mapped.sitting.papers.findIndex((paper) => paper.id === mapped.paper.id);
-  const wholeSitting = Boolean(attempt.page_images.marked_script_p2?.length || attempt.page_images.marked_script_p3?.length);
-  const scriptKind = !wholeSitting || paperIndex <= 0 ? "marked_script" : paperIndex === 1 ? "marked_script_p2" : "marked_script_p3";
-  const scriptPages = attempt.page_images[scriptKind] || [];
-  const reportPages = attempt.page_images.marking_report || [];
-  const bmcrPages = attempt.page_images.bmcr_worksheet || [];
-  if (!scriptPages.length || !reportPages.length || !bmcrPages.length) {
-    throw new Error(`Page images missing for the BMCR, the ${paperLabel} script or the marking report. Run evidence preparation first.`);
-  }
+  const ctx = await loadPaperContext(attemptId, options.paperId);
 
   log("Stage 0: mapping script pages by required label…");
-  const [{ map }, reportMap, bmcrRows] = await Promise.all([
-    mapScriptPages({ paperLabel, expected, scriptPages, questionText, usage, warnings }),
-    mapReportPages({ paperLabel, expected, reportPages, usage, warnings }),
-    readBmcr({ paperLabel, expected, bmcrPages, usage, warnings }),
-  ]);
-  for (const row of map.requirements) row.report_pages = reportMap[row.code] || [];
+  let progress = await runStage0(ctx, emptyProgress());
 
-  const toRun = requirements.filter((r) => !options.only?.length || options.only.includes(r.code));
+  const toRun = ctx.requirements.filter((r) => !options.only?.length || options.only.includes(r.code));
   log(`Stage 1: evaluating ${toRun.length} requirement(s)…`);
-  const evaluated = await mapLimit(toRun, options.concurrency ?? 3, async (requirement) => {
-    const pageMap = map.requirements.find((row) => row.code === requirement.code)!;
-    log(`  ${pageMap.label}…`);
-    return evaluateRequirement({
-      requirement,
-      pageMap,
-      scriptPages,
-      reportPages,
-      bmcr: bmcrRows.find((row) => row.code === requirement.code),
-      officialText,
-      usage,
-      paperId,
-    });
+  // Requirements run side by side here; each one only adds its own entry, so the results are merged afterwards.
+  const base = progress;
+  const results = await mapLimit(toRun, options.concurrency ?? 3, async (requirement) => {
+    log(`  ${requirement.code}…`);
+    return runRequirementStep(ctx, { ...base, usage: { input_tokens: 0, output_tokens: 0, calls: 0 }, warnings: [] }, requirement.code);
   });
-
-  const evaluations: RequirementEvaluation[] = evaluated.map((item) => item.evaluation);
-  for (const item of evaluated) warnings.push(...item.warnings);
-
-  const dataset: EvaluationDataset = {
-    version: 1,
-    attempt_id: attempt.id,
-    sitting_id: attempt.sitting_id,
-    paper_id: paperId,
-    generated_at: new Date().toISOString(),
-    model: evaluatorModel(),
-    page_map: map,
-    bmcr_rows: bmcrRows,
-    requirements: evaluations,
-    metrics: evaluations.map(computeMetrics),
-    source_notes: sources.notes,
-    warnings,
-  };
+  for (const r of results) {
+    progress = {
+      ...progress,
+      evaluations: { ...progress.evaluations, ...r.evaluations },
+      warnings: [...progress.warnings, ...r.warnings],
+      usage: {
+        input_tokens: progress.usage.input_tokens + r.usage.input_tokens,
+        output_tokens: progress.usage.output_tokens + r.usage.output_tokens,
+        calls: progress.usage.calls + r.usage.calls,
+      },
+    };
+  }
+  const usage = progress.usage;
+  const dataset: EvaluationDataset = assembleDataset(ctx, progress);
 
   let report: EvaluationReport | null = null;
   if (options.datasetOnly) {

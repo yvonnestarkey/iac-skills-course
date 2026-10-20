@@ -6,11 +6,24 @@ import { useEffect, useState } from "react";
 import { attemptDisplayTitle, attemptStatusLabel, fetchExamAttempt, type ExamAttempt } from "@/lib/exam-attempts";
 import { useStudentSession } from "@/lib/student-session";
 
+type PaperStatus = { paper_id: string; title: string; status: "waiting" | "working" | "done" | "checking"; done: number; total: number };
+type EvaluatorStatus =
+  | { evaluator: "old" }
+  | { evaluator: "v2"; papers: PaperStatus[]; all_done: boolean; released: boolean; report_url: string | null };
+
+function paperLine(p: PaperStatus): string {
+  if (p.status === "done") return "Evaluated";
+  if (p.status === "checking") return "Being checked by Yvonne";
+  if (p.status === "working") return p.done ? `Working: ${p.done} of ${p.total} questions` : "Reading your pages";
+  return "Waiting to start";
+}
+
 export default function ExamAttemptSubmitted() {
   const params = useParams<{ id: string }>();
   const { user } = useStudentSession();
   const attemptId = String(params.id || "");
   const [attempt, setAttempt] = useState<ExamAttempt | null>(null);
+  const [status, setStatus] = useState<EvaluatorStatus | null>(null);
 
   useEffect(() => {
     if (!user?.id || !attemptId) return;
@@ -20,39 +33,88 @@ export default function ExamAttemptSubmitted() {
     void fetch(`/api/exam-attempts/${attemptId}/prepare-evidence`, { method: "POST" });
   }, [user?.id, attemptId]);
 
+  // Check progress now and every 30 seconds until the report is released (checking also keeps the work moving).
+  useEffect(() => {
+    if (!user?.id || !attemptId) return;
+    let stopped = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    async function poll() {
+      try {
+        const response = await fetch(`/api/exam-attempts/${attemptId}/evaluator-status`, { cache: "no-store" });
+        if (response.ok) {
+          const next = (await response.json()) as EvaluatorStatus;
+          if (stopped) return;
+          setStatus(next);
+          if (next.evaluator === "old" || next.released) return;
+        }
+      } catch {
+        // try again on the next tick
+      }
+      if (!stopped) timer = setTimeout(poll, 30000);
+    }
+    void poll();
+    return () => {
+      stopped = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, [user?.id, attemptId]);
+
+  const v2 = status && status.evaluator === "v2" ? status : null;
+
   return (
     <article className="lesson-body wide eval-page">
       <p>
         <Link href="/student/evaluator">← Script evaluator</Link>
       </p>
       <p className="kicker">Exam attempt submitted</p>
-      <h1>Your script is in!</h1>
+      <h1>{v2?.released ? "Your report is ready" : "Your script is in!"}</h1>
       {attempt ? (
         <p className="muted">
           {attemptDisplayTitle(attempt)} · {attemptStatusLabel(attempt.status)}
         </p>
       ) : null}
-      <p>
-        We&apos;re analysing your BMCR, exam script and marking report alongside the exam question, official solution
-        and examiner information.
-      </p>
-      <p>
-        Your report will be available once the analysis is complete.
-      </p>
-      <p>
-        You don&apos;t need to wait here. You can return to the course and keep working.
-      </p>
-      <p>
-        Written IAC before? If you have another script from a previous sitting, you can submit that too. Use that
-        sitting&apos;s BMCR. Each paper is a separate attempt. Once you&apos;ve submitted more than one script,
-        we&apos;ll also be able to look for patterns across your attempts.
-      </p>
+
+      {v2 ? (
+        <>
+          {v2.released && v2.report_url ? (
+            <p>
+              <a className="primary" href={v2.report_url}>
+                Open your report
+              </a>
+            </p>
+          ) : (
+            <>
+              <p>
+                We&apos;re evaluating each paper against the exam question, the official solution and your marking report.
+                {v2.all_done
+                  ? " All three papers are done. Yvonne is checking your report before it is released, and you will get an email when it is ready."
+                  : " This takes a while: you don't need to stay on this page. You'll get an email when your report is ready."}
+              </p>
+              <ul className="eval-attempt-list" style={{ listStyle: "none", padding: 0 }}>
+                {v2.papers.map((p) => (
+                  <li key={p.paper_id} className="eval-attempt-card" style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+                    <strong>{p.title}</strong>
+                    <span className="pill">{paperLine(p)}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <p>
+            We&apos;re analysing your BMCR, exam scripts and marking report alongside the exam question, official solution
+            and examiner information.
+          </p>
+          <p>Your report will be available once the analysis is complete.</p>
+        </>
+      )}
+
+      <p>You don&apos;t need to wait here. You can return to the course and keep working.</p>
       <div className="eval-confirm-actions">
         <Link className="primary" href="/student/dashboard">
           Return to course
-        </Link>
-        <Link className="eval-secondary" href="/student/evaluator/new">
-          Upload another exam attempt
         </Link>
       </div>
     </article>

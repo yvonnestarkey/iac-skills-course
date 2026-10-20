@@ -13,6 +13,10 @@ import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { createExamAttempt } from "@/lib/exam-attempts";
 import { officialSourceSpec } from "@/lib/exam-source-pack";
 import { DEFAULT_PAST_PAPER_SITTING_ID, PAST_PAPER_SITTINGS } from "@/lib/past-papers";
+import { isEvaluatorReadySitting } from "@/lib/evaluator/ready-sittings";
+
+/** Only sittings the Script Evaluator has been set up for are offered (Yvonne, 20 Oct 2026). */
+const EVALUATOR_SITTINGS = PAST_PAPER_SITTINGS.filter((item) => isEvaluatorReadySitting(item.id));
 import { hasTask1Submission, task1LessonHref } from "@/lib/task1-gate";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -24,13 +28,16 @@ export default function ExamAttemptNew() {
   const bypassLocks = useBypassLessonLocks();
   const canUse = hasTask1Submission(submissions, outline) || unlocked || bypassLocks;
   const [sittingId, setSittingId] = useState(
-    () => resolveBmcrSittingId(searchParams.get("sitting")) || DEFAULT_PAST_PAPER_SITTING_ID
+    () => {
+      const requested = resolveBmcrSittingId(searchParams.get("sitting"));
+      return requested && isEvaluatorReadySitting(requested) ? requested : DEFAULT_PAST_PAPER_SITTING_ID;
+    }
   );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
   const sitting = useMemo(
-    () => PAST_PAPER_SITTINGS.find((item) => item.id === sittingId) || PAST_PAPER_SITTINGS[0],
+    () => EVALUATOR_SITTINGS.find((item) => item.id === sittingId) || EVALUATOR_SITTINGS[0] || PAST_PAPER_SITTINGS[0],
     [sittingId]
   );
   const papers = sitting?.papers || [];
@@ -103,7 +110,7 @@ export default function ExamAttemptNew() {
           <label className="eval-exam-picker">
             Sitting
             <select className="select-line" value={sitting.id} onChange={(event) => changeSitting(event.target.value)}>
-              {PAST_PAPER_SITTINGS.map((item) => (
+              {EVALUATOR_SITTINGS.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.label}
                 </option>

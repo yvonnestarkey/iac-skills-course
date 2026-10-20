@@ -9,6 +9,12 @@ import {
   isMissingExamAttemptsTable,
   requestScriptEvaluation,
 } from "@/lib/exam-attempts";
+import { newEvaluatorApplies } from "@/lib/evaluator/job-rules";
+import { createJobsForAttempt, getEvaluatorMode, kickJob } from "@/lib/evaluator/jobs";
+import { isEvaluatorReadySitting } from "@/lib/evaluator/ready-sittings";
+import { isCoachAccount } from "@/lib/roles";
+import { STAFF_TEST_ATTEMPT_SOURCE } from "@/lib/staff-access";
+import { studentUserFromAuth } from "@/lib/student-lesson";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -73,6 +79,29 @@ export async function POST(
       .eq("id", id)
       .eq("user_id", user.id);
     if (updateError) return NextResponse.json({ error: updateError.message }, { status: 400 });
+  }
+
+  // The new evaluator takes whole-sitting uploads for sittings it has Question Models for, for the accounts the
+  // switch allows (Coach tools > Script Evaluator reports). Everything else keeps the old evaluator for now.
+  const useNewEvaluator = newEvaluatorApplies({
+    mode: await getEvaluatorMode(),
+    sittingReady: isEvaluatorReadySitting(attempt.sitting_id),
+    wholeSitting: Boolean(attempt.marked_script_p2_path || attempt.marked_script_p3_path),
+    staffTest: attempt.source === STAFF_TEST_ATTEMPT_SOURCE || isCoachAccount(studentUserFromAuth(user)),
+  });
+  const origin = request.nextUrl.origin;
+
+  if (useNewEvaluator) {
+    after(async () => {
+      void prepareExamAttemptEvidence(id);
+      try {
+        const jobs = await createJobsForAttempt(attempt, origin);
+        await Promise.all(jobs.filter((job) => job.status !== "done").map((job) => kickJob(job, origin)));
+      } catch {
+        // The status page retries job creation and restarts stalled jobs.
+      }
+    });
+    return NextResponse.json({ ok: true, status: "analysing", evaluator: "v2" });
   }
 
   after(() => {

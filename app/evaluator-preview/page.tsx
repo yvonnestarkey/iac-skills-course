@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { getRequestUser, isStaffUser } from "@/lib/auth-server";
-import { findPastPaper } from "@/lib/past-papers";
 import { getServiceSupabase } from "@/lib/supabase-admin";
-import { buildOverallReport } from "@/lib/evaluator/overall-report";
+import { attemptReportSections, latestDatasetPerPaper } from "@/lib/evaluator/attempt-report";
 import { renderReportBody, REPORT_CSS } from "@/lib/evaluator/report-html";
 import { PAPER_NAMES } from "@/lib/evaluator/report-text";
-import { buildPaperReport, paperNumber } from "@/lib/evaluator/student-report";
 import type { EvaluationDataset } from "@/lib/evaluator/types";
 import PrintButton from "./PrintButton";
 
@@ -62,24 +60,9 @@ export default async function EvaluatorPreviewPage({ searchParams }: { searchPar
 
   const { data, error } = await supabase.from("evaluator_runs").select("id, created_at, dataset").in("id", ids);
   if (error || !data?.length) return <main style={{ padding: 24, fontFamily: "Arial" }}><p>Could not load those runs{error ? `: ${error.message}` : "."}</p></main>;
-  // one dataset per paper: the most recently saved wins
-  const latest = new Map<string, { created_at: string; dataset: EvaluationDataset }>();
-  for (const row of data as unknown as { created_at: string; dataset: EvaluationDataset }[]) {
-    const prev = latest.get(row.dataset.paper_id);
-    if (!prev || prev.created_at < row.created_at) latest.set(row.dataset.paper_id, row);
-  }
-  const datasets = [...latest.values()].map((v) => v.dataset).sort((a, b) => paperNumber(a) - paperNumber(b));
-  const paperNames: Record<number, string> = {};
-  for (const d of datasets) if (PAPER_NAMES[d.paper_id]) paperNames[paperNumber(d)] = PAPER_NAMES[d.paper_id];
+  const datasets = latestDatasetPerPaper(data as unknown as { created_at: string; dataset: EvaluationDataset }[]);
   const studentName = params.name?.trim() || undefined;
-  const sections = [
-    buildOverallReport(datasets, { studentName, paperNames }),
-    ...datasets.map((d) => {
-      const titles: Record<string, string> = {};
-      for (const q of findPastPaper(d.paper_id)?.paper.questions ?? []) titles[q.code] = q.title;
-      return buildPaperReport(d, { studentName, paperNames, titles });
-    }),
-  ];
+  const sections = attemptReportSections(datasets, studentName);
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: REPORT_CSS }} />

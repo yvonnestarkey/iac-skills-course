@@ -49,6 +49,10 @@ export default function CoachHomePage() {
             <strong>Payments & referrals</strong>
             <span className="muted">Entitlement, Stripe status, and credits needing manual action</span>
           </button>
+          <button onClick={() => router.push("/coach/evaluator")}>
+            <strong>Script Evaluator reports</strong>
+            <span className="muted">Student submissions on the new evaluator: progress per paper, review and release reports, and the on/off switch</span>
+          </button>
           <button onClick={() => router.push("/evaluator-preview")}>
             <strong>Evaluator report preview</strong>
             <span className="muted">Staff only: see saved Script Evaluator runs as the student report, ready to save as PDF. Students cannot see this yet</span>
