@@ -63,7 +63,8 @@ export default async function CoachEvaluatorPage() {
     .in("status", ["analysing", "evidence_ready", "report_ready", "analysis_failed"])
     .order("created_at", { ascending: false })
     .limit(30);
-  const waiting = ((waitingRows ?? []) as (AttemptRow & { sitting_id: string })[]).filter((a) => !attemptIds.includes(a.id));
+  type WaitingRow = { id: string; user_id: string; sitting_id: string; sitting_label: string; submitted_at: string | null };
+  const waiting = ((waitingRows ?? []) as unknown as WaitingRow[]).filter((a) => !attemptIds.includes(a.id));
   const waitingUserIds = [...new Set(waiting.map((a) => a.user_id))].filter((id) => !userIds.includes(id));
   if (waitingUserIds.length) {
     const { data: more } = await supabase.from("profiles").select("id, email, full_name").in("id", waitingUserIds);
