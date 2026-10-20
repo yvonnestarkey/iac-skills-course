@@ -40,8 +40,12 @@ export type ReportOptions = {
   titles?: Record<string, string>;
 };
 
+/** The line at the top of every report: the student and the sitting (Yvonne, 20 Oct 2026). Rendered small, above the title. */
+export const documentHeader = (o: ReportOptions = {}) => `###### ${o.studentName ?? "(Student name)"} · ${o.sittingLabel ?? "June 2026"}`;
+
+/** The big red title of a Per Paper Report, e.g. "Paper 1: Inpahla". */
 export const reportHeader = (dataset: EvaluationDataset, o: ReportOptions = {}) =>
-  `${o.studentName ?? "(Student name)"} ${o.sittingLabel ?? "June 2026"} Paper ${paperNumber(dataset)}${o.paperNames?.[paperNumber(dataset)] ? `, ${o.paperNames[paperNumber(dataset)]}` : ""}`;
+  `Paper ${paperNumber(dataset)}${o.paperNames?.[paperNumber(dataset)] ? `: ${o.paperNames[paperNumber(dataset)]}` : ""}`;
 
 export function groupByPart(dataset: EvaluationDataset): { key: string; title: string; requirements: RequirementEvaluation[] }[] {
   const parts = new Map<string, RequirementEvaluation[]>();
@@ -185,6 +189,8 @@ function communicationStep(dataset: EvaluationDataset, parts: ReturnType<typeof 
 export function buildPaperReport(dataset: EvaluationDataset, options: ReportOptions = {}): string {
   const parts = groupByPart(dataset);
   return [
+    documentHeader(options),
+    "",
     `# ${reportHeader(dataset, options)}`,
     "",
     "## How to read this report",

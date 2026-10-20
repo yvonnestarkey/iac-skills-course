@@ -11,7 +11,7 @@ import { bmcrVerdict, BMCR_CONVERSION_THRESHOLD } from "./metrics";
 import { pillarFor, pvaaMarksFor } from "./question-model";
 import { OVERALL_STEPS, PILLARS, PVAA_ROW, SIGNALS_GLOSSARY } from "./report-text";
 import { mdTable, num, pct } from "./report-format";
-import { paperNumber, partKeyOf, partName, type ReportOptions } from "./student-report";
+import { documentHeader, paperNumber, partKeyOf, partName, type ReportOptions } from "./student-report";
 import { signalLines, TYPE_LABEL, typeKeyOf, type TypeKey } from "./signals";
 import type { BmcrVerdict, EvaluationDataset, RequirementEvaluation } from "./types";
 
@@ -151,7 +151,9 @@ function evaluationStep(datasets: EvaluationDataset[]): string[] {
 export function buildOverallReport(datasets: EvaluationDataset[], options: ReportOptions = {}): string {
   const sorted = [...datasets].sort((a, b) => paperNumber(a) - paperNumber(b));
   return [
-    `# ${options.studentName ?? "(Student name)"} ${options.sittingLabel ?? "June 2026"} Overall Report`,
+    documentHeader(options),
+    "",
+    "# Overall Report",
     "",
     ...bmcrStep(sorted, options),
     ...typePillarStep(sorted, options),

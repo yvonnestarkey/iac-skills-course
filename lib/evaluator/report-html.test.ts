@@ -3,8 +3,9 @@ import test from "node:test";
 import { markdownToHtml, renderReportBody } from "./report-html";
 
 test("headings, labels, lists and paragraphs", () => {
-  const html = markdownToHtml("# (Student name) June 2026 Paper 1\n\n## How to read this report\n\nText **bold** and *it*.\n\n## Step 1. RTFQ\n\n### Part I\n\n**Q1(a)**\n\n- one\n- two");
-  assert.ok(html.includes("<h1>(Student name) June 2026 Paper 1</h1>"));
+  const html = markdownToHtml("###### (Student name) · June 2026\n\n# Paper 1\n\n## How to read this report\n\nText **bold** and *it*.\n\n## Step 1. RTFQ\n\n### Part I\n\n**Q1(a)**\n\n- one\n- two");
+  assert.ok(html.includes("<h1>Paper 1</h1>"));
+  assert.ok(html.includes('<p class="doc-head">(Student name) · June 2026</p>'));
   assert.ok(html.includes('<h2 class="how">How to read this report</h2>'));
   assert.ok(html.includes("<h2>Step 1. RTFQ</h2>"));
   assert.ok(html.includes("<h3>Part I</h3>"));

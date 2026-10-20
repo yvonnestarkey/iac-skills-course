@@ -1,4 +1,4 @@
-import { findPastPaper } from "@/lib/past-papers";
+import { findPastPaper, findPastPaperSitting } from "@/lib/past-papers";
 import { buildOverallReport } from "./overall-report";
 import { PAPER_NAMES } from "./report-text";
 import { buildPaperReport, paperNumber } from "./student-report";
@@ -15,15 +15,16 @@ export function latestDatasetPerPaper(rows: { created_at: string; dataset: Evalu
 }
 
 /** The full student report: the Overall Report, then one Per Paper Report per paper (markdown sections). */
-export function attemptReportSections(datasets: EvaluationDataset[], studentName?: string): string[] {
+export function attemptReportSections(datasets: EvaluationDataset[], studentName?: string, sittingLabel?: string): string[] {
+  const label = sittingLabel || (datasets[0] ? findPastPaperSitting(datasets[0].sitting_id)?.label : undefined);
   const paperNames: Record<number, string> = {};
   for (const d of datasets) if (PAPER_NAMES[d.paper_id]) paperNames[paperNumber(d)] = PAPER_NAMES[d.paper_id];
   return [
-    buildOverallReport(datasets, { studentName, paperNames }),
+    buildOverallReport(datasets, { studentName, sittingLabel: label, paperNames }),
     ...datasets.map((d) => {
       const titles: Record<string, string> = {};
       for (const q of findPastPaper(d.paper_id)?.paper.questions ?? []) titles[q.code] = q.title;
-      return buildPaperReport(d, { studentName, paperNames, titles });
+      return buildPaperReport(d, { studentName, sittingLabel: label, paperNames, titles });
     }),
   ];
 }

@@ -38,14 +38,14 @@ test("formatting: half-up rounding and one-decimal marks", () => {
 test("Per Paper Report: header, how-to-read and the five steps in order, in Yvonne's wording, tables only", () => {
   const ds = dataset(1, [req(), req({ code: "P1Q2_e", label: "Q2(e)", discussion_basis: "compliance" })]);
   const md = buildPaperReport(ds, { paperNames: { 1: "Inpahla" } });
-  assert.ok(md.startsWith("# (Student name) June 2026 Paper 1, Inpahla"));
+  assert.ok(md.startsWith("###### (Student name) · June 2026\n\n# Paper 1: Inpahla"));
   assert.ok(md.includes("Each Paper report follows the same five steps"));
   const steps = [...md.matchAll(/^## (Step \d)\. ([^:]+):/gm)].map((m) => `${m[1]} ${m[2]}`);
   assert.deepEqual(steps, ["Step 1 RTFQ", "Step 2 Buried Treasure", "Step 3 Volume and Accuracy", "Step 4 Components and Core Issue", "Step 5 Communication"]);
   assert.ok(md.includes("A line that only introduces the points under it is not counted."));
   assert.ok(!md.includes("What it shows"));
   assert.ok(md.includes("### Part I") && md.includes("### Part II"));
-  assert.equal(reportHeader(ds, { studentName: "Sam" }), "Sam June 2026 Paper 1");
+  assert.equal(reportHeader(ds, { studentName: "Sam" }), "Paper 1");
 });
 
 test("Step 1 shows Delivered? as Yes / Partly / No and says Not attempted", () => {

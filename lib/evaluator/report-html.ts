@@ -43,6 +43,7 @@ export function markdownToHtml(md: string): string {
     } else if (line.startsWith("### ")) { out.push(`<h3>${inline(line.slice(4))}</h3>`); i++; }
     else if (line.startsWith("## ")) { const t = line.slice(3); out.push(`<h2${/^How to read/.test(t) ? ' class="how"' : ""}>${inline(t)}</h2>`); i++; }
     else if (line.startsWith("# ")) { out.push(`<h1>${inline(line.slice(2))}</h1>`); i++; }
+    else if (line.startsWith("###### ")) { out.push(`<p class="doc-head">${inline(line.slice(7))}</p>`); i++; }
     else if (line.startsWith("- ")) {
       const items: string[] = [];
       while (i < lines.length && lines[i].startsWith("- ")) items.push(`<li>${inline(lines[i++].slice(2))}</li>`);
@@ -66,7 +67,8 @@ export const REPORT_CSS = `
 .eve-report .wm { position: fixed; left: 50%; top: 50%; width: min(150mm, 70vw); transform: translate(-50%, -50%); opacity: .13; z-index: 0; pointer-events: none }
 .eve-report .sec { position: relative; z-index: 1; break-before: page }
 .eve-report .sec:first-of-type { break-before: auto }
-.eve-report h1 { font-size: 12pt; font-weight: normal; margin: 0 0 14pt }
+.eve-report .doc-head { font-size: 11pt; color: ${BRAND.teal}; margin: 0 0 2pt; padding-bottom: 4pt; border-bottom: 1px solid ${BRAND.teal} }
+.eve-report h1 { font-size: 28pt; font-weight: bold; color: ${BRAND.red}; margin: 10pt 0 14pt; line-height: 1.15; break-after: avoid }
 .eve-report h2 { font-size: 19pt; color: ${BRAND.teal}; margin: 22pt 0 8pt; line-height: 1.2; break-after: avoid }
 .eve-report h2.how { font-size: 13pt; color: ${BRAND.red}; font-style: italic; margin-top: 8pt }
 .eve-report h3 { font-size: 13pt; color: ${BRAND.red}; font-style: italic; margin: 16pt 0 6pt; break-after: avoid }
