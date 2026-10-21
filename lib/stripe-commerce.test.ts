@@ -4,6 +4,7 @@ import { FALLBACK_PRODUCT } from "./commerce";
 import {
   checkoutCouponSpec,
   checkoutDiscount,
+  creditToApplyToNextInstallment,
   incrementSuccessfulInstallments,
   publicCheckoutError,
   shouldCountSubscriptionInstallment,
@@ -36,6 +37,23 @@ test("plan referral is baked into each invoice amount rather than a repeating co
   });
   assert.equal(spec.coupon, null);
   assert.equal(spec.applyCreditAsBalance, false);
+});
+
+test("plan course credit without a friend's code is a once-off coupon on the first payment", () => {
+  const spec = checkoutCouponSpec({
+    option: "plan_6",
+    product: FALLBACK_PRODUCT,
+    creditCents: 3270,
+  });
+  assert.equal(spec.coupon?.amount_off, 3270);
+  assert.equal(spec.coupon?.duration, "once");
+  assert.equal(spec.applyCreditAsBalance, false);
+});
+
+test("referral credit comes off the next instalment in full, never split across later months", () => {
+  assert.equal(creditToApplyToNextInstallment([3270], 6000), 3270);
+  assert.equal(creditToApplyToNextInstallment([3270, 3270], 6000), 3270);
+  assert.equal(creditToApplyToNextInstallment([3270], 0), 0);
 });
 
 test("plan referral plus course credit applies credit as customer balance on instalment 1", () => {

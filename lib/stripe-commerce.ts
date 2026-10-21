@@ -151,7 +151,9 @@ export async function markRewardsApplied(userId: string, amountCents: number) {
   let remaining = amountCents;
   for (const row of data || []) {
     if (remaining <= 0) break;
-    remaining -= Number(row.amount_cents || 0);
+    const amount = Number(row.amount_cents || 0);
+    if (amount <= 0 || amount > remaining) break;
+    remaining -= amount;
     await client.from("referral_rewards").update({ status: "applied", updated_at: new Date().toISOString() }).eq("id", row.id);
     await client.from("referral_ledger").insert({
       user_id: userId,
@@ -234,7 +236,54 @@ export async function earnReferralReward(params: {
       amount_cents: amount,
       note: "Qualifying referred purchase",
     });
+    await applyEarnedCreditToOpenPlan(String(payload.referrer_user_id));
   }
+}
+
+export async function applyEarnedCreditToOpenPlan(userId: string) {
+  const client = getServiceSupabase();
+  if (!client) return 0;
+  const { data: purchase } = await client
+    .from("course_purchases")
+    .select("id, stripe_customer_id")
+    .eq("user_id", userId)
+    .eq("option", "plan_6")
+    .in("status", ["active", "past_due"])
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (!purchase?.stripe_customer_id) return 0;
+  const { data: due } = await client
+    .from("course_purchase_installments")
+    .select("amount_cents")
+    .eq("purchase_id", purchase.id)
+    .in("status", ["pending", "draft", "failed"])
+    .order("installment_number", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  const nextInstallmentCents = Number(due?.amount_cents || 0);
+  const withKind = await client
+    .from("referral_rewards")
+    .select("amount_cents, status, payout_kind")
+    .eq("referrer_user_id", userId)
+    .eq("status", "earned")
+    .order("created_at", { ascending: true });
+  const earned = (withKind.error
+    ? ((await client.from("referral_rewards").select("amount_cents, status").eq("referrer_user_id", userId).eq("status", "earned")).data || [])
+    : withKind.data || []
+  )
+    .filter((row) => String((row as { payout_kind?: string }).payout_kind || "credit") !== "external")
+    .map((row) => Number(row.amount_cents || 0));
+  const apply = creditToApplyToNextInstallment(earned, nextInstallmentCents);
+  if (apply <= 0) return 0;
+  const stripe = getStripe();
+  await stripe.customers.createBalanceTransaction(String(purchase.stripe_customer_id), {
+    amount: -apply,
+    currency: "usd",
+    description: "Referral course credit",
+  });
+  await markRewardsApplied(userId, apply);
+  return apply;
 }
 
 export async function reverseUnredeemedRewards(purchaseId: string) {
@@ -359,6 +408,19 @@ export function checkoutCouponSpec(params: {
     };
   }
   return { coupon: null, applyCreditAsBalance: false };
+}
+
+/** Whole rewards only, on the next instalment. Never spread one reward across later months. */
+export function creditToApplyToNextInstallment(earnedAmounts: number[], installmentCents: number): number {
+  if (installmentCents <= 0) return 0;
+  let sum = 0;
+  for (const amount of earnedAmounts) {
+    const value = Number(amount || 0);
+    if (value <= 0) continue;
+    if (sum + value > installmentCents) break;
+    sum += value;
+  }
+  return sum;
 }
 
 export function shouldCountSubscriptionInstallment(invoice: {
