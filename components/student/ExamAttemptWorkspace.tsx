@@ -9,7 +9,6 @@ import {
   EXAM_ATTEMPT_SCRIPT_KINDS,
   EXAM_SCRIPT_ONCE_WARNING,
   EXAM_SCRIPT_SCAN_NOTE,
-  attemptDisplayTitle,
   attemptHasAllRequiredFiles,
   attemptHasFile,
   attemptScriptSlotLocked,
@@ -172,33 +171,33 @@ export default function ExamAttemptWorkspace() {
         <Link href="/student/evaluator">← Script evaluator</Link>
       </p>
       <p className="kicker">Exam attempt</p>
-      <h1>{attemptDisplayTitle(attempt)}</h1>
+      <h1>{attempt.sitting_label}</h1>
       <p className="muted">
-        {attempt.exam_body} · {attempt.sitting_label}. Upload the completed sitting BMCR, all three exam scripts, and
-        the marking report for this sitting.
+        Upload the completed BMCR, all three paper scripts and your marking report from SAICA.
+      </p>
+      <p>
+        <strong>{EXAM_SCRIPT_ONCE_WARNING}</strong>
       </p>
 
       <section className="eval-upload-block">
-        <h2>Sitting BMCR</h2>
-        <p>
-          Reprint the one sitting worksheet if you still need it. You do the What I got / Basic Marks / % I could&apos;ve
-          earned arithmetic yourself.
-        </p>
-        <p>
+        <p className="eval-bmcr-print-row">
+          <span>Print the BMCR here if you haven&apos;t already</span>
           <Link className="eval-secondary" href={worksheetHref(attempt.sitting_id, `/student/evaluator/attempt/${attempt.id}`)}>
-            Reprint sitting BMCR
+            BMCR
           </Link>
         </p>
       </section>
 
       <section className="eval-upload-block">
-        <h2>Upload the sitting PDFs</h2>
+        <h2>Upload the PDFs</h2>
         <p>Each file is stored against this attempt only. A PDF sitting in storage is not treated as analysed.</p>
         <div className="eval-upload-grid">
           <label className={`eval-upload-card${attemptHasFile(attempt, "bmcr_worksheet") ? " is-ready" : ""}`}>
             <span className="eval-upload-letter">A</span>
-            <strong>{EXAM_ATTEMPT_FILE_LABELS.bmcr_worksheet}</strong>
-            <p className="muted small">The completed sitting BMCR — one handwritten sheet covers all three papers.</p>
+            <p>
+              Upload the completed BMCR for all three papers (Use the BMCR worksheet, and either type or write your
+              amounts)
+            </p>
             <HiddenPdfPicker
               disabled={Boolean(busyKind)}
               busy={busyKind === "bmcr_worksheet"}
@@ -251,8 +250,6 @@ export default function ExamAttemptWorkspace() {
       </section>
 
       {error ? <p className="notice">{error}</p> : null}
-
-      {scriptsReady ? <p className="notice eval-script-once-warning">{EXAM_SCRIPT_ONCE_WARNING}</p> : null}
 
       <p>
         <button type="button" className="primary" disabled={!ready || submitting} onClick={onSubmit}>

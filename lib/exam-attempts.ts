@@ -92,7 +92,7 @@ export const EXAM_ATTEMPT_SQL_HINT =
   "Paste supabase/exam-attempts.sql in the Supabase SQL editor, then try again.";
 
 export const EXAM_SCRIPT_ONCE_WARNING =
-  "Before you click submit, please ensure you've uploaded the correct documents. You can only submit an exam script once, so make sure that ALL the pages are there, and that you have the correct documents. You cannot 'redo' the submission.";
+  "Please note that you can only submit this paper once, so make sure that your pdf's are correct. You cannot resubmit this.";
 
 export const EXAM_SCRIPT_SCAN_NOTE =
   "Please make sure you scan EVERY page of your scripts, INCLUDING BLANK PAGES, as the system follows the page numbers to ensure no information is missing.";

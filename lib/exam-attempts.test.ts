@@ -106,8 +106,13 @@ test("a successfully uploaded script cannot be replaced, and the one-shot warnin
   const lib = readFileSync(resolve("lib/exam-attempts.ts"), "utf8");
   assert.match(workspace, /EXAM_SCRIPT_SCAN_NOTE/);
   assert.match(workspace, /EXAM_SCRIPT_ONCE_WARNING/);
+  assert.match(workspace, /attempt\.sitting_label/);
+  assert.doesNotMatch(workspace, /All three papers/);
+  assert.match(workspace, /Print the BMCR here if you haven/);
+  assert.match(workspace, /eval-secondary[\s\S]*BMCR/);
+  assert.doesNotMatch(workspace, /Completed BMCR worksheet/);
   assert.match(workspace, /attemptScriptSlotLocked/);
   assert.match(lib, /This paper is already uploaded/);
   assert.match(EXAM_SCRIPT_SCAN_NOTE, /INCLUDING BLANK PAGES/);
-  assert.match(EXAM_SCRIPT_ONCE_WARNING, /cannot 'redo' the submission/);
+  assert.match(EXAM_SCRIPT_ONCE_WARNING, /cannot resubmit this/);
 });

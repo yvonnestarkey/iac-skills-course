@@ -6646,6 +6646,14 @@ a.live-session-watch:hover {
   margin-top: 8px;
 }
 
+.eval-bmcr-print-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+
 .eval-upload-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
