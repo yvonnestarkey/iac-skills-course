@@ -2001,6 +2001,45 @@ input[type="tel"]:focus {
   margin-bottom: 14px;
 }
 
+.coach-tool-toggle {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.coach-tool.open .coach-tool-toggle {
+  margin-bottom: 14px;
+}
+
+.coach-tool-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.coach-tool-toggle h2 {
+  margin: 0 0 2px;
+}
+
+.coach-tool-toggle p {
+  margin: 0;
+}
+
+.coach-tool-chevron {
+  flex: 0 0 auto;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--muted);
+}
+
 .fact-list {
   margin: 0;
   display: grid;

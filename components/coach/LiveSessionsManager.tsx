@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import CoachToolPanel from "@/components/coach/CoachToolPanel";
 import {
   deleteLiveSession,
   emptyLiveSessionWrite,
@@ -65,6 +66,7 @@ export default function LiveSessionsManager() {
   const [status, setStatus] = useState<{ kind: "ok" | "warn"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const load = async () => {
     const listed = await listLiveSessions();
@@ -142,16 +144,13 @@ export default function LiveSessionsManager() {
   const editing = Boolean(form.id);
 
   return (
-    <section className="card live-session-manager">
-      <div className="panel-head">
-        <div>
-          <h2>Live sessions</h2>
-          <p className="muted small">
-            Add an upcoming Zoom link with the date and time (SAST). After the session, edit it to add the recording,
-            summary notes, and scribbles — the same fields as 22 September.
-          </p>
-        </div>
-      </div>
+    <CoachToolPanel
+      title="Live sessions"
+      description="Add an upcoming Zoom link with the date and time (SAST). After the session, edit it to add the recording, summary notes, and scribbles — the same fields as 22 September."
+      open={open}
+      onToggle={() => setOpen((current) => !current)}
+    >
+      <div className="live-session-manager">
       {status ? <div className={status.kind === "ok" ? "notice" : "waiting"}>{status.text}</div> : null}
 
       <div className="profile-grid">
@@ -300,6 +299,7 @@ export default function LiveSessionsManager() {
           </ul>
         </div>
       </div>
-    </section>
+      </div>
+    </CoachToolPanel>
   );
 }

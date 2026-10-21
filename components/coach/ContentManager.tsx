@@ -28,6 +28,7 @@ import { useStore } from "@/lib/store";
 import type { Chapter, Lesson } from "@/lib/types";
 import { fetchCustomSurveys, insertIndexAfterLesson, SURVEY_PLACE_END, SURVEY_PLACE_START, type CustomSurvey } from "@/lib/custom-surveys";
 import { invalidateCourseOutline } from "@/lib/student-lesson";
+import CoachToolPanel from "@/components/coach/CoachToolPanel";
 import CourseOutlineBoard from "@/components/coach/CourseOutlineBoard";
 
 const BLANK = {
@@ -75,6 +76,11 @@ export default function ContentManager() {
   const [board, setBoard] = useState<ManagedChapter[]>([]);
   const [boardReady, setBoardReady] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [openTools, setOpenTools] = useState<Partial<Record<"admin" | "lesson" | "csv" | "outline", boolean>>>({});
+
+  const toggleTool = (id: "admin" | "lesson" | "csv" | "outline") => {
+    setOpenTools((current) => ({ ...current, [id]: !current[id] }));
+  };
 
   const loadBoard = async () => {
     const result = await fetchManagedCourse();
@@ -282,6 +288,10 @@ export default function ContentManager() {
       afterLessonId: SURVEY_PLACE_END,
     });
     setStatus({ kind: "ok", text: `Editing “${lesson.title}”.` });
+    setOpenTools((current) => ({ ...current, lesson: true }));
+    window.setTimeout(() => {
+      document.getElementById("builder-lesson-tool")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 0);
   };
 
   const saveEdit = async () => {
@@ -355,19 +365,18 @@ export default function ContentManager() {
 
   return (
     <>
-      <section className="card">
-        <div className="panel-head">
-          <div>
-            <h2>Admin Content Manager</h2>
-            <p className="muted small">
-              Add lessons by hand or import a CSV. Anything you add appears in the student sidebar straight away.
-            </p>
-          </div>
+      {status ? <div className={status.kind === "ok" ? "notice" : "waiting"}>{status.text}</div> : null}
+      <CoachToolPanel
+        title="Admin Content Manager"
+        description="Test the database, load live lessons, and download the CSV template. Anything you add appears in the student sidebar straight away."
+        open={Boolean(openTools.admin)}
+        onToggle={() => toggleTool("admin")}
+        badge={
           <span className={`badge ${supabaseConfigured ? "ok" : "warn"}`}>
             {supabaseConfigured ? `Supabase · ${supabaseProjectRef}` : "Supabase not configured"}
           </span>
-        </div>
-        {status ? <div className={status.kind === "ok" ? "notice" : "waiting"}>{status.text}</div> : null}
+        }
+      >
         <div className="actions">
           <button className="ghost" onClick={testConnection} disabled={busy}>
             Test connection
@@ -388,11 +397,15 @@ export default function ContentManager() {
             Also save to Supabase
           </label>
         </div>
-      </section>
+      </CoachToolPanel>
 
-      <div className="profile-grid">
-        <section className="card">
-          <h2>{editingId ? "Edit lesson" : "Add a lesson"}</h2>
+      <CoachToolPanel
+        id="builder-lesson-tool"
+        title={editingId ? "Edit lesson" : "Add a lesson"}
+        description="Create or edit one lesson by hand."
+        open={Boolean(openTools.lesson)}
+        onToggle={() => toggleTool("lesson")}
+      >
           <div className="plan-field">
             <label htmlFor="cm-chapter">
               <strong>Chapter</strong>
@@ -666,14 +679,14 @@ export default function ContentManager() {
               </button>
             ) : null}
           </div>
-        </section>
+      </CoachToolPanel>
 
-        <section className="card">
-          <h2>Import CSV</h2>
-          <p className="muted small">
-            Header row required. Columns: {CSV_COLUMNS.join(", ")}. Use a pipe (|) to separate paragraphs and
-            takeaways inside one cell.
-          </p>
+      <CoachToolPanel
+        title="Import CSV"
+        description={`Header row required. Columns: ${CSV_COLUMNS.join(", ")}. Use a pipe (|) to separate paragraphs and takeaways inside one cell.`}
+        open={Boolean(openTools.csv)}
+        onToggle={() => toggleTool("csv")}
+      >
           <label className="dropzone" htmlFor="cm-csv-file">
             <strong>Choose a CSV file</strong>
             <span className="muted small">or paste the rows below</span>
@@ -738,19 +751,14 @@ export default function ContentManager() {
               )}
             </>
           ) : null}
-        </section>
-      </div>
+      </CoachToolPanel>
 
-      <section className="card">
-        <div className="panel-head">
-          <div>
-            <h2>Course content</h2>
-            <p className="muted small">
-              Duplicate a lesson to clone its video, reading, survey, and banner. Drag to reorder, or move it to another
-              chapter.
-            </p>
-          </div>
-        </div>
+      <CoachToolPanel
+        title="Course content"
+        description="Duplicate a lesson to clone its video, reading, survey, and banner. Drag to reorder, or move it to another chapter."
+        open={Boolean(openTools.outline)}
+        onToggle={() => toggleTool("outline")}
+      >
         {board.length ? (
           <CourseOutlineBoard
             chapters={board}
@@ -766,7 +774,7 @@ export default function ContentManager() {
         ) : (
           <p className="empty">Load lessons from Supabase to duplicate, drag, and edit the live course outline.</p>
         )}
-      </section>
+      </CoachToolPanel>
     </>
   );
 }
