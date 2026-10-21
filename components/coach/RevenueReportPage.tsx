@@ -278,7 +278,7 @@ export default function RevenueReportPage() {
         <section className="card">
           <div className="revenue-no-print">
             <h2>Student statements</h2>
-            <p className="muted small">Open a student to print or save their statement.</p>
+            <p className="muted small">Open a student on their row to print or save their statement.</p>
           </div>
           <table className="data-table roster">
             <thead className="revenue-no-print">
