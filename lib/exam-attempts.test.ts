@@ -3,7 +3,11 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { test } from "node:test";
 import {
+  EXAM_SCRIPT_ALREADY_UPLOADED,
+  EXAM_SCRIPT_ONCE_WARNING,
+  EXAM_SCRIPT_SCAN_NOTE,
   attemptPaperName,
+  attemptScriptSlotLocked,
   attemptStatusLabel,
   attemptStudentLabel,
   deriveAttemptStatus,
@@ -90,4 +94,20 @@ test("students upload Paper 1, Paper 2 and Paper 3 on one sitting attempt", () =
   assert.doesNotMatch(start, /Which paper/);
   assert.match(sql, /marked_script_p2/);
   assert.match(sql, /marked_script_p3/);
+});
+
+test("a successfully uploaded script cannot be replaced, and the one-shot warning is on the page", () => {
+  const locked = attempt({ marked_script_url: "https://x/p1.pdf", marked_script_path: "p1.pdf" });
+  assert.equal(attemptScriptSlotLocked(locked, "marked_script"), true);
+  assert.equal(attemptScriptSlotLocked(locked, "marked_script_p2"), false);
+  assert.equal(attemptScriptSlotLocked(attempt(), "bmcr_worksheet"), false);
+  assert.equal(EXAM_SCRIPT_ALREADY_UPLOADED.includes("already uploaded"), true);
+  const workspace = readFileSync(resolve("components/student/ExamAttemptWorkspace.tsx"), "utf8");
+  const lib = readFileSync(resolve("lib/exam-attempts.ts"), "utf8");
+  assert.match(workspace, /EXAM_SCRIPT_SCAN_NOTE/);
+  assert.match(workspace, /EXAM_SCRIPT_ONCE_WARNING/);
+  assert.match(workspace, /attemptScriptSlotLocked/);
+  assert.match(lib, /This paper is already uploaded/);
+  assert.match(EXAM_SCRIPT_SCAN_NOTE, /INCLUDING BLANK PAGES/);
+  assert.match(EXAM_SCRIPT_ONCE_WARNING, /cannot 'redo' the submission/);
 });

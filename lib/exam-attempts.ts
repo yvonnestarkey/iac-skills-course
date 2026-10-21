@@ -91,6 +91,15 @@ export const EXAM_ATTEMPT_SCRIPT_PAPERS_SQL =
 export const EXAM_ATTEMPT_SQL_HINT =
   "Paste supabase/exam-attempts.sql in the Supabase SQL editor, then try again.";
 
+export const EXAM_SCRIPT_ONCE_WARNING =
+  "Before you click submit, please ensure you've uploaded the correct documents. You can only submit an exam script once, so make sure that ALL the pages are there, and that you have the correct documents. You cannot 'redo' the submission.";
+
+export const EXAM_SCRIPT_SCAN_NOTE =
+  "Please make sure you scan EVERY page of your scripts, INCLUDING BLANK PAGES, as the system follows the page numbers to ensure no information is missing.";
+
+export const EXAM_SCRIPT_ALREADY_UPLOADED =
+  "This paper is already uploaded. You can only submit each exam script once.";
+
 const TERMINAL_STATUSES: ExamAttemptStatus[] = [
   "analysing",
   "evidence_ready",
@@ -112,6 +121,10 @@ export function examAttemptTableError(message: string): string {
 
 export function attemptHasFile(attempt: ExamAttempt, kind: ExamAttemptFileKind): boolean {
   return Boolean(attempt[`${kind}_url`] || attempt[`${kind}_path`]);
+}
+
+export function attemptScriptSlotLocked(attempt: ExamAttempt, kind: ExamAttemptFileKind): boolean {
+  return EXAM_ATTEMPT_SCRIPT_KINDS.includes(kind) && attemptHasFile(attempt, kind);
 }
 
 export function attemptFileCount(attempt: ExamAttempt): number {
@@ -360,18 +373,16 @@ export async function createExamAttempt(input: {
   }
   const wholeExam = !input.paperId;
   if (wholeExam) {
-    // One open attempt per sitting: clicking "Start an exam attempt" again picks up the unfinished one instead of
-    // adding another card (Yvonne, 20 Oct 2026).
-    const { data: open } = await client
+    // One attempt per sitting: an unfinished upload is reused, and a submitted sitting cannot be started again.
+    const { data: existing } = await client
       .from("exam_attempts")
       .select("*")
       .eq("user_id", input.userId)
       .eq("sitting_id", mapped.sitting.id)
-      .in("status", ["started", "awaiting_documents", "ready_to_submit"])
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    if (open) return { ok: true, attempt: examAttemptFromRow(open as JsonRow) };
+    if (existing) return { ok: true, attempt: examAttemptFromRow(existing as JsonRow) };
   }
   const now = new Date().toISOString();
   const { data: session } = await client.auth.getUser();
@@ -436,6 +447,16 @@ export async function uploadExamAttemptFile(input: {
   if (!isPdfFile(input.file)) return { ok: false, error: "Please upload a PDF file." };
 
   const ownerId = session.user.id || input.userId;
+  const existing = await fetchExamAttempt(ownerId, input.attemptId);
+  if (existing.ok === false) return { ok: false, error: existing.error };
+  if (!existing.attempt) return { ok: false, error: "That exam attempt was not found." };
+  if (isAttemptSubmitted(existing.attempt.status)) {
+    return { ok: false, error: "This attempt is already submitted. Start a new exam attempt for another sitting." };
+  }
+  if (attemptScriptSlotLocked(existing.attempt, input.kind)) {
+    return { ok: false, error: EXAM_SCRIPT_ALREADY_UPLOADED };
+  }
+
   const safeName = input.file.name.replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || `${input.kind}.pdf`;
   const stamp = Date.now();
   const path = `exam-attempts/${ownerId}/${input.attemptId}/${input.kind}/${stamp}-${safeName}`;
@@ -446,13 +467,6 @@ export async function uploadExamAttemptFile(input: {
   if (uploaded.error) return { ok: false, error: storageUploadError(uploaded.error.message) };
   const { data: publicFile } = client.storage.from("course-pdfs").getPublicUrl(path);
   if (!publicFile?.publicUrl) return { ok: false, error: "Could not get a URL for that file." };
-
-  const existing = await fetchExamAttempt(ownerId, input.attemptId);
-  if (existing.ok === false) return { ok: false, error: existing.error };
-  if (!existing.attempt) return { ok: false, error: "That exam attempt was not found." };
-  if (isAttemptSubmitted(existing.attempt.status)) {
-    return { ok: false, error: "This attempt is already submitted. Start a new exam attempt for another script." };
-  }
 
   const pageImages = { ...existing.attempt.page_images };
   if (input.pageImages?.length) {
@@ -494,17 +508,7 @@ export async function uploadExamAttemptFile(input: {
     }
     return { ok: false, error: examAttemptTableError(error?.message || "Could not attach that file.") };
   }
-  const attempt = examAttemptFromRow(data as JsonRow);
-  if (input.kind === "marked_script" && attempt.marked_script_url) {
-    void requestScriptEvaluation({
-      fileUrl: attempt.marked_script_url,
-      paperName: attemptPaperName(attempt),
-      userId: ownerId,
-      attemptId: attempt.id,
-      pageImageUrls: (attempt.page_images.marked_script || []).map((page) => page.url).filter(Boolean),
-    });
-  }
-  return { ok: true, attempt };
+  return { ok: true, attempt: examAttemptFromRow(data as JsonRow) };
 }
 
 export async function markAttemptAnalysing(

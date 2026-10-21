@@ -10,7 +10,7 @@ import {
   requestScriptEvaluation,
 } from "@/lib/exam-attempts";
 import { newEvaluatorApplies } from "@/lib/evaluator/job-rules";
-import { createJobsForAttempt, getEvaluatorMode, kickJob } from "@/lib/evaluator/jobs";
+import { createJobsForAttempt, getEvaluatorMode, jobsForAttempt, kickJob } from "@/lib/evaluator/jobs";
 import { isEvaluatorReadySitting } from "@/lib/evaluator/ready-sittings";
 import { isCoachAccount } from "@/lib/roles";
 import { STAFF_TEST_ATTEMPT_SOURCE } from "@/lib/staff-access";
@@ -83,6 +83,11 @@ export async function POST(
 
   // The new evaluator takes whole-sitting uploads for sittings it has Question Models for, for the accounts the
   // switch allows (Coach tools > Script Evaluator reports). Everything else keeps the old evaluator for now.
+  const existingJobs = await jobsForAttempt(id).catch(() => []);
+  if (existingJobs.length) {
+    return NextResponse.json({ ok: true, status: attempt.status, alreadySubmitted: true });
+  }
+
   const useNewEvaluator = newEvaluatorApplies({
     mode: await getEvaluatorMode(),
     sittingReady: isEvaluatorReadySitting(attempt.sitting_id),

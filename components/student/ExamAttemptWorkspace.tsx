@@ -7,9 +7,12 @@ import { worksheetHref } from "@/lib/bmcr-worksheet";
 import {
   EXAM_ATTEMPT_FILE_LABELS,
   EXAM_ATTEMPT_SCRIPT_KINDS,
+  EXAM_SCRIPT_ONCE_WARNING,
+  EXAM_SCRIPT_SCAN_NOTE,
   attemptDisplayTitle,
   attemptHasAllRequiredFiles,
   attemptHasFile,
+  attemptScriptSlotLocked,
   fetchExamAttempt,
   isAttemptSubmitted,
   markAttemptAnalysing,
@@ -100,6 +103,10 @@ export default function ExamAttemptWorkspace() {
 
   async function onUpload(kind: ExamAttemptFileKind, file: File | undefined) {
     if (!file || !user?.id || !attempt) return;
+    if (attemptScriptSlotLocked(attempt, kind)) {
+      setError("This paper is already uploaded. You can only submit each exam script once.");
+      return;
+    }
     setBusyKind(kind);
     setError("");
     let pageImages: { page: number; blob: Blob }[] = [];
@@ -204,18 +211,28 @@ export default function ExamAttemptWorkspace() {
             <span className="eval-upload-letter">B</span>
             <strong>Exam script</strong>
             <p className="muted small">Upload Paper 1, Paper 2 and Paper 3 as separate PDFs for this sitting.</p>
+            <p>
+              <strong>{EXAM_SCRIPT_SCAN_NOTE}</strong>
+            </p>
             <div className="eval-script-slots">
-              {EXAM_ATTEMPT_SCRIPT_KINDS.map((kind) => (
-                <div key={kind} className="eval-script-slot">
-                  <span className="eval-script-slot-label">{EXAM_ATTEMPT_FILE_LABELS[kind]}</span>
-                  <HiddenPdfPicker
-                    disabled={Boolean(busyKind)}
-                    busy={busyKind === kind}
-                    onPick={(file) => void onUpload(kind, file)}
-                  />
-                  <UploadStatus attempt={attempt} kind={kind} busy={busyKind === kind} />
-                </div>
-              ))}
+              {EXAM_ATTEMPT_SCRIPT_KINDS.map((kind) => {
+                const locked = attemptScriptSlotLocked(attempt, kind);
+                return (
+                  <div key={kind} className="eval-script-slot">
+                    <span className="eval-script-slot-label">{EXAM_ATTEMPT_FILE_LABELS[kind]}</span>
+                    {locked ? (
+                      <p className="muted small">Uploaded — this paper cannot be replaced.</p>
+                    ) : (
+                      <HiddenPdfPicker
+                        disabled={Boolean(busyKind)}
+                        busy={busyKind === kind}
+                        onPick={(file) => void onUpload(kind, file)}
+                      />
+                    )}
+                    <UploadStatus attempt={attempt} kind={kind} busy={busyKind === kind} />
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -234,6 +251,8 @@ export default function ExamAttemptWorkspace() {
       </section>
 
       {error ? <p className="notice">{error}</p> : null}
+
+      {scriptsReady ? <p className="notice eval-script-once-warning">{EXAM_SCRIPT_ONCE_WARNING}</p> : null}
 
       <p>
         <button type="button" className="primary" disabled={!ready || submitting} onClick={onSubmit}>
