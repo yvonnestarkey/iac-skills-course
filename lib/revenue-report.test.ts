@@ -3,6 +3,8 @@ import test from "node:test";
 import {
   buildRevenueMonthRows,
   buildRevenueStatements,
+  excludeTestStudents,
+  isTestStudentEmail,
   sortRevenueRows,
   totalRevenueRow,
 } from "./revenue-report";
@@ -207,4 +209,45 @@ test("sort and cohort total keep month rows and a pinned total", () => {
   assert.equal(total.month, "total");
   assert.equal(total.paying_students, 3);
   assert.equal(total.cash_cents, 44100);
+});
+
+test("emails containing @test are dropped from revenue", () => {
+  assert.equal(isTestStudentEmail("ada@test.com"), true);
+  assert.equal(isTestStudentEmail("ada@Test.local"), true);
+  assert.equal(isTestStudentEmail("ada@example.com"), false);
+  const live = excludeTestStudents({
+    purchases: [
+      {
+        id: "real",
+        user_id: "u1",
+        option: "once_off",
+        status: "active",
+        amount_cents: 32700,
+        created_at: "2026-09-03T08:00:00.000Z",
+      },
+      {
+        id: "fake",
+        user_id: "u2",
+        option: "once_off",
+        status: "active",
+        amount_cents: 32700,
+        student_email: "script@test.com",
+        created_at: "2026-09-04T08:00:00.000Z",
+      },
+    ],
+    installments: [],
+    rewards: [
+      { id: "r1", referrer_user_id: "u2", amount_cents: 3270, status: "earned", created_at: "2026-09-04T08:00:00.000Z" },
+    ],
+    profiles: [
+      { id: "u1", email: "ada@example.com" },
+      { id: "u2", email: "script@test.com" },
+    ],
+  });
+  assert.equal(live.purchases.length, 1);
+  assert.equal(live.purchases[0].user_id, "u1");
+  assert.equal(live.rewards.length, 0);
+  const rows = buildRevenueMonthRows(live);
+  assert.equal(rows[0].sales_cents, 32700);
+  assert.equal(rows[0].paying_students, 1);
 });

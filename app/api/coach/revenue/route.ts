@@ -3,6 +3,7 @@ import { getRequestUser, isStaffUser } from "@/lib/auth-server";
 import {
   buildRevenueMonthRows,
   buildRevenueStatements,
+  excludeTestStudents,
   totalRevenueRow,
 } from "@/lib/revenue-report";
 import { getServiceSupabase } from "@/lib/supabase-admin";
@@ -67,19 +68,16 @@ export async function GET() {
       : []) ||
     [];
 
-  const months = buildRevenueMonthRows({
-    purchases,
-    installments,
-    rewards,
-  });
-  const statements = buildRevenueStatements({
+  const live = excludeTestStudents({
     purchases,
     installments,
     rewards,
     profiles: profiles || [],
   });
+  const months = buildRevenueMonthRows(live);
+  const statements = buildRevenueStatements(live);
   const payingStudents = new Set(
-    purchases.filter((row) => ["pending", "active", "past_due"].includes(String(row.status))).map((row) => asText(row.user_id))
+    live.purchases.filter((row) => ["active", "past_due"].includes(String(row.status))).map((row) => asText(row.user_id))
   );
 
   return NextResponse.json({

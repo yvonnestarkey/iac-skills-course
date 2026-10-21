@@ -119,6 +119,36 @@ const DUE_REFERRAL = new Set(["pending", "earned", "refund_due"]);
 /** Live checkout stores the full plan total (e.g. $360). Older rows may store one instalment. */
 const PLAN_MONTHLY_AMOUNT_CEILING_CENTS = 10_000;
 
+export function isTestStudentEmail(email?: string | null): boolean {
+  return String(email || "").toLowerCase().includes("@test");
+}
+
+export function testStudentUserIds(input: { profiles?: RevenueProfile[]; purchases?: RevenuePurchase[] }): Set<string> {
+  const ids = new Set<string>();
+  (input.profiles || []).forEach((row) => {
+    if (isTestStudentEmail(row.email)) ids.add(row.id);
+  });
+  (input.purchases || []).forEach((row) => {
+    if (isTestStudentEmail(row.student_email)) ids.add(row.user_id);
+  });
+  return ids;
+}
+
+export function excludeTestStudents<T extends { purchases: RevenuePurchase[]; installments: RevenueInstallment[]; rewards: RevenueReward[] }>(
+  input: T & { profiles?: RevenueProfile[] }
+): T & { profiles: RevenueProfile[] } {
+  const skip = testStudentUserIds(input);
+  const purchases = input.purchases.filter((row) => !skip.has(row.user_id));
+  const purchaseIds = new Set(purchases.map((row) => row.id));
+  return {
+    ...input,
+    purchases,
+    installments: input.installments.filter((row) => purchaseIds.has(row.purchase_id)),
+    rewards: input.rewards.filter((row) => !skip.has(row.referrer_user_id || "") && !skip.has(row.referee_user_id || "")),
+    profiles: (input.profiles || []).filter((row) => !skip.has(row.id)),
+  };
+}
+
 export function sastMonthKey(value: string | Date | null | undefined): string | null {
   const date = isoToSastDateAndTime(value).date;
   return date ? date.slice(0, 7) : null;

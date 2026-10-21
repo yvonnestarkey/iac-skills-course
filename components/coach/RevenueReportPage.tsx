@@ -133,7 +133,7 @@ export default function RevenueReportPage() {
         <p className="muted">
           Only completed purchases count, not abandoned checkouts. Sales is the course price they bought — $327 once-off
           or $360 / $342 on the plan, not six times the plan total. Cash is the money due that SAST month. Click a month
-          to see the lines behind the totals.
+          to see the lines behind the totals. Addresses containing @test are left out.
         </p>
         {error ? <p className="student-auth-error">{error}</p> : null}
         {!data && !error ? <p className="empty">Loading revenue…</p> : null}
