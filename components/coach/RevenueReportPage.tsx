@@ -26,7 +26,7 @@ type Payload = {
 
 const SORT_LABELS: { key: RevenueSortKey; label: string }[] = [
   { key: "month", label: "Month" },
-  { key: "paying_students", label: "Students" },
+  { key: "paying_students", label: "Enrolments" },
   { key: "sales_cents", label: "Sales" },
   { key: "installments_paid_cents", label: "Instalments paid" },
   { key: "installments_due_cents", label: "Instalments due" },
@@ -98,12 +98,9 @@ export default function RevenueReportPage() {
   }, [data, cohort, month, search]);
 
   const monthRows = useMemo(() => {
-    const paying = new Set(
-      statements.filter((row) => ["pending", "active", "past_due"].includes(row.purchase_status)).map((row) => row.user_id)
-    ).size;
     const source = rollupRevenueMonthRows(statements.flatMap((row) => row.month_rows || []));
     const filtered = month === "all" ? source : source.filter((row) => row.month === month);
-    return sortRevenueRows(filtered, sortKey, sortDir).concat(filtered.length ? [totalRevenueRow(filtered, paying)] : []);
+    return sortRevenueRows(filtered, sortKey, sortDir).concat(filtered.length ? [totalRevenueRow(filtered)] : []);
   }, [statements, month, sortKey, sortDir]);
 
   const open = statements.find((row) => row.user_id === openId) || null;
@@ -133,9 +130,9 @@ export default function RevenueReportPage() {
         <p className="kicker">Coach tools</p>
         <h1>Revenue</h1>
         <p className="muted">
-          Only completed purchases count, not abandoned checkouts. Sales is the course price they bought — $327 once-off
-          or $360 / $342 on the plan, not six times the plan total. Cash is the money due that SAST month. Click a month
-          to see the lines behind the totals. Addresses containing @test are left out.
+          Only completed purchases count, not abandoned checkouts. Enrolments is who bought that month — later instalment
+          months stay at 0, and the total is unique buyers, not 2 + 8. Sales is the course price they bought. Cash is the
+          money due that SAST month. Click a month to see the lines. Addresses containing @test are left out.
         </p>
         {error ? <p className="student-auth-error">{error}</p> : null}
         {!data && !error ? <p className="empty">Loading revenue…</p> : null}

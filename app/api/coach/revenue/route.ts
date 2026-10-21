@@ -77,13 +77,10 @@ export async function GET() {
   });
   const months = buildRevenueMonthRows(live);
   const statements = buildRevenueStatements(live).filter((row) => !isTestStudentEmail(row.email));
-  const payingStudents = new Set(
-    live.purchases.filter((row) => ["active", "past_due"].includes(String(row.status))).map((row) => asText(row.user_id))
-  );
 
   return NextResponse.json({
     months,
-    total: totalRevenueRow(months, payingStudents.size),
+    total: totalRevenueRow(months),
     statements,
   });
 }

@@ -7,6 +7,7 @@ import {
   isTestStudentEmail,
   sortRevenueRows,
   totalRevenueRow,
+  uniquePayingStudents,
 } from "./revenue-report";
 
 test("monthly cash follows scheduled instalments, not the contracted sale", () => {
@@ -209,6 +210,56 @@ test("sort and cohort total keep month rows and a pinned total", () => {
   assert.equal(total.month, "total");
   assert.equal(total.paying_students, 3);
   assert.equal(total.cash_cents, 44100);
+});
+
+test("cohort total counts unique buyers, not a referrer and not the sum of months", () => {
+  const statements = buildRevenueStatements({
+    purchases: [
+      {
+        id: "p1",
+        user_id: "u1",
+        option: "once_off",
+        status: "active",
+        amount_cents: 32700,
+        created_at: "2026-09-03T08:00:00.000Z",
+      },
+      {
+        id: "p2",
+        user_id: "u2",
+        option: "plan_6",
+        status: "active",
+        amount_cents: 36000,
+        successful_installments: 1,
+        created_at: "2026-10-02T10:00:00.000Z",
+      },
+      {
+        id: "pending",
+        user_id: "u3",
+        option: "once_off",
+        status: "pending",
+        amount_cents: 32700,
+        created_at: "2026-10-05T10:00:00.000Z",
+      },
+    ],
+    installments: [],
+    rewards: [
+      {
+        id: "r1",
+        referrer_user_id: "u3",
+        amount_cents: 3270,
+        status: "earned",
+        created_at: "2026-10-06T10:00:00.000Z",
+      },
+    ],
+    profiles: [
+      { id: "u1", email: "one@example.com" },
+      { id: "u2", email: "two@example.com" },
+      { id: "u3", email: "ref@example.com" },
+    ],
+  });
+  const months = statements.flatMap((row) => row.month_rows);
+  assert.equal(uniquePayingStudents(months), 2);
+  assert.equal(totalRevenueRow(months).paying_students, 2);
 });
 
 test("emails containing @test are dropped from revenue", () => {

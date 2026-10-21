@@ -59,6 +59,7 @@ export type RevenueProfile = {
 export type RevenueMonthRow = {
   month: string;
   paying_students: number;
+  paying_student_ids?: string[];
   sales_cents: number;
   installments_paid_cents: number;
   installments_due_cents: number;
@@ -295,6 +296,7 @@ export function buildRevenueMonthRows(input: {
     .map(([month, bucket]) => ({
       month,
       paying_students: bucket.payingStudentIds.size,
+      paying_student_ids: [...bucket.payingStudentIds],
       sales_cents: bucket.sales_cents,
       installments_paid_cents: bucket.installments_paid_cents,
       installments_due_cents: bucket.installments_due_cents,
@@ -304,11 +306,16 @@ export function buildRevenueMonthRows(input: {
     }));
 }
 
-export function totalRevenueRow(rows: RevenueMonthRow[], payingStudents: number): RevenueMonthRow {
+export function uniquePayingStudents(rows: RevenueMonthRow[]): number {
+  return new Set(rows.flatMap((row) => row.paying_student_ids || [])).size;
+}
+
+export function totalRevenueRow(rows: RevenueMonthRow[], payingStudents?: number): RevenueMonthRow {
+  const paying = payingStudents ?? uniquePayingStudents(rows);
   return rows.reduce(
     (total, row) => ({
       month: "total",
-      paying_students: payingStudents,
+      paying_students: paying,
       sales_cents: total.sales_cents + row.sales_cents,
       installments_paid_cents: total.installments_paid_cents + row.installments_paid_cents,
       installments_due_cents: total.installments_due_cents + row.installments_due_cents,
@@ -318,7 +325,7 @@ export function totalRevenueRow(rows: RevenueMonthRow[], payingStudents: number)
     }),
     {
       month: "total",
-      paying_students: payingStudents,
+      paying_students: paying,
       sales_cents: 0,
       installments_paid_cents: 0,
       installments_due_cents: 0,
@@ -335,6 +342,7 @@ export function rollupRevenueMonthRows(rows: RevenueMonthRow[]): RevenueMonthRow
     const current = months.get(row.month) || {
       month: row.month,
       paying_students: 0,
+      paying_student_ids: [],
       sales_cents: 0,
       installments_paid_cents: 0,
       installments_due_cents: 0,
@@ -342,7 +350,8 @@ export function rollupRevenueMonthRows(rows: RevenueMonthRow[]): RevenueMonthRow
       referrals_due_cents: 0,
       cash_cents: 0,
     };
-    current.paying_students += row.paying_students;
+    current.paying_student_ids = [...new Set([...(current.paying_student_ids || []), ...(row.paying_student_ids || [])])];
+    current.paying_students = current.paying_student_ids.length;
     current.sales_cents += row.sales_cents;
     current.installments_paid_cents += row.installments_paid_cents;
     current.installments_due_cents += row.installments_due_cents;
