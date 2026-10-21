@@ -4,6 +4,7 @@ import {
   buildRevenueMonthRows,
   buildRevenueStatements,
   excludeTestStudents,
+  isTestStudentEmail,
   totalRevenueRow,
 } from "@/lib/revenue-report";
 import { getServiceSupabase } from "@/lib/supabase-admin";
@@ -75,7 +76,7 @@ export async function GET() {
     profiles: profiles || [],
   });
   const months = buildRevenueMonthRows(live);
-  const statements = buildRevenueStatements(live);
+  const statements = buildRevenueStatements(live).filter((row) => !isTestStudentEmail(row.email));
   const payingStudents = new Set(
     live.purchases.filter((row) => ["active", "past_due"].includes(String(row.status))).map((row) => asText(row.user_id))
   );

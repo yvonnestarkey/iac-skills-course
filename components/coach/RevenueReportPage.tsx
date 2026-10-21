@@ -7,6 +7,7 @@ import { formatUsdCents } from "@/lib/format-money";
 import { MONTHS } from "@/lib/dates";
 import {
   contributionKindLabel,
+  isTestStudentEmail,
   optionLabel,
   rollupRevenueMonthRows,
   sortRevenueRows,
@@ -88,6 +89,7 @@ export default function RevenueReportPage() {
     if (!data) return [];
     const query = search.trim().toLowerCase();
     return data.statements.filter((row) => {
+      if (isTestStudentEmail(row.email)) return false;
       if (cohort !== "all" && normalizeCohortId(row.cohort) !== cohort) return false;
       if (month !== "all" && !row.months.includes(month)) return false;
       if (!query) return true;
