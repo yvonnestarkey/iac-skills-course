@@ -67,6 +67,25 @@ export type RevenueMonthRow = {
   cash_cents: number;
 };
 
+export type RevenueContributionKind =
+  | "sale"
+  | "installment_paid"
+  | "installment_due"
+  | "cash"
+  | "referral_paid"
+  | "referral_due";
+
+export type RevenueContribution = {
+  month: string;
+  user_id: string;
+  name?: string;
+  kind: RevenueContributionKind;
+  label: string;
+  status: string;
+  amount_cents: number;
+  date: string;
+};
+
 export type RevenueStatementLine = {
   date: string;
   label: string;
@@ -88,21 +107,25 @@ export type RevenueStatement = {
   referrals_due_cents: number;
   months: string[];
   month_rows: RevenueMonthRow[];
+  contributions: RevenueContribution[];
   lines: RevenueStatementLine[];
 };
 
-const LIVE_PURCHASE = new Set(["pending", "active", "past_due"]);
+/** Checkout started but not paid. Do not count as a sale or as cash due. */
+const COUNTED_PURCHASE = new Set(["active", "past_due"]);
 const DUE_INSTALLMENT = new Set(["pending", "draft", "failed"]);
 const PAID_REFERRAL = new Set(["applied"]);
 const DUE_REFERRAL = new Set(["pending", "earned", "refund_due"]);
+/** Live checkout stores the full plan total (e.g. $360). Older rows may store one instalment. */
+const PLAN_MONTHLY_AMOUNT_CEILING_CENTS = 10_000;
 
 export function sastMonthKey(value: string | Date | null | undefined): string | null {
   const date = isoToSastDateAndTime(value).date;
   return date ? date.slice(0, 7) : null;
 }
 
-export function isLivePurchase(status: string): boolean {
-  return LIVE_PURCHASE.has(status);
+export function isCountedPurchase(status: string): boolean {
+  return COUNTED_PURCHASE.has(status);
 }
 
 export function isDueInstallment(status: string): boolean {
@@ -117,10 +140,24 @@ export function isCashInstallment(status: string): boolean {
   return isPaidInstallment(status) || isDueInstallment(status);
 }
 
+export function planMonthlyAmountCents(purchase: RevenuePurchase, installments: RevenueInstallment[] = []): number {
+  if (installments.length) {
+    return Math.round(
+      installments.reduce((sum, row) => sum + Number(row.amount_cents || 0), 0) / installments.length
+    );
+  }
+  const amount = Number(purchase.amount_cents || 0);
+  if (!amount) return 0;
+  if (amount <= PLAN_MONTHLY_AMOUNT_CEILING_CENTS) return amount;
+  return Math.round(amount / 6);
+}
+
 export function contractedSaleCents(purchase: RevenuePurchase, installments: RevenueInstallment[]): number {
   if (purchase.option === "plan_6") {
     if (installments.length) return installments.reduce((sum, row) => sum + Number(row.amount_cents || 0), 0);
-    return Number(purchase.amount_cents || 0) * 6;
+    const amount = Number(purchase.amount_cents || 0);
+    if (amount <= PLAN_MONTHLY_AMOUNT_CEILING_CENTS) return amount * 6;
+    return amount;
   }
   return Number(purchase.amount_cents || 0);
 }
@@ -131,7 +168,7 @@ export function installmentsForPurchase(purchase: RevenuePurchase, recorded: Rev
     .sort((a, b) => a.installment_number - b.installment_number);
   if (rows.length || purchase.option !== "plan_6") return rows;
   const paidCount = Math.max(0, Number(purchase.successful_installments || 0));
-  const amount = Number(purchase.amount_cents || 0);
+  const amount = planMonthlyAmountCents(purchase, []);
   const enrolledAt = new Date(purchase.created_at);
   if (Number.isNaN(enrolledAt.getTime()) || !amount) return [];
   return planInstallmentDates(enrolledAt, 6).map((scheduledAt, index) => {
@@ -180,14 +217,15 @@ export function buildRevenueMonthRows(input: {
   });
 
   input.purchases.forEach((purchase) => {
+    if (!isCountedPurchase(purchase.status)) return;
     const rows = installmentsForPurchase(purchase, installmentsByPurchase.get(purchase.id) || []);
     const saleMonth = sastMonthKey(purchase.created_at);
     const saleBucket = takeBucket(months, saleMonth);
-    if (saleBucket && isLivePurchase(purchase.status)) {
+    if (saleBucket) {
       saleBucket.sales_cents += contractedSaleCents(purchase, rows);
       saleBucket.payingStudentIds.add(purchase.user_id);
     }
-    if (purchase.option !== "plan_6" && saleBucket && isLivePurchase(purchase.status)) {
+    if (purchase.option !== "plan_6" && saleBucket) {
       saleBucket.cash_cents += Number(purchase.amount_cents || 0);
     }
     rows.forEach((row) => {
@@ -300,6 +338,102 @@ export function optionLabel(option: string): string {
   return option || "No purchase";
 }
 
+export function contributionKindLabel(kind: RevenueContributionKind): string {
+  if (kind === "sale") return "Sale";
+  if (kind === "installment_paid") return "Instalment paid";
+  if (kind === "installment_due") return "Instalment due";
+  if (kind === "cash") return "Cash";
+  if (kind === "referral_paid") return "Referral paid";
+  return "Referral due";
+}
+
+export function buildStudentContributions(input: {
+  userId: string;
+  name: string;
+  purchases: RevenuePurchase[];
+  installments: RevenueInstallment[];
+  rewards: RevenueReward[];
+}): RevenueContribution[] {
+  const entries: RevenueContribution[] = [];
+  const installmentsByPurchase = new Map<string, RevenueInstallment[]>();
+  input.installments.forEach((row) => {
+    const list = installmentsByPurchase.get(row.purchase_id) || [];
+    list.push(row);
+    installmentsByPurchase.set(row.purchase_id, list);
+  });
+
+  const add = (entry: Omit<RevenueContribution, "user_id" | "name">) => {
+    if (!entry.month || !entry.amount_cents) return;
+    entries.push({ ...entry, user_id: input.userId, name: input.name });
+  };
+
+  input.purchases.forEach((purchase) => {
+    if (!isCountedPurchase(purchase.status)) return;
+    const rows = installmentsForPurchase(purchase, installmentsByPurchase.get(purchase.id) || []);
+    const sale = contractedSaleCents(purchase, rows);
+    add({
+      month: sastMonthKey(purchase.created_at) || "",
+      kind: "sale",
+      label: `${optionLabel(purchase.option)} · contracted`,
+      status: purchase.status,
+      amount_cents: sale,
+      date: purchase.created_at,
+    });
+    if (purchase.option !== "plan_6") {
+      add({
+        month: sastMonthKey(purchase.created_at) || "",
+        kind: "cash",
+        label: "Once-off payment",
+        status: "paid",
+        amount_cents: Number(purchase.amount_cents || 0),
+        date: purchase.created_at,
+      });
+    }
+    rows.forEach((row) => {
+      const scheduledMonth = sastMonthKey(row.scheduled_at) || "";
+      const paidMonth = sastMonthKey(row.paid_at) || scheduledMonth;
+      const amount = Number(row.amount_cents || 0);
+      const label = `Instalment ${row.installment_number} of 6`;
+      if (isPaidInstallment(row.status)) {
+        add({ month: paidMonth, kind: "installment_paid", label, status: row.status, amount_cents: amount, date: row.paid_at || row.scheduled_at });
+      }
+      if (isDueInstallment(row.status)) {
+        add({ month: scheduledMonth, kind: "installment_due", label, status: row.status, amount_cents: amount, date: row.scheduled_at });
+      }
+      if (isCashInstallment(row.status)) {
+        add({ month: scheduledMonth, kind: "cash", label, status: row.status, amount_cents: amount, date: row.scheduled_at });
+      }
+    });
+  });
+
+  input.rewards.forEach((reward) => {
+    const amount = Number(reward.amount_cents || 0);
+    if (PAID_REFERRAL.has(reward.status)) {
+      add({
+        month: sastMonthKey(reward.updated_at || reward.created_at) || "",
+        kind: "referral_paid",
+        label: "Referral credit applied",
+        status: reward.status,
+        amount_cents: amount,
+        date: reward.updated_at || reward.created_at,
+      });
+      return;
+    }
+    if (DUE_REFERRAL.has(reward.status)) {
+      add({
+        month: sastMonthKey(reward.created_at) || "",
+        kind: "referral_due",
+        label: "Referral still due",
+        status: reward.status,
+        amount_cents: amount,
+        date: reward.created_at,
+      });
+    }
+  });
+
+  return entries.sort((a, b) => a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind));
+}
+
 export function buildRevenueStatements(input: {
   purchases: RevenuePurchase[];
   installments: RevenueInstallment[];
@@ -337,9 +471,10 @@ export function buildRevenueStatements(input: {
       let due = 0;
 
       purchases.forEach((purchase) => {
+        if (!isCountedPurchase(purchase.status)) return;
         const rows = installmentsForPurchase(purchase, installmentsByPurchase.get(purchase.id) || []);
         const sale = contractedSaleCents(purchase, rows);
-        if (isLivePurchase(purchase.status)) sales += sale;
+        sales += sale;
         const saleMonth = sastMonthKey(purchase.created_at);
         if (saleMonth) months.add(saleMonth);
         lines.push({
@@ -356,7 +491,7 @@ export function buildRevenueStatements(input: {
             amount_cents: -Number(purchase.credit_applied_cents || 0),
           });
         }
-        if (purchase.option !== "plan_6" && isLivePurchase(purchase.status)) {
+        if (purchase.option !== "plan_6") {
           paid += Number(purchase.amount_cents || 0);
           lines.push({
             date: purchase.created_at,
@@ -397,9 +532,25 @@ export function buildRevenueStatements(input: {
           });
         });
 
+      const counted = purchases.filter((purchase) => isCountedPurchase(purchase.status));
+      const latestCounted = counted[counted.length - 1] || latest;
+      const name =
+        String(profile?.full_name || "").trim() ||
+        String(latestCounted?.student_name || "").trim() ||
+        String(profile?.email || latestCounted?.student_email || "").trim() ||
+        "Student";
       const month_rows = buildRevenueMonthRows({
-        purchases,
-        installments: purchases.flatMap((purchase) =>
+        purchases: counted,
+        installments: counted.flatMap((purchase) =>
+          installmentsForPurchase(purchase, installmentsByPurchase.get(purchase.id) || [])
+        ),
+        rewards: ownRewards.filter((reward) => reward.referrer_user_id === userId),
+      });
+      const contributions = buildStudentContributions({
+        userId,
+        name,
+        purchases: counted,
+        installments: counted.flatMap((purchase) =>
           installmentsForPurchase(purchase, installmentsByPurchase.get(purchase.id) || [])
         ),
         rewards: ownRewards.filter((reward) => reward.referrer_user_id === userId),
@@ -407,15 +558,11 @@ export function buildRevenueStatements(input: {
 
       return {
         user_id: userId,
-        name:
-          String(profile?.full_name || "").trim() ||
-          String(latest?.student_name || "").trim() ||
-          String(profile?.email || latest?.student_email || "").trim() ||
-          "Student",
-        email: String(profile?.email || latest?.student_email || "").trim(),
+        name,
+        email: String(profile?.email || latestCounted?.student_email || "").trim(),
         cohort: String(profile?.cohort || "").trim(),
-        option: latest?.option || "",
-        purchase_status: latest?.status || "none",
+        option: latestCounted?.option || "",
+        purchase_status: latestCounted?.status || "none",
         sales_cents: sales,
         paid_cents: paid,
         due_cents: due,
@@ -423,6 +570,7 @@ export function buildRevenueStatements(input: {
         referrals_due_cents: referralsDue,
         months: [...months].sort(),
         month_rows,
+        contributions,
         lines: lines.sort((a, b) => a.date.localeCompare(b.date)),
       };
     })

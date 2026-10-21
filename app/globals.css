@@ -1756,6 +1756,9 @@ input[type="tel"]:focus {
   text-transform: inherit;
   letter-spacing: inherit;
   cursor: pointer;
+  white-space: normal;
+  max-width: 9em;
+  line-height: 1.25;
 }
 
 .data-table.roster tbody tr.roster-empty {
@@ -2062,6 +2065,18 @@ input[type="tel"]:focus {
 
 .data-table tbody tr.revenue-total-row td {
   font-weight: 700;
+}
+
+.data-table tbody tr.revenue-month-open {
+  background: #eef6f2;
+}
+
+.revenue-drill {
+  margin-top: 18px;
+}
+
+.revenue-drill-block {
+  margin-top: 14px;
 }
 
 .fact-list {

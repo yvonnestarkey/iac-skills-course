@@ -143,6 +143,39 @@ test("student statement totals paid and due instalments", () => {
   assert.equal(statement.sales_cents, 11400);
   assert.ok(statement.lines.some((line) => line.label.includes("Instalment 2")));
   assert.ok(statement.month_rows.some((row) => row.month === "2026-11" && row.cash_cents === 5700));
+  assert.ok(statement.contributions.some((row) => row.kind === "installment_due" && row.amount_cents === 5700));
+});
+
+test("pending checkouts are not sales, and plan amount_cents is already the full total", () => {
+  const rows = buildRevenueMonthRows({
+    purchases: [
+      {
+        id: "pending",
+        user_id: "u1",
+        option: "plan_6",
+        status: "pending",
+        amount_cents: 36000,
+        created_at: "2026-10-01T10:00:00.000Z",
+      },
+      {
+        id: "active",
+        user_id: "u1",
+        option: "plan_6",
+        status: "active",
+        amount_cents: 36000,
+        successful_installments: 1,
+        created_at: "2026-10-02T10:00:00.000Z",
+      },
+    ],
+    installments: [],
+    rewards: [],
+  });
+  const october = rows.find((row) => row.month === "2026-10");
+  assert.ok(october);
+  assert.equal(october.paying_students, 1);
+  assert.equal(october.sales_cents, 36000);
+  assert.equal(october.cash_cents, 6000);
+  assert.equal(october.installments_paid_cents, 6000);
 });
 
 test("sort and cohort total keep month rows and a pinned total", () => {

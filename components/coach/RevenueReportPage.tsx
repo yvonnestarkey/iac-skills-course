@@ -6,10 +6,12 @@ import { COURSE_COHORTS, displayCohortName, normalizeCohortId } from "@/lib/coho
 import { formatUsdCents } from "@/lib/format-money";
 import { MONTHS } from "@/lib/dates";
 import {
+  contributionKindLabel,
   optionLabel,
   rollupRevenueMonthRows,
   sortRevenueRows,
   totalRevenueRow,
+  type RevenueContributionKind,
   type RevenueMonthRow,
   type RevenueSortKey,
   type RevenueStatement,
@@ -23,13 +25,22 @@ type Payload = {
 
 const SORT_LABELS: { key: RevenueSortKey; label: string }[] = [
   { key: "month", label: "Month" },
-  { key: "paying_students", label: "Total cohort" },
-  { key: "sales_cents", label: "Total sales" },
+  { key: "paying_students", label: "Students" },
+  { key: "sales_cents", label: "Sales" },
   { key: "installments_paid_cents", label: "Instalments paid" },
   { key: "installments_due_cents", label: "Instalments due" },
-  { key: "referrals_paid_cents", label: "Referrals paid" },
-  { key: "referrals_due_cents", label: "Referrals due" },
+  { key: "referrals_paid_cents", label: "Ref paid" },
+  { key: "referrals_due_cents", label: "Ref due" },
   { key: "cash_cents", label: "Cash" },
+];
+
+const DRILL_KINDS: RevenueContributionKind[] = [
+  "sale",
+  "installment_paid",
+  "installment_due",
+  "cash",
+  "referral_paid",
+  "referral_due",
 ];
 
 function money(cents: number) {
@@ -61,6 +72,7 @@ export default function RevenueReportPage() {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
+  const [drillMonth, setDrillMonth] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/coach/revenue")
@@ -93,7 +105,13 @@ export default function RevenueReportPage() {
   }, [statements, month, sortKey, sortDir]);
 
   const open = statements.find((row) => row.user_id === openId) || null;
-  const monthOptions = data?.months.map((row) => row.month) || [];
+  const monthOptions = [...new Set(statements.flatMap((row) => row.months))].sort();
+  const drillRows = drillMonth
+    ? statements
+        .flatMap((row) => row.contributions || [])
+        .filter((row) => row.month === drillMonth)
+        .sort((a, b) => a.name.localeCompare(b.name || "") || a.kind.localeCompare(b.kind) || a.date.localeCompare(b.date))
+    : [];
 
   const toggleSort = (key: RevenueSortKey) => {
     if (sortKey === key) {
@@ -113,8 +131,9 @@ export default function RevenueReportPage() {
         <p className="kicker">Coach tools</p>
         <h1>Revenue</h1>
         <p className="muted">
-          Months are SAST. Total sales is the contracted course value in the enrolment month. Cash is the money due that
-          month from once-off payments and scheduled instalments.
+          Only completed purchases count, not abandoned checkouts. Sales is the course price they bought — $327 once-off
+          or $360 / $342 on the plan, not six times the plan total. Cash is the money due that SAST month. Click a month
+          to see the lines behind the totals.
         </p>
         {error ? <p className="student-auth-error">{error}</p> : null}
         {!data && !error ? <p className="empty">Loading revenue…</p> : null}
@@ -175,9 +194,17 @@ export default function RevenueReportPage() {
             <tbody>
               {monthRows.length ? (
                 monthRows.map((row) => (
-                  <tr key={row.month} className={row.month === "total" ? "revenue-total-row" : undefined}>
+                  <tr
+                    key={row.month}
+                    className={row.month === "total" ? "revenue-total-row" : drillMonth === row.month ? "revenue-month-open" : undefined}
+                    onClick={() => {
+                      if (row.month === "total") return;
+                      setDrillMonth((current) => (current === row.month ? null : row.month));
+                    }}
+                  >
                     <td>
                       <strong>{monthLabel(row.month)}</strong>
+                      {row.month !== "total" ? <span className="cell-sub">{drillMonth === row.month ? "Close" : "Open"}</span> : null}
                     </td>
                     <td>{row.paying_students}</td>
                     <td>{money(row.sales_cents)}</td>
@@ -197,6 +224,46 @@ export default function RevenueReportPage() {
               )}
             </tbody>
           </table>
+          {drillMonth ? (
+            <div className="revenue-drill">
+              <h3>{monthLabel(drillMonth)} detail</h3>
+              <p className="muted small">Every line that makes up the totals for this month.</p>
+              {DRILL_KINDS.map((kind) => {
+                const rows = drillRows.filter((row) => row.kind === kind);
+                if (!rows.length) return null;
+                const sum = rows.reduce((total, row) => total + row.amount_cents, 0);
+                return (
+                  <div key={kind} className="revenue-drill-block">
+                    <p>
+                      <strong>{contributionKindLabel(kind)}</strong>
+                      <span className="muted small"> · {money(sum)}</span>
+                    </p>
+                    <table className="data-table">
+                      <thead>
+                        <tr>
+                          <th>Student</th>
+                          <th>Item</th>
+                          <th>Status</th>
+                          <th>Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {rows.map((row, index) => (
+                          <tr key={`${row.user_id}-${row.kind}-${row.date}-${index}`} onClick={() => setOpenId(row.user_id)}>
+                            <td>{row.name}</td>
+                            <td>{row.label}</td>
+                            <td>{row.status}</td>
+                            <td>{money(row.amount_cents)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                );
+              })}
+              {!drillRows.length ? <p className="empty">No lines in this month for the current filter.</p> : null}
+            </div>
+          ) : null}
         </section>
       ) : null}
 
