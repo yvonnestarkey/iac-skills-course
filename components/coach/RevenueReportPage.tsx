@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { COURSE_COHORTS, displayCohortName, normalizeCohortId } from "@/lib/cohorts";
 import { formatUsdCents } from "@/lib/format-money";
@@ -105,6 +105,14 @@ export default function RevenueReportPage() {
 
   const open = statements.find((row) => row.user_id === openId) || null;
   const monthOptions = [...new Set(statements.flatMap((row) => row.months))].sort();
+
+  const openStatement = (userId: string, scroll = false) => {
+    setOpenId((current) => (current === userId && !scroll ? null : userId));
+    if (!scroll) return;
+    window.requestAnimationFrame(() => {
+      document.getElementById(`student-row-${userId}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
   const drillRows = drillMonth
     ? statements
         .flatMap((row) => row.contributions || [])
@@ -248,7 +256,7 @@ export default function RevenueReportPage() {
                       </thead>
                       <tbody>
                         {rows.map((row, index) => (
-                          <tr key={`${row.user_id}-${row.kind}-${row.date}-${index}`} onClick={() => setOpenId(row.user_id)}>
+                          <tr key={`${row.user_id}-${row.kind}-${row.date}-${index}`} onClick={() => openStatement(row.user_id, true)}>
                             <td>{row.name}</td>
                             <td>{row.label}</td>
                             <td>{row.status}</td>
@@ -267,11 +275,13 @@ export default function RevenueReportPage() {
       ) : null}
 
       {data ? (
-        <section className="card revenue-no-print">
-          <h2>Student statements</h2>
-          <p className="muted small">Open a student to print or save their statement.</p>
+        <section className="card">
+          <div className="revenue-no-print">
+            <h2>Student statements</h2>
+            <p className="muted small">Open a student to print or save their statement.</p>
+          </div>
           <table className="data-table roster">
-            <thead>
+            <thead className="revenue-no-print">
               <tr>
                 <th>Student</th>
                 <th>Plan</th>
@@ -283,72 +293,85 @@ export default function RevenueReportPage() {
             <tbody>
               {statements.length ? (
                 statements.map((row) => (
-                  <tr key={row.user_id} onClick={() => setOpenId(row.user_id)}>
-                    <td>
-                      <strong>{row.name}</strong>
-                      <span className="cell-sub">{row.email || displayCohortName(row.cohort)}</span>
-                    </td>
-                    <td>{optionLabel(row.option)}</td>
-                    <td>{money(row.paid_cents)}</td>
-                    <td>{money(row.due_cents)}</td>
-                    <td>
-                      <button className="ghost" type="button">
-                        Statement
-                      </button>
-                    </td>
-                  </tr>
+                  <Fragment key={row.user_id}>
+                    <tr
+                      id={`student-row-${row.user_id}`}
+                      className={openId === row.user_id ? "revenue-student-open" : "revenue-no-print"}
+                      onClick={() => openStatement(row.user_id)}
+                    >
+                      <td>
+                        <strong>{row.name}</strong>
+                        <span className="cell-sub">{row.email || displayCohortName(row.cohort)}</span>
+                      </td>
+                      <td>{optionLabel(row.option)}</td>
+                      <td>{money(row.paid_cents)}</td>
+                      <td>{money(row.due_cents)}</td>
+                      <td>
+                        <button className="ghost" type="button">
+                          {openId === row.user_id ? "Close" : "Statement"}
+                        </button>
+                      </td>
+                    </tr>
+                    {open && open.user_id === row.user_id ? (
+                      <tr className="revenue-statement-row" onClick={(event) => event.stopPropagation()}>
+                        <td colSpan={5}>
+                          <div className="revenue-statement-embed" aria-label={`${open.name} statement`}>
+                            <div className="panel-head">
+                              <div>
+                                <p className="kicker">Student statement</p>
+                                <h2>{open.name}</h2>
+                                <p className="muted small">
+                                  {open.email}
+                                  {open.cohort ? ` · ${displayCohortName(open.cohort)}` : ""}
+                                </p>
+                              </div>
+                              <div className="actions revenue-no-print">
+                                <button className="ghost" type="button" onClick={() => setOpenId(null)}>
+                                  Close
+                                </button>
+                                <button className="primary" type="button" onClick={() => window.print()}>
+                                  Print statement
+                                </button>
+                              </div>
+                            </div>
+                            <p>
+                              {optionLabel(open.option)} · {open.purchase_status} · Paid {money(open.paid_cents)} · Due{" "}
+                              {money(open.due_cents)}
+                              {open.discount_cents
+                                ? ` · ${open.discount_label || "Referral discount"} ${money(open.discount_cents)}`
+                                : ""}
+                            </p>
+                            <table className="data-table">
+                              <thead>
+                                <tr>
+                                  <th>Date</th>
+                                  <th>Item</th>
+                                  <th>Status</th>
+                                  <th>Amount</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {open.lines.map((line, index) => (
+                                  <tr key={`${line.date}-${line.label}-${index}`}>
+                                    <td>{formatWhen(line.date)}</td>
+                                    <td>{line.label}</td>
+                                    <td>{line.status}</td>
+                                    <td>{money(line.amount_cents)}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : null}
+                  </Fragment>
                 ))
               ) : (
                 <tr className="roster-empty">
                   <td colSpan={5}>No student statements in that filter.</td>
                 </tr>
               )}
-            </tbody>
-          </table>
-        </section>
-      ) : null}
-
-      {open ? (
-        <section className="card revenue-statement" aria-label={`${open.name} statement`}>
-          <div className="panel-head">
-            <div>
-              <p className="kicker">Student statement</p>
-              <h2>{open.name}</h2>
-              <p className="muted small">
-                {open.email}
-                {open.cohort ? ` · ${displayCohortName(open.cohort)}` : ""}
-              </p>
-            </div>
-            <div className="actions revenue-no-print">
-              <button className="ghost" type="button" onClick={() => setOpenId(null)}>
-                Close
-              </button>
-              <button className="primary" type="button" onClick={() => window.print()}>
-                Print statement
-              </button>
-            </div>
-          </div>
-          <p>
-            {optionLabel(open.option)} · {open.purchase_status} · Paid {money(open.paid_cents)} · Due {money(open.due_cents)}
-          </p>
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Item</th>
-                <th>Status</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {open.lines.map((line, index) => (
-                <tr key={`${line.date}-${line.label}-${index}`}>
-                  <td>{formatWhen(line.date)}</td>
-                  <td>{line.label}</td>
-                  <td>{line.status}</td>
-                  <td>{money(line.amount_cents)}</td>
-                </tr>
-              ))}
             </tbody>
           </table>
         </section>

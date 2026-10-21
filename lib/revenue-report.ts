@@ -1,3 +1,8 @@
+import {
+  FALLBACK_PRODUCT,
+  refereeDiscountCents,
+  selectedOptionTotalCents,
+} from "@/lib/commerce";
 import { isoToSastDateAndTime } from "@/lib/dates";
 import { planInstallmentDates } from "@/lib/plan-installments";
 
@@ -104,6 +109,8 @@ export type RevenueStatement = {
   sales_cents: number;
   paid_cents: number;
   due_cents: number;
+  discount_cents: number;
+  discount_label: string;
   referrals_paid_cents: number;
   referrals_due_cents: number;
   months: string[];
@@ -111,6 +118,13 @@ export type RevenueStatement = {
   contributions: RevenueContribution[];
   lines: RevenueStatementLine[];
 };
+
+export type RevenueReferrer = {
+  name: string;
+  user_id?: string;
+};
+
+export type RevenueReferrerLookup = Record<string, RevenueReferrer>;
 
 /** Checkout started but not paid. Do not count as a sale or as cash due. */
 const COUNTED_PURCHASE = new Set(["active", "past_due"]);
@@ -377,6 +391,107 @@ export function optionLabel(option: string): string {
   return option || "No purchase";
 }
 
+function normalizeReferralCode(code: string): string {
+  return code.trim().toUpperCase();
+}
+
+function profileDisplayName(profile?: RevenueProfile | null): string {
+  return String(profile?.full_name || "").trim() || String(profile?.email || "").trim();
+}
+
+export function courseListPriceCents(option: string): number {
+  return selectedOptionTotalCents(option === "plan_6" ? "plan_6" : "once_off", FALLBACK_PRODUCT);
+}
+
+export function courseReferralDiscountCents(option: string): number {
+  return refereeDiscountCents(option === "plan_6" ? "plan_6" : "once_off", FALLBACK_PRODUCT);
+}
+
+export function purchaseWasReferred(
+  purchase: RevenuePurchase,
+  userId: string,
+  rewards: RevenueReward[]
+): boolean {
+  if (String(purchase.referral_code_used || "").trim()) return true;
+  return rewards.some(
+    (row) => row.referee_user_id === userId && (!row.purchase_id || row.purchase_id === purchase.id)
+  );
+}
+
+export function enrolmentDiscountForPurchase(
+  purchase: RevenuePurchase,
+  userId: string,
+  rewards: RevenueReward[]
+): { amount_cents: number; kind: "referral" | "promo" | null } {
+  if (purchaseWasReferred(purchase, userId, rewards)) {
+    return { amount_cents: courseReferralDiscountCents(purchase.option), kind: "referral" };
+  }
+  const promo = String(purchase.promo_code_used || "").trim();
+  if (!promo) return { amount_cents: 0, kind: null };
+  const stored = Number(purchase.amount_cents || 0);
+  const net =
+    purchase.option === "plan_6" && stored > 0 && stored <= PLAN_MONTHLY_AMOUNT_CEILING_CENTS
+      ? stored * 6
+      : stored;
+  const amount = Math.max(0, courseListPriceCents(purchase.option) - net);
+  return { amount_cents: amount, kind: amount ? "promo" : null };
+}
+
+export function referrerNameForPurchase(
+  purchase: RevenuePurchase,
+  userId: string,
+  rewards: RevenueReward[],
+  profiles: Map<string, RevenueProfile>,
+  referrersByCode: RevenueReferrerLookup = {}
+): string {
+  const code = normalizeReferralCode(String(purchase.referral_code_used || ""));
+  if (code && referrersByCode[code]?.name) return referrersByCode[code].name;
+  const reward = rewards.find(
+    (row) => row.referee_user_id === userId && (!row.purchase_id || row.purchase_id === purchase.id)
+  );
+  if (reward?.referrer_user_id) {
+    const name = profileDisplayName(profiles.get(reward.referrer_user_id));
+    if (name) return name;
+  }
+  return code;
+}
+
+export function buildReferrersByCode(
+  codes: { user_id?: string | null; code?: string | null }[],
+  profiles: RevenueProfile[],
+  professionals: { name: string; code: string }[] = []
+): RevenueReferrerLookup {
+  const profileById = new Map(profiles.map((row) => [row.id, row]));
+  const map: RevenueReferrerLookup = {};
+  professionals.forEach((partner) => {
+    const code = normalizeReferralCode(partner.code);
+    if (code) map[code] = { name: partner.name };
+  });
+  codes.forEach((row) => {
+    const code = normalizeReferralCode(String(row.code || ""));
+    if (!code || map[code]) return;
+    const profile = row.user_id ? profileById.get(row.user_id) : undefined;
+    map[code] = {
+      name: profileDisplayName(profile) || code,
+      user_id: row.user_id || undefined,
+    };
+  });
+  return map;
+}
+
+function discountLineLabel(kind: "referral" | "promo", referrerName: string, promoCode: string): string {
+  if (kind === "promo") return promoCode ? `Promo discount (${promoCode})` : "Promo discount";
+  return referrerName ? `Referral discount (${referrerName})` : "Referral discount";
+}
+
+function statementLineRank(label: string): number {
+  if (label.includes("IAC Skills Course")) return 0;
+  if (/^(Referral discount|Promo discount)/.test(label)) return 1;
+  if (label.includes("credit applied")) return 2;
+  if (label.startsWith("Referral credit")) return 4;
+  return 3;
+}
+
 export function contributionKindLabel(kind: RevenueContributionKind): string {
   if (kind === "sale") return "Sale";
   if (kind === "installment_paid") return "Instalment paid";
@@ -478,6 +593,7 @@ export function buildRevenueStatements(input: {
   installments: RevenueInstallment[];
   rewards: RevenueReward[];
   profiles: RevenueProfile[];
+  referrersByCode?: RevenueReferrerLookup;
 }): RevenueStatement[] {
   const profileById = new Map(input.profiles.map((row) => [row.id, row]));
   const installmentsByPurchase = new Map<string, RevenueInstallment[]>();
@@ -505,23 +621,44 @@ export function buildRevenueStatements(input: {
       const latest = purchases[purchases.length - 1];
       const lines: RevenueStatementLine[] = [];
       const months = new Set<string>();
+      const discountLabels: string[] = [];
       let sales = 0;
       let paid = 0;
       let due = 0;
+      let discount = 0;
 
       purchases.forEach((purchase) => {
         if (!isCountedPurchase(purchase.status)) return;
         const rows = installmentsForPurchase(purchase, installmentsByPurchase.get(purchase.id) || []);
         const sale = contractedSaleCents(purchase, rows);
+        const given = enrolmentDiscountForPurchase(purchase, userId, input.rewards);
         sales += sale;
+        discount += given.amount_cents;
         const saleMonth = sastMonthKey(purchase.created_at);
         if (saleMonth) months.add(saleMonth);
         lines.push({
           date: purchase.created_at,
           label: `${optionLabel(purchase.option)} · January 2027 IAC Skills Course`,
           status: purchase.status,
-          amount_cents: sale,
+          amount_cents: given.amount_cents ? courseListPriceCents(purchase.option) : sale,
         });
+        if (given.kind && given.amount_cents) {
+          const referrer = referrerNameForPurchase(
+            purchase,
+            userId,
+            input.rewards,
+            profileById,
+            input.referrersByCode
+          );
+          const label = discountLineLabel(given.kind, referrer, String(purchase.promo_code_used || "").trim());
+          if (!discountLabels.includes(label)) discountLabels.push(label);
+          lines.push({
+            date: purchase.created_at,
+            label,
+            status: "given",
+            amount_cents: -given.amount_cents,
+          });
+        }
         if (purchase.credit_applied_cents) {
           lines.push({
             date: purchase.created_at,
@@ -555,14 +692,14 @@ export function buildRevenueStatements(input: {
 
       let referralsPaid = 0;
       let referralsDue = 0;
-      const ownRewards = input.rewards.filter((row) => row.referrer_user_id === userId || row.referee_user_id === userId);
+      const ownRewards = input.rewards.filter((row) => row.referrer_user_id === userId);
       ownRewards.forEach((reward) => {
           const month = sastMonthKey(reward.updated_at || reward.created_at);
           if (month) months.add(month);
-          const asReferrer = reward.referrer_user_id === userId;
-          const label = asReferrer ? "Referral payout / credit earned" : "Referral discount on this enrolment";
+          const refereeName = profileDisplayName(profileById.get(reward.referee_user_id || ""));
+          const label = refereeName ? `Referral credit earned (${refereeName})` : "Referral credit earned";
           if (PAID_REFERRAL.has(reward.status)) referralsPaid += Number(reward.amount_cents || 0);
-          if (DUE_REFERRAL.has(reward.status) && asReferrer) referralsDue += Number(reward.amount_cents || 0);
+          if (DUE_REFERRAL.has(reward.status)) referralsDue += Number(reward.amount_cents || 0);
           lines.push({
             date: reward.updated_at || reward.created_at,
             label,
@@ -605,12 +742,16 @@ export function buildRevenueStatements(input: {
         sales_cents: sales,
         paid_cents: paid,
         due_cents: due,
+        discount_cents: discount,
+        discount_label: discountLabels.join(" · "),
         referrals_paid_cents: referralsPaid,
         referrals_due_cents: referralsDue,
         months: [...months].sort(),
         month_rows,
         contributions,
-        lines: lines.sort((a, b) => a.date.localeCompare(b.date)),
+        lines: lines.sort(
+          (a, b) => a.date.localeCompare(b.date) || statementLineRank(a.label) - statementLineRank(b.label)
+        ),
       };
     })
     .filter((row) => row.sales_cents || row.paid_cents || row.due_cents || row.referrals_paid_cents || row.referrals_due_cents || row.lines.length)

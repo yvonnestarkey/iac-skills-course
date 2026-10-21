@@ -147,6 +147,68 @@ test("student statement totals paid and due instalments", () => {
   assert.ok(statement.lines.some((line) => line.label.includes("Instalment 2")));
   assert.ok(statement.month_rows.some((row) => row.month === "2026-11" && row.cash_cents === 5700));
   assert.ok(statement.contributions.some((row) => row.kind === "installment_due" && row.amount_cents === 5700));
+  assert.equal(statement.discount_cents, 0);
+  assert.equal(
+    statement.lines.find((line) => line.label.includes("IAC Skills Course"))?.amount_cents,
+    11400
+  );
+});
+
+test("referred plan statements show the $360 sale, $18 given discount, and the referrer", () => {
+  const statements = buildRevenueStatements({
+    purchases: [
+      {
+        id: "p1",
+        user_id: "pitse",
+        option: "plan_6",
+        status: "active",
+        amount_cents: 34200,
+        successful_installments: 1,
+        referral_code_used: "JAN27-ADA",
+        created_at: "2026-10-20T10:00:00.000Z",
+      },
+    ],
+    installments: [],
+    rewards: [
+      {
+        id: "r1",
+        referrer_user_id: "ada",
+        referee_user_id: "pitse",
+        purchase_id: "p1",
+        amount_cents: 3270,
+        status: "earned",
+        created_at: "2026-10-20T10:05:00.000Z",
+      },
+    ],
+    profiles: [
+      { id: "pitse", full_name: "Pitse Bontle", email: "bontle.pitse@kpmg.co.za", cohort: "jan27" },
+      { id: "ada", full_name: "Ada Molefe", email: "ada@example.com", cohort: "jan27" },
+    ],
+    referrersByCode: { "JAN27-ADA": { name: "Ada Molefe", user_id: "ada" } },
+  });
+  const pitse = statements.find((row) => row.user_id === "pitse");
+  const ada = statements.find((row) => row.user_id === "ada");
+  assert.ok(pitse);
+  assert.equal(pitse.sales_cents, 34200);
+  assert.equal(pitse.discount_cents, 1800);
+  assert.equal(pitse.discount_label, "Referral discount (Ada Molefe)");
+  assert.equal(pitse.lines.find((line) => line.label.includes("IAC Skills Course"))?.amount_cents, 36000);
+  assert.deepEqual(
+    pitse.lines.find((line) => line.label.startsWith("Referral discount")),
+    {
+      date: "2026-10-20T10:00:00.000Z",
+      label: "Referral discount (Ada Molefe)",
+      status: "given",
+      amount_cents: -1800,
+    }
+  );
+  assert.equal(
+    pitse.lines.some((line) => line.amount_cents === 3270 || line.label.includes("earned")),
+    false
+  );
+  assert.ok(ada);
+  assert.equal(ada.lines.find((line) => line.label.includes("Referral credit"))?.label, "Referral credit earned (Pitse Bontle)");
+  assert.equal(ada.referrals_due_cents, 3270);
 });
 
 test("pending checkouts are not sales, and plan amount_cents is already the full total", () => {

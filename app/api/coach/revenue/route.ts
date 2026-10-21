@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { PROFESSIONAL_AFFILIATES } from "@/lib/affiliate-partners";
 import { getRequestUser, isStaffUser } from "@/lib/auth-server";
 import {
+  buildReferrersByCode,
   buildRevenueMonthRows,
   buildRevenueStatements,
   excludeTestStudents,
@@ -21,7 +23,7 @@ export async function GET() {
   const client = getServiceSupabase();
   if (!client) return NextResponse.json({ error: "Supabase is not configured." }, { status: 500 });
 
-  const [purchasesQuery, installmentsQuery, rewardsQuery] = await Promise.all([
+  const [purchasesQuery, installmentsQuery, rewardsQuery, codesQuery] = await Promise.all([
     client
       .from("course_purchases")
       .select(
@@ -36,6 +38,7 @@ export async function GET() {
       .from("referral_rewards")
       .select("id, referrer_user_id, referee_user_id, purchase_id, amount_cents, status, created_at, updated_at")
       .order("created_at", { ascending: false }),
+    client.from("referral_codes").select("user_id, code"),
   ]);
 
   const purchases =
@@ -49,6 +52,7 @@ export async function GET() {
     [];
   const installments = (!installmentsQuery.error && installmentsQuery.data) || [];
   const rewards = (!rewardsQuery.error && rewardsQuery.data) || [];
+  const codes = (!codesQuery.error && codesQuery.data) || [];
 
   const userIds = [
     ...new Set(
@@ -56,6 +60,7 @@ export async function GET() {
         ...purchases.map((row) => asText(row.user_id)),
         ...rewards.map((row) => asText(row.referrer_user_id)),
         ...rewards.map((row) => asText(row.referee_user_id)),
+        ...codes.map((row) => asText(row.user_id)),
       ].filter(Boolean)
     ),
   ];
@@ -75,8 +80,11 @@ export async function GET() {
     rewards,
     profiles: profiles || [],
   });
+  const referrersByCode = buildReferrersByCode(codes, live.profiles, PROFESSIONAL_AFFILIATES);
   const months = buildRevenueMonthRows(live);
-  const statements = buildRevenueStatements(live).filter((row) => !isTestStudentEmail(row.email));
+  const statements = buildRevenueStatements({ ...live, referrersByCode }).filter(
+    (row) => !isTestStudentEmail(row.email)
+  );
 
   return NextResponse.json({
     months,

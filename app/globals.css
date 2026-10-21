@@ -2079,6 +2079,24 @@ input[type="tel"]:focus {
   margin-top: 14px;
 }
 
+.data-table tbody tr.revenue-student-open {
+  background: #eef6f2;
+}
+
+.data-table tbody tr.revenue-statement-row,
+.data-table tbody tr.revenue-statement-row:hover {
+  cursor: default;
+  background: #f7faf8;
+}
+
+.data-table tbody tr.revenue-statement-row td {
+  padding: 16px 18px 20px;
+}
+
+.revenue-statement-embed .panel-head {
+  margin-bottom: 8px;
+}
+
 .fact-list {
   margin: 0;
   display: grid;
