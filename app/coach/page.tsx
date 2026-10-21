@@ -49,6 +49,10 @@ export default function CoachHomePage() {
             <strong>Payments & referrals</strong>
             <span className="muted">Entitlement, Stripe status, and credits needing manual action</span>
           </button>
+          <button onClick={() => router.push("/coach/revenue")}>
+            <strong>Revenue</strong>
+            <span className="muted">Monthly sales, instalments, cash, referrals, and student statements</span>
+          </button>
           <button onClick={() => router.push("/coach/evaluator")}>
             <strong>Script Evaluator reports</strong>
             <span className="muted">Student submissions on the new evaluator: progress per paper, review and release reports, and the on/off switch</span>

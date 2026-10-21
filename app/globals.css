@@ -2040,6 +2040,30 @@ input[type="tel"]:focus {
   color: var(--muted);
 }
 
+.revenue-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.revenue-toolbar label {
+  display: grid;
+  gap: 4px;
+  min-width: 180px;
+  flex: 1;
+}
+
+.data-table tbody tr.revenue-total-row,
+.data-table tbody tr.revenue-total-row:hover {
+  cursor: default;
+  background: #f3f7f5;
+}
+
+.data-table tbody tr.revenue-total-row td {
+  font-weight: 700;
+}
+
 .fact-list {
   margin: 0;
   display: grid;
@@ -6871,7 +6895,8 @@ a.live-session-watch:hover {
   .student-signout,
   .student-account-link,
   .student-email,
-  #fab {
+  #fab,
+  .revenue-no-print {
     display: none !important;
   }
 

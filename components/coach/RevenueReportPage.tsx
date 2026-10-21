@@ -1,0 +1,292 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { COURSE_COHORTS, displayCohortName, normalizeCohortId } from "@/lib/cohorts";
+import { formatUsdCents } from "@/lib/format-money";
+import { MONTHS } from "@/lib/dates";
+import {
+  optionLabel,
+  rollupRevenueMonthRows,
+  sortRevenueRows,
+  totalRevenueRow,
+  type RevenueMonthRow,
+  type RevenueSortKey,
+  type RevenueStatement,
+} from "@/lib/revenue-report";
+
+type Payload = {
+  months: RevenueMonthRow[];
+  total: RevenueMonthRow;
+  statements: RevenueStatement[];
+};
+
+const SORT_LABELS: { key: RevenueSortKey; label: string }[] = [
+  { key: "month", label: "Month" },
+  { key: "paying_students", label: "Total cohort" },
+  { key: "sales_cents", label: "Total sales" },
+  { key: "installments_paid_cents", label: "Instalments paid" },
+  { key: "installments_due_cents", label: "Instalments due" },
+  { key: "referrals_paid_cents", label: "Referrals paid" },
+  { key: "referrals_due_cents", label: "Referrals due" },
+  { key: "cash_cents", label: "Cash" },
+];
+
+function money(cents: number) {
+  return formatUsdCents(cents);
+}
+
+function monthLabel(key: string) {
+  if (key === "total") return "Total cohort";
+  const [year, month] = key.split("-");
+  const index = Number(month) - 1;
+  if (!year || index < 0 || index > 11) return key;
+  return `${MONTHS[index]} ${year}`;
+}
+
+function formatWhen(value: string) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-ZA", { dateStyle: "medium", timeZone: "Africa/Johannesburg" });
+}
+
+export default function RevenueReportPage() {
+  const router = useRouter();
+  const [data, setData] = useState<Payload | null>(null);
+  const [error, setError] = useState("");
+  const [cohort, setCohort] = useState("all");
+  const [month, setMonth] = useState("all");
+  const [sortKey, setSortKey] = useState<RevenueSortKey>("month");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+  const [search, setSearch] = useState("");
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/coach/revenue")
+      .then(async (response) => {
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || "Could not load revenue.");
+        setData(payload);
+      })
+      .catch((item) => setError(item instanceof Error ? item.message : "Could not load revenue."));
+  }, []);
+
+  const statements = useMemo(() => {
+    if (!data) return [];
+    const query = search.trim().toLowerCase();
+    return data.statements.filter((row) => {
+      if (cohort !== "all" && normalizeCohortId(row.cohort) !== cohort) return false;
+      if (month !== "all" && !row.months.includes(month)) return false;
+      if (!query) return true;
+      return `${row.name} ${row.email}`.toLowerCase().includes(query);
+    });
+  }, [data, cohort, month, search]);
+
+  const monthRows = useMemo(() => {
+    const paying = new Set(
+      statements.filter((row) => ["pending", "active", "past_due"].includes(row.purchase_status)).map((row) => row.user_id)
+    ).size;
+    const source = rollupRevenueMonthRows(statements.flatMap((row) => row.month_rows || []));
+    const filtered = month === "all" ? source : source.filter((row) => row.month === month);
+    return sortRevenueRows(filtered, sortKey, sortDir).concat(filtered.length ? [totalRevenueRow(filtered, paying)] : []);
+  }, [statements, month, sortKey, sortDir]);
+
+  const open = statements.find((row) => row.user_id === openId) || null;
+  const monthOptions = data?.months.map((row) => row.month) || [];
+
+  const toggleSort = (key: RevenueSortKey) => {
+    if (sortKey === key) {
+      setSortDir((current) => (current === "asc" ? "desc" : "asc"));
+      return;
+    }
+    setSortKey(key);
+    setSortDir(key === "month" ? "asc" : "desc");
+  };
+
+  return (
+    <div className="coach-page">
+      <button className="back-link revenue-no-print" type="button" onClick={() => router.push("/coach")}>
+        ← Coach home
+      </button>
+      <section className="card revenue-no-print">
+        <p className="kicker">Coach tools</p>
+        <h1>Revenue</h1>
+        <p className="muted">
+          Months are SAST. Total sales is the contracted course value in the enrolment month. Cash is the money due that
+          month from once-off payments and scheduled instalments.
+        </p>
+        {error ? <p className="student-auth-error">{error}</p> : null}
+        {!data && !error ? <p className="empty">Loading revenue…</p> : null}
+        {data ? (
+          <div className="revenue-toolbar">
+            <label>
+              <span className="muted small">Cohort</span>
+              <select className="select-line" value={cohort} onChange={(event) => setCohort(event.target.value)}>
+                <option value="all">All cohorts</option>
+                {COURSE_COHORTS.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span className="muted small">Month</span>
+              <select className="select-line" value={month} onChange={(event) => setMonth(event.target.value)}>
+                <option value="all">All months</option>
+                {monthOptions.map((value) => (
+                  <option key={value} value={value}>
+                    {monthLabel(value)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span className="muted small">Find a student</span>
+              <input
+                className="select-line"
+                type="search"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Name or email"
+              />
+            </label>
+          </div>
+        ) : null}
+      </section>
+
+      {data ? (
+        <section className="card revenue-no-print">
+          <h2>Monthly cash</h2>
+          <table className="data-table roster">
+            <thead>
+              <tr>
+                {SORT_LABELS.map((column) => (
+                  <th key={column.key}>
+                    <button className="roster-sort" type="button" onClick={() => toggleSort(column.key)}>
+                      {column.label}
+                      {sortKey === column.key ? (sortDir === "asc" ? " ↑" : " ↓") : ""}
+                    </button>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {monthRows.length ? (
+                monthRows.map((row) => (
+                  <tr key={row.month} className={row.month === "total" ? "revenue-total-row" : undefined}>
+                    <td>
+                      <strong>{monthLabel(row.month)}</strong>
+                    </td>
+                    <td>{row.paying_students}</td>
+                    <td>{money(row.sales_cents)}</td>
+                    <td>{money(row.installments_paid_cents)}</td>
+                    <td>{money(row.installments_due_cents)}</td>
+                    <td>{money(row.referrals_paid_cents)}</td>
+                    <td>{money(row.referrals_due_cents)}</td>
+                    <td>
+                      <strong>{money(row.cash_cents)}</strong>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr className="roster-empty">
+                  <td colSpan={8}>No sales in that filter.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </section>
+      ) : null}
+
+      {data ? (
+        <section className="card revenue-no-print">
+          <h2>Student statements</h2>
+          <p className="muted small">Open a student to print or save their statement.</p>
+          <table className="data-table roster">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Plan</th>
+                <th>Paid</th>
+                <th>Due</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {statements.length ? (
+                statements.map((row) => (
+                  <tr key={row.user_id} onClick={() => setOpenId(row.user_id)}>
+                    <td>
+                      <strong>{row.name}</strong>
+                      <span className="cell-sub">{row.email || displayCohortName(row.cohort)}</span>
+                    </td>
+                    <td>{optionLabel(row.option)}</td>
+                    <td>{money(row.paid_cents)}</td>
+                    <td>{money(row.due_cents)}</td>
+                    <td>
+                      <button className="ghost" type="button">
+                        Statement
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr className="roster-empty">
+                  <td colSpan={5}>No student statements in that filter.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </section>
+      ) : null}
+
+      {open ? (
+        <section className="card revenue-statement" aria-label={`${open.name} statement`}>
+          <div className="panel-head">
+            <div>
+              <p className="kicker">Student statement</p>
+              <h2>{open.name}</h2>
+              <p className="muted small">
+                {open.email}
+                {open.cohort ? ` · ${displayCohortName(open.cohort)}` : ""}
+              </p>
+            </div>
+            <div className="actions revenue-no-print">
+              <button className="ghost" type="button" onClick={() => setOpenId(null)}>
+                Close
+              </button>
+              <button className="primary" type="button" onClick={() => window.print()}>
+                Print statement
+              </button>
+            </div>
+          </div>
+          <p>
+            {optionLabel(open.option)} · {open.purchase_status} · Paid {money(open.paid_cents)} · Due {money(open.due_cents)}
+          </p>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Status</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {open.lines.map((line, index) => (
+                <tr key={`${line.date}-${line.label}-${index}`}>
+                  <td>{formatWhen(line.date)}</td>
+                  <td>{line.label}</td>
+                  <td>{line.status}</td>
+                  <td>{money(line.amount_cents)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      ) : null}
+    </div>
+  );
+}
