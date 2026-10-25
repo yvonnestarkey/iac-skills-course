@@ -4163,7 +4163,49 @@ a.live-session-watch:hover {
 }
 
 .student-planner h1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.student-planner-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
   margin-bottom: 8px;
+}
+
+.planner-video-btn,
+a.planner-video-btn,
+a.planner-video-btn:link,
+a.planner-video-btn:visited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--link);
+  border: 1px solid var(--link);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.planner-video-btn:hover,
+a.planner-video-btn:hover,
+a.planner-video-btn:visited:hover {
+  color: #ffffff;
+  text-decoration: none;
+  filter: brightness(1.08);
+}
+
+.help-drawer-video-action {
+  margin: 0 0 16px;
 }
 
 .student-planner-export {

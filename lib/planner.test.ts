@@ -64,6 +64,19 @@ test("packCourse finish date matches the packed lessons, not a padded horizon", 
   assert.ok(days <= 14, `finish stretched beyond the actual 3 hours of course: ${days} days`);
 });
 
+test("study planner heading and tooltip offer the walkthrough video", () => {
+  const planner = readFileSync(resolve("components/student/StudyPlanner.tsx"), "utf8");
+  const tooltip = readFileSync(resolve("components/ui/HelpTooltip.tsx"), "utf8");
+  const help = readFileSync(resolve("lib/help-content.ts"), "utf8");
+  const sql = readFileSync(resolve("supabase/study-planner-help-video.sql"), "utf8");
+  assert.match(planner, /PlannerVideoButton/);
+  assert.match(planner, /student-planner-title-row/);
+  assert.match(tooltip, /PlannerVideoButton/);
+  assert.match(help, /player\.vimeo\.com\/video\/1239250910/);
+  assert.match(help, /How to use the Study Planner/);
+  assert.match(sql, /1239250910/);
+});
+
 test("study planner reloads the live course outline so duration_minutes changes apply", () => {
   const planner = readFileSync(resolve("components/student/StudyPlanner.tsx"), "utf8");
   const session = readFileSync(resolve("lib/student-session.tsx"), "utf8");

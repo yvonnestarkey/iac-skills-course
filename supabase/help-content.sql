@@ -35,7 +35,7 @@ values
     'study_planner_header_info',
     'Study planner',
     'Set your start date, weekly hours, and study slots. We date the rest of the course so you can see when you finish, then export those sessions to your calendar.',
-    null
+    'https://player.vimeo.com/video/1239250910'
   ),
   (
     'live_calendar_subscription',
@@ -47,4 +47,5 @@ on conflict (key) do update
 set
   title = excluded.title,
   description = excluded.description,
+  video_url = excluded.video_url,
   updated_at = now();

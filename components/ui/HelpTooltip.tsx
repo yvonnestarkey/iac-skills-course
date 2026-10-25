@@ -5,6 +5,7 @@ import type { MouseEvent } from "react";
 import { createPortal } from "react-dom";
 import { CircleHelp, X } from "lucide-react";
 import { fetchHelpContent, type HelpContent } from "@/lib/help-content";
+import PlannerVideoButton from "@/components/ui/PlannerVideoButton";
 import { embedSrcForVideo } from "@/components/lesson/VideoPlayer";
 
 export default function HelpTooltip({ contentKey }: { contentKey: string }) {
@@ -94,14 +95,14 @@ export default function HelpTooltip({ contentKey }: { contentKey: string }) {
                     Close
                   </button>
                 </div>
+                {embedSrc ? (
+                  <div className="help-drawer-video-action">
+                    <PlannerVideoButton href={content.video_url} />
+                  </div>
+                ) : null}
                 {paragraphs.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
-                {embedSrc ? (
-                  <div className="help-drawer-video">
-                    <iframe title={content.title} src={embedSrc} allow="autoplay; fullscreen" allowFullScreen />
-                  </div>
-                ) : null}
               </aside>
             </div>,
             document.body
