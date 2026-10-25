@@ -102,16 +102,12 @@ test("Signals: Direct and Indirect at half, Volume and Accuracy at 60%, separate
   assert.equal(get("Accuracy below 60%").exam, "0"); // 9 / 11 = 82%
 });
 
-test("Signals: the by-type RTFQ line appears only with 3 or more requirements of that type and a 75% trend", () => {
+test("Signals: one general RTFQ line, no by-type lines and no combined Buried Treasure line", () => {
   const miss = { dimensions: [{ dimension: "shape" as const, required: "x", delivered: "no" as const, note: "" }], evidence: "" };
-  const ok = { dimensions: [{ dimension: "shape" as const, required: "x", delivered: "yes" as const, note: "" }], evidence: "" };
-  const mk = (code: string, rtfq: RequirementEvaluation["rtfq"]) => req({ code, label: code, rtfq });
-  const three = signalLines([dataset(1, [mk("P1Q1_a", miss), mk("P1Q1_d", miss), mk("P1Q2_g1", miss)])]);
-  assert.ok(three.some((l) => l.signal.endsWith("Specifically for non-compliance discussion questions") && l.exam === "3 of 3"));
-  const twoOnly = signalLines([dataset(1, [mk("P1Q1_a", miss), mk("P1Q1_d", miss)])]);
-  assert.ok(!twoOnly.some((l) => l.signal.includes("Specifically")));
-  const weak = signalLines([dataset(1, [mk("P1Q1_a", miss), mk("P1Q1_d", miss), mk("P1Q2_g1", ok), mk("P1Q2_g1b", ok)])]);
-  assert.ok(!weak.some((l) => l.signal.includes("Specifically")), "2 of 4 is under 75%");
+  const mk = (code: string) => req({ code, label: code, rtfq: miss });
+  const lines = signalLines([dataset(1, [mk("P1Q1_a"), mk("P1Q1_d"), mk("P1Q2_g1")])]);
+  assert.equal(lines.filter((l) => l.tool === "RTFQ").length, 1);
+  assert.ok(!lines.some((l) => l.signal.includes("Specifically") || l.signal.startsWith("Either")));
 });
 
 test("Overall Report: warnings, the signals table and the glossary are present", () => {

@@ -60,7 +60,7 @@ export const OVERALL_STEPS = {
   },
   evaluation: {
     title: "Step 3. Overall Evaluation",
-    intro: "Combining the findings from all three papers, this section identifies the main Skill signals that are costing you the most marks. A 'Signal' is the issue, and the Tool is where you will find the details in each papers’ report. The table shows how many requirements each skill issue shows up in, and lists only the most common issues. This tells us which Skill trends to work on. A line for a particular type of question is added only where that type shows a clear trend (at least 3 requirements of that type, with the signal in at least 75% of them). (If a signal shows up in more than half of the requirements you attempted, it is a very important skill to work on.)",
+    intro: "Combining the findings from all three papers, this section identifies the main Skill signals that are costing you the most marks. A 'Signal' is the issue, and the Tool is where you will find the details in each papers’ report. The table shows how many requirements each skill issue shows up in, and lists only the most common issues. This tells us which Skill trends to work on. (If a signal shows up in more than half of the requirements you attempted, it is a very important skill to work on.)",
   },
 } as const;
 
@@ -81,7 +81,7 @@ export const SIGNALS_GLOSSARY = `## What do the Signals and Tools mean?
 - **Shape** indicates whether you answered what was asked, i.e. you gave a 'critique' if asked, as opposed to an 'explanation'.
 - **Direction** indicates whether you followed the specific instructions provided, i.e. include or exclude specific details.
 - **Lens** refers to whether there was a specific context you were instructed to deal with, e.g. '... given the going concern issues' requires you to focus on the related implications and context, as opposed to perhaps the ethical issues.
-- **Signals** are given where any of the three is not fully delivered. If the same signal shows up clearly within one type of question (for example non-compliance discussion questions), it is shown on its own line as well.
+- **Signals** are given where any of the three is not fully delivered.
 
 **Communication: are you getting your thoughts across effectively?**
 This tool evaluates your ability to convey a thought effectively. Note that this step IGNORES whether your point was correct or not (we dealt with that earlier). Here we simply focus on your ability to communicate whatever YOU'RE thinking. We evaluate whether your thoughts are:

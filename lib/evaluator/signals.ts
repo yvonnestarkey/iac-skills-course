@@ -89,28 +89,10 @@ export function signalLines(datasets: EvaluationDataset[]): SignalLine[] {
   simple("direct");
   simple("indirect");
   simple("rtfq");
-  // Conditional RTFQ line by type of question.
-  for (const type of ["compliance", "non_compliance", "calculation"] as TypeKey[]) {
-    const of = all.filter((s) => s.type === type && s.rtfq !== null);
-    const hits = of.filter((s) => s.rtfq === true);
-    if (of.length >= COND_MIN && hits.length / of.length >= COND_SHARE) {
-      const text = (p: ReqSignals[]) => {
-        const o = p.filter((s) => s.type === type && s.rtfq !== null);
-        return o.length ? `${o.filter((s) => s.rtfq === true).length} of ${o.length}` : "-";
-      };
-      lines.push({ signal: `${SIGNAL_TEXT.rtfq[0]}. Specifically for ${TYPE_LABEL[type]}`, tool: "RTFQ", papers: perPaper.map(text), exam: `${hits.length} of ${of.length}` });
-    }
-  }
   simple("volume");
   simple("accuracy");
   simple("core");
   simple("underdeveloped");
-  // Either Buried Treasure signal, out of the requirements that have Buried Treasure.
-  const bt = (p: ReqSignals[]) => {
-    const o = p.filter((s) => s.direct !== null || s.indirect !== null);
-    return `${o.filter((s) => s.direct === true || s.indirect === true).length} of ${o.length}`;
-  };
-  lines.push({ signal: "Either Buried Treasure signal", tool: "Buried Treasure", papers: perPaper.map(bt), exam: bt(all) });
   return lines;
 }
 

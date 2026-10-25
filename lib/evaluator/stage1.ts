@@ -1,6 +1,7 @@
 import { callStructured, fetchPageImages, imageBlocks } from "./anthropic";
 import { stage1Methodology } from "./methodology";
-import { aggregateProximity, applyNotAttemptedRule, buildComponents, buildCoreIssue, componentNodeId, finalizeCommunication, validateRequirement, type RawComponents, type RawCoreIssue } from "./metrics";
+import { assembleRequirementEvaluation, type RawRequirementObservation } from "./assemble";
+import { componentNodeId } from "./metrics";
 import { questionModelFor, toolsFor } from "./question-model";
 import { requirementLabel } from "./pagemap";
 import { DISCUSSION_BASES, COMMUNICATION_RATINGS, INTRO_STATUSES, QUESTION_TYPES, RTFQ_DELIVERED, type BmcrRow, type RequirementEvaluation, type RequirementPageMap, type UsageTally } from "./types";
@@ -189,7 +190,7 @@ export async function evaluateRequirement(input: {
   const reportSelected = input.reportPages.filter((page) => pageMap.report_pages.includes(page.page));
   const [scriptImages, reportImages] = await Promise.all([fetchPageImages(scriptSelected), fetchPageImages(reportSelected)]);
 
-  const raw = await callStructured<Omit<RequirementEvaluation, "code" | "label" | "total_marks" | "bmcr" | "buried_treasure" | "core_issue" | "components"> & { core_issue: RawCoreIssue | null; components: RawComponents | null }>({
+  const raw = await callStructured<RawRequirementObservation>({
     system: `${stage1Methodology()}\n\nYou are Stage 1 of the Script Evaluator for ONE requirement. Record observations only. Do not explain why the student behaved as they did. Report counts and flags; never calculate percentages. If the requirement was not attempted, set attempted=false and set the answer-based measures to null (only Question Type, Competency and the marker's marks are returned).`,
     userContent: [
       {
@@ -238,54 +239,5 @@ export async function evaluateRequirement(input: {
     maxTokens: 12000,
   });
 
-  const warnings: string[] = [];
-  // A paid answer must survive a missing list: later steps read these arrays, so default them and say so.
-  if (raw.communication && !Array.isArray(raw.communication.points)) {
-    warnings.push(`${label}: the model returned Communication without its list of points; Communication is empty for this requirement.`);
-    raw.communication = { ...raw.communication, points: [] };
-  }
-  if (!raw.quick_comment) {
-    warnings.push(`${label}: the model returned no quick comment (coach layer only; nothing in the student report depends on it).`);
-    raw.quick_comment = { main_issue: null, certainty: "uncertain", evidence: "" };
-  }
-  if (!raw.competency) {
-    warnings.push(`${label}: the model returned no competency topic.`);
-    raw.competency = { topic: "", basis: "" };
-  }
-  if (!raw.question_type_basis) raw.question_type_basis = "";
-  if (!Array.isArray(raw.uncertainties)) raw.uncertainties = [];
-  if (raw.rtfq && !Array.isArray(raw.rtfq.dimensions)) {
-    warnings.push(`${label}: the model returned RTFQ without its dimensions; RTFQ is empty for this requirement.`);
-    raw.rtfq = { ...raw.rtfq, dimensions: [] };
-  }
-  if (gate.coreIssue && !model?.core_issue?.length) warnings.push(`${label}: no pre-calibrated Core Issue components; Core Issue not scored.`);
-  if (gate.buriedTreasure && !model?.proximity_items.length) warnings.push(`${label}: no pre-calibrated proximity items; Buried Treasure not scored.`);
-  const buriedTreasure = gate.buriedTreasure ? aggregateProximity(model, raw.buried_treasure_items ?? null) : null;
-
-  const evaluation: RequirementEvaluation = applyNotAttemptedRule({
-    ...raw,
-    question_type: questionType ?? raw.question_type,
-    discussion_basis: discussionBasis,
-    attempted: Boolean(raw.attempted) && pageMap.attempted,
-    code: requirement.code,
-    label,
-    total_marks: requirement.total_marks,
-    bmcr: { student_known: input.bmcr?.student_known ?? null, available: input.bmcr?.available ?? null },
-    buried_treasure_items: gate.buriedTreasure ? raw.buried_treasure_items ?? null : null,
-    buried_treasure: buriedTreasure,
-    volume: gate.volumeAccuracy ? raw.volume ?? null : null,
-    components: gate.components ? buildComponents(model, raw.components ?? null) : null,
-    core_issue: gate.coreIssue ? buildCoreIssue(model?.core_issue, raw.core_issue ?? null) : null,
-    rtfq: gate.rtfq ? raw.rtfq ?? null : null,
-    communication: gate.communication ? finalizeCommunication(raw.communication ?? null, requirement.total_marks, discussionBasis) : null,
-    uncertainties: raw.uncertainties || [],
-  });
-  let checks: string[];
-  try {
-    checks = validateRequirement(evaluation);
-  } catch (error) {
-    // A check must never throw away a model call that has already been paid for.
-    checks = [`${label}: validation failed (${error instanceof Error ? error.message : "unknown error"}); the result is kept unchecked.`];
-  }
-  return { evaluation, warnings: [...warnings, ...checks] };
+  return assembleRequirementEvaluation({ requirement, attempted: pageMap.attempted, bmcr: input.bmcr, paperId: input.paperId, raw });
 }
