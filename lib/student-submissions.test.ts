@@ -4,8 +4,11 @@ import { resolve } from "node:path";
 import { test } from "node:test";
 import {
   assignmentSubmittedNotifySubject,
+  isLessonQueueId,
+  lessonQueuePath,
   lessonStatusToQueue,
   packSubmissionContent,
+  queueStatusToLesson,
   shouldNotifyCoachOfLessonSubmission,
   submissionFromRow,
   unpackSubmissionContent,
@@ -47,6 +50,9 @@ test("submissionFromRow maps live content into the student form fields", () => {
 });
 
 test("lesson uploads map onto the submissions queue and notify the coach", () => {
+  assert.equal(isLessonQueueId("lesson:abc"), true);
+  assert.equal(lessonQueuePath("abc"), "/coach/submissions/lesson:abc");
+  assert.equal(queueStatusToLesson("graded"), "approved");
   assert.equal(lessonStatusToQueue("submitted"), "submitted");
   assert.equal(lessonStatusToQueue("approved"), "graded");
   assert.equal(lessonStatusToQueue("rejected"), "rejected");
@@ -54,7 +60,10 @@ test("lesson uploads map onto the submissions queue and notify the coach", () =>
   assert.equal(shouldNotifyCoachOfLessonSubmission("s1@test.com"), false);
   assert.match(assignmentSubmittedNotifySubject("Keagan de Kock", "Task 1"), /Keagan de Kock/);
   const tab = readFileSync(resolve("components/coach/AssignmentsTab.tsx"), "utf8");
+  const review = readFileSync(resolve("components/coach/SubmissionReview.tsx"), "utf8");
   assert.match(tab, /fetchLessonSubmissionsForCoach/);
+  assert.match(review, /isLessonQueueId/);
+  assert.match(review, /Open student PDF/);
   const form = readFileSync(resolve("components/student/LessonSubmissionForm.tsx"), "utf8");
   assert.match(form, /\/api\/student\/assignment-submitted/);
 });

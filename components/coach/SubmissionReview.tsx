@@ -19,15 +19,30 @@ import {
   type CustomSurveyResponse,
   type SurveyResponseStatus,
 } from "@/lib/custom-surveys";
-import { parseBmcrAnswer } from "@/lib/bmcr";
+import { fetchLessonBmcrEvaluation, parseBmcrAnswer, withDiagnostics, type BmcrValue } from "@/lib/bmcr";
 import { formatSastDateTime } from "@/lib/dates";
+import {
+  fetchLessonSubmissionReview,
+  fileNameFromUrl,
+  isLessonQueueId,
+  saveLessonSubmissionReview,
+  type LessonSubmissionReview,
+} from "@/lib/student-submissions";
 
 const REVIEW_STATUSES: SurveyResponseStatus[] = ["graded", "rejected", "resubmit"];
+
+function lessonStatusLabel(status: string): string {
+  if (status === "approved") return "Graded";
+  if (status === "rejected") return "Rejected";
+  return "Submitted";
+}
 
 export default function SubmissionReview({ id }: { id: string }) {
   const router = useRouter();
   const [survey, setSurvey] = useState<CustomSurvey | null>(null);
   const [response, setResponse] = useState<CustomSurveyResponse | null>(null);
+  const [lesson, setLesson] = useState<LessonSubmissionReview | null>(null);
+  const [bmcr, setBmcr] = useState<BmcrValue | null>(null);
   const [status, setStatus] = useState<SurveyResponseStatus>("graded");
   const [grade, setGrade] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -41,30 +56,64 @@ export default function SubmissionReview({ id }: { id: string }) {
 
   useEffect(() => {
     let cancelled = false;
-    fetchSurveySubmission(id).then((result) => {
-      if (cancelled) return;
-      setLoading(false);
-      if (!result.ok) {
-        setError(result.error || "Could not load this submission.");
-        return;
-      }
-      if (!result.survey || !result.response) {
-        setError("This submission could not be found.");
-        return;
-      }
-      setSurvey(result.survey);
-      setResponse(result.response);
-      setStatus(result.response.status === "submitted" ? "graded" : result.response.status);
-      setGrade(result.response.grade == null ? "" : String(result.response.grade));
-      setFeedback(result.response.feedback || "");
-      setFileUrl(result.response.feedbackFileUrl || "");
-    });
+    const load = isLessonQueueId(id)
+      ? fetchLessonSubmissionReview(id).then(async (result) => {
+          if (cancelled) return;
+          setLoading(false);
+          if (!result.ok || !result.review) {
+            setError(result.error || "This submission could not be found.");
+            return;
+          }
+          setLesson(result.review);
+          setStatus(result.review.status === "submitted" ? "graded" : result.review.status === "approved" ? "graded" : "rejected");
+          setFeedback(result.review.feedback || "");
+          setFileUrl(result.review.feedbackFileUrl || "");
+          const marks = await fetchLessonBmcrEvaluation(result.review.student_id, result.review.lesson_id);
+          if (!cancelled && marks) setBmcr(withDiagnostics(marks));
+        })
+      : fetchSurveySubmission(id).then((result) => {
+          if (cancelled) return;
+          setLoading(false);
+          if (!result.ok) {
+            setError(result.error || "Could not load this submission.");
+            return;
+          }
+          if (!result.survey || !result.response) {
+            setError("This submission could not be found.");
+            return;
+          }
+          setSurvey(result.survey);
+          setResponse(result.response);
+          setStatus(result.response.status === "submitted" ? "graded" : result.response.status);
+          setGrade(result.response.grade == null ? "" : String(result.response.grade));
+          setFeedback(result.response.feedback || "");
+          setFileUrl(result.response.feedbackFileUrl || "");
+        });
+    void load;
     return () => {
       cancelled = true;
     };
   }, [id]);
 
   const save = async () => {
+    if (lesson) {
+      setBusy(true);
+      setNotice("");
+      const result = await saveLessonSubmissionReview({
+        id: lesson.id || id,
+        status,
+        feedback,
+        feedbackFileUrl: fileUrl,
+      });
+      setBusy(false);
+      if (!result.ok) {
+        setNotice(result.error || "Could not save this review.");
+        return;
+      }
+      if (result.review) setLesson(result.review);
+      setNotice(result.error || "Review saved. The student has been notified.");
+      return;
+    }
     if (!response || !survey) return;
     if (survey.requiresGrade && status === "graded" && grade.trim() === "") {
       setNotice("Add a numeric grade, or change the status.");
@@ -102,10 +151,14 @@ export default function SubmissionReview({ id }: { id: string }) {
   };
 
   const pickFile = async (file: File | null) => {
-    if (!file || !survey || !response) return;
+    if (!file || (!survey && !lesson)) return;
     setUploading(true);
     setNotice("");
-    const result = await uploadCoachFeedbackFile(file, survey.id, response.id);
+    const result = await uploadCoachFeedbackFile(
+      file,
+      survey?.id || "lesson-assignments",
+      response?.id || lesson?.id || id
+    );
     setUploading(false);
     if (!result.ok || !result.url) {
       setNotice(result.error || "Could not upload that file.");
@@ -124,7 +177,7 @@ export default function SubmissionReview({ id }: { id: string }) {
     );
   }
 
-  if (!survey || !response) {
+  if (!lesson && (!survey || !response)) {
     return (
       <div className="coach-page">
         <button className="back-link" type="button" onClick={() => router.push("/coach/lists")}>
@@ -135,7 +188,13 @@ export default function SubmissionReview({ id }: { id: string }) {
     );
   }
 
-  const pdfs = surveyPdfUploads(survey, response.answers);
+  const pdfs = survey && response ? surveyPdfUploads(survey, response.answers) : [];
+  if (lesson?.link_url) pdfs.unshift({ url: lesson.link_url, name: fileNameFromUrl(lesson.link_url) });
+  const title = lesson?.lessonTitle || survey?.title || "Submission";
+  const studentName = lesson?.studentName || response?.studentName || "Student";
+  const studentEmail = lesson?.studentEmail || response?.studentEmail || "";
+  const submittedAt = lesson?.submittedAt || response?.createdAt || "";
+  const currentStatus = lesson ? lessonStatusLabel(lesson.status) : response!.status;
 
   return (
     <div className="coach-page submission-review">
@@ -144,62 +203,84 @@ export default function SubmissionReview({ id }: { id: string }) {
       </button>
       <div className="coach-head">
         <div>
-          <p className="kicker">{survey.isAssignment ? "Assignment" : "Survey"}</p>
-          <h1>{survey.title}</h1>
+          <p className="kicker">{lesson || survey?.isAssignment ? "Assignment" : "Survey"}</p>
+          <h1>{title}</h1>
           <p className="muted">
-            {response.studentName || "Student"}
-            {response.studentEmail ? ` · ${response.studentEmail}` : ""}
-            {response.createdAt ? ` · submitted ${formatSastDateTime(response.createdAt) || response.createdAt}` : ""}
+            {studentName}
+            {studentEmail ? ` · ${studentEmail}` : ""}
+            {submittedAt ? ` · submitted ${formatSastDateTime(submittedAt) || submittedAt}` : ""}
           </p>
         </div>
-        <span className={`badge ${surveyResponseStatusClass(response.status)}`}>
-          {surveyResponseStatusLabel(response.status)}
+        <span className={`badge ${surveyResponseStatusClass(lesson ? (lesson.status === "approved" ? "graded" : lesson.status === "rejected" ? "rejected" : "submitted") : response!.status)}`}>
+          {lesson ? lessonStatusLabel(lesson.status) : surveyResponseStatusLabel(response!.status)}
         </span>
       </div>
+      {pdfs.length ? (
+        <div className="actions submission-review-pdfs">
+          {pdfs.map((file) => (
+            <a key={file.url} className="primary" href={file.url} target="_blank" rel="noopener noreferrer">
+              Open student PDF{file.name ? `: ${file.name}` : ""} ↗
+            </a>
+          ))}
+        </div>
+      ) : null}
       {error ? <div className="notice">{error}</div> : null}
 
       <div className="submission-review-grid">
         <section className="card survey-rich-text">
           <h2>Student submission</h2>
-          {pdfs.length ? (
-            <div className="actions">
-              {pdfs.map((file) => (
-                <a key={file.url} className="primary" href={file.url} target="_blank" rel="noopener noreferrer">
-                  View Attached PDF ↗
-                </a>
-              ))}
-            </div>
-          ) : null}
           <div className="work-list">
-            {survey.questions.map((question) =>
-              isInfoBlock(question.type) ? (
-                <article className="work-item" key={question.id}>
-                  <strong>
-                    <LinkedText text={question.label} />
-                  </strong>
-                  {question.helperText ? (
-                    <p className="muted small">
-                      <LinkedText text={question.helperText} />
-                    </p>
-                  ) : null}
-                </article>
-              ) : (
-                <article className="work-item" key={question.id}>
-                  <strong>
-                    <LinkedText text={question.label} />
-                  </strong>
-                  {isBmcrBlock(question.type) ? (
-                    <BmcrCalculator
-                      value={parseBmcrAnswer(response.answers[question.id])}
-                      readOnly
-                      idPrefix={`review-${question.id}`}
-                    />
-                  ) : (
+            {lesson ? (
+              <>
+                {lesson.body.trim() ? (
+                  <article className="work-item">
+                    <strong>Notes</strong>
                     <p>
-                      <SurveyAnswerValue value={response.answers[question.id]} type={question.type} />
+                      <LinkedText text={lesson.body} />
                     </p>
-                  )}
-                </article>
+                  </article>
+                ) : null}
+                {bmcr ? (
+                  <article className="work-item">
+                    <strong>BMCR calculator</strong>
+                    <BmcrCalculator value={bmcr} readOnly idPrefix="review-lesson-bmcr" />
+                  </article>
+                ) : null}
+                {!lesson.body.trim() && !bmcr ? (
+                  <p className="muted small">No written notes on this upload. Open the PDF above to review the script.</p>
+                ) : null}
+              </>
+            ) : (
+              survey!.questions.map((question) =>
+                isInfoBlock(question.type) ? (
+                  <article className="work-item" key={question.id}>
+                    <strong>
+                      <LinkedText text={question.label} />
+                    </strong>
+                    {question.helperText ? (
+                      <p className="muted small">
+                        <LinkedText text={question.helperText} />
+                      </p>
+                    ) : null}
+                  </article>
+                ) : (
+                  <article className="work-item" key={question.id}>
+                    <strong>
+                      <LinkedText text={question.label} />
+                    </strong>
+                    {isBmcrBlock(question.type) ? (
+                      <BmcrCalculator
+                        value={parseBmcrAnswer(response!.answers[question.id])}
+                        readOnly
+                        idPrefix={`review-${question.id}`}
+                      />
+                    ) : (
+                      <p>
+                        <SurveyAnswerValue value={response!.answers[question.id]} type={question.type} />
+                      </p>
+                    )}
+                  </article>
+                )
               )
             )}
           </div>
@@ -208,7 +289,7 @@ export default function SubmissionReview({ id }: { id: string }) {
         <section className="card">
           <h2>Feedback & grading</h2>
           <p className="muted small">
-            {survey.requiresGrade
+            {survey?.requiresGrade
               ? "This form requires a numeric score as well as a status."
               : "Feedback-only. Mark as Graded when you have reviewed it, without a numeric score."}
           </p>
@@ -225,7 +306,7 @@ export default function SubmissionReview({ id }: { id: string }) {
               </button>
             ))}
           </div>
-          {survey.requiresGrade ? (
+          {survey?.requiresGrade ? (
             <>
               <label className="student-notes-label" htmlFor="submission-grade">
                 Grade
@@ -283,10 +364,10 @@ export default function SubmissionReview({ id }: { id: string }) {
             </div>
           ) : null}
           {notice ? <p className="notice">{notice}</p> : null}
-          {response.gradedAt ? (
+          {lesson?.gradedAt || response?.gradedAt ? (
             <p className="muted small">
-              Last reviewed {formatSastDateTime(response.gradedAt) || response.gradedAt}
-              {response.gradedByName ? ` by ${response.gradedByName}` : ""}.
+              Last reviewed {formatSastDateTime(lesson?.gradedAt || response?.gradedAt || "") || lesson?.gradedAt || response?.gradedAt}
+              {response?.gradedByName ? ` by ${response.gradedByName}` : ""}.
             </p>
           ) : null}
           <div className="actions">

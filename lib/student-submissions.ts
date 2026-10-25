@@ -1,9 +1,25 @@
 import type { SurveyResponseStatus, SurveySubmissionRow } from "./custom-surveys";
+import { notifyAssignmentFeedback } from "./notifications";
 import { getSupabase } from "./supabase";
 import type { Submission, SubmissionStatus } from "../types/database";
 
 export type { Submission, SubmissionStatus };
 export type StudentSubmission = Submission;
+
+export const LESSON_QUEUE_PREFIX = "lesson:";
+
+export const STUDENT_SUBMISSION_REVIEW_SQL =
+  "Paste supabase/student-submission-review.sql in the Supabase SQL editor, then try again.";
+
+export type LessonSubmissionReview = StudentSubmission & {
+  feedback: string;
+  feedbackFileUrl: string;
+  gradedAt: string;
+  lessonTitle: string;
+  studentName: string;
+  studentEmail: string;
+  submittedAt: string;
+};
 
 function asStatus(value: unknown): SubmissionStatus {
   if (value === "approved" || value === "rejected" || value === "submitted") return value;
@@ -81,10 +97,22 @@ export function submissionFromRow(row: {
   };
 }
 
+export function isLessonQueueId(id: string): boolean {
+  return id.startsWith(LESSON_QUEUE_PREFIX);
+}
+
+export function lessonQueuePath(id: string): string {
+  return `/coach/submissions/${id.startsWith(LESSON_QUEUE_PREFIX) ? id : `${LESSON_QUEUE_PREFIX}${id}`}`;
+}
+
 export function lessonStatusToQueue(status: SubmissionStatus): SurveyResponseStatus {
   if (status === "approved") return "graded";
   if (status === "rejected") return "rejected";
   return "submitted";
+}
+
+export function queueStatusToLesson(status: SurveyResponseStatus): SubmissionStatus {
+  return status === "graded" ? "approved" : "rejected";
 }
 
 export function shouldNotifyCoachOfLessonSubmission(email?: string | null): boolean {
@@ -168,12 +196,137 @@ export async function fetchLessonSubmissionsForCoach(): Promise<{
           surveyTitle: titles.get(item.lesson_id) || item.lesson_id,
           isAssignment: true,
           requiresGrade: false,
-          href: `/coach/students/${item.student_id}`,
+          href: lessonQueuePath(item.id || `${item.student_id}:${item.lesson_id}`),
         };
         return rowOut;
       })
       .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))),
   };
+}
+
+function lessonIdFromQueue(id: string): string {
+  return id.startsWith(LESSON_QUEUE_PREFIX) ? id.slice(LESSON_QUEUE_PREFIX.length) : id;
+}
+
+export async function fetchLessonSubmissionReview(
+  queueId: string
+): Promise<{ ok: boolean; error?: string; review?: LessonSubmissionReview }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const rawId = lessonIdFromQueue(queueId);
+  let { data, error } = await client.from("student_submissions").select("*").eq("id", rawId).maybeSingle();
+  if ((error || !data) && rawId.includes(":")) {
+    const [studentId, lessonId] = rawId.split(":");
+    const fallback = await client
+      .from("student_submissions")
+      .select("*")
+      .eq("student_id", studentId)
+      .eq("lesson_id", lessonId)
+      .maybeSingle();
+    data = fallback.data;
+    error = fallback.error;
+  }
+  if (error) return { ok: false, error: error.message };
+  if (!data) return { ok: false, error: "This submission could not be found." };
+  const row = data as Record<string, unknown>;
+  const item = submissionFromRow({
+    id: row.id != null ? String(row.id) : undefined,
+    student_id: String(row.student_id || ""),
+    lesson_id: String(row.lesson_id || ""),
+    body: row.body != null ? String(row.body) : null,
+    link_url: row.link_url != null ? String(row.link_url) : null,
+    content: row.content != null ? String(row.content) : null,
+    status: row.status != null ? String(row.status) : null,
+    submitted_at: row.submitted_at != null ? String(row.submitted_at) : null,
+    updated_at: row.updated_at != null ? String(row.updated_at) : null,
+  });
+  const [profile, lesson] = await Promise.all([
+    client.from("profiles").select("full_name, email").eq("id", item.student_id).maybeSingle(),
+    client.from("lessons").select("title").eq("id", item.lesson_id).maybeSingle(),
+  ]);
+  return {
+    ok: true,
+    review: {
+      ...item,
+      feedback: String(row.feedback || ""),
+      feedbackFileUrl: String(row.feedback_file_url || ""),
+      gradedAt: String(row.graded_at || ""),
+      lessonTitle: String(lesson.data?.title || item.lesson_id),
+      studentName: String(profile.data?.full_name || "").trim() || String(profile.data?.email || "Student"),
+      studentEmail: String(profile.data?.email || ""),
+      submittedAt: String(row.submitted_at || item.updated_at || ""),
+    },
+  };
+}
+
+export async function saveLessonSubmissionReview(input: {
+  id: string;
+  status: SurveyResponseStatus;
+  feedback: string;
+  feedbackFileUrl: string;
+}): Promise<{ ok: boolean; error?: string; review?: LessonSubmissionReview }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const { data: session } = await client.auth.getUser();
+  if (!session.user) return { ok: false, error: "Sign in required." };
+  if (input.status === "submitted") return { ok: false, error: "Choose Graded, Rejected, or Resubmit." };
+  const rawId = lessonIdFromQueue(input.id);
+  const now = new Date().toISOString();
+  const payload: Record<string, unknown> = {
+    status: queueStatusToLesson(input.status),
+    feedback: input.feedback.trim(),
+    feedback_file_url: input.feedbackFileUrl.trim(),
+    graded_by: session.user.id,
+    graded_at: now,
+    updated_at: now,
+  };
+  let { data, error } = await client.from("student_submissions").update(payload).eq("id", rawId).select("*").maybeSingle();
+  if (error && /feedback|feedback_file_url|graded_by|graded_at/i.test(error.message || "")) {
+    const statusOnly = { status: payload.status, updated_at: now };
+    ({ data, error } = await client.from("student_submissions").update(statusOnly).eq("id", rawId).select("*").maybeSingle());
+    if (!error) {
+      const loaded = await fetchLessonSubmissionReview(input.id);
+      if (loaded.review?.student_id) {
+        await notifyAssignmentFeedback({
+          studentId: loaded.review.student_id,
+          studentEmail: loaded.review.studentEmail,
+          title: `${input.status === "graded" ? "Graded" : "Returned"}: ${loaded.review.lessonTitle}`,
+          message: [`Your coach reviewed “${loaded.review.lessonTitle}”.`, input.feedback.trim(), input.feedbackFileUrl.trim()]
+            .filter(Boolean)
+            .join("\n\n"),
+        });
+      }
+      return {
+        ok: true,
+        review: loaded.review,
+        error: STUDENT_SUBMISSION_REVIEW_SQL,
+      };
+    }
+  }
+  if (error || !data) return { ok: false, error: error?.message || STUDENT_SUBMISSION_REVIEW_SQL };
+  const loaded = await fetchLessonSubmissionReview(String((data as { id?: string }).id || rawId));
+  if (loaded.review?.student_id) {
+    const notified = await notifyAssignmentFeedback({
+      studentId: loaded.review.student_id,
+      studentEmail: loaded.review.studentEmail,
+      title: `${input.status === "graded" ? "Graded" : "Returned"}: ${loaded.review.lessonTitle}`,
+      message: [
+        `Your coach reviewed “${loaded.review.lessonTitle}”.`,
+        input.feedback.trim(),
+        input.feedbackFileUrl ? `[Open coach file](${input.feedbackFileUrl})` : "",
+      ]
+        .filter(Boolean)
+        .join("\n\n"),
+    });
+    if (!notified.ok) {
+      return {
+        ok: true,
+        review: loaded.review,
+        error: `Review saved, but the student was not notified${notified.error ? `: ${notified.error}` : "."}`,
+      };
+    }
+  }
+  return { ok: true, review: loaded.review };
 }
 
 export async function fetchSubmissionsAwaitingFeedback(): Promise<{

@@ -2270,6 +2270,10 @@ input[type="tel"]:focus {
   min-width: 180px;
 }
 
+.submission-review-pdfs {
+  margin: 0 0 16px;
+}
+
 .submission-review-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
