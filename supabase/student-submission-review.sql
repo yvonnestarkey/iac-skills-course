@@ -5,3 +5,4 @@ alter table public.student_submissions add column if not exists feedback text no
 alter table public.student_submissions add column if not exists feedback_file_url text;
 alter table public.student_submissions add column if not exists graded_by uuid;
 alter table public.student_submissions add column if not exists graded_at timestamptz;
+alter table public.student_submissions add column if not exists updated_at timestamptz not null default now();

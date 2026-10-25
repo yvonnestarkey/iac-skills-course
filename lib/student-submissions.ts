@@ -289,29 +289,15 @@ export async function saveLessonSubmissionReview(input: {
     graded_at: now,
     updated_at: now,
   };
+  const optional = ["updated_at", "feedback", "feedback_file_url", "graded_by", "graded_at"];
   let { data, error } = await client.from("student_submissions").update(payload).eq("id", rawId).select("*").maybeSingle();
-  if (error && /feedback|feedback_file_url|graded_by|graded_at/i.test(error.message || "")) {
-    const statusOnly = { status: payload.status, updated_at: now };
-    ({ data, error } = await client.from("student_submissions").update(statusOnly).eq("id", rawId).select("*").maybeSingle());
-    if (!error) {
-      const loaded = await fetchLessonSubmissionReview(input.id);
-      if (loaded.review?.student_id) {
-        await notifyAssignmentFeedback({
-          studentId: loaded.review.student_id,
-          studentEmail: loaded.review.studentEmail,
-          title: `${input.status === "graded" ? "Graded" : "Returned"}: ${loaded.review.lessonTitle}`,
-          message: [`Your coach reviewed “${loaded.review.lessonTitle}”.`, input.feedback.trim(), input.feedbackFileUrl.trim()]
-            .filter(Boolean)
-            .join("\n\n"),
-        });
-      }
-      return {
-        ok: true,
-        review: loaded.review,
-        error: STUDENT_SUBMISSION_REVIEW_SQL,
-      };
-    }
+  for (let attempt = 0; attempt < optional.length && error; attempt += 1) {
+    const missing = optional.find((column) => column in payload && (error?.message || "").includes(column));
+    if (!missing) break;
+    delete payload[missing];
+    ({ data, error } = await client.from("student_submissions").update(payload).eq("id", rawId).select("*").maybeSingle());
   }
+  const droppedReviewColumns = !("feedback" in payload);
   if (error || !data) return { ok: false, error: error?.message || STUDENT_SUBMISSION_REVIEW_SQL };
   const loaded = await fetchLessonSubmissionReview(String((data as { id?: string }).id || rawId));
   if (loaded.review?.student_id) {
@@ -335,7 +321,11 @@ export async function saveLessonSubmissionReview(input: {
       };
     }
   }
-  return { ok: true, review: loaded.review };
+  return {
+    ok: true,
+    review: loaded.review,
+    error: droppedReviewColumns ? STUDENT_SUBMISSION_REVIEW_SQL : undefined,
+  };
 }
 
 export async function fetchSubmissionsAwaitingFeedback(): Promise<{
