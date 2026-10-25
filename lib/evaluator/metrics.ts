@@ -6,7 +6,10 @@ import type { BmcrVerdict, CoachHypothesis, CommunicationEvidence, Communication
 export const BMCR_THEORY_THRESHOLD = 0.5; // Basic marks as a share of total marks
 export const BMCR_CONVERSION_THRESHOLD = 0.7; // marks awarded as a share of Basic marks
 
+const capOne = (x: number | null) => (x === null ? null : Math.min(1, x));
+
 /** Cross-multiplied so rounding can never flip a borderline case (e.g. 3 of 6 is exactly 50%). */
+
 export function bmcrVerdict(awarded: number | null, basic: number | null, total: number): BmcrVerdict {
   if (basic === null || !Number.isFinite(basic) || basic <= 0 || total <= 0) return "no_basic_marks";
   if (basic * 2 < total) return "not_enough_theory";
@@ -57,7 +60,8 @@ export function computeMetrics(requirement: RequirementEvaluation): RequirementM
     bmcr_verdict: bmcrVerdict(requirement.technical_awarded, requirement.bmcr.student_known, requirement.total_marks),
     bmcr_known_pct: ratio(requirement.bmcr.student_known, requirement.total_marks),
     actual_pct: ratio(requirement.technical_awarded, requirement.total_marks),
-    accuracy: requirement.attempted ? ratio(requirement.technical_awarded, volume) : null,
+    // Capped at 100%: a single point can carry 2 or 3 marks, but accuracy is the share of points that earned.
+    accuracy: requirement.attempted ? capOne(ratio(requirement.technical_awarded, volume)) : null,
     proximity_conversion: {
       direct: bucketConversion(bt?.direct),
       indirect: bucketConversion(bt?.indirect),
@@ -98,7 +102,7 @@ export function diagnose(requirement: RequirementEvaluation): RequirementDiagnos
     const attempts = requirement.volume.attempts;
     const awarded = requirement.technical_awarded ?? 0;
     const volume = attempts / requirement.total_marks;
-    const accuracy = attempts > 0 ? awarded / attempts : null;
+    const accuracy = attempts > 0 ? Math.min(1, awarded / attempts) : null;
     const combined = accuracy === null ? null : volume * accuracy;
     const passes = combined !== null && combined >= PASS_SHARE;
     const needed_volume = accuracy && accuracy > 0 ? PASS_SHARE / accuracy : null;
