@@ -97,12 +97,25 @@ export function submissionFromRow(row: {
   };
 }
 
+export function normalizeQueueId(id: string): string {
+  try {
+    return decodeURIComponent(String(id || "").trim());
+  } catch {
+    return String(id || "").trim();
+  }
+}
+
 export function isLessonQueueId(id: string): boolean {
-  return id.startsWith(LESSON_QUEUE_PREFIX);
+  const raw = normalizeQueueId(id);
+  return raw.startsWith(LESSON_QUEUE_PREFIX) || raw.startsWith("lesson/");
+}
+
+export function lessonIdFromQueue(id: string): string {
+  return normalizeQueueId(id).replace(/^lesson[/:]/, "");
 }
 
 export function lessonQueuePath(id: string): string {
-  return `/coach/submissions/${id.startsWith(LESSON_QUEUE_PREFIX) ? id : `${LESSON_QUEUE_PREFIX}${id}`}`;
+  return `/coach/submissions/lesson/${lessonIdFromQueue(id)}`;
 }
 
 export function lessonStatusToQueue(status: SubmissionStatus): SurveyResponseStatus {
@@ -202,10 +215,6 @@ export async function fetchLessonSubmissionsForCoach(): Promise<{
       })
       .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))),
   };
-}
-
-function lessonIdFromQueue(id: string): string {
-  return id.startsWith(LESSON_QUEUE_PREFIX) ? id.slice(LESSON_QUEUE_PREFIX.length) : id;
 }
 
 export async function fetchLessonSubmissionReview(

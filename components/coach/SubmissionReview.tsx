@@ -37,7 +37,7 @@ function lessonStatusLabel(status: string): string {
   return "Submitted";
 }
 
-export default function SubmissionReview({ id }: { id: string }) {
+export default function SubmissionReview({ id, kind }: { id: string; kind?: "lesson" | "survey" }) {
   const router = useRouter();
   const [survey, setSurvey] = useState<CustomSurvey | null>(null);
   const [response, setResponse] = useState<CustomSurveyResponse | null>(null);
@@ -56,7 +56,7 @@ export default function SubmissionReview({ id }: { id: string }) {
 
   useEffect(() => {
     let cancelled = false;
-    const load = isLessonQueueId(id)
+    const load = kind === "lesson" || isLessonQueueId(id)
       ? fetchLessonSubmissionReview(id).then(async (result) => {
           if (cancelled) return;
           setLoading(false);
@@ -93,7 +93,7 @@ export default function SubmissionReview({ id }: { id: string }) {
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [id, kind]);
 
   const save = async () => {
     if (lesson) {

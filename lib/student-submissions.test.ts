@@ -51,7 +51,9 @@ test("submissionFromRow maps live content into the student form fields", () => {
 
 test("lesson uploads map onto the submissions queue and notify the coach", () => {
   assert.equal(isLessonQueueId("lesson:abc"), true);
-  assert.equal(lessonQueuePath("abc"), "/coach/submissions/lesson:abc");
+  assert.equal(isLessonQueueId("lesson%3Aabc"), true);
+  assert.equal(lessonQueuePath("abc"), "/coach/submissions/lesson/abc");
+  assert.equal(lessonQueuePath("lesson:abc"), "/coach/submissions/lesson/abc");
   assert.equal(queueStatusToLesson("graded"), "approved");
   assert.equal(lessonStatusToQueue("submitted"), "submitted");
   assert.equal(lessonStatusToQueue("approved"), "graded");

@@ -5,5 +5,5 @@ import SubmissionReview from "@/components/coach/SubmissionReview";
 
 export default function CoachSubmissionPage() {
   const params = useParams<{ id: string }>();
-  return <SubmissionReview id={params.id} />;
+  return <SubmissionReview id={String(params.id || "")} />;
 }
