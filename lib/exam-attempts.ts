@@ -123,6 +123,23 @@ export function attemptHasFile(attempt: ExamAttempt, kind: ExamAttemptFileKind):
   return Boolean(attempt[`${kind}_url`] || attempt[`${kind}_path`]);
 }
 
+export type AttemptUploadedFile = {
+  kind: ExamAttemptFileKind;
+  label: string;
+  url: string;
+  name: string;
+};
+
+/** PDFs the student uploaded on this attempt, in upload order, for coach download. */
+export function attemptUploadedFiles(attempt: ExamAttempt): AttemptUploadedFile[] {
+  return EXAM_ATTEMPT_FILE_KINDS.flatMap((kind) => {
+    const url = String(attempt[`${kind}_url`] || "").trim();
+    if (!url) return [];
+    const name = String(attempt[`${kind}_name`] || "").trim() || `${EXAM_ATTEMPT_FILE_LABELS[kind]}.pdf`;
+    return [{ kind, label: EXAM_ATTEMPT_FILE_LABELS[kind], url, name }];
+  });
+}
+
 export function attemptScriptSlotLocked(attempt: ExamAttempt, kind: ExamAttemptFileKind): boolean {
   return EXAM_ATTEMPT_SCRIPT_KINDS.includes(kind) && attemptHasFile(attempt, kind);
 }

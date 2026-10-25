@@ -10,6 +10,7 @@ import {
   attemptScriptSlotLocked,
   attemptStatusLabel,
   attemptStudentLabel,
+  attemptUploadedFiles,
   deriveAttemptStatus,
   examAttemptFromRow,
   type ExamAttempt,
@@ -55,6 +56,32 @@ test("status stays independent per attempt and does not jump to report ready", (
   );
   assert.equal(deriveAttemptStatus(attempt({ status: "analysing" })), "analysing");
   assert.equal(attemptStatusLabel("evidence_ready"), "Documents uploaded");
+});
+
+test("coach profile lists only the PDFs the student uploaded on an attempt", () => {
+  const files = attemptUploadedFiles(
+    attempt({
+      marked_script_url: "https://x/p1.pdf",
+      marked_script_name: "paper-1.pdf",
+      marked_script_p2_url: "https://x/p2.pdf",
+      marking_report_url: "https://x/report.pdf",
+      marking_report_name: "marks.pdf",
+    })
+  );
+  assert.deepEqual(
+    files.map((file) => [file.kind, file.label, file.url, file.name]),
+    [
+      ["marked_script", "Paper 1", "https://x/p1.pdf", "paper-1.pdf"],
+      ["marked_script_p2", "Paper 2", "https://x/p2.pdf", "Paper 2.pdf"],
+      ["marking_report", "Marking report", "https://x/report.pdf", "marks.pdf"],
+    ]
+  );
+  const profile = readFileSync(resolve("components/coach/StudentProfile.tsx"), "utf8");
+  const panel = readFileSync(resolve("components/coach/ScriptEvaluationsPanel.tsx"), "utf8");
+  assert.match(profile, /ScriptEvaluationsPanel/);
+  assert.match(panel, /Script Evaluations/);
+  assert.match(panel, /Download \{file\.label\}/);
+  assert.match(panel, /fetchOwnExamAttempts/);
 });
 
 test("attempt paper name is sitting plus paper for the evaluation route", () => {
