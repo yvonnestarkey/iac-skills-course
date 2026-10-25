@@ -2,6 +2,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { after } from "next/server";
 import { getRequestUser, isStaffUser } from "@/lib/auth-server";
+import { canReleaseEvaluatorReport, coachReportUrl } from "@/lib/evaluator/coach-report";
 import { getEvaluatorMode, kickPendingJobs, type EvaluatorJob } from "@/lib/evaluator/jobs";
 import { EVALUATOR_READY_SITTINGS } from "@/lib/evaluator/ready-sittings";
 import { PAPER_NAMES } from "@/lib/evaluator/report-text";
@@ -18,7 +19,15 @@ const MODE_TEXT = {
   all: "Everyone: every June 2026 whole-sitting submission uses the new evaluator.",
 } as const;
 
-type AttemptRow = { id: string; user_id: string; sitting_label: string; submitted_at: string | null; evaluator_report_released_at: string | null };
+type AttemptRow = {
+  id: string;
+  user_id: string;
+  sitting_label: string;
+  submitted_at: string | null;
+  evaluator_report_released_at: string | null;
+  coach_report_url?: string | null;
+  coach_report_name?: string | null;
+};
 
 function paperStatus(job: EvaluatorJob | undefined): string {
   if (!job) return "not started";
@@ -30,41 +39,88 @@ function paperStatus(job: EvaluatorJob | undefined): string {
   return `${done} of ${total} questions`;
 }
 
+function CoachReportUpload({ attemptId, hasPdf }: { attemptId: string; hasPdf: boolean }) {
+  return (
+    <form method="post" action="/api/evaluator/review" encType="multipart/form-data" style={{ marginTop: 8 }}>
+      <input type="hidden" name="action" value="upload_report" />
+      <input type="hidden" name="attempt_id" value={attemptId} />
+      <input type="file" name="file" accept="application/pdf,.pdf" required />
+      <div>
+        <button type="submit" className="ghost" style={{ marginTop: 4 }}>
+          {hasPdf ? "Replace PDF" : "Upload report PDF"}
+        </button>
+      </div>
+    </form>
+  );
+}
+
 /**
  * Staff review list for the new Script Evaluator: progress per paper, open the report, release it to the student,
- * retry a stopped paper, and the on/off switch.
+ * retry a stopped paper, upload a manual PDF, and the on/off switch.
  */
-export default async function CoachEvaluatorPage() {
+export default async function CoachEvaluatorPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ notice?: string }>;
+}) {
   const user = await getRequestUser();
   if (!isStaffUser(user)) return <div className="coach-page"><p>Staff only.</p></div>;
   const supabase = getServiceSupabase();
   if (!supabase) return <div className="coach-page"><p>The server is missing its Supabase service key.</p></div>;
+  const query = await searchParams;
 
   const mode = await getEvaluatorMode();
   const { data: jobRows, error } = await supabase.from("evaluator_jobs").select("*").order("created_at", { ascending: false }).limit(150);
   const jobs = (jobRows ?? []) as EvaluatorJob[];
   const attemptIds = [...new Set(jobs.map((j) => j.attempt_id))];
-  const { data: attemptRows } = attemptIds.length
-    ? await supabase.from("exam_attempts").select("id, user_id, sitting_label, submitted_at, evaluator_report_released_at").in("id", attemptIds)
-    : { data: [] };
-  const attempts = (attemptRows ?? []) as AttemptRow[];
+  const attemptSelect =
+    "id, user_id, sitting_label, submitted_at, evaluator_report_released_at, coach_report_url, coach_report_name";
+  let attemptRows: AttemptRow[] = [];
+  if (attemptIds.length) {
+    const full = await supabase.from("exam_attempts").select(attemptSelect).in("id", attemptIds);
+    if (full.error) {
+      const lean = await supabase
+        .from("exam_attempts")
+        .select("id, user_id, sitting_label, submitted_at, evaluator_report_released_at")
+        .in("id", attemptIds);
+      attemptRows = (lean.data ?? []) as AttemptRow[];
+    } else {
+      attemptRows = (full.data ?? []) as AttemptRow[];
+    }
+  }
+  const attempts = attemptRows;
   const userIds = [...new Set(attempts.map((a) => a.user_id))];
   const { data: profileRows } = userIds.length ? await supabase.from("profiles").select("id, email, full_name").in("id", userIds) : { data: [] };
   const names = new Map(((profileRows ?? []) as { id: string; email: string; full_name: string | null }[]).map((p) => [p.id, profileDisplayName(p.email, p.full_name)]));
   const paperIds = [...new Set(jobs.map((j) => j.paper_id))].sort();
 
   // Submitted whole-sitting attempts for evaluator-ready sittings that have not been through the new evaluator yet
-  // (for example submitted before it existed, or by an account the switch did not cover). Staff can start them by hand.
-  const { data: waitingRows } = await supabase
+  // (for example submitted before it existed, or by an account the switch did not cover). Staff can start them by hand
+  // or upload a manual PDF instead.
+  const waitingSelect =
+    "id, user_id, sitting_id, sitting_label, submitted_at, marked_script_p2_path, status, coach_report_url, coach_report_name, evaluator_report_released_at";
+  const waitingFull = await supabase
     .from("exam_attempts")
-    .select("id, user_id, sitting_id, sitting_label, submitted_at, marked_script_p2_path, status")
+    .select(waitingSelect)
     .in("sitting_id", [...EVALUATOR_READY_SITTINGS])
     .not("marked_script_p2_path", "is", null)
     .in("status", ["analysing", "evidence_ready", "report_ready", "analysis_failed"])
     .order("created_at", { ascending: false })
     .limit(30);
-  type WaitingRow = { id: string; user_id: string; sitting_id: string; sitting_label: string; submitted_at: string | null };
-  const waiting = ((waitingRows ?? []) as unknown as WaitingRow[]).filter((a) => !attemptIds.includes(a.id));
+  const waitingLean = waitingFull.error
+    ? await supabase
+        .from("exam_attempts")
+        .select("id, user_id, sitting_id, sitting_label, submitted_at, marked_script_p2_path, status")
+        .in("sitting_id", [...EVALUATOR_READY_SITTINGS])
+        .not("marked_script_p2_path", "is", null)
+        .in("status", ["analysing", "evidence_ready", "report_ready", "analysis_failed"])
+        .order("created_at", { ascending: false })
+        .limit(30)
+    : null;
+  type WaitingRow = AttemptRow & { sitting_id: string };
+  const waiting = (((waitingFull.error ? waitingLean?.data : waitingFull.data) ?? []) as unknown as WaitingRow[]).filter(
+    (a) => !attemptIds.includes(a.id)
+  );
   const waitingUserIds = [...new Set(waiting.map((a) => a.user_id))].filter((id) => !userIds.includes(id));
   if (waitingUserIds.length) {
     const { data: more } = await supabase.from("profiles").select("id, email, full_name").in("id", waitingUserIds);
@@ -82,7 +138,8 @@ export default async function CoachEvaluatorPage() {
     <div className="coach-page">
       <p><Link href="/coach">← Coach home</Link></p>
       <h1>Script Evaluator reports</h1>
-      <p className="muted">Each submission is evaluated paper by paper in the background. Students only see the report once you release it.</p>
+      <p className="muted">Each submission is evaluated paper by paper in the background. Students only see the report once you release it. You can also upload your own PDF and release that instead of the system report.</p>
+      {query.notice ? <p className="notice">{query.notice}</p> : null}
 
       <section className="card" style={{ padding: 16, margin: "16px 0" }}>
         <h3 style={{ marginTop: 0 }}>Who uses the new evaluator</h3>
@@ -115,6 +172,8 @@ export default async function CoachEvaluatorPage() {
               .map((a) => {
                 const mine = jobs.filter((j) => j.attempt_id === a.id);
                 const allDone = mine.length > 0 && mine.every((j) => j.status === "done");
+                const pdfUrl = coachReportUrl(a.coach_report_url);
+                const canRelease = canReleaseEvaluatorReport({ systemReady: allDone, coachReportUrl: pdfUrl });
                 return (
                   <tr key={a.id}>
                     <td style={cell}>{names.get(a.user_id) ?? "Student"}<br /><span className="muted small">{a.sitting_label}</span></td>
@@ -136,12 +195,23 @@ export default async function CoachEvaluatorPage() {
                       );
                     })}
                     <td style={cell}>
-                      {allDone ? <Link href={`/evaluator-report/${a.id}`}>Open report</Link> : <span className="muted">not ready</span>}
+                      {allDone ? <Link href={`/evaluator-report/${a.id}`}>Open system report</Link> : <span className="muted">System report not ready</span>}
+                      {pdfUrl ? (
+                        <>
+                          <br />
+                          <a href={pdfUrl} target="_blank" rel="noopener noreferrer">Open uploaded PDF</a>
+                          <br />
+                          <span className="muted small">{a.coach_report_name || "Manual PDF"}</span>
+                        </>
+                      ) : null}
+                      <CoachReportUpload attemptId={a.id} hasPdf={Boolean(pdfUrl)} />
                       <br />
-                      <span className="muted small">{a.evaluator_report_released_at ? "Released" : allDone ? "Waiting for you" : ""}</span>
+                      <span className="muted small">
+                        {a.evaluator_report_released_at ? "Released" : pdfUrl ? "Manual PDF ready" : allDone ? "Waiting for you" : ""}
+                      </span>
                     </td>
                     <td style={cell}>
-                      {allDone ? (
+                      {canRelease ? (
                         <form method="post" action="/api/evaluator/review">
                           <input type="hidden" name="attempt_id" value={a.id} />
                           <input type="hidden" name="action" value={a.evaluator_report_released_at ? "unrelease" : "release"} />
@@ -161,22 +231,46 @@ export default async function CoachEvaluatorPage() {
       {waiting.length ? (
         <section style={{ marginTop: 28 }}>
           <h3>Submitted, not on the new evaluator yet</h3>
-          <p className="muted">Starting one runs all three papers and uses Anthropic credit (about the same as three calibration runs).</p>
+          <p className="muted">Start the system evaluator, or upload your own PDF and release that instead.</p>
           <table style={{ borderCollapse: "collapse", width: "100%" }}>
             <tbody>
-              {waiting.map((a) => (
-                <tr key={a.id}>
-                  <td style={cell}>{names.get(a.user_id) ?? "Student"}<br /><span className="muted small">{a.sitting_label}</span></td>
-                  <td style={cell}>{a.submitted_at ? new Date(a.submitted_at).toLocaleString("en-ZA", { timeZone: "Africa/Johannesburg" }) : "-"}</td>
-                  <td style={cell}>
-                    <form method="post" action="/api/evaluator/review">
-                      <input type="hidden" name="action" value="start" />
-                      <input type="hidden" name="attempt_id" value={a.id} />
-                      <button type="submit" className="primary">Start the new evaluator</button>
-                    </form>
-                  </td>
-                </tr>
-              ))}
+              {waiting.map((a) => {
+                const pdfUrl = coachReportUrl(a.coach_report_url);
+                return (
+                  <tr key={a.id}>
+                    <td style={cell}>{names.get(a.user_id) ?? "Student"}<br /><span className="muted small">{a.sitting_label}</span></td>
+                    <td style={cell}>{a.submitted_at ? new Date(a.submitted_at).toLocaleString("en-ZA", { timeZone: "Africa/Johannesburg" }) : "-"}</td>
+                    <td style={cell}>
+                      {pdfUrl ? (
+                        <>
+                          <a href={pdfUrl} target="_blank" rel="noopener noreferrer">Open uploaded PDF</a>
+                          <br />
+                          <span className="muted small">{a.coach_report_name || "Manual PDF"}</span>
+                        </>
+                      ) : (
+                        <span className="muted small">No manual PDF yet</span>
+                      )}
+                      <CoachReportUpload attemptId={a.id} hasPdf={Boolean(pdfUrl)} />
+                    </td>
+                    <td style={cell}>
+                      <form method="post" action="/api/evaluator/review">
+                        <input type="hidden" name="action" value="start" />
+                        <input type="hidden" name="attempt_id" value={a.id} />
+                        <button type="submit" className="ghost">Start the new evaluator</button>
+                      </form>
+                      {pdfUrl ? (
+                        <form method="post" action="/api/evaluator/review" style={{ marginTop: 8 }}>
+                          <input type="hidden" name="attempt_id" value={a.id} />
+                          <input type="hidden" name="action" value={a.evaluator_report_released_at ? "unrelease" : "release"} />
+                          <button type="submit" className={a.evaluator_report_released_at ? "ghost" : "primary"}>
+                            {a.evaluator_report_released_at ? "Hide from student" : "Release to student"}
+                          </button>
+                        </form>
+                      ) : null}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </section>

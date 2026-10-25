@@ -9,7 +9,14 @@ import { useStudentSession } from "@/lib/student-session";
 type PaperStatus = { paper_id: string; title: string; status: "waiting" | "working" | "done" | "checking"; done: number; total: number };
 type EvaluatorStatus =
   | { evaluator: "old" }
-  | { evaluator: "v2"; papers: PaperStatus[]; all_done: boolean; released: boolean; report_url: string | null };
+  | {
+      evaluator: "v2";
+      papers: PaperStatus[];
+      all_done: boolean;
+      released: boolean;
+      report_url: string | null;
+      report_kind?: "pdf" | "system" | null;
+    };
 
 function paperLine(p: PaperStatus): string {
   if (p.status === "done") return "Evaluated";
@@ -79,37 +86,59 @@ export default function ExamAttemptSubmitted() {
           {v2.released && v2.report_url ? (
             <section className="eval-report-ready">
               <div className="eval-report-thumb" aria-hidden="true">
-                <iframe src={`${v2.report_url}?embed=1`} title="Report preview" tabIndex={-1} loading="lazy" />
+                <iframe
+                  src={v2.report_kind === "pdf" ? v2.report_url : `${v2.report_url}?embed=1`}
+                  title="Report preview"
+                  tabIndex={-1}
+                  loading="lazy"
+                />
                 <a href={v2.report_url} tabIndex={-1} aria-label="Open your report" />
               </div>
               <div className="eval-report-actions">
                 <h2>Your Script Evaluator report</h2>
-                <p className="muted">The Overall Report and one report per paper, in one document.</p>
-                <a className="primary" href={v2.report_url}>
+                <p className="muted">
+                  {v2.report_kind === "pdf"
+                    ? "Your report is ready to open or download."
+                    : "The Overall Report and one report per paper, in one document."}
+                </p>
+                <a className="primary" href={v2.report_url} target={v2.report_kind === "pdf" ? "_blank" : undefined} rel={v2.report_kind === "pdf" ? "noopener noreferrer" : undefined}>
                   Open your report
                 </a>
-                <a className="eval-secondary" href={`${v2.report_url}?print=1`}>
-                  Download as PDF
-                </a>
-                <p className="muted small">Download opens the report and your browser&apos;s print window: choose Save as PDF.</p>
+                {v2.report_kind === "pdf" ? (
+                  <a className="eval-secondary" href={v2.report_url} target="_blank" rel="noopener noreferrer" download>
+                    Download PDF
+                  </a>
+                ) : (
+                  <>
+                    <a className="eval-secondary" href={`${v2.report_url}?print=1`}>
+                      Download as PDF
+                    </a>
+                    <p className="muted small">Download opens the report and your browser&apos;s print window: choose Save as PDF.</p>
+                  </>
+                )}
               </div>
             </section>
           ) : (
             <>
               <p>
-                We&apos;re evaluating each paper against the exam question, the official solution and your marking report.
-                {v2.all_done
-                  ? " All three papers are done. Yvonne is checking your report before it is released, and you will get an email when it is ready."
-                  : " This takes a while: you don't need to stay on this page. You'll get an email when your report is ready."}
+                {v2.papers.length
+                  ? `We're evaluating each paper against the exam question, the official solution and your marking report.${
+                      v2.all_done
+                        ? " All three papers are done. Yvonne is checking your report before it is released, and you will get an email when it is ready."
+                        : " This takes a while: you don't need to stay on this page. You'll get an email when your report is ready."
+                    }`
+                  : "Yvonne is preparing your report. You will get an email when it is ready."}
               </p>
-              <ul className="eval-attempt-list" style={{ listStyle: "none", padding: 0 }}>
-                {v2.papers.map((p) => (
-                  <li key={p.paper_id} className="eval-attempt-card" style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-                    <strong>{p.title}</strong>
-                    <span className="pill">{paperLine(p)}</span>
-                  </li>
-                ))}
-              </ul>
+              {v2.papers.length ? (
+                <ul className="eval-attempt-list" style={{ listStyle: "none", padding: 0 }}>
+                  {v2.papers.map((p) => (
+                    <li key={p.paper_id} className="eval-attempt-card" style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+                      <strong>{p.title}</strong>
+                      <span className="pill">{paperLine(p)}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </>
           )}
         </>

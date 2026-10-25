@@ -1,6 +1,7 @@
 import { after, NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { examAttemptFromRow, isAttemptSubmitted } from "@/lib/exam-attempts";
+import { releasedReportForAttempt } from "@/lib/evaluator/coach-report";
 import { newEvaluatorApplies, questionsDone, studentPaperStatus } from "@/lib/evaluator/job-rules";
 import { createJobsForAttempt, getEvaluatorMode, jobsForAttempt, kickPendingJobs } from "@/lib/evaluator/jobs";
 import { isEvaluatorReadySitting } from "@/lib/evaluator/ready-sittings";
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
   const origin = request.nextUrl.origin;
 
   let jobs = await jobsForAttempt(id).catch(() => []);
-  if (!jobs.length && isAttemptSubmitted(attempt.status)) {
+  if (!jobs.length && isAttemptSubmitted(attempt.status) && !attempt.coach_report_url) {
     const applies = newEvaluatorApplies({
       mode: await getEvaluatorMode(),
       sittingReady: isEvaluatorReadySitting(attempt.sitting_id),
@@ -48,7 +49,26 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
     // Submitted for the new evaluator but the jobs were never made (for example the submit request was cut short).
     if (applies) jobs = await createJobsForAttempt(attempt, origin).catch(() => []);
   }
-  if (!jobs.length) return NextResponse.json({ evaluator: "old" });
+  const released = Boolean(attempt.evaluator_report_released_at);
+  if (!jobs.length) {
+    if (!attempt.coach_report_url) return NextResponse.json({ evaluator: "old" });
+    const report = releasedReportForAttempt({
+      attemptId: id,
+      coachReportUrl: attempt.coach_report_url,
+      coachReportName: attempt.coach_report_name,
+      released,
+      staff,
+      systemReady: false,
+    });
+    return NextResponse.json({
+      evaluator: "v2",
+      papers: [],
+      all_done: true,
+      released,
+      report_url: report?.url ?? null,
+      report_kind: report?.kind ?? "pdf",
+    });
+  }
 
   after(() => kickPendingJobs(id, origin).catch(() => undefined));
 
@@ -62,12 +82,21 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
       ...questionsDone(job?.progress, paper.questions.length),
     };
   });
-  const released = Boolean((data as { evaluator_report_released_at?: string | null }).evaluator_report_released_at);
+  const allDone = papers.every((p) => p.status === "done");
+  const report = releasedReportForAttempt({
+    attemptId: id,
+    coachReportUrl: attempt.coach_report_url,
+    coachReportName: attempt.coach_report_name,
+    released,
+    staff,
+    systemReady: allDone,
+  });
   return NextResponse.json({
     evaluator: "v2",
     papers,
-    all_done: papers.every((p) => p.status === "done"),
+    all_done: allDone,
     released,
-    report_url: released || staff ? `/evaluator-report/${id}` : null,
+    report_url: report?.url ?? null,
+    report_kind: report?.kind ?? null,
   });
 }

@@ -67,6 +67,10 @@ export type ExamAttempt = {
   marking_report_url: string | null;
   /** Set when Yvonne releases the Script Evaluator report to the student. */
   evaluator_report_released_at: string | null;
+  /** Coach-uploaded PDF that replaces the system report when released. */
+  coach_report_path: string | null;
+  coach_report_url: string | null;
+  coach_report_name: string | null;
   marking_report_name: string | null;
   page_images: Partial<Record<ExamAttemptFileKind, ExamAttemptPageImage[]>>;
   evidence_pack: Record<string, unknown> | null;
@@ -281,6 +285,9 @@ export function examAttemptFromRow(row: JsonRow): ExamAttempt {
     marked_script_p3_name: row.marked_script_p3_name ? String(row.marked_script_p3_name) : null,
     marking_report_path: row.marking_report_path ? String(row.marking_report_path) : null,
     evaluator_report_released_at: row.evaluator_report_released_at ? String(row.evaluator_report_released_at) : null,
+    coach_report_path: row.coach_report_path ? String(row.coach_report_path) : null,
+    coach_report_url: row.coach_report_url ? String(row.coach_report_url) : null,
+    coach_report_name: row.coach_report_name ? String(row.coach_report_name) : null,
     marking_report_url: row.marking_report_url ? String(row.marking_report_url) : null,
     marking_report_name: row.marking_report_name ? String(row.marking_report_name) : null,
     page_images: asPageImages(row.page_images),

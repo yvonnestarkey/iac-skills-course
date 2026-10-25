@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { getRequestUser, isStaffUser } from "@/lib/auth-server";
 import { attemptReportSections, latestDatasetPerPaper } from "@/lib/evaluator/attempt-report";
@@ -14,17 +15,34 @@ import AutoPrint from "./AutoPrint";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-type AttemptOwner = { id: string; user_id: string; sitting_id: string; sitting_label: string; evaluator_report_released_at: string | null; name: string };
+type AttemptOwner = {
+  id: string;
+  user_id: string;
+  sitting_id: string;
+  sitting_label: string;
+  evaluator_report_released_at: string | null;
+  coach_report_url?: string | null;
+  name: string;
+};
 
 /** The attempt and the student's name as the course shows it. */
 async function loadAttemptOwner(id: string): Promise<AttemptOwner | null> {
   const supabase = getServiceSupabase();
   if (!supabase) return null;
-  const { data } = await supabase
+  const full = await supabase
     .from("exam_attempts")
-    .select("id, user_id, sitting_id, sitting_label, evaluator_report_released_at")
+    .select("id, user_id, sitting_id, sitting_label, evaluator_report_released_at, coach_report_url")
     .eq("id", id)
     .maybeSingle();
+  const data =
+    full.data ??
+    (
+      await supabase
+        .from("exam_attempts")
+        .select("id, user_id, sitting_id, sitting_label, evaluator_report_released_at")
+        .eq("id", id)
+        .maybeSingle()
+    ).data;
   const attempt = data as Omit<AttemptOwner, "name"> | null;
   if (!attempt) return null;
   const { data: profile } = await supabase.from("profiles").select("email, full_name").eq("id", attempt.user_id).maybeSingle();
@@ -87,6 +105,9 @@ export default async function EvaluatorReportPage({
 
   const attempt = await loadAttemptOwner(id);
   if (!attempt || (!staff && attempt.user_id !== user.id)) return <Message><p>That report was not found.</p></Message>;
+  if (!staff && attempt.evaluator_report_released_at && attempt.coach_report_url) {
+    redirect(attempt.coach_report_url);
+  }
   if (!staff && !attempt.evaluator_report_released_at) {
     return (
       <Message>
@@ -112,7 +133,19 @@ export default async function EvaluatorReportPage({
         <PrintButton /> <Link href="/student/evaluator" style={{ marginLeft: 12 }}>Back to the Script Evaluator</Link>
         {staff ? (
           <span style={{ marginLeft: 12, fontSize: 13 }}>
-            Staff view. {attempt.evaluator_report_released_at ? "Released to the student." : "Not released yet."} <Link href="/coach/evaluator">Review list</Link>
+            Staff view. {attempt.evaluator_report_released_at ? "Released to the student." : "Not released yet."}
+            {attempt.coach_report_url ? (
+              <>
+                {" "}
+                A manual PDF is uploaded
+                {attempt.evaluator_report_released_at ? " and that is what the student sees." : "; release will send that PDF."}{" "}
+                <a href={attempt.coach_report_url} target="_blank" rel="noopener noreferrer">
+                  Open uploaded PDF
+                </a>
+                .
+              </>
+            ) : null}{" "}
+            <Link href="/coach/evaluator">Review list</Link>
           </span>
         ) : (
           <span style={{ marginLeft: 12, fontSize: 13 }}>To keep a copy, choose Save as PDF as the destination.</span>

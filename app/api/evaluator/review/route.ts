@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import {
+  COACH_REPORT_SQL,
+  coachReportStoragePath,
+  isCoachReportPdf,
+  isMissingCoachReportColumn,
+} from "@/lib/evaluator/coach-report";
 import { parseEvaluatorMode } from "@/lib/evaluator/job-rules";
 import { createJobsForAttempt, kickJob, retryJob, setEvaluatorMode } from "@/lib/evaluator/jobs";
 import { isEvaluatorReadySitting } from "@/lib/evaluator/ready-sittings";
@@ -41,7 +47,12 @@ export async function POST(request: NextRequest) {
 
   const form = await request.formData();
   const action = String(form.get("action") || "");
-  const back = NextResponse.redirect(new URL("/coach/evaluator", request.url), 303);
+  const backTo = (notice?: string) => {
+    const dest = new URL("/coach/evaluator", request.url);
+    if (notice) dest.searchParams.set("notice", notice);
+    return NextResponse.redirect(dest, 303);
+  };
+  const back = backTo();
 
   if (action === "mode") {
     await setEvaluatorMode(parseEvaluatorMode(form.get("mode")));
@@ -60,6 +71,39 @@ export async function POST(request: NextRequest) {
   if (action === "retry") {
     const job = await retryJob(String(form.get("job_id") || ""));
     if (job) await kickJob(job, request.nextUrl.origin);
+    return back;
+  }
+  if (action === "upload_report") {
+    const attemptId = String(form.get("attempt_id") || "");
+    const file = form.get("file");
+    if (!attemptId) return backTo("Choose a student attempt first.");
+    if (!(file instanceof File) || !file.size) return backTo("Choose a PDF to upload.");
+    if (file.size > 50 * 1024 * 1024) return backTo("That PDF is larger than 50 MB.");
+    if (!isCoachReportPdf(file)) return backTo("Please upload a PDF file.");
+    const { data: row } = await service.from("exam_attempts").select("id, user_id").eq("id", attemptId).maybeSingle();
+    const attempt = row as { id: string; user_id: string } | null;
+    if (!attempt) return backTo("That exam attempt was not found.");
+    const path = coachReportStoragePath({ userId: attempt.user_id, attemptId, fileName: file.name });
+    const uploaded = await service.storage.from("course-pdfs").upload(path, Buffer.from(await file.arrayBuffer()), {
+      upsert: false,
+      contentType: "application/pdf",
+    });
+    if (uploaded.error) return backTo(uploaded.error.message || "Could not upload that PDF.");
+    const { data: publicFile } = service.storage.from("course-pdfs").getPublicUrl(path);
+    if (!publicFile?.publicUrl) return backTo("Could not get a URL for that file.");
+    const now = new Date().toISOString();
+    const { error } = await service
+      .from("exam_attempts")
+      .update({
+        coach_report_path: path,
+        coach_report_url: publicFile.publicUrl,
+        coach_report_name: file.name,
+        coach_report_uploaded_at: now,
+        coach_report_uploaded_by: user.id,
+        updated_at: now,
+      })
+      .eq("id", attemptId);
+    if (error) return backTo(isMissingCoachReportColumn(error.message) ? COACH_REPORT_SQL : error.message);
     return back;
   }
   if (action === "release" || action === "unrelease") {
