@@ -58,6 +58,10 @@ a:hover {
   text-decoration: underline;
 }
 
+.student-profile-link {
+  font: inherit;
+}
+
 h1,
 h2,
 h3 {
@@ -4279,6 +4283,18 @@ a.live-session-watch:hover {
 .inbox-item.waiting-item {
   background: var(--sand);
   border-color: var(--sand-line);
+}
+
+.inbox-item-open {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
 }
 
 .inbox-preview {

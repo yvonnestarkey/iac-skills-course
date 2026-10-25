@@ -19,6 +19,7 @@ import {
   type CustomSurveyResponse,
   type SurveyResponseStatus,
 } from "@/lib/custom-surveys";
+import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import { fetchLessonBmcrEvaluation, parseBmcrAnswer, withDiagnostics, type BmcrValue } from "@/lib/bmcr";
 import { formatSastDateTime } from "@/lib/dates";
 import {
@@ -192,6 +193,7 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
   if (lesson?.link_url) pdfs.unshift({ url: lesson.link_url, name: fileNameFromUrl(lesson.link_url) });
   const title = lesson?.lessonTitle || survey?.title || "Submission";
   const studentName = lesson?.studentName || response?.studentName || "Student";
+  const studentId = lesson?.student_id || response?.studentId || "";
   const studentEmail = lesson?.studentEmail || response?.studentEmail || "";
   const submittedAt = lesson?.submittedAt || response?.createdAt || "";
   const currentStatus = lesson ? lessonStatusLabel(lesson.status) : response!.status;
@@ -206,7 +208,7 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
           <p className="kicker">{lesson || survey?.isAssignment ? "Assignment" : "Survey"}</p>
           <h1>{title}</h1>
           <p className="muted">
-            {studentName}
+            <StudentProfileLink studentId={studentId}>{studentName}</StudentProfileLink>
             {studentEmail ? ` · ${studentEmail}` : ""}
             {submittedAt ? ` · submitted ${formatSastDateTime(submittedAt) || submittedAt}` : ""}
           </p>

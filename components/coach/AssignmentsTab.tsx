@@ -10,6 +10,7 @@ import {
   type SurveySubmissionRow,
 } from "@/lib/custom-surveys";
 import { formatSastDateTime } from "@/lib/dates";
+import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import { fetchLessonSubmissionsForCoach } from "@/lib/student-submissions";
 import { useStore } from "@/lib/store";
 import type { Student } from "@/lib/types";
@@ -134,7 +135,9 @@ export default function AssignmentsTab({ students }: Props) {
               {visible.map((row) => (
                 <tr key={row.id} onClick={() => router.push(row.href || `/coach/submissions/${row.id}`)}>
                   <td>
-                    <strong>{row.studentName || "Student"}</strong>
+                    <strong>
+                      <StudentProfileLink studentId={row.studentId}>{row.studentName || "Student"}</StudentProfileLink>
+                    </strong>
                     {row.studentEmail ? <span className="cell-sub">{row.studentEmail}</span> : null}
                   </td>
                   <td>

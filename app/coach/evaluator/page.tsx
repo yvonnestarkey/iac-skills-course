@@ -7,6 +7,7 @@ import { getEvaluatorMode, kickPendingJobs, type EvaluatorJob } from "@/lib/eval
 import { EVALUATOR_READY_SITTINGS } from "@/lib/evaluator/ready-sittings";
 import { PAPER_NAMES } from "@/lib/evaluator/report-text";
 import { findPastPaper } from "@/lib/past-papers";
+import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import { profileDisplayName } from "@/lib/profiles";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 
@@ -176,7 +177,11 @@ export default async function CoachEvaluatorPage({
                 const canRelease = canReleaseEvaluatorReport({ systemReady: allDone, coachReportUrl: pdfUrl });
                 return (
                   <tr key={a.id}>
-                    <td style={cell}>{names.get(a.user_id) ?? "Student"}<br /><span className="muted small">{a.sitting_label}</span></td>
+                    <td style={cell}>
+                      <StudentProfileLink studentId={a.user_id}>{names.get(a.user_id) ?? "Student"}</StudentProfileLink>
+                      <br />
+                      <span className="muted small">{a.sitting_label}</span>
+                    </td>
                     <td style={cell}>{a.submitted_at ? new Date(a.submitted_at).toLocaleString("en-ZA", { timeZone: "Africa/Johannesburg" }) : "-"}</td>
                     {paperIds.map((p) => {
                       const job = mine.find((j) => j.paper_id === p);
@@ -238,7 +243,11 @@ export default async function CoachEvaluatorPage({
                 const pdfUrl = coachReportUrl(a.coach_report_url);
                 return (
                   <tr key={a.id}>
-                    <td style={cell}>{names.get(a.user_id) ?? "Student"}<br /><span className="muted small">{a.sitting_label}</span></td>
+                    <td style={cell}>
+                      <StudentProfileLink studentId={a.user_id}>{names.get(a.user_id) ?? "Student"}</StudentProfileLink>
+                      <br />
+                      <span className="muted small">{a.sitting_label}</span>
+                    </td>
                     <td style={cell}>{a.submitted_at ? new Date(a.submitted_at).toLocaleString("en-ZA", { timeZone: "Africa/Johannesburg" }) : "-"}</td>
                     <td style={cell}>
                       {pdfUrl ? (

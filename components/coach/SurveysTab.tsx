@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import {
   fetchCustomSurveys,
   fetchSurveyResponses,
@@ -8,11 +9,7 @@ import {
   type CustomSurveyResponse,
 } from "@/lib/custom-surveys";
 
-interface Props {
-  onOpenProfile: (id: string) => void;
-}
-
-export default function SurveysTab({ onOpenProfile }: Props) {
+export default function SurveysTab() {
   const [surveys, setSurveys] = useState<CustomSurvey[]>([]);
   const [responses, setResponses] = useState<Record<string, CustomSurveyResponse[]>>({});
   const [error, setError] = useState("");
@@ -65,9 +62,9 @@ export default function SurveysTab({ onOpenProfile }: Props) {
               <ul className="comment-list">
                 {rows.map((row) => (
                   <li key={row.id}>
-                    <button className="link-btn" type="button" onClick={() => onOpenProfile(row.studentId)}>
+                    <StudentProfileLink studentId={row.studentId}>
                       {row.studentName || row.studentEmail || "Student"}
-                    </button>
+                    </StudentProfileLink>
                     <span className="muted small">{row.createdAt.slice(0, 10)}</span>
                   </li>
                 ))}

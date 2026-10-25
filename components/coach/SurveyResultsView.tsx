@@ -11,6 +11,7 @@ import {
   type CustomSurveyResponse,
 } from "@/lib/custom-surveys";
 import { formatSastDateTime } from "@/lib/dates";
+import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
 
 export default function SurveyResultsView({ surveyId }: { surveyId: string }) {
@@ -100,7 +101,9 @@ export default function SurveyResultsView({ surveyId }: { surveyId: string }) {
             <tbody>
               {responses.map((response) => (
                 <tr key={response.id}>
-                  <td>{response.studentName}</td>
+                  <td>
+                    <StudentProfileLink studentId={response.studentId}>{response.studentName}</StudentProfileLink>
+                  </td>
                   <td>{response.studentEmail}</td>
                   <td>{formatSastDateTime(response.createdAt) || response.createdAt}</td>
                   {survey.questions

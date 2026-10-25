@@ -224,7 +224,7 @@ export default function StudentListsPage() {
         ))}
       </div>
       {coach.tab === "surveys" ? (
-        <SurveysTab onOpenProfile={openProfile} />
+        <SurveysTab />
       ) : coach.tab === "roster" ? (
         <RosterTab
           students={students}

@@ -2,6 +2,7 @@
 
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import { COURSE_COHORTS, displayCohortName, normalizeCohortId } from "@/lib/cohorts";
 import { formatUsdCents } from "@/lib/format-money";
 import { MONTHS } from "@/lib/dates";
@@ -257,7 +258,9 @@ export default function RevenueReportPage() {
                       <tbody>
                         {rows.map((row, index) => (
                           <tr key={`${row.user_id}-${row.kind}-${row.date}-${index}`} onClick={() => openStatement(row.user_id, true)}>
-                            <td>{row.name}</td>
+                            <td>
+                              <StudentProfileLink studentId={row.user_id}>{row.name}</StudentProfileLink>
+                            </td>
                             <td>{row.label}</td>
                             <td>{row.status}</td>
                             <td>{money(row.amount_cents)}</td>
@@ -300,7 +303,9 @@ export default function RevenueReportPage() {
                       onClick={() => openStatement(row.user_id)}
                     >
                       <td>
-                        <strong>{row.name}</strong>
+                        <strong>
+                          <StudentProfileLink studentId={row.user_id}>{row.name}</StudentProfileLink>
+                        </strong>
                         <span className="cell-sub">{row.email || displayCohortName(row.cohort)}</span>
                       </td>
                       <td>{optionLabel(row.option)}</td>
@@ -319,7 +324,9 @@ export default function RevenueReportPage() {
                             <div className="panel-head">
                               <div>
                                 <p className="kicker">Student statement</p>
-                                <h2>{open.name}</h2>
+                                <h2>
+                                  <StudentProfileLink studentId={open.user_id}>{open.name}</StudentProfileLink>
+                                </h2>
                                 <p className="muted small">
                                   {open.email}
                                   {open.cohort ? ` · ${displayCohortName(open.cohort)}` : ""}

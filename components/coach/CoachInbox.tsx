@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
 import ComposerBox from "@/components/ui/ComposerBox";
 import LinkedText from "@/components/ui/LinkedText";
+import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import { fetchLiveAssignmentLessons } from "@/lib/content";
 import {
   fetchInboxMessages,
@@ -76,13 +77,13 @@ export default function CoachInbox() {
   );
   const waiting = queue.length;
 
-  const labelFor = (thread: InboxThread) => {
+  const identityFor = (thread: InboxThread) => {
     const match = data.students.find(
       (student) =>
         student.email.toLowerCase() === thread.studentEmail.toLowerCase() ||
         (thread.studentId && student.id === thread.studentId)
     );
-    return match?.name || thread.studentEmail;
+    return { name: match?.name || thread.studentEmail, id: thread.studentId || match?.id || "" };
   };
 
   const send = async (kind: InboxKind) => {
@@ -127,28 +128,37 @@ export default function CoachInbox() {
       <div className="inbox-layout">
         <aside className="inbox-list" aria-label="Students waiting on a reply">
           {queue.length ? (
-            queue.map((thread) => (
-              <button
-                key={thread.studentEmail}
-                className={`inbox-item ${thread.studentEmail === selectedEmail ? "active" : ""} ${
-                  thread.waiting ? "waiting-item" : ""
-                }`}
-                type="button"
-                onClick={() => {
-                  setSelectedEmail(thread.studentEmail);
-                  setStatus("");
-                }}
-              >
-                <strong>{labelFor(thread)}</strong>
-                <span className="muted small">
-                  {thread.waiting ? "Waiting · " : "Unread · "}
-                  {formatInboxTime(thread.lastAt)}
-                </span>
-                <span className="inbox-preview">
-                  <LinkedText text={thread.messages[thread.messages.length - 1]?.body || ""} interactive={false} />
-                </span>
-              </button>
-            ))
+            queue.map((thread) => {
+              const student = identityFor(thread);
+              return (
+                <div
+                  key={thread.studentEmail}
+                  className={`inbox-item ${thread.studentEmail === selectedEmail ? "active" : ""} ${
+                    thread.waiting ? "waiting-item" : ""
+                  }`}
+                >
+                  <strong>
+                    <StudentProfileLink studentId={student.id}>{student.name}</StudentProfileLink>
+                  </strong>
+                  <button
+                    type="button"
+                    className="inbox-item-open"
+                    onClick={() => {
+                      setSelectedEmail(thread.studentEmail);
+                      setStatus("");
+                    }}
+                  >
+                    <span className="muted small">
+                      {thread.waiting ? "Waiting · " : "Unread · "}
+                      {formatInboxTime(thread.lastAt)}
+                    </span>
+                    <span className="inbox-preview">
+                      <LinkedText text={thread.messages[thread.messages.length - 1]?.body || ""} interactive={false} />
+                    </span>
+                  </button>
+                </div>
+              );
+            })
           ) : (
             <p className="empty">The queue is clear. Open a student profile to read older threads.</p>
           )}
@@ -158,7 +168,9 @@ export default function CoachInbox() {
             <>
               <div className="panel-head">
                 <div>
-                  <h2>{labelFor(selected)}</h2>
+                  <h2>
+                    <StudentProfileLink studentId={identityFor(selected).id}>{identityFor(selected).name}</StudentProfileLink>
+                  </h2>
                   <p className="muted small">
                     {selected.queued ? "Waiting for your reply" : "Replied · removed from the queue"} ·{" "}
                     {selected.messages.length} message{selected.messages.length === 1 ? "" : "s"}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import { formatUsdCents } from "@/lib/format-money";
 
 type PartnerRow = {
@@ -112,7 +113,9 @@ export default function CoachReferralsPage() {
                 {data.students.map((student) => (
                   <article className="work-item" key={student.user_id}>
                     <div className="work-head">
-                      <strong>{student.name}</strong>
+                      <strong>
+                        <StudentProfileLink studentId={student.user_id}>{student.name}</StudentProfileLink>
+                      </strong>
                       <span className="muted small">{student.successful_count} successful</span>
                     </div>
                     <p className="muted small">{student.email}</p>
