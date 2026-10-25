@@ -10,6 +10,7 @@ import {
   type SurveySubmissionRow,
 } from "@/lib/custom-surveys";
 import { formatSastDateTime } from "@/lib/dates";
+import { fetchLessonSubmissionsForCoach } from "@/lib/student-submissions";
 import { useStore } from "@/lib/store";
 import type { Student } from "@/lib/types";
 
@@ -36,15 +37,18 @@ export default function AssignmentsTab({ students }: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    fetchAllSurveySubmissions().then((result) => {
+    Promise.all([fetchAllSurveySubmissions(), fetchLessonSubmissionsForCoach()]).then(([surveys, lessons]) => {
       if (cancelled) return;
       setLoading(false);
-      if (!result.ok) {
-        setError(result.error || "Could not load submissions.");
+      if (!surveys.ok && !lessons.ok) {
+        setError(surveys.error || "Could not load submissions.");
         return;
       }
-      setError("");
-      setRows(result.data);
+      setError(surveys.ok ? "" : surveys.error || "");
+      const merged = [...(surveys.ok ? surveys.data : []), ...(lessons.ok ? lessons.data : [])].sort((a, b) =>
+        String(b.createdAt || "").localeCompare(String(a.createdAt || ""))
+      );
+      setRows(merged);
     });
     return () => {
       cancelled = true;
@@ -67,7 +71,7 @@ export default function AssignmentsTab({ students }: Props) {
         <div>
           <h2>Submissions</h2>
           <p className="muted small">
-            All survey and assignment form submissions in one grading queue.
+            Lesson uploads and survey / assignment forms in one grading queue.
             {loading ? " Loading…" : ` ${visible.length} shown.`}
           </p>
         </div>
@@ -128,7 +132,7 @@ export default function AssignmentsTab({ students }: Props) {
             </thead>
             <tbody>
               {visible.map((row) => (
-                <tr key={row.id} onClick={() => router.push(`/coach/submissions/${row.id}`)}>
+                <tr key={row.id} onClick={() => router.push(row.href || `/coach/submissions/${row.id}`)}>
                   <td>
                     <strong>{row.studentName || "Student"}</strong>
                     {row.studentEmail ? <span className="cell-sub">{row.studentEmail}</span> : null}

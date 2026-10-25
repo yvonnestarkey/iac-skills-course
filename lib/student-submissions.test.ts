@@ -1,6 +1,15 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { test } from "node:test";
-import { packSubmissionContent, submissionFromRow, unpackSubmissionContent } from "./student-submissions";
+import {
+  assignmentSubmittedNotifySubject,
+  lessonStatusToQueue,
+  packSubmissionContent,
+  shouldNotifyCoachOfLessonSubmission,
+  submissionFromRow,
+  unpackSubmissionContent,
+} from "./student-submissions";
 
 test("live content column stores a PDF URL as link_url", () => {
   const unpacked = unpackSubmissionContent({
@@ -35,4 +44,17 @@ test("submissionFromRow maps live content into the student form fields", () => {
   assert.equal(row.link_url, "https://cdn.example/file.pdf");
   assert.equal(row.body, "");
   assert.equal(row.updated_at, "2026-09-21T15:00:00.000Z");
+});
+
+test("lesson uploads map onto the submissions queue and notify the coach", () => {
+  assert.equal(lessonStatusToQueue("submitted"), "submitted");
+  assert.equal(lessonStatusToQueue("approved"), "graded");
+  assert.equal(lessonStatusToQueue("rejected"), "rejected");
+  assert.equal(shouldNotifyCoachOfLessonSubmission("keagan@example.com"), true);
+  assert.equal(shouldNotifyCoachOfLessonSubmission("s1@test.com"), false);
+  assert.match(assignmentSubmittedNotifySubject("Keagan de Kock", "Task 1"), /Keagan de Kock/);
+  const tab = readFileSync(resolve("components/coach/AssignmentsTab.tsx"), "utf8");
+  assert.match(tab, /fetchLessonSubmissionsForCoach/);
+  const form = readFileSync(resolve("components/student/LessonSubmissionForm.tsx"), "utf8");
+  assert.match(form, /\/api\/student\/assignment-submitted/);
 });

@@ -93,6 +93,7 @@ export interface SurveySubmissionRow extends CustomSurveyResponse {
   surveyTitle: string;
   isAssignment: boolean;
   requiresGrade: boolean;
+  href?: string;
 }
 
 export interface SurveyDraft {

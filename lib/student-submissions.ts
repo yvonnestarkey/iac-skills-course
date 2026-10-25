@@ -1,3 +1,4 @@
+import type { SurveyResponseStatus, SurveySubmissionRow } from "./custom-surveys";
 import { getSupabase } from "./supabase";
 import type { Submission, SubmissionStatus } from "../types/database";
 
@@ -77,6 +78,101 @@ export function submissionFromRow(row: {
     link_url: unpacked.link_url,
     status: asStatus(row.status),
     updated_at: unpacked.updated_at,
+  };
+}
+
+export function lessonStatusToQueue(status: SubmissionStatus): SurveyResponseStatus {
+  if (status === "approved") return "graded";
+  if (status === "rejected") return "rejected";
+  return "submitted";
+}
+
+export function shouldNotifyCoachOfLessonSubmission(email?: string | null): boolean {
+  return !String(email || "").toLowerCase().includes("@test");
+}
+
+export function assignmentSubmittedNotifySubject(studentName: string, lessonTitle: string): string {
+  const name = studentName.trim() || "Student";
+  const lesson = lessonTitle.trim() || "Assignment";
+  return `New assignment submission — ${name} · ${lesson}`;
+}
+
+export function assignmentSubmittedNotifyKey(studentId: string, lessonId: string): string {
+  return `assignment-submitted-${studentId}-${lessonId}`;
+}
+
+export async function fetchLessonSubmissionsForCoach(): Promise<{
+  ok: boolean;
+  data: SurveySubmissionRow[];
+}> {
+  const client = getSupabase();
+  if (!client) return { ok: false, data: [] };
+  const { data, error } = await client.from("student_submissions").select("*");
+  if (error || !data) return { ok: false, data: [] };
+  const rows = data as Array<Record<string, unknown>>;
+  const studentIds = [...new Set(rows.map((row) => String(row.student_id || "")).filter(Boolean))];
+  const lessonIds = [...new Set(rows.map((row) => String(row.lesson_id || "")).filter(Boolean))];
+  const [profiles, lessons] = await Promise.all([
+    studentIds.length
+      ? client.from("profiles").select("id, full_name, email").in("id", studentIds)
+      : Promise.resolve({ data: [] as { id: string; full_name?: string | null; email?: string | null }[] }),
+    lessonIds.length
+      ? client.from("lessons").select("id, title").in("id", lessonIds)
+      : Promise.resolve({ data: [] as { id: string; title?: string | null }[] }),
+  ]);
+  const names = new Map<string, { name: string; email: string }>();
+  (profiles.data || []).forEach((profile) => {
+    names.set(String(profile.id), {
+      name: String(profile.full_name || "").trim() || String(profile.email || "Student"),
+      email: String(profile.email || ""),
+    });
+  });
+  const titles = new Map<string, string>();
+  (lessons.data || []).forEach((lesson) => {
+    titles.set(String(lesson.id), String(lesson.title || lesson.id));
+  });
+  return {
+    ok: true,
+    data: rows
+      .map((row) => {
+        const item = submissionFromRow({
+          id: row.id != null ? String(row.id) : undefined,
+          student_id: String(row.student_id || ""),
+          lesson_id: String(row.lesson_id || ""),
+          body: row.body != null ? String(row.body) : null,
+          link_url: row.link_url != null ? String(row.link_url) : null,
+          content: row.content != null ? String(row.content) : null,
+          status: row.status != null ? String(row.status) : null,
+          submitted_at: row.submitted_at != null ? String(row.submitted_at) : null,
+          updated_at: row.updated_at != null ? String(row.updated_at) : null,
+        });
+        const student = names.get(item.student_id) || { name: "Student", email: "" };
+        const when = item.updated_at || String(row.submitted_at || row.created_at || "");
+        const reviewed = item.status === "approved" || item.status === "rejected";
+        const rowOut: SurveySubmissionRow = {
+          id: `lesson:${item.id || `${item.student_id}:${item.lesson_id}`}`,
+          surveyId: item.lesson_id,
+          studentId: item.student_id,
+          studentName: student.name,
+          studentEmail: student.email,
+          answers: {},
+          status: lessonStatusToQueue(item.status),
+          grade: null,
+          feedback: "",
+          feedbackFileUrl: "",
+          gradedBy: "",
+          gradedByName: "",
+          gradedAt: reviewed ? when : "",
+          createdAt: String(row.submitted_at || when),
+          updatedAt: when,
+          surveyTitle: titles.get(item.lesson_id) || item.lesson_id,
+          isAssignment: true,
+          requiresGrade: false,
+          href: `/coach/students/${item.student_id}`,
+        };
+        return rowOut;
+      })
+      .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))),
   };
 }
 

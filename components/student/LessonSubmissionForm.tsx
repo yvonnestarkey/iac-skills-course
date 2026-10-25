@@ -130,6 +130,11 @@ export default function LessonSubmissionForm({
         return;
       }
     }
+    void fetch("/api/student/assignment-submitted", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lessonId }),
+    });
     setBusy(false);
     onSaved?.(result.submission);
     setStatus(
