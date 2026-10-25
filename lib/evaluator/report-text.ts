@@ -81,7 +81,7 @@ export const SIGNALS_GLOSSARY = `## What do the Signals and Tools mean?
 - **Shape** indicates whether you answered what was asked, i.e. you gave a 'critique' if asked, as opposed to an 'explanation'.
 - **Direction** indicates whether you followed the specific instructions provided, i.e. include or exclude specific details.
 - **Lens** refers to whether there was a specific context you were instructed to deal with, e.g. '... given the going concern issues' requires you to focus on the related implications and context, as opposed to perhaps the ethical issues.
-- **Signals** are given where any of the three is not fully delivered.
+- **Signals** are given where the shape or the directions were not fully delivered, or the lens was missed altogether. Points missing within the right lens show up under Components and Core Issue instead, so they are not counted twice.
 
 **Communication: are you getting your thoughts across effectively?**
 This tool evaluates your ability to convey a thought effectively. Note that this step IGNORES whether your point was correct or not (we dealt with that earlier). Here we simply focus on your ability to communicate whatever YOU'RE thinking. We evaluate whether your thoughts are:

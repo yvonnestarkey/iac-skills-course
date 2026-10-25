@@ -49,12 +49,21 @@ export function requirementSignals(dataset: EvaluationDataset, r: RequirementEva
     ...none,
     direct: notEarned(r.buried_treasure?.direct),
     indirect: notEarned(r.buried_treasure?.indirect),
-    rtfq: r.rtfq?.dimensions.length ? r.rtfq.dimensions.some((d) => d.delivered !== "yes") : null,
+    rtfq: r.rtfq?.dimensions.length ? rtfqMissed(r.rtfq.dimensions) : null,
     volume: diag?.volume_accuracy ? diag.volume_accuracy.volume_signal : null,
     accuracy: diag?.volume_accuracy ? diag.volume_accuracy.accuracy_signal : null,
     core: coreNotReached(dataset.paper_id, r),
     underdeveloped: comm && total > 0 ? q === "Many" || q === "Most" : null,
   };
+}
+
+/**
+ * RTFQ signal: the shape or the directions not fully delivered, or the lens not addressed at all.
+ * A lens marked partly is not a signal on its own: missing content within the right lens is already
+ * picked up by Components and Core Issue, so counting it here would count the same gap twice.
+ */
+export function rtfqMissed(dims: { dimension: string; delivered: string }[]): boolean {
+  return dims.some((d) => (d.dimension === "lens" ? d.delivered === "no" : d.delivered !== "yes"));
 }
 
 export type SignalLine = {

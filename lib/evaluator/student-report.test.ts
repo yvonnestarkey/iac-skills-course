@@ -3,7 +3,7 @@ import test from "node:test";
 import { computeMetrics, finalizeCommunication } from "./metrics";
 import { buildOverallReport } from "./overall-report";
 import { buildPaperReport, groupByPart, reportHeader } from "./student-report";
-import { signalLines } from "./signals";
+import { rtfqMissed, signalLines } from "./signals";
 import { pct, num } from "./report-format";
 import type { EvaluationDataset, RequirementEvaluation } from "./types";
 
@@ -108,6 +108,14 @@ test("Signals: one general RTFQ line, no by-type lines and no combined Buried Tr
   const lines = signalLines([dataset(1, [mk("P1Q1_a"), mk("P1Q1_d"), mk("P1Q2_g1")])]);
   assert.equal(lines.filter((l) => l.tool === "RTFQ").length, 1);
   assert.ok(!lines.some((l) => l.signal.includes("Specifically") || l.signal.startsWith("Either")));
+});
+
+test("Signals: RTFQ flags shape or directions not delivered, and lens only when missed altogether", () => {
+  const dims = (shape: string, directions: string, lens: string) => [{ dimension: "shape", delivered: shape }, { dimension: "directions", delivered: directions }, { dimension: "lens", delivered: lens }];
+  assert.equal(rtfqMissed(dims("yes", "yes", "partly")), false);
+  assert.equal(rtfqMissed(dims("yes", "yes", "no")), true);
+  assert.equal(rtfqMissed(dims("partly", "yes", "yes")), true);
+  assert.equal(rtfqMissed(dims("yes", "partly", "yes")), true);
 });
 
 test("Overall Report: warnings, the signals table and the glossary are present", () => {
