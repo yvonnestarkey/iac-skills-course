@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import AnnotatedCase from "@/components/reading/AnnotatedCase";
 import { Choice, Pill, ResultRange, StepStrip, Tile, fmt } from "@/components/reading/parts";
 import {
@@ -29,7 +29,8 @@ const STEPS = ["Read", "Recall", "RTFQ", "Index", "Answer", "Feedback"];
 type Stage = "intro" | "read" | "recall" | "rtfq" | "index" | "answer" | "marking" | "self" | "feedback";
 const STEP_OF: Record<Stage, number> = { intro: 0, read: 0, recall: 1, rtfq: 2, index: 3, answer: 4, marking: 5, self: 5, feedback: 5 };
 
-export default function DrillFlow({ exercise: ex }: { exercise: DrillExercise }) {
+/** One practice exercise. `embedded` = shown inside a course lesson, which completes when the feedback appears. */
+export default function DrillFlow({ exercise: ex, embedded = false, onComplete }: { exercise: DrillExercise; embedded?: boolean; onComplete?: () => void }) {
   const { user } = useStudentSession();
   const seed = useMemo(() => Math.floor(Math.random() * 100000), []);
   const [stage, setStage] = useState<Stage>("intro");
@@ -50,9 +51,11 @@ export default function DrillFlow({ exercise: ex }: { exercise: DrillExercise })
   useEffect(() => {
     if (user?.id) fetchReadingHistory(user.id).then((h) => setHistory(h.attempts));
   }, [user?.id]);
+  const top = useRef<HTMLElement>(null);
   useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, [stage]);
+    if (!embedded) window.scrollTo({ top: 0 });
+    else if (stage !== "intro") top.current?.scrollIntoView({ block: "start" });
+  }, [stage, embedded]);
 
   const words = caseWords(ex);
   const [lo, hi] = paceWindow(words);
@@ -89,6 +92,7 @@ export default function DrillFlow({ exercise: ex }: { exercise: DrillExercise })
     setMarking(m);
     setAttempt(a);
     setStage("feedback");
+    onComplete?.();
     if (!user?.id) return setSaveMsg("Sign in to keep your results.");
     const res = await saveDrillAttempt(user.id, a);
     setSaveMsg(res.ok ? "Saved to your record." : `Not saved: ${res.error}`);
@@ -114,15 +118,17 @@ export default function DrillFlow({ exercise: ex }: { exercise: DrillExercise })
   };
 
   return (
-    <article className="lesson-body wide rd-page">
-      <p className="muted small">
-        <Link href="/student/reading">Read the Required</Link> · {ex.title} · {ex.area}
-      </p>
+    <article ref={top} className={embedded ? "rd-page rd-embedded" : "lesson-body wide rd-page"}>
+      {embedded ? null : (
+        <p className="muted small">
+          <Link href="/student/reading">Read the Required</Link> · {ex.title} · {ex.area}
+        </p>
+      )}
       <StepStrip names={STEPS} step={STEP_OF[stage]} t0={t0} countdownFrom={stage === "answer" ? ex.answer_minutes * 60 : undefined} countdownStart={answerStart} />
 
       {stage === "intro" ? (
         <div className="rd-stack">
-          <h1>{ex.title}</h1>
+          {embedded ? <h2>{ex.title} · {ex.area}</h2> : <h1>{ex.title}</h1>}
           <p>
             Read the case and the required once, at exam pace, and index it as you go: click any word to write a short note in the margin,
             the way you would on a printed case. When you finish, the case is hidden and you answer {ex.recall.length} questions on what
@@ -246,7 +252,7 @@ export default function DrillFlow({ exercise: ex }: { exercise: DrillExercise })
       {stage === "self" ? <SelfMark ex={ex} answer={answer} reason={selfReason} onDone={(m) => finish(m, "self")} /> : null}
 
       {stage === "feedback" && attempt && marking ? (
-        <Feedback ex={ex} a={attempt} marking={marking} notes={notes} pick={pick} saveMsg={saveMsg} history={history} />
+        <Feedback ex={ex} a={attempt} marking={marking} notes={notes} pick={pick} saveMsg={saveMsg} history={history} embedded={embedded} />
       ) : null}
     </article>
   );
@@ -312,7 +318,7 @@ function SelfMark({ ex, answer, reason, onDone }: { ex: DrillExercise; answer: s
   );
 }
 
-function Feedback({ ex, a, marking, notes, pick, saveMsg, history }: {
+function Feedback({ ex, a, marking, notes, pick, saveMsg, history, embedded }: {
   ex: DrillExercise;
   a: DrillAttempt;
   marking: Marking;
@@ -320,6 +326,7 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history }: {
   pick: { shape: number | null; lens: number | null; dir: number[] };
   saveMsg: string;
   history: DrillAttempt[];
+  embedded: boolean;
 }) {
   const words = caseWords(ex);
   const [lo, hi] = paceWindow(words);
@@ -429,6 +436,9 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history }: {
         <p className="muted small">Direct: the case states it, you only need to spot it and use it. Indirect: the case gives a clue and you take one step (apply a rule, draw the conclusion).</p>
       </section>
 
+      {embedded ? (
+        <p className="muted small">This lesson is now marked complete. Your result is saved to your record.</p>
+      ) : (
       <section className="rd-sheet rd-row">
         <div>
           <span className="rd-eyebrow">Next</span>
@@ -440,6 +450,7 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history }: {
           <a className="primary" href={`/student/reading/${next.exercise.id}`}>Start</a>
         </div>
       </section>
+      )}
     </div>
   );
 }

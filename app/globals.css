@@ -7429,3 +7429,5 @@ a.planner-video-btn:visited:hover {
 .rd-skill { display: grid; grid-template-columns: minmax(0, 1fr) 120px 40px; gap: 10px; align-items: center; font-size: 14px; }
 .rd-bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
 .rd-bar i { display: block; height: 100%; background: var(--medium); }
+.rd-embedded { margin: 24px 0; padding-top: 16px; border-top: 1px solid var(--line); scroll-margin-top: 80px; }
+.rd-embedded h2 { font-family: var(--serif); }

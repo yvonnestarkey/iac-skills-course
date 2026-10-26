@@ -173,6 +173,7 @@ export function buildLesson(id: string, fields: Record<string, string>): Lesson 
     }
   }
   if (fields.bannerUrl?.trim()) lesson.banner_image_url = fields.bannerUrl.trim();
+  if (fields.tool?.trim()) lesson.tool = fields.tool.trim();
   if (fields.pdfUrl?.trim()) lesson.pdf_url = fields.pdfUrl.trim();
   if (fields.resourceUrl?.trim()) {
     lesson.resource_downloads = [
@@ -244,6 +245,7 @@ export interface LessonRow {
   video_url?: string | null;
   video_urls?: unknown;
   banner_image_url?: string | null;
+  tool?: string | null;
   pdf_url?: string | null;
   resource_downloads?: unknown;
 }
@@ -267,6 +269,7 @@ export function draftToRow(draft: LessonDraft, position: number): LessonRow {
     survey_id: l.survey_id || null,
     video_url: l.video_url || null,
     banner_image_url: l.banner_image_url || null,
+    tool: l.tool || null,
     pdf_url: l.pdf_url || null,
     resource_downloads: l.resource_downloads || null,
   };
@@ -285,6 +288,7 @@ export function rowToDraft(row: LessonRow): LessonDraft {
   const videoUrl = row.video_url || firstLessonVideoUrl(row.video_urls);
   if (videoUrl) lesson.video_url = videoUrl;
   if (row.banner_image_url) lesson.banner_image_url = row.banner_image_url;
+  if (row.tool) lesson.tool = row.tool;
   if (row.pdf_url) lesson.pdf_url = row.pdf_url;
   if (row.resource_downloads) lesson.resource_downloads = row.resource_downloads;
   return { chapterId: row.chapter_id, lesson };
@@ -331,6 +335,7 @@ export async function pullLessons(): Promise<DbResult<LessonDraft[]>> {
 const OPTIONAL_LESSON_COLUMNS = [
   "survey_id",
   "banner_image_url",
+  "tool",
   "video_url",
   "video_urls",
   "pdf_url",
@@ -451,6 +456,7 @@ export interface ManagedLesson {
   pdf_url: string | null;
   survey_id: string | null;
   banner_image_url: string | null;
+  tool: string | null;
   requires_submission: boolean | null;
   requires_coach_approval: boolean | null;
   prereq_lesson_id: string | null;
@@ -483,6 +489,7 @@ function asManagedLesson(row: Record<string, unknown>): ManagedLesson {
     pdf_url: row.pdf_url != null ? String(row.pdf_url) : null,
     survey_id: row.survey_id != null ? String(row.survey_id) : null,
     banner_image_url: row.banner_image_url != null ? String(row.banner_image_url) : null,
+    tool: row.tool != null ? String(row.tool) : null,
     requires_submission: typeof row.requires_submission === "boolean" ? row.requires_submission : null,
     requires_coach_approval: typeof row.requires_coach_approval === "boolean" ? row.requires_coach_approval : null,
     prereq_lesson_id: row.prereq_lesson_id != null ? String(row.prereq_lesson_id) : null,

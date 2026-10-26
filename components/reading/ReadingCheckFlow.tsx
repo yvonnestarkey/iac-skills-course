@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import AnnotatedCase from "@/components/reading/AnnotatedCase";
 import { Choice, StepStrip, Tile, fmt } from "@/components/reading/parts";
 import {
@@ -23,7 +23,7 @@ type Stage = "intro" | "read" | "recall" | "result";
 const STEP_OF: Record<Stage, number> = { intro: 0, read: 0, recall: 1, result: 2 };
 
 /** The reading check: a longer case, no required. Pace with notes against absorption of the big picture. */
-export default function ReadingCheckFlow() {
+export default function ReadingCheckFlow({ embedded = false, onComplete }: { embedded?: boolean; onComplete?: () => void } = {}) {
   const { user } = useStudentSession();
   const rc = READING_CHECK;
   const seed = useMemo(() => Math.floor(Math.random() * 100000), []);
@@ -33,9 +33,11 @@ export default function ReadingCheckFlow() {
   const [picks, setPicks] = useState<(number | null)[]>(rc.recall.map(() => null));
   const [result, setResult] = useState<ReadingCheckResult | null>(null);
   const [saveMsg, setSaveMsg] = useState("");
+  const top = useRef<HTMLElement>(null);
   useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, [stage]);
+    if (!embedded) window.scrollTo({ top: 0 });
+    else if (stage !== "intro") top.current?.scrollIntoView({ block: "start" });
+  }, [stage, embedded]);
 
   const words = caseWords(rc);
   const [lo, hi] = paceWindow(words);
@@ -55,6 +57,7 @@ export default function ReadingCheckFlow() {
     };
     setResult(r);
     setStage("result");
+    onComplete?.();
     if (!user?.id) return setSaveMsg("Sign in to keep your results.");
     const res = await saveReadingCheck(user.id, r);
     setSaveMsg(res.ok ? "Saved to your record." : `Not saved: ${res.error}`);
@@ -63,15 +66,17 @@ export default function ReadingCheckFlow() {
   const [readSec, setReadSec] = useState(0);
 
   return (
-    <article className="lesson-body wide rd-page">
-      <p className="muted small">
-        <Link href="/student/reading">Read the Required</Link> · Reading check · {rc.title}
-      </p>
+    <article ref={top} className={embedded ? "rd-page rd-embedded" : "lesson-body wide rd-page"}>
+      {embedded ? null : (
+        <p className="muted small">
+          <Link href="/student/reading">Read the Required</Link> · Reading check · {rc.title}
+        </p>
+      )}
       <StepStrip names={["Read", "Recall", "Result"]} step={STEP_OF[stage]} t0={stage === "result" ? null : t0} />
 
       {stage === "intro" ? (
         <div className="rd-stack">
-          <h1>Reading check</h1>
+          {embedded ? <h2>Reading check</h2> : <h1>Reading check</h1>}
           <p>
             Read this case the way you would read an exam case: once, carefully, making short notes as you go (click any word to add one).
             It is about {words.toLocaleString("en-ZA")} words, roughly {Math.round(words / 476)} exam pages. There is no required. When you
@@ -125,12 +130,12 @@ export default function ReadingCheckFlow() {
         </div>
       ) : null}
 
-      {stage === "result" && result ? <CheckResult r={result} saveMsg={saveMsg} lo={lo} hi={hi} /> : null}
+      {stage === "result" && result ? <CheckResult r={result} saveMsg={saveMsg} lo={lo} hi={hi} embedded={embedded} /> : null}
     </article>
   );
 }
 
-function CheckResult({ r, saveMsg, lo, hi }: { r: ReadingCheckResult; saveMsg: string; lo: number; hi: number }) {
+function CheckResult({ r, saveMsg, lo, hi, embedded }: { r: ReadingCheckResult; saveMsg: string; lo: number; hi: number; embedded: boolean }) {
   const prof = readingProfile(r.wpm, r.absorb / r.absorb_n);
   const marker = Math.min(r.wpm, 300) / 3;
   return (
@@ -172,9 +177,13 @@ function CheckResult({ r, saveMsg, lo, hi }: { r: ReadingCheckResult; saveMsg: s
           ))}
         </section>
       ) : null}
-      <div className="rd-row">
-        <Link href="/student/reading">Back to Read the Required</Link>
-      </div>
+      {embedded ? (
+        <p className="muted small">This lesson is now marked complete. Your result is saved to your record.</p>
+      ) : (
+        <div className="rd-row">
+          <Link href="/student/reading">Back to Read the Required</Link>
+        </div>
+      )}
     </div>
   );
 }

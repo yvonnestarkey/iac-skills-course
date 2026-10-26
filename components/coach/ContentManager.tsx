@@ -43,6 +43,7 @@ import {
   type DripWrite,
 } from "@/lib/drip-messages";
 import { firstLessonWebLink } from "@/lib/getLessonPdf";
+import { lessonToolOptions } from "@/lib/reading-drills";
 
 const BLANK = {
   chapter: "",
@@ -58,6 +59,7 @@ const BLANK = {
   surveyId: "",
   videoUrl: "",
   bannerUrl: "",
+  tool: "",
   pdfUrl: "",
   resourceUrl: "",
   resourceLabel: "",
@@ -350,6 +352,7 @@ export default function ContentManager() {
       surveyId: lesson.survey_id || "",
       videoUrl: lesson.video_url || "",
       bannerUrl: lesson.banner_image_url || "",
+      tool: lesson.tool || "",
       pdfUrl: lesson.pdf_url || "",
       resourceUrl: firstLessonWebLink(lesson)?.url || "",
       resourceLabel: firstLessonWebLink(lesson)?.title === "Open link" ? "" : firstLessonWebLink(lesson)?.title || "",
@@ -397,6 +400,7 @@ export default function ContentManager() {
       survey_id: form.surveyId || null,
       video_url: form.videoUrl.trim() || null,
       banner_image_url: form.bannerUrl.trim() || null,
+      tool: form.tool || null,
       pdf_url: form.pdfUrl.trim() || null,
       resource_downloads: form.resourceUrl.trim()
         ? [{ url: form.resourceUrl.trim(), title: form.resourceLabel.trim() || "Open link" }]
@@ -746,6 +750,23 @@ export default function ContentManager() {
               onChange={(event) => set({ resourceLabel: event.target.value })}
             />
             <p className="muted small">Shows as a button on the lesson. Use this for another page, form, or external resource.</p>
+          </div>
+          <div className="plan-field">
+            <label htmlFor="cm-tool">
+              <strong>Practice tool</strong>
+            </label>
+            <select id="cm-tool" className="select-line" value={form.tool} onChange={(event) => set({ tool: event.target.value })}>
+              <option value="">None</option>
+              {lessonToolOptions().map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <p className="muted small">
+              Shows an interactive tool under the lesson text. Use a Reading lesson for it: your text and video come first, then the tool.
+              Finishing the tool marks the lesson complete.
+            </p>
           </div>
           <div className="plan-field">
             <label htmlFor="cm-banner">

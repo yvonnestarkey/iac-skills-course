@@ -99,3 +99,14 @@ test("the marking prompt carries the rules, the rows and the answer, and costs c
   assert.equal(markingCostUsd("claude-sonnet-5-5", 2000, 700), 0.011);
   assert.equal(markingCostUsd("claude-haiku-5-5", 2000, 700), 0.00055);
 });
+
+test("a lesson's tool setting resolves to the right tool, and unknown values show nothing", async () => {
+  const { parseLessonTool, lessonToolOptions } = await import("./reading-drills");
+  assert.deepEqual(parseLessonTool("reading-check"), { kind: "check" });
+  assert.deepEqual(parseLessonTool("reading-drill:next"), { kind: "next" });
+  assert.equal((parseLessonTool("reading-drill:ubuntu") as { exercise: { id: string } }).exercise.id, "ubuntu");
+  assert.equal(parseLessonTool("reading-drill:nope"), null);
+  assert.equal(parseLessonTool(""), null);
+  assert.equal(parseLessonTool(null), null);
+  for (const option of lessonToolOptions()) assert.ok(parseLessonTool(option.value), `${option.value} resolves`);
+});

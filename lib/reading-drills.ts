@@ -424,3 +424,27 @@ export function markingCostUsd(model: string, inputTokens: number, outputTokens:
   return Math.round(((inputTokens * i + outputTokens * o) / 1e6) * 1e5) / 1e5;
 }
 export const READING_MARK_MODEL_DEFAULT = "claude-sonnet-5-5";
+
+/* ---------------------------------------------------------------- tools inside lessons */
+
+/** What a lesson's `tool` setting can be. The course builder offers these in a dropdown. */
+export type LessonTool = { kind: "check" } | { kind: "drill"; exercise: DrillExercise } | { kind: "next" };
+
+export function lessonToolOptions(): { value: string; label: string }[] {
+  return [
+    { value: "reading-check", label: "Reading check (pace and absorption)" },
+    { value: "reading-drill:next", label: "Reading drill: the student's next recommended exercise" },
+    ...EXERCISES.map((ex) => ({ value: `reading-drill:${ex.id}`, label: `Reading drill: ${ex.title} (${ex.area})` })),
+  ];
+}
+
+export function parseLessonTool(value: string | null | undefined): LessonTool | null {
+  const v = String(value || "").trim();
+  if (v === "reading-check") return { kind: "check" };
+  if (v === "reading-drill:next") return { kind: "next" };
+  if (v.startsWith("reading-drill:")) {
+    const exercise = getExercise(v.slice("reading-drill:".length));
+    return exercise ? { kind: "drill", exercise } : null;
+  }
+  return null;
+}

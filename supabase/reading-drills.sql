@@ -3,8 +3,12 @@
 --
 -- reading_checks      one row per reading check (pace vs absorption, no required)
 -- reading_attempts    one row per practice exercise (the whole result, for the student and the coach)
+-- lessons.tool        which practice tool a lesson shows under its text (set in the course builder)
 -- reading_mark_calls  one row per automatic marking call: tokens and cost. Written only by the server
 --                     (service role), so the daily limit and the spend figures cannot be tampered with.
+
+-- A lesson can show a practice tool under its text: 'reading-check', 'reading-drill:<exercise id>' or 'reading-drill:next'.
+alter table public.lessons add column if not exists tool text;
 
 create table if not exists public.reading_checks (
   id uuid primary key default gen_random_uuid(),

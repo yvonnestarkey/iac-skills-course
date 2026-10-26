@@ -48,6 +48,7 @@ export interface StudentLesson {
   survey_slug?: string | null;
   is_assignment?: boolean;
   banner_image_url?: string | null;
+  tool?: string | null;
   access?: "full" | "preview" | "locked";
   locked_message?: string;
   next: { id: string; title: string } | null;
@@ -147,6 +148,7 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     survey_slug: lesson.type === "survey" ? lesson.brief || null : null,
     is_assignment: lessonIsAssignment(lesson),
     banner_image_url: lesson.banner_image_url || null,
+    tool: lesson.tool || null,
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
   };
@@ -604,7 +606,7 @@ export function safeStudentPath(value: string | null | undefined): string {
 }
 
 const LESSON_ROW_COLUMNS =
-  "id, title, type, duration, seconds, chapter_id, position, video_urls, blurb, body, takeaways, due, brief, requires_submission, requires_coach_approval, prereq_lesson_id, pdf_url, resource_downloads, unlock_at, video_duration_seconds, estimated_read_minutes, duration_minutes, survey_id, banner_image_url";
+  "id, title, type, duration, seconds, chapter_id, position, video_urls, blurb, body, takeaways, due, brief, requires_submission, requires_coach_approval, prereq_lesson_id, pdf_url, resource_downloads, unlock_at, video_duration_seconds, estimated_read_minutes, duration_minutes, survey_id, banner_image_url, tool";
 
 async function loadLessonRow(client: NonNullable<ReturnType<typeof getSupabase>>, lessonId: string) {
   const withPdf = await client.from("lessons").select(LESSON_ROW_COLUMNS).eq("id", lessonId).maybeSingle();
@@ -665,6 +667,7 @@ export async function fetchStudentLesson(
             ),
           }),
           banner_image_url: asPrereq((data as { banner_image_url?: unknown }).banner_image_url) || null,
+          tool: asPrereq((data as { tool?: unknown }).tool) || null,
           next: nextFromOutline(tree, lessonId),
           source: "supabase",
         },

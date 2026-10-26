@@ -20,7 +20,11 @@ export async function GET(_request: Request, context: { params: Promise<{ lesson
   const client = getServiceSupabase();
   if (!client) return NextResponse.json({ error: "Supabase is not configured." }, { status: 500 });
 
-  const { data, error } = await client.from("lessons").select(LESSON_COLUMNS).eq("id", lessonId).maybeSingle();
+  // `tool` arrived later (supabase/reading-drills.sql); fall back to the older column list if it is not there yet.
+  const withTool = await client.from("lessons").select(`${LESSON_COLUMNS}, tool`).eq("id", lessonId).maybeSingle();
+  const loaded = withTool.error ? await client.from("lessons").select(LESSON_COLUMNS).eq("id", lessonId).maybeSingle() : withTool;
+  const data = loaded.data as Record<string, unknown> | null;
+  const error = loaded.error;
   if (error) return NextResponse.json({ error: "Could not load lesson." }, { status: 500 });
   if (!data) return NextResponse.json({ error: "Lesson not found." }, { status: 404 });
 
