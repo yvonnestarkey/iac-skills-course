@@ -33,7 +33,9 @@ export default function ReadingCheckFlow() {
   const [picks, setPicks] = useState<(number | null)[]>(rc.recall.map(() => null));
   const [result, setResult] = useState<ReadingCheckResult | null>(null);
   const [saveMsg, setSaveMsg] = useState("");
-  useEffect(() => window.scrollTo({ top: 0 }), [stage]);
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [stage]);
 
   const words = caseWords(rc);
   const [lo, hi] = paceWindow(words);

@@ -50,7 +50,9 @@ export default function DrillFlow({ exercise: ex }: { exercise: DrillExercise })
   useEffect(() => {
     if (user?.id) fetchReadingHistory(user.id).then((h) => setHistory(h.attempts));
   }, [user?.id]);
-  useEffect(() => window.scrollTo({ top: 0 }), [stage]);
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [stage]);
 
   const words = caseWords(ex);
   const [lo, hi] = paceWindow(words);
