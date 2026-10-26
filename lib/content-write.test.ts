@@ -35,6 +35,15 @@ test("coach lesson saves go through a staff service-role route", () => {
   assert.match(route, /revalidateTag\("course-outline"\)/);
   assert.match(writer, /\/api\/coach\/lessons/);
   assert.match(writer, /normalizeLessonWriteRow/);
+  assert.match(writer, /persistLessonDraftFlags/);
+  assert.match(writer, /set_lesson_draft/);
   assert.match(manager, /drip-feed message when students complete this lesson/);
   assert.match(manager, /Save as draft/);
+});
+
+test("draft SQL can set the flag after a lesson save", () => {
+  const sql = readFileSync(resolve("supabase/lesson-drafts.sql"), "utf8");
+  assert.match(sql, /add column if not exists is_draft/);
+  assert.match(sql, /set_lesson_draft/);
+  assert.match(sql, /reload schema/);
 });

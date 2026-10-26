@@ -107,6 +107,7 @@ export default function ContentManager() {
     const result = await fetchManagedCourse();
     if (result.ok && result.data) setBoard(result.data);
     setBoardReady(true);
+    return result.ok ? result.data || [] : [];
   };
 
   useEffect(() => {
@@ -436,16 +437,15 @@ export default function ContentManager() {
       return;
     }
     invalidateCourseOutline();
-    await loadBoard();
+    const chapters = await loadBoard();
+    const saved = chapters.flatMap((chapter) => chapter.lessons).find((lesson) => lesson.id === editingId);
     const dripProblem = await persistLessonDrip(editingId, form.title.trim());
-    setEditingId(null);
-    setForm({ ...BLANK, chapter: form.chapter, type: form.type });
-    resetDrip();
+    set({ isDraft: Boolean(saved?.is_draft) });
     setStatus({
       kind: dripProblem ? "warn" : "ok",
       text: dripProblem
         ? `Lesson saved.${dripProblem}`
-        : form.isDraft
+        : saved?.is_draft
           ? "Lesson saved as a draft. Students cannot see it."
           : "Lesson saved and visible to students.",
     });

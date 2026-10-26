@@ -56,3 +56,29 @@ $$;
 
 revoke all on function public.list_lesson_catalog() from public;
 grant execute on function public.list_lesson_catalog() to authenticated;
+
+create or replace function public.set_lesson_draft(lesson_id text, draft boolean)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.role() <> 'service_role' and not public.is_course_staff() then
+    raise exception 'Coach access required.';
+  end if;
+  update public.lessons
+    set is_draft = coalesce(draft, false)
+    where id = lesson_id;
+  if not found then
+    raise exception 'Lesson not found.';
+  end if;
+  return coalesce(draft, false);
+end;
+$$;
+
+revoke all on function public.set_lesson_draft(text, boolean) from public;
+grant execute on function public.set_lesson_draft(text, boolean) to authenticated;
+grant execute on function public.set_lesson_draft(text, boolean) to service_role;
+
+notify pgrst, 'reload schema';

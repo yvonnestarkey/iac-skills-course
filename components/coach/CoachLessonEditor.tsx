@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import RichTextField from "@/components/ui/RichTextField";
 import {
@@ -37,6 +37,10 @@ export default function CoachLessonEditor({ lesson }: { lesson: StudentLesson })
   const [resourceUrl, setResourceUrl] = useState(webLink?.url || "");
   const [resourceLabel, setResourceLabel] = useState(webLink?.title === "Open link" ? "" : webLink?.title || "");
   const [isDraft, setIsDraft] = useState(Boolean(lesson.is_draft));
+
+  useEffect(() => {
+    setIsDraft(Boolean(lesson.is_draft));
+  }, [lesson.id, lesson.is_draft]);
 
   const teaching = type === "video" || type === "reading";
 

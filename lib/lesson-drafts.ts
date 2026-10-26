@@ -2,8 +2,16 @@ import { isCoachAccount } from "@/lib/roles";
 import { staffOverrideApplies, type StaffCourseView } from "@/lib/staff-access";
 import type { OutlineChapter } from "@/lib/student-lesson";
 
+export const LESSON_DRAFTS_SQL_HINT =
+  "Paste supabase/lesson-drafts.sql in the Supabase SQL editor, then try again. Drafts cannot save until that is in place.";
+
+export function asDraftFlag(value: unknown): boolean {
+  if (value === true || value === 1 || value === "1") return true;
+  return typeof value === "string" && value.trim().toLowerCase() === "true";
+}
+
 export function isDraftLesson(lesson: { is_draft?: boolean | null } | null | undefined): boolean {
-  return lesson?.is_draft === true;
+  return asDraftFlag(lesson?.is_draft);
 }
 
 export function canViewDraftLessons(

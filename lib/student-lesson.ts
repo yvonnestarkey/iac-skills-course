@@ -8,6 +8,7 @@ import {
   isTaskChapter,
   isTaskSubmissionAssignment,
 } from "./course-phases";
+import { asDraftFlag } from "./lesson-drafts";
 import { withComputedDuration } from "./lesson-duration";
 import { getLessonPdfUrl } from "./getLessonPdf";
 import { staffRoleFromAppMetadata } from "./roles";
@@ -212,7 +213,7 @@ function outlineLessonFromRow(row: {
     unlock_at: asPrereq(row.unlock_at) || null,
     survey_id: asPrereq(row.survey_id) || null,
     is_assignment: lessonIsAssignment({ type, is_assignment: asBool(row.is_assignment) }),
-    is_draft: asBool(row.is_draft) ?? false,
+    is_draft: asDraftFlag(row.is_draft),
   };
   return withComputedDuration(lesson);
 }
@@ -689,7 +690,7 @@ export async function fetchStudentLesson(
           }),
           banner_image_url: asPrereq((data as { banner_image_url?: unknown }).banner_image_url) || null,
           tool: asPrereq((data as { tool?: unknown }).tool) || null,
-          is_draft: asBool((data as { is_draft?: unknown }).is_draft) ?? false,
+          is_draft: asDraftFlag((data as { is_draft?: unknown }).is_draft),
           next: nextFromOutline(tree, lessonId),
           source: "supabase",
         },

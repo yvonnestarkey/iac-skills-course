@@ -5,6 +5,7 @@ import { lessonMinutes } from "./lesson-duration";
 import { lessonIsAssignment } from "./lesson-type";
 import { firstLessonVideoUrl } from "./lesson-videos";
 import { getSupabase } from "./supabase";
+import { asDraftFlag, LESSON_DRAFTS_SQL_HINT } from "./lesson-drafts";
 import type { Chapter, CourseData, FlatLesson, Lesson, LessonType } from "./types";
 
 export const LESSON_TYPES: LessonType[] = ["video", "reading", "assignment", "upload", "download", "ask", "survey"];
@@ -275,7 +276,7 @@ export function draftToRow(draft: LessonDraft, position: number): LessonRow {
     tool: l.tool || null,
     pdf_url: l.pdf_url || null,
     resource_downloads: l.resource_downloads || null,
-    is_draft: Boolean(l.is_draft),
+    is_draft: asDraftFlag(l.is_draft),
   };
 }
 
@@ -295,7 +296,7 @@ export function rowToDraft(row: LessonRow): LessonDraft {
   if (row.tool) lesson.tool = row.tool;
   if (row.pdf_url) lesson.pdf_url = row.pdf_url;
   if (row.resource_downloads) lesson.resource_downloads = row.resource_downloads;
-  if (row.is_draft) lesson.is_draft = true;
+  if (asDraftFlag(row.is_draft)) lesson.is_draft = true;
   return { chapterId: row.chapter_id, lesson };
 }
 
@@ -376,8 +377,33 @@ function writeClient(): SupabaseClient | null {
   return getSupabase();
 }
 
+function draftFlagsFromRows(rows: Record<string, unknown>[]): { id: string; is_draft: boolean }[] {
+  return rows.flatMap((row) => {
+    const id = typeof row.id === "string" ? row.id : "";
+    if (!id || !("is_draft" in row)) return [];
+    return [{ id, is_draft: asDraftFlag(row.is_draft) }];
+  });
+}
+
+export async function persistLessonDraftFlags(
+  client: SupabaseClient,
+  flags: { id: string; is_draft: boolean }[]
+): Promise<DbResult> {
+  if (!flags.length) return { ok: true };
+  for (const item of flags) {
+    const rpc = await client.rpc("set_lesson_draft", { lesson_id: item.id, draft: item.is_draft });
+    if (!rpc.error) continue;
+    const direct = await client.from("lessons").update({ is_draft: item.is_draft }).eq("id", item.id).select("id, is_draft");
+    if (direct.error || !direct.data?.length || asDraftFlag(direct.data[0]?.is_draft) !== item.is_draft) {
+      return { ok: false, error: LESSON_DRAFTS_SQL_HINT };
+    }
+  }
+  return { ok: true };
+}
+
 export async function writeLessonRows(client: SupabaseClient, rows: Record<string, unknown>[]): Promise<DbResult> {
   if (!rows.length) return { ok: true };
+  const draftFlags = draftFlagsFromRows(rows);
   let payload = rows.map((row) => normalizeLessonWriteRow(row));
   for (let attempt = 0; attempt < OPTIONAL_LESSON_COLUMNS.length + 1; attempt += 1) {
     const { data, error } = await client.from("lessons").upsert(payload, { onConflict: "id" }).select("id");
@@ -385,7 +411,7 @@ export async function writeLessonRows(client: SupabaseClient, rows: Record<strin
       if (data && data.length > 0 && data.length < payload.length) {
         return { ok: false, error: "Supabase only saved some of those lessons." };
       }
-      return { ok: true };
+      return persistLessonDraftFlags(client, draftFlags);
     }
     const missing = OPTIONAL_LESSON_COLUMNS.find((column) => payload.some((row) => column in row) && error.message.includes(column));
     if (!missing) return { ok: false, error: describe(error) };
@@ -399,12 +425,13 @@ export async function writeLessonRows(client: SupabaseClient, rows: Record<strin
 }
 
 export async function writeLessonPatch(client: SupabaseClient, id: string, patch: Record<string, unknown>): Promise<DbResult> {
+  const draftFlags = "is_draft" in patch ? [{ id, is_draft: asDraftFlag(patch.is_draft) }] : [];
   let payload = normalizeLessonWriteRow(patch);
   for (let attempt = 0; attempt < OPTIONAL_LESSON_COLUMNS.length + 1; attempt += 1) {
     const { data, error } = await client.from("lessons").update(payload).eq("id", id).select("id");
     if (!error) {
       if (data && data.length === 0) return { ok: false, error: "That lesson was not updated in Supabase." };
-      return { ok: true };
+      return persistLessonDraftFlags(client, draftFlags);
     }
     const missing = OPTIONAL_LESSON_COLUMNS.find((column) => column in payload && error.message.includes(column));
     if (!missing) return { ok: false, error: describe(error) };
@@ -502,7 +529,7 @@ function asManagedLesson(row: Record<string, unknown>): ManagedLesson {
     prereq_lesson_id: row.prereq_lesson_id != null ? String(row.prereq_lesson_id) : null,
     resource_downloads: row.resource_downloads ?? null,
     unlock_at: row.unlock_at != null ? String(row.unlock_at) : null,
-    is_draft: row.is_draft === true,
+    is_draft: asDraftFlag(row.is_draft),
   };
 }
 

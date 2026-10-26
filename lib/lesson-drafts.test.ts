@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { canViewDraftLessons, isDraftLesson, publishedOutline } from "./lesson-drafts";
+import { asDraftFlag, canViewDraftLessons, isDraftLesson, publishedOutline } from "./lesson-drafts";
 import { studentUserFromAuth } from "./student-lesson";
 
 const coach = studentUserFromAuth({
@@ -29,6 +29,8 @@ const outline = [
 ];
 
 test("only explicit draft lessons count as drafts", () => {
+  assert.equal(asDraftFlag(true), true);
+  assert.equal(asDraftFlag("true"), true);
   assert.equal(isDraftLesson({ is_draft: true }), true);
   assert.equal(isDraftLesson({ is_draft: false }), false);
   assert.equal(isDraftLesson({}), false);
