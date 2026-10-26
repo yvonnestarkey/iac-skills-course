@@ -9,6 +9,8 @@ create index if not exists lessons_is_draft_idx
   on public.lessons (is_draft)
   where is_draft;
 
+drop function if exists public.list_lesson_catalog();
+
 create or replace function public.list_lesson_catalog()
 returns table (
   id text,
