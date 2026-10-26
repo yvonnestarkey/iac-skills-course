@@ -9,5 +9,5 @@
   ],
   "exam": { "pages": 9.6, "words": 4565, "readMin": 35, "readMax": 40 },
   "dailyMarkedLimit": 10,
-  "exercises": ["mopane", "ubuntu", "baobab", "lindiwe"]
+  "exercises": ["mopane", "ubuntu", "baobab", "lindiwe", "highveld"]
 }

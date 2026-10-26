@@ -1,0 +1,259 @@
+{
+  "id": "highveld",
+  "title": "Highveld Cold Storage",
+  "area": "Audit: ethics",
+  "marks": 5,
+  "answer_minutes": 6,
+  "trains": [
+    "lens",
+    "dir",
+    "indirect"
+  ],
+  "case": [
+    {
+      "heading": "1 Background",
+      "sentences": [
+        {
+          "id": "h0",
+          "text": "You are a first-year audit manager at Dlamini & Associates Inc., responsible for the external audit of Highveld Cold Storage (Pty) Ltd (Highveld) for the year ended 30 June 2026.",
+          "kind": null
+        },
+        {
+          "id": "h1",
+          "text": "Highveld operates large refrigerated logistics warehouses across Gauteng, storing perishable pharmaceutical products and export agricultural produce.",
+          "kind": null
+        },
+        {
+          "id": "h2",
+          "text": "Highveld has been an audit client of Dlamini & Associates for nine consecutive years, generating 18% of the audit firm's total annual fee income.",
+          "kind": "direct"
+        },
+        {
+          "id": "h3",
+          "text": "The engagement partner, Johan Dlamini, went to university with Highveld's Managing Director and frequently plays golf with him.",
+          "kind": "direct"
+        }
+      ]
+    },
+    {
+      "heading": "2 The working capital crisis",
+      "sentences": [
+        {
+          "id": "h4",
+          "text": "During final analytical procedures, you discover that Highveld breached its debt service coverage covenant on a R45 million facility with Apex Bank on 15 June 2026.",
+          "kind": "indirect"
+        },
+        {
+          "id": "h5",
+          "text": "The Managing Director instructed the financial manager to backdate a R12 million customer storage deposit receipt to hide the covenant breach from Apex Bank.",
+          "kind": "indirect"
+        },
+        {
+          "id": "h6",
+          "text": "The financial manager complied with the Managing Director's instruction because he feared losing his annual performance bonus.",
+          "kind": "off_required"
+        },
+        {
+          "id": "h7",
+          "text": "When you raised the backdated entry with Johan Dlamini, he sighed and said: \"Highveld is our biggest client; if we qualify the audit report or delay signing, they will fire us and our firm cannot survive that loss.\"",
+          "kind": "direct"
+        },
+        {
+          "id": "h8",
+          "text": "Johan instructed you to sign off the working papers and treat the R12 million backdating as an \"immaterial timing difference\".",
+          "kind": "direct"
+        }
+      ]
+    },
+    {
+      "heading": "3 Statutory and governance matters",
+      "sentences": [
+        {
+          "id": "h9",
+          "text": "Highveld's Social and Ethics Committee has not met during the financial year, in direct contravention of the Companies Act.",
+          "kind": "off_required"
+        },
+        {
+          "id": "h10",
+          "text": "You are considering whether this matter constitutes a Reportable Irregularity in terms of section 45 of the Auditing Profession Act (APA).",
+          "kind": "excluded"
+        }
+      ]
+    }
+  ],
+  "required": "Evaluate the ethical dilemma facing you, as the audit manager, in terms of the SAICA Code of Professional Conduct. In your answer, do not discuss Reportable Irregularities.",
+  "recall": [
+    {
+      "question": "What kind of business is Highveld Cold Storage?",
+      "options": [
+        "A refrigerated logistics and warehousing company",
+        "A pharmaceutical manufacturer",
+        "A cold-room construction contractor",
+        "An agricultural export trader"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is your role?",
+      "options": [
+        "The audit manager on Highveld's external audit",
+        "Highveld's financial manager",
+        "A credit analyst at Apex Bank",
+        "Chair of Highveld's Social and Ethics Committee"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What did the client do that created the problem?",
+      "options": [
+        "Backdated a receipt to hide a loan covenant breach from the bank",
+        "Failed to pay the audit fee",
+        "Sold warehouses without board approval",
+        "Refused the auditors access to its records"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What did the engagement partner tell you to do?",
+      "options": [
+        "Sign off and treat the backdated entry as an immaterial timing difference",
+        "Report the Managing Director to IRBA",
+        "Resign from the audit",
+        "Ask Apex Bank for a covenant waiver"
+      ],
+      "correct": 0
+    }
+  ],
+  "rtfq": {
+    "shape": {
+      "options": [
+        "Evaluate under the Code: the threats to the fundamental principles, how significant they are, what you must do, and a conclusion",
+        "A discussion of whether the Managing Director committed fraud under the Companies Act",
+        "A legal assessment of whether Apex Bank can cancel the facility",
+        "A list of audit procedures to test the backdated receipt"
+      ],
+      "correct": 0,
+      "why": "\"Evaluate\" means weighing, not listing: name each threat and the principle at risk, say how serious it is and whether a safeguard can deal with it, and end with a conclusion on what you must do."
+    },
+    "directions": {
+      "options": [
+        {
+          "text": "Leave out whether a Reportable Irregularity has occurred under the Auditing Profession Act",
+          "required": true
+        },
+        {
+          "text": "Use the SAICA Code of Professional Conduct",
+          "required": true
+        },
+        {
+          "text": "Discuss the Social and Ethics Committee's failure to meet",
+          "required": false
+        },
+        {
+          "text": "Evaluate the financial manager's bonus scheme",
+          "required": false
+        },
+        {
+          "text": "Report the matter to Apex Bank",
+          "required": false
+        }
+      ],
+      "why": "The required carries an exclusion: anything on Reportable Irregularities or section 45 earns nothing, however good. The Social and Ethics Committee and the financial manager's bonus are in the case to tempt you; neither is your dilemma."
+    },
+    "lens": {
+      "options": [
+        "You, the audit manager: what the partner's instruction means for your own ethics",
+        "The Managing Director: whether backdating the receipt was ethical",
+        "The financial manager: whether he should have followed the instruction",
+        "Apex Bank: whether it was misled"
+      ],
+      "correct": 0,
+      "why": "\"The ethical dilemma facing you, as the audit manager\" sets the lens. Judging the Managing Director's or the financial manager's conduct answers a different question. The firm's fee dependence and the partner's friendship count only as the reasons for the pressure on you."
+    }
+  },
+  "rows": [
+    {
+      "id": "r1",
+      "proximity": "direct",
+      "point": "Intimidation threat: the partner pressures you, under threat of losing the client, to sign off and call the backdating immaterial",
+      "clues": [
+        "h7",
+        "h8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r2",
+      "proximity": "direct",
+      "point": "Self-interest threat: fear of losing the firm's biggest client puts the firm's interests (and your own standing) ahead of objectivity",
+      "clues": [
+        "h7"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r3",
+      "proximity": "indirect",
+      "point": "Fee dependence: 18% of the firm's fees from one client makes the self-interest threat significant, and explains the partner's pressure",
+      "clues": [
+        "h2"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r4",
+      "proximity": "direct",
+      "point": "Familiarity threat: nine years on the audit and the partner's close friendship with the Managing Director weaken professional scepticism",
+      "clues": [
+        "h2",
+        "h3"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r5",
+      "proximity": "indirect",
+      "point": "The backdating is deliberate manipulation to hide a covenant breach, so it is material by its nature whatever the amount; calling it an \"immaterial timing difference\" is not true",
+      "clues": [
+        "h4",
+        "h5",
+        "h8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r6",
+      "proximity": "direct",
+      "point": "Integrity: signing off would knowingly associate you with false or misleading information",
+      "clues": [
+        "h8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r7",
+      "proximity": "indirect",
+      "point": "Objectivity and professional competence and due care: signing off without resolving the entry is not proper audit work",
+      "clues": [
+        "h8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r8",
+      "proximity": "indirect",
+      "point": "Action: refuse to sign off, document the matter and your discussion with the partner, and escalate inside the firm (ethics partner, engagement quality reviewer or firm leadership)",
+      "clues": [
+        "h8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r9",
+      "proximity": "thinking",
+      "point": "Conclusion: while the instruction stands, no safeguard reduces these threats to an acceptable level; if it is not reversed, you cannot be associated with the work (remove yourself from the engagement, take legal advice)",
+      "clues": [],
+      "marks": 1
+    }
+  ]
+}
