@@ -29,6 +29,8 @@ export interface Lesson {
   survey_id?: string | null;
   is_assignment?: boolean;
   banner_image_url?: string | null;
+  /** An interactive practice tool shown under the lesson text, e.g. "reading-check" or "reading-drill:mopane". */
+  tool?: string | null;
 }
 
 /** Student BMCR (Basic Mark Conversion Ratio) evaluation for an assignment lesson. */

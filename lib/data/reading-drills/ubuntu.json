@@ -1,0 +1,249 @@
+{
+  "id": "ubuntu",
+  "title": "Ubuntu Bricks",
+  "area": "Audit: ethics",
+  "marks": 7,
+  "answer_minutes": 4,
+  "trains": [
+    "lens",
+    "dir",
+    "indirect"
+  ],
+  "case": [
+    {
+      "heading": "1 The audit",
+      "sentences": [
+        {
+          "id": "u0",
+          "text": "You are the audit manager at Thandeka & Co.",
+          "kind": null
+        },
+        {
+          "id": "u1",
+          "text": "Thandeka & Co (TC) has audited Ubuntu Bricks Ltd, a brick maker listed on the JSE, for four years.",
+          "kind": "indirect"
+        },
+        {
+          "id": "u2",
+          "text": "Ubuntu's fees make up 18% of TC's total fee income.",
+          "kind": "excluded"
+        },
+        {
+          "id": "u3",
+          "text": "The audit partner's sister-in-law joined Ubuntu's sales team in September.",
+          "kind": "off_required"
+        },
+        {
+          "id": "u4",
+          "text": "TC prepared Ubuntu's interim financial statements for the six months to 30 June 2026, and in doing so classified a R20 million shareholder loan as equity.",
+          "kind": "indirect"
+        }
+      ]
+    },
+    {
+      "heading": "2 The loan",
+      "sentences": [
+        {
+          "id": "u5",
+          "text": "Ubuntu's loan agreement with Seboka Bank requires debt to equity to stay below 1.5 times; if it does not, the bank may call the loan.",
+          "kind": "indirect"
+        },
+        {
+          "id": "u6",
+          "text": "The draft year-end figures at 31 October 2026 show debt to equity of 1.7 times.",
+          "kind": "indirect"
+        }
+      ]
+    },
+    {
+      "heading": "3 The meeting on 10 November",
+      "sentences": [
+        {
+          "id": "u7",
+          "text": "At a meeting on 10 November, the CFO, Pieter Botha, told the audit partner that a covenant breach “cannot appear in the financial statements”.",
+          "kind": "direct"
+        },
+        {
+          "id": "u8",
+          "text": "He suggested the partner “find a way” to treat more of the shareholder loans as equity, as TC had done at the interim stage.",
+          "kind": "direct"
+        },
+        {
+          "id": "u9",
+          "text": "He added that the board would decide on next year's auditor in January.",
+          "kind": "direct"
+        },
+        {
+          "id": "u10",
+          "text": "Ubuntu's audit committee is chaired by Nomsa Dlamini, an independent CA(SA).",
+          "kind": "indirect"
+        }
+      ]
+    }
+  ],
+  "required": "Discuss the professional ethical considerations for Thandeka & Co arising from the CFO's comments at the 10 November meeting. Include appropriate safeguards. Do not discuss the audit fee or TC's acceptance of the engagement.",
+  "recall": [
+    {
+      "question": "What kind of business is Ubuntu?",
+      "options": [
+        "A listed brick maker",
+        "A private construction company",
+        "A bank",
+        "An audit firm"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is your role?",
+      "options": [
+        "The auditor: audit manager at Thandeka & Co",
+        "Ubuntu's CFO",
+        "An analyst at Seboka Bank",
+        "A member of the audit committee"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What was the meeting on 10 November mainly about?",
+      "options": [
+        "Pressure to keep a loan covenant breach out of the financial statements",
+        "Next year's audit fee",
+        "The partner's relative working at Ubuntu",
+        "Approving the interim results"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What are the main transactions in the case?",
+      "options": [
+        "A bank loan with a debt-to-equity covenant, and shareholder loans",
+        "The sale of a factory",
+        "The purchase of a competitor",
+        "A large export contract"
+      ],
+      "correct": 0
+    }
+  ],
+  "rtfq": {
+    "shape": {
+      "options": [
+        "Discuss each threat to TC's compliance with the Code, from the facts, with a safeguard for each",
+        "List the fundamental principles of the Code",
+        "Describe audit procedures on the loan",
+        "Conclude on whether Ubuntu breached its covenant"
+      ],
+      "correct": 0,
+      "why": "'Discuss and include safeguards' means: the threat, the fact behind it, why it matters to TC, and what TC does about it."
+    },
+    "directions": {
+      "options": [
+        {
+          "text": "Include safeguards",
+          "required": true
+        },
+        {
+          "text": "Deal only with what arises from the CFO's comments on 10 November",
+          "required": true
+        },
+        {
+          "text": "Leave out the audit fee",
+          "required": true
+        },
+        {
+          "text": "Leave out the acceptance of the engagement",
+          "required": true
+        },
+        {
+          "text": "Calculate the debt-to-equity ratio",
+          "required": false
+        }
+      ],
+      "why": "The 18% fee and the four-year relationship are tempting, but both are excluded. The sister-in-law is a real threat, but it does not arise from the CFO's comments."
+    },
+    "lens": {
+      "options": [
+        "TC, the auditor: what the CFO's pressure means for TC's own ethics",
+        "Ubuntu's directors: whether breaching the covenant was ethical",
+        "Seboka Bank: whether it should call the loan",
+        "The CFO: whether he broke the law"
+      ],
+      "correct": 0,
+      "why": "In June 2026 all three students drifted to management's ethics on a question like this. It asks about the auditor."
+    }
+  },
+  "rows": [
+    {
+      "id": "r1",
+      "proximity": "direct",
+      "point": "Intimidation threat: the CFO is pressuring TC to hide the covenant breach",
+      "clues": [
+        "u7"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r2",
+      "proximity": "direct",
+      "point": "Intimidation threat: the hint that TC could lose the audit in January",
+      "clues": [
+        "u9"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r3",
+      "proximity": "direct",
+      "point": "Integrity and objectivity: TC may not be associated with financial statements it knows are misleading, so it cannot reclassify the loans to avoid the breach",
+      "clues": [
+        "u7",
+        "u8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r4",
+      "proximity": "indirect",
+      "point": "Self-review threat: TC classified the shareholder loan as equity in the interims it prepared, and would now audit its own classification, which decides the covenant",
+      "clues": [
+        "u4",
+        "u8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r5",
+      "proximity": "indirect",
+      "point": "The breach (1.7 against a 1.5 limit) lets the bank call the loan, so hiding it would materially misstate the loan's classification and the going concern disclosure",
+      "clues": [
+        "u5",
+        "u6"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r6",
+      "proximity": "indirect",
+      "point": "Ubuntu is listed, so it is a public interest entity: the threats carry more weight and the Code is stricter (for example on TC preparing its financial statements)",
+      "clues": [
+        "u1"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r7",
+      "proximity": "indirect",
+      "point": "Safeguard: take the CFO's pressure to the audit committee chair, Nomsa Dlamini (those charged with governance)",
+      "clues": [
+        "u10"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r8",
+      "proximity": "thinking",
+      "point": "Safeguards: consult inside the firm or use an engagement quality review, document the discussion, and consider withdrawing if the pressure continues",
+      "clues": [],
+      "marks": 1
+    }
+  ]
+}

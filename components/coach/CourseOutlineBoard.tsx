@@ -86,6 +86,7 @@ export default function CourseOutlineBoard({
                       {lesson.type}
                       {lesson.duration ? ` · ${lesson.duration}` : ""}
                       {lesson.banner_image_url ? " · banner" : ""}
+                      {lesson.tool ? " · practice tool" : ""}
                     </span>
                   </div>
                   <div className="course-outline-actions">

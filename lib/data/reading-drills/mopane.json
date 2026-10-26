@@ -1,0 +1,286 @@
+{
+  "id": "mopane",
+  "title": "Mopane Airlines",
+  "area": "Strategy",
+  "marks": 8,
+  "answer_minutes": 4,
+  "trains": [
+    "dir",
+    "lens",
+    "direct"
+  ],
+  "case": [
+    {
+      "heading": "1 Background",
+      "sentences": [
+        {
+          "id": "m0",
+          "text": "You are a strategy consultant appointed by Mopane's board.",
+          "kind": null
+        },
+        {
+          "id": "m1",
+          "text": "Mopane Airlines (Pty) Ltd flies regional routes from Lanseria to five towns in Limpopo and Mpumalanga.",
+          "kind": null
+        },
+        {
+          "id": "m2",
+          "text": "It was founded in 1998 by two former air force pilots, who still sit on the board.",
+          "kind": null
+        },
+        {
+          "id": "m3",
+          "text": "Mopane holds the only licence to fly scheduled flights into Hoedspruit until 2029.",
+          "kind": "direct"
+        },
+        {
+          "id": "m4",
+          "text": "Its on-time rate of 91% is the best of any South African regional airline.",
+          "kind": "direct"
+        },
+        {
+          "id": "m5",
+          "text": "Two of its six aircraft are more than 25 years old and were out of service for 40 days last year.",
+          "kind": "direct"
+        }
+      ]
+    },
+    {
+      "heading": "2 Financial position",
+      "sentences": [
+        {
+          "id": "m6",
+          "text": "For the year ended 30 June 2026 Mopane made a loss of R38 million, its third loss in a row.",
+          "kind": "direct"
+        },
+        {
+          "id": "m7",
+          "text": "Current liabilities exceed current assets by R64 million.",
+          "kind": "direct"
+        },
+        {
+          "id": "m8",
+          "text": "A R120 million bank loan must be repaid in full in March 2027, and the bank has said it will not extend it.",
+          "kind": "indirect"
+        },
+        {
+          "id": "m9",
+          "text": "Jet fuel makes up 35% of operating costs and is priced in US dollars.",
+          "kind": "indirect"
+        }
+      ]
+    },
+    {
+      "heading": "3 Board proposals",
+      "sentences": [
+        {
+          "id": "m10",
+          "text": "The board is considering selling two aircraft and leasing them back, merging with a larger airline, or raising R80 million from a new shareholder.",
+          "kind": "excluded"
+        }
+      ]
+    },
+    {
+      "heading": "4 Market",
+      "sentences": [
+        {
+          "id": "m11",
+          "text": "Tourist arrivals in the Kruger area grew 14% in 2025, and two new lodges near Hoedspruit open in 2027.",
+          "kind": "direct"
+        },
+        {
+          "id": "m12",
+          "text": "A low-cost airline has announced that it will start flying to Mbombela in 2027.",
+          "kind": "direct"
+        },
+        {
+          "id": "m13",
+          "text": "Two mining companies have asked Mopane to quote for weekly charter flights to their sites.",
+          "kind": "indirect"
+        }
+      ]
+    }
+  ],
+  "required": "Prepare a SWOT analysis for Mopane Airlines in view of its going concern challenges. Do not discuss the board proposals in paragraph 3.",
+  "recall": [
+    {
+      "question": "What kind of business is Mopane?",
+      "options": [
+        "A regional airline in financial difficulty",
+        "A national airline expanding abroad",
+        "An aircraft leasing company",
+        "A tourism lodge operator"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is your role?",
+      "options": [
+        "A strategy consultant advising the board",
+        "Mopane's external auditor",
+        "A credit analyst at the bank",
+        "Mopane's financial manager"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is the main issue running through the case?",
+      "options": [
+        "Whether Mopane can survive: losses, and a loan it cannot repay",
+        "A breach of ethics by the directors",
+        "A dispute with the aviation regulator",
+        "A planned listing on the JSE"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is the board considering?",
+      "options": [
+        "Ways to raise money or restructure",
+        "Closing the airline",
+        "Buying new aircraft",
+        "Starting international routes"
+      ],
+      "correct": 0
+    }
+  ],
+  "rtfq": {
+    "shape": {
+      "options": [
+        "A SWOT: internal strengths and weaknesses, external opportunities and threats, each taken from the case",
+        "A discussion of whether Mopane is a going concern, ending in a conclusion",
+        "A recommendation on which board proposal to accept",
+        "A general list of strengths and weaknesses of regional airlines"
+      ],
+      "correct": 0,
+      "why": "'Prepare a SWOT' sets the form: four headings, internal and external, and every point taken from Mopane's own facts."
+    },
+    "directions": {
+      "options": [
+        {
+          "text": "Leave out the board proposals in paragraph 3",
+          "required": true
+        },
+        {
+          "text": "Cover both the internal and the external environment",
+          "required": true
+        },
+        {
+          "text": "Use Mopane's own facts, not airlines in general",
+          "required": true
+        },
+        {
+          "text": "Calculate the going concern shortfall",
+          "required": false
+        },
+        {
+          "text": "Recommend the best board proposal",
+          "required": false
+        }
+      ],
+      "why": "The exclusion is the one students miss: a sale and leaseback or new capital looks like an opportunity, but paragraph 3 is out of bounds."
+    },
+    "lens": {
+      "options": [
+        "How each point affects Mopane's ability to keep going: cash, the loan, the losses",
+        "How each point affects passengers",
+        "Whether the directors acted ethically",
+        "How each point affects the audit opinion"
+      ],
+      "correct": 0,
+      "why": "'In view of its going concern challenges' is the angle. A strength or opportunity only counts when you show how it helps Mopane survive."
+    }
+  },
+  "rows": [
+    {
+      "id": "r1",
+      "proximity": "direct",
+      "point": "Strength: the only scheduled licence into Hoedspruit until 2029 protects a route and its income",
+      "clues": [
+        "m3"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r2",
+      "proximity": "direct",
+      "point": "Strength: the best on-time rate (91%) supports customer loyalty and revenue",
+      "clues": [
+        "m4"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r3",
+      "proximity": "direct",
+      "point": "Weakness: an ageing fleet; 40 days out of service cuts capacity and income",
+      "clues": [
+        "m5"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r4",
+      "proximity": "direct",
+      "point": "Weakness: a third loss in a row (R38 million) drains cash and equity",
+      "clues": [
+        "m6"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r5",
+      "proximity": "direct",
+      "point": "Weakness: net current liabilities of R64 million, so short-term debts cannot be met from current assets",
+      "clues": [
+        "m7"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r6",
+      "proximity": "indirect",
+      "point": "Weakness or threat: the R120 million loan is due in March 2027 with no extension, so without new funding Mopane may not be able to repay it (significant doubt about going concern)",
+      "clues": [
+        "m8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r7",
+      "proximity": "indirect",
+      "point": "Threat: fuel is 35% of costs and priced in dollars, so a weaker rand raises costs and deepens losses",
+      "clues": [
+        "m9"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r8",
+      "proximity": "direct",
+      "point": "Opportunity: tourism growth and new lodges near Hoedspruit, where Mopane holds the only licence, bring more passengers and cash",
+      "clues": [
+        "m11"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r9",
+      "proximity": "direct",
+      "point": "Threat: a low-cost airline flying to Mbombela from 2027 will put pressure on fares and income",
+      "clues": [
+        "m12"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r10",
+      "proximity": "indirect",
+      "point": "Opportunity: charter contracts with the mines would bring regular, contracted income that eases cash flow",
+      "clues": [
+        "m13"
+      ],
+      "marks": 1
+    }
+  ]
+}

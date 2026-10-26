@@ -1,0 +1,399 @@
+{
+  "id": "reading-check",
+  "title": "Khanyisa Dairies",
+  "case": [
+    {
+      "heading": "1 Background",
+      "sentences": [
+        {
+          "id": "k0_0",
+          "text": "You are a senior trainee accountant at Mthembu Inc., the audit firm appointed to audit Khanyisa Dairies Ltd for the year ended 30 September 2026."
+        },
+        {
+          "id": "k0_1",
+          "text": "Khanyisa processes fresh milk into pasteurised milk, yoghurt and maas at two plants in the Eastern Cape, in Gqeberha and Makhanda."
+        },
+        {
+          "id": "k0_2",
+          "text": "It was founded in 1987 by Themba and Grace Ndlovu, who started by collecting milk from four farms with a single truck."
+        },
+        {
+          "id": "k0_3",
+          "text": "Today it employs 640 people and sells about 180 million litres of dairy products a year, almost all of it in the Eastern Cape, the Western Cape and KwaZulu-Natal."
+        },
+        {
+          "id": "k0_4",
+          "text": "Its products are sold under the Khanyisa brand, which is well known in the Eastern Cape for its yoghurt range, and under the private labels of two supermarket chains."
+        },
+        {
+          "id": "k0_5",
+          "text": "Revenue for the year was R2.1 billion, slightly up on the previous year, but profit after tax fell from R96 million to R41 million."
+        }
+      ]
+    },
+    {
+      "heading": "2 Ownership and leadership",
+      "sentences": [
+        {
+          "id": "k1_0",
+          "text": "Khanyisa listed on the JSE's AltX board in 2021 to raise money for growth, but the Ndlovu family still owns 62% of the shares through the Ndlovu Family Trust."
+        },
+        {
+          "id": "k1_1",
+          "text": "Themba Ndlovu, now 68, is the chief executive officer and chairs the board's investment committee."
+        },
+        {
+          "id": "k1_2",
+          "text": "He has told the board that he plans to retire at the end of 2027, and no successor has been named."
+        },
+        {
+          "id": "k1_3",
+          "text": "His daughter, Lerato Ndlovu, is the operations director and is widely seen inside the company as his preferred successor."
+        },
+        {
+          "id": "k1_4",
+          "text": "The board has eight members, three of whom are independent non-executive directors."
+        },
+        {
+          "id": "k1_5",
+          "text": "One of them, Pieter van Wyk, chairs the board; he is a retired banker who joined when the company listed."
+        },
+        {
+          "id": "k1_6",
+          "text": "The audit committee is chaired by Ayanda Mokoena, a CA(SA) who also sits on the board of a listed retailer."
+        }
+      ]
+    },
+    {
+      "heading": "3 Milk supply",
+      "sentences": [
+        {
+          "id": "k2_0",
+          "text": "Khanyisa buys raw milk from about 120 independent dairy farmers, most of them within 150 kilometres of its plants."
+        },
+        {
+          "id": "k2_1",
+          "text": "It pays farmers a price per litre that is reviewed every quarter."
+        },
+        {
+          "id": "k2_2",
+          "text": "The Eastern Cape has had below-average rainfall for two years, and many farmers have cut the size of their herds because feed has become expensive."
+        },
+        {
+          "id": "k2_3",
+          "text": "As a result, Khanyisa received 9% less raw milk in 2026 than in 2025, and the Gqeberha plant ran at only 71% of its capacity for most of the year."
+        },
+        {
+          "id": "k2_4",
+          "text": "To keep supermarket shelves full, Khanyisa bought milk from farmers in KwaZulu-Natal at a higher price and paid more to transport it."
+        },
+        {
+          "id": "k2_5",
+          "text": "Management believes that supply will only recover once the drought breaks."
+        },
+        {
+          "id": "k2_6",
+          "text": "Two large competitors have started offering Eastern Cape farmers longer contracts at fixed prices, and eleven farmers moved to a competitor during the year."
+        }
+      ]
+    },
+    {
+      "heading": "4 Customers",
+      "sentences": [
+        {
+          "id": "k3_0",
+          "text": "About 45% of Khanyisa's revenue comes from one customer, the supermarket group FreshCo, which buys both Khanyisa-branded products and FreshCo's own private-label yoghurt."
+        },
+        {
+          "id": "k3_1",
+          "text": "The supply agreement with FreshCo ends on 31 March 2027."
+        },
+        {
+          "id": "k3_2",
+          "text": "FreshCo has told Khanyisa that it will renew the agreement only if Khanyisa cuts its prices by 4% and can prove that its food safety controls meet FreshCo's new standards."
+        },
+        {
+          "id": "k3_3",
+          "text": "The rest of the revenue comes from a second supermarket chain, independent retailers, spaza shops supplied through wholesalers, and schools and hospitals."
+        },
+        {
+          "id": "k3_4",
+          "text": "Sales to independent retailers grew strongly in 2026, mainly because of a popular new range of drinking yoghurts in small pouches."
+        }
+      ]
+    },
+    {
+      "heading": "5 The Makhanda expansion",
+      "sentences": [
+        {
+          "id": "k4_0",
+          "text": "In 2025 the board approved a R380 million expansion of the Makhanda plant, which will add a new long-life milk line."
+        },
+        {
+          "id": "k4_1",
+          "text": "Long-life milk does not need to be kept cold, so it can be sold further from the plants and exported to neighbouring countries."
+        },
+        {
+          "id": "k4_2",
+          "text": "The expansion is funded by a R300 million loan from Ubuntu Bank and R80 million of the company's own cash."
+        },
+        {
+          "id": "k4_3",
+          "text": "Construction is about seven months behind schedule because imported equipment was delayed, and the cost is now expected to reach R430 million."
+        },
+        {
+          "id": "k4_4",
+          "text": "The loan agreement requires Khanyisa to keep its net debt below 2.5 times earnings before interest, tax, depreciation and amortisation."
+        },
+        {
+          "id": "k4_5",
+          "text": "Management expects to stay below this limit, but with little room to spare."
+        }
+      ]
+    },
+    {
+      "heading": "6 The recall",
+      "sentences": [
+        {
+          "id": "k5_0",
+          "text": "In June 2026, a batch of strawberry yoghurt produced at the Gqeberha plant was found to contain a harmful bacterium."
+        },
+        {
+          "id": "k5_1",
+          "text": "Several customers became ill, and Khanyisa recalled all yoghurt produced on the affected line over a three-week period."
+        },
+        {
+          "id": "k5_2",
+          "text": "The recall cost about R27 million, including the products destroyed, refunds to retailers and the cost of cleaning and testing the line."
+        },
+        {
+          "id": "k5_3",
+          "text": "An investigation found that a temperature sensor had failed and that the staff who checked the readings had not reported the problem."
+        },
+        {
+          "id": "k5_4",
+          "text": "The story was widely reported in the media, and sales of Khanyisa-branded yoghurt fell by about a fifth in the two months that followed."
+        },
+        {
+          "id": "k5_5",
+          "text": "Sales have since recovered to about 90% of their earlier level."
+        },
+        {
+          "id": "k5_6",
+          "text": "Two customers who became ill have instructed lawyers to claim damages from the company."
+        }
+      ]
+    },
+    {
+      "heading": "7 Board meeting of 14 October 2026",
+      "sentences": [
+        {
+          "id": "k6_0",
+          "text": "Most of the meeting was spent on a proposal from Themba Ndlovu to buy Amathole Cheese (Pty) Ltd, a family-owned cheese maker near Stutterheim, for about R150 million."
+        },
+        {
+          "id": "k6_1",
+          "text": "Themba argued that cheese would give Khanyisa a use for surplus milk in good seasons and a product with higher margins."
+        },
+        {
+          "id": "k6_2",
+          "text": "Two of the independent directors were against the proposal."
+        },
+        {
+          "id": "k6_3",
+          "text": "They said that the company should first finish the Makhanda expansion, renew the FreshCo agreement and repair its food safety reputation before taking on another business."
+        },
+        {
+          "id": "k6_4",
+          "text": "Pieter van Wyk also pointed out that Themba's brother-in-law owns 30% of Amathole Cheese."
+        },
+        {
+          "id": "k6_5",
+          "text": "The board agreed to appoint an independent adviser to value Amathole Cheese and to discuss the proposal again in January 2027."
+        },
+        {
+          "id": "k6_6",
+          "text": "Themba did not take part in the vote."
+        }
+      ]
+    },
+    {
+      "heading": "8 Financial performance",
+      "sentences": [
+        {
+          "id": "k7_0",
+          "text": "Gross margin fell from 24% to 19%, mainly because Khanyisa paid more for milk and transport and absorbed the cost of the recall."
+        },
+        {
+          "id": "k7_1",
+          "text": "Cash generated from operations fell by almost half."
+        },
+        {
+          "id": "k7_2",
+          "text": "The board reduced the final dividend to 20 cents a share, from 75 cents a year earlier, to keep cash for the expansion."
+        },
+        {
+          "id": "k7_3",
+          "text": "Debtor days rose from 38 to 47 because several wholesalers paid more slowly, and Khanyisa bought a large stock of long-life milk cartons in advance to avoid further delays once the new line starts."
+        },
+        {
+          "id": "k7_4",
+          "text": "The finance director, Sipho Dube, has warned the board that the company will rely on its overdraft for the next six months."
+        }
+      ]
+    },
+    {
+      "heading": "9 Systems and controls",
+      "sentences": [
+        {
+          "id": "k8_0",
+          "text": "The quality control records at the Gqeberha plant are still kept on paper and are checked by shift supervisors at the end of each week."
+        },
+        {
+          "id": "k8_1",
+          "text": "Internal audit is outsourced to a small firm that visits twice a year."
+        },
+        {
+          "id": "k8_2",
+          "text": "After the recall, the board appointed a food safety consultancy to review controls at both plants; its report is due in December 2026."
+        },
+        {
+          "id": "k8_3",
+          "text": "Khanyisa also plans to replace its accounting system in 2027, as the current system cannot record batch costs for each product line."
+        }
+      ]
+    },
+    {
+      "heading": "10 Plans for 2027",
+      "sentences": [
+        {
+          "id": "k9_0",
+          "text": "Management's plan for 2027 is to start the long-life milk line, export to Botswana and Namibia, renew the FreshCo agreement and launch the pouch yoghurt range in the Western Cape."
+        },
+        {
+          "id": "k9_1",
+          "text": "It also intends to appoint a head of food safety who reports directly to the audit committee."
+        }
+      ]
+    },
+    {
+      "heading": "11 Other matters",
+      "sentences": [
+        {
+          "id": "k10_0",
+          "text": "Khanyisa installed solar panels at both plants in 2025, which now supply about a third of their electricity and have reduced the impact of power cuts."
+        },
+        {
+          "id": "k10_1",
+          "text": "The company's B-BBEE rating matters to several of its public sector customers, and it is due for reassessment in February 2027."
+        },
+        {
+          "id": "k10_2",
+          "text": "The human resources department reports high staff turnover among qualified food technologists, because larger food companies in Gauteng pay more."
+        }
+      ]
+    }
+  ],
+  "recall": [
+    {
+      "question": "What kind of business is Khanyisa?",
+      "options": [
+        "A dairy processor that sells mainly to supermarkets",
+        "A dairy farming business",
+        "A supermarket chain",
+        "A cheese importer"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is your role?",
+      "options": [
+        "A trainee at the firm that audits Khanyisa",
+        "Khanyisa's financial director",
+        "An analyst at Ubuntu Bank",
+        "An adviser on the cheese deal"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Who controls Khanyisa?",
+      "options": [
+        "The Ndlovu family, through a trust",
+        "Ubuntu Bank",
+        "FreshCo",
+        "The independent directors"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Why is Khanyisa getting less milk?",
+      "options": [
+        "Drought has made farmers cut their herds, and some farmers left for competitors",
+        "Farmers went on strike",
+        "Its plants broke down",
+        "Government quotas limit supply"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Which customer relationship is at risk?",
+      "options": [
+        "The agreement with its largest supermarket customer",
+        "Its contracts with schools and hospitals",
+        "Its export customers",
+        "Its wholesalers"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What went wrong during the year?",
+      "options": [
+        "Contaminated yoghurt led to a product recall",
+        "A fire stopped production",
+        "A strike closed a plant",
+        "The company failed a tax audit"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "How is the plant expansion going?",
+      "options": [
+        "Late and over budget",
+        "On time and on budget",
+        "It has been cancelled",
+        "It finished early"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What was the board meeting mainly about?",
+      "options": [
+        "A proposal to buy a cheese maker",
+        "Choosing the next CEO",
+        "Closing a plant",
+        "Paying a special dividend"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is the main plan for 2027?",
+      "options": [
+        "Start the long-life milk line and begin exporting",
+        "Close the Gqeberha plant",
+        "Sell the Khanyisa brand",
+        "Move into beef farming"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "Why did some directors object to that proposal?",
+      "options": [
+        "Bad timing given other pressures, and the CEO's family has an interest in the seller",
+        "Cheese has low margins",
+        "The seller is outside South Africa",
+        "The bank refused to fund it"
+      ],
+      "correct": 0
+    }
+  ]
+}

@@ -17,6 +17,7 @@ import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
 import LessonCarryForwardCheckpoint from "@/components/lesson/LessonCarryForwardCheckpoint";
 import LessonVideoParts from "@/components/lesson/LessonVideoParts";
+import LessonTool from "@/components/reading/LessonTool";
 import { isProgressiveCheckpoint } from "@/lib/lesson-checkpoint";
 import { isMultiVideoLesson, parseLessonVideos } from "@/lib/lesson-videos";
 import LinkedText from "@/components/ui/LinkedText";
@@ -300,6 +301,7 @@ export default function StudentPlayer({
                 </ul>
               </div>
             ) : null}
+            {lesson.tool ? <LessonTool tool={lesson.tool} onComplete={completeSurveyLesson} /> : null}
 
             {resourceLink && resourceHref ? (
               <a className="primary lesson-resource-link" href={resourceHref} target="_blank" rel="noopener noreferrer">
