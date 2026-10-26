@@ -38,9 +38,12 @@ test("coach tools expose Referrals instead of Waitlist", () => {
   const dash = readFileSync(resolve("components/student/StudentDashboard.tsx"), "utf8");
   assert.match(home, /\/coach\/referrals/);
   assert.match(home, /Referrals/);
+  assert.match(home, /\/coach\/drips/);
   assert.doesNotMatch(home, /\/coach\/waitlist/);
+  assert.doesNotMatch(home, /\/evaluator-preview/);
   assert.match(lists, /label: "Referrals"/);
   assert.match(lists, /\/coach\/referrals/);
   assert.match(dash, /\/coach\/referrals/);
   assert.match(dash, />Referrals</);
+  assert.doesNotMatch(dash, /\/coach\/waitlist/);
 });

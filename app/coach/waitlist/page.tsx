@@ -1,5 +1,5 @@
-import WaitlistTab from "@/components/coach/WaitlistTab";
+import { redirect } from "next/navigation";
 
 export default function CoachWaitlistPage() {
-  return <WaitlistTab />;
+  redirect("/coach");
 }

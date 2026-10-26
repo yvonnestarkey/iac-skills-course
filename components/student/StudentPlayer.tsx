@@ -21,6 +21,7 @@ import { isProgressiveCheckpoint } from "@/lib/lesson-checkpoint";
 import { isMultiVideoLesson, parseLessonVideos } from "@/lib/lesson-videos";
 import LinkedText from "@/components/ui/LinkedText";
 import { firstLessonWebLink } from "@/lib/getLessonPdf";
+import { requestDripCatchup } from "@/lib/drip-messages";
 import { readingHeroDuration } from "@/lib/lesson-duration";
 import { resolveCourseHref } from "@/lib/rich-text";
 
@@ -79,6 +80,7 @@ export default function StudentPlayer({
     const result = await saveLessonProgress(lesson.id, next);
     if (result.ok) {
       setLessonCompleted(lesson.id, next.completed);
+      if (next.completed) void requestDripCatchup();
       if (!silent) setStatus("Saved.");
     } else {
       setStatus(result.error || "Could not save.");
