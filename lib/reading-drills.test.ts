@@ -135,3 +135,17 @@ test("reading tasks stay one-attempt and coaches can reset them", () => {
   assert.match(coach, /reading_mark_calls/);
   assert.match(profile, /ReadingAttemptsPanel/);
 });
+
+test("the Direct / Indirect table groups every row with its case wording, and lists the traps", async () => {
+  const { proximityTable, PROXIMITY_WHY } = await import("./reading-drills");
+  for (const ex of EXERCISES) {
+    const t = proximityTable(ex);
+    assert.equal(t.direct.length + t.indirect.length + t.thinking.length, ex.rows.length, ex.id);
+    for (const item of [...t.direct, ...t.indirect]) assert.ok(item.caseText.length > 0, `${ex.id} ${item.row.id} shows case wording`);
+    assert.ok(t.traps.every((x) => x.why), ex.id);
+  }
+  const hv = proximityTable(getExercise("highveld")!);
+  assert.ok(hv.direct.some((x) => x.row.id === "r4" && x.caseText.some((q) => q.includes("nine consecutive years"))));
+  assert.equal(hv.indirect[0].why, PROXIMITY_WHY.indirect);
+  assert.equal(hv.traps.length, 3);
+});

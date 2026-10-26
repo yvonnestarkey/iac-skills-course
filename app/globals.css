@@ -7512,3 +7512,6 @@ a.planner-video-btn:visited:hover {
 .rd-bar i { display: block; height: 100%; background: var(--medium); }
 .rd-embedded { margin: 24px 0; padding-top: 16px; border-top: 1px solid var(--line); scroll-margin-top: 80px; }
 .rd-embedded h2 { font-family: var(--serif); }
+.rd-prox-group h3 { display: flex; gap: 8px; align-items: center; margin: 8px 0 0; font-size: 15px; }
+.rd-prox-table td.rd-quote { font-family: var(--serif); font-size: 15px; width: 36%; }
+.rd-prox-table td.rd-quote div + div { margin-top: 6px; }

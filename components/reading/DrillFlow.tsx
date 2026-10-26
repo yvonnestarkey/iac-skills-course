@@ -14,6 +14,7 @@ import {
   notedNotUsed,
   paceBand,
   paceWindow,
+  proximityTable,
   readingNote,
   READING_ONCE_COPY,
   recommendUnused,
@@ -459,6 +460,8 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, embedded }: {
         <p className="muted small">Direct: the case states it, you only need to spot it and use it. Indirect: the case gives a clue and you take one step (apply a rule, draw the conclusion).</p>
       </section>
 
+      <ProximityLesson ex={ex} marking={marking} noted={noted} />
+
       {embedded ? (
         <p className="muted small">This lesson is now marked complete. Your result is saved to your record.</p>
       ) : (
@@ -475,5 +478,77 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, embedded }: {
       </section>
       )}
     </div>
+  );
+}
+
+/** After the marking: every mark with the case wording that held it, and why it is Direct, Indirect or Thinking. */
+function ProximityLesson({ ex, marking, noted }: { ex: DrillExercise; marking: Marking; noted: Set<string> }) {
+  const t = proximityTable(ex);
+  const groups = [
+    { key: "direct", title: "Direct: the case states it", items: t.direct },
+    { key: "indirect", title: "Indirect: a clue in the case, plus one step", items: t.indirect },
+    { key: "thinking", title: "Thinking: no clue in the case", items: t.thinking },
+  ].filter((g) => g.items.length);
+  return (
+    <section className="rd-sheet rd-stack">
+      <h2>Direct or Indirect? How the case hid the marks</h2>
+      <p className="muted">
+        Read across each row: what the case said, the point the marker rewarded, and why it counts as Direct or Indirect. Next time, look
+        for the same kind of wording while you read.
+      </p>
+      {groups.map((g) => (
+        <div key={g.key} className="rd-stack rd-prox-group">
+          <h3><span className={`rd-prox ${g.key}`}>{g.key}</span> {g.title}</h3>
+          <div className="rd-table-wrap">
+            <table className="rd-table rd-prox-table">
+              <thead>
+                <tr><th>What the case said</th><th>The point it gives</th><th>Why it is {g.key}</th><th>You</th></tr>
+              </thead>
+              <tbody>
+                {g.items.map(({ row, caseText, why }) => {
+                  const wasNoted = row.clues.some((c) => noted.has(c));
+                  const earned = Boolean(marking.rows[row.id]?.earned);
+                  return (
+                    <tr key={row.id}>
+                      <td className="rd-quote">{caseText.length ? caseText.map((q, i) => <div key={i}>“{q}”</div>) : <span className="muted">Nothing in the case</span>}</td>
+                      <td>{row.point}</td>
+                      <td className="muted">{why}</td>
+                      <td className="c">
+                        {row.clues.length ? <div className={wasNoted ? "rd-ok" : "rd-miss"}>{wasNoted ? "Noted" : "Not noted"}</div> : null}
+                        <div className={earned ? "rd-ok" : "rd-miss"}>{earned ? "Earned" : "Not earned"}</div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+      {t.traps.length ? (
+        <div className="rd-stack rd-prox-group">
+          <h3>Traps: in the case, but no marks</h3>
+          <div className="rd-table-wrap">
+            <table className="rd-table rd-prox-table">
+              <thead>
+                <tr><th>What the case said</th><th>Why it earns nothing</th><th>You</th></tr>
+              </thead>
+              <tbody>
+                {t.traps.map(({ sentence, why }) => {
+                  const used = marking.traps.includes(sentence.id);
+                  return (
+                    <tr key={sentence.id}>
+                      <td className="rd-quote">“{sentence.text}”</td>
+                      <td className="muted">{why}</td>
+                      <td className="c"><span className={used ? "rd-miss" : "rd-ok"}>{used ? "Used it" : "Avoided"}</span></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : null}
+    </section>
   );
 }

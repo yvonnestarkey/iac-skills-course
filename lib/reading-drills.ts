@@ -18,7 +18,8 @@ export type Sentence = { id: string; text: string; kind?: SentenceKind };
 export type CaseSection = { heading: string; sentences: Sentence[] };
 export type RecallQuestion = { question: string; options: string[]; correct: number };
 export type Proximity = "direct" | "indirect" | "thinking";
-export type MarkRow = { id: string; proximity: Proximity; point: string; clues: string[]; marks: number };
+/** `why` (optional) explains the jump from the case to the point; without it, the feedback uses the general explanation for the type. */
+export type MarkRow = { id: string; proximity: Proximity; point: string; clues: string[]; marks: number; why?: string };
 export type SkillKey = "read_speed" | "read_comp" | "shape" | "dir" | "lens" | "direct" | "indirect";
 export type Delivered = "yes" | "partly" | "no";
 
@@ -489,4 +490,31 @@ export function parseLessonTool(value: string | null | undefined): LessonTool | 
     return exercise ? { kind: "drill", exercise } : null;
   }
   return null;
+}
+
+/* ---------------------------------------------------------------- teaching the Direct / Indirect difference */
+
+export const PROXIMITY_WHY: Record<Proximity, string> = {
+  direct: "The case hands you this. Spot it, and say why it matters to the required.",
+  indirect: "The case gives you the fact, but not the point. One step (apply the rule, or draw the conclusion) turns it into a mark.",
+  thinking: "Nothing in the case points here. It comes from your own knowledge and judgement.",
+};
+
+export const TRAP_WHY: Record<"excluded" | "off_required" | "wrong_level", string> = {
+  excluded: "The required rules this out. Anything you write on it earns nothing.",
+  off_required: "It's in the case to tempt you, but it isn't what the required asks about.",
+  wrong_level: "A real issue, but at the wrong level for this required.",
+};
+
+/** The rows grouped Direct, Indirect, Thinking, each with its case wording, plus the trap sentences. */
+export function proximityTable(ex: DrillExercise) {
+  const text = Object.fromEntries(sentencesOf(ex.case).map((s) => [s.id, s.text]));
+  const group = (p: Proximity) =>
+    ex.rows
+      .filter((r) => r.proximity === p)
+      .map((r) => ({ row: r, caseText: r.clues.map((c) => text[c]).filter(Boolean), why: r.why || PROXIMITY_WHY[p] }));
+  const traps = sentencesOf(ex.case)
+    .filter((s) => s.kind === "excluded" || s.kind === "off_required" || s.kind === "wrong_level")
+    .map((s) => ({ sentence: s, why: TRAP_WHY[s.kind as keyof typeof TRAP_WHY] }));
+  return { direct: group("direct"), indirect: group("indirect"), thinking: group("thinking"), traps };
 }
