@@ -29,9 +29,11 @@ test("lesson writes leave existing video_urls alone when video_url is empty", ()
 test("coach lesson saves go through a staff service-role route", () => {
   const route = readFileSync(resolve("app/api/coach/lessons/route.ts"), "utf8");
   const writer = readFileSync(resolve("lib/content.ts"), "utf8");
+  const manager = readFileSync(resolve("components/coach/ContentManager.tsx"), "utf8");
   assert.match(route, /isStaffUser/);
   assert.match(route, /getServiceSupabase/);
   assert.match(route, /revalidateTag\("course-outline"\)/);
   assert.match(writer, /\/api\/coach\/lessons/);
   assert.match(writer, /normalizeLessonWriteRow/);
+  assert.match(manager, /drip-feed message when students complete this lesson/);
 });

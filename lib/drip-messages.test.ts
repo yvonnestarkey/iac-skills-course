@@ -3,7 +3,10 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 import {
+  delayDaysFromParts,
+  delayPartsFromDays,
   dripAppliesToCohort,
+  dripCategory,
   dripFromRow,
   dripIsDue,
   dripScopeLabel,
@@ -118,12 +121,24 @@ test("drip writes require the matching trigger target", () => {
 });
 
 test("trigger and scope labels stay coach-readable", () => {
-  assert.equal(dripTriggerLabel(rule({ delayDays: 0 })), "The day they join");
+  assert.equal(dripTriggerLabel(rule({ delayDays: 0 })), "Day of enrolment");
   assert.equal(dripTriggerLabel(rule({ delayDays: 14 })), "2 weeks after enrolment");
-  assert.equal(dripScopeLabel(rule()), "All current and future cohorts");
-  assert.equal(dripScopeLabel(rule({ scope: "cohort", cohortId: "jan27" })), "January 2027 only");
+  assert.equal(dripTriggerLabel(rule({ delayDays: 30 })), "1 month after enrolment");
+  assert.equal(dripScopeLabel(rule()), "Current and future");
+  assert.equal(dripScopeLabel(rule({ scope: "cohort", cohortId: "jan27" })), "Current cohort only");
   assert.equal(isTaskChapterOption("Task 1 · Buried Treasure"), true);
   assert.equal(isTaskChapterOption("S1 · How marking works"), false);
+});
+
+test("enrolment delays convert between days, weeks, and months", () => {
+  assert.equal(delayDaysFromParts(1, "weeks"), 7);
+  assert.equal(delayDaysFromParts(1, "months"), 30);
+  assert.deepEqual(delayPartsFromDays(0), { amount: 0, unit: "days" });
+  assert.deepEqual(delayPartsFromDays(14), { amount: 2, unit: "weeks" });
+  assert.deepEqual(delayPartsFromDays(30), { amount: 1, unit: "months" });
+  assert.equal(dripCategory("enrolment_delay"), "enrolment");
+  assert.equal(dripCategory("fixed_date"), "date");
+  assert.equal(dripCategory("lesson_completed"), "progress");
 });
 
 test("database rows map onto drip messages", () => {
@@ -160,4 +175,13 @@ test("coach tools expose drip-feed messages and hide waitlist plus evaluator pre
   assert.match(sql, /create table if not exists public\.drip_messages/);
   assert.match(sql, /create table if not exists public\.drip_deliveries/);
   assert.match(catchup, /claimDueDripMessagesForStudent/);
+  const fields = readFileSync(resolve("components/coach/DripMessageFields.tsx"), "utf8");
+  const creator = readFileSync(resolve("components/coach/ContentManager.tsx"), "utf8");
+  assert.match(fields, /dripCategoryLabel/);
+  assert.match(fields, /type="date"/);
+  assert.match(fields, /Day of/);
+  assert.match(fields, /Current cohort only/);
+  assert.match(fields, /Current and future/);
+  assert.match(creator, /Add a drip-feed message when students complete this lesson/);
+  assert.match(creator, /saveCoachDrip/);
 });

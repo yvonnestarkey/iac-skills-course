@@ -7260,3 +7260,57 @@ a.planner-video-btn:visited:hover {
 .eval-report-actions { display: flex; flex-direction: column; gap: 12px; min-width: 220px; }
 .eval-report-actions h2 { margin: 0; }
 .eval-report-actions .primary, .eval-report-actions .eval-secondary { text-align: center; }
+
+/* Drip-feed message categories, timeline chips, and lesson-completion option */
+.drip-fields .plan-field,
+.drip-lesson-option .plan-field {
+  margin-top: 14px;
+}
+.drip-categories,
+.drip-timeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.drip-chip {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 14px;
+}
+.drip-chip.on {
+  background: var(--link);
+  color: #fff;
+  border-color: var(--link);
+}
+.drip-delay-custom {
+  align-items: center;
+}
+.drip-delay-custom .select-line {
+  width: auto;
+  min-width: 150px;
+  margin-top: 0;
+}
+.drip-calendar {
+  max-width: 220px;
+}
+.drip-active {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 12px;
+}
+.drip-lesson-option {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.drip-group {
+  margin-top: 18px;
+}
+.drip-group h3 {
+  margin-bottom: 8px;
+}

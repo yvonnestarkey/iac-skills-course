@@ -1,12 +1,23 @@
-import { COURSE_COHORTS, displayCohortName, normalizeCohortId } from "./cohorts";
+import { currentCohortId, displayCohortName, normalizeCohortId } from "./cohorts";
 import { addDays, isoDate, isoToSastDateAndTime, parseISO } from "./dates";
 import { isTaskChapter } from "./course-phases";
 
 export const DRIP_TRIGGERS = ["enrolment_delay", "fixed_date", "lesson_completed", "task_completed"] as const;
 export const DRIP_SCOPES = ["static", "cohort"] as const;
+export const DRIP_CATEGORIES = ["enrolment", "date", "progress"] as const;
+export const DRIP_DELAY_UNITS = ["days", "weeks", "months"] as const;
 
 export type DripTrigger = (typeof DRIP_TRIGGERS)[number];
 export type DripScope = (typeof DRIP_SCOPES)[number];
+export type DripCategory = (typeof DRIP_CATEGORIES)[number];
+export type DripDelayUnit = (typeof DRIP_DELAY_UNITS)[number];
+
+export const DRIP_DELAY_PRESETS: { label: string; days: number }[] = [
+  { label: "Day of", days: 0 },
+  { label: "1 day after", days: 1 },
+  { label: "1 week after", days: 7 },
+  { label: "1 month after", days: 30 },
+];
 
 export interface DripMessage {
   id: string;
@@ -58,17 +69,50 @@ export function isDripScope(value: unknown): value is DripScope {
   return DRIP_SCOPES.includes(value as DripScope);
 }
 
+export function dripCategory(trigger: DripTrigger | null | undefined): DripCategory {
+  if (trigger === "fixed_date") return "date";
+  if (trigger === "lesson_completed" || trigger === "task_completed") return "progress";
+  return "enrolment";
+}
+
+export function dripCategoryLabel(category: DripCategory): string {
+  if (category === "date") return "Specific Date";
+  if (category === "progress") return "Course progress";
+  return "Enrolment";
+}
+
+export function triggersForCategory(category: DripCategory): DripTrigger {
+  if (category === "date") return "fixed_date";
+  if (category === "progress") return "lesson_completed";
+  return "enrolment_delay";
+}
+
+export function delayDaysFromParts(amount: number, unit: DripDelayUnit): number {
+  const value = Math.max(0, Math.trunc(Number(amount) || 0));
+  if (unit === "weeks") return value * 7;
+  if (unit === "months") return value * 30;
+  return value;
+}
+
+export function delayPartsFromDays(days: number | null | undefined): { amount: number; unit: DripDelayUnit } {
+  const value = Math.max(0, Number(days) || 0);
+  if (value === 0) return { amount: 0, unit: "days" };
+  if (value % 30 === 0) return { amount: value / 30, unit: "months" };
+  if (value % 7 === 0) return { amount: value / 7, unit: "weeks" };
+  return { amount: value, unit: "days" };
+}
+
 export function emptyDripWrite(): DripWrite {
   return {
     title: "",
     body: "",
     trigger: "enrolment_delay",
-    delayDays: 14,
+    delayDays: 0,
     sendOn: "",
     lessonId: "",
     taskId: "",
     scope: "static",
-    cohortId: COURSE_COHORTS[0]?.id || "",
+    cohortId: currentCohortId(),
     isActive: true,
   };
 }
@@ -84,7 +128,7 @@ export function dripWriteFromMessage(message: DripMessage): DripWrite {
     lessonId: message.lessonId || "",
     taskId: message.taskId || "",
     scope: message.scope,
-    cohortId: message.cohortId || COURSE_COHORTS[0]?.id || "",
+    cohortId: message.cohortId || currentCohortId(),
     isActive: message.isActive,
   };
 }
@@ -143,7 +187,7 @@ export function validateDripWrite(input: DripWrite): { ok: true; write: DripWrit
   if (!title) return { ok: false, error: "Add a title for this drip message." };
   if (!body) return { ok: false, error: "Write the message students should receive." };
   if (!isDripTrigger(input.trigger)) return { ok: false, error: "Choose when this message should send." };
-  if (!isDripScope(input.scope)) return { ok: false, error: "Choose whether this message is static or cohort-specific." };
+  if (!isDripScope(input.scope)) return { ok: false, error: "Choose current cohort only, or current and future." };
 
   const write: DripWrite = {
     id: asOptionalText(input.id) || undefined,
@@ -178,9 +222,7 @@ export function validateDripWrite(input: DripWrite): { ok: true; write: DripWrit
   }
 
   if (input.scope === "cohort") {
-    const cohortId = normalizeCohortId(asOptionalText(input.cohortId));
-    if (!cohortId) return { ok: false, error: "Choose which cohort this message is for." };
-    write.cohortId = cohortId;
+    write.cohortId = normalizeCohortId(asOptionalText(input.cohortId) || currentCohortId());
   }
 
   return { ok: true, write };
@@ -263,7 +305,11 @@ export function dripTriggerLabel(rule: Pick<DripMessage, "trigger" | "delayDays"
 }): string {
   if (rule.trigger === "enrolment_delay") {
     const days = rule.delayDays ?? 0;
-    if (days === 0) return "The day they join";
+    if (days === 0) return "Day of enrolment";
+    if (days % 30 === 0) {
+      const months = days / 30;
+      return `${months} month${months === 1 ? "" : "s"} after enrolment`;
+    }
     if (days % 7 === 0) {
       const weeks = days / 7;
       return `${weeks} week${weeks === 1 ? "" : "s"} after enrolment`;
@@ -280,10 +326,58 @@ export function dripTriggerLabel(rule: Pick<DripMessage, "trigger" | "delayDays"
 }
 
 export function dripScopeLabel(rule: Pick<DripMessage, "scope" | "cohortId">): string {
-  if (rule.scope === "cohort" && rule.cohortId) {
-    return `${displayCohortName(rule.cohortId)} only`;
+  if (rule.scope === "cohort") {
+    const cohortId = rule.cohortId || currentCohortId();
+    return normalizeCohortId(cohortId) === currentCohortId()
+      ? "Current cohort only"
+      : `${displayCohortName(cohortId)} only`;
   }
-  return "All current and future cohorts";
+  return "Current and future";
+}
+
+export async function listCoachDrips(): Promise<{ ok: boolean; data: DripMessage[]; error?: string }> {
+  try {
+    const response = await fetch("/api/coach/drips");
+    const payload = (await response.json().catch(() => ({}))) as { data?: DripMessage[]; error?: string };
+    if (!response.ok) return { ok: false, data: [], error: payload.error || "Could not load drip messages." };
+    return { ok: true, data: payload.data || [] };
+  } catch (error) {
+    return { ok: false, data: [], error: error instanceof Error ? error.message : "Could not load drip messages." };
+  }
+}
+
+export async function saveCoachDrip(write: DripWrite): Promise<{ ok: boolean; data?: DripMessage; error?: string }> {
+  try {
+    const response = await fetch("/api/coach/drips", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "save", message: write }),
+    });
+    const payload = (await response.json().catch(() => ({}))) as { data?: DripMessage; error?: string };
+    if (!response.ok) return { ok: false, error: payload.error || "Could not save that drip message." };
+    return { ok: true, data: payload.data };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Could not save that drip message." };
+  }
+}
+
+export async function deleteCoachDrip(id: string): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const response = await fetch("/api/coach/drips", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "delete", id }),
+    });
+    const payload = (await response.json().catch(() => ({}))) as { error?: string };
+    if (!response.ok) return { ok: false, error: payload.error || "Could not delete that drip message." };
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Could not delete that drip message." };
+  }
+}
+
+export function completionDripForLesson(messages: DripMessage[], lessonId: string): DripMessage | null {
+  return messages.find((message) => message.trigger === "lesson_completed" && message.lessonId === lessonId) || null;
 }
 
 export function isTaskChapterOption(title: string): boolean {

@@ -10,6 +10,10 @@ export const COURSE_COHORTS: Cohort[] = [
 
 export const CURRENT_COHORT_TERM = "January 2027 cohort";
 
+export function currentCohortId(): string {
+  return COURSE_COHORTS.find((cohort) => cohort.current)?.id || DEFAULT_COHORT_ID;
+}
+
 const LEGACY_COHORT_IDS: Record<string, string> = {
   autumn26: DEFAULT_COHORT_ID,
   summer26: JUNE_COHORT_ID,

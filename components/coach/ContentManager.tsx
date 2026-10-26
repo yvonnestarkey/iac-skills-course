@@ -31,7 +31,17 @@ import { fetchCustomSurveys, insertIndexAfterLesson, SURVEY_PLACE_END, SURVEY_PL
 import { invalidateCourseOutline } from "@/lib/student-lesson";
 import CoachToolPanel from "@/components/coach/CoachToolPanel";
 import CourseOutlineBoard from "@/components/coach/CourseOutlineBoard";
+import DripMessageFields from "@/components/coach/DripMessageFields";
 import RichTextField from "@/components/ui/RichTextField";
+import {
+  completionDripForLesson,
+  deleteCoachDrip,
+  dripWriteFromMessage,
+  emptyDripWrite,
+  listCoachDrips,
+  saveCoachDrip,
+  type DripWrite,
+} from "@/lib/drip-messages";
 import { firstLessonWebLink } from "@/lib/getLessonPdf";
 
 const BLANK = {
@@ -81,6 +91,9 @@ export default function ContentManager() {
   const [board, setBoard] = useState<ManagedChapter[]>([]);
   const [boardReady, setBoardReady] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [dripEnabled, setDripEnabled] = useState(false);
+  const [dripForm, setDripForm] = useState<DripWrite>(emptyDripWrite());
+  const [lessonDripId, setLessonDripId] = useState<string | null>(null);
   const [openTools, setOpenTools] = useState<Partial<Record<"admin" | "lesson" | "csv" | "outline", boolean>>>({});
 
   const toggleTool = (id: "admin" | "lesson" | "csv" | "outline") => {
@@ -109,6 +122,35 @@ export default function ContentManager() {
   }, [board]);
 
   const set = (next: Partial<typeof BLANK>) => setForm((current) => ({ ...current, ...next }));
+  const setDrip = (next: Partial<DripWrite>) => setDripForm((current) => ({ ...current, ...next }));
+
+  const resetDrip = () => {
+    setDripEnabled(false);
+    setDripForm(emptyDripWrite());
+    setLessonDripId(null);
+  };
+
+  const persistLessonDrip = async (lessonId: string, lessonTitle: string) => {
+    if (!dripEnabled) {
+      if (lessonDripId) {
+        const removed = await deleteCoachDrip(lessonDripId);
+        return removed.ok ? "" : ` ${removed.error || "The lesson saved, but the drip message could not be removed."}`;
+      }
+      return "";
+    }
+    const title = dripForm.title.trim() || `After you complete ${lessonTitle}`;
+    const body = dripForm.body.trim();
+    if (!body) return " The lesson saved, but the drip message needs a body.";
+    const saved = await saveCoachDrip({
+      ...dripForm,
+      id: lessonDripId || undefined,
+      title,
+      body,
+      trigger: "lesson_completed",
+      lessonId,
+    });
+    return saved.ok ? "" : ` ${saved.error || "The lesson saved, but the drip message could not be saved."}`;
+  };
 
   const addDrafts = (drafts: LessonDraft[], insertAt?: number) => {
     mutate((draft) => {
@@ -163,9 +205,11 @@ export default function ContentManager() {
       });
       return;
     }
+    const dripProblem = await persistLessonDrip(lesson.id, lesson.title);
+    resetDrip();
     setStatus({
-      kind: "ok",
-      text: `“${lesson.title}” is now in Supabase and the student sidebar.`,
+      kind: dripProblem ? "warn" : "ok",
+      text: `“${lesson.title}” is now in Supabase and the student sidebar.${dripProblem}`,
     });
   };
 
@@ -311,6 +355,14 @@ export default function ContentManager() {
       resourceLabel: firstLessonWebLink(lesson)?.title === "Open link" ? "" : firstLessonWebLink(lesson)?.title || "",
       afterLessonId: SURVEY_PLACE_END,
     });
+    resetDrip();
+    void listCoachDrips().then((listed) => {
+      const existing = completionDripForLesson(listed.data || [], lesson.id);
+      if (!existing) return;
+      setDripEnabled(true);
+      setLessonDripId(existing.id);
+      setDripForm(dripWriteFromMessage(existing));
+    });
     setStatus({ kind: "ok", text: `Editing “${lesson.title}”.` });
     setOpenTools((current) => ({ ...current, lesson: true }));
     window.setTimeout(() => {
@@ -357,9 +409,14 @@ export default function ContentManager() {
     }
     invalidateCourseOutline();
     await loadBoard();
+    const dripProblem = await persistLessonDrip(editingId, form.title.trim());
     setEditingId(null);
     setForm({ ...BLANK, chapter: form.chapter, type: form.type });
-    setStatus({ kind: "ok", text: "Lesson saved." });
+    resetDrip();
+    setStatus({
+      kind: dripProblem ? "warn" : "ok",
+      text: dripProblem ? `Lesson saved.${dripProblem}` : "Lesson saved.",
+    });
   };
 
   const pickBanner = async (file: File | null) => {
@@ -716,6 +773,31 @@ export default function ContentManager() {
               <img className="lesson-banner-preview" src={form.bannerUrl.trim()} alt="" />
             ) : null}
           </div>
+          <div className="plan-field drip-lesson-option">
+            <label className="drip-active">
+              <input
+                type="checkbox"
+                checked={dripEnabled}
+                onChange={(event) => {
+                  const enabled = event.target.checked;
+                  setDripEnabled(enabled);
+                  if (!enabled) return;
+                  setDrip({
+                    trigger: "lesson_completed",
+                    title: dripForm.title.trim() || (form.title.trim() ? `After you complete ${form.title.trim()}` : ""),
+                  });
+                }}
+              />
+              <strong>Add a drip-feed message when students complete this lesson</strong>
+            </label>
+            {dripEnabled ? (
+              <DripMessageFields
+                form={dripForm}
+                onChange={setDrip}
+                lockCategory="progress"
+              />
+            ) : null}
+          </div>
           <div className="actions">
             <button
               className="primary"
@@ -734,6 +816,7 @@ export default function ContentManager() {
                 onClick={() => {
                   setEditingId(null);
                   setForm({ ...BLANK, chapter: form.chapter, type: form.type });
+                  resetDrip();
                 }}
               >
                 Cancel edit
