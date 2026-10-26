@@ -1,7 +1,9 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { allLessons } from "./course";
 import { fetchSurveyAssignmentFlags } from "./custom-surveys";
 import { lessonMinutes } from "./lesson-duration";
 import { lessonIsAssignment } from "./lesson-type";
+import { firstLessonVideoUrl } from "./lesson-videos";
 import { getSupabase } from "./supabase";
 import type { Chapter, CourseData, FlatLesson, Lesson, LessonType } from "./types";
 
@@ -234,6 +236,7 @@ export interface LessonRow {
   brief: string | null;
   survey_id?: string | null;
   video_url?: string | null;
+  video_urls?: unknown;
   banner_image_url?: string | null;
 }
 
@@ -269,7 +272,8 @@ export function rowToDraft(row: LessonRow): LessonDraft {
   if (row.due) lesson.due = row.due;
   if (row.brief) lesson.brief = row.brief;
   if (row.survey_id) lesson.survey_id = row.survey_id;
-  if (row.video_url) lesson.video_url = row.video_url;
+  const videoUrl = row.video_url || firstLessonVideoUrl(row.video_urls);
+  if (videoUrl) lesson.video_url = videoUrl;
   if (row.banner_image_url) lesson.banner_image_url = row.banner_image_url;
   return { chapterId: row.chapter_id, lesson };
 }
@@ -296,8 +300,6 @@ export async function checkLessonsTable(): Promise<DbResult<number>> {
 }
 
 export async function pushLessons(drafts: LessonDraft[], startPosition: number): Promise<DbResult> {
-  const client = getSupabase();
-  if (!client) return { ok: false, error: "Supabase is not configured." };
   const rows = drafts.map((draft, i) => draftToRow(draft, startPosition + i));
   return upsertLessonRows(rows as unknown as Record<string, unknown>[]);
 }
@@ -314,23 +316,46 @@ export async function pullLessons(): Promise<DbResult<LessonDraft[]>> {
   return { ok: true, data: (data as LessonRow[]).map(rowToDraft) };
 }
 
-export async function deleteLesson(id: string): Promise<DbResult> {
-  const client = getSupabase();
-  if (!client) return { ok: false, error: "Supabase is not configured." };
-  const { error } = await client.from("lessons").delete().eq("id", id);
-  if (error) return { ok: false, error: describe(error) };
-  return { ok: true };
-}
-
 const OPTIONAL_LESSON_COLUMNS = ["survey_id", "banner_image_url", "video_url", "video_urls", "pdf_url", "duration_minutes"];
 
-async function upsertLessonRows(rows: Record<string, unknown>[]): Promise<DbResult> {
-  const client = getSupabase();
-  if (!client) return { ok: false, error: "Supabase is not configured." };
-  let payload: Record<string, unknown>[] = rows.map((row) => ({ ...row }));
+/** Live `lessons` stores clips in `video_urls`. The builder field is still `video_url`. */
+export function normalizeLessonWriteRow(row: Record<string, unknown>): Record<string, unknown> {
+  const next: Record<string, unknown> = { ...row };
+  const videoUrl = typeof next.video_url === "string" ? next.video_url.trim() : "";
+  if (videoUrl && next.video_urls == null) next.video_urls = [videoUrl];
+  delete next.video_url;
+  delete next.created_at;
+  delete next.updated_at;
+  return next;
+}
+
+async function staffLessonRequest(body: Record<string, unknown>): Promise<DbResult> {
+  const response = await fetch("/api/coach/lessons", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(body),
+  });
+  const payload = (await response.json().catch(() => null)) as { error?: string; data?: unknown } | null;
+  if (!response.ok) return { ok: false, error: payload?.error || `Could not save lessons (${response.status}).` };
+  return { ok: true, data: payload?.data as never };
+}
+
+function writeClient(): SupabaseClient | null {
+  return getSupabase();
+}
+
+export async function writeLessonRows(client: SupabaseClient, rows: Record<string, unknown>[]): Promise<DbResult> {
+  if (!rows.length) return { ok: true };
+  let payload = rows.map((row) => normalizeLessonWriteRow(row));
   for (let attempt = 0; attempt < OPTIONAL_LESSON_COLUMNS.length + 1; attempt += 1) {
-    const { error } = await client.from("lessons").upsert(payload, { onConflict: "id" });
-    if (!error) return { ok: true };
+    const { data, error } = await client.from("lessons").upsert(payload, { onConflict: "id" }).select("id");
+    if (!error) {
+      if (data && data.length > 0 && data.length < payload.length) {
+        return { ok: false, error: "Supabase only saved some of those lessons." };
+      }
+      return { ok: true };
+    }
     const missing = OPTIONAL_LESSON_COLUMNS.find((column) => payload.some((row) => column in row) && error.message.includes(column));
     if (!missing) return { ok: false, error: describe(error) };
     payload = payload.map((row) => {
@@ -340,6 +365,52 @@ async function upsertLessonRows(rows: Record<string, unknown>[]): Promise<DbResu
     });
   }
   return { ok: false, error: "Could not save lessons." };
+}
+
+export async function writeLessonPatch(client: SupabaseClient, id: string, patch: Record<string, unknown>): Promise<DbResult> {
+  let payload = normalizeLessonWriteRow(patch);
+  for (let attempt = 0; attempt < OPTIONAL_LESSON_COLUMNS.length + 1; attempt += 1) {
+    const { data, error } = await client.from("lessons").update(payload).eq("id", id).select("id");
+    if (!error) {
+      if (data && data.length === 0) return { ok: false, error: "That lesson was not updated in Supabase." };
+      return { ok: true };
+    }
+    const missing = OPTIONAL_LESSON_COLUMNS.find((column) => column in payload && error.message.includes(column));
+    if (!missing) return { ok: false, error: describe(error) };
+    delete payload[missing];
+  }
+  return { ok: false, error: "Could not update the lesson." };
+}
+
+export async function writeLessonDelete(client: SupabaseClient, id: string): Promise<DbResult> {
+  const { data, error } = await client.from("lessons").delete().eq("id", id).select("id");
+  if (error) return { ok: false, error: describe(error) };
+  if (data && data.length === 0) return { ok: false, error: "That lesson was not removed from Supabase." };
+  return { ok: true };
+}
+
+export async function writeChapterOrder(client: SupabaseClient, chapterId: string, lessonIds: string[]): Promise<DbResult> {
+  const updates = lessonIds.map((id, index) =>
+    client.from("lessons").update({ chapter_id: chapterId, position: index + 1 }).eq("id", id).select("id")
+  );
+  const results = await Promise.all(updates);
+  const failed = results.find((result) => result.error);
+  if (failed?.error) return { ok: false, error: describe(failed.error) };
+  return { ok: true };
+}
+
+export async function upsertLessonRows(rows: Record<string, unknown>[]): Promise<DbResult> {
+  if (typeof window !== "undefined") return staffLessonRequest({ action: "upsert", rows });
+  const client = writeClient();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  return writeLessonRows(client, rows);
+}
+
+export async function deleteLesson(id: string): Promise<DbResult> {
+  if (typeof window !== "undefined") return staffLessonRequest({ action: "delete", id });
+  const client = writeClient();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  return writeLessonDelete(client, id);
 }
 
 export interface ManagedLesson {
@@ -387,7 +458,7 @@ function asManagedLesson(row: Record<string, unknown>): ManagedLesson {
     takeaways: row.takeaways ?? null,
     due: row.due != null ? String(row.due) : null,
     brief: row.brief != null ? String(row.brief) : null,
-    video_url: row.video_url != null ? String(row.video_url) : null,
+    video_url: row.video_url != null ? String(row.video_url) : firstLessonVideoUrl(row.video_urls) || null,
     video_urls: row.video_urls ?? null,
     pdf_url: row.pdf_url != null ? String(row.pdf_url) : null,
     survey_id: row.survey_id != null ? String(row.survey_id) : null,
@@ -517,15 +588,10 @@ export async function fetchLiveAssignmentLessons(): Promise<FlatLesson[]> {
 }
 
 async function rewriteChapterOrder(chapterId: string, lessonIds: string[]): Promise<DbResult> {
-  const client = getSupabase();
+  if (typeof window !== "undefined") return staffLessonRequest({ action: "reorder", chapterId, lessonIds });
+  const client = writeClient();
   if (!client) return { ok: false, error: "Supabase is not configured." };
-  const updates = lessonIds.map((id, index) =>
-    client.from("lessons").update({ chapter_id: chapterId, position: index + 1 }).eq("id", id)
-  );
-  const results = await Promise.all(updates);
-  const failed = results.find((result) => result.error);
-  if (failed?.error) return { ok: false, error: describe(failed.error) };
-  return { ok: true };
+  return writeChapterOrder(client, chapterId, lessonIds);
 }
 
 export async function duplicateLesson(lessonId: string): Promise<DbResult<ManagedLesson>> {
@@ -593,17 +659,10 @@ export async function moveLessonToChapter(
 }
 
 export async function updateLessonFields(id: string, patch: Record<string, unknown>): Promise<DbResult> {
-  const client = getSupabase();
+  if (typeof window !== "undefined") return staffLessonRequest({ action: "update", id, patch });
+  const client = writeClient();
   if (!client) return { ok: false, error: "Supabase is not configured." };
-  let payload: Record<string, unknown> = { ...patch };
-  for (let attempt = 0; attempt < OPTIONAL_LESSON_COLUMNS.length + 1; attempt += 1) {
-    const { error } = await client.from("lessons").update(payload).eq("id", id);
-    if (!error) return { ok: true };
-    const missing = OPTIONAL_LESSON_COLUMNS.find((column) => column in payload && error.message.includes(column));
-    if (!missing) return { ok: false, error: describe(error) };
-    delete payload[missing];
-  }
-  return { ok: false, error: "Could not update the lesson." };
+  return writeLessonPatch(client, id, patch);
 }
 
 export async function uploadLessonBanner(file: File): Promise<DbResult<string>> {

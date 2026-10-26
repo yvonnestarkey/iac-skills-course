@@ -419,8 +419,13 @@ async function withAssignmentFlags(chapters: OutlineChapter[]): Promise<OutlineC
   }));
 }
 
+function outlineClient() {
+  if (typeof window === "undefined") return getServiceSupabase() || getSupabase();
+  return getSupabase();
+}
+
 async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
-  const client = getSupabase();
+  const client = outlineClient();
   if (client) {
     const catalog = await client.rpc("list_lesson_catalog");
     if (!catalog.error && Array.isArray(catalog.data) && catalog.data.length) {

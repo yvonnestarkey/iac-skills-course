@@ -69,7 +69,6 @@ export default function ContentManager() {
   const [form, setForm] = useState({ ...BLANK, chapter: "" });
   const [csv, setCsv] = useState("");
   const [preview, setPreview] = useState<ParseResult | null>(null);
-  const [alsoSave, setAlsoSave] = useState(true);
   const [status, setStatus] = useState<{ kind: "ok" | "warn"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [surveys, setSurveys] = useState<CustomSurvey[]>([]);
@@ -115,9 +114,9 @@ export default function ContentManager() {
   };
 
   const saveToDb = async (drafts: LessonDraft[], startPosition: number) => {
-    if (!alsoSave || !supabaseConfigured) return "";
+    if (!supabaseConfigured) return " Supabase is not configured.";
     const result = await pushLessons(drafts, startPosition);
-    return result.ok ? "" : ` Supabase said: ${result.error}`;
+    return result.ok ? "" : ` ${result.error}`;
   };
 
   const addLesson = async () => {
@@ -143,17 +142,24 @@ export default function ContentManager() {
     setBusy(true);
     addDrafts([{ chapterId: chapter.id, lesson }], insertAt);
     const problem = await saveToDb([{ chapterId: chapter.id, lesson }], insertAt + 1);
-    const orderProblem = alsoSave && supabaseConfigured ? await saveChapterOrder(chapter.id, orderedIds) : { ok: true, error: "" };
+    const orderProblem = problem ? { ok: false, error: problem } : await saveChapterOrder(chapter.id, orderedIds);
     invalidateCourseOutline();
     await loadBoard();
     setBusy(false);
     setForm({ ...BLANK, chapter: chapter.id, type: form.type, afterLessonId: SURVEY_PLACE_END });
     setEditingId(null);
+    if (problem || !orderProblem.ok) {
+      setStatus({
+        kind: "warn",
+        text: `“${lesson.title}” was not saved to Supabase.${problem}${
+          orderProblem.ok ? "" : ` ${orderProblem.error || "Could not save the new lesson order."}`
+        }`,
+      });
+      return;
+    }
     setStatus({
-      kind: problem || !orderProblem.ok ? "warn" : "ok",
-      text: `“${lesson.title}” added to ${chapter.title} and it is live in the student sidebar.${problem}${
-        orderProblem.ok ? "" : ` ${orderProblem.error || "Could not save the new lesson order."}`
-      }`,
+      kind: "ok",
+      text: `“${lesson.title}” is now in Supabase and the student sidebar.`,
     });
   };
 
@@ -186,9 +192,11 @@ export default function ContentManager() {
     setPreview(null);
     setStatus({
       kind: problem ? "warn" : "ok",
-      text: `Imported ${parsed.drafts.length} lesson${parsed.drafts.length === 1 ? "" : "s"}.${
-        parsed.errors.length ? ` ${parsed.errors.length} row(s) skipped.` : ""
-      }${problem}`,
+      text: problem
+        ? `Imported locally, but Supabase did not update.${problem}`
+        : `Imported ${parsed.drafts.length} lesson${parsed.drafts.length === 1 ? "" : "s"} into Supabase.${
+            parsed.errors.length ? ` ${parsed.errors.length} row(s) skipped.` : ""
+          }`,
     });
   };
 
@@ -222,10 +230,17 @@ export default function ContentManager() {
       const chapter = draft.chapters.find((c) => c.id === chapterId);
       if (chapter) chapter.lessons = chapter.lessons.filter((l) => l.id !== lessonId);
     });
-    if (supabaseConfigured) await deleteLesson(lessonId);
+    if (supabaseConfigured) {
+      const removed = await deleteLesson(lessonId);
+      if (!removed.ok) {
+        setStatus({ kind: "warn", text: removed.error || "Could not remove that lesson from Supabase." });
+        await loadBoard();
+        return;
+      }
+    }
     invalidateCourseOutline();
     await loadBoard();
-    setStatus({ kind: "ok", text: `Removed ${lessonId}.` });
+    setStatus({ kind: "ok", text: `Removed ${lessonId} from Supabase.` });
   };
 
   const duplicate = async (lessonId: string) => {
@@ -368,7 +383,7 @@ export default function ContentManager() {
       {status ? <div className={status.kind === "ok" ? "notice" : "waiting"}>{status.text}</div> : null}
       <CoachToolPanel
         title="Admin Content Manager"
-        description="Test the database, load live lessons, and download the CSV template. Anything you add appears in the student sidebar straight away."
+        description="Test the database, load live lessons, and download the CSV template. New lessons are written to Supabase and show in the student sidebar."
         open={Boolean(openTools.admin)}
         onToggle={() => toggleTool("admin")}
         badge={
@@ -387,15 +402,6 @@ export default function ContentManager() {
           <button className="ghost" onClick={downloadTemplate}>
             Download CSV template
           </button>
-          <label className="role-chip">
-            <input
-              type="checkbox"
-              checked={alsoSave}
-              onChange={(event) => setAlsoSave(event.target.checked)}
-              disabled={!supabaseConfigured}
-            />{" "}
-            Also save to Supabase
-          </label>
         </div>
       </CoachToolPanel>
 

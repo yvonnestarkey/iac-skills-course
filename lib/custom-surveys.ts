@@ -523,16 +523,10 @@ export async function attachSurveyToChapter(
     duration: "5 min",
     survey_id: survey.id,
   };
-  let { error } = await client.from("lessons").upsert(row, { onConflict: "id" });
-  if (error && /survey_id/i.test(error.message)) {
-    const fallback = { ...row };
-    delete fallback.survey_id;
-    const retry = await client.from("lessons").upsert(fallback, { onConflict: "id" });
-    error = retry.error;
-  }
-  if (error) return { ok: false, error: describe(error) };
+  const { saveChapterOrder, upsertLessonRows } = await import("./content");
+  const inserted = await upsertLessonRows([row]);
+  if (!inserted.ok) return { ok: false, error: inserted.error || "Could not save that survey lesson." };
   orderedIds.splice(insertAt, 0, lessonId);
-  const { saveChapterOrder } = await import("./content");
   const rewritten = await saveChapterOrder(chapter, orderedIds);
   if (!rewritten.ok) return { ok: false, error: rewritten.error || "Survey was added, but the chapter order could not be saved." };
   if (!survey.isActive) await setCustomSurveyActive(survey.id, true);
