@@ -22,6 +22,17 @@ export default function CourseOutlineBoard({
   onReorder: (chapterId: string, lessonIds: string[]) => void;
 }) {
   const [dragging, setDragging] = useState<{ lessonId: string; chapterId: string } | null>(null);
+  const [openChapters, setOpenChapters] = useState<Record<string, boolean>>({});
+
+  const isOpen = (chapterId: string) => Boolean(openChapters[chapterId]);
+
+  const toggleChapter = (chapterId: string) => {
+    setOpenChapters((current) => ({ ...current, [chapterId]: !current[chapterId] }));
+  };
+
+  const setAllChapters = (open: boolean) => {
+    setOpenChapters(Object.fromEntries(chapters.map((chapter) => [chapter.id, open])));
+  };
 
   const dropOnLesson = (chapterId: string, targetId: string) => {
     if (!dragging || dragging.lessonId === targetId) return;
@@ -43,25 +54,48 @@ export default function CourseOutlineBoard({
 
   return (
     <div className="course-outline-board">
-      {chapters.map((chapter) => (
-        <section className="course-outline-chapter" key={chapter.id}>
-          <div className="panel-head">
-            <div>
+      <div className="course-outline-toolbar">
+        <button className="ghost" type="button" onClick={() => setAllChapters(true)}>
+          Expand all
+        </button>
+        <button className="ghost" type="button" onClick={() => setAllChapters(false)}>
+          Collapse all
+        </button>
+      </div>
+      {chapters.map((chapter) => {
+        const open = isOpen(chapter.id);
+        const drafts = chapter.lessons.filter((lesson) => lesson.is_draft).length;
+        return (
+        <section
+          className={`course-outline-chapter ${open ? "open" : "collapsed"}`}
+          key={chapter.id}
+          onDragOver={(event) => {
+            event.preventDefault();
+            if (!open) setOpenChapters((current) => ({ ...current, [chapter.id]: true }));
+          }}
+          onDrop={() => {
+            if (!dragging || dragging.chapterId === chapter.id) return;
+            onMove(dragging.lessonId, dragging.chapterId, chapter.id);
+            setDragging(null);
+          }}
+        >
+          <button
+            className="chapter-toggle course-outline-toggle"
+            type="button"
+            aria-expanded={open}
+            onClick={() => toggleChapter(chapter.id)}
+          >
+            <span>
               <h3>{chapter.title}</h3>
               <p className="muted small">
-                {chapter.lessons.length} lesson{chapter.lessons.length === 1 ? "" : "s"} · drag to reorder or move
+                {chapter.lessons.length} lesson{chapter.lessons.length === 1 ? "" : "s"}
+                {drafts ? ` · ${drafts} draft${drafts === 1 ? "" : "s"}` : ""}
               </p>
-            </div>
-          </div>
-          <ul
-            className="course-outline-list"
-            onDragOver={(event) => event.preventDefault()}
-            onDrop={() => {
-              if (!dragging || dragging.chapterId === chapter.id) return;
-              onMove(dragging.lessonId, dragging.chapterId, chapter.id);
-              setDragging(null);
-            }}
-          >
+            </span>
+            <span className="chapter-caret">{open ? "▾" : "▸"}</span>
+          </button>
+          {open ? (
+          <ul className="course-outline-list">
             {chapter.lessons.length ? (
               chapter.lessons.map((lesson, index) => (
                 <li
@@ -150,8 +184,10 @@ export default function CourseOutlineBoard({
               <li className="empty">No lessons in this chapter yet. Drop a lesson here to move it in.</li>
             )}
           </ul>
+          ) : null}
         </section>
-      ))}
+        );
+      })}
     </div>
   );
 }

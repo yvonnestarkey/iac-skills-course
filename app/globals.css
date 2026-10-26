@@ -5130,10 +5130,25 @@ a.planner-video-btn:visited:hover {
   color: var(--ink);
 }
 
+.course-outline-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
 .course-outline-chapter {
   margin-top: 18px;
   padding-top: 8px;
   border-top: 1px solid var(--line);
+}
+
+.course-outline-toggle {
+  padding: 8px 2px;
+}
+
+.course-outline-toggle h3 {
+  margin: 0 0 2px;
 }
 
 .course-outline-chapter:first-child {
