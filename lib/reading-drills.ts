@@ -60,6 +60,7 @@ export type Marking = {
 
 /** One saved practice attempt (a row of public.reading_attempts). */
 export type DrillAttempt = {
+  id?: string;
   exercise_id: string;
   created_at?: string;
   wpm: number;
@@ -83,6 +84,7 @@ export type DrillAttempt = {
 
 /** One saved reading check (a row of public.reading_checks). */
 export type ReadingCheckResult = {
+  id?: string;
   check_id: string;
   created_at?: string;
   wpm: number;
@@ -289,6 +291,36 @@ export function recentRange(attempts: DrillAttempt[]): GradeBand | null {
   return mean == null ? null : gradeBand(mean);
 }
 
+export const READING_ONCE_COPY =
+  "You can do each reading task once. If something went wrong, message your coach so they can reset it.";
+
+export function remainingExercises(attempts: DrillAttempt[]): DrillExercise[] {
+  const done = new Set(attempts.map((attempt) => attempt.exercise_id));
+  return EXERCISES.filter((exercise) => !done.has(exercise.id));
+}
+
+export function attemptForExercise(attempts: DrillAttempt[], exerciseId: string): DrillAttempt | null {
+  return [...attempts].reverse().find((attempt) => attempt.exercise_id === exerciseId) || null;
+}
+
+export function checkForId(checks: ReadingCheckResult[], checkId: string): ReadingCheckResult | null {
+  return [...checks].reverse().find((check) => check.check_id === checkId) || null;
+}
+
+export function markingFromAttempt(ex: DrillExercise, attempt: DrillAttempt): Marking {
+  const earned = new Set(attempt.rows_earned || []);
+  return {
+    rtfq: {
+      shape: { delivered: attempt.rtfq_delivered.shape, note: "" },
+      dir: { delivered: attempt.rtfq_delivered.dir, note: "" },
+      lens: { delivered: attempt.rtfq_delivered.lens, note: "" },
+    },
+    rows: Object.fromEntries(ex.rows.map((row) => [row.id, { earned: earned.has(row.id), evidence: "" }])),
+    traps: [],
+    fix: attempt.fix || "",
+  };
+}
+
 export function recommend(attempts: DrillAttempt[]): { exercise: DrillExercise; reason: string } {
   const sk = skillProfile(attempts);
   const done: Record<string, number> = {};
@@ -304,6 +336,15 @@ export function recommend(attempts: DrillAttempt[]): { exercise: DrillExercise; 
     ? `It trains ${SKILLS[weakest]}, your weakest area so far (${Math.round((sk[weakest] as number) * 100)}%).`
     : `A good first exercise: it trains ${ex.trains.map((k) => SKILLS[k]).join(", ")}.`;
   return { exercise: ex, reason };
+}
+
+/** Next unread exercise, or null once every drill has been used. */
+export function recommendUnused(attempts: DrillAttempt[]): { exercise: DrillExercise; reason: string } | null {
+  const left = remainingExercises(attempts);
+  if (!left.length) return null;
+  const rec = recommend(attempts);
+  if (left.some((exercise) => exercise.id === rec.exercise.id)) return rec;
+  return { exercise: left[0], reason: rec.reason };
 }
 
 /* ---------------------------------------------------------------- marking */

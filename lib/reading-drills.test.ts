@@ -1,5 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import {
   EXERCISES,
   READING_CHECK,
@@ -13,8 +15,11 @@ import {
   paceBand,
   readingProfile,
   recommend,
+  recommendUnused,
+  remainingExercises,
   rtfqRead,
   sentencesOf,
+  type DrillAttempt,
   type Marking,
 } from "./reading-drills";
 
@@ -109,4 +114,24 @@ test("a lesson's tool setting resolves to the right tool, and unknown values sho
   assert.equal(parseLessonTool(""), null);
   assert.equal(parseLessonTool(null), null);
   for (const option of lessonToolOptions()) assert.ok(parseLessonTool(option.value), `${option.value} resolves`);
+});
+
+test("each reading exercise can only be recommended once all unused ones are gone", () => {
+  const used = EXERCISES.map((exercise) => ({ exercise_id: exercise.id }) as DrillAttempt);
+  assert.equal(remainingExercises([]).length, EXERCISES.length);
+  assert.equal(remainingExercises(used.slice(0, 1)).length, EXERCISES.length - 1);
+  assert.equal(recommendUnused(used), null);
+  assert.ok(recommendUnused([]));
+});
+
+test("reading tasks stay one-attempt and coaches can reset them", () => {
+  const sql = readFileSync(resolve("supabase/reading-attempt-once.sql"), "utf8");
+  const mark = readFileSync(resolve("app/api/reading/mark/route.ts"), "utf8");
+  const coach = readFileSync(resolve("app/api/coach/reading/route.ts"), "utf8");
+  const profile = readFileSync(resolve("components/coach/StudentProfile.tsx"), "utf8");
+  assert.match(sql, /reading_attempts_user_exercise_uidx/);
+  assert.match(sql, /staff delete reading attempts/);
+  assert.match(mark, /READING_ONCE_COPY/);
+  assert.match(coach, /reading_mark_calls/);
+  assert.match(profile, /ReadingAttemptsPanel/);
 });

@@ -7,6 +7,7 @@ import {
   MARKING_SCHEMA,
   MARKING_SYSTEM,
   READING_MARK_MODEL_DEFAULT,
+  READING_ONCE_COPY,
   buildMarkingPrompt,
   getExercise,
   markingCostUsd,
@@ -36,6 +37,16 @@ export async function POST(req: Request) {
   const db = getServiceSupabase();
   if (!db || !process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json({ selfMark: true, reason: "Automatic marking is not set up yet." });
+  }
+
+  const existingAttempt = await db
+    .from("reading_attempts")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("exercise_id", ex.id)
+    .maybeSingle();
+  if (existingAttempt.data) {
+    return NextResponse.json({ error: READING_ONCE_COPY }, { status: 409 });
   }
 
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();

@@ -8,7 +8,8 @@ import {
   examReadMinutes,
   paceBand,
   recentRange,
-  recommend,
+  recommendUnused,
+  READING_ONCE_COPY,
   skillProfile,
   type DrillAttempt,
   type ReadingCheckResult,
@@ -32,12 +33,11 @@ export default function ReadingHub() {
     });
   }, [user?.id]);
 
-  const rec = recommend(attempts);
+  const rec = recommendUnused(attempts);
   const sk = skillProfile(attempts);
   const range = recentRange(attempts);
   const lastCheck = checks.at(-1);
-  const done: Record<string, number> = {};
-  attempts.forEach((a) => (done[a.exercise_id] = (done[a.exercise_id] || 0) + 1));
+  const done = new Set(attempts.map((a) => a.exercise_id));
 
   return (
     <article className="lesson-body wide rd-page">
@@ -47,6 +47,7 @@ export default function ReadingHub() {
         the case hands you (Buried Treasure). You read a short case at exam pace and index it with margin notes, show you absorbed what it
         is about, break down the required, index the case for the marks, then answer.
       </p>
+      <p className="muted small">{READING_ONCE_COPY}</p>
 
       <div className="rd-stack">
         {loaded && !lastCheck ? (
@@ -72,20 +73,26 @@ export default function ReadingHub() {
                 exam case would take about {examReadMinutes(lastCheck.wpm)} minutes
               </p>
             </div>
-            <Link className="rd-push" href="/student/reading/check">Retake</Link>
+            <Link className="rd-push" href="/student/reading/check">View result</Link>
           </section>
         ) : null}
 
         <section className="rd-sheet rd-stack">
           <span className="rd-eyebrow">Your next exercise</span>
-          <div className="rd-row">
-            <div>
-              <h2>{rec.exercise.title}</h2>
-              <p className="muted small">{rec.exercise.area} · {rec.exercise.marks} marks · about 10 minutes</p>
-            </div>
-            <Link className="primary rd-push" href={`/student/reading/${rec.exercise.id}`}>Start</Link>
-          </div>
-          <p className="rd-note">{rec.reason}</p>
+          {rec ? (
+            <>
+              <div className="rd-row">
+                <div>
+                  <h2>{rec.exercise.title}</h2>
+                  <p className="muted small">{rec.exercise.area} · {rec.exercise.marks} marks · about 10 minutes</p>
+                </div>
+                <Link className="primary rd-push" href={`/student/reading/${rec.exercise.id}`}>Start</Link>
+              </div>
+              <p className="rd-note">{rec.reason}</p>
+            </>
+          ) : (
+            <p className="muted">You have used every reading exercise. Message your coach if you need one reset.</p>
+          )}
         </section>
 
         {attempts.length ? (
@@ -108,14 +115,16 @@ export default function ReadingHub() {
         <section className="rd-stack">
           <span className="rd-eyebrow">All exercises</span>
           {EXERCISES.map((ex) => (
-            <div key={ex.id} className={`rd-sheet rd-row${ex.id === rec.exercise.id ? " rd-rec" : ""}`}>
+            <div key={ex.id} className={`rd-sheet rd-row${rec?.exercise.id === ex.id ? " rd-rec" : ""}`}>
               <div>
                 <b>{ex.title}</b>
                 <div className="muted small">
-                  {ex.area} · {ex.marks} marks{done[ex.id] ? ` · done ${done[ex.id]}×` : ""} · trains {ex.trains.map((k) => SKILLS[k]).join(", ")}
+                  {ex.area} · {ex.marks} marks{done.has(ex.id) ? " · done" : ""} · trains {ex.trains.map((k) => SKILLS[k]).join(", ")}
                 </div>
               </div>
-              <Link className="rd-push" href={`/student/reading/${ex.id}`}>Start</Link>
+              <Link className="rd-push" href={`/student/reading/${ex.id}`}>
+                {done.has(ex.id) ? "View result" : "Start"}
+              </Link>
             </div>
           ))}
         </section>

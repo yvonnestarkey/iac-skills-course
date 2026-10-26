@@ -5,15 +5,18 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import AnnotatedCase from "@/components/reading/AnnotatedCase";
 import { Choice, Pill, ResultRange, StepStrip, Tile, fmt } from "@/components/reading/parts";
 import {
+  attemptForExercise,
   buildAttempt,
   caseWords,
   examReadMinutes,
   EXAM,
+  markingFromAttempt,
   notedNotUsed,
   paceBand,
   paceWindow,
   readingNote,
-  recommend,
+  READING_ONCE_COPY,
+  recommendUnused,
   rtfqRead,
   sentencesOf,
   type Delivered,
@@ -47,10 +50,25 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
   const [attempt, setAttempt] = useState<DrillAttempt | null>(null);
   const [saveMsg, setSaveMsg] = useState("");
   const [history, setHistory] = useState<DrillAttempt[]>([]);
+  const [ready, setReady] = useState(!user);
 
   useEffect(() => {
-    if (user?.id) fetchReadingHistory(user.id).then((h) => setHistory(h.attempts));
-  }, [user?.id]);
+    if (!user?.id) {
+      setReady(true);
+      return;
+    }
+    fetchReadingHistory(user.id).then((h) => {
+      setHistory(h.attempts);
+      const prior = attemptForExercise(h.attempts, ex.id);
+      if (prior) {
+        setAttempt(prior);
+        setMarking(markingFromAttempt(ex, prior));
+        setStage("feedback");
+        setSaveMsg(READING_ONCE_COPY);
+      }
+      setReady(true);
+    });
+  }, [user?.id, ex]);
   const top = useRef<HTMLElement>(null);
   useEffect(() => {
     if (!embedded) window.scrollTo({ top: 0 });
@@ -117,6 +135,10 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
     setStage("self");
   };
 
+  if (!ready) {
+    return <p className="muted">Loading your reading record…</p>;
+  }
+
   return (
     <article ref={top} className={embedded ? "rd-page rd-embedded" : "lesson-body wide rd-page"}>
       {embedded ? null : (
@@ -137,6 +159,7 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
           <p className="rd-note">
             Exam pace for this case, reading and making notes: <b>{fmt(lo)} to {fmt(hi)}</b> (100 to 150 words a minute). The clock runs while you read.
           </p>
+          <p className="muted small">{READING_ONCE_COPY}</p>
           <div>
             <button className="primary" onClick={() => { setT0(Date.now()); setStage("read"); }}>
               Start reading
@@ -334,7 +357,7 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, embedded }: {
   const noted = new Set(notes.filter((n) => !n.crossed).map((n) => n.sentence));
   const notUsed = notedNotUsed(ex, marking, noted);
   const sents = Object.fromEntries(sentencesOf(ex.case).map((s) => [s.id, s.text]));
-  const next = recommend(history);
+  const next = recommendUnused(history);
   const ticked = new Set(pick.dir);
   const misread = ex.rtfq.directions.options.filter((o, i) => o.required !== ticked.has(i));
   const readPill = (k: "shape" | "dir" | "lens") => {
@@ -442,12 +465,12 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, embedded }: {
       <section className="rd-sheet rd-row">
         <div>
           <span className="rd-eyebrow">Next</span>
-          <h2>{next.exercise.title}</h2>
-          <p className="muted small">{next.reason}</p>
+          <h2>{next ? next.exercise.title : "All exercises used"}</h2>
+          <p className="muted small">{next ? next.reason : READING_ONCE_COPY}</p>
         </div>
         <div className="rd-row rd-push">
           <Link href="/student/reading">Back to Read the Required</Link>
-          <a className="primary" href={`/student/reading/${next.exercise.id}`}>Start</a>
+          {next ? <a className="primary" href={`/student/reading/${next.exercise.id}`}>Start</a> : null}
         </div>
       </section>
       )}

@@ -7,6 +7,7 @@ import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
 import SetTemporaryPasswordPanel from "@/components/coach/SetTemporaryPasswordPanel";
 import StudentAccessPanel from "@/components/coach/StudentAccessPanel";
 import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
+import ReadingAttemptsPanel from "@/components/coach/ReadingAttemptsPanel";
 import ScriptEvaluationsPanel from "@/components/coach/ScriptEvaluationsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { accountStatusLabel } from "@/lib/student-registration";
@@ -298,6 +299,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           <p className="empty">No assignment submissions yet.</p>
         )}
       </section>
+
+      <ReadingAttemptsPanel studentId={student.id} />
 
       <ScriptEvaluationsPanel studentId={student.id} />
 

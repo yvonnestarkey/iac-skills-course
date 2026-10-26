@@ -13,10 +13,12 @@ import {
   paceWindow,
   readingProfile,
   wordsPerMinute,
+  checkForId,
+  READING_ONCE_COPY,
   type DrillNote,
   type ReadingCheckResult,
 } from "@/lib/reading-drills";
-import { saveReadingCheck } from "@/lib/reading-drills-store";
+import { fetchReadingHistory, saveReadingCheck } from "@/lib/reading-drills-store";
 import { useStudentSession } from "@/lib/student-session";
 
 type Stage = "intro" | "read" | "recall" | "result";
@@ -33,7 +35,24 @@ export default function ReadingCheckFlow({ embedded = false, onComplete }: { emb
   const [picks, setPicks] = useState<(number | null)[]>(rc.recall.map(() => null));
   const [result, setResult] = useState<ReadingCheckResult | null>(null);
   const [saveMsg, setSaveMsg] = useState("");
+  const [ready, setReady] = useState(!user);
   const top = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!user?.id) {
+      setReady(true);
+      return;
+    }
+    fetchReadingHistory(user.id).then((h) => {
+      const prior = checkForId(h.checks, rc.id);
+      if (prior) {
+        setResult(prior);
+        setStage("result");
+        setSaveMsg(READING_ONCE_COPY);
+      }
+      setReady(true);
+    });
+  }, [user?.id, rc.id]);
   useEffect(() => {
     if (!embedded) window.scrollTo({ top: 0 });
     else if (stage !== "intro") top.current?.scrollIntoView({ block: "start" });
@@ -65,6 +84,8 @@ export default function ReadingCheckFlow({ embedded = false, onComplete }: { emb
 
   const [readSec, setReadSec] = useState(0);
 
+  if (!ready) return <p className="muted">Loading your reading record…</p>;
+
   return (
     <article ref={top} className={embedded ? "rd-page rd-embedded" : "lesson-body wide rd-page"}>
       {embedded ? null : (
@@ -86,6 +107,7 @@ export default function ReadingCheckFlow({ embedded = false, onComplete }: { emb
             Exam pace, reading and making notes: <b>{fmt(lo)} to {fmt(hi)}</b> for this case. An exam case is about {EXAM.words.toLocaleString("en-ZA")} words,
             which at this pace is {EXAM.readMin} to {EXAM.readMax} minutes.
           </p>
+          <p className="muted small">{READING_ONCE_COPY}</p>
           <div>
             <button className="primary" onClick={() => { setT0(Date.now()); setStage("read"); }}>Start reading</button>
           </div>
