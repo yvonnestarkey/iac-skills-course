@@ -97,6 +97,9 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     ids.forEach((id) => {
       next[id] = true;
     });
+    Object.keys(nextSubmissions).forEach((id) => {
+      next[id] = true;
+    });
     setCompleted(next);
     setSubmissions(nextSubmissions);
     setSurveyReviews(nextReviews);

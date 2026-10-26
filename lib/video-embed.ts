@@ -53,6 +53,22 @@ export function embedSrcForVideo(raw?: string): string | null {
   return id ? youtubeEmbedSrc(id) : null;
 }
 
+/** Enable the player APIs so we can tell when a student has watched 80%. */
+export function withPlayerApi(src: string, origin?: string): string {
+  try {
+    const url = new URL(src);
+    if (isYouTubeEmbed(src)) {
+      url.searchParams.set("enablejsapi", "1");
+      if (origin) url.searchParams.set("origin", origin);
+    } else if (url.hostname.includes("vimeo.com")) {
+      url.searchParams.set("api", "1");
+    }
+    return url.toString();
+  } catch {
+    return src;
+  }
+}
+
 export function isYouTubeEmbed(src: string): boolean {
   return src.includes("youtube.com/embed/") || src.includes("youtube-nocookie.com/embed/");
 }

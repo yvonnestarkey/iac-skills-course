@@ -109,6 +109,7 @@ export interface Student {
   additionalNotes?: string | null;
   // All optional: the UI reads them defensively and seeds may omit them.
   completed?: string[];
+  opened?: string[];
   submissions?: Record<string, string>;
   uploads?: Record<string, UploadRecord>;
   surveys?: Record<string, SurveyAnswer>;

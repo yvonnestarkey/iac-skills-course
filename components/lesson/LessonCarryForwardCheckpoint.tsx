@@ -33,11 +33,13 @@ export default function LessonCarryForwardCheckpoint({
   video,
   notes,
   onProgress,
+  onWatchProgress,
 }: {
   lesson: StudentLesson;
   video?: LessonVideo;
   notes: string;
   onProgress: (next: { completed: boolean; notes: string }) => void;
+  onWatchProgress?: (seconds: number, percent: number) => void;
 }) {
   const [survey, setSurvey] = useState<CustomSurvey | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -170,7 +172,12 @@ export default function LessonCarryForwardCheckpoint({
           ))}
           {video ? (
             <div className="lesson-checkpoint-player">
-              <VideoPlayer lesson={lesson} src={video.url} title={video.heading || lesson.title} />
+              <VideoPlayer
+                lesson={lesson}
+                src={video.url}
+                title={video.heading || lesson.title}
+                onWatchProgress={onWatchProgress}
+              />
             </div>
           ) : null}
           {reflection ? (

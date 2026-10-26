@@ -3,6 +3,14 @@ import { DEFAULT_COHORT_ID, normalizeCohortId } from "./cohorts";
 import { commerceTableMissing, DEFAULT_PRODUCT_ID, type EntitlementStatus } from "./commerce";
 import { courseAccessFromEntitlementStatus } from "./course-access";
 import { isoDate, today } from "./dates";
+import { asDraftFlag } from "./lesson-drafts";
+import {
+  assembleStudentProgress,
+  emptyStudentProgress,
+  type CoachProgressBundle,
+  type LessonProgressRow,
+  type SubmissionProgressRow,
+} from "./lesson-progress";
 import { parseRosterOnboarding } from "./roster";
 import { isCoachAccount } from "./roles";
 import { isCourseAccessClosed } from "./student-registration";
@@ -55,6 +63,7 @@ export function profileToStudent(
     struggleAreas: onboarding.struggleAreas,
     additionalNotes: onboarding.additionalNotes,
     completed,
+    opened: Array.isArray(extras.opened) ? extras.opened.map(String) : [],
     courseAccess: extras.courseAccess === "full" ? "full" : "free_preview",
     accessExpiresOn: typeof extras.accessExpiresOn === "string" ? extras.accessExpiresOn : null,
     deregisteredAt: typeof extras.deregisteredAt === "string" ? extras.deregisteredAt : null,
@@ -141,24 +150,105 @@ export async function fetchStudentProfiles(): Promise<{ ok: boolean; error?: str
   return { ok: true, data: (data || []) as ProfileRow[] };
 }
 
-export async function fetchCompletedByUser(): Promise<Record<string, string[]>> {
+let progressInflight: { key: string; run: Promise<CoachProgressBundle> } | null = null;
+let progressCache: { at: number; key: string; data: CoachProgressBundle } | null = null;
+
+async function fetchProgressClientSide(studentId = ""): Promise<CoachProgressBundle> {
   const client = getSupabase();
-  if (!client) return {};
-  const { data } = await client.from("lesson_progress").select("user_id, lesson_id").eq("completed", true);
+  if (!client) return { lessonIds: [], byUser: {} };
+
+  const lessons = await client.from("lessons").select("id, is_draft");
+  const lessonRows = (
+    lessons.error ? (await client.from("lessons").select("id")).data : lessons.data
+  ) as Array<{ id: string; is_draft?: unknown }> | null;
+  const lessonIds = (lessonRows || [])
+    .filter((row) => !asDraftFlag(row.is_draft))
+    .map((row) => String(row.id))
+    .filter(Boolean);
+
+  let progressQuery = client
+    .from("lesson_progress")
+    .select("user_id, lesson_id, completed, opened_at, last_opened_at, video_seconds, video_percent, notes, updated_at");
+  if (studentId) progressQuery = progressQuery.eq("user_id", studentId);
+  let progressRows = (await progressQuery).data as LessonProgressRow[] | null;
+  if (!progressRows) {
+    let basic = client.from("lesson_progress").select("user_id, lesson_id, completed, notes, updated_at");
+    if (studentId) basic = basic.eq("user_id", studentId);
+    progressRows = ((await basic).data || []) as LessonProgressRow[];
+  }
+
+  let submissionsQuery = client.from("student_submissions").select("student_id, lesson_id");
+  if (studentId) submissionsQuery = submissionsQuery.eq("student_id", studentId);
+  const submissions = await submissionsQuery;
+
+  return assembleStudentProgress({
+    lessonIds,
+    progress: progressRows || [],
+    submissions: (submissions.data || []) as SubmissionProgressRow[],
+  });
+}
+
+export async function fetchCoachProgressBundle(studentId?: string): Promise<CoachProgressBundle> {
+  const key = studentId || "";
+  if (progressCache && progressCache.key === key && Date.now() - progressCache.at < 8000) {
+    return progressCache.data;
+  }
+  if (progressInflight && progressInflight.key === key) return progressInflight.run;
+
+  const run = (async () => {
+    if (typeof window !== "undefined") {
+      const url = key ? `/api/coach/progress?studentId=${encodeURIComponent(key)}` : "/api/coach/progress";
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = (await response.json()) as CoachProgressBundle;
+        progressCache = { at: Date.now(), key, data };
+        return data;
+      }
+    }
+    const data = await fetchProgressClientSide(key);
+    progressCache = { at: Date.now(), key, data };
+    return data;
+  })();
+
+  progressInflight = { key, run };
+  try {
+    return await run;
+  } finally {
+    if (progressInflight?.run === run) progressInflight = null;
+  }
+}
+
+export async function fetchCompletedByUser(): Promise<Record<string, string[]>> {
+  const bundle = await fetchCoachProgressBundle();
   const map: Record<string, string[]> = {};
-  (data || []).forEach((row) => {
-    map[row.user_id] = map[row.user_id] || [];
-    map[row.user_id].push(row.lesson_id);
+  Object.entries(bundle.byUser).forEach(([userId, view]) => {
+    map[userId] = view.completed;
+  });
+  return map;
+}
+
+export async function fetchOpenedByUser(): Promise<Record<string, string[]>> {
+  const bundle = await fetchCoachProgressBundle();
+  const map: Record<string, string[]> = {};
+  Object.entries(bundle.byUser).forEach(([userId, view]) => {
+    map[userId] = view.opened;
   });
   return map;
 }
 
 export async function fetchLiveLessonIds(): Promise<string[]> {
+  if (progressCache?.data.lessonIds.length && Date.now() - progressCache.at < 8000) {
+    return progressCache.data.lessonIds;
+  }
   const client = getSupabase();
   if (!client) return [];
-  const { data, error } = await client.from("lessons").select("id");
-  if (error || !data) return [];
-  return data.map((row) => String(row.id)).filter(Boolean);
+  const { data, error } = await client.from("lessons").select("id, is_draft");
+  if (!error && data) {
+    return data.filter((row) => !asDraftFlag(row.is_draft)).map((row) => String(row.id)).filter(Boolean);
+  }
+  const fallback = await client.from("lessons").select("id");
+  if (fallback.error || !fallback.data) return [];
+  return fallback.data.map((row) => String(row.id)).filter(Boolean);
 }
 
 export async function fetchOnboardingByUser(): Promise<Record<string, Record<string, unknown>>> {
@@ -256,13 +346,19 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured.", students: [] };
 
-  const [onboarding, completed, profileResult, access, activation] = await Promise.all([
+  const [onboarding, progress, profileResult, access, activation] = await Promise.all([
     fetchOnboardingByUser(),
-    fetchCompletedByUser(),
+    fetchCoachProgressBundle(),
     fetchStudentProfiles(),
     fetchCourseAccessByUser(),
     fetchAccountActivationByUser(),
   ]);
+  const completed = Object.fromEntries(
+    Object.entries(progress.byUser).map(([userId, view]) => [userId, view.completed])
+  );
+  const opened = Object.fromEntries(
+    Object.entries(progress.byUser).map(([userId, view]) => [userId, view.opened])
+  );
 
   const byId = new Map<string, ProfileRow>();
   if (profileResult.ok) {
@@ -289,6 +385,7 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
     .map((row) =>
       profileToStudent(row, completed[row.id] || [], {
         ...(onboarding[row.id] || {}),
+        opened: opened[row.id] || [],
         courseAccess: access[row.id]?.status || "free_preview",
         accessExpiresOn: access[row.id]?.accessExpiresOn || null,
         deregisteredAt: access[row.id]?.deregisteredAt || null,
@@ -303,15 +400,17 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
 export async function fetchRosterStudent(id: string): Promise<Student | null> {
   const client = getSupabase();
   if (!client) return null;
-  const [completed, onboarding, access, activation] = await Promise.all([
-    fetchCompletedByUser(),
+  const [progress, onboarding, access, activation] = await Promise.all([
+    fetchCoachProgressBundle(id),
     fetchOnboardingByUser(),
     fetchCourseAccessByUser(),
     fetchAccountActivationByUser(),
   ]);
+  const completed = progress.byUser[id] || emptyStudentProgress();
   const onboardingRow = onboarding[id] || {};
   const extras = {
     ...onboardingRow,
+    opened: completed.opened,
     courseAccess: access[id]?.status || "free_preview",
     accessExpiresOn: access[id]?.accessExpiresOn || null,
     deregisteredAt: access[id]?.deregisteredAt || null,
@@ -322,7 +421,7 @@ export async function fetchRosterStudent(id: string): Promise<Student | null> {
   if (data) {
     const row = data as ProfileRow;
     if (isCoachAccount({ id: row.id, email: row.email, role: row.role || null })) return null;
-    return profileToStudent(row, completed[id] || [], extras);
+    return profileToStudent(row, completed.completed, extras);
   }
   if (!onboardingRow.student_id && !Object.keys(onboardingRow).length) return null;
   return profileToStudent(
@@ -337,7 +436,7 @@ export async function fetchRosterStudent(id: string): Promise<Student | null> {
       last_active: null,
       created_at: "",
     },
-    completed[id] || [],
+    completed.completed,
     extras
   );
 }

@@ -11,7 +11,8 @@ import ReadingAttemptsPanel from "@/components/coach/ReadingAttemptsPanel";
 import ScriptEvaluationsPanel from "@/components/coach/ScriptEvaluationsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { accountStatusLabel } from "@/lib/student-registration";
-import { fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
+import { describeProgressReasons, type LessonEngagement } from "@/lib/lesson-progress";
+import { fetchCoachProgressBundle, fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
 import { cohortName, initials, lastActiveLabel } from "@/lib/course";
 import { formatSastDateTime, longDate, parseISO, today } from "@/lib/dates";
@@ -30,6 +31,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const [lessonIds, setLessonIds] = useState<string[]>([]);
   const [submissions, setSubmissions] = useState<StudentSubmission[]>([]);
   const [lessonTitles, setLessonTitles] = useState<Record<string, string>>({});
+  const [engagement, setEngagement] = useState<LessonEngagement[]>([]);
   const [setupBusy, setSetupBusy] = useState(false);
   const [setupNotice, setSetupNotice] = useState("");
 
@@ -41,18 +43,26 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       fetchLiveLessonIds(),
       fetchStudentSubmissions(studentId),
       fetchCourseOutline(),
-    ]).then(([found, ids, submitted, outline]) => {
+      fetchCoachProgressBundle(studentId),
+    ]).then(([found, ids, submitted, outline, progress]) => {
       if (cancelled) return;
       setLive(found);
       setLessonIds(ids);
       setSubmissions(Object.values(submitted));
       const titles: Record<string, string> = {};
+      const order: string[] = [];
       outline.forEach((chapter) => {
         chapter.lessons.forEach((lesson) => {
           titles[lesson.id] = lesson.title;
+          order.push(lesson.id);
         });
       });
       setLessonTitles(titles);
+      const rank = new Map(order.map((id, index) => [id, index]));
+      const rows = [...(progress.byUser[studentId]?.lessons || [])].sort((a, b) => {
+        return (rank.get(a.lessonId) ?? 9999) - (rank.get(b.lessonId) ?? 9999);
+      });
+      setEngagement(rows);
       setLoadingLive(false);
     });
     return () => {
@@ -83,6 +93,12 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   }
 
   const p = completionProgress(student.completed, lessonIds);
+  const openedCount = (student.opened || engagement.filter((item) => item.opened).map((item) => item.lessonId))
+    .filter((id, index, list) => list.indexOf(id) === index && (!lessonIds.length || lessonIds.includes(id)))
+    .length;
+  const watchedCount = engagement.filter((item) => item.reasons.includes("watched")).length;
+  const openedOnly = engagement.filter((item) => item.opened && !item.completed);
+  const notStarted = Math.max(0, p.total - openedCount);
   const status = student.plan ? planStatus(data, student) : null;
 
   const saveNote = () => {
@@ -171,7 +187,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           <div>
             <h2>Progress</h2>
             <p className="muted small">
-              {p.done} of {p.total} course items complete
+              {p.done} of {p.total} lessons complete · {openedCount} opened
             </p>
           </div>
           <span className="score-chip">{p.pct}%</span>
@@ -180,13 +196,48 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           <span style={{ width: `${p.pct}%` }} />
         </div>
         <div className="progress-legend">
-          <span>
-            {p.done} of {p.total} lessons complete
-          </span>
+          <span>{p.done} complete</span>
+          <span>{openedCount} opened</span>
+          <span>{watchedCount} watched to 80%</span>
           <span>
             {submissions.length} assignment submission{submissions.length === 1 ? "" : "s"}
           </span>
+          <span>{notStarted} not started</span>
         </div>
+        {engagement.length ? (
+          <div className="progress-report">
+            <table>
+              <thead>
+                <tr>
+                  <th>Lesson</th>
+                  <th>Opened</th>
+                  <th>Watch</th>
+                  <th>Evidence</th>
+                </tr>
+              </thead>
+              <tbody>
+                {engagement.map((item) => (
+                  <tr key={item.lessonId}>
+                    <td>
+                      <strong>{lessonTitles[item.lessonId] || item.lessonId}</strong>
+                      {item.completed ? <span className="badge ok">Complete</span> : <span className="badge">Opened</span>}
+                    </td>
+                    <td>{item.lastOpenedAt ? formatSastDateTime(item.lastOpenedAt) : item.opened ? "Yes" : "—"}</td>
+                    <td>{item.videoPercent ? `${item.videoPercent}%` : "—"}</td>
+                    <td>{describeProgressReasons(item.reasons)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {openedOnly.length ? (
+              <p className="muted small">
+                {openedOnly.length} lesson{openedOnly.length === 1 ? "" : "s"} opened but not yet watched, submitted, or marked complete.
+              </p>
+            ) : null}
+          </div>
+        ) : (
+          <p className="empty">No lesson opens, watch progress, or submissions recorded yet.</p>
+        )}
       </section>
 
       <div className="profile-grid">

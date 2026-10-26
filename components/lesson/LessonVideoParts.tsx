@@ -8,9 +8,11 @@ import type { Lesson } from "@/lib/types";
 export default function LessonVideoParts({
   lesson,
   videos,
+  onWatchProgress,
 }: {
   lesson: Lesson;
   videos: LessonVideo[];
+  onWatchProgress?: (seconds: number, percent: number) => void;
 }) {
   const [openIndex, setOpenIndex] = useState(0);
   const total = videos.length;
@@ -45,7 +47,7 @@ export default function LessonVideoParts({
               {selected ? (
                 <div className="lesson-video-item-body" id={panelId} role="region" aria-labelledby={`lesson-video-part-tab-${index}`}>
                   <div className="lesson-video-item-player">
-                    <VideoPlayer lesson={lesson} src={video.url} title={heading} />
+                    <VideoPlayer lesson={lesson} src={video.url} title={heading} onWatchProgress={onWatchProgress} />
                     {video.after ? <p>{video.after}</p> : null}
                     {index < total - 1 ? (
                       <div className="lesson-video-part-nav">

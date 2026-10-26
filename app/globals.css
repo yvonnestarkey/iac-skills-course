@@ -2024,6 +2024,35 @@ input[type="tel"]:focus {
   color: var(--muted);
 }
 
+.progress-report {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.progress-report table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.progress-report th,
+.progress-report td {
+  text-align: left;
+  vertical-align: top;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line, #eadfce);
+}
+
+.progress-report th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.progress-report td strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

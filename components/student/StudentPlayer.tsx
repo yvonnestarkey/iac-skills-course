@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FilePenLine } from "lucide-react";
 import CoachLessonEditor from "@/components/coach/CoachLessonEditor";
 import { LessonPdfPlaceholder } from "@/components/student/LessonLoadingSkeleton";
@@ -10,7 +10,13 @@ import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
 import LessonSubmissionForm from "@/components/student/LessonSubmissionForm";
 import StudentSurveyForm from "@/components/student/StudentSurveyForm";
-import { fetchLessonProgress, saveLessonProgress, type StudentLesson } from "@/lib/student-lesson";
+import {
+  fetchLessonProgress,
+  logLessonOpened,
+  saveLessonProgress,
+  saveVideoWatchProgress,
+  type StudentLesson,
+} from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
 import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult } from "@/lib/accessControl";
 import { composeLessonAvailability } from "@/lib/lesson-availability";
@@ -77,11 +83,27 @@ export default function StudentPlayer({
     };
 
     void load();
+    if (user && !isCoachAccount(user)) void logLessonOpened(lesson.id);
     return () => {
       cancelled = true;
       if (notesTimer.current) clearTimeout(notesTimer.current);
     };
-  }, [completedMap, lesson.id]);
+  }, [completedMap, lesson.id, user]);
+
+  const onWatchProgress = useCallback(
+    (seconds: number, percent: number) => {
+      if (!user || isCoachAccount(user)) return;
+      void saveVideoWatchProgress(lesson.id, seconds, percent).then((result) => {
+        if (result.completed && !completedRef.current) {
+          completedRef.current = true;
+          setCompleted(true);
+          setLessonCompleted(lesson.id, true);
+          void requestDripCatchup();
+        }
+      });
+    },
+    [lesson.id, setLessonCompleted, user]
+  );
 
   const persist = async (next: { completed: boolean; notes: string }, silent = false) => {
     const result = await saveLessonProgress(lesson.id, next);
@@ -208,7 +230,7 @@ export default function StudentPlayer({
   return (
     <>
       {kind === "video" && !isMultiVideo && !isCheckpoint ? (
-        <VideoPlayer lesson={lesson} src={videos[0]?.url} />
+        <VideoPlayer lesson={lesson} src={videos[0]?.url} onWatchProgress={onWatchProgress} />
       ) : null}
 
       <article className="lesson-body">
@@ -279,6 +301,7 @@ export default function StudentPlayer({
                     setCompleted(next.completed);
                     setLessonCompleted(lesson.id, next.completed);
                   }}
+                  onWatchProgress={onWatchProgress}
                 />
                 {completed && lesson.next ? (
                   <div className="actions">
@@ -301,7 +324,7 @@ export default function StudentPlayer({
                 <LinkedText text={paragraph} />
               </p>
             ))}
-            {isMultiVideo ? <LessonVideoParts lesson={lesson} videos={videos} /> : null}
+            {isMultiVideo ? <LessonVideoParts lesson={lesson} videos={videos} onWatchProgress={onWatchProgress} /> : null}
             {(lesson.takeaways || []).length ? (
               <div className="takeaways">
                 <h3>Takeaways</h3>

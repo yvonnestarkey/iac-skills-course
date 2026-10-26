@@ -5,6 +5,7 @@ import { test } from "node:test";
 import {
   embedSrcForVideo,
   isYouTubeEmbed,
+  withPlayerApi,
   youtubeVideoId,
   youtubeWatchUrl,
   YOUTUBE_EMBED_REFERRER_POLICY,
@@ -22,6 +23,14 @@ test("watch and short YouTube links resolve to the same embed", () => {
   assert.equal(youtubeVideoId("https://youtu.be/ra8_R5XWd8g"), "ra8_R5XWd8g");
   assert.equal(youtubeVideoId("https://www.youtube.com/watch?v=ra8_R5XWd8g"), "ra8_R5XWd8g");
   assert.equal(embedSrcForVideo("https://vimeo.com/701654979"), "https://player.vimeo.com/video/701654979");
+});
+
+test("player API flags are added only when tracking watch progress", () => {
+  assert.equal(
+    withPlayerApi("https://www.youtube.com/embed/ra8_R5XWd8g?feature=oembed", "https://iac.accountingstudyadvice.com"),
+    "https://www.youtube.com/embed/ra8_R5XWd8g?feature=oembed&enablejsapi=1&origin=https%3A%2F%2Fiac.accountingstudyadvice.com"
+  );
+  assert.equal(withPlayerApi("https://player.vimeo.com/video/701654979"), "https://player.vimeo.com/video/701654979?api=1");
 });
 
 test("the lesson player uses YouTube's required referrer policy", () => {

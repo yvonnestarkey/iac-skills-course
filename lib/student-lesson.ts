@@ -60,6 +60,10 @@ export interface StudentLesson {
 export interface LessonProgress {
   completed: boolean;
   notes: string;
+  opened_at?: string | null;
+  last_opened_at?: string | null;
+  video_seconds?: number;
+  video_percent?: number;
 }
 
 export interface OutlineLesson {
@@ -615,8 +619,17 @@ export async function getStudentUser(): Promise<StudentUser | null> {
 export async function fetchCompletedLessonIds(userId: string): Promise<string[]> {
   const client = getSupabase();
   if (!client) return [];
+  const full = await client
+    .from("lesson_progress")
+    .select("lesson_id, completed, video_percent")
+    .eq("user_id", userId);
+  if (!full.error) {
+    return (full.data || [])
+      .filter((row) => Boolean(row.completed) || Number(row.video_percent || 0) >= 80)
+      .map((row) => String(row.lesson_id));
+  }
   const { data } = await client.from("lesson_progress").select("lesson_id").eq("user_id", userId).eq("completed", true);
-  return (data || []).map((row) => row.lesson_id);
+  return (data || []).map((row) => String(row.lesson_id));
 }
 
 /** Only allow in-app student paths through the login `next` query. */
@@ -715,24 +728,50 @@ export async function fetchLessonProgress(lessonId: string): Promise<{
   const user = sessionData.session?.user || null;
   if (!user) return { userId: null, email: null, progress: empty };
 
-  const { data } = await client
+  const full = await client
     .from("lesson_progress")
-    .select("completed, notes")
+    .select("completed, notes, opened_at, last_opened_at, video_seconds, video_percent")
     .eq("user_id", user.id)
     .eq("lesson_id", lessonId)
     .maybeSingle();
+  const data = full.error
+    ? (
+        await client
+          .from("lesson_progress")
+          .select("completed, notes")
+          .eq("user_id", user.id)
+          .eq("lesson_id", lessonId)
+          .maybeSingle()
+      ).data
+    : full.data;
 
   return {
     userId: user.id,
     email: user.email || null,
     progress: {
-      completed: Boolean(data?.completed),
+      completed: Boolean(data?.completed) || Number((data as { video_percent?: unknown } | null)?.video_percent || 0) >= 80,
       notes: data?.notes || "",
+      opened_at: (data as { opened_at?: string | null } | null)?.opened_at || null,
+      last_opened_at: (data as { last_opened_at?: string | null } | null)?.last_opened_at || null,
+      video_seconds: Number((data as { video_seconds?: unknown } | null)?.video_seconds || 0) || 0,
+      video_percent: Number((data as { video_percent?: unknown } | null)?.video_percent || 0) || 0,
     },
   };
 }
 
-export async function saveLessonProgress(lessonId: string, progress: LessonProgress): Promise<{ ok: boolean; error?: string }> {
+type ProgressPatch = {
+  completed?: boolean;
+  notes?: string;
+  opened?: boolean;
+  videoSeconds?: number;
+  videoPercent?: number;
+};
+
+function missingEngagementColumn(message: string): boolean {
+  return /opened_at|last_opened_at|video_seconds|video_percent/i.test(message) && /column|schema cache/i.test(message);
+}
+
+async function upsertOwnProgress(lessonId: string, patch: ProgressPatch): Promise<{ ok: boolean; error?: string }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
 
@@ -740,15 +779,97 @@ export async function saveLessonProgress(lessonId: string, progress: LessonProgr
   const user = sessionData.session?.user;
   if (!user) return { ok: false, error: "Sign in to save your progress." };
 
-  const { error } = await client.from("lesson_progress").upsert({
+  const existingFull = await client
+    .from("lesson_progress")
+    .select("completed, notes, opened_at, last_opened_at, video_seconds, video_percent")
+    .eq("user_id", user.id)
+    .eq("lesson_id", lessonId)
+    .maybeSingle();
+  const existing = existingFull.error
+    ? (
+        await client
+          .from("lesson_progress")
+          .select("completed, notes")
+          .eq("user_id", user.id)
+          .eq("lesson_id", lessonId)
+          .maybeSingle()
+      ).data
+    : existingFull.data;
+
+  const now = new Date().toISOString();
+  const videoPercent = Math.max(
+    Number((existing as { video_percent?: unknown } | null)?.video_percent || 0) || 0,
+    Math.min(100, Math.max(0, Math.round(patch.videoPercent ?? 0)))
+  );
+  const completed = patch.completed ?? (Boolean(existing?.completed) || videoPercent >= 80);
+  const row: Record<string, unknown> = {
     user_id: user.id,
     lesson_id: lessonId,
-    completed: progress.completed,
-    notes: progress.notes,
-    updated_at: new Date().toISOString(),
-  });
+    completed,
+    notes: patch.notes ?? existing?.notes ?? "",
+    updated_at: now,
+    opened_at: (existing as { opened_at?: string | null } | null)?.opened_at || now,
+    last_opened_at: patch.opened ? now : (existing as { last_opened_at?: string | null } | null)?.last_opened_at || now,
+    video_seconds: Math.max(
+      Number((existing as { video_seconds?: unknown } | null)?.video_seconds || 0) || 0,
+      Math.max(0, Math.round(patch.videoSeconds ?? 0))
+    ),
+    video_percent: videoPercent,
+  };
+
+  let { error } = await client.from("lesson_progress").upsert(row);
+  if (error && missingEngagementColumn(error.message)) {
+    const basic = {
+      user_id: user.id,
+      lesson_id: lessonId,
+      completed,
+      notes: row.notes,
+      updated_at: now,
+    };
+    ({ error } = await client.from("lesson_progress").upsert(basic));
+  }
   if (error) return { ok: false, error: error.message };
   return { ok: true };
+}
+
+const openedThisVisit = new Set<string>();
+const lastWatchWrite = new Map<string, { at: number; percent: number }>();
+
+export async function logLessonOpened(lessonId: string): Promise<{ ok: boolean; error?: string }> {
+  if (openedThisVisit.has(lessonId)) return { ok: true };
+  openedThisVisit.add(lessonId);
+  return upsertOwnProgress(lessonId, { opened: true });
+}
+
+export async function saveVideoWatchProgress(
+  lessonId: string,
+  seconds: number,
+  percent: number
+): Promise<{ ok: boolean; error?: string; completed?: boolean }> {
+  const rounded = Math.min(100, Math.max(0, Math.round(percent)));
+  const prev = lastWatchWrite.get(lessonId);
+  const now = Date.now();
+  const crossed = rounded >= 80 && (prev?.percent ?? 0) < 80;
+  const jumped = rounded >= (prev?.percent ?? 0) + 10;
+  if (!crossed && !jumped && prev && now - prev.at < 8000) {
+    return { ok: true, completed: rounded >= 80 };
+  }
+  lastWatchWrite.set(lessonId, { at: now, percent: rounded });
+  const result = await upsertOwnProgress(lessonId, {
+    opened: true,
+    videoSeconds: seconds,
+    videoPercent: rounded,
+    completed: rounded >= 80 ? true : undefined,
+  });
+  return { ...result, completed: rounded >= 80 };
+}
+
+export async function saveLessonProgress(lessonId: string, progress: LessonProgress): Promise<{ ok: boolean; error?: string }> {
+  return upsertOwnProgress(lessonId, {
+    completed: progress.completed,
+    notes: progress.notes,
+    opened: true,
+  });
 }
 
 export async function signOutStudent(): Promise<void> {

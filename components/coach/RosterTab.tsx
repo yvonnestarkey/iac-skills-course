@@ -59,6 +59,7 @@ interface RosterRow {
   progressPct: number;
   progressDone: number;
   progressTotal: number;
+  openedCount: number;
   submitted: number;
   surveysAnswered: number;
   surveysTotal: number;
@@ -154,7 +155,7 @@ function plainCell(id: RosterColumnId, row: RosterRow, gradedTotal: number): str
     case "struggleAreas":
       return student.struggleAreas || "";
     case "progress":
-      return `${row.progressDone} of ${row.progressTotal} (${row.progressPct}%)`;
+      return `${row.progressDone} of ${row.progressTotal} (${row.progressPct}%) · ${row.openedCount} opened`;
     case "lastActive":
       return lastActiveLabel(student);
     case "status":
@@ -277,6 +278,7 @@ export default function RosterTab({
         progressPct: progress.pct,
         progressDone: progress.done,
         progressTotal: progress.total,
+        openedCount: new Set(student.opened || []).size,
         submitted: submissionCounts[student.id] || 0,
         surveysAnswered: surveyCounts[student.id] || 0,
         surveysTotal: surveyTotal,
@@ -631,6 +633,7 @@ function cellFor(id: RosterColumnId, row: RosterRow, gradedTotal: number) {
           </div>
           <span className="cell-sub">
             {row.progressDone} of {row.progressTotal} · {row.progressPct}%
+            {row.openedCount ? ` · ${row.openedCount} opened` : ""}
           </span>
         </>
       );
