@@ -24,7 +24,7 @@ import {
 } from "./reading-drills";
 
 test("every exercise is complete and internally consistent", () => {
-  assert.equal(EXERCISES.length, 4);
+  assert.equal(EXERCISES.length, 5);
   for (const ex of EXERCISES) {
     const ids = new Set(sentencesOf(ex.case).map((s) => s.id));
     assert.equal(ids.size, sentencesOf(ex.case).length, `${ex.id}: sentence ids are unique`);
