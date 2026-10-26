@@ -18,11 +18,13 @@ import { isEvaluatorReadySitting } from "@/lib/evaluator/ready-sittings";
 const EVALUATOR_SITTINGS = PAST_PAPER_SITTINGS.filter((item) => isEvaluatorReadySitting(item.id));
 import { hasTask1Submission, task1LessonHref } from "@/lib/task1-gate";
 import { useStudentSession } from "@/lib/student-session";
+import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 export default function ExamAttemptNew() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { ready, user, outline, submissions } = useStudentSession();
+  const { ready, user, submissions } = useStudentSession();
+  const outline = useVisibleCourseOutline();
   const { unlocked } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
   const canUse = hasTask1Submission(submissions, outline) || unlocked || bypassLocks;

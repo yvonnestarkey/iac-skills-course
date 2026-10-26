@@ -4745,6 +4745,42 @@ a.planner-video-btn:visited:hover {
   color: #fff;
 }
 
+.lesson-draft-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 14px;
+  color: var(--link);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lesson-draft-word {
+  color: var(--link);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+
+.lesson-link.active .lesson-draft-word {
+  color: #ff9ec4;
+}
+
+.coach-lesson-editor {
+  margin: 0 0 18px;
+}
+
+.coach-lesson-editor-form {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border: 1px solid rgba(153, 15, 73, 0.22);
+  border-radius: 12px;
+  background: rgba(153, 15, 73, 0.04);
+}
+
 .course-phase-phase1 .phase-chapter {
   border-color: #d5dddb;
 }
@@ -5147,7 +5183,10 @@ a.planner-video-btn:visited:hover {
 }
 
 .course-outline-copy strong {
-  display: block;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
   font-size: 14.5px;
 }
 

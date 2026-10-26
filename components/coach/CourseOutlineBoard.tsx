@@ -81,7 +81,10 @@ export default function CourseOutlineBoard({
                     <GripVertical size={16} />
                   </span>
                   <div className="course-outline-copy">
-                    <strong>{lesson.title}</strong>
+                    <strong>
+                      {lesson.title}
+                      {lesson.is_draft ? <span className="lesson-draft-word">draft</span> : null}
+                    </strong>
                     <span className="muted small">
                       {lesson.type}
                       {lesson.duration ? ` · ${lesson.duration}` : ""}
@@ -128,6 +131,9 @@ export default function CourseOutlineBoard({
                         </option>
                       ))}
                     </select>
+                    <a className="ghost" href={`/student/${lesson.id}`}>
+                      Open
+                    </a>
                     <button className="ghost" type="button" disabled={busy} onClick={() => onEdit(lesson)}>
                       Edit
                     </button>

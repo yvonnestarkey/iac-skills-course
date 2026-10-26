@@ -3,6 +3,8 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { FilePenLine } from "lucide-react";
+import CoachLessonEditor from "@/components/coach/CoachLessonEditor";
 import { LessonPdfPlaceholder } from "@/components/student/LessonLoadingSkeleton";
 import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
 import StudentCoachThread from "@/components/student/StudentCoachThread";
@@ -24,7 +26,9 @@ import LinkedText from "@/components/ui/LinkedText";
 import { firstLessonWebLink } from "@/lib/getLessonPdf";
 import { requestDripCatchup } from "@/lib/drip-messages";
 import { readingHeroDuration } from "@/lib/lesson-duration";
+import { isCoachAccount } from "@/lib/roles";
 import { resolveCourseHref } from "@/lib/rich-text";
+import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 const LessonPdfViewer = dynamic(() => import("@/components/LessonPdfViewer"), {
   ssr: false,
@@ -45,10 +49,12 @@ export default function StudentPlayer({
   initialAccess?: AccessResult;
   overrideLocks?: boolean;
 }) {
-  const { user, setLessonCompleted, setSubmission, outline, completed: completedMap, submissions, entitlement, previewLessonIds } = useStudentSession();
+  const { user, setLessonCompleted, setSubmission, completed: completedMap, submissions, entitlement, previewLessonIds } = useStudentSession();
+  const outline = useVisibleCourseOutline();
   const { basePath } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
   const skipLocks = overrideLocks || bypassLocks;
+  const canEditLesson = isCoachAccount(user) && skipLocks;
   const [completed, setCompleted] = useState(() => Boolean(completedMap[lesson.id]));
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
@@ -206,6 +212,13 @@ export default function StudentPlayer({
       ) : null}
 
       <article className="lesson-body">
+        {lesson.is_draft ? (
+          <p className="lesson-draft-mark" role="status">
+            <FilePenLine size={18} aria-hidden="true" />
+            Draft
+          </p>
+        ) : null}
+        {canEditLesson ? <CoachLessonEditor lesson={lesson} /> : null}
         {lesson.banner_image_url ? (
           <div className="lesson-header-banner">
             <img src={lesson.banner_image_url} alt="" />

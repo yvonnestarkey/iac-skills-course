@@ -7,6 +7,7 @@ import { ensureStudentProfile } from "./profiles";
 import { isCoachAccount } from "./roles";
 import { readStaffCourseViewFromCookieHeader, staffOverrideApplies } from "./staff-access";
 import { getSupabase } from "./supabase";
+import { publishedOutline } from "./lesson-drafts";
 import {
   fetchCompletedLessonIds,
   fetchCourseOutline,
@@ -108,7 +109,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       const [nextUser, nextOutline] = await Promise.all([getStudentUser(), fetchCourseOutline()]);
       if (cancelled) return;
       setUser(nextUser);
-      setOutline(nextOutline);
+      setOutline(isCoachAccount(nextUser) ? nextOutline : publishedOutline(nextOutline));
 
       if (nextUser) {
         void ensureStudentProfile(nextUser);
@@ -191,8 +192,8 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   const reloadOutline = useCallback(async () => {
     invalidateCourseOutline();
     const next = await fetchCourseOutline({ fresh: true });
-    setOutline(next);
-  }, []);
+    setOutline(isCoachAccount(user) ? next : publishedOutline(next));
+  }, [user]);
 
   const signOut = useCallback(async () => {
     await signOutStudent();

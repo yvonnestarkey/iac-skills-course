@@ -36,4 +36,5 @@ test("coach lesson saves go through a staff service-role route", () => {
   assert.match(writer, /\/api\/coach\/lessons/);
   assert.match(writer, /normalizeLessonWriteRow/);
   assert.match(manager, /drip-feed message when students complete this lesson/);
+  assert.match(manager, /Save as draft/);
 });

@@ -49,6 +49,7 @@ export interface StudentLesson {
   is_assignment?: boolean;
   banner_image_url?: string | null;
   tool?: string | null;
+  is_draft?: boolean;
   access?: "full" | "preview" | "locked";
   locked_message?: string;
   next: { id: string; title: string } | null;
@@ -75,6 +76,7 @@ export interface OutlineLesson {
   unlock_at?: string | null;
   survey_id?: string | null;
   is_assignment?: boolean;
+  is_draft?: boolean;
 }
 
 export interface OutlineChapter {
@@ -87,7 +89,7 @@ export interface OutlineChapter {
 export type StudentUser = Pick<UserProfile, "id" | "email" | "role" | "full_name">;
 
 const OUTLINE_TTL_MS = 120_000;
-const OUTLINE_STORAGE_KEY = "iac-course-outline-v2";
+const OUTLINE_STORAGE_KEY = "iac-course-outline-v3";
 
 type OutlineCacheEntry = { at: number; data: OutlineChapter[] };
 let memoryOutline: OutlineCacheEntry | null = null;
@@ -149,6 +151,7 @@ function packSeed(lesson: Lesson & { chapter: { id: string; title: string } }): 
     is_assignment: lessonIsAssignment(lesson),
     banner_image_url: lesson.banner_image_url || null,
     tool: lesson.tool || null,
+    is_draft: Boolean(lesson.is_draft),
     next: next ? { id: next.id, title: next.title } : null,
     source: "seed",
   };
@@ -186,6 +189,7 @@ function outlineLessonFromRow(row: {
   unlock_at?: string | null;
   survey_id?: string | null;
   is_assignment?: boolean | null;
+  is_draft?: boolean | null;
 }): OutlineLesson {
   const flagged = asBool(row.requires_submission);
   const type = displayLessonType({
@@ -208,6 +212,7 @@ function outlineLessonFromRow(row: {
     unlock_at: asPrereq(row.unlock_at) || null,
     survey_id: asPrereq(row.survey_id) || null,
     is_assignment: lessonIsAssignment({ type, is_assignment: asBool(row.is_assignment) }),
+    is_draft: asBool(row.is_draft) ?? false,
   };
   return withComputedDuration(lesson);
 }
@@ -225,6 +230,7 @@ function withSubmissionPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
   const flagged = chapters.map((chapter) => ({
     ...chapter,
     lessons: chapter.lessons.map((lesson) => {
+      if (lesson.is_draft) return { ...lesson, requires_submission: false };
       if (isDiyLesson(lesson.title)) return { ...lesson, requires_submission: false };
       if (isTaskSubmissionAssignment(chapter.title, lesson)) return { ...lesson, requires_submission: true };
       return lesson;
@@ -239,6 +245,10 @@ function withSubmissionPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
     const phase1Open = hasNamedPhases && (firstTask === -1 || chapterIndex < firstTask);
     const task1Open = isTask1Chapter(chapter.title || "");
     chapter.lessons.forEach((lesson) => {
+      if (lesson.is_draft) {
+        gated.set(lesson.id, { ...lesson, prereq_lesson_id: lastMainTaskId || pendingPhase1Gate || null });
+        return;
+      }
       if (phase1Open || task1Open) {
         gated.set(lesson.id, { ...lesson, prereq_lesson_id: null });
         if (isMainTaskAssignment(chapter.title, lesson)) {
@@ -332,6 +342,7 @@ const OUTLINE_COLUMNS =
   "id, title, type, duration, seconds, chapter_id, position, video_duration_seconds, estimated_read_minutes, duration_minutes";
 const GATE_COLUMNS = `${OUTLINE_COLUMNS}, requires_submission, requires_coach_approval, prereq_lesson_id`;
 const DRIP_COLUMNS = `${GATE_COLUMNS}, unlock_at`;
+const DRAFT_COLUMNS = `${DRIP_COLUMNS}, is_draft`;
 
 function readOutlineCache(): OutlineChapter[] | null {
   if (memoryOutline && Date.now() - memoryOutline.at < OUTLINE_TTL_MS) {
@@ -453,6 +464,7 @@ async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
           prereq_lesson_id?: string | null;
           unlock_at?: string | null;
           survey_id?: string | null;
+          is_draft?: boolean | null;
         };
         const list = grouped.get(String(item.chapter_id)) || [];
         list.push(outlineLessonFromRow(item));
@@ -495,10 +507,19 @@ async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
     }> | null = null;
     let { data, error } = await client
       .from("lessons")
-      .select(DRIP_COLUMNS)
+      .select(DRAFT_COLUMNS)
       .order("chapter_id", { ascending: true })
       .order("position", { ascending: true });
     rows = data;
+    if (error) {
+      const dripped = await client
+        .from("lessons")
+        .select(DRIP_COLUMNS)
+        .order("chapter_id", { ascending: true })
+        .order("position", { ascending: true });
+      rows = dripped.data;
+      error = dripped.error;
+    }
     if (error) {
       const gated = await client
         .from("lessons")
@@ -606,7 +627,7 @@ export function safeStudentPath(value: string | null | undefined): string {
 }
 
 const LESSON_ROW_COLUMNS =
-  "id, title, type, duration, seconds, chapter_id, position, video_urls, blurb, body, takeaways, due, brief, requires_submission, requires_coach_approval, prereq_lesson_id, pdf_url, resource_downloads, unlock_at, video_duration_seconds, estimated_read_minutes, duration_minutes, survey_id, banner_image_url, tool";
+  "id, title, type, duration, seconds, chapter_id, position, video_urls, blurb, body, takeaways, due, brief, requires_submission, requires_coach_approval, prereq_lesson_id, pdf_url, resource_downloads, unlock_at, video_duration_seconds, estimated_read_minutes, duration_minutes, survey_id, banner_image_url, tool, is_draft";
 
 async function loadLessonRow(client: NonNullable<ReturnType<typeof getSupabase>>, lessonId: string) {
   const withPdf = await client.from("lessons").select(LESSON_ROW_COLUMNS).eq("id", lessonId).maybeSingle();
@@ -668,6 +689,7 @@ export async function fetchStudentLesson(
           }),
           banner_image_url: asPrereq((data as { banner_image_url?: unknown }).banner_image_url) || null,
           tool: asPrereq((data as { tool?: unknown }).tool) || null,
+          is_draft: asBool((data as { is_draft?: unknown }).is_draft) ?? false,
           next: nextFromOutline(tree, lessonId),
           source: "supabase",
         },

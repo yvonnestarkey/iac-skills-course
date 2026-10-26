@@ -7,11 +7,13 @@ import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { usePreviewNavState } from "@/lib/preview-nav";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentNav } from "@/lib/student-nav";
+import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator", "dashboard", "account", "bmcr", "volume-accuracy", "buried-treasure", "reading"]);
 
 export default function StudentCourseNav() {
-  const { outline, completed, submissions, surveyReviews } = useStudentSession();
+  const { completed, submissions, surveyReviews } = useStudentSession();
+  const outline = useVisibleCourseOutline();
   const { unlocked, basePath } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
   const { markPreviewNav, previewLessonIds } = usePreviewNavState();

@@ -64,6 +64,7 @@ const BLANK = {
   resourceUrl: "",
   resourceLabel: "",
   afterLessonId: SURVEY_PLACE_END,
+  isDraft: true,
 };
 
 /** New teaching work goes before the chapter's Ask the Coach and survey lessons. */
@@ -184,7 +185,26 @@ export default function ContentManager() {
       return;
     }
     const existingIds = board.flatMap((item) => item.lessons.map((lesson) => lesson.id));
-    const lesson = buildLesson(nextLiveLessonId(chapter.id, existingIds), form);
+    const lesson = buildLesson(nextLiveLessonId(chapter.id, existingIds), {
+      type: form.type,
+      title: form.title,
+      duration: form.duration,
+      seconds: form.seconds,
+      blurb: form.blurb,
+      body: form.body,
+      takeaways: form.takeaways,
+      due: form.due,
+      brief: form.brief,
+      surveyId: form.surveyId,
+      videoUrl: form.videoUrl,
+      bannerUrl: form.bannerUrl,
+      tool: form.tool,
+      pdfUrl: form.pdfUrl,
+      resourceUrl: form.resourceUrl,
+      resourceLabel: form.resourceLabel,
+      isDraft: form.isDraft ? "true" : "false",
+    });
+    lesson.is_draft = form.isDraft;
     const siblingIds = chapter.lessons.map((item) => item.id);
     const insertAt = insertIndexAfterLesson(siblingIds, form.afterLessonId);
     const orderedIds = [...siblingIds];
@@ -211,7 +231,9 @@ export default function ContentManager() {
     resetDrip();
     setStatus({
       kind: dripProblem ? "warn" : "ok",
-      text: `“${lesson.title}” is now in Supabase and the student sidebar.${dripProblem}`,
+      text: form.isDraft
+        ? `“${lesson.title}” is saved as a draft. Only Coach View can see it.${dripProblem}`
+        : `“${lesson.title}” is now in Supabase and the student sidebar.${dripProblem}`,
     });
   };
 
@@ -357,6 +379,7 @@ export default function ContentManager() {
       resourceUrl: firstLessonWebLink(lesson)?.url || "",
       resourceLabel: firstLessonWebLink(lesson)?.title === "Open link" ? "" : firstLessonWebLink(lesson)?.title || "",
       afterLessonId: SURVEY_PLACE_END,
+      isDraft: Boolean(lesson.is_draft),
     });
     resetDrip();
     void listCoachDrips().then((listed) => {
@@ -405,6 +428,7 @@ export default function ContentManager() {
       resource_downloads: form.resourceUrl.trim()
         ? [{ url: form.resourceUrl.trim(), title: form.resourceLabel.trim() || "Open link" }]
         : null,
+      is_draft: form.isDraft,
     });
     setBusy(false);
     if (!result.ok) {
@@ -419,7 +443,11 @@ export default function ContentManager() {
     resetDrip();
     setStatus({
       kind: dripProblem ? "warn" : "ok",
-      text: dripProblem ? `Lesson saved.${dripProblem}` : "Lesson saved.",
+      text: dripProblem
+        ? `Lesson saved.${dripProblem}`
+        : form.isDraft
+          ? "Lesson saved as a draft. Students cannot see it."
+          : "Lesson saved and visible to students.",
     });
   };
 
@@ -495,7 +523,7 @@ export default function ContentManager() {
       <CoachToolPanel
         id="builder-lesson-tool"
         title={editingId ? "Edit lesson" : "Add a lesson"}
-        description="Create or edit one lesson by hand."
+        description="Create the basic lesson here. New lessons start as drafts so only Coach View can see them. Open the lesson in the course to keep editing."
         open={Boolean(openTools.lesson)}
         onToggle={() => toggleTool("lesson")}
       >
@@ -793,6 +821,19 @@ export default function ContentManager() {
             {form.bannerUrl.trim() ? (
               <img className="lesson-banner-preview" src={form.bannerUrl.trim()} alt="" />
             ) : null}
+          </div>
+          <div className="plan-field">
+            <label className="drip-active">
+              <input
+                type="checkbox"
+                checked={form.isDraft}
+                onChange={(event) => set({ isDraft: event.target.checked })}
+              />
+              <strong>Save as draft</strong>
+            </label>
+            <p className="muted small">
+              Drafts sit in the course for you in Coach View. Students cannot see them until you uncheck this and save.
+            </p>
           </div>
           <div className="plan-field drip-lesson-option">
             <label className="drip-active">

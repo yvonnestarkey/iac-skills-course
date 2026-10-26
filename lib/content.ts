@@ -180,6 +180,8 @@ export function buildLesson(id: string, fields: Record<string, string>): Lesson 
       { url: fields.resourceUrl.trim(), title: fields.resourceLabel?.trim() || "Open link" },
     ];
   }
+  if (fields.isDraft === "true") lesson.is_draft = true;
+  if (fields.isDraft === "false") lesson.is_draft = false;
   return lesson;
 }
 
@@ -248,6 +250,7 @@ export interface LessonRow {
   tool?: string | null;
   pdf_url?: string | null;
   resource_downloads?: unknown;
+  is_draft?: boolean | null;
 }
 
 export function draftToRow(draft: LessonDraft, position: number): LessonRow {
@@ -272,6 +275,7 @@ export function draftToRow(draft: LessonDraft, position: number): LessonRow {
     tool: l.tool || null,
     pdf_url: l.pdf_url || null,
     resource_downloads: l.resource_downloads || null,
+    is_draft: Boolean(l.is_draft),
   };
 }
 
@@ -291,6 +295,7 @@ export function rowToDraft(row: LessonRow): LessonDraft {
   if (row.tool) lesson.tool = row.tool;
   if (row.pdf_url) lesson.pdf_url = row.pdf_url;
   if (row.resource_downloads) lesson.resource_downloads = row.resource_downloads;
+  if (row.is_draft) lesson.is_draft = true;
   return { chapterId: row.chapter_id, lesson };
 }
 
@@ -341,6 +346,7 @@ const OPTIONAL_LESSON_COLUMNS = [
   "pdf_url",
   "resource_downloads",
   "duration_minutes",
+  "is_draft",
 ];
 
 /** Live `lessons` stores clips in `video_urls`. The builder field is still `video_url`. */
@@ -462,6 +468,7 @@ export interface ManagedLesson {
   prereq_lesson_id: string | null;
   resource_downloads: unknown;
   unlock_at: string | null;
+  is_draft: boolean;
 }
 
 export interface ManagedChapter {
@@ -495,6 +502,7 @@ function asManagedLesson(row: Record<string, unknown>): ManagedLesson {
     prereq_lesson_id: row.prereq_lesson_id != null ? String(row.prereq_lesson_id) : null,
     resource_downloads: row.resource_downloads ?? null,
     unlock_at: row.unlock_at != null ? String(row.unlock_at) : null,
+    is_draft: row.is_draft === true,
   };
 }
 
@@ -646,6 +654,7 @@ export async function duplicateLesson(lessonId: string): Promise<DbResult<Manage
   clone.title = copyLessonTitle(String(source.title || "Untitled lesson"), rows.map((row) => String(row.title || "")));
   clone.chapter_id = chapterId;
   clone.position = Number(source.position || index + 1) + 1;
+  clone.is_draft = true;
   const inserted = await upsertLessonRows([clone]);
   if (!inserted.ok) return inserted;
   const ordered = rows.map((row) => String(row.id));

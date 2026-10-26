@@ -17,9 +17,11 @@ import {
 import { isCoachAccount } from "@/lib/roles";
 import { hasTask1Submission, task1AssignmentFromOutline, task1LessonHref } from "@/lib/task1-gate";
 import { useStudentSession } from "@/lib/student-session";
+import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 export default function ScriptEvaluatorHub() {
-  const { ready, user, outline, submissions, entitlement } = useStudentSession();
+  const { ready, user, submissions, entitlement } = useStudentSession();
+  const outline = useVisibleCourseOutline();
   const { unlocked } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
   const staff = isCoachAccount(user);

@@ -10,6 +10,7 @@ import { composeLessonAvailability } from "./lesson-availability";
 import { displayLessonType } from "./lesson-type";
 import { getLessonPdfUrl } from "./getLessonPdf";
 import { protectLessonResourceFields } from "./lesson-assets";
+import { canViewDraftLessons, isDraftLesson, publishedOutline } from "./lesson-drafts";
 import { fetchCourseOutline, fetchStudentLesson, type StudentLesson } from "./student-lesson";
 import type { SubmissionStatus } from "./student-submissions";
 import type { LessonType } from "../types/database";
@@ -24,7 +25,7 @@ export interface LessonData {
 }
 
 const loadCachedOutline = cache(
-  unstable_cache(fetchCourseOutline, ["course-outline-v2"], {
+  unstable_cache(fetchCourseOutline, ["course-outline-v3"], {
     revalidate: 120,
     tags: ["course-outline"],
   })
@@ -39,8 +40,12 @@ export const getLessonData = cache(async (
   options?: { studentId?: string | null; overrideLocks?: boolean }
 ): Promise<LessonData> => {
   const [user, outline] = await Promise.all([getRequestUser(), loadCachedOutline()]);
-  const lesson = await fetchStudentLesson(lessonId, outline);
-  if (!lesson) {
+  const staffView = await getStaffCourseView();
+  const staffOverride = staffOverrideApplies(user, staffView) || Boolean(options?.overrideLocks && user && staffOverrideApplies(user, "override"));
+  const includeDrafts = canViewDraftLessons(user, staffView, Boolean(options?.overrideLocks));
+  const visibleOutline = includeDrafts ? outline : publishedOutline(outline);
+  const lesson = await fetchStudentLesson(lessonId, visibleOutline);
+  if (!lesson || (isDraftLesson(lesson) && !includeDrafts)) {
     return {
       lesson: null,
       pdfUrl: undefined,
@@ -50,9 +55,6 @@ export const getLessonData = cache(async (
       access: { isLocked: false },
     };
   }
-
-  const staffView = await getStaffCourseView();
-  const staffOverride = staffOverrideApplies(user, staffView) || Boolean(options?.overrideLocks && user && staffOverrideApplies(user, "override"));
   const content = await resolveLessonContentAccess(user, lessonId, {
     overrideLocks: staffOverride,
     staffView,
@@ -60,7 +62,7 @@ export const getLessonData = cache(async (
   const skipProgression = staffOverride;
   const pedagogical =
     user && !skipProgression
-      ? await getLessonAccess(user.id, lessonId, { outline, chapterId: lesson.chapterId })
+      ? await getLessonAccess(user.id, lessonId, { outline: visibleOutline, chapterId: lesson.chapterId })
       : { isLocked: false };
   const composed = composeLessonAvailability({
     commercialCanRead: content.canReadBody,

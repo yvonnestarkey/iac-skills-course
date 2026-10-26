@@ -10,12 +10,14 @@ import { useCoursePreview } from "@/lib/course-preview";
 import { hasCoachReview } from "@/lib/custom-surveys";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
+import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 import PurchaseCta from "@/components/commerce/PurchaseCta";
 import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
 import { isCoachAccount } from "@/lib/roles";
 
 export default function StudentDashboard() {
-  const { user, outline, completed, surveyReviews } = useStudentSession();
+  const { user, completed, surveyReviews } = useStudentSession();
+  const outline = useVisibleCourseOutline();
   const { unlocked, basePath } = useCoursePreview();
   const { inboxWaiting, unreadCount } = useStudentInbox();
   const [coachingUnseen, setCoachingUnseen] = useState(false);

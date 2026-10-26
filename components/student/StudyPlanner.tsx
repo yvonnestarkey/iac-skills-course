@@ -17,6 +17,7 @@ import { courseTasks } from "@/lib/course";
 import { clearStudyPlan, fetchStudyPlan, saveStudyPlan } from "@/lib/student-plan";
 import { courseDataFromOutline } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
+import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 import type { CalendarFeed, StudyPlan } from "@/lib/types";
 
 function emptyPlan(): StudyPlan {
@@ -29,7 +30,8 @@ function emptyPlan(): StudyPlan {
 }
 
 export default function StudyPlanner() {
-  const { outline, user, completed, reloadOutline } = useStudentSession();
+  const { user, completed, reloadOutline } = useStudentSession();
+  const outline = useVisibleCourseOutline();
   const course = useMemo(() => courseDataFromOutline(outline), [outline]);
   const [draft, setDraft] = useState<StudyPlan>(emptyPlan);
   const [savedPlan, setSavedPlan] = useState<StudyPlan | null>(null);

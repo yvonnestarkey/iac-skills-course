@@ -62,6 +62,7 @@ function LessonEntry({
       {showLock ? <Lock size={12} className="lesson-lock" aria-label={purchaseLocked ? "Full course" : "Locked"} /> : null}
       {lesson.title}
       {showPreviewBadge ? <span className="preview-access-badge">Free preview</span> : null}
+      {lesson.is_draft ? <span className="lesson-draft-word">draft</span> : null}
       {lesson.is_assignment ? <span className="duration-badge assignment-flag">Assignment</span> : null}
       {review && review.status !== "submitted" ? (
         <span className={`badge ${surveyResponseStatusClass(review.status)}`}>{reviewText}</span>

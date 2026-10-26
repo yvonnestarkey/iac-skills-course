@@ -16,6 +16,7 @@ import {
 } from "@/lib/custom-surveys";
 import { formatSastDateTime } from "@/lib/dates";
 import { useStudentSession } from "@/lib/student-session";
+import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 type FilterId = "all" | "assignments" | "surveys" | "reviewed";
 
@@ -33,7 +34,8 @@ function hrefForSurvey(survey: CustomSurvey, lessonId?: string | null, basePath 
 }
 
 export default function StudentFeedbackHub() {
-  const { user, outline, submissions } = useStudentSession();
+  const { user, submissions } = useStudentSession();
+  const outline = useVisibleCourseOutline();
   const { basePath } = useCoursePreview();
   const [packs, setPacks] = useState<{ survey: CustomSurvey; response: CustomSurveyResponse }[]>([]);
   const [filter, setFilter] = useState<FilterId>("all");

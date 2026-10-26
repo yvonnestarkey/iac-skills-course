@@ -7,9 +7,11 @@ import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { usePreviewNavState } from "@/lib/preview-nav";
 import { useStudentSession } from "@/lib/student-session";
+import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 export default function StudentOverview() {
-  const { outline, completed, submissions, surveyReviews } = useStudentSession();
+  const { completed, submissions, surveyReviews } = useStudentSession();
+  const outline = useVisibleCourseOutline();
   const { basePath } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
   const { markPreviewNav, previewLessonIds } = usePreviewNavState();
