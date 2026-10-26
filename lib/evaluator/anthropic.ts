@@ -64,6 +64,8 @@ export async function callStructured<T>(input: {
   schema: Tool["input_schema"];
   usage: UsageTally;
   maxTokens?: number;
+  /** Defaults to the evaluator model; other features (e.g. reading drills) pass their own. */
+  model?: string;
 }): Promise<T> {
   const anthropic = getClient();
   let lastError: unknown;
@@ -75,7 +77,7 @@ export async function callStructured<T>(input: {
     try {
       // Streamed: the SDK refuses a plain request when max_tokens is large enough that it could run past 10 minutes.
       const response = await anthropic.messages.stream({
-        model: evaluatorModel(),
+        model: input.model || evaluatorModel(),
         max_tokens: maxTokens,
         ...(thinkingOff ? { thinking: { type: "disabled" as const } } : {}),
         system: `${input.system}\n\nYou must answer by calling the ${input.toolName} tool exactly once. Do not reply with plain text.`,

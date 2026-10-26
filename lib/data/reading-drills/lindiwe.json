@@ -1,0 +1,243 @@
+{
+  "id": "lindiwe",
+  "title": "Lindiwe's Leather",
+  "area": "Management accounting",
+  "marks": 7,
+  "answer_minutes": 4,
+  "trains": [
+    "dir",
+    "shape",
+    "indirect"
+  ],
+  "case": [
+    {
+      "heading": "1 Products",
+      "sentences": [
+        {
+          "id": "l0",
+          "text": "You are the management accountant at Lindiwe's Leather.",
+          "kind": null
+        },
+        {
+          "id": "l1",
+          "text": "Lindiwe's Leather makes belts and bags in a workshop in Maboneng, Johannesburg.",
+          "kind": null
+        },
+        {
+          "id": "l2",
+          "text": "A belt sells for R450, uses 0.5 m² of leather and has other variable costs of R60.",
+          "kind": "direct"
+        },
+        {
+          "id": "l3",
+          "text": "A bag sells for R1 200, uses 2 m² of leather and has other variable costs of R250.",
+          "kind": "direct"
+        },
+        {
+          "id": "l4",
+          "text": "Leather has cost R180 per m², but from 1 November the supplier charges R200 per m².",
+          "kind": "direct"
+        },
+        {
+          "id": "l5",
+          "text": "A belt needs 0.5 machine hours and a bag 2 machine hours.",
+          "kind": "direct"
+        },
+        {
+          "id": "l6",
+          "text": "Historically, Lindiwe's has sold two belts for every bag.",
+          "kind": "off_required"
+        }
+      ]
+    },
+    {
+      "heading": "2 November",
+      "sentences": [
+        {
+          "id": "l7",
+          "text": "Because one stitching machine is being repaired, only 700 machine hours are available in November.",
+          "kind": "indirect"
+        },
+        {
+          "id": "l8",
+          "text": "Customers will buy at most 600 belts and 300 bags in November.",
+          "kind": "direct"
+        },
+        {
+          "id": "l9",
+          "text": "Fixed costs are R95 000 a month and do not change with the product mix.",
+          "kind": "direct"
+        }
+      ]
+    },
+    {
+      "heading": "3 Export enquiry",
+      "sentences": [
+        {
+          "id": "l10",
+          "text": "A Dubai retailer has asked for 100 bags at R1 000 each, for delivery in November.",
+          "kind": "excluded"
+        }
+      ]
+    }
+  ],
+  "required": "Calculate how many belts and how many bags Lindiwe's Leather should make in November to earn the most profit, and the profit that results. Use the supplier's new leather price. Ignore the export enquiry in paragraph 3.",
+  "recall": [
+    {
+      "question": "What kind of business is Lindiwe's Leather?",
+      "options": [
+        "A small maker of leather belts and bags",
+        "A leather supplier",
+        "A clothing retailer",
+        "A shoe factory"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is your role?",
+      "options": [
+        "The management accountant planning production",
+        "The auditor",
+        "The supplier's sales manager",
+        "A buyer for the Dubai retailer"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What limits production in November?",
+      "options": [
+        "Machine time, because a machine is being repaired",
+        "The supply of leather",
+        "A shortage of staff",
+        "A shortage of cash"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What has changed in the costs?",
+      "options": [
+        "The price of leather has gone up",
+        "Rent has gone up",
+        "Wages have gone down",
+        "Fixed costs have doubled"
+      ],
+      "correct": 0
+    }
+  ],
+  "rtfq": {
+    "shape": {
+      "options": [
+        "The units of each product to make, and the profit that results",
+        "Breakeven units for belts and bags",
+        "A discussion of whether to accept the Dubai order",
+        "A total number of units in the usual sales mix"
+      ],
+      "correct": 0,
+      "why": "Two unit figures (belts and bags) and one profit figure. A combined unit total does not answer it."
+    },
+    "directions": {
+      "options": [
+        {
+          "text": "Use the new leather price of R200",
+          "required": true
+        },
+        {
+          "text": "Ignore the Dubai enquiry",
+          "required": true
+        },
+        {
+          "text": "Choose the mix that earns the most profit, not the usual sales mix",
+          "required": true
+        },
+        {
+          "text": "Use the historical sales mix of two belts per bag",
+          "required": false
+        },
+        {
+          "text": "Price the Dubai bags at R1 000",
+          "required": false
+        }
+      ],
+      "why": "'Earn the most profit' is a decision rule. In June 2026 all three students used the historical sales mix on a question like this."
+    },
+    "lens": {
+      "options": [
+        "Short-term profit, with machine hours as the limit",
+        "Breakeven and margin of safety",
+        "Long-term pricing strategy",
+        "Customer satisfaction"
+      ],
+      "correct": 0,
+      "why": "When one resource is limited, rank the products by contribution per unit of that resource, not per product."
+    }
+  },
+  "rows": [
+    {
+      "id": "r1",
+      "proximity": "direct",
+      "point": "Belt contribution R290 (R450 − R100 leather at R200 − R60)",
+      "clues": [
+        "l2",
+        "l4"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r2",
+      "proximity": "direct",
+      "point": "Bag contribution R550 (R1 200 − R400 leather − R250)",
+      "clues": [
+        "l3",
+        "l4"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r3",
+      "proximity": "indirect",
+      "point": "Machine hours are the limit: full demand needs 900 hours (600 × 0.5 + 300 × 2) and only 700 are available",
+      "clues": [
+        "l5",
+        "l7",
+        "l8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r4",
+      "proximity": "indirect",
+      "point": "Rank by contribution per machine hour: belts R580, bags R275, so make belts first",
+      "clues": [
+        "l5"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r5",
+      "proximity": "direct",
+      "point": "Make 600 belts (the demand limit), using 300 hours",
+      "clues": [
+        "l8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r6",
+      "proximity": "indirect",
+      "point": "Use the remaining 400 hours for 200 bags",
+      "clues": [
+        "l7"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r7",
+      "proximity": "direct",
+      "point": "Profit: R174 000 + R110 000 = R284 000 contribution, less R95 000 fixed costs = R189 000",
+      "clues": [
+        "l9"
+      ],
+      "marks": 1
+    }
+  ]
+}

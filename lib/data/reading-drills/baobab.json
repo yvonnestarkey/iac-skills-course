@@ -1,0 +1,260 @@
+{
+  "id": "baobab",
+  "title": "Baobab Fresh",
+  "area": "Audit: risk",
+  "marks": 8,
+  "answer_minutes": 4,
+  "trains": [
+    "shape",
+    "dir",
+    "indirect"
+  ],
+  "case": [
+    {
+      "heading": "1 The client",
+      "sentences": [
+        {
+          "id": "b0",
+          "text": "You are the audit senior on the Baobab Fresh engagement.",
+          "kind": null
+        },
+        {
+          "id": "b1",
+          "text": "Baobab Fresh Ltd packs and exports citrus from farms near Tzaneen.",
+          "kind": null
+        },
+        {
+          "id": "b2",
+          "text": "Your firm was appointed as auditor for the year ending 28 February 2027, after the previous auditor resigned following a fee dispute.",
+          "kind": "indirect"
+        },
+        {
+          "id": "b3",
+          "text": "Sales are invoiced in euros, and Baobab hedges 60% of expected receipts with forward contracts.",
+          "kind": "wrong_level"
+        }
+      ]
+    },
+    {
+      "heading": "2 People and systems",
+      "sentences": [
+        {
+          "id": "b4",
+          "text": "In July 2026 the board replaced the CFO, and two of the four finance staff left soon after.",
+          "kind": "direct"
+        },
+        {
+          "id": "b5",
+          "text": "The new CFO is a CA(SA) with twelve years' experience at a large audit firm.",
+          "kind": "direct"
+        },
+        {
+          "id": "b6",
+          "text": "A new accounting system went live on 1 March 2026, the first day of the year.",
+          "kind": "indirect"
+        },
+        {
+          "id": "b7",
+          "text": "The audit committee meets monthly, all its members are independent, and an internal audit team reports to it.",
+          "kind": "direct"
+        }
+      ]
+    },
+    {
+      "heading": "3 Results and funding",
+      "sentences": [
+        {
+          "id": "b8",
+          "text": "Hail in October 2026 destroyed 30% of the crop.",
+          "kind": "indirect"
+        },
+        {
+          "id": "b9",
+          "text": "The hail also damaged packing equipment, which may need to be impaired.",
+          "kind": "wrong_level"
+        },
+        {
+          "id": "b10",
+          "text": "The CEO's bonus is 2% of profit before tax.",
+          "kind": "indirect"
+        },
+        {
+          "id": "b11",
+          "text": "The bank loan requires interest cover of at least 3 times; the latest forecast is 3.1 times.",
+          "kind": "indirect"
+        }
+      ]
+    }
+  ],
+  "required": "Assess the risk of material misstatement at the overall financial statement level for the audit of Baobab Fresh Ltd for the year ending 28 February 2027.",
+  "recall": [
+    {
+      "question": "What kind of business is Baobab?",
+      "options": [
+        "A citrus packer and exporter",
+        "A fruit retailer",
+        "A farming cooperative's bank",
+        "An equipment supplier"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is your role?",
+      "options": [
+        "The auditor, in your firm's first year on the client",
+        "Baobab's internal auditor",
+        "Baobab's new CFO",
+        "A risk officer at the bank"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What changed inside Baobab during the year?",
+      "options": [
+        "Its finance team and its accounting system",
+        "Its owners and its products",
+        "Its export markets",
+        "Nothing significant"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What put pressure on this year's results?",
+      "options": [
+        "Hail damage to the crop",
+        "A strike at the packhouse",
+        "A new competitor",
+        "A tax dispute"
+      ],
+      "correct": 0
+    }
+  ],
+  "rtfq": {
+    "shape": {
+      "options": [
+        "Assess: the factors that raise the risk, the factors that lower it, and a conclusion on the overall level",
+        "List the risks for each account balance",
+        "Describe audit procedures for each risk",
+        "Discuss Baobab's business risks"
+      ],
+      "correct": 0,
+      "why": "'Assess' needs both sides and a conclusion. In June 2026 all three students gave mostly raising factors and no conclusion."
+    },
+    "directions": {
+      "options": [
+        {
+          "text": "At the overall financial statement level, not individual balances or assertions",
+          "required": true
+        },
+        {
+          "text": "For the audit of the year ending 28 February 2027",
+          "required": true
+        },
+        {
+          "text": "Include the risk on each account balance (foreign exchange, impairment)",
+          "required": false
+        },
+        {
+          "text": "Calculate materiality",
+          "required": false
+        },
+        {
+          "text": "Design the audit responses",
+          "required": false
+        }
+      ],
+      "why": "The euro hedges and the hail-damaged equipment are real risks, but they sit at assertion level. The question asks about the statements as a whole."
+    },
+    "lens": {
+      "options": [
+        "The auditor: the risk that the financial statements are materially misstated",
+        "Management: the risk that Baobab's business fails",
+        "The bank: the risk that Baobab defaults",
+        "The CEO: the risk to his bonus"
+      ],
+      "correct": 0,
+      "why": "The lens is audit risk, not business risk. Each factor needs a line on why it makes a misstatement more or less likely."
+    }
+  },
+  "rows": [
+    {
+      "id": "r1",
+      "proximity": "indirect",
+      "point": "Raises: a first-year audit, so less knowledge of the client and risk in the opening balances",
+      "clues": [
+        "b2"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r2",
+      "proximity": "direct",
+      "point": "Raises: a new CFO and half the finance staff gone during the year, so a weaker control environment and more errors",
+      "clues": [
+        "b4"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r3",
+      "proximity": "indirect",
+      "point": "Raises: a new accounting system from the first day of the year, so data migration and new-system errors can affect every balance",
+      "clues": [
+        "b6"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r4",
+      "proximity": "indirect",
+      "point": "Raises: the hail cuts profit, so management is under pressure to make the results look better",
+      "clues": [
+        "b8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r5",
+      "proximity": "indirect",
+      "point": "Raises: the CEO's bonus on profit gives an incentive to overstate profit (management override, fraud risk)",
+      "clues": [
+        "b10"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r6",
+      "proximity": "indirect",
+      "point": "Raises: interest cover of 3.1 against a covenant of 3 leaves little room, adding pressure to manipulate results",
+      "clues": [
+        "b11"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r7",
+      "proximity": "direct",
+      "point": "Lowers: an independent audit committee that meets monthly, with internal audit reporting to it",
+      "clues": [
+        "b7"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r8",
+      "proximity": "direct",
+      "point": "Lowers: the new CFO is an experienced CA(SA)",
+      "clues": [
+        "b5"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r9",
+      "proximity": "thinking",
+      "point": "Conclusion: overall, the risk of material misstatement at the financial statement level is high",
+      "clues": [],
+      "marks": 1
+    }
+  ]
+}

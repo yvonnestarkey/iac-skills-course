@@ -1,0 +1,13 @@
+{
+  "_note": "Pace is words a minute while reading AND making notes. Exam benchmark: the six Jan and June 2026 question papers average 3,804 words (measured from knowledge_docs/mark_plan), plus 20% = about 4,565 words, read in 35 to 40 minutes, which is 114 to 130 words a minute.",
+  "bands": [
+    { "max": 100, "label": "Slow", "score": 0.4 },
+    { "max": 150, "label": "Exam pace", "score": 1 },
+    { "max": 220, "label": "Quick", "score": 1 },
+    { "max": 600, "label": "Very fast", "score": 0.8 },
+    { "max": null, "label": "Not a real read", "score": 0.2 }
+  ],
+  "exam": { "pages": 9.6, "words": 4565, "readMin": 35, "readMax": 40 },
+  "dailyMarkedLimit": 10,
+  "exercises": ["mopane", "ubuntu", "baobab", "lindiwe"]
+}
