@@ -30,6 +30,7 @@ import {
   type SurveyQuestion,
   type SurveyQuestionType,
 } from "@/lib/custom-surveys";
+import RichTextField from "@/components/ui/RichTextField";
 
 function SurveyPlacementFields({
   chapters,
@@ -531,12 +532,13 @@ function SurveyEditor({
       <label className="student-notes-label" htmlFor="survey-description">
         Description
       </label>
-      <textarea
+      <RichTextField
         id="survey-description"
         rows={3}
         value={draft.description}
-        onChange={(event) => onChange({ ...draft, description: event.target.value })}
-        placeholder="Optional intro shown to students. URLs and [text](https://…) links become clickable."
+        onChange={(description) => onChange({ ...draft, description })}
+        placeholder="Optional intro shown to students."
+        hint="Use the toolbar for bold, underline, and links."
       />
       <label className="student-notes-label" htmlFor="survey-pdf">
         Downloadable PDF
@@ -697,10 +699,10 @@ function SurveyEditor({
             ))}
           </select>
           <label className="student-notes-label">{info ? "Header text" : "Question label"}</label>
-          <input
-            className="select-line"
+          <RichTextField
+            rows={2}
             value={question.label}
-            onChange={(event) => onChangeQuestion(question.id, { label: event.target.value })}
+            onChange={(label) => onChangeQuestion(question.id, { label })}
             placeholder={
               info
                 ? "Refer back to this lesson"
@@ -712,17 +714,16 @@ function SurveyEditor({
             }
           />
           <label className="student-notes-label">{info ? "Body text" : "Helper text"}</label>
-          <textarea
-            className="select-line"
+          <RichTextField
             rows={info ? 3 : 2}
             value={question.helperText}
-            onChange={(event) => onChangeQuestion(question.id, { helperText: event.target.value })}
+            onChange={(helperText) => onChangeQuestion(question.id, { helperText })}
             placeholder={
               info
-                ? "Optional note. URLs and [text](https://…) links become clickable."
+                ? "Optional note."
                 : pdfUpload
                   ? "Optional note under the upload, e.g. Scan the whole attempt as a single PDF."
-                  : "Optional hint under the question. URLs become clickable."
+                  : "Optional hint under the question."
             }
           />
           {bmcr ? (

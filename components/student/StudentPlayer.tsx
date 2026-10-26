@@ -19,6 +19,10 @@ import LessonCarryForwardCheckpoint from "@/components/lesson/LessonCarryForward
 import LessonVideoParts from "@/components/lesson/LessonVideoParts";
 import { isProgressiveCheckpoint } from "@/lib/lesson-checkpoint";
 import { isMultiVideoLesson, parseLessonVideos } from "@/lib/lesson-videos";
+import LinkedText from "@/components/ui/LinkedText";
+import { firstLessonWebLink } from "@/lib/getLessonPdf";
+import { readingHeroDuration } from "@/lib/lesson-duration";
+import { resolveCourseHref } from "@/lib/rich-text";
 
 const LessonPdfViewer = dynamic(() => import("@/components/LessonPdfViewer"), {
   ssr: false,
@@ -128,6 +132,8 @@ export default function StudentPlayer({
   });
   const access = composed.access;
   const resume = findResumeLesson(ordered, completedMap);
+  const resourceLink = firstLessonWebLink(lesson);
+  const resourceHref = resourceLink ? resolveCourseHref(resourceLink.url) : null;
   const showSubmission = lesson.requires_submission === true || lesson.requires_coach_approval === true;
   const kind = displayLessonType(lesson);
   const isAssignmentPage = showSubmission || Boolean(lesson.is_assignment) || kind === "assignment" || kind === "upload";
@@ -211,7 +217,11 @@ export default function StudentPlayer({
         {status ? <p className="notice">{status}</p> : null}
         {kind === "survey" ? (
           <>
-            {lesson.blurb ? <p className="lead">{lesson.blurb}</p> : null}
+            {lesson.blurb ? (
+              <p className="lead">
+                <LinkedText text={lesson.blurb} />
+              </p>
+            ) : null}
             <StudentSurveyForm
               embedded
               hideTitle
@@ -230,11 +240,17 @@ export default function StudentPlayer({
           <>
             {kind === "reading" && !isCheckpoint ? (
               <div className="reading-hero">
-                <span>{lesson.duration}</span>
-                <p>{lesson.blurb}</p>
+                {readingHeroDuration(lesson.duration) ? <span>{readingHeroDuration(lesson.duration)}</span> : null}
+                {lesson.blurb ? (
+                  <p>
+                    <LinkedText text={lesson.blurb} />
+                  </p>
+                ) : null}
               </div>
             ) : !isCheckpoint && lesson.blurb ? (
-              <p className="lead">{lesson.blurb}</p>
+              <p className="lead">
+                <LinkedText text={lesson.blurb} />
+              </p>
             ) : null}
             {isCheckpoint ? (
               <>
@@ -259,9 +275,15 @@ export default function StudentPlayer({
             ) : (
               <>
             {lesson.due ? <p className="lead">Due {lesson.due}</p> : null}
-            {lesson.brief ? <p>{lesson.brief}</p> : null}
+            {lesson.brief ? (
+              <p>
+                <LinkedText text={lesson.brief} />
+              </p>
+            ) : null}
             {(lesson.body || []).map((paragraph, index) => (
-              <p key={`${lesson.id}-body-${index}`}>{paragraph}</p>
+              <p key={`${lesson.id}-body-${index}`}>
+                <LinkedText text={paragraph} />
+              </p>
             ))}
             {isMultiVideo ? <LessonVideoParts lesson={lesson} videos={videos} /> : null}
             {(lesson.takeaways || []).length ? (
@@ -269,12 +291,19 @@ export default function StudentPlayer({
                 <h3>Takeaways</h3>
                 <ul>
                   {lesson.takeaways!.map((item) => (
-                    <li key={item}>{item}</li>
+                    <li key={item}>
+                      <LinkedText text={item} />
+                    </li>
                   ))}
                 </ul>
               </div>
             ) : null}
 
+            {resourceLink && resourceHref ? (
+              <a className="primary lesson-resource-link" href={resourceHref} target="_blank" rel="noopener noreferrer">
+                {resourceLink.title}
+              </a>
+            ) : null}
             <LessonPdfViewer pdfUrl={lesson.pdf_url} lesson={lesson} />
 
             {isAssignmentPage ? null : (

@@ -14,6 +14,7 @@ import {
   type LiveSession,
   type LiveSessionWrite,
 } from "@/lib/live-sessions";
+import RichTextField from "@/components/ui/RichTextField";
 
 function PdfField({
   id,
@@ -173,11 +174,11 @@ export default function LiveSessionsManager() {
             <label htmlFor="ls-description">
               <strong>Description</strong>
             </label>
-            <textarea
+            <RichTextField
               id="ls-description"
               rows={2}
               value={form.description}
-              onChange={(event) => set({ description: event.target.value })}
+              onChange={(description) => set({ description })}
               placeholder="Optional. Shown under the title."
             />
           </div>

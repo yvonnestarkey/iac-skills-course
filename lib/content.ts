@@ -173,6 +173,12 @@ export function buildLesson(id: string, fields: Record<string, string>): Lesson 
     }
   }
   if (fields.bannerUrl?.trim()) lesson.banner_image_url = fields.bannerUrl.trim();
+  if (fields.pdfUrl?.trim()) lesson.pdf_url = fields.pdfUrl.trim();
+  if (fields.resourceUrl?.trim()) {
+    lesson.resource_downloads = [
+      { url: fields.resourceUrl.trim(), title: fields.resourceLabel?.trim() || "Open link" },
+    ];
+  }
   return lesson;
 }
 
@@ -238,6 +244,8 @@ export interface LessonRow {
   video_url?: string | null;
   video_urls?: unknown;
   banner_image_url?: string | null;
+  pdf_url?: string | null;
+  resource_downloads?: unknown;
 }
 
 export function draftToRow(draft: LessonDraft, position: number): LessonRow {
@@ -259,6 +267,8 @@ export function draftToRow(draft: LessonDraft, position: number): LessonRow {
     survey_id: l.survey_id || null,
     video_url: l.video_url || null,
     banner_image_url: l.banner_image_url || null,
+    pdf_url: l.pdf_url || null,
+    resource_downloads: l.resource_downloads || null,
   };
 }
 
@@ -275,6 +285,8 @@ export function rowToDraft(row: LessonRow): LessonDraft {
   const videoUrl = row.video_url || firstLessonVideoUrl(row.video_urls);
   if (videoUrl) lesson.video_url = videoUrl;
   if (row.banner_image_url) lesson.banner_image_url = row.banner_image_url;
+  if (row.pdf_url) lesson.pdf_url = row.pdf_url;
+  if (row.resource_downloads) lesson.resource_downloads = row.resource_downloads;
   return { chapterId: row.chapter_id, lesson };
 }
 
@@ -316,7 +328,15 @@ export async function pullLessons(): Promise<DbResult<LessonDraft[]>> {
   return { ok: true, data: (data as LessonRow[]).map(rowToDraft) };
 }
 
-const OPTIONAL_LESSON_COLUMNS = ["survey_id", "banner_image_url", "video_url", "video_urls", "pdf_url", "duration_minutes"];
+const OPTIONAL_LESSON_COLUMNS = [
+  "survey_id",
+  "banner_image_url",
+  "video_url",
+  "video_urls",
+  "pdf_url",
+  "resource_downloads",
+  "duration_minutes",
+];
 
 /** Live `lessons` stores clips in `video_urls`. The builder field is still `video_url`. */
 export function normalizeLessonWriteRow(row: Record<string, unknown>): Record<string, unknown> {
@@ -678,4 +698,16 @@ export async function uploadLessonBanner(file: File): Promise<DbResult<string>> 
     if (data?.publicUrl) return { ok: true, data: data.publicUrl };
   }
   return { ok: false, error: "Could not upload that image. Paste a public image URL instead." };
+}
+
+export async function uploadLessonPdf(file: File): Promise<DbResult<string>> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const ext = (file.name.split(".").pop() || "pdf").toLowerCase().replace(/[^a-z0-9]/g, "") || "pdf";
+  const path = `lesson-pdfs/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const uploaded = await client.storage.from("course-pdfs").upload(path, file, { upsert: true, contentType: file.type || "application/pdf" });
+  if (uploaded.error) return { ok: false, error: uploaded.error.message || "Could not upload that PDF." };
+  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
+  if (data?.publicUrl) return { ok: true, data: data.publicUrl };
+  return { ok: false, error: "Could not upload that PDF. Paste a public URL instead." };
 }

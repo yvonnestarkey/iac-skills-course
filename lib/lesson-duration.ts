@@ -66,6 +66,14 @@ export function formatMinutesLabel(minutes: number): string {
   return minutes === 1 ? "1 min" : `${minutes} mins`;
 }
 
+/** Hide a bare number such as "2" from the reading hero. Sidebar still uses durationBadge. */
+export function readingHeroDuration(duration?: string | null): string | null {
+  const text = String(duration || "").trim();
+  if (!text) return null;
+  if (/^\d+(\.\d+)?$/.test(text)) return null;
+  return text;
+}
+
 export function durationBadge(lesson: DurationFields): string {
   const minutes = lessonMinutes(lesson);
   if (lesson.type === "reading") return `${formatMinutesLabel(minutes)} read`;

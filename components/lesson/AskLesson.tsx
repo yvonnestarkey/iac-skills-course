@@ -37,7 +37,11 @@ export default function AskLesson({ lesson }: { lesson: FlatLesson }) {
   return (
     <article className="lesson-body wide">
       <LessonHeader lesson={lesson} kicker="Ask the Coach" />
-      <p className="lead">{lesson.blurb}</p>
+      {lesson.blurb ? (
+        <p className="lead">
+          <LinkedText text={lesson.blurb} />
+        </p>
+      ) : null}
       {pending ? <div className="waiting">Your question is waiting for the coach.</div> : null}
       {notice ? <div className="notice">{notice}</div> : null}
       <ComposerBox

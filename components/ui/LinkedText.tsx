@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { isInternalCourseHref, linkDisplayLabel, resolveCourseHref } from "@/lib/rich-text";
+import { isInternalCourseHref, linkDisplayLabel, parseTextMarks, resolveCourseHref } from "@/lib/rich-text";
 
 const MARKDOWN_LINK = /\[([^\]]+)\]\(([^)\s]+)\)/g;
 const BARE_URL = /(https?:\/\/[^\s<]+|www\.[^\s<]+|\/(?:lessons|learn|student|coach|surveys|events|planner|coaching)[^\s<]*)/gi;
@@ -33,7 +33,7 @@ function linkBareUrls(text: string, keyPrefix: string, interactive: boolean): Re
   let match: RegExpExecArray | null;
   let index = 0;
   while ((match = re.exec(text))) {
-    if (match.index > last) parts.push(text.slice(last, match.index));
+    if (match.index > last) parts.push(...markPlain(text.slice(last, match.index), `${keyPrefix}-p-${index}`));
     const raw = match[0];
     const trimmed = raw.replace(/[),.;!?]+$/, "");
     const trailing = raw.slice(trimmed.length);
@@ -45,8 +45,18 @@ function linkBareUrls(text: string, keyPrefix: string, interactive: boolean): Re
     if (trailing) parts.push(trailing);
     last = match.index + raw.length;
   }
-  if (last < text.length) parts.push(text.slice(last));
-  return parts.length ? parts : [text];
+  if (last < text.length) parts.push(...markPlain(text.slice(last), `${keyPrefix}-t`));
+  return parts.length ? parts : markPlain(text, keyPrefix);
+}
+
+function markPlain(text: string, keyPrefix: string): ReactNode[] {
+  return parseTextMarks(text).map((part, index) => {
+    let node: ReactNode = part.text;
+    if (part.italic) node = <em key={`${keyPrefix}-i-${index}`}>{node}</em>;
+    if (part.underline) node = <u key={`${keyPrefix}-u-${index}`}>{node}</u>;
+    if (part.bold) node = <strong key={`${keyPrefix}-b-${index}`}>{node}</strong>;
+    return <span key={`${keyPrefix}-${index}`}>{node}</span>;
+  });
 }
 
 export default function LinkedText({

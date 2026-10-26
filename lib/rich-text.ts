@@ -66,6 +66,54 @@ export function linkDisplayLabel(raw: string, explicit?: string): string {
   }
 }
 
+export type TextMark = { text: string; bold?: boolean; underline?: boolean; italic?: boolean };
+
+function splitMark(parts: TextMark[], pattern: RegExp, flag: keyof Omit<TextMark, "text">): TextMark[] {
+  const next: TextMark[] = [];
+  parts.forEach((part) => {
+    if (part.bold && flag === "bold") {
+      next.push(part);
+      return;
+    }
+    const re = new RegExp(pattern.source, "g");
+    let last = 0;
+    let match: RegExpExecArray | null;
+    const source = part.text;
+    while ((match = re.exec(source))) {
+      if (match.index > last) next.push({ ...part, text: source.slice(last, match.index) });
+      next.push({ ...part, text: match[1], [flag]: true });
+      last = match.index + match[0].length;
+    }
+    if (last < source.length) next.push({ ...part, text: source.slice(last) });
+  });
+  return next.filter((part) => part.text);
+}
+
+/** **bold**, __underline__, *italic* inside a plain string. Links are handled separately. */
+export function parseTextMarks(text: string): TextMark[] {
+  if (!text) return [];
+  let parts: TextMark[] = [{ text }];
+  parts = splitMark(parts, /\*\*(.+?)\*\*/, "bold");
+  parts = splitMark(parts, /__(.+?)__/, "underline");
+  parts = splitMark(parts, /(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/, "italic");
+  return parts.length ? parts : [{ text }];
+}
+
+export function wrapSelectedText(
+  current: string,
+  before: string,
+  after: string,
+  start: number,
+  end: number
+): { next: string; caretStart: number; caretEnd: number } {
+  const from = Math.max(0, Math.min(start, current.length));
+  const to = Math.max(from, Math.min(end, current.length));
+  const selected = current.slice(from, to) || "text";
+  const next = `${current.slice(0, from)}${before}${selected}${after}${current.slice(to)}`;
+  const caretStart = from + before.length;
+  return { next, caretStart, caretEnd: caretStart + selected.length };
+}
+
 export function markdownLink(text: string, url: string): string {
   const label = String(text || "").trim() || String(url || "").trim();
   const href = String(url || "").trim();

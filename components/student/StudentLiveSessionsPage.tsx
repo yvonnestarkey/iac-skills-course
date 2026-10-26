@@ -13,6 +13,7 @@ import {
 import InfoTooltip from "@/components/ui/InfoTooltip";
 import PurchaseCta from "@/components/commerce/PurchaseCta";
 import { useStudentSession } from "@/lib/student-session";
+import LinkedText from "@/components/ui/LinkedText";
 
 function SessionRow({ session, fullAccess }: { session: LiveSession; fullAccess: boolean }) {
   const recorded = liveSessionIsRecorded(session);
@@ -24,7 +25,11 @@ function SessionRow({ session, fullAccess }: { session: LiveSession; fullAccess:
       {when ? <p className="live-session-when">{when}</p> : <span className="live-session-when muted">Date TBC</span>}
       <div className="live-session-copy">
         <strong>{session.title}</strong>
-        {session.description ? <p>{session.description}</p> : null}
+        {session.description ? (
+          <p>
+            <LinkedText text={session.description} />
+          </p>
+        ) : null}
         {locked ? <p>Unlock the full course to join live Zoom sessions and later recordings.</p> : null}
       </div>
       <div className="live-session-actions">

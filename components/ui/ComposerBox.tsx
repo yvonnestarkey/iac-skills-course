@@ -1,8 +1,10 @@
 "use client";
 
 import { useRef, type KeyboardEvent } from "react";
+import { Bold, Underline } from "lucide-react";
 import EmojiPickerButton, { insertTextAtCursor } from "@/components/ui/EmojiPicker";
 import LinkInsertButton from "@/components/ui/LinkInsertButton";
+import { wrapSelectedText } from "@/lib/rich-text";
 
 export default function ComposerBox({
   id,
@@ -34,6 +36,17 @@ export default function ComposerBox({
     });
   };
 
+  const wrap = (before: string, after: string) => {
+    const field = fieldRef.current;
+    const next = wrapSelectedText(value, before, after, field?.selectionStart ?? value.length, field?.selectionEnd ?? value.length);
+    onChange(next.next);
+    requestAnimationFrame(() => {
+      if (!field) return;
+      field.focus();
+      field.setSelectionRange(next.caretStart, next.caretEnd);
+    });
+  };
+
   return (
     <div className="composer-box">
       <textarea
@@ -47,6 +60,12 @@ export default function ComposerBox({
         onKeyDown={onKeyDown}
       />
       <div className="composer-tools">
+        <button className="ghost emoji-picker-btn" type="button" aria-label="Bold" disabled={disabled} onClick={() => wrap("**", "**")}>
+          <Bold size={16} />
+        </button>
+        <button className="ghost emoji-picker-btn" type="button" aria-label="Underline" disabled={disabled} onClick={() => wrap("__", "__")}>
+          <Underline size={16} />
+        </button>
         <LinkInsertButton onInsert={insertAtCursor} disabled={disabled} />
         <EmojiPickerButton onPick={insertAtCursor} disabled={disabled} />
       </div>

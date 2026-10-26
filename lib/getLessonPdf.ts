@@ -53,3 +53,16 @@ export function getLessonPdfUrl(lesson: LessonPdfSource | null | undefined): str
   if (primary) return primary;
   return firstResourceFileUrl(lesson.resource_downloads);
 }
+
+/** First non-PDF resource link on a lesson, for "open this URL" buttons. */
+export function firstLessonWebLink(lesson: LessonPdfSource | null | undefined): { url: string; title: string } | null {
+  if (!lesson) return null;
+  for (const item of asDownloadList(lesson.resource_downloads)) {
+    const record = item && typeof item === "object" ? (item as Record<string, unknown>) : null;
+    const raw = typeof item === "string" ? item : String(record?.url ?? record?.href ?? record?.file_url ?? "");
+    if (!raw.trim() || /\.pdf(\?|#|$)/i.test(raw)) continue;
+    const title = String(record?.title ?? record?.label ?? "").trim();
+    return { url: raw.trim(), title: title || "Open link" };
+  }
+  return null;
+}

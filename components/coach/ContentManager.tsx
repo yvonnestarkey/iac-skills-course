@@ -18,6 +18,7 @@ import {
   saveChapterOrder,
   updateLessonFields,
   uploadLessonBanner,
+  uploadLessonPdf,
   type ManagedChapter,
   type ManagedLesson,
   type LessonDraft,
@@ -30,6 +31,8 @@ import { fetchCustomSurveys, insertIndexAfterLesson, SURVEY_PLACE_END, SURVEY_PL
 import { invalidateCourseOutline } from "@/lib/student-lesson";
 import CoachToolPanel from "@/components/coach/CoachToolPanel";
 import CourseOutlineBoard from "@/components/coach/CourseOutlineBoard";
+import RichTextField from "@/components/ui/RichTextField";
+import { firstLessonWebLink } from "@/lib/getLessonPdf";
 
 const BLANK = {
   chapter: "",
@@ -45,6 +48,9 @@ const BLANK = {
   surveyId: "",
   videoUrl: "",
   bannerUrl: "",
+  pdfUrl: "",
+  resourceUrl: "",
+  resourceLabel: "",
   afterLessonId: SURVEY_PLACE_END,
 };
 
@@ -300,6 +306,9 @@ export default function ContentManager() {
       surveyId: lesson.survey_id || "",
       videoUrl: lesson.video_url || "",
       bannerUrl: lesson.banner_image_url || "",
+      pdfUrl: lesson.pdf_url || "",
+      resourceUrl: firstLessonWebLink(lesson)?.url || "",
+      resourceLabel: firstLessonWebLink(lesson)?.title === "Open link" ? "" : firstLessonWebLink(lesson)?.title || "",
       afterLessonId: SURVEY_PLACE_END,
     });
     setStatus({ kind: "ok", text: `Editing “${lesson.title}”.` });
@@ -336,6 +345,10 @@ export default function ContentManager() {
       survey_id: form.surveyId || null,
       video_url: form.videoUrl.trim() || null,
       banner_image_url: form.bannerUrl.trim() || null,
+      pdf_url: form.pdfUrl.trim() || null,
+      resource_downloads: form.resourceUrl.trim()
+        ? [{ url: form.resourceUrl.trim(), title: form.resourceLabel.trim() || "Open link" }]
+        : null,
     });
     setBusy(false);
     if (!result.ok) {
@@ -360,6 +373,19 @@ export default function ContentManager() {
     }
     set({ bannerUrl: result.data });
     setStatus({ kind: "ok", text: "Banner image uploaded." });
+  };
+
+  const pickPdf = async (file: File | null) => {
+    if (!file) return;
+    setBusy(true);
+    const result = await uploadLessonPdf(file);
+    setBusy(false);
+    if (!result.ok || !result.data) {
+      setStatus({ kind: "warn", text: result.error || "Could not upload that PDF. Paste a public URL instead." });
+      return;
+    }
+    set({ pdfUrl: result.data });
+    setStatus({ kind: "ok", text: "PDF uploaded." });
   };
 
   const downloadTemplate = () => {
@@ -532,35 +558,30 @@ export default function ContentManager() {
                 <label htmlFor="cm-blurb">
                   <strong>Lead line</strong>
                 </label>
-                <textarea
-                  id="cm-blurb"
-                  rows={2}
-                  value={form.blurb}
-                  onChange={(event) => set({ blurb: event.target.value })}
-                />
+                <RichTextField id="cm-blurb" rows={2} value={form.blurb} onChange={(blurb) => set({ blurb })} />
               </div>
               <div className="plan-field">
                 <label htmlFor="cm-body">
                   <strong>Body</strong>
                 </label>
-                <p className="muted small">One paragraph per line.</p>
-                <textarea
+                <RichTextField
                   id="cm-body"
                   rows={5}
                   value={form.body}
-                  onChange={(event) => set({ body: event.target.value })}
+                  onChange={(body) => set({ body })}
+                  hint="One paragraph per line. Use the toolbar for bold, underline, and links."
                 />
               </div>
               <div className="plan-field">
                 <label htmlFor="cm-takeaways">
                   <strong>Takeaways</strong>
                 </label>
-                <p className="muted small">One per line, optional.</p>
-                <textarea
+                <RichTextField
                   id="cm-takeaways"
                   rows={3}
                   value={form.takeaways}
-                  onChange={(event) => set({ takeaways: event.target.value })}
+                  onChange={(takeaways) => set({ takeaways })}
+                  hint="One per line, optional."
                 />
               </div>
             </>
@@ -584,12 +605,7 @@ export default function ContentManager() {
                 <label htmlFor="cm-brief">
                   <strong>Brief</strong>
                 </label>
-                <textarea
-                  id="cm-brief"
-                  rows={4}
-                  value={form.brief}
-                  onChange={(event) => set({ brief: event.target.value })}
-                />
+                <RichTextField id="cm-brief" rows={4} value={form.brief} onChange={(brief) => set({ brief })} />
               </div>
             </>
           ) : null}
@@ -627,14 +643,53 @@ export default function ContentManager() {
               <label htmlFor="cm-blurb-alt">
                 <strong>Lead line</strong>
               </label>
-              <textarea
-                id="cm-blurb-alt"
-                rows={3}
-                value={form.blurb}
-                onChange={(event) => set({ blurb: event.target.value })}
-              />
+              <RichTextField id="cm-blurb-alt" rows={3} value={form.blurb} onChange={(blurb) => set({ blurb })} />
             </div>
           ) : null}
+          <div className="plan-field">
+            <label htmlFor="cm-pdf">
+              <strong>PDF</strong>
+            </label>
+            <input
+              id="cm-pdf"
+              type="url"
+              className="select-line"
+              placeholder="https://… (PDF URL, optional)"
+              value={form.pdfUrl}
+              onChange={(event) => set({ pdfUrl: event.target.value })}
+            />
+            <input
+              className="select-line"
+              type="file"
+              accept="application/pdf"
+              onChange={(event) => {
+                void pickPdf(event.target.files && event.target.files[0]);
+                event.target.value = "";
+              }}
+            />
+            <p className="muted small">Paste a public PDF URL or upload a file. Students can read and download it on the lesson.</p>
+          </div>
+          <div className="plan-field">
+            <label htmlFor="cm-resource">
+              <strong>Link to another URL</strong>
+            </label>
+            <input
+              id="cm-resource"
+              type="url"
+              className="select-line"
+              placeholder="https://…"
+              value={form.resourceUrl}
+              onChange={(event) => set({ resourceUrl: event.target.value })}
+            />
+            <input
+              className="select-line"
+              type="text"
+              placeholder="Button label (optional)"
+              value={form.resourceLabel}
+              onChange={(event) => set({ resourceLabel: event.target.value })}
+            />
+            <p className="muted small">Shows as a button on the lesson. Use this for another page, form, or external resource.</p>
+          </div>
           <div className="plan-field">
             <label htmlFor="cm-banner">
               <strong>Header banner image</strong>

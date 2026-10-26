@@ -4362,7 +4362,7 @@ a.planner-video-btn:visited:hover {
 .composer-box textarea {
   width: 100%;
   min-height: 96px;
-  padding: 12px 84px 12px 14px;
+  padding: 12px 148px 12px 14px;
   border: 1px solid var(--line);
   border-radius: 14px;
   background: #fff;
@@ -4387,10 +4387,38 @@ a.planner-video-btn:visited:hover {
 }
 
 .composer-tools .emoji-picker,
-.composer-tools .link-insert {
+.composer-tools .link-insert,
+.composer-tools .emoji-picker-btn {
   position: relative;
   right: auto;
   bottom: auto;
+}
+
+.rich-text-field textarea {
+  width: 100%;
+  min-height: 84px;
+  resize: vertical;
+}
+
+.rich-text-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.rich-text-toolbar .ghost {
+  min-width: 34px;
+  padding: 4px 8px;
+}
+
+.rich-text-toolbar .link-insert {
+  position: relative;
+}
+
+.lesson-resource-link {
+  display: inline-flex;
+  margin: 8px 0 16px;
 }
 
 .link-insert {
