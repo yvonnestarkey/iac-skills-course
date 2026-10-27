@@ -7640,6 +7640,41 @@ a.planner-video-btn:visited:hover {
 .rd-eyebrow { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 .rd-note { border-left: 3px solid var(--medium); background: var(--paper); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 0; }
 .rd-signal { border-left: 3px solid var(--rd-bad); background: var(--rd-bad-soft); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 0; }
+.rd-tool-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 12px;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+.rd-tool-top .rd-strip {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  position: static;
+}
+.rd-coach-reset {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.rd-reset {
+  background: var(--link);
+  border: 1px solid var(--link);
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.rd-reset:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
 .rd-strip { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 12px; border: 0; border-radius: 0; position: sticky; top: 0; background: #d9dcd9; z-index: 3; }
 .rd-steps { display: flex; gap: 0; flex-wrap: wrap; align-items: center; }
 .rd-steps span { font-size: 12.5px; padding: 0 10px 0 0; margin-right: 10px; border: 0; border-radius: 0; background: none; color: #5c6360; pointer-events: none; cursor: default; }

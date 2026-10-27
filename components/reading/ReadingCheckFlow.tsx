@@ -18,6 +18,7 @@ import {
   type DrillNote,
   type ReadingCheckResult,
 } from "@/lib/reading-drills";
+import CoachReadingReset from "@/components/reading/CoachReadingReset";
 import { fetchReadingHistory, saveReadingCheck } from "@/lib/reading-drills-store";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -28,7 +29,8 @@ const STEP_OF: Record<Stage, number> = { intro: 0, read: 0, recall: 1, result: 2
 export default function ReadingCheckFlow({ embedded = false, onComplete }: { embedded?: boolean; onComplete?: () => void } = {}) {
   const { user } = useStudentSession();
   const rc = READING_CHECK;
-  const seed = useMemo(() => Math.floor(Math.random() * 100000), []);
+  const [session, setSession] = useState(0);
+  const seed = useMemo(() => Math.floor(Math.random() * 100000), [session]);
   const [stage, setStage] = useState<Stage>("intro");
   const [t0, setT0] = useState<number | null>(null);
   const [notes, setNotes] = useState<DrillNote[]>([]);
@@ -93,7 +95,23 @@ export default function ReadingCheckFlow({ embedded = false, onComplete }: { emb
           <Link href="/student/reading">Read the Required</Link> · Reading check · {rc.title}
         </p>
       )}
-      <StepStrip names={["Read", "Recall", "Result"]} step={STEP_OF[stage]} t0={stage === "result" ? null : t0} />
+      <div className="rd-tool-top">
+        <StepStrip names={["Read", "Recall", "Result"]} step={STEP_OF[stage]} t0={stage === "result" ? null : t0} />
+        <CoachReadingReset
+          kind="check"
+          taskKey={rc.id}
+          onReset={() => {
+            setStage("intro");
+            setT0(null);
+            setNotes([]);
+            setPicks(rc.recall.map(() => null));
+            setResult(null);
+            setSaveMsg("");
+            setReadSec(0);
+            setSession((n) => n + 1);
+          }}
+        />
+      </div>
 
       {stage === "intro" ? (
         <div className="rd-stack">

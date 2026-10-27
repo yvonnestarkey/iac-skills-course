@@ -26,6 +26,7 @@ import {
   type DrillNote,
   type Marking,
 } from "@/lib/reading-drills";
+import CoachReadingReset from "@/components/reading/CoachReadingReset";
 import { fetchReadingHistory, saveDrillAttempt } from "@/lib/reading-drills-store";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -36,7 +37,8 @@ const STEP_OF: Record<Stage, number> = { intro: 0, read: 0, recall: 1, rtfq: 2, 
 /** One practice exercise. `embedded` = shown inside a course lesson, which completes when the feedback appears. */
 export default function DrillFlow({ exercise: ex, embedded = false, onComplete }: { exercise: DrillExercise; embedded?: boolean; onComplete?: () => void }) {
   const { user } = useStudentSession();
-  const seed = useMemo(() => Math.floor(Math.random() * 100000), []);
+  const [session, setSession] = useState(0);
+  const seed = useMemo(() => Math.floor(Math.random() * 100000), [session]);
   const [stage, setStage] = useState<Stage>("intro");
   const [t0, setT0] = useState<number | null>(null);
   const [readSec, setReadSec] = useState(0);
@@ -147,7 +149,30 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
           <Link href="/student/reading">Read the Required</Link> · {ex.title} · {ex.area}
         </p>
       )}
-      <StepStrip names={STEPS} step={STEP_OF[stage]} t0={t0} countdownFrom={stage === "answer" ? ex.answer_minutes * 60 : undefined} countdownStart={answerStart} />
+      <div className="rd-tool-top">
+        <StepStrip names={STEPS} step={STEP_OF[stage]} t0={t0} countdownFrom={stage === "answer" ? ex.answer_minutes * 60 : undefined} countdownStart={answerStart} />
+        <CoachReadingReset
+          kind="exercise"
+          taskKey={ex.id}
+          onReset={() => {
+            setStage("intro");
+            setT0(null);
+            setReadSec(0);
+            setRecall(ex.recall.map(() => null));
+            setPick({ shape: null, lens: null, dir: [] });
+            setNotes([]);
+            setAnswer("");
+            setAnswerStart(null);
+            setAnswerSec(0);
+            setMarking(null);
+            setSelfReason("");
+            setAttempt(null);
+            setSaveMsg("");
+            setHistory((current) => current.filter((row) => row.exercise_id !== ex.id));
+            setSession((n) => n + 1);
+          }}
+        />
+      </div>
 
       {stage === "intro" ? (
         <div className="rd-stack">

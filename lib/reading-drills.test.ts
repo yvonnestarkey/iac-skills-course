@@ -129,11 +129,18 @@ test("reading tasks stay one-attempt and coaches can reset them", () => {
   const mark = readFileSync(resolve("app/api/reading/mark/route.ts"), "utf8");
   const coach = readFileSync(resolve("app/api/coach/reading/route.ts"), "utf8");
   const profile = readFileSync(resolve("components/coach/StudentProfile.tsx"), "utf8");
+  const drill = readFileSync(resolve("components/reading/DrillFlow.tsx"), "utf8");
+  const check = readFileSync(resolve("components/reading/ReadingCheckFlow.tsx"), "utf8");
+  const reset = readFileSync(resolve("components/reading/CoachReadingReset.tsx"), "utf8");
   assert.match(sql, /reading_attempts_user_exercise_uidx/);
   assert.match(sql, /staff delete reading attempts/);
   assert.match(mark, /READING_ONCE_COPY/);
   assert.match(coach, /reading_mark_calls/);
   assert.match(profile, /ReadingAttemptsPanel/);
+  assert.match(drill, /CoachReadingReset/);
+  assert.match(check, /CoachReadingReset/);
+  assert.match(reset, /isCoachAccount/);
+  assert.match(reset, /Reset/);
 });
 
 test("the Direct / Indirect table groups every row with its case wording, and lists the traps", async () => {
