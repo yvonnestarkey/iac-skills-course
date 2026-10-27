@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import ActivityGrid from "@/components/coach/ActivityGrid";
 import AccountActivationBadge from "@/components/coach/AccountActivationBadge";
 import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
@@ -43,7 +44,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const [outline, setOutline] = useState<OutlineChapter[]>([]);
   const [setupBusy, setSetupBusy] = useState(false);
   const [setupNotice, setSetupNotice] = useState("");
-  const [activityOpen, setActivityOpen] = useState(true);
+  const [activityOpen, setActivityOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -223,33 +224,43 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
 
       <section className="card" id="activity">
         <div className="panel-head">
-          <button type="button" className="activity-progress-toggle" onClick={() => setActivityOpen((open) => !open)}>
+          <button
+            type="button"
+            className="activity-progress-toggle"
+            aria-expanded={activityOpen}
+            onClick={() => setActivityOpen((open) => !open)}
+          >
             <div>
               <h2>Progress</h2>
-              <p className="muted small">
-                {p.done} of {p.total} lessons complete · {openedCount} opened
-                {position.current
-                  ? ` · currently on ${position.current.chapterTitle} · ${position.current.lessonLabel} ${position.current.title}`
-                  : ""}
-              </p>
+              {activityOpen ? (
+                <p className="muted small">
+                  {p.done} of {p.total} lessons complete · {openedCount} opened
+                  {position.current
+                    ? ` · currently on ${position.current.chapterTitle} · ${position.current.lessonLabel} ${position.current.title}`
+                    : ""}
+                </p>
+              ) : null}
             </div>
-            <span className="score-chip">{p.pct}%</span>
+            <span className="activity-progress-meta">
+              <span className="score-chip">{p.pct}%</span>
+              {activityOpen ? <ChevronUp size={18} aria-hidden="true" /> : <ChevronDown size={18} aria-hidden="true" />}
+            </span>
           </button>
         </div>
         <div className="progress-wide">
           <span style={{ width: `${p.pct}%` }} />
         </div>
-        <div className="progress-legend">
-          <span>{p.done} complete</span>
-          <span>{openedCount} opened</span>
-          <span>{watchedCount} watched to 80%</span>
-          <span>
-            {submissions.length} assignment submission{submissions.length === 1 ? "" : "s"}
-          </span>
-          <span>{notStarted} not started</span>
-        </div>
         {activityOpen ? (
           <>
+            <div className="progress-legend">
+              <span>{p.done} complete</span>
+              <span>{openedCount} opened</span>
+              <span>{watchedCount} watched to 80%</span>
+              <span>
+                {submissions.length} assignment submission{submissions.length === 1 ? "" : "s"}
+              </span>
+              <span>{notStarted} not started</span>
+            </div>
             <p className="activity-here">
               {position.current
                 ? `Currently on ${position.current.phaseLabel} · ${position.current.chapterTitle} · ${position.current.title}.`
@@ -310,9 +321,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
               ) : null}
             </div>
           </>
-        ) : (
-          <p className="muted small">Click Progress to open the lesson-by-lesson activity report.</p>
-        )}
+        ) : null}
       </section>
 
       <div className="profile-grid">

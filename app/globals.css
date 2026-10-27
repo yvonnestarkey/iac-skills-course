@@ -2067,6 +2067,13 @@ input[type="tel"]:focus {
   cursor: pointer;
 }
 
+.activity-progress-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .activity-progress-link {
   display: block;
   width: 100%;
