@@ -6,7 +6,8 @@ import StudentDashboardBanner from "@/components/student/StudentDashboardBanner"
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
 import { fetchCoachingDashboardHint } from "@/lib/coaching";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
-import { useCoursePreview } from "@/lib/course-preview";
+import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
+import { hasTask2Submission } from "@/lib/task2-gate";
 import { hasCoachReview } from "@/lib/custom-surveys";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
@@ -16,9 +17,10 @@ import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
 import { isCoachAccount } from "@/lib/roles";
 
 export default function StudentDashboard() {
-  const { user, completed, surveyReviews } = useStudentSession();
+  const { user, completed, surveyReviews, submissions } = useStudentSession();
   const outline = useVisibleCourseOutline();
   const { unlocked, basePath } = useCoursePreview();
+  const bypassLocks = useBypassLessonLocks();
   const { inboxWaiting, unreadCount } = useStudentInbox();
   const [coachingUnseen, setCoachingUnseen] = useState(false);
   const chapters = outline || [];
@@ -33,6 +35,7 @@ export default function StudentDashboard() {
   const notifyHref = "/student/notifications";
   const coach = isCoachAccount(user);
   const feedbackCount = Object.values(surveyReviews || {}).filter(hasCoachReview).length;
+  const readingUnlocked = hasTask2Submission(submissions, outline) || unlocked || bypassLocks || coach;
 
   useEffect(() => {
     if (!user?.id || unlocked) return;
@@ -94,6 +97,15 @@ export default function StudentDashboard() {
         <Link href="/student/evaluator" className="student-hub-card">
           <strong>Script Evaluator</strong>
           <p>After Task 1, choose a sitting, print one BMCR for all three papers, then upload that worksheet with Paper 1, Paper 2, Paper 3, and the marking report.</p>
+        </Link>
+        <Link href="/student/reading" className={`student-hub-card${readingUnlocked ? "" : " is-locked"}`}>
+          <strong>Reading &amp; RTFQ Tool</strong>
+          <p>
+            {readingUnlocked
+              ? "Practice more reading and RTFQ questions after the first ones in Task 2."
+              : "Do the first ones in Task 2. This hub unlocks after you submit that assignment."}
+          </p>
+          {readingUnlocked ? null : <span className="pill">Unlocks after Task 2</span>}
         </Link>
         {ASK_QUESTION_ENABLED ? (
           <button type="button" className="student-hub-card" onClick={() => window.dispatchEvent(new Event("open-ask-question"))}>

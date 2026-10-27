@@ -92,7 +92,7 @@ export default function ReadingCheckFlow({ embedded = false, onComplete }: { emb
     <article ref={top} className={embedded ? "rd-page rd-embedded" : "lesson-body wide rd-page"}>
       {embedded ? null : (
         <p className="muted small">
-          <Link href="/student/reading">Read the Required</Link> · Reading check · {rc.title}
+          <Link href="/student/reading">Reading & RTFQ Tool</Link> · Reading check · {rc.title}
         </p>
       )}
       <div className="rd-tool-top">
@@ -221,7 +221,7 @@ function CheckResult({ r, saveMsg, lo, hi, embedded }: { r: ReadingCheckResult; 
         <p className="muted small">This lesson is now marked complete. Your result is saved to your record.</p>
       ) : (
         <div className="rd-row">
-          <Link href="/student/reading">Back to Read the Required</Link>
+          <Link href="/student/reading">Back to Reading & RTFQ Tool</Link>
         </div>
       )}
     </div>

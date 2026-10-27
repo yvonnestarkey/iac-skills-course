@@ -9,10 +9,10 @@ import {
   READING_MARK_MODEL_DEFAULT,
   READING_ONCE_COPY,
   buildMarkingPrompt,
-  getExercise,
   markingCostUsd,
   normaliseMarking,
 } from "@/lib/reading-drills";
+import { fetchPracticeExercise } from "@/lib/reading-practice";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: "Please sign in again." }, { status: 401 });
 
   const body = (await req.json().catch(() => ({}))) as { exerciseId?: string; answer?: string };
-  const ex = getExercise(String(body.exerciseId || ""));
+  const ex = await fetchPracticeExercise(String(body.exerciseId || ""));
   const answer = String(body.answer || "").trim();
   if (!ex) return NextResponse.json({ error: "Unknown exercise." }, { status: 400 });
   if (answer.split(/\s+/).length < 15) return NextResponse.json({ error: "The answer is too short to mark." }, { status: 400 });

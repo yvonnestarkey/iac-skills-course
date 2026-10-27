@@ -296,9 +296,9 @@ export function recentRange(attempts: DrillAttempt[]): GradeBand | null {
 export const READING_ONCE_COPY =
   "You can do each reading task once. If something went wrong, message your coach so they can reset it.";
 
-export function remainingExercises(attempts: DrillAttempt[]): DrillExercise[] {
+export function remainingExercises(attempts: DrillAttempt[], pool: DrillExercise[] = EXERCISES): DrillExercise[] {
   const done = new Set(attempts.map((attempt) => attempt.exercise_id));
-  return EXERCISES.filter((exercise) => !done.has(exercise.id));
+  return pool.filter((exercise) => !done.has(exercise.id));
 }
 
 export function attemptForExercise(attempts: DrillAttempt[], exerciseId: string): DrillAttempt | null {
@@ -323,12 +323,12 @@ export function markingFromAttempt(ex: DrillExercise, attempt: DrillAttempt): Ma
   };
 }
 
-export function recommend(attempts: DrillAttempt[]): { exercise: DrillExercise; reason: string } {
+export function recommend(attempts: DrillAttempt[], pool: DrillExercise[] = EXERCISES): { exercise: DrillExercise; reason: string } {
   const sk = skillProfile(attempts);
   const done: Record<string, number> = {};
   attempts.forEach((a) => (done[a.exercise_id] = (done[a.exercise_id] || 0) + 1));
   let best: { ex: DrillExercise; need: number } | null = null;
-  for (const ex of EXERCISES) {
+  for (const ex of pool) {
     const need = ex.trains.reduce((s, k) => s + (1 - (sk[k] ?? 0.5)), 0) - 0.8 * (done[ex.id] || 0);
     if (!best || need > best.need) best = { ex, need };
   }
@@ -341,10 +341,10 @@ export function recommend(attempts: DrillAttempt[]): { exercise: DrillExercise; 
 }
 
 /** Next unread exercise, or null once every drill has been used. */
-export function recommendUnused(attempts: DrillAttempt[]): { exercise: DrillExercise; reason: string } | null {
-  const left = remainingExercises(attempts);
+export function recommendUnused(attempts: DrillAttempt[], pool: DrillExercise[] = EXERCISES): { exercise: DrillExercise; reason: string } | null {
+  const left = remainingExercises(attempts, pool);
   if (!left.length) return null;
-  const rec = recommend(attempts);
+  const rec = recommend(attempts, pool);
   if (left.some((exercise) => exercise.id === rec.exercise.id)) return rec;
   return { exercise: left[0], reason: rec.reason };
 }

@@ -44,6 +44,7 @@ import {
 } from "@/lib/drip-messages";
 import { firstLessonWebLink } from "@/lib/getLessonPdf";
 import { lessonToolOptions } from "@/lib/reading-drills";
+import ReadingPracticeManager from "@/components/coach/ReadingPracticeManager";
 
 const BLANK = {
   chapter: "",
@@ -97,9 +98,9 @@ export default function ContentManager() {
   const [dripEnabled, setDripEnabled] = useState(false);
   const [dripForm, setDripForm] = useState<DripWrite>(emptyDripWrite());
   const [lessonDripId, setLessonDripId] = useState<string | null>(null);
-  const [openTools, setOpenTools] = useState<Partial<Record<"admin" | "lesson" | "csv" | "outline", boolean>>>({});
+  const [openTools, setOpenTools] = useState<Partial<Record<"admin" | "lesson" | "reading" | "csv" | "outline", boolean>>>({});
 
-  const toggleTool = (id: "admin" | "lesson" | "csv" | "outline") => {
+  const toggleTool = (id: "admin" | "lesson" | "reading" | "csv" | "outline") => {
     setOpenTools((current) => ({ ...current, [id]: !current[id] }));
   };
 
@@ -885,6 +886,15 @@ export default function ContentManager() {
               </button>
             ) : null}
           </div>
+      </CoachToolPanel>
+
+      <CoachToolPanel
+        title="Reading & RTFQ practice"
+        description="Add extra questions for the student dashboard hub. These unlock after Task 2 is submitted and do not replace the first drills in the Task 2 lessons."
+        open={Boolean(openTools.reading)}
+        onToggle={() => toggleTool("reading")}
+      >
+        <ReadingPracticeManager />
       </CoachToolPanel>
 
       <CoachToolPanel

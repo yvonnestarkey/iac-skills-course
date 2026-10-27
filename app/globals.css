@@ -4054,6 +4054,14 @@ a.student-account-link {
   margin-top: 10px;
 }
 
+.student-hub-card.is-locked {
+  background: #f3f3f3;
+}
+
+.student-hub-card.is-locked:hover {
+  border-color: var(--line);
+}
+
 .student-hub-card-featured {
   grid-column: 1 / -1;
   background: var(--dark);
@@ -7769,6 +7777,36 @@ a.planner-video-btn:visited:hover {
 .rd-skill { display: grid; grid-template-columns: minmax(0, 1fr) 120px 40px; gap: 10px; align-items: center; font-size: 14px; }
 .rd-bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
 .rd-bar i { display: block; height: 100%; background: var(--medium); }
+.rd-practice-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+}
+.rd-practice-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+.rd-practice-form .rd-span,
+.rd-practice-form .rd-check,
+.rd-practice-form .actions {
+  grid-column: 1 / -1;
+}
+.rd-practice-form .rd-check {
+  flex-direction: row;
+  align-items: center;
+}
+.rd-practice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 12px 0 18px;
+}
+@media (max-width: 720px) {
+  .rd-practice-form { grid-template-columns: 1fr; }
+}
+
 .rd-embedded { margin: 24px 0; padding-top: 16px; border-top: 1px solid var(--line); scroll-margin-top: 80px; }
 .rd-embedded h2 { font-family: var(--serif); }
 .rd-prox-group h3 { display: flex; gap: 8px; align-items: center; margin: 8px 0 0; font-size: 15px; }

@@ -37,6 +37,7 @@ const STEP_OF: Record<Stage, number> = { intro: 0, read: 0, recall: 1, rtfq: 2, 
 /** One practice exercise. `embedded` = shown inside a course lesson, which completes when the feedback appears. */
 export default function DrillFlow({ exercise: ex, embedded = false, onComplete }: { exercise: DrillExercise; embedded?: boolean; onComplete?: () => void }) {
   const { user } = useStudentSession();
+  const [pool, setPool] = useState<DrillExercise[]>([]);
   const [session, setSession] = useState(0);
   const seed = useMemo(() => Math.floor(Math.random() * 100000), [session]);
   const [stage, setStage] = useState<Stage>("intro");
@@ -72,6 +73,15 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
       setReady(true);
     });
   }, [user?.id, ex]);
+  useEffect(() => {
+    if (embedded) return;
+    fetch("/api/reading/exercises")
+      .then((response) => response.json().catch(() => ({})))
+      .then((payload) => {
+        const extras = Array.isArray(payload.exercises) ? payload.exercises : [];
+        setPool(extras.filter((item: DrillExercise) => item?.id && item?.title && item?.required));
+      });
+  }, [embedded]);
   const top = useRef<HTMLElement>(null);
   useEffect(() => {
     if (!embedded) window.scrollTo({ top: 0 });
@@ -146,7 +156,7 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
     <article ref={top} className={embedded ? "rd-page rd-embedded" : "lesson-body wide rd-page"}>
       {embedded ? null : (
         <p className="muted small">
-          <Link href="/student/reading">Read the Required</Link> · {ex.title} · {ex.area}
+          <Link href="/student/reading">Reading & RTFQ Tool</Link> · {ex.title} · {ex.area}
         </p>
       )}
       <div className="rd-tool-top">
@@ -301,7 +311,7 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
       {stage === "self" ? <SelfMark ex={ex} answer={answer} reason={selfReason} onDone={(m) => finish(m, "self")} /> : null}
 
       {stage === "feedback" && attempt && marking ? (
-        <Feedback ex={ex} a={attempt} marking={marking} notes={notes} pick={pick} saveMsg={saveMsg} history={history} embedded={embedded} />
+        <Feedback ex={ex} a={attempt} marking={marking} notes={notes} pick={pick} saveMsg={saveMsg} history={history} pool={pool} embedded={embedded} />
       ) : null}
     </article>
   );
@@ -367,7 +377,7 @@ function SelfMark({ ex, answer, reason, onDone }: { ex: DrillExercise; answer: s
   );
 }
 
-function Feedback({ ex, a, marking, notes, pick, saveMsg, history, embedded }: {
+function Feedback({ ex, a, marking, notes, pick, saveMsg, history, pool, embedded }: {
   ex: DrillExercise;
   a: DrillAttempt;
   marking: Marking;
@@ -375,6 +385,7 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, embedded }: {
   pick: { shape: number | null; lens: number | null; dir: number[] };
   saveMsg: string;
   history: DrillAttempt[];
+  pool: DrillExercise[];
   embedded: boolean;
 }) {
   const words = caseWords(ex);
@@ -383,7 +394,7 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, embedded }: {
   const noted = new Set(notes.filter((n) => !n.crossed).map((n) => n.sentence));
   const notUsed = notedNotUsed(ex, marking, noted);
   const sents = Object.fromEntries(sentencesOf(ex.case).map((s) => [s.id, s.text]));
-  const next = recommendUnused(history);
+  const next = recommendUnused(history, pool);
   const ticked = new Set(pick.dir);
   const misread = ex.rtfq.directions.options.filter((o, i) => o.required !== ticked.has(i));
   const readPill = (k: "shape" | "dir" | "lens") => {
@@ -497,7 +508,7 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, embedded }: {
           <p className="muted small">{next ? next.reason : READING_ONCE_COPY}</p>
         </div>
         <div className="rd-row rd-push">
-          <Link href="/student/reading">Back to Read the Required</Link>
+          <Link href="/student/reading">Back to Reading & RTFQ Tool</Link>
           {next ? <a className="primary" href={`/student/reading/${next.exercise.id}`}>Start</a> : null}
         </div>
       </section>

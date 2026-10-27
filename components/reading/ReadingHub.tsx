@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
-  EXERCISES,
   SKILLS,
   examReadMinutes,
   paceBand,
@@ -12,28 +11,40 @@ import {
   READING_ONCE_COPY,
   skillProfile,
   type DrillAttempt,
+  type DrillExercise,
   type ReadingCheckResult,
   type SkillKey,
 } from "@/lib/reading-drills";
 import { fetchReadingHistory } from "@/lib/reading-drills-store";
+import { useReadingToolAccess } from "@/components/reading/ReadingToolGate";
 import { useStudentSession } from "@/lib/student-session";
 
 export default function ReadingHub() {
   const { user } = useStudentSession();
+  const { unlockedByTask2, bypass } = useReadingToolAccess();
   const [attempts, setAttempts] = useState<DrillAttempt[]>([]);
   const [checks, setChecks] = useState<ReadingCheckResult[]>([]);
+  const [pool, setPool] = useState<DrillExercise[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    if (!user?.id) return;
-    fetchReadingHistory(user.id).then((h) => {
+    if (!user?.id) {
+      setLoaded(true);
+      return;
+    }
+    Promise.all([
+      fetchReadingHistory(user.id),
+      fetch("/api/reading/exercises").then((response) => response.json().catch(() => ({}))),
+    ]).then(([h, extra]) => {
       setAttempts(h.attempts);
       setChecks(h.checks);
+      const extras = Array.isArray(extra.exercises) ? extra.exercises : [];
+      setPool(extras.filter((item: DrillExercise) => item?.id && item?.title && item?.required));
       setLoaded(true);
     });
   }, [user?.id]);
 
-  const rec = recommendUnused(attempts);
+  const rec = recommendUnused(attempts, pool);
   const sk = skillProfile(attempts);
   const range = recentRange(attempts);
   const lastCheck = checks.at(-1);
@@ -41,7 +52,11 @@ export default function ReadingHub() {
 
   return (
     <article className="lesson-body wide rd-page">
-      <h1>Read the Required</h1>
+      <p>
+        <Link href="/student/dashboard">← Student dashboard</Link>
+      </p>
+      <p className="kicker">Reading & RTFQ Tool</p>
+      <h1>Practice more reading and RTFQ questions</h1>
       <p>
         A ten-minute drill on the two skills that cost the most marks: answering exactly what the required asks (RTFQ), and using the marks
         the case hands you (Buried Treasure). You read a short case at exam pace and index it with margin notes, show you absorbed what it
@@ -91,7 +106,13 @@ export default function ReadingHub() {
               <p className="rd-note">{rec.reason}</p>
             </>
           ) : (
-            <p className="muted">You have used every reading exercise. Message your coach if you need one reset.</p>
+            <p className="muted">
+              {!pool.length
+                ? "Extra practice questions will appear here when your coach adds them."
+                : bypass && !unlockedByTask2
+                  ? "Coach view: Task 2 submission is not required on this account."
+                  : "You have used every extra practice question. Message your coach if you need one reset."}
+            </p>
           )}
         </section>
 
@@ -113,8 +134,9 @@ export default function ReadingHub() {
         ) : null}
 
         <section className="rd-stack">
-          <span className="rd-eyebrow">All exercises</span>
-          {EXERCISES.map((ex) => (
+          <span className="rd-eyebrow">Extra practice</span>
+          {!pool.length ? <p className="muted">No extra questions published yet.</p> : null}
+          {pool.map((ex) => (
             <div key={ex.id} className={`rd-sheet rd-row${rec?.exercise.id === ex.id ? " rd-rec" : ""}`}>
               <div>
                 <b>{ex.title}</b>
