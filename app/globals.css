@@ -5382,8 +5382,22 @@ a.planner-video-btn:visited:hover {
   border-top: 1px solid var(--line);
 }
 
-.course-outline-chapter.collapsed .course-outline-list {
+.course-outline-chapter.collapsed .course-outline-list,
+.course-outline-chapter:not([open]) .course-outline-list {
   display: none !important;
+}
+
+.course-outline-chapter > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.course-outline-chapter > summary::-webkit-details-marker {
+  display: none;
+}
+
+.course-outline-chapter[open] > summary .chapter-caret {
+  transform: rotate(90deg);
 }
 
 .course-outline-chapter .course-outline-toggle {

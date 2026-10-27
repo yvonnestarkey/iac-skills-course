@@ -342,13 +342,17 @@ export default function ContentManager() {
         return { ...chapter, lessons: lessonIds.map((id) => map.get(id)).filter(Boolean) as ManagedLesson[] };
       })
     );
+    setBusy(true);
     const result = await saveChapterOrder(chapterId, lessonIds);
     if (!result.ok) {
+      setBusy(false);
       setStatus({ kind: "warn", text: result.error || "Could not save the new order." });
       await loadBoard();
       return;
     }
     invalidateCourseOutline();
+    await loadBoard();
+    setBusy(false);
     setStatus({ kind: "ok", text: "Lesson order saved." });
   };
 
@@ -982,16 +986,17 @@ export default function ContentManager() {
           <CourseOutlineBoard
             chapters={board}
             busy={busy}
+            orderMessage={status}
             onDuplicate={(id) => void duplicate(id)}
             onRemove={removeLesson}
             onEdit={startEdit}
             onMove={(lessonId, fromChapterId, toChapterId, toIndex) =>
               void moveLesson(lessonId, fromChapterId, toChapterId, toIndex)
             }
-            onReorder={(chapterId, lessonIds) => void reorder(chapterId, lessonIds)}
+            onReorder={reorder}
           />
         ) : (
-          <p className="empty">Load lessons from Supabase to duplicate, drag, and edit the live course outline.</p>
+          <p className="empty">Load lessons from Supabase to edit the live course outline.</p>
         )}
       </CoachToolPanel>
     </>

@@ -35,3 +35,5 @@ $$;
 
 revoke all on function public.reorder_chapter_lessons(text, text[]) from public;
 grant execute on function public.reorder_chapter_lessons(text, text[]) to service_role, authenticated;
+
+notify pgrst, 'reload schema';

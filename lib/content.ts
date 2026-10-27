@@ -451,9 +451,14 @@ export async function writeChapterOrder(client: SupabaseClient, chapterId: strin
   const rpc = await client.rpc("reorder_chapter_lessons", { p_chapter_id: chapterId, p_lesson_ids: lessonIds });
   if (!rpc.error) return { ok: true };
 
+  const missing = /could not find the function|PGRST202|schema cache/i.test(`${rpc.error.message} ${rpc.error.code}`);
+  if (!missing) return { ok: false, error: describe(rpc.error) };
+
+  const stamp = Date.now();
   for (const [index, id] of lessonIds.entries()) {
-    const parked = await client.from("lessons").update({ position: -10000 - index }).eq("id", id).select("id");
+    const parked = await client.from("lessons").update({ position: stamp + index }).eq("id", id).select("id");
     if (parked.error) return { ok: false, error: describe(parked.error) };
+    if (parked.data && parked.data.length === 0) return { ok: false, error: "That lesson was not updated in Supabase." };
   }
   for (const [index, id] of lessonIds.entries()) {
     const placed = await client

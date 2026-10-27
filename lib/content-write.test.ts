@@ -41,17 +41,18 @@ test("coach lesson saves go through a staff service-role route", () => {
   assert.match(manager, /Save as draft/);
 });
 
-test("course outline chapters start collapsed and only the handle is draggable", () => {
+test("course outline chapters start collapsed and Up/Down save order", () => {
   const board = readFileSync(resolve("components/coach/CourseOutlineBoard.tsx"), "utf8");
   const manager = readFileSync(resolve("components/coach/ContentManager.tsx"), "utf8");
-  assert.match(board, /openChapters\[chapterId\] === true/);
+  const sql = readFileSync(resolve("supabase/reorder-chapter-lessons.sql"), "utf8");
+  assert.match(board, /<details className="course-outline-chapter"/);
   assert.match(board, /Chapters start closed/);
-  assert.match(board, /draggable\s*\n\s*onDragStart/);
-  assert.doesNotMatch(board, /<li\b[^>]*\bdraggable/);
+  assert.doesNotMatch(board, /\bdraggable\b/);
   assert.match(board, /shiftLesson/);
   assert.match(manager, /outline: true/);
   const writer = readFileSync(resolve("lib/content.ts"), "utf8");
   assert.match(writer, /reorder_chapter_lessons/);
+  assert.match(sql, /reload schema/);
 });
 
 test("draft SQL can set the flag after a lesson save", () => {
