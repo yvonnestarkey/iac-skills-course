@@ -5373,8 +5373,15 @@ a.planner-video-btn:visited:hover {
   border-top: 1px solid var(--line);
 }
 
-.course-outline-toggle {
-  padding: 8px 2px;
+.course-outline-chapter.collapsed .course-outline-list {
+  display: none !important;
+}
+
+.course-outline-chapter .course-outline-toggle {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  margin-bottom: 8px;
 }
 
 .course-outline-toggle h3 {

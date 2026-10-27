@@ -95,6 +95,7 @@ export default function CourseOutlineBoard({
 
   return (
     <div className="course-outline-board">
+      <p className="muted small">Chapters start closed. Click a chapter to see its lessons, then use Up or Down to move them.</p>
       <div className="course-outline-toolbar">
         <button className="ghost" type="button" onClick={() => setAllChapters(true)}>
           Expand all
@@ -111,11 +112,14 @@ export default function CourseOutlineBoard({
             className={`course-outline-chapter ${open ? "open" : "collapsed"}`}
             key={chapter.id}
             onDragOver={(event) => {
+              if (!open) return;
               event.preventDefault();
               event.dataTransfer.dropEffect = "move";
-              if (!open) setOpenChapters((current) => ({ ...current, [chapter.id]: true }));
             }}
-            onDrop={(event) => dropAt(event, chapter.id, chapter.lessons.length)}
+            onDrop={(event) => {
+              if (!open) return;
+              dropAt(event, chapter.id, chapter.lessons.length);
+            }}
           >
             <button
               className="chapter-toggle course-outline-toggle"
@@ -172,7 +176,7 @@ export default function CourseOutlineBoard({
                       </div>
                       <div className="course-outline-actions" onMouseDown={(event) => event.stopPropagation()}>
                         <button
-                          className="ghost"
+                          className="primary"
                           type="button"
                           disabled={busy || index === 0}
                           onClick={() => shiftLesson(chapter, index, -1)}
@@ -180,7 +184,7 @@ export default function CourseOutlineBoard({
                           Up
                         </button>
                         <button
-                          className="ghost"
+                          className="primary"
                           type="button"
                           disabled={busy || index === chapter.lessons.length - 1}
                           onClick={() => shiftLesson(chapter, index, 1)}

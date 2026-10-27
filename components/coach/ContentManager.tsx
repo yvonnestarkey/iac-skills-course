@@ -98,7 +98,9 @@ export default function ContentManager() {
   const [dripEnabled, setDripEnabled] = useState(false);
   const [dripForm, setDripForm] = useState<DripWrite>(emptyDripWrite());
   const [lessonDripId, setLessonDripId] = useState<string | null>(null);
-  const [openTools, setOpenTools] = useState<Partial<Record<"admin" | "lesson" | "reading" | "csv" | "outline", boolean>>>({});
+  const [openTools, setOpenTools] = useState<Partial<Record<"admin" | "lesson" | "reading" | "csv" | "outline", boolean>>>({
+    outline: true,
+  });
 
   const toggleTool = (id: "admin" | "lesson" | "reading" | "csv" | "outline") => {
     setOpenTools((current) => ({ ...current, [id]: !current[id] }));
@@ -347,6 +349,7 @@ export default function ContentManager() {
       return;
     }
     invalidateCourseOutline();
+    setStatus({ kind: "ok", text: "Lesson order saved." });
   };
 
   const moveLesson = async (lessonId: string, fromChapterId: string, toChapterId: string, toIndex?: number) => {
@@ -971,7 +974,7 @@ export default function ContentManager() {
 
       <CoachToolPanel
         title="Course content"
-        description="Duplicate a lesson to clone its video, reading, survey, and banner. Drag to reorder, or move it to another chapter."
+        description="Chapters start closed. Open one, then use Up or Down to move a lesson."
         open={Boolean(openTools.outline)}
         onToggle={() => toggleTool("outline")}
       >

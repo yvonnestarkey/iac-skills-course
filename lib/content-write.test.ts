@@ -43,12 +43,15 @@ test("coach lesson saves go through a staff service-role route", () => {
 
 test("course outline chapters start collapsed and only the handle is draggable", () => {
   const board = readFileSync(resolve("components/coach/CourseOutlineBoard.tsx"), "utf8");
+  const manager = readFileSync(resolve("components/coach/ContentManager.tsx"), "utf8");
   assert.match(board, /openChapters\[chapterId\] === true/);
+  assert.match(board, /Chapters start closed/);
   assert.match(board, /draggable\s*\n\s*onDragStart/);
   assert.doesNotMatch(board, /<li\b[^>]*\bdraggable/);
   assert.match(board, /shiftLesson/);
+  assert.match(manager, /outline: true/);
   const writer = readFileSync(resolve("lib/content.ts"), "utf8");
-  assert.match(writer, /10000 \+ index/);
+  assert.match(writer, /reorder_chapter_lessons/);
 });
 
 test("draft SQL can set the flag after a lesson save", () => {

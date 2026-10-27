@@ -448,15 +448,12 @@ export async function writeLessonDelete(client: SupabaseClient, id: string): Pro
 }
 
 export async function writeChapterOrder(client: SupabaseClient, chapterId: string, lessonIds: string[]): Promise<DbResult> {
-  // Two passes so a unique (chapter_id, position) constraint cannot reject a swap.
+  const rpc = await client.rpc("reorder_chapter_lessons", { p_chapter_id: chapterId, p_lesson_ids: lessonIds });
+  if (!rpc.error) return { ok: true };
+
   for (const [index, id] of lessonIds.entries()) {
-    const parked = await client
-      .from("lessons")
-      .update({ chapter_id: chapterId, position: 10000 + index })
-      .eq("id", id)
-      .select("id");
+    const parked = await client.from("lessons").update({ position: -10000 - index }).eq("id", id).select("id");
     if (parked.error) return { ok: false, error: describe(parked.error) };
-    if (parked.data && parked.data.length === 0) return { ok: false, error: "That lesson was not updated in Supabase." };
   }
   for (const [index, id] of lessonIds.entries()) {
     const placed = await client
