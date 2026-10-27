@@ -7807,6 +7807,11 @@ a.planner-video-btn:visited:hover {
   .rd-practice-form { grid-template-columns: 1fr; }
 }
 
+.variance-bakery-wrap {
+  margin: 20px 0 8px;
+  min-height: 720px;
+}
+
 .variance-bakery-frame {
   display: block;
   width: 100%;

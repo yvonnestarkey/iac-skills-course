@@ -20,8 +20,11 @@ test("Variance Bakery is a lesson tool with branded static HTML", () => {
   assert.match(embed, /\/tools\/variance-bakery\.html/);
   assert.match(embed, /variance-bakery:height/);
 
-  const player = readFileSync(resolve("components/reading/LessonTool.tsx"), "utf8");
+  const player = readFileSync(resolve("components/student/StudentPlayer.tsx"), "utf8");
   assert.match(player, /VarianceBakeryEmbed/);
+  assert.match(player, /showVarianceBakery/);
+  const lessonTool = readFileSync(resolve("components/reading/LessonTool.tsx"), "utf8");
+  assert.match(lessonTool, /VarianceBakeryEmbed/);
 
   const sql = readFileSync(resolve("supabase/variance-bakery-lesson.sql"), "utf8");
   assert.match(sql, /ch10-l2/);

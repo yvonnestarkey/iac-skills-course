@@ -33,12 +33,14 @@ export default function VarianceBakeryEmbed({ onComplete }: { onComplete?: () =>
   }, [onComplete]);
 
   return (
-    <iframe
-      ref={frameRef}
-      className="variance-bakery-frame"
-      src={SRC}
-      title="Variance Bakery"
-      style={{ height }}
-    />
+    <div className="variance-bakery-wrap">
+      <iframe
+        ref={frameRef}
+        className="variance-bakery-frame"
+        src={SRC}
+        title="Variance Bakery"
+        style={{ height }}
+      />
+    </div>
   );
 }
