@@ -7640,14 +7640,15 @@ a.planner-video-btn:visited:hover {
 .rd-eyebrow { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 .rd-note { border-left: 3px solid var(--medium); background: var(--paper); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 0; }
 .rd-signal { border-left: 3px solid var(--rd-bad); background: var(--rd-bad-soft); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 0; }
-.rd-strip { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 10px 12px; margin: 0 0 8px; border: 1px solid #d5d8d7; border-radius: 8px; position: sticky; top: 0; background: #e6e8e7; z-index: 3; }
-.rd-steps { display: flex; gap: 4px; flex-wrap: wrap; }
-.rd-steps span { font-size: 12px; padding: 2px 8px; border-radius: 99px; border: 1px solid transparent; background: #d8dcdb; color: #5c6360; pointer-events: none; }
-.rd-steps span.on { background: #c9cdcb; color: #2f3331; font-weight: 600; }
+.rd-strip { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 12px; border: 0; border-radius: 0; position: sticky; top: 0; background: #d9dcd9; z-index: 3; }
+.rd-steps { display: flex; gap: 0; flex-wrap: wrap; align-items: center; }
+.rd-steps span { font-size: 12.5px; padding: 0 10px 0 0; margin-right: 10px; border: 0; border-radius: 0; background: none; color: #5c6360; pointer-events: none; cursor: default; }
+.rd-steps span:not(:last-child) { border-right: 1px solid #b7bbb8; }
+.rd-steps span.on { background: none; color: #2f3331; font-weight: 700; }
 .rd-steps span.done { color: #3d4240; }
-.rd-clock { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; font-family: ui-monospace, Menlo, Consolas, monospace; border: 1px solid #d5d8d7; border-radius: 6px; padding: 2px 8px; background: #d8dcdb; }
-.rd-clock-label { font-family: var(--sans); font-size: 12px; font-weight: 600; color: #5c6360; }
-.rd-clock.over { color: var(--rd-bad); border-color: var(--rd-bad); }
+.rd-clock { margin-left: auto; display: inline-flex; align-items: baseline; gap: 8px; font-variant-numeric: tabular-nums; font-family: ui-monospace, Menlo, Consolas, monospace; border: 0; border-radius: 0; padding: 0; background: none; color: #2f3331; }
+.rd-clock-label { font-family: var(--sans); font-size: 12.5px; font-weight: 700; color: #5c6360; }
+.rd-clock.over { color: var(--rd-bad); border-color: transparent; }
 @media (max-width: 560px) { .rd-steps span:not(.on) { display: none; } }
 
 .rd-required { border: 2px solid var(--dark); border-radius: 8px; padding: 12px 16px; background: var(--card); display: flex; gap: 12px; align-items: flex-start; font-family: var(--serif); font-size: 16.5px; line-height: 1.6; }
