@@ -41,11 +41,16 @@ test("a complete draft becomes a drill exercise and round-trips", () => {
 
 test("Reading & RTFQ practice is on the dashboard, hub, and course creator", () => {
   const dashboard = readFileSync(resolve("components/student/StudentDashboard.tsx"), "utf8");
+  const nav = readFileSync(resolve("components/student/StudentCourseNav.tsx"), "utf8");
+  const hub = readFileSync(resolve("components/reading/ReadingHub.tsx"), "utf8");
   const creator = readFileSync(resolve("components/coach/ContentManager.tsx"), "utf8");
   const sql = readFileSync(resolve("supabase/reading-practice-exercises.sql"), "utf8");
   const gate = readFileSync(resolve("components/reading/ReadingToolGate.tsx"), "utf8");
   assert.match(dashboard, /Reading &amp; RTFQ Tool/);
+  assert.match(dashboard, /student-hub-card-featured/);
   assert.match(dashboard, /hasTask2Submission/);
+  assert.match(nav, /Reading & RTFQ Tool/);
+  assert.match(hub, /EXERCISES/);
   assert.match(creator, /Reading & RTFQ practice/);
   assert.match(creator, /ReadingPracticeManager/);
   assert.match(sql, /reading_practice_exercises/);

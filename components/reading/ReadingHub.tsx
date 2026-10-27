@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
+  EXERCISES,
   SKILLS,
   examReadMinutes,
   paceBand,
@@ -35,13 +36,22 @@ export default function ReadingHub() {
     Promise.all([
       fetchReadingHistory(user.id),
       fetch("/api/reading/exercises").then((response) => response.json().catch(() => ({}))),
-    ]).then(([h, extra]) => {
-      setAttempts(h.attempts);
-      setChecks(h.checks);
-      const extras = Array.isArray(extra.exercises) ? extra.exercises : [];
-      setPool(extras.filter((item: DrillExercise) => item?.id && item?.title && item?.required));
-      setLoaded(true);
-    });
+    ])
+      .then(([h, extra]) => {
+        setAttempts(h.attempts);
+        setChecks(h.checks);
+        const extras = Array.isArray(extra.exercises) ? extra.exercises : [];
+        const seen = new Set(EXERCISES.map((item) => item.id));
+        setPool([
+          ...EXERCISES,
+          ...extras.filter((item: DrillExercise) => item?.id && item?.title && item?.required && !seen.has(item.id)),
+        ]);
+        setLoaded(true);
+      })
+      .catch(() => {
+        setPool(EXERCISES);
+        setLoaded(true);
+      });
   }, [user?.id]);
 
   const rec = recommendUnused(attempts, pool);
@@ -107,11 +117,9 @@ export default function ReadingHub() {
             </>
           ) : (
             <p className="muted">
-              {!pool.length
-                ? "Extra practice questions will appear here when your coach adds them."
-                : bypass && !unlockedByTask2
-                  ? "Coach view: Task 2 submission is not required on this account."
-                  : "You have used every extra practice question. Message your coach if you need one reset."}
+              {bypass && !unlockedByTask2
+                ? "Coach view: Task 2 submission is not required on this account."
+                : "You have used every practice question. Message your coach if you need one reset."}
             </p>
           )}
         </section>
@@ -134,8 +142,7 @@ export default function ReadingHub() {
         ) : null}
 
         <section className="rd-stack">
-          <span className="rd-eyebrow">Extra practice</span>
-          {!pool.length ? <p className="muted">No extra questions published yet.</p> : null}
+          <span className="rd-eyebrow">Practice bank</span>
           {pool.map((ex) => (
             <div key={ex.id} className={`rd-sheet rd-row${rec?.exercise.id === ex.id ? " rd-rec" : ""}`}>
               <div>

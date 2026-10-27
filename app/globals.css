@@ -4088,6 +4088,15 @@ a.student-account-link {
   color: var(--dark);
 }
 
+.student-hub-card-featured.is-locked {
+  background: #4a1630;
+  border-color: #4a1630;
+}
+
+.student-hub-card-featured.is-locked:hover {
+  border-color: var(--medium);
+}
+
 .dashboard-banner-wrap {
   margin: 0 0 16px;
 }

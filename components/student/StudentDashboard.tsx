@@ -94,18 +94,18 @@ export default function StudentDashboard() {
       ) : null}
 
       <nav className="student-hub" aria-label="Student shortcuts">
-        <Link href="/student/evaluator" className="student-hub-card">
-          <strong>Script Evaluator</strong>
-          <p>After Task 1, choose a sitting, print one BMCR for all three papers, then upload that worksheet with Paper 1, Paper 2, Paper 3, and the marking report.</p>
-        </Link>
-        <Link href="/student/reading" className={`student-hub-card${readingUnlocked ? "" : " is-locked"}`}>
+        <Link href="/student/reading" className={`student-hub-card student-hub-card-featured${readingUnlocked ? "" : " is-locked"}`}>
           <strong>Reading &amp; RTFQ Tool</strong>
           <p>
             {readingUnlocked
-              ? "Practice more reading and RTFQ questions after the first ones in Task 2."
-              : "Do the first ones in Task 2. This hub unlocks after you submit that assignment."}
+              ? "Practice reading pace, RTFQ, and Buried Treasure. First drills stay in Task 2; use this hub for more."
+              : "First drills stay in Task 2. This hub unlocks after you submit that assignment."}
           </p>
           {readingUnlocked ? null : <span className="pill">Unlocks after Task 2</span>}
+        </Link>
+        <Link href="/student/evaluator" className="student-hub-card">
+          <strong>Script Evaluator</strong>
+          <p>After Task 1, choose a sitting, print one BMCR for all three papers, then upload that worksheet with Paper 1, Paper 2, Paper 3, and the marking report.</p>
         </Link>
         {ASK_QUESTION_ENABLED ? (
           <button type="button" className="student-hub-card" onClick={() => window.dispatchEvent(new Event("open-ask-question"))}>
