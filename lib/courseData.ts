@@ -38,7 +38,7 @@ const loadCachedOutline = cache(
  */
 export const getLessonData = cache(async (
   lessonId: string,
-  options?: { studentId?: string | null; overrideLocks?: boolean }
+  options?: { studentId?: string | null; overrideLocks?: boolean; skipProgression?: boolean }
 ): Promise<LessonData> => {
   const [user, outline] = await Promise.all([getRequestUser(), loadCachedOutline()]);
   const staffView = await getStaffCourseView();
@@ -60,7 +60,7 @@ export const getLessonData = cache(async (
     overrideLocks: staffOverride,
     staffView,
   });
-  const skipProgression = staffOverride;
+  const skipProgression = staffOverride || Boolean(options?.skipProgression);
   const pedagogical =
     user && !skipProgression
       ? await getLessonAccess(user.id, lessonId, { outline: visibleOutline, chapterId: lesson.chapterId })

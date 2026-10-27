@@ -9,7 +9,7 @@ import { useStudentSession } from "@/lib/student-session";
 import { useStudentNav } from "@/lib/student-nav";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
-const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator", "dashboard", "account", "bmcr", "volume-accuracy", "buried-treasure", "reading"]);
+const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator", "dashboard", "account", "bmcr", "volume-accuracy", "buried-treasure", "reading", "study-clinic"]);
 
 export default function StudentCourseNav() {
   const { completed, submissions, surveyReviews } = useStudentSession();
@@ -24,6 +24,7 @@ export default function StudentCourseNav() {
   const segment = pathname.startsWith(prefix) ? pathname.slice(prefix.length).split("/")[0] : null;
   const activeLessonId = segment && !RESERVED.has(segment) ? segment : null;
   const onDashboard = pathname === basePath || pathname === "/student/dashboard";
+  const onStudyClinic = pathname.startsWith("/student/study-clinic");
   const onOverview = pathname === `${basePath}/overview`;
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
   const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
@@ -37,6 +38,9 @@ export default function StudentCourseNav() {
         <nav className="student-nav-buttons" aria-label="Student pages">
           <Link href={unlocked ? basePath : "/student/dashboard"} className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
             Student Dashboard
+          </Link>
+          <Link href="/student/study-clinic" className={`dash-link ${onStudyClinic ? "active" : ""}`} onClick={close}>
+            Study Clinic
           </Link>
           <Link href={`${basePath}/overview`} className={`dash-link ${onOverview ? "active" : ""}`} onClick={close}>
             Course Overview

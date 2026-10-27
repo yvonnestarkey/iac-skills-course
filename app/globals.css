@@ -3912,6 +3912,43 @@ a.student-account-link {
   text-decoration: none;
 }
 
+.study-clinic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.study-clinic-btn {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+  text-align: left;
+  text-decoration: none;
+}
+
+.study-clinic-btn:hover {
+  border-color: var(--link);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.study-clinic-btn strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 18px;
+}
+
+.study-clinic-btn .muted {
+  display: block;
+  margin-top: 4px;
+}
+
 .eval-exam-picker {
   display: grid;
   gap: 8px;
