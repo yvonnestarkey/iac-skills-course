@@ -39,7 +39,8 @@ export function StepStrip({ names, step, t0, countdownFrom, countdownStart }: {
           </span>
         ))}
       </div>
-      <span className={`rd-clock${over ? " over" : ""}`} aria-label="Clock">
+      <span className={`rd-clock${over ? " over" : ""}`} aria-label="Timer">
+        <span className="rd-clock-label">Timer</span>
         {label}
       </span>
     </div>
