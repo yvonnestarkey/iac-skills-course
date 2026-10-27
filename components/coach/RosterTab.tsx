@@ -49,7 +49,7 @@ interface Props {
   submissionCounts?: Record<string, number>;
   surveyCounts?: Record<string, number>;
   surveyTotal?: number;
-  onOpenProfile: (id: string) => void;
+  onOpenProfile: (id: string, hash?: string) => void;
 }
 
 interface RosterRow {
@@ -560,7 +560,7 @@ export default function RosterTab({
                     />
                   </td>
                   {visible.map((id) => (
-                    <td key={id}>{cellFor(id, row, row.submitted)}</td>
+                    <td key={id}>{cellFor(id, row, row.submitted, onOpenProfile)}</td>
                   ))}
                   <td className="row-go">Open profile →</td>
                 </tr>
@@ -577,7 +577,12 @@ export default function RosterTab({
   );
 }
 
-function cellFor(id: RosterColumnId, row: RosterRow, gradedTotal: number) {
+function cellFor(
+  id: RosterColumnId,
+  row: RosterRow,
+  gradedTotal: number,
+  onOpenProfile: (id: string, hash?: string) => void
+) {
   const { student } = row;
   switch (id) {
     case "name":
@@ -627,7 +632,14 @@ function cellFor(id: RosterColumnId, row: RosterRow, gradedTotal: number) {
       return <span className="muted small">{student.struggleAreas || "—"}</span>;
     case "progress":
       return (
-        <>
+        <button
+          type="button"
+          className="activity-progress-link"
+          onClick={(event) => {
+            event.stopPropagation();
+            onOpenProfile(student.id, "#activity");
+          }}
+        >
           <div className="mini-bar">
             <span style={{ width: `${row.progressPct}%` }} />
           </div>
@@ -635,7 +647,7 @@ function cellFor(id: RosterColumnId, row: RosterRow, gradedTotal: number) {
             {row.progressDone} of {row.progressTotal} · {row.progressPct}%
             {row.openedCount ? ` · ${row.openedCount} opened` : ""}
           </span>
-        </>
+        </button>
       );
     case "lastActive":
       return <span className={`muted small ${row.stale ? "stale" : ""}`}>{lastActiveLabel(student)}</span>;

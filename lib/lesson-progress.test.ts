@@ -2,11 +2,13 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   VIDEO_COMPLETE_PERCENT,
+  activityLevel,
   assembleStudentProgress,
   buildLessonEngagement,
   describeProgressReasons,
   watchedEnough,
 } from "./lesson-progress";
+import { activityColumnsFromOutline, currentActivityPosition } from "./activity-grid";
 
 test("80 percent watched counts as complete", () => {
   assert.equal(watchedEnough(79), false);
@@ -54,4 +56,41 @@ test("coach roster merges marked complete, watch, and submissions", () => {
   assert.equal(bundle.byUser.anna.completed.includes("gone"), false);
   assert.deepEqual(bundle.byUser.ben.completed, ["ch1-l1"]);
   assert.deepEqual(bundle.byUser.ben.opened, ["ch1-l1"]);
+});
+
+test("activity colours treat a brief open as red and mid-watch as yellow", () => {
+  assert.equal(activityLevel(undefined), "none");
+  assert.equal(
+    activityLevel(buildLessonEngagement("ch1-l1", { user_id: "u1", lesson_id: "ch1-l1", completed: false, video_percent: 8 })),
+    "click"
+  );
+  assert.equal(
+    activityLevel(buildLessonEngagement("ch1-l1", { user_id: "u1", lesson_id: "ch1-l1", completed: false, video_percent: 52 })),
+    "partial"
+  );
+  assert.equal(
+    activityLevel(buildLessonEngagement("ch1-l1", { user_id: "u1", lesson_id: "ch1-l1", completed: true })),
+    "complete"
+  );
+});
+
+test("current activity is the next incomplete lesson after the last complete one", () => {
+  const columns = activityColumnsFromOutline([
+    {
+      id: "ch1",
+      title: "S1 Start",
+      lessons: [
+        { id: "a", title: "One", type: "video" },
+        { id: "b", title: "Two", type: "video" },
+        { id: "c", title: "Three", type: "video" },
+      ],
+    },
+  ]);
+  const position = currentActivityPosition(columns, [
+    buildLessonEngagement("a", { user_id: "u1", lesson_id: "a", completed: true }),
+    buildLessonEngagement("b", { user_id: "u1", lesson_id: "b", completed: false, video_percent: 12 }),
+  ]);
+  assert.equal(position.last?.id, "b");
+  assert.equal(position.current?.id, "b");
+  assert.equal(position.current?.chapterLabel, "S1");
 });

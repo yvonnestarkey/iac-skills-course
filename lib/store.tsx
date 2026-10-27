@@ -63,7 +63,7 @@ function loadSession(): Session | null {
 /** Dashboard filters live in the store so they survive a trip into a profile. */
 export interface CoachUi {
   cohort: string;
-  tab: "assignments" | "surveys" | "roster" | "bmcr";
+  tab: "assignments" | "surveys" | "roster" | "activity" | "bmcr";
   filter: "all" | "missing" | "questions" | "submitted";
   formKind: "all" | "assignments" | "surveys";
   assignmentId: string;

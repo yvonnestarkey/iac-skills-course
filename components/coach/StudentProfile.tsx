@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import ActivityGrid from "@/components/coach/ActivityGrid";
 import AccountActivationBadge from "@/components/coach/AccountActivationBadge";
 import CourseAccessBadge from "@/components/coach/CourseAccessBadge";
 import SetTemporaryPasswordPanel from "@/components/coach/SetTemporaryPasswordPanel";
@@ -11,14 +12,21 @@ import ReadingAttemptsPanel from "@/components/coach/ReadingAttemptsPanel";
 import ScriptEvaluationsPanel from "@/components/coach/ScriptEvaluationsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { accountStatusLabel } from "@/lib/student-registration";
-import { describeProgressReasons, type LessonEngagement } from "@/lib/lesson-progress";
+import { activityColumnsFromOutline, currentActivityPosition } from "@/lib/activity-grid";
+import {
+  activityLevel,
+  activityLevelLabel,
+  describeProgressReasons,
+  engagementByLesson,
+  type LessonEngagement,
+} from "@/lib/lesson-progress";
 import { fetchCoachProgressBundle, fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
 import { cohortName, initials, lastActiveLabel } from "@/lib/course";
 import { formatSastDateTime, longDate, parseISO, today } from "@/lib/dates";
 import { completionProgress } from "@/lib/metrics";
 import { planCapacity, planStatus, slotLabel } from "@/lib/planner";
-import { fetchCourseOutline } from "@/lib/student-lesson";
+import { fetchCourseOutline, type OutlineChapter } from "@/lib/student-lesson";
 import { fetchStudentSubmissions, type StudentSubmission } from "@/lib/student-submissions";
 import { useStore } from "@/lib/store";
 
@@ -32,8 +40,10 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const [submissions, setSubmissions] = useState<StudentSubmission[]>([]);
   const [lessonTitles, setLessonTitles] = useState<Record<string, string>>({});
   const [engagement, setEngagement] = useState<LessonEngagement[]>([]);
+  const [outline, setOutline] = useState<OutlineChapter[]>([]);
   const [setupBusy, setSetupBusy] = useState(false);
   const [setupNotice, setSetupNotice] = useState("");
+  const [activityOpen, setActivityOpen] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -58,6 +68,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         });
       });
       setLessonTitles(titles);
+      setOutline(outline);
       const rank = new Map(order.map((id, index) => [id, index]));
       const rows = [...(progress.byUser[studentId]?.lessons || [])].sort((a, b) => {
         return (rank.get(a.lessonId) ?? 9999) - (rank.get(b.lessonId) ?? 9999);
@@ -69,6 +80,34 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       cancelled = true;
     };
   }, [studentId]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash === "#activity") {
+      setActivityOpen(true);
+      window.requestAnimationFrame(() => document.getElementById("activity")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    }
+  }, [loadingLive, studentId]);
+
+  const columns = useMemo(() => activityColumnsFromOutline(outline), [outline]);
+  const position = useMemo(() => currentActivityPosition(columns, engagement), [columns, engagement]);
+  const chapterGroups = useMemo(() => {
+    const groups: { id: string; title: string; phaseLabel: string; columns: typeof columns }[] = [];
+    columns.forEach((column) => {
+      const last = groups[groups.length - 1];
+      if (last && last.id === column.chapterId) last.columns.push(column);
+      else {
+        groups.push({
+          id: column.chapterId,
+          title: column.chapterTitle,
+          phaseLabel: column.phaseLabel,
+          columns: [column],
+        });
+      }
+    });
+    return groups;
+  }, [columns]);
+  const byLesson = useMemo(() => engagementByLesson(engagement), [engagement]);
 
   const student = live;
   if (loadingLive) {
@@ -182,15 +221,20 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
 
       <SetTemporaryPasswordPanel userId={student.id} studentName={student.name} />
 
-      <section className="card">
+      <section className="card" id="activity">
         <div className="panel-head">
-          <div>
-            <h2>Progress</h2>
-            <p className="muted small">
-              {p.done} of {p.total} lessons complete · {openedCount} opened
-            </p>
-          </div>
-          <span className="score-chip">{p.pct}%</span>
+          <button type="button" className="activity-progress-toggle" onClick={() => setActivityOpen((open) => !open)}>
+            <div>
+              <h2>Progress</h2>
+              <p className="muted small">
+                {p.done} of {p.total} lessons complete · {openedCount} opened
+                {position.current
+                  ? ` · currently on ${position.current.chapterTitle} · ${position.current.lessonLabel} ${position.current.title}`
+                  : ""}
+              </p>
+            </div>
+            <span className="score-chip">{p.pct}%</span>
+          </button>
         </div>
         <div className="progress-wide">
           <span style={{ width: `${p.pct}%` }} />
@@ -204,39 +248,70 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           </span>
           <span>{notStarted} not started</span>
         </div>
-        {engagement.length ? (
-          <div className="progress-report">
-            <table>
-              <thead>
-                <tr>
-                  <th>Lesson</th>
-                  <th>Opened</th>
-                  <th>Watch</th>
-                  <th>Evidence</th>
-                </tr>
-              </thead>
-              <tbody>
-                {engagement.map((item) => (
-                  <tr key={item.lessonId}>
-                    <td>
-                      <strong>{lessonTitles[item.lessonId] || item.lessonId}</strong>
-                      {item.completed ? <span className="badge ok">Complete</span> : <span className="badge">Opened</span>}
-                    </td>
-                    <td>{item.lastOpenedAt ? formatSastDateTime(item.lastOpenedAt) : item.opened ? "Yes" : "—"}</td>
-                    <td>{item.videoPercent ? `${item.videoPercent}%` : "—"}</td>
-                    <td>{describeProgressReasons(item.reasons)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {openedOnly.length ? (
-              <p className="muted small">
-                {openedOnly.length} lesson{openedOnly.length === 1 ? "" : "s"} opened but not yet watched, submitted, or marked complete.
-              </p>
-            ) : null}
-          </div>
+        {activityOpen ? (
+          <>
+            <p className="activity-here">
+              {position.current
+                ? `Currently on ${position.current.phaseLabel} · ${position.current.chapterTitle} · ${position.current.title}.`
+                : "No lesson activity recorded yet."}
+              {position.lastItem?.lastOpenedAt
+                ? ` Last activity ${formatSastDateTime(position.lastItem.lastOpenedAt)}.`
+                : ""}
+            </p>
+            <ActivityGrid
+              columns={columns}
+              rows={[{ student, byLesson }]}
+              selectable={false}
+            />
+            <div className="progress-report">
+              {chapterGroups.map((group) => (
+                <div key={group.id} className="activity-chapter-block">
+                  <h3>
+                    {group.phaseLabel} · {group.title}
+                  </h3>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Lesson</th>
+                        <th>Date</th>
+                        <th>Watched</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.columns.map((column) => {
+                        const item = byLesson[column.id];
+                        const level = activityLevel(item);
+                        return (
+                          <tr key={column.id}>
+                            <td>
+                              <strong>
+                                {column.lessonLabel} · {column.title}
+                              </strong>
+                              <span className={`badge ${level === "complete" ? "ok" : level === "none" ? "" : "warn"}`}>
+                                {activityLevelLabel(level)}
+                              </span>
+                            </td>
+                            <td>{item?.lastOpenedAt ? formatSastDateTime(item.lastOpenedAt) : "—"}</td>
+                            <td>{item?.videoPercent ? `${item.videoPercent}%` : "—"}</td>
+                            <td>{item ? describeProgressReasons(item.reasons) : "Not started"}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              ))}
+              {openedOnly.length ? (
+                <p className="muted small">
+                  {openedOnly.length} lesson{openedOnly.length === 1 ? "" : "s"} opened but not yet watched, submitted, or
+                  marked complete.
+                </p>
+              ) : null}
+            </div>
+          </>
         ) : (
-          <p className="empty">No lesson opens, watch progress, or submissions recorded yet.</p>
+          <p className="muted small">Click Progress to open the lesson-by-lesson activity report.</p>
         )}
       </section>
 

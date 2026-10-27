@@ -1,6 +1,9 @@
 /** Shared rules for lesson opens, video watch, submissions, and coach completion. */
 
 export const VIDEO_COMPLETE_PERCENT = 80;
+export const ACTIVITY_PARTIAL_PERCENT = 40;
+
+export type ActivityLevel = "none" | "click" | "partial" | "complete";
 
 export type ProgressReason = "marked" | "watched" | "submitted";
 
@@ -147,4 +150,26 @@ export function assembleStudentProgress(input: {
 
 export function emptyStudentProgress(): StudentProgressView {
   return { completed: [], opened: [], lessons: [] };
+}
+
+export function activityLevel(item?: LessonEngagement | null): ActivityLevel {
+  if (!item?.opened) return "none";
+  if (item.completed) return "complete";
+  if (item.videoPercent >= ACTIVITY_PARTIAL_PERCENT) return "partial";
+  return "click";
+}
+
+export function activityLevelLabel(level: ActivityLevel): string {
+  if (level === "complete") return "Complete";
+  if (level === "partial") return "Partial";
+  if (level === "click") return "Opened briefly";
+  return "Not started";
+}
+
+export function engagementByLesson(lessons: LessonEngagement[] | undefined): Record<string, LessonEngagement> {
+  const map: Record<string, LessonEngagement> = {};
+  (lessons || []).forEach((item) => {
+    map[item.lessonId] = item;
+  });
+  return map;
 }

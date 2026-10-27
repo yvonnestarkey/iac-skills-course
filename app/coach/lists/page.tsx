@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { COURSE_ACCESS_FILTERS, filterStudentsByCourseAccess, type CourseAccessFilter } from "@/lib/course-access";
+import ActivityTab from "@/components/coach/ActivityTab";
 import AssignmentsTab from "@/components/coach/AssignmentsTab";
 import BmcrAnalyticsTab from "@/components/coach/BmcrAnalyticsTab";
 import RosterTab from "@/components/coach/RosterTab";
@@ -14,7 +15,9 @@ import { fetchLiveAssignmentLessons } from "@/lib/content";
 import { cohortName, unansweredQuestion } from "@/lib/course";
 import { fetchCustomSurveys, fetchSurveyResponseCountsByStudent, fetchSurveyResponsePairs } from "@/lib/custom-surveys";
 import { assignmentSubmissionsAwaitingFeedback, cohortStudents } from "@/lib/metrics";
-import { fetchLiveLessonIds, fetchRosterStudents } from "@/lib/profiles";
+import { type CoachProgressBundle } from "@/lib/lesson-progress";
+import { fetchCoachProgressBundle, fetchLiveLessonIds, fetchRosterStudents } from "@/lib/profiles";
+import { fetchCourseOutline, type OutlineChapter } from "@/lib/student-lesson";
 import { fetchAllSubmissionBodies, fetchSubmissionCountsByStudent, fetchSubmissionsAwaitingFeedback } from "@/lib/student-submissions";
 import { useStore } from "@/lib/store";
 import type { FlatLesson, Student } from "@/lib/types";
@@ -23,6 +26,7 @@ const TABS = [
   { id: "assignments", label: "Submissions", href: null },
   { id: "surveys", label: "Surveys", href: null },
   { id: "roster", label: "Student Roster", href: null },
+  { id: "activity", label: "Activity", href: null },
   { id: "add-student", label: "Add Student", href: "/coach/students/new" },
   { id: "bmcr", label: "BMCR Analytics", href: null },
   { id: "referrals", label: "Referrals", href: "/coach/referrals" },
@@ -50,6 +54,8 @@ export default function StudentListsPage() {
     ready: false,
     rows: null,
   });
+  const [outline, setOutline] = useState<OutlineChapter[]>([]);
+  const [progress, setProgress] = useState<CoachProgressBundle | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -64,6 +70,8 @@ export default function StudentListsPage() {
       fetchAllSubmissionBodies(),
       fetchSubmissionsAwaitingFeedback(),
       fetchAllBmcrEvaluations(),
+      fetchCourseOutline(),
+      fetchCoachProgressBundle(),
     ]).then(
       ([
         roster,
@@ -76,6 +84,8 @@ export default function StudentListsPage() {
         bodies,
         awaiting,
         bmcrRows,
+        courseOutline,
+        progressBundle,
       ]) => {
         if (cancelled) return;
         if (!roster.ok) {
@@ -100,6 +110,8 @@ export default function StudentListsPage() {
         );
         setAwaitingLive({ ready: true, rows: awaiting.ok ? awaiting.rows : [] });
         setEvaluations(bmcrRows);
+        setOutline(courseOutline);
+        setProgress(progressBundle);
         setAnalyticsReady(true);
         setRosterReady(true);
       }
@@ -124,7 +136,7 @@ export default function StudentListsPage() {
   const awaitingFeedback = awaitingLive.ready
     ? assignmentSubmissionsAwaitingFeedback(data, students, awaitingLive.rows)
     : { count: 0, students: [] };
-  const openProfile = (id: string) => router.push(`/coach/students/${id}`);
+  const openProfile = (id: string, hash = "") => router.push(`/coach/students/${id}${hash}`);
 
   const nameLinks = (list: Student[]) =>
     list.map((s, i) => (
@@ -216,7 +228,7 @@ export default function StudentListsPage() {
                 router.push(t.href);
                 return;
               }
-              setCoach({ tab: t.id as "assignments" | "surveys" | "roster" | "bmcr" });
+              setCoach({ tab: t.id as "assignments" | "surveys" | "roster" | "activity" | "bmcr" });
             }}
           >
             {t.label}
@@ -235,6 +247,8 @@ export default function StudentListsPage() {
           surveyTotal={surveyTotal}
           onOpenProfile={openProfile}
         />
+      ) : coach.tab === "activity" ? (
+        <ActivityTab students={students} outline={outline} progress={progress} onOpenProfile={openProfile} />
       ) : coach.tab === "bmcr" ? (
         <BmcrAnalyticsTab
           students={students}
