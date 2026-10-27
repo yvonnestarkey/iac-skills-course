@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  async headers() {
+    return [
+      {
+        source: "/coach/:path*",
+        headers: [
+          { key: "Cache-Control", value: "no-store, must-revalidate" },
+        ],
+      },
+    ];
+  },
   serverExternalPackages: ["openai", "pdfjs-dist", "@napi-rs/canvas"],
   outputFileTracingIncludes: {
     "/api/evaluate-script": ["./node_modules/pdfjs-dist/**/*"],

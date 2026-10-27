@@ -69,9 +69,10 @@ test("Reading & RTFQ practice is on the dashboard and in the Tools workspace", (
   const dashboard = readFileSync(resolve("components/student/StudentDashboard.tsx"), "utf8");
   const nav = readFileSync(resolve("components/student/StudentCourseNav.tsx"), "utf8");
   const hub = readFileSync(resolve("components/reading/ReadingHub.tsx"), "utf8");
-  const creator = readFileSync(resolve("app/coach/content/page.tsx"), "utf8");
+  const creator = readFileSync(resolve("app/coach/builder/page.tsx"), "utf8");
   const tools = readFileSync(resolve("app/coach/tools/page.tsx"), "utf8");
   const editor = readFileSync(resolve("app/coach/tools/reading/page.tsx"), "utf8");
+  const panel = readFileSync(resolve("components/coach/CourseToolsPanel.tsx"), "utf8");
   const manager = readFileSync(resolve("components/coach/ContentManager.tsx"), "utf8");
   const sql = readFileSync(resolve("supabase/reading-practice-exercises.sql"), "utf8");
   const gate = readFileSync(resolve("components/reading/ReadingToolGate.tsx"), "utf8");
@@ -81,7 +82,9 @@ test("Reading & RTFQ practice is on the dashboard and in the Tools workspace", (
   assert.match(dashboard, /hasTask2Submission/);
   assert.doesNotMatch(nav, /Reading & RTFQ Tool/);
   assert.match(hub, /mergePracticePool/);
-  assert.match(creator, /Edit tools/);
+  assert.match(creator, /CourseToolsPanel/);
+  assert.match(panel, /title="Tools"/);
+  assert.match(panel, /ReadingPracticeManager/);
   assert.match(tools, /COURSE_TOOLS/);
   assert.match(editor, /ReadingPracticeManager/);
   assert.doesNotMatch(manager, /ReadingPracticeManager/);
