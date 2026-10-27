@@ -170,7 +170,6 @@ button{font:inherit;cursor:pointer}
         <div class="eyebrow">Picture it first</div>
         <h2>Predict before you look</h2>
       </div>
-      <label class="toggle"><input type="checkbox" id="predictMode" checked> Hide the answers until I predict</label>
     </div>
     <p class="lede" id="predictLede" style="margin:0">Read the scenario. For each variance, decide: compared with standard, did this make costs higher (adverse), lower (favourable), or no different?</p>
     <div class="guesses" id="guesses"></div>
@@ -286,7 +285,6 @@ function syncInputs(){ for (const k of ["fp","sp","fq","sq","out"]) $(k).value =
 }));
 function resetGuesses(){ guesses = {price:null,mix:null,yield:null}; revealed = false; }
 
-$("predictMode").addEventListener("change", e => { predict = e.target.checked; resetGuesses(); render(); });
 $("reveal").addEventListener("click", () => {
   const c = calc(state);
   const wrong = wrongCount(c);
