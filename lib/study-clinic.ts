@@ -2,6 +2,18 @@ import { getSupabase } from "@/lib/supabase";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import { parseLessonVideos } from "@/lib/lesson-videos";
 
+/** Old Common Fixes chapter. Those videos now live in study_clinic, not the course. */
+export function isRetiredCourseChapter(chapter: { id?: string | null; title?: string | null }): boolean {
+  const id = String(chapter.id || "");
+  const title = (chapter.title || "").trim();
+  if (id === "ch11") return true;
+  return /common\s+(fixes|challenges)/i.test(title) || /fixes for common/i.test(title);
+}
+
+export function withoutRetiredChapters<T extends { id?: string | null; title?: string | null }>(chapters: T[] | null | undefined): T[] {
+  return (chapters || []).filter((chapter) => !isRetiredCourseChapter(chapter));
+}
+
 export type StudyClinicClip = {
   id: string;
   title: string;

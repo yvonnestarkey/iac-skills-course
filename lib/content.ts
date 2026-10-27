@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { isRetiredCourseChapter } from "./study-clinic";
 import { allLessons } from "./course";
 import { fetchSurveyAssignmentFlags } from "./custom-surveys";
 import { lessonMinutes } from "./lesson-duration";
@@ -605,7 +606,8 @@ export async function fetchManagedCourse(): Promise<DbResult<ManagedChapter[]>> 
         id,
         title: meta.get(id) || id,
         lessons: grouped.get(id) || [],
-      })),
+      }))
+      .filter((chapter) => !isRetiredCourseChapter(chapter)),
   };
 }
 

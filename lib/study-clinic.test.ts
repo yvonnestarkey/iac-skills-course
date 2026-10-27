@@ -2,7 +2,13 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { test } from "node:test";
-import { clipFromDraft, emptyClinicDraft, slugifyClinicId } from "./study-clinic";
+import {
+  clipFromDraft,
+  emptyClinicDraft,
+  isRetiredCourseChapter,
+  slugifyClinicId,
+  withoutRetiredChapters,
+} from "./study-clinic";
 
 test("Study Clinic drafts require a title and at least one video URL", () => {
   const draft = emptyClinicDraft();
@@ -13,6 +19,22 @@ test("Study Clinic drafts require a title and at least one video URL", () => {
   assert.equal(parsed.clip?.id, slugifyClinicId(draft.title));
   assert.equal(Array.isArray(parsed.clip?.video_urls) && parsed.clip.video_urls.length, 2);
   assert.equal(clipFromDraft(emptyClinicDraft()).error, "Title is required.");
+});
+
+test("the old Common Fixes chapter is retired from the course", () => {
+  assert.equal(isRetiredCourseChapter({ id: "ch11", title: "Fixes for Common Student Challenges" }), true);
+  assert.equal(isRetiredCourseChapter({ id: "ch-task1", title: "Common Fixes" }), true);
+  assert.equal(isRetiredCourseChapter({ id: "ch1", title: "Task 1" }), false);
+  assert.deepEqual(
+    withoutRetiredChapters([
+      { id: "ch1", title: "Task 1" },
+      { id: "ch11", title: "Fixes for Common Student Challenges" },
+    ]).map((chapter) => chapter.id),
+    ["ch1"]
+  );
+  const sql = readFileSync(resolve("supabase/remove-common-fixes-chapter.sql"), "utf8");
+  assert.match(sql, /delete from public.chapters/);
+  assert.match(sql, /chapter_id = 'ch11'/);
 });
 
 test("Study Clinic is a table, sidebar page, and Tools editor", () => {

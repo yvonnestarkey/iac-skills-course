@@ -13,6 +13,7 @@ import { withComputedDuration } from "./lesson-duration";
 import { getLessonPdfUrl } from "./getLessonPdf";
 import { staffRoleFromAppMetadata } from "./roles";
 import { SEED } from "./seed";
+import { isRetiredCourseChapter, withoutRetiredChapters } from "./study-clinic";
 import { getSupabase } from "./supabase";
 import { getServiceSupabase } from "./supabase-admin";
 import { firstLessonVideoUrl, parseLessonVideos, type LessonVideo } from "./lesson-videos";
@@ -94,7 +95,7 @@ export interface OutlineChapter {
 export type StudentUser = Pick<UserProfile, "id" | "email" | "role" | "full_name">;
 
 const OUTLINE_TTL_MS = 120_000;
-const OUTLINE_STORAGE_KEY = "iac-course-outline-v3";
+const OUTLINE_STORAGE_KEY = "iac-course-outline-v4";
 
 type OutlineCacheEntry = { at: number; data: OutlineChapter[] };
 let memoryOutline: OutlineCacheEntry | null = null;
@@ -294,7 +295,7 @@ export function courseDataFromOutline(outline: OutlineChapter[]): CourseData {
     term: CURRENT_COHORT_TERM,
     cohorts: COURSE_COHORTS.map((cohort) => ({ ...cohort })),
     liveSessions: [],
-    chapters: outline.map((chapter) => ({
+    chapters: withoutRetiredChapters(outline).map((chapter) => ({
       id: chapter.id,
       title: chapter.title,
       summary: chapter.summary || "",
@@ -320,7 +321,7 @@ export function courseDataFromOutline(outline: OutlineChapter[]): CourseData {
 
 export function outlineFromSeed(): OutlineChapter[] {
   return withSubmissionPrereqs(
-    SEED.chapters.map((chapter) => ({
+    withoutRetiredChapters(SEED.chapters).map((chapter) => ({
       id: chapter.id,
       title: chapter.title,
       summary: chapter.summary,
@@ -351,7 +352,7 @@ const DRAFT_COLUMNS = `${DRIP_COLUMNS}, is_draft`;
 
 function readOutlineCache(): OutlineChapter[] | null {
   if (memoryOutline && Date.now() - memoryOutline.at < OUTLINE_TTL_MS) {
-    return memoryOutline.data;
+    return withoutRetiredChapters(memoryOutline.data);
   }
   if (typeof window === "undefined") return null;
   try {
@@ -360,7 +361,7 @@ function readOutlineCache(): OutlineChapter[] | null {
     const parsed = JSON.parse(raw) as OutlineCacheEntry;
     if (!Array.isArray(parsed?.data) || Date.now() - parsed.at >= OUTLINE_TTL_MS) return null;
     memoryOutline = parsed;
-    return parsed.data;
+    return withoutRetiredChapters(parsed.data);
   } catch {
     return null;
   }
@@ -480,17 +481,19 @@ async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
       const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
       return withAssignmentFlags(
         withSubmissionPrereqs(
-          [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
-            const lessons = grouped.get(id) || [];
-            const live = chapterMeta.get(id);
-            const seed = SEED.chapters.find((chapter) => chapter.id === id);
-            return {
-              id,
-              title: live?.title || seed?.title || id,
-              summary: live?.summary || seed?.summary,
-              lessons,
-            };
-          })
+          withoutRetiredChapters(
+            [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
+              const lessons = grouped.get(id) || [];
+              const live = chapterMeta.get(id);
+              const seed = SEED.chapters.find((chapter) => chapter.id === id);
+              return {
+                id,
+                title: live?.title || seed?.title || id,
+                summary: live?.summary || seed?.summary,
+                lessons,
+              };
+            })
+          )
         )
       );
     }
@@ -568,17 +571,19 @@ async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
       const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
       return withAssignmentFlags(
         withSubmissionPrereqs(
-          [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
-            const lessons = grouped.get(id) || [];
-            const live = chapterMeta.get(id);
-            const seed = SEED.chapters.find((chapter) => chapter.id === id);
-            return {
-              id,
-              title: live?.title || seed?.title || id,
-              summary: live?.summary || seed?.summary,
-              lessons,
-            };
-          })
+          withoutRetiredChapters(
+            [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
+              const lessons = grouped.get(id) || [];
+              const live = chapterMeta.get(id);
+              const seed = SEED.chapters.find((chapter) => chapter.id === id);
+              return {
+                id,
+                title: live?.title || seed?.title || id,
+                summary: live?.summary || seed?.summary,
+                lessons,
+              };
+            })
+          )
         )
       );
     }
@@ -659,6 +664,7 @@ export async function fetchStudentLesson(
   if (client) {
     const { data, error } = await loadLessonRow(client, lessonId);
     if (!error && data) {
+      if (isRetiredCourseChapter({ id: data.chapter_id })) return null;
       const pdf_url = getLessonPdfUrl({
         pdf_url: data.pdf_url,
         resource_downloads: data.resource_downloads,
@@ -712,7 +718,8 @@ export async function fetchStudentLesson(
     }
   }
   const seed = fromSeed(lessonId);
-  return seed ? applyOutlineGates(seed, tree) : null;
+  if (!seed || isRetiredCourseChapter({ id: seed.chapterId, title: seed.chapterTitle })) return null;
+  return applyOutlineGates(seed, tree);
 }
 
 export async function fetchLessonProgress(lessonId: string): Promise<{

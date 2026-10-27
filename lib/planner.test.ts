@@ -77,6 +77,30 @@ test("study planner heading and tooltip offer the walkthrough video", () => {
   assert.match(sql, /1239250910/);
 });
 
+test("study planner drops the retired Common Fixes chapter", () => {
+  const outline: OutlineChapter[] = [
+    {
+      id: "ch1",
+      title: "Task 1",
+      lessons: [{ id: "a", title: "A", type: "video", duration_minutes: 60 }],
+    },
+    {
+      id: "ch11",
+      title: "Fixes for Common Student Challenges",
+      lessons: [{ id: "ch11-l2", title: "Why don't I do questions?", type: "video", duration_minutes: 20 }],
+    },
+  ];
+  const data = courseDataFromOutline(outline);
+  assert.deepEqual(
+    data.chapters.map((chapter) => chapter.id),
+    ["ch1"]
+  );
+  assert.equal(
+    courseTasks(data).some((task) => task.lesson.id === "ch11-l2" || task.lesson.chapter.id === "ch11"),
+    false
+  );
+});
+
 test("study planner reloads the live course outline so duration_minutes changes apply", () => {
   const planner = readFileSync(resolve("components/student/StudyPlanner.tsx"), "utf8");
   const session = readFileSync(resolve("lib/student-session.tsx"), "utf8");
