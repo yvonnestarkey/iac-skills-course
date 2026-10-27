@@ -12,6 +12,7 @@ import { getLessonPdfUrl } from "./getLessonPdf";
 import { protectLessonResourceFields } from "./lesson-assets";
 import { canViewDraftLessons, isDraftLesson, publishedOutline } from "./lesson-drafts";
 import { fetchCourseOutline, fetchStudentLesson, type StudentLesson } from "./student-lesson";
+import { isVarianceBakeryLesson } from "./variance-bakery";
 import type { SubmissionStatus } from "./student-submissions";
 import type { LessonType } from "../types/database";
 
@@ -91,7 +92,12 @@ export const getLessonData = cache(async (
 
   const pdfUrl = composed.canReadBody ? getLessonPdfUrl(visible) || (typeof visible.pdf_url === "string" ? visible.pdf_url : undefined) : undefined;
   const lessonType = displayLessonType({ ...visible, pdf_url: pdfUrl });
-  const normalized: StudentLesson = { ...visible, pdf_url: pdfUrl, type: lessonType };
+  const normalized: StudentLesson = {
+    ...visible,
+    pdf_url: pdfUrl,
+    type: lessonType,
+    tool: isVarianceBakeryLesson(visible) ? "variance-bakery" : visible.tool,
+  };
 
   return {
     lesson: normalized,

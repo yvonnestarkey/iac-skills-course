@@ -25,7 +25,6 @@ import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
 import LessonCarryForwardCheckpoint from "@/components/lesson/LessonCarryForwardCheckpoint";
 import LessonVideoParts from "@/components/lesson/LessonVideoParts";
-import VarianceBakeryEmbed from "@/components/lesson/VarianceBakeryEmbed";
 import LessonTool from "@/components/reading/LessonTool";
 import { isProgressiveCheckpoint } from "@/lib/lesson-checkpoint";
 import { isMultiVideoLesson, parseLessonVideos } from "@/lib/lesson-videos";
@@ -172,10 +171,6 @@ export default function StudentPlayer({
   const videos = lesson.videos?.length ? lesson.videos : parseLessonVideos(lesson.video_url);
   const isMultiVideo = isMultiVideoLesson(kind, videos);
   const isCheckpoint = isProgressiveCheckpoint({ ...lesson, videos });
-  const showVarianceBakery =
-    lesson.tool === "variance-bakery" ||
-    lesson.id === "ch10-l12" ||
-    /variance bakery/i.test(lesson.title || "");
   const purchaseLocked = !skipLocks && composed.layer === "purchase";
 
   if (purchaseLocked) {
@@ -342,9 +337,7 @@ export default function StudentPlayer({
                 </ul>
               </div>
             ) : null}
-            {showVarianceBakery ? (
-              <VarianceBakeryEmbed onComplete={completeSurveyLesson} />
-            ) : lesson.tool ? (
+            {lesson.tool && lesson.tool !== "variance-bakery" ? (
               <LessonTool tool={lesson.tool} onComplete={completeSurveyLesson} />
             ) : null}
 

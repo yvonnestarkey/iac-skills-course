@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { test } from "node:test";
 import { parseLessonTool, lessonToolOptions } from "./reading-drills";
+import { isVarianceBakeryLesson } from "./variance-bakery";
 
 test("Variance Bakery is a lesson tool with branded static HTML", () => {
   assert.deepEqual(parseLessonTool("variance-bakery"), { kind: "variance-bakery" });
@@ -16,13 +17,14 @@ test("Variance Bakery is a lesson tool with branded static HTML", () => {
   assert.match(html, /variance-bakery:height/);
   assert.match(html, /variance-bakery:result/);
 
+  assert.equal(isVarianceBakeryLesson({ id: "ch10-l12", title: "Variance Bakery" }), true);
   const embed = readFileSync(resolve("components/lesson/VarianceBakeryEmbed.tsx"), "utf8");
   assert.match(embed, /\/tools\/variance-bakery\.html/);
   assert.match(embed, /variance-bakery:height/);
 
-  const player = readFileSync(resolve("components/student/StudentPlayer.tsx"), "utf8");
-  assert.match(player, /VarianceBakeryEmbed/);
-  assert.match(player, /showVarianceBakery/);
+  const page = readFileSync(resolve("components/student/StudentLessonPage.tsx"), "utf8");
+  assert.match(page, /\/tools\/variance-bakery\.html/);
+  assert.match(page, /isVarianceBakeryLesson/);
   const lessonTool = readFileSync(resolve("components/reading/LessonTool.tsx"), "utf8");
   assert.match(lessonTool, /VarianceBakeryEmbed/);
 
