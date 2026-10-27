@@ -3,6 +3,7 @@
 import { useState } from "react";
 import CoachToolPanel from "@/components/coach/CoachToolPanel";
 import ReadingPracticeManager from "@/components/coach/ReadingPracticeManager";
+import StudyClinicManager from "@/components/coach/StudyClinicManager";
 import { COURSE_TOOLS } from "@/lib/course-tools";
 
 export default function CourseToolsPanel() {
@@ -33,6 +34,7 @@ export default function CourseToolsPanel() {
         ))}
       </div>
       {editing === "reading" ? <ReadingPracticeManager /> : null}
+      {editing === "study-clinic" ? <StudyClinicManager /> : null}
     </CoachToolPanel>
   );
 }

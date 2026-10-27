@@ -15,6 +15,13 @@ export const COURSE_TOOLS: CourseTool[] = [
     editable: true,
   },
   {
+    id: "study-clinic",
+    title: "Study Clinic",
+    description: "Common Fixes videos on the student Study Clinic page. Edit the bank here, not in Course content.",
+    href: "/coach/tools/study-clinic",
+    editable: true,
+  },
+  {
     id: "variance-bakery",
     title: "Variance Bakery",
     description: "Lesson tool for material variances. Attach it from Add a lesson — it is not a dashboard hub.",
