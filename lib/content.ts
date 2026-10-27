@@ -448,12 +448,25 @@ export async function writeLessonDelete(client: SupabaseClient, id: string): Pro
 }
 
 export async function writeChapterOrder(client: SupabaseClient, chapterId: string, lessonIds: string[]): Promise<DbResult> {
-  const updates = lessonIds.map((id, index) =>
-    client.from("lessons").update({ chapter_id: chapterId, position: index + 1 }).eq("id", id).select("id")
-  );
-  const results = await Promise.all(updates);
-  const failed = results.find((result) => result.error);
-  if (failed?.error) return { ok: false, error: describe(failed.error) };
+  // Two passes so a unique (chapter_id, position) constraint cannot reject a swap.
+  for (const [index, id] of lessonIds.entries()) {
+    const parked = await client
+      .from("lessons")
+      .update({ chapter_id: chapterId, position: 10000 + index })
+      .eq("id", id)
+      .select("id");
+    if (parked.error) return { ok: false, error: describe(parked.error) };
+    if (parked.data && parked.data.length === 0) return { ok: false, error: "That lesson was not updated in Supabase." };
+  }
+  for (const [index, id] of lessonIds.entries()) {
+    const placed = await client
+      .from("lessons")
+      .update({ chapter_id: chapterId, position: index + 1 })
+      .eq("id", id)
+      .select("id");
+    if (placed.error) return { ok: false, error: describe(placed.error) };
+    if (placed.data && placed.data.length === 0) return { ok: false, error: "That lesson was not updated in Supabase." };
+  }
   return { ok: true };
 }
 

@@ -5416,6 +5416,10 @@ a.planner-video-btn:visited:hover {
   opacity: 0.55;
 }
 
+.course-outline-item.drop-target {
+  border-color: var(--link);
+}
+
 .course-outline-handle {
   color: var(--muted);
   cursor: grab;

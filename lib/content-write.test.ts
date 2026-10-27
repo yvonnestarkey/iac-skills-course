@@ -41,6 +41,16 @@ test("coach lesson saves go through a staff service-role route", () => {
   assert.match(manager, /Save as draft/);
 });
 
+test("course outline chapters start collapsed and only the handle is draggable", () => {
+  const board = readFileSync(resolve("components/coach/CourseOutlineBoard.tsx"), "utf8");
+  assert.match(board, /openChapters\[chapterId\] === true/);
+  assert.match(board, /draggable\s*\n\s*onDragStart/);
+  assert.doesNotMatch(board, /<li\b[^>]*\bdraggable/);
+  assert.match(board, /shiftLesson/);
+  const writer = readFileSync(resolve("lib/content.ts"), "utf8");
+  assert.match(writer, /10000 \+ index/);
+});
+
 test("draft SQL can set the flag after a lesson save", () => {
   const sql = readFileSync(resolve("supabase/lesson-drafts.sql"), "utf8");
   assert.match(sql, /add column if not exists is_draft/);
