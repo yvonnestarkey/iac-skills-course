@@ -69,6 +69,10 @@ export default function CoachHomePage() {
             <strong>Course creator</strong>
             <span className="muted">Add lessons, live Zoom sessions, and import CSV content</span>
           </button>
+          <button onClick={() => router.push("/coach/tools")}>
+            <strong>Tools</strong>
+            <span className="muted">Edit the Reading & RTFQ Tool and other dashboard tools</span>
+          </button>
         </div>
       </section>
     </div>

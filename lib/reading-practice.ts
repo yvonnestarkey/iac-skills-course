@@ -268,18 +268,35 @@ export async function fetchPracticeExercises(options?: { includeDrafts?: boolean
 }
 
 export async function fetchPracticeExercise(id: string): Promise<DrillExercise | null> {
-  const builtIn = getExercise(id);
-  if (builtIn) return builtIn;
   const client = db();
-  if (!client) return null;
-  const { data } = await client.from("reading_practice_exercises").select("*").eq("id", id).maybeSingle();
-  if (!data) return null;
-  const payload = asDrillExercise(data.payload);
-  return payload ? { ...payload, id: String(data.id), title: String(data.title || payload.title) } : null;
+  if (client) {
+    const { data } = await client.from("reading_practice_exercises").select("*").eq("id", id).maybeSingle();
+    const payload = data ? asDrillExercise(data.payload) : null;
+    if (payload && data) return { ...payload, id: String(data.id), title: String(data.title || payload.title) };
+  }
+  return getExercise(id);
+}
+
+export function mergePracticePool(builtIn: DrillExercise[], extras: DrillExercise[]): DrillExercise[] {
+  const overrides = new Map(extras.filter((item) => item?.id).map((item) => [item.id, item]));
+  const seen = new Set<string>();
+  const merged: DrillExercise[] = [];
+  for (const item of builtIn) {
+    merged.push(overrides.get(item.id) || item);
+    seen.add(item.id);
+  }
+  for (const item of extras) {
+    if (!item?.id || seen.has(item.id)) continue;
+    merged.push(item);
+    seen.add(item.id);
+  }
+  return merged;
 }
 
 export async function listPracticePool(): Promise<DrillExercise[]> {
   const extra = await fetchPracticeExercises();
-  const seen = new Set(EXERCISES.map((item) => item.id));
-  return [...EXERCISES, ...extra.filter((row) => !seen.has(row.id)).map((row) => row.payload)];
+  return mergePracticePool(
+    EXERCISES,
+    extra.map((row) => row.payload)
+  );
 }

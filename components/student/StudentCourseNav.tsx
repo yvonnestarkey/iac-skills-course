@@ -25,7 +25,6 @@ export default function StudentCourseNav() {
   const activeLessonId = segment && !RESERVED.has(segment) ? segment : null;
   const onDashboard = pathname === basePath || pathname === "/student/dashboard";
   const onOverview = pathname === `${basePath}/overview`;
-  const onReading = pathname.startsWith("/student/reading");
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
   const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
   const total = lessons.length;
@@ -38,9 +37,6 @@ export default function StudentCourseNav() {
         <nav className="student-nav-buttons" aria-label="Student pages">
           <Link href={unlocked ? basePath : "/student/dashboard"} className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
             Student Dashboard
-          </Link>
-          <Link href="/student/reading" className={`dash-link ${onReading ? "active" : ""}`} onClick={close}>
-            Reading & RTFQ Tool
           </Link>
           <Link href={`${basePath}/overview`} className={`dash-link ${onOverview ? "active" : ""}`} onClick={close}>
             Course Overview

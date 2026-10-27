@@ -17,6 +17,7 @@ import {
   type SkillKey,
 } from "@/lib/reading-drills";
 import { fetchReadingHistory } from "@/lib/reading-drills-store";
+import { mergePracticePool } from "@/lib/reading-practice";
 import { useReadingToolAccess } from "@/components/reading/ReadingToolGate";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -41,11 +42,12 @@ export default function ReadingHub() {
         setAttempts(h.attempts);
         setChecks(h.checks);
         const extras = Array.isArray(extra.exercises) ? extra.exercises : [];
-        const seen = new Set(EXERCISES.map((item) => item.id));
-        setPool([
-          ...EXERCISES,
-          ...extras.filter((item: DrillExercise) => item?.id && item?.title && item?.required && !seen.has(item.id)),
-        ]);
+        setPool(
+          mergePracticePool(
+            EXERCISES,
+            extras.filter((item: DrillExercise) => item?.id && item?.title && item?.required)
+          )
+        );
         setLoaded(true);
       })
       .catch(() => {

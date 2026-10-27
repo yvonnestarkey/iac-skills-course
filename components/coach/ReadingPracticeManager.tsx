@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { EXERCISES } from "@/lib/reading-drills";
 import {
   draftFromExercise,
   emptyPracticeDraft,
@@ -54,7 +55,8 @@ export default function ReadingPracticeManager() {
   };
 
   const remove = async (id: string) => {
-    if (!window.confirm("Remove this practice question from the student hub?")) return;
+    const builtIn = EXERCISES.some((exercise) => exercise.id === id);
+    if (!window.confirm(builtIn ? "Restore the built-in version of this question?" : "Remove this practice question from the student hub?")) return;
     setBusy(true);
     const response = await fetch(`/api/coach/reading-exercises/${encodeURIComponent(id)}`, { method: "DELETE" });
     setBusy(false);
@@ -67,22 +69,39 @@ export default function ReadingPracticeManager() {
     await load();
   };
 
+  const savedIds = new Set(rows.map((row) => row.id));
+  const builtInRows: PracticeExerciseRow[] = EXERCISES.map((exercise, index) => {
+    const saved = rows.find((row) => row.id === exercise.id);
+    return saved || {
+      id: exercise.id,
+      title: exercise.title,
+      area: exercise.area,
+      published: true,
+      position: index,
+      payload: exercise,
+    };
+  });
+  const extraRows = rows.filter((row) => !EXERCISES.some((exercise) => exercise.id === row.id));
+
   return (
     <div className="rd-practice-admin">
       <p className="muted small">
-        These questions appear on the student dashboard after Task 2 is submitted. They do not replace the first
-        exercises inside Task 2.
+        Edit the Reading & RTFQ question bank. Built-in drills stay available in Task 2 lessons. Saved changes and new
+        questions appear on the student dashboard hub after Task 2.
       </p>
       {status ? <p className="notice">{status}</p> : null}
 
       <div className="rd-practice-list">
-        {rows.length ? (
-          rows.map((row) => (
+        {[...builtInRows, ...extraRows].map((row) => {
+          const builtIn = EXERCISES.some((exercise) => exercise.id === row.id);
+          const edited = builtIn && savedIds.has(row.id);
+          return (
             <div key={row.id} className="rd-sheet rd-row">
               <div>
                 <b>{row.title}</b>
                 <div className="muted small">
                   {row.area} · {row.id}
+                  {builtIn ? (edited ? " · built-in, edited" : " · built-in") : " · extra"}
                   {row.published ? "" : " · hidden"}
                 </div>
               </div>
@@ -90,15 +109,15 @@ export default function ReadingPracticeManager() {
                 <button type="button" className="ghost" onClick={() => setDraft(draftFromExercise(row.payload, row.published))}>
                   Edit
                 </button>
-                <button type="button" className="ghost" disabled={busy} onClick={() => void remove(row.id)}>
-                  Delete
-                </button>
+                {savedIds.has(row.id) ? (
+                  <button type="button" className="ghost" disabled={busy} onClick={() => void remove(row.id)}>
+                    {edited ? "Restore" : "Delete"}
+                  </button>
+                ) : null}
               </div>
             </div>
-          ))
-        ) : (
-          <p className="empty">No extra practice questions yet.</p>
-        )}
+          );
+        })}
         <button type="button" className="ghost" onClick={() => setDraft(emptyPracticeDraft())}>
           New question
         </button>

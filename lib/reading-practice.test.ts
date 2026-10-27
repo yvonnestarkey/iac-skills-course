@@ -7,6 +7,7 @@ import {
   draftFromExercise,
   emptyPracticeDraft,
   exerciseFromDraft,
+  mergePracticePool,
   parseCaseText,
   parseRecallText,
   parseRowsText,
@@ -39,20 +40,51 @@ test("a complete draft becomes a drill exercise and round-trips", () => {
   assert.equal(remainingExercises([], [parsed.exercise!]).length, 1);
 });
 
-test("Reading & RTFQ practice is on the dashboard, hub, and course creator", () => {
+test("saved practice questions override built-in drills with the same id", () => {
+  const builtIn = exerciseFromDraft({
+    ...emptyPracticeDraft(),
+    id: "mopane",
+    title: "Built-in mopane",
+    required: "Advise the board.",
+  }).exercise!;
+  const extra = exerciseFromDraft({
+    ...emptyPracticeDraft(),
+    id: "mopane",
+    title: "Edited mopane",
+    required: "Advise the board.",
+  }).exercise!;
+  const added = exerciseFromDraft({
+    ...emptyPracticeDraft(),
+    id: "practice-cash",
+    title: "Extra cash case",
+    required: "Advise the board.",
+  }).exercise!;
+  const pool = mergePracticePool([builtIn], [extra, added]);
+  assert.equal(pool.length, 2);
+  assert.equal(pool[0].title, "Edited mopane");
+  assert.equal(pool[1].id, "practice-cash");
+});
+
+test("Reading & RTFQ practice is on the dashboard and in the Tools workspace", () => {
   const dashboard = readFileSync(resolve("components/student/StudentDashboard.tsx"), "utf8");
   const nav = readFileSync(resolve("components/student/StudentCourseNav.tsx"), "utf8");
   const hub = readFileSync(resolve("components/reading/ReadingHub.tsx"), "utf8");
-  const creator = readFileSync(resolve("components/coach/ContentManager.tsx"), "utf8");
+  const creator = readFileSync(resolve("app/coach/content/page.tsx"), "utf8");
+  const tools = readFileSync(resolve("app/coach/tools/page.tsx"), "utf8");
+  const editor = readFileSync(resolve("app/coach/tools/reading/page.tsx"), "utf8");
+  const manager = readFileSync(resolve("components/coach/ContentManager.tsx"), "utf8");
   const sql = readFileSync(resolve("supabase/reading-practice-exercises.sql"), "utf8");
   const gate = readFileSync(resolve("components/reading/ReadingToolGate.tsx"), "utf8");
   assert.match(dashboard, /Reading &amp; RTFQ Tool/);
-  assert.match(dashboard, /student-hub-card-featured/);
+  assert.match(dashboard, /Unlocks after Task 2/);
+  assert.doesNotMatch(dashboard, /student-hub-card-featured/);
   assert.match(dashboard, /hasTask2Submission/);
-  assert.match(nav, /Reading & RTFQ Tool/);
-  assert.match(hub, /EXERCISES/);
-  assert.match(creator, /Reading & RTFQ practice/);
-  assert.match(creator, /ReadingPracticeManager/);
+  assert.doesNotMatch(nav, /Reading & RTFQ Tool/);
+  assert.match(hub, /mergePracticePool/);
+  assert.match(creator, /Edit tools/);
+  assert.match(tools, /COURSE_TOOLS/);
+  assert.match(editor, /ReadingPracticeManager/);
+  assert.doesNotMatch(manager, /ReadingPracticeManager/);
   assert.match(sql, /reading_practice_exercises/);
   assert.match(gate, /hasTask2Submission/);
 });
