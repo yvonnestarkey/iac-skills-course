@@ -1,6 +1,5 @@
 import StudentPlayer from "@/components/student/StudentPlayer";
 import { getLessonData } from "@/lib/courseData";
-import { isVarianceBakeryLesson } from "@/lib/variance-bakery";
 
 export async function generateStudentLessonMetadata(params: Promise<{ lessonId: string }>) {
   const { lessonId } = await params;
@@ -18,7 +17,7 @@ export default async function StudentLessonPage({
   overrideLocks?: boolean;
 }) {
   const { lessonId } = await params;
-  const { lesson, access, isLocked } = await getLessonData(lessonId, { overrideLocks });
+  const { lesson, access } = await getLessonData(lessonId, { overrideLocks });
 
   if (!lesson) {
     return (
@@ -30,19 +29,5 @@ export default async function StudentLessonPage({
     );
   }
 
-  return (
-    <>
-      {isVarianceBakeryLesson(lesson) && (!isLocked || overrideLocks) ? (
-        <article className="lesson-body">
-          <iframe
-            className="variance-bakery-frame"
-            src="/tools/variance-bakery.html"
-            title="Variance Bakery"
-            style={{ width: "100%", minHeight: 2400, border: 0, display: "block" }}
-          />
-        </article>
-      ) : null}
-      <StudentPlayer lesson={lesson} initialAccess={access} overrideLocks={overrideLocks} />
-    </>
-  );
+  return <StudentPlayer lesson={lesson} initialAccess={access} overrideLocks={overrideLocks} />;
 }

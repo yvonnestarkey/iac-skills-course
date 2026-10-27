@@ -35,6 +35,7 @@ import { readingHeroDuration } from "@/lib/lesson-duration";
 import { isCoachAccount } from "@/lib/roles";
 import { resolveCourseHref } from "@/lib/rich-text";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
+import { isVarianceBakeryLesson } from "@/lib/variance-bakery";
 
 const LessonPdfViewer = dynamic(() => import("@/components/LessonPdfViewer"), {
   ssr: false,
@@ -337,7 +338,14 @@ export default function StudentPlayer({
                 </ul>
               </div>
             ) : null}
-            {lesson.tool && lesson.tool !== "variance-bakery" ? (
+            {isVarianceBakeryLesson(lesson) ? (
+              <iframe
+                className="variance-bakery-frame"
+                src="/tools/variance-bakery.html"
+                title="Variance Bakery"
+                style={{ width: "100%", minHeight: 2400, border: 0, display: "block" }}
+              />
+            ) : lesson.tool ? (
               <LessonTool tool={lesson.tool} onComplete={completeSurveyLesson} />
             ) : null}
 

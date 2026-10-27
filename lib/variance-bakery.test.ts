@@ -22,9 +22,10 @@ test("Variance Bakery is a lesson tool with branded static HTML", () => {
   assert.match(embed, /\/tools\/variance-bakery\.html/);
   assert.match(embed, /variance-bakery:height/);
 
-  const page = readFileSync(resolve("components/student/StudentLessonPage.tsx"), "utf8");
-  assert.match(page, /\/tools\/variance-bakery\.html/);
-  assert.match(page, /isVarianceBakeryLesson/);
+  const player = readFileSync(resolve("components/student/StudentPlayer.tsx"), "utf8");
+  assert.match(player, /\/tools\/variance-bakery\.html/);
+  assert.match(player, /isVarianceBakeryLesson\(lesson\)/);
+  assert.match(player, /<h1>\{lesson.title\}<\/h1>[\s\S]*variance-bakery\.html/);
   const lessonTool = readFileSync(resolve("components/reading/LessonTool.tsx"), "utf8");
   assert.match(lessonTool, /VarianceBakeryEmbed/);
 
