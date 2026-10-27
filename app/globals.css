@@ -7807,6 +7807,13 @@ a.planner-video-btn:visited:hover {
   .rd-practice-form { grid-template-columns: 1fr; }
 }
 
+.variance-bakery-frame {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+}
+
 .rd-embedded { margin: 24px 0; padding-top: 16px; border-top: 1px solid var(--line); scroll-margin-top: 80px; }
 .rd-embedded h2 { font-family: var(--serif); }
 .rd-prox-group h3 { display: flex; gap: 8px; align-items: center; margin: 8px 0 0; font-size: 15px; }

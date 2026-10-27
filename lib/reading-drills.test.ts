@@ -110,6 +110,7 @@ test("a lesson's tool setting resolves to the right tool, and unknown values sho
   assert.deepEqual(parseLessonTool("reading-check"), { kind: "check" });
   assert.deepEqual(parseLessonTool("reading-drill:next"), { kind: "next" });
   assert.equal((parseLessonTool("reading-drill:ubuntu") as { exercise: { id: string } }).exercise.id, "ubuntu");
+  assert.deepEqual(parseLessonTool("variance-bakery"), { kind: "variance-bakery" });
   assert.equal(parseLessonTool("reading-drill:nope"), null);
   assert.equal(parseLessonTool(""), null);
   assert.equal(parseLessonTool(null), null);

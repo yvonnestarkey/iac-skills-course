@@ -471,19 +471,25 @@ export const READING_MARK_MODEL_DEFAULT = "claude-sonnet-5-5";
 /* ---------------------------------------------------------------- tools inside lessons */
 
 /** What a lesson's `tool` setting can be. The course builder offers these in a dropdown. */
-export type LessonTool = { kind: "check" } | { kind: "drill"; exercise: DrillExercise } | { kind: "next" };
+export type LessonTool =
+  | { kind: "check" }
+  | { kind: "drill"; exercise: DrillExercise }
+  | { kind: "next" }
+  | { kind: "variance-bakery" };
 
 export function lessonToolOptions(): { value: string; label: string }[] {
   return [
     { value: "reading-check", label: "Reading check (pace and absorption)" },
     { value: "reading-drill:next", label: "Reading drill: the student's next recommended exercise" },
     ...EXERCISES.map((ex) => ({ value: `reading-drill:${ex.id}`, label: `Reading drill: ${ex.title} (${ex.area})` })),
+    { value: "variance-bakery", label: "Variance Bakery (material variances)" },
   ];
 }
 
 export function parseLessonTool(value: string | null | undefined): LessonTool | null {
   const v = String(value || "").trim();
   if (v === "reading-check") return { kind: "check" };
+  if (v === "variance-bakery") return { kind: "variance-bakery" };
   if (v === "reading-drill:next") return { kind: "next" };
   if (v.startsWith("reading-drill:")) {
     const exercise = getExercise(v.slice("reading-drill:".length));

@@ -856,6 +856,17 @@
           "chapterTitle": "Task 1 - How to evaluate whether you need revision"
         },
         {
+          "id": "ch10-l12",
+          "type": "reading",
+          "title": "Variance Bakery",
+          "videoUrls": [],
+          "body": [
+            "Variances aren't formulas to memorise. Each one answers a question about what happened in production. Predict first, then check yourself."
+          ],
+          "tool": "variance-bakery",
+          "chapterTitle": "Task 1 - How to evaluate whether you need revision"
+        },
+        {
           "id": "ch10-l3",
           "type": "upload",
           "title": "L5 - BMCR Summary",

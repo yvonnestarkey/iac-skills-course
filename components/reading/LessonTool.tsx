@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import VarianceBakeryEmbed from "@/components/lesson/VarianceBakeryEmbed";
 import DrillFlow from "@/components/reading/DrillFlow";
 import ReadingCheckFlow from "@/components/reading/ReadingCheckFlow";
 import { parseLessonTool, recommendUnused, type DrillExercise } from "@/lib/reading-drills";
@@ -28,6 +29,7 @@ export default function LessonTool({ tool, onComplete }: { tool: string; onCompl
   }, [parsed?.kind, user?.id]);
 
   if (!parsed) return null;
+  if (parsed.kind === "variance-bakery") return <VarianceBakeryEmbed onComplete={onComplete} />;
   if (parsed.kind === "check") return <ReadingCheckFlow embedded onComplete={onComplete} />;
   if (parsed.kind === "drill") return <DrillFlow key={parsed.exercise.id} exercise={parsed.exercise} embedded onComplete={onComplete} />;
   if (!ready) return <p className="muted">Choosing your next exercise…</p>;
