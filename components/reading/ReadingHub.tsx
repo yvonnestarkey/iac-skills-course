@@ -19,10 +19,14 @@ import {
 import { fetchReadingHistory } from "@/lib/reading-drills-store";
 import { mergePracticePool } from "@/lib/reading-practice";
 import { useReadingToolAccess } from "@/components/reading/ReadingToolGate";
+import Task2ReadingResults from "@/components/reading/Task2ReadingResults";
+import { TASK2_MOPANE_EXERCISE_ID } from "@/lib/task2-gate";
 import { useStudentSession } from "@/lib/student-session";
+import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 export default function ReadingHub() {
-  const { user } = useStudentSession();
+  const { user, readingAttempts, readingChecks } = useStudentSession();
+  const outline = useVisibleCourseOutline();
   const { unlockedByTask2, bypass } = useReadingToolAccess();
   const [attempts, setAttempts] = useState<DrillAttempt[]>([]);
   const [checks, setChecks] = useState<ReadingCheckResult[]>([]);
@@ -77,6 +81,15 @@ export default function ReadingHub() {
       <p className="muted small">{READING_ONCE_COPY}</p>
 
       <div className="rd-stack">
+        <section className="rd-sheet rd-stack">
+          <span className="rd-eyebrow">Done in Task 2</span>
+          <p className="muted small">The Skimming check and Mopane drill you already completed in Task 2 stay on your record here.</p>
+          <Task2ReadingResults
+            outline={outline}
+            attempts={loaded ? attempts : readingAttempts}
+            checks={loaded ? checks : readingChecks}
+          />
+        </section>
         {loaded && !lastCheck ? (
           <section className="rd-sheet rd-stack rd-start">
             <span className="rd-eyebrow">Start here</span>
@@ -150,7 +163,13 @@ export default function ReadingHub() {
               <div>
                 <b>{ex.title}</b>
                 <div className="muted small">
-                  {ex.area} · {ex.marks} marks{done.has(ex.id) ? " · done" : ""} · trains {ex.trains.map((k) => SKILLS[k]).join(", ")}
+                  {ex.area} · {ex.marks} marks
+                  {ex.id === TASK2_MOPANE_EXERCISE_ID && done.has(ex.id)
+                    ? " · done in Task 2"
+                    : done.has(ex.id)
+                      ? " · done"
+                      : ""}{" "}
+                  · trains {ex.trains.map((k) => SKILLS[k]).join(", ")}
                 </div>
               </div>
               <Link className="rd-push" href={`/student/reading/${ex.id}`}>

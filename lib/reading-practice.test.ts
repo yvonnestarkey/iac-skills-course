@@ -80,6 +80,8 @@ test("Reading & RTFQ practice is on the dashboard and in the Tools workspace", (
   assert.match(dashboard, /Unlocks after Task 2/);
   assert.doesNotMatch(dashboard, /student-hub-card-featured/);
   assert.match(dashboard, /hasTask2Submission/);
+  assert.match(dashboard, /Task2ReadingResults/);
+  assert.match(hub, /Done in Task 2/);
   assert.doesNotMatch(nav, /Reading & RTFQ Tool/);
   assert.match(hub, /mergePracticePool/);
   assert.match(creator, /CourseToolsPanel/);

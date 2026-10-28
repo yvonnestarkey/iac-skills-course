@@ -7,6 +7,7 @@ import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
 import { fetchCoachingDashboardHint } from "@/lib/coaching";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
+import Task2ReadingResults from "@/components/reading/Task2ReadingResults";
 import { hasTask2Submission } from "@/lib/task2-gate";
 import { hasCoachReview } from "@/lib/custom-surveys";
 import { useStudentInbox } from "@/lib/use-student-inbox";
@@ -17,7 +18,7 @@ import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
 import { isCoachAccount } from "@/lib/roles";
 
 export default function StudentDashboard() {
-  const { user, completed, surveyReviews, submissions } = useStudentSession();
+  const { user, completed, surveyReviews, submissions, readingAttempts, readingChecks } = useStudentSession();
   const outline = useVisibleCourseOutline();
   const { unlocked, basePath } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
@@ -101,6 +102,13 @@ export default function StudentDashboard() {
         <Link href="/student/reading" className={`student-hub-card${readingUnlocked ? "" : " is-locked"}`}>
           <strong>Reading &amp; RTFQ Tool</strong>
           <p>Practice reading pace, RTFQ, and Buried Treasure after the first drills in Task 2.</p>
+          <Task2ReadingResults
+            outline={outline}
+            attempts={readingAttempts}
+            checks={readingChecks}
+            compact
+            links={false}
+          />
           {readingUnlocked ? null : <span className="pill">Unlocks after Task 2</span>}
         </Link>
         {ASK_QUESTION_ENABLED ? (

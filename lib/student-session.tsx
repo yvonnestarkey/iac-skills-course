@@ -19,6 +19,8 @@ import {
   type StudentUser,
 } from "./student-lesson";
 import { fetchOwnSurveyResponses, type CustomSurveyResponse } from "./custom-surveys";
+import type { DrillAttempt, ReadingCheckResult } from "./reading-drills";
+import { fetchReadingHistory } from "./reading-drills-store";
 import type { EntitlementSource } from "./account-access";
 import type { EntitlementStatus } from "./commerce";
 import { fetchStudentSubmissions, type StudentSubmission } from "./student-submissions";
@@ -33,6 +35,8 @@ interface StudentSessionValue {
   completed: Record<string, boolean>;
   submissions: Record<string, StudentSubmission>;
   surveyReviews: Record<string, CustomSurveyResponse>;
+  readingAttempts: DrillAttempt[];
+  readingChecks: ReadingCheckResult[];
   entitlement: SessionEntitlement;
   entitlementSource: EntitlementSource | null;
   previewLessonIds: string[];
@@ -53,6 +57,8 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
   const [submissions, setSubmissions] = useState<Record<string, StudentSubmission>>({});
   const [surveyReviews, setSurveyReviews] = useState<Record<string, CustomSurveyResponse>>({});
+  const [readingAttempts, setReadingAttempts] = useState<DrillAttempt[]>([]);
+  const [readingChecks, setReadingChecks] = useState<ReadingCheckResult[]>([]);
   const [entitlement, setEntitlement] = useState<SessionEntitlement>(null);
   const [entitlementSource, setEntitlementSource] = useState<EntitlementSource | null>(null);
   const [previewLessonIds, setPreviewLessonIds] = useState<string[]>([]);
@@ -88,10 +94,11 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loadProgress = useCallback(async (userId: string) => {
-    const [ids, nextSubmissions, nextReviews] = await Promise.all([
+    const [ids, nextSubmissions, nextReviews, reading] = await Promise.all([
       fetchCompletedLessonIds(userId),
       fetchStudentSubmissions(userId),
       fetchOwnSurveyResponses(userId),
+      fetchReadingHistory(userId),
     ]);
     const next: Record<string, boolean> = {};
     ids.forEach((id) => {
@@ -103,6 +110,8 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     setCompleted(next);
     setSubmissions(nextSubmissions);
     setSurveyReviews(nextReviews);
+    setReadingAttempts(reading.attempts);
+    setReadingChecks(reading.checks);
   }, []);
 
   useEffect(() => {
@@ -150,6 +159,8 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
         setCompleted({});
         setSubmissions({});
         setSurveyReviews({});
+        setReadingAttempts([]);
+        setReadingChecks([]);
         setEntitlement(null);
         setEntitlementSource(null);
         setPreviewLessonIds([]);
@@ -206,6 +217,8 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     setCompleted({});
     setSubmissions({});
     setSurveyReviews({});
+    setReadingAttempts([]);
+    setReadingChecks([]);
     setEntitlement(null);
     setEntitlementSource(null);
     setPreviewLessonIds([]);
@@ -220,6 +233,8 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       completed,
       submissions,
       surveyReviews,
+      readingAttempts,
+      readingChecks,
       entitlement,
       entitlementSource,
       previewLessonIds,
@@ -230,7 +245,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       reloadOutline,
       signOut,
     }),
-    [ready, user, outline, completed, submissions, surveyReviews, entitlement, entitlementSource, previewLessonIds, onboarding, setLessonCompleted, setSubmission, reloadProgress, reloadOutline, signOut]
+    [ready, user, outline, completed, submissions, surveyReviews, readingAttempts, readingChecks, entitlement, entitlementSource, previewLessonIds, onboarding, setLessonCompleted, setSubmission, reloadProgress, reloadOutline, signOut]
   );
 
   return <StudentSessionContext.Provider value={value}>{children}</StudentSessionContext.Provider>;

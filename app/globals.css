@@ -4106,6 +4106,40 @@ a.student-account-link {
   background: #f3f3f3;
 }
 
+.task2-reading-results {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.task2-reading-results li {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.task2-reading-results li span {
+  display: grid;
+  gap: 2px;
+}
+
+.task2-reading-results.compact {
+  margin-top: 10px;
+}
+
+.task2-reading-results.compact b {
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.student-hub-card .task2-reading-results .pill {
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
 .student-hub-card.is-locked:hover {
   border-color: var(--line);
 }

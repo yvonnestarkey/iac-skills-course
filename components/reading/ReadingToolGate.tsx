@@ -41,8 +41,8 @@ export default function ReadingToolGate({ children }: { children: ReactNode }) {
         <p className="kicker">Reading & RTFQ Tool</p>
         <h1>Locked until Task 2 is submitted</h1>
         <p>
-          You first work through the reading and RTFQ lessons in Task 2. After you submit that assignment, this hub
-          opens so you can practice more of the same kind of question.
+          Finish the Skimming check and Mopane drill in Task 2, then submit that assignment. This hub then opens with
+          those results already on your record, so you can practice more of the same kind of question.
         </p>
         <p className="notice">
           Submit <strong>{task2.lessonTitle}</strong> to unlock extra practice.

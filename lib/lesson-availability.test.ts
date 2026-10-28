@@ -58,6 +58,24 @@ test("full entitlement plus an open progression gate can read the body", () => {
   assert.equal(composed.access.isLocked, false);
 });
 
+test("Task 2 assignment stays locked until extra reading tools are complete", () => {
+  const assignment = {
+    id: "ch12-l15",
+    title: "Task 2 - Question & Submission",
+    extra_prereq_lesson_ids: ["ch12-skim", "ch12-mopane"],
+  };
+  const tools = [
+    assignment,
+    { id: "ch12-skim", title: "Skimming" },
+    { id: "ch12-mopane", title: "Mopane" },
+  ];
+  const locked = checkLessonAccess(assignment, tools, {}, { completed: { "ch12-skim": true } });
+  assert.equal(locked.isLocked, true);
+  assert.match(locked.reason || "", /Mopane/);
+  const open = checkLessonAccess(assignment, tools, {}, { completed: { "ch12-skim": true, "ch12-mopane": true } });
+  assert.equal(open.isLocked, false);
+});
+
 test("completion-only prereqs stay locked when the student has no progress yet", () => {
   const locked = checkLessonAccess(catalog[2], catalog, {}, { completed: {} });
   assert.equal(locked.isLocked, true);

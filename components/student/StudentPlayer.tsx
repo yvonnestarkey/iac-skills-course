@@ -33,6 +33,7 @@ import { firstLessonWebLink } from "@/lib/getLessonPdf";
 import { requestDripCatchup } from "@/lib/drip-messages";
 import { readingHeroDuration } from "@/lib/lesson-duration";
 import { isCoachAccount } from "@/lib/roles";
+import { mergeCompletedWithReading } from "@/lib/task2-gate";
 import { resolveCourseHref } from "@/lib/rich-text";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 import { isVarianceBakeryLesson } from "@/lib/variance-bakery";
@@ -56,7 +57,18 @@ export default function StudentPlayer({
   initialAccess?: AccessResult;
   overrideLocks?: boolean;
 }) {
-  const { user, setLessonCompleted, setSubmission, completed: completedMap, submissions, entitlement, previewLessonIds } = useStudentSession();
+  const {
+    user,
+    setLessonCompleted,
+    setSubmission,
+    completed: completedMap,
+    submissions,
+    entitlement,
+    previewLessonIds,
+    readingAttempts,
+    readingChecks,
+    reloadProgress,
+  } = useStudentSession();
   const outline = useVisibleCourseOutline();
   const { basePath } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
@@ -143,7 +155,11 @@ export default function StudentPlayer({
   const ordered = splitCoursePhases(outline || []).flatMap((phase) => phase.chapters || []);
   const catalog = useMemo(() => catalogFromOutline(outline), [outline]);
   const gatedTarget = catalog.find((item) => item.id === lesson.id) || outlineToGate(lesson);
-  const liveAccess = checkLessonAccess(gatedTarget, catalog, submissions || {}, { completed: completedMap || {} });
+  const gatedCompleted = mergeCompletedWithReading(completedMap, outline, {
+    attempts: readingAttempts,
+    checks: readingChecks,
+  });
+  const liveAccess = checkLessonAccess(gatedTarget, catalog, submissions || {}, { completed: gatedCompleted });
   const chapterLocked =
     Boolean(lesson.chapterId) &&
     (outline || []).length > 0 &&
@@ -346,7 +362,13 @@ export default function StudentPlayer({
                 style={{ width: "100%", minHeight: 2400, border: 0, display: "block" }}
               />
             ) : lesson.tool ? (
-              <LessonTool tool={lesson.tool} onComplete={completeSurveyLesson} />
+              <LessonTool
+                tool={lesson.tool}
+                onComplete={() => {
+                  void completeSurveyLesson();
+                  void reloadProgress();
+                }}
+              />
             ) : null}
 
             {resourceLink && resourceHref ? (

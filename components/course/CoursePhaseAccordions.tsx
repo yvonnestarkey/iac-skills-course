@@ -24,6 +24,8 @@ import { durationBadge } from "@/lib/lesson-duration";
 import { displayLessonType } from "@/lib/lesson-type";
 import { isPurchaseLockedLesson } from "@/lib/preview-nav-state";
 import type { OutlineChapter, OutlineLesson } from "@/lib/student-lesson";
+import { useOptionalStudentSession } from "@/lib/student-session";
+import { mergeCompletedWithReading } from "@/lib/task2-gate";
 
 function LessonEntry({
   lesson,
@@ -135,6 +137,15 @@ export default function CoursePhaseAccordions({
   markPreviewNav?: boolean;
   previewLessonIds?: Iterable<string>;
 }) {
+  const session = useOptionalStudentSession();
+  const gatedCompleted = useMemo(
+    () =>
+      mergeCompletedWithReading(completed, chapters, {
+        attempts: session?.readingAttempts,
+        checks: session?.readingChecks,
+      }),
+    [completed, chapters, session?.readingAttempts, session?.readingChecks]
+  );
   const phases = useMemo(() => splitCoursePhases(chapters), [chapters]);
   const ordered = useMemo(() => phases.flatMap((phase) => phase.chapters), [phases]);
   const catalog = useMemo(() => catalogFromOutline(chapters), [chapters]);
@@ -191,8 +202,8 @@ export default function CoursePhaseAccordions({
             </button>
             {phaseOpen
               ? phase.chapters.map((chapter) => {
-                  const stats = chapterProgress(chapter, completed);
-                  const chapterLocked = !unlocked && isChapterSequentiallyLocked(chapters, chapter.id, completed);
+                  const stats = chapterProgress(chapter, gatedCompleted);
+                  const chapterLocked = !unlocked && isChapterSequentiallyLocked(chapters, chapter.id, gatedCompleted);
                   const chapterOpen = Boolean(openChapters[chapter.id]);
                   const lessons = chapter.lessons || [];
                   return (
@@ -237,13 +248,13 @@ export default function CoursePhaseAccordions({
                                     locked={
                                       !unlocked &&
                                       (chapterLocked ||
-                                        checkLessonAccess(lesson, catalog, submissions, { completed }).isLocked)
+                                        checkLessonAccess(lesson, catalog, submissions, { completed: gatedCompleted }).isLocked)
                                     }
                                     purchaseLocked={purchaseLocked}
                                     previewOverride={previewOverride}
                                     showPreviewBadge={markPreviewNav && previewOverride}
                                     active={lesson.id === activeLessonId}
-                                    done={Boolean(completed[lesson.id])}
+                                    done={Boolean(gatedCompleted[lesson.id])}
                                     href={`${basePath}/${lesson.id}`}
                                     variant="hub"
                                     onNavigate={onNavigate}
@@ -264,13 +275,13 @@ export default function CoursePhaseAccordions({
                                 locked={
                                   !unlocked &&
                                   (chapterLocked ||
-                                    checkLessonAccess(lesson, catalog, submissions, { completed }).isLocked)
+                                    checkLessonAccess(lesson, catalog, submissions, { completed: gatedCompleted }).isLocked)
                                 }
                                 purchaseLocked={purchaseLocked}
                                 previewOverride={previewOverride}
                                 showPreviewBadge={markPreviewNav && previewOverride}
                                 active={lesson.id === activeLessonId}
-                                done={Boolean(completed[lesson.id])}
+                                done={Boolean(gatedCompleted[lesson.id])}
                                 href={`${basePath}/${lesson.id}`}
                                 variant="nav"
                                 onNavigate={onNavigate}

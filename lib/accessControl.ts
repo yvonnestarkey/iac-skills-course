@@ -7,6 +7,7 @@ export interface LessonGate {
   requires_submission?: boolean;
   requires_coach_approval?: boolean;
   prereq_lesson_id?: string | null;
+  extra_prereq_lesson_ids?: string[];
   unlock_at?: string | null;
 }
 
@@ -33,6 +34,7 @@ export function outlineToGate(lesson: LessonGate | OutlineLesson): LessonGate {
     requires_submission: Boolean(lesson.requires_submission),
     requires_coach_approval: Boolean(lesson.requires_coach_approval),
     prereq_lesson_id: lesson.prereq_lesson_id || null,
+    extra_prereq_lesson_ids: "extra_prereq_lesson_ids" in lesson ? lesson.extra_prereq_lesson_ids || [] : [],
     unlock_at: lesson.unlock_at || null,
   };
 }
@@ -97,6 +99,18 @@ export function checkLessonAccess(
         prereqTitle,
       };
     }
+  }
+
+  for (const extraId of target.extra_prereq_lesson_ids || []) {
+    if (options.completed?.[extraId]) continue;
+    const extra = catalog.find((lesson) => lesson.id === extraId);
+    const extraTitle = extra?.title || "the required reading tool";
+    return {
+      isLocked: true,
+      reason: `Finish ${extraTitle} first`,
+      prereqLessonId: extraId,
+      prereqTitle: extraTitle,
+    };
   }
 
   if (target.unlock_at) {

@@ -13,6 +13,7 @@ import { withComputedDuration } from "./lesson-duration";
 import { getLessonPdfUrl } from "./getLessonPdf";
 import { staffRoleFromAppMetadata } from "./roles";
 import { SEED } from "./seed";
+import { applyTask2ReadingAssignmentPrereqs } from "./task2-gate";
 import { isRetiredCourseChapter, withoutRetiredChapters } from "./study-clinic";
 import { getSupabase } from "./supabase";
 import { getServiceSupabase } from "./supabase-admin";
@@ -83,6 +84,8 @@ export interface OutlineLesson {
   survey_id?: string | null;
   is_assignment?: boolean;
   is_draft?: boolean;
+  tool?: string | null;
+  extra_prereq_lesson_ids?: string[];
 }
 
 export interface OutlineChapter {
@@ -95,7 +98,7 @@ export interface OutlineChapter {
 export type StudentUser = Pick<UserProfile, "id" | "email" | "role" | "full_name">;
 
 const OUTLINE_TTL_MS = 120_000;
-const OUTLINE_STORAGE_KEY = "iac-course-outline-v4";
+const OUTLINE_STORAGE_KEY = "iac-course-outline-v5";
 
 type OutlineCacheEntry = { at: number; data: OutlineChapter[] };
 let memoryOutline: OutlineCacheEntry | null = null;
@@ -196,6 +199,7 @@ function outlineLessonFromRow(row: {
   survey_id?: string | null;
   is_assignment?: boolean | null;
   is_draft?: boolean | null;
+  tool?: string | null;
 }): OutlineLesson {
   const flagged = asBool(row.requires_submission);
   const type = displayLessonType({
@@ -219,6 +223,7 @@ function outlineLessonFromRow(row: {
     survey_id: asPrereq(row.survey_id) || null,
     is_assignment: lessonIsAssignment({ type, is_assignment: asBool(row.is_assignment) }),
     is_draft: asDraftFlag(row.is_draft),
+    tool: row.tool != null ? String(row.tool) : null,
   };
   return withComputedDuration(lesson);
 }
@@ -320,7 +325,8 @@ export function courseDataFromOutline(outline: OutlineChapter[]): CourseData {
 }
 
 export function outlineFromSeed(): OutlineChapter[] {
-  return withSubmissionPrereqs(
+  return applyTask2ReadingAssignmentPrereqs(
+    withSubmissionPrereqs(
     withoutRetiredChapters(SEED.chapters).map((chapter) => ({
       id: chapter.id,
       title: chapter.title,
@@ -341,6 +347,7 @@ export function outlineFromSeed(): OutlineChapter[] {
         })
       ),
     }))
+    )
   );
 }
 
@@ -407,6 +414,31 @@ function applyOutlineGates(lesson: StudentLesson, outline: OutlineChapter[]): St
     is_assignment: Boolean(match?.is_assignment || lesson.is_assignment),
     next: nextFromOutline(outline, lesson.id) || lesson.next,
   };
+}
+
+async function attachLessonTools(
+  client: NonNullable<ReturnType<typeof outlineClient>>,
+  chapters: OutlineChapter[]
+): Promise<OutlineChapter[]> {
+  const { data, error } = await client.from("lessons").select("id, tool");
+  if (error || !data) return chapters;
+  const tools = new Map(
+    data.map((row) => [String(row.id), row.tool != null ? String(row.tool) : null] as const)
+  );
+  return chapters.map((chapter) => ({
+    ...chapter,
+    lessons: chapter.lessons.map((lesson) => ({
+      ...lesson,
+      tool: lesson.tool || tools.get(lesson.id) || null,
+    })),
+  }));
+}
+
+async function withTask2ReadingGates(
+  client: NonNullable<ReturnType<typeof outlineClient>>,
+  chapters: OutlineChapter[]
+): Promise<OutlineChapter[]> {
+  return applyTask2ReadingAssignmentPrereqs(await attachLessonTools(client, chapters));
 }
 
 async function withAssignmentFlags(chapters: OutlineChapter[]): Promise<OutlineChapter[]> {
@@ -479,20 +511,23 @@ async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
       const chapterMeta = new Map((chapterRows || []).map((row) => [row.id, row]));
       const ids = chapterRows?.length ? chapterRows.map((row) => row.id) : [...grouped.keys()];
       const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
-      return withAssignmentFlags(
-        withSubmissionPrereqs(
-          withoutRetiredChapters(
-            [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
-              const lessons = grouped.get(id) || [];
-              const live = chapterMeta.get(id);
-              const seed = SEED.chapters.find((chapter) => chapter.id === id);
-              return {
-                id,
-                title: live?.title || seed?.title || id,
-                summary: live?.summary || seed?.summary,
-                lessons,
-              };
-            })
+      return withTask2ReadingGates(
+        client,
+        await withAssignmentFlags(
+          withSubmissionPrereqs(
+            withoutRetiredChapters(
+              [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
+                const lessons = grouped.get(id) || [];
+                const live = chapterMeta.get(id);
+                const seed = SEED.chapters.find((chapter) => chapter.id === id);
+                return {
+                  id,
+                  title: live?.title || seed?.title || id,
+                  summary: live?.summary || seed?.summary,
+                  lessons,
+                };
+              })
+            )
           )
         )
       );
@@ -569,20 +604,23 @@ async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
       const chapterMeta = new Map((chapterRows || []).map((row) => [row.id, row]));
       const ids = chapterRows?.length ? chapterRows.map((row) => row.id) : [...grouped.keys()];
       const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
-      return withAssignmentFlags(
-        withSubmissionPrereqs(
-          withoutRetiredChapters(
-            [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
-              const lessons = grouped.get(id) || [];
-              const live = chapterMeta.get(id);
-              const seed = SEED.chapters.find((chapter) => chapter.id === id);
-              return {
-                id,
-                title: live?.title || seed?.title || id,
-                summary: live?.summary || seed?.summary,
-                lessons,
-              };
-            })
+      return withTask2ReadingGates(
+        client,
+        await withAssignmentFlags(
+          withSubmissionPrereqs(
+            withoutRetiredChapters(
+              [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
+                const lessons = grouped.get(id) || [];
+                const live = chapterMeta.get(id);
+                const seed = SEED.chapters.find((chapter) => chapter.id === id);
+                return {
+                  id,
+                  title: live?.title || seed?.title || id,
+                  summary: live?.summary || seed?.summary,
+                  lessons,
+                };
+              })
+            )
           )
         )
       );
