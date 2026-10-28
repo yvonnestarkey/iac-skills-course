@@ -28,7 +28,15 @@ import { formatSastDateTime, longDate, parseISO, today } from "@/lib/dates";
 import { completionProgress } from "@/lib/metrics";
 import { planCapacity, planStatus, slotLabel } from "@/lib/planner";
 import { fetchCourseOutline, type OutlineChapter } from "@/lib/student-lesson";
-import { fetchStudentSubmissions, type StudentSubmission } from "@/lib/student-submissions";
+import { hasWrittenFeedback } from "@/lib/feedback-log";
+import {
+  fetchStudentSubmissions,
+  lessonQueuePath,
+  lessonStatusToQueue,
+  type StudentSubmission,
+} from "@/lib/student-submissions";
+import { surveyResponseStatusClass, surveyResponseStatusLabel } from "@/lib/custom-surveys";
+import FeedbackLog from "@/components/feedback/FeedbackLog";
 import { useStore } from "@/lib/store";
 
 export default function StudentProfile({ studentId }: { studentId: string }) {
@@ -411,11 +419,17 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         <h2>Assignment submissions</h2>
         {submissions.length ? (
           <div className="work-list">
-            {submissions.map((item) => (
+            {submissions.map((item) => {
+              const queueStatus = lessonStatusToQueue(item.status);
+              const reviewed = item.status === "approved" || item.status === "rejected" || hasWrittenFeedback(item.feedback);
+              return (
               <div className="work-item" key={item.id || `${item.student_id}-${item.lesson_id}`}>
                 <div className="work-head">
                   <strong>{lessonTitles[item.lesson_id] || item.lesson_id}</strong>
-                  <span className="muted small">{item.status}{item.updated_at ? ` · ${formatSastDateTime(item.updated_at)}` : ""}</span>
+                  <span className={`badge ${surveyResponseStatusClass(queueStatus)}`}>
+                    {surveyResponseStatusLabel(queueStatus)}
+                    {item.updated_at ? ` · ${formatSastDateTime(item.updated_at)}` : ""}
+                  </span>
                 </div>
                 {item.link_url ? (
                   <p>
@@ -427,8 +441,26 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
                 <div className={`submission ${item.body.trim() ? "" : "empty"}`}>
                   {item.body.trim() || (item.link_url ? "" : "No written response.")}
                 </div>
+                {hasWrittenFeedback(item.feedback) ? <FeedbackLog raw={item.feedback} /> : null}
+                {item.feedbackFileUrl ? (
+                  <p>
+                    <a href={item.feedbackFileUrl} target="_blank" rel="noopener noreferrer">
+                      Open coach file ↗
+                    </a>
+                  </p>
+                ) : null}
+                <div className="actions">
+                  <button
+                    className={reviewed ? "primary" : "ghost"}
+                    type="button"
+                    onClick={() => router.push(lessonQueuePath(item.id || `${item.student_id}:${item.lesson_id}`))}
+                  >
+                    {reviewed ? "Feedback" : "Review"}
+                  </button>
+                </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <p className="empty">No assignment submissions yet.</p>

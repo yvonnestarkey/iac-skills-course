@@ -19,7 +19,9 @@ import {
   type CustomSurveyResponse,
   type SurveyResponseStatus,
 } from "@/lib/custom-surveys";
+import FeedbackLog from "@/components/feedback/FeedbackLog";
 import StudentProfileLink from "@/components/coach/StudentProfileLink";
+import { hasWrittenFeedback, parseFeedbackLog } from "@/lib/feedback-log";
 import { fetchLessonBmcrEvaluation, parseBmcrAnswer, withDiagnostics, type BmcrValue } from "@/lib/bmcr";
 import { formatSastDateTime } from "@/lib/dates";
 import {
@@ -54,6 +56,8 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [outcomeOpen, setOutcomeOpen] = useState(true);
+  const [gradeOpen, setGradeOpen] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -66,9 +70,12 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
             return;
           }
           setLesson(result.review);
+          const reviewed = result.review.status === "approved" || result.review.status === "rejected" || hasWrittenFeedback(result.review.feedback);
           setStatus(result.review.status === "submitted" ? "graded" : result.review.status === "approved" ? "graded" : "rejected");
-          setFeedback(result.review.feedback || "");
+          setFeedback("");
           setFileUrl(result.review.feedbackFileUrl || "");
+          setOutcomeOpen(!reviewed);
+          setGradeOpen(!reviewed);
           const marks = await fetchLessonBmcrEvaluation(result.review.student_id, result.review.lesson_id);
           if (!cancelled && marks) setBmcr(withDiagnostics(marks));
         })
@@ -85,10 +92,13 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
           }
           setSurvey(result.survey);
           setResponse(result.response);
+          const reviewed = result.response.status !== "submitted" || hasWrittenFeedback(result.response.feedback);
           setStatus(result.response.status === "submitted" ? "graded" : result.response.status);
           setGrade(result.response.grade == null ? "" : String(result.response.grade));
-          setFeedback(result.response.feedback || "");
+          setFeedback("");
           setFileUrl(result.response.feedbackFileUrl || "");
+          setOutcomeOpen(!reviewed);
+          setGradeOpen(!reviewed);
         });
     void load;
     return () => {
@@ -112,6 +122,9 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
         return;
       }
       if (result.review) setLesson(result.review);
+      setFeedback("");
+      setOutcomeOpen(false);
+      setGradeOpen(false);
       setNotice(result.error || "Review saved. The student has been notified.");
       return;
     }
@@ -148,6 +161,9 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
         gradedByName: result.response.gradedByName || "You",
       });
     }
+    setFeedback("");
+    setOutcomeOpen(false);
+    setGradeOpen(false);
     setNotice(result.error || "Review saved. The student has been notified.");
   };
 
@@ -196,8 +212,6 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
   const studentId = lesson?.student_id || response?.studentId || "";
   const studentEmail = lesson?.studentEmail || response?.studentEmail || "";
   const submittedAt = lesson?.submittedAt || response?.createdAt || "";
-  const currentStatus = lesson ? lessonStatusLabel(lesson.status) : response!.status;
-
   return (
     <div className="coach-page submission-review">
       <button className="back-link" type="button" onClick={() => router.push("/coach/lists")}>
@@ -293,46 +307,75 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
           <p className="muted small">
             {survey?.requiresGrade
               ? "This form requires a numeric score as well as a status."
-              : "Feedback-only. Mark as Graded when you have reviewed it, without a numeric score."}
+              : "Previous comments stay in the log. Add a new note if you need to follow up, without rewriting what you already sent."}
           </p>
+          {parseFeedbackLog(lesson?.feedback || response?.feedback).length ? (
+            <div className="logged-feedback">
+              <p className="student-notes-label">Logged feedback</p>
+              <FeedbackLog raw={lesson?.feedback || response?.feedback} />
+            </div>
+          ) : null}
           <p className="student-notes-label">Status</p>
-          <div className="filters">
-            {REVIEW_STATUSES.map((item) => (
-              <button
-                key={item}
-                type="button"
-                className={status === item ? "active" : ""}
-                onClick={() => setStatus(item)}
-              >
-                {surveyResponseStatusLabel(item)}
+          {outcomeOpen ? (
+            <div className="filters">
+              {REVIEW_STATUSES.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  className={status === item ? "active" : ""}
+                  onClick={() => setStatus(item)}
+                >
+                  {surveyResponseStatusLabel(item)}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="actions">
+              <span className={`badge ${surveyResponseStatusClass(status)}`}>{surveyResponseStatusLabel(status)}</span>
+              <button className="ghost" type="button" onClick={() => setOutcomeOpen(true)}>
+                Change status
               </button>
-            ))}
-          </div>
+            </div>
+          )}
           {survey?.requiresGrade ? (
-            <>
-              <label className="student-notes-label" htmlFor="submission-grade">
-                Grade
-              </label>
-              <input
-                id="submission-grade"
-                className="select-line"
-                type="number"
-                step="0.5"
-                value={grade}
-                onChange={(event) => setGrade(event.target.value)}
-                placeholder="e.g. 72"
-              />
-            </>
+            gradeOpen ? (
+              <>
+                <label className="student-notes-label" htmlFor="submission-grade">
+                  Grade
+                </label>
+                <input
+                  id="submission-grade"
+                  className="select-line"
+                  type="number"
+                  step="0.5"
+                  value={grade}
+                  onChange={(event) => setGrade(event.target.value)}
+                  placeholder="e.g. 72"
+                />
+              </>
+            ) : (
+              <div className="actions">
+                <p className="student-notes-label">Grade</p>
+                <strong>{grade.trim() || "—"}</strong>
+                <button className="ghost" type="button" onClick={() => setGradeOpen(true)}>
+                  Change grade
+                </button>
+              </div>
+            )
           ) : null}
           <label className="student-notes-label" htmlFor="submission-feedback">
-            Feedback
+            {parseFeedbackLog(lesson?.feedback || response?.feedback).length ? "Add notes" : "Feedback"}
           </label>
           <ComposerBox
             id="submission-feedback"
             rows={8}
             value={feedback}
             onChange={setFeedback}
-            placeholder="Write feedback. URLs and [text](https://…) links become clickable, and you can add emoji."
+            placeholder={
+              parseFeedbackLog(lesson?.feedback || response?.feedback).length
+                ? "Add a follow-up note. This is saved as a new log entry; earlier comments stay as they are."
+                : "Write feedback. URLs and [text](https://…) links become clickable, and you can add emoji."
+            }
           />
           <label className="student-notes-label" htmlFor="submission-feedback-file">
             File attachment

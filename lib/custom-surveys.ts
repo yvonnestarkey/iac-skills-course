@@ -8,6 +8,7 @@ import {
   parseBmcrAnswer,
   saveBmcrEvaluation,
 } from "./bmcr";
+import { nextFeedbackLog } from "./feedback-log";
 import { notifyAssignmentFeedback } from "./notifications";
 import { downloadRosterCsv } from "./roster";
 import { safeHref } from "./rich-text";
@@ -987,10 +988,21 @@ export async function saveSurveyReview(input: {
   const { data: session } = await client.auth.getUser();
   if (!session.user) return { ok: false, error: "Sign in required." };
   if (input.status === "submitted") return { ok: false, error: "Choose Graded, Rejected, or Resubmit." };
+  const current = await fetchSurveySubmission(input.id);
+  const previous = current.response;
+  const now = new Date().toISOString();
+  const storedFeedback = nextFeedbackLog(previous?.feedback, {
+    note: input.feedback,
+    at: now,
+    statusChanged: Boolean(previous && previous.status !== input.status),
+    statusLabel: surveyResponseStatusLabel(input.status),
+    gradeChanged: Boolean(previous && previous.grade !== input.grade),
+    gradeLabel: input.grade == null ? "blank" : String(input.grade),
+  });
   const payload: Record<string, unknown> = {
     status: input.status,
     grade: input.grade,
-    feedback: input.feedback.trim(),
+    feedback: storedFeedback,
     feedback_file_url: input.feedbackFileUrl.trim(),
     graded_by: session.user.id,
     graded_at: new Date().toISOString(),

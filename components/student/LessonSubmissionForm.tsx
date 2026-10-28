@@ -11,6 +11,8 @@ import {
   withDiagnostics,
   type BmcrValue,
 } from "@/lib/bmcr";
+import FeedbackLog from "@/components/feedback/FeedbackLog";
+import { hasWrittenFeedback } from "@/lib/feedback-log";
 import {
   fileNameFromUrl,
   saveStudentSubmission,
@@ -166,6 +168,17 @@ export default function LessonSubmissionForm({
       )}
       {practiceOnly ? null : saved?.status === "approved" ? <p className="notice">Your coach approved this submission.</p> : null}
       {practiceOnly ? null : saved?.status === "rejected" ? <p className="notice">Your coach asked for an update. Resubmit when you are ready.</p> : null}
+      {!practiceOnly && hasWrittenFeedback(saved?.feedback) ? (
+        <aside className="survey-info-card survey-review-card">
+          <strong>Coach feedback</strong>
+          <FeedbackLog raw={saved?.feedback} />
+          {saved?.feedbackFileUrl ? (
+            <a className="ghost" href={saved.feedbackFileUrl} target="_blank" rel="noopener noreferrer">
+              Open coach file ↗
+            </a>
+          ) : null}
+        </aside>
+      ) : null}
       {!practiceOnly && saved?.status === "submitted" && requiresCoachApproval ? (
         <p className="notice">Waiting for coach approval.</p>
       ) : null}

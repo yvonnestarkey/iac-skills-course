@@ -26,6 +26,7 @@ import {
 } from "@/lib/custom-surveys";
 import { parseBmcrAnswer, stringifyBmcrAnswer } from "@/lib/bmcr";
 import LessonPdfViewer from "@/components/LessonPdfViewer";
+import FeedbackLog from "@/components/feedback/FeedbackLog";
 import LinkedText from "@/components/ui/LinkedText";
 import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
 import { notificationMentionsSurvey } from "@/lib/notifications";
@@ -288,11 +289,7 @@ function CoachReviewCard({ response }: { response: CustomSurveyResponse }) {
         <span className={`badge ${surveyResponseStatusClass(response.status)}`}>{surveyResponseStatusLabel(response.status)}</span>
         {response.grade != null ? ` Grade: ${response.grade}` : ""}
       </p>
-      {response.feedback.trim() ? (
-        <p>
-          <LinkedText text={response.feedback} />
-        </p>
-      ) : (
+      {response.feedback.trim() ? <FeedbackLog raw={response.feedback} /> : (
         <p className="muted small">No written comments yet.</p>
       )}
       {response.feedbackFileUrl ? (

@@ -65,6 +65,9 @@ export interface Submission {
   link_url: string;
   status: SubmissionStatus;
   updated_at?: string;
+  feedback?: string;
+  feedbackFileUrl?: string;
+  gradedAt?: string;
 }
 
 /** Signed-in account in `public.profiles`. */

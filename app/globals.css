@@ -2434,6 +2434,33 @@ input[type="tel"]:focus {
   margin-bottom: 9px;
 }
 
+.feedback-log {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.feedback-log li {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f7f8f7;
+}
+
+.feedback-log li p {
+  margin: 0;
+}
+
+.feedback-log li .muted.small {
+  margin-bottom: 6px;
+}
+
+.logged-feedback {
+  margin: 12px 0 16px;
+}
+
 .script-eval-files {
   display: flex;
   flex-direction: column;

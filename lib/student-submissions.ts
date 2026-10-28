@@ -1,4 +1,6 @@
 import type { SurveyResponseStatus, SurveySubmissionRow } from "./custom-surveys";
+import { surveyResponseStatusLabel } from "./custom-surveys";
+import { nextFeedbackLog } from "./feedback-log";
 import { notifyAssignmentFeedback } from "./notifications";
 import { getSupabase } from "./supabase";
 import type { Submission, SubmissionStatus } from "../types/database";
@@ -84,6 +86,9 @@ export function submissionFromRow(row: {
   status?: string | null;
   submitted_at?: string | null;
   updated_at?: string | null;
+  feedback?: string | null;
+  feedback_file_url?: string | null;
+  graded_at?: string | null;
 }): StudentSubmission {
   const unpacked = unpackSubmissionContent(row);
   return {
@@ -94,6 +99,9 @@ export function submissionFromRow(row: {
     link_url: unpacked.link_url,
     status: asStatus(row.status),
     updated_at: unpacked.updated_at,
+    feedback: String(row.feedback || ""),
+    feedbackFileUrl: String(row.feedback_file_url || ""),
+    gradedAt: String(row.graded_at || ""),
   };
 }
 
@@ -186,6 +194,9 @@ export async function fetchLessonSubmissionsForCoach(): Promise<{
           status: row.status != null ? String(row.status) : null,
           submitted_at: row.submitted_at != null ? String(row.submitted_at) : null,
           updated_at: row.updated_at != null ? String(row.updated_at) : null,
+          feedback: row.feedback != null ? String(row.feedback) : null,
+          feedback_file_url: row.feedback_file_url != null ? String(row.feedback_file_url) : null,
+          graded_at: row.graded_at != null ? String(row.graded_at) : null,
         });
         const student = names.get(item.student_id) || { name: "Student", email: "" };
         const when = item.updated_at || String(row.submitted_at || row.created_at || "");
@@ -199,8 +210,8 @@ export async function fetchLessonSubmissionsForCoach(): Promise<{
           answers: {},
           status: lessonStatusToQueue(item.status),
           grade: null,
-          feedback: "",
-          feedbackFileUrl: "",
+          feedback: item.feedback || "",
+          feedbackFileUrl: item.feedbackFileUrl || "",
           gradedBy: "",
           gradedByName: "",
           gradedAt: reviewed ? when : "",
@@ -248,6 +259,9 @@ export async function fetchLessonSubmissionReview(
     status: row.status != null ? String(row.status) : null,
     submitted_at: row.submitted_at != null ? String(row.submitted_at) : null,
     updated_at: row.updated_at != null ? String(row.updated_at) : null,
+    feedback: row.feedback != null ? String(row.feedback) : null,
+    feedback_file_url: row.feedback_file_url != null ? String(row.feedback_file_url) : null,
+    graded_at: row.graded_at != null ? String(row.graded_at) : null,
   });
   const [profile, lesson] = await Promise.all([
     client.from("profiles").select("full_name, email").eq("id", item.student_id).maybeSingle(),
@@ -257,9 +271,9 @@ export async function fetchLessonSubmissionReview(
     ok: true,
     review: {
       ...item,
-      feedback: String(row.feedback || ""),
-      feedbackFileUrl: String(row.feedback_file_url || ""),
-      gradedAt: String(row.graded_at || ""),
+      feedback: item.feedback || "",
+      feedbackFileUrl: item.feedbackFileUrl || "",
+      gradedAt: item.gradedAt || "",
       lessonTitle: String(lesson.data?.title || item.lesson_id),
       studentName: String(profile.data?.full_name || "").trim() || String(profile.data?.email || "Student"),
       studentEmail: String(profile.data?.email || ""),
@@ -280,10 +294,19 @@ export async function saveLessonSubmissionReview(input: {
   if (!session.user) return { ok: false, error: "Sign in required." };
   if (input.status === "submitted") return { ok: false, error: "Choose Graded, Rejected, or Resubmit." };
   const rawId = lessonIdFromQueue(input.id);
+  const current = await fetchLessonSubmissionReview(input.id);
   const now = new Date().toISOString();
+  const previousStatus = current.review?.status;
+  const nextStatus = queueStatusToLesson(input.status);
+  const storedFeedback = nextFeedbackLog(current.review?.feedback, {
+    note: input.feedback,
+    at: now,
+    statusChanged: Boolean(previousStatus && previousStatus !== nextStatus),
+    statusLabel: surveyResponseStatusLabel(input.status),
+  });
   const payload: Record<string, unknown> = {
-    status: queueStatusToLesson(input.status),
-    feedback: input.feedback.trim(),
+    status: nextStatus,
+    feedback: storedFeedback,
     feedback_file_url: input.feedbackFileUrl.trim(),
     graded_by: session.user.id,
     graded_at: now,

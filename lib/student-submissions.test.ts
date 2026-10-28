@@ -69,6 +69,9 @@ test("lesson uploads map onto the submissions queue and notify the coach", () =>
   assert.match(tab, /fetchLessonSubmissionsForCoach/);
   assert.match(review, /isLessonQueueId/);
   assert.match(review, /Open student PDF/);
+  assert.match(review, /Logged feedback/);
+  assert.match(review, /setFeedback\(""\)/);
+  assert.match(saver, /nextFeedbackLog/);
   const form = readFileSync(resolve("components/student/LessonSubmissionForm.tsx"), "utf8");
   assert.match(form, /\/api\/student\/assignment-submitted/);
 });

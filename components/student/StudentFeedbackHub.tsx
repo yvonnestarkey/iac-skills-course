@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import LinkedText from "@/components/ui/LinkedText";
+import FeedbackLog from "@/components/feedback/FeedbackLog";
 import { useCoursePreview } from "@/lib/course-preview";
 import {
   fetchStudentSurveyPacks,
@@ -159,9 +159,7 @@ export default function StudentFeedbackHub() {
                     {response.grade != null ? ` Grade: ${response.grade}` : ""}
                   </p>
                   {response.feedback.trim() ? (
-                    <p>
-                      <LinkedText text={response.feedback} />
-                    </p>
+                    <FeedbackLog raw={response.feedback} />
                   ) : (
                     <p className="muted small">No written comments yet.</p>
                   )}
@@ -198,6 +196,12 @@ export default function StudentFeedbackHub() {
                 </div>
                 {item.updated_at ? (
                   <p className="muted small">Updated {formatSastDateTime(item.updated_at) || item.updated_at}</p>
+                ) : null}
+                {item.feedback?.trim() ? <FeedbackLog raw={item.feedback} /> : null}
+                {item.feedbackFileUrl ? (
+                  <a className="ghost" href={item.feedbackFileUrl} target="_blank" rel="noopener noreferrer">
+                    Open coach file ↗
+                  </a>
                 ) : null}
                 <div className="actions">
                   <Link className="ghost" href={item.href}>
