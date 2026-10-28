@@ -1,3 +1,4 @@
+import { keptProfileIdentity } from "./account-profile";
 import { parseAccountActivationStatus, type AccountActivationStatus } from "./account-activation";
 import { DEFAULT_COHORT_ID, normalizeCohortId } from "./cohorts";
 import { commerceTableMissing, DEFAULT_PRODUCT_ID, type EntitlementStatus } from "./commerce";
@@ -116,11 +117,22 @@ export async function ensureStudentProfile(user: {
     last_active: isoDate(today()),
   };
 
-  const { data: existing } = await client.from("profiles").select("id, role").eq("id", user.id).maybeSingle();
+  const { data: existing } = await client
+    .from("profiles")
+    .select("id, role, email, full_name")
+    .eq("id", user.id)
+    .maybeSingle();
   if (existing) {
-    const { error } = await client.from("profiles").update(identity).eq("id", user.id);
+    const kept = keptProfileIdentity(existing, { email, full_name: fullName });
+    const patch = {
+      email: kept.email,
+      full_name: kept.full_name,
+      updated_at: now,
+      last_active: isoDate(today()),
+    };
+    const { error } = await client.from("profiles").update(patch).eq("id", user.id);
     if (error && /updated_at|could not find|schema cache/i.test(error.message)) {
-      const { updated_at: _updated, ...withoutStamp } = identity;
+      const { updated_at: _updated, ...withoutStamp } = patch;
       await client.from("profiles").update(withoutStamp).eq("id", user.id);
     } else if (error) {
       console.error(error.message);

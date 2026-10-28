@@ -16,6 +16,10 @@ export default function CoachHomePage() {
         </p>
         <h3 style={{ marginTop: 22 }}>Where do you want to go?</h3>
         <div className="people hub-choices">
+          <button onClick={() => router.push("/coach/account")}>
+            <strong>Your profile</strong>
+            <span className="muted">Edit your name, email, and phone number</span>
+          </button>
           <button onClick={() => router.push("/student")}>
             <strong>Student course</strong>
             <span className="muted">The live student dashboard, lessons, live sessions, and Script Evaluator</span>

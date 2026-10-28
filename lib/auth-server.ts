@@ -3,12 +3,12 @@ import { cookies } from "next/headers";
 import { studentUserFromAuth, type StudentUser } from "@/lib/student-lesson";
 import { isCoachAccount } from "@/lib/roles";
 
-export async function getRequestUser(): Promise<StudentUser | null> {
+export async function getRequestSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !anonKey) return null;
   const store = await cookies();
-  const supabase = createServerClient(url, anonKey, {
+  return createServerClient(url, anonKey, {
     cookies: {
       getAll() {
         return store.getAll();
@@ -22,6 +22,11 @@ export async function getRequestUser(): Promise<StudentUser | null> {
       },
     },
   });
+}
+
+export async function getRequestUser(): Promise<StudentUser | null> {
+  const supabase = await getRequestSupabase();
+  if (!supabase) return null;
   const {
     data: { user },
   } = await supabase.auth.getUser();

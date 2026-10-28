@@ -3856,6 +3856,17 @@ a.student-account-link {
   border-color: var(--link);
 }
 
+.profile-editor {
+  display: grid;
+  gap: 4px;
+  margin-top: 8px;
+  max-width: 34rem;
+}
+
+.profile-editor .student-notes-label {
+  margin-top: 14px;
+}
+
 .student-notes-label {
   display: block;
   font-size: 13px;

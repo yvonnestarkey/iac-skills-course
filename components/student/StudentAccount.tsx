@@ -1,5 +1,6 @@
 "use client";
 
+import ProfileEditor from "@/components/account/ProfileEditor";
 import PurchaseCta from "@/components/commerce/PurchaseCta";
 import ReferralCard from "@/components/commerce/ReferralCard";
 import { useBypassLessonLocks } from "@/lib/course-preview";
@@ -18,6 +19,13 @@ export default function StudentAccount() {
       <p className="kicker">Account</p>
       <h1>Your account</h1>
       {user?.email ? <p className="muted">{user.email}</p> : null}
+
+      <section className="card">
+        <p className="kicker">Profile</p>
+        <h2>Your details</h2>
+        <p className="muted">Update the name, email, and phone we use for your course account.</p>
+        <ProfileEditor />
+      </section>
 
       <section className="card">
         <p className="kicker">Course access</p>

@@ -618,7 +618,15 @@ export async function getStudentUser(): Promise<StudentUser | null> {
   if (!client) return null;
   const { data, error } = await client.auth.getUser();
   if (error || !data.user) return null;
-  return studentUserFromAuth(data.user);
+  const user = studentUserFromAuth(data.user);
+  const profile = await client.from("profiles").select("full_name, email").eq("id", data.user.id).maybeSingle();
+  const named = String(profile.data?.full_name || "").trim();
+  const email = String(profile.data?.email || "").trim();
+  return {
+    ...user,
+    email: email || user.email,
+    full_name: named || user.full_name,
+  };
 }
 
 export async function fetchCompletedLessonIds(userId: string): Promise<string[]> {

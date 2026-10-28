@@ -104,14 +104,15 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
             <button className="ghost" type="button" onClick={() => router.push("/coach")}>
               Coach tools
             </button>
-          ) : (
-            <Link
-              href="/student/account"
-              className={`ghost student-account-link ${pathname.startsWith("/student/account") ? "on" : ""}`}
-            >
-              Account
-            </Link>
-          )}
+          ) : null}
+          <Link
+            href={isCoachAccount(user) ? "/coach/account" : "/student/account"}
+            className={`ghost student-account-link ${
+              pathname.startsWith("/student/account") || pathname.startsWith("/coach/account") ? "on" : ""
+            }`}
+          >
+            Account
+          </Link>
           <button className="ghost student-signout" type="button" onClick={leave}>
             Sign Out
           </button>

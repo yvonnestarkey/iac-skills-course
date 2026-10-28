@@ -27,7 +27,7 @@ export default function StudentDashboard() {
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
   const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
   const pct = lessons.length ? Math.round((done / lessons.length) * 100) : 0;
-  const name = user?.email ? user.email.split("@")[0] : unlocked ? "Coach" : "there";
+  const name = user?.full_name?.trim() || (user?.email ? user.email.split("@")[0] : unlocked ? "Coach" : "there");
   const ordered = splitCoursePhases(chapters).flatMap((phase) => phase.chapters || []);
   const resume = findResumeLesson(ordered, completed || {});
   const allDone = lessons.length > 0 && done === lessons.length;
@@ -140,6 +140,10 @@ export default function StudentDashboard() {
         <Link href="/student/planner" className="student-hub-card">
           <strong>Study planner</strong>
           <p>Set your hours, slots, and target finish date.</p>
+        </Link>
+        <Link href="/student/account" className="student-hub-card">
+          <strong>Your profile</strong>
+          <p>Edit your name, email, phone number, and accountability contact.</p>
         </Link>
       </nav>
       <StudentPersonalNotes />

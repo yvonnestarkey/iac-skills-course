@@ -53,6 +53,15 @@ export default function TopBar() {
           </button>
         ) : null}
         {isCoach ? (
+          <button
+            className={`ghost student-account-link ${pathname.startsWith("/coach/account") ? "on" : ""}`}
+            type="button"
+            onClick={() => router.push("/coach/account")}
+          >
+            Account
+          </button>
+        ) : null}
+        {isCoach ? (
           <button className="ghost" type="button" onClick={() => router.push("/student")}>
             Student course
           </button>
