@@ -65,6 +65,7 @@ export interface Submission {
   link_url: string;
   status: SubmissionStatus;
   updated_at?: string;
+  submitted_at?: string;
   feedback?: string;
   feedbackFileUrl?: string;
   gradedAt?: string;

@@ -47,6 +47,7 @@ test("submissionFromRow maps live content into the student form fields", () => {
   assert.equal(row.link_url, "https://cdn.example/file.pdf");
   assert.equal(row.body, "");
   assert.equal(row.updated_at, "2026-09-21T15:00:00.000Z");
+  assert.equal(row.submitted_at, "2026-09-21T15:00:00.000Z");
 });
 
 test("lesson uploads map onto the submissions queue and notify the coach", () => {
@@ -74,6 +75,8 @@ test("lesson uploads map onto the submissions queue and notify the coach", () =>
   assert.match(saver, /nextFeedbackLog/);
   const profile = readFileSync(resolve("components/coach/StudentProfile.tsx"), "utf8");
   assert.match(profile, /Hide feedback/);
+  assert.match(profile, /Submitted ·/);
+  assert.match(profile, /assignment-submitted-date/);
   const form = readFileSync(resolve("components/student/LessonSubmissionForm.tsx"), "utf8");
   assert.match(form, /\/api\/student\/assignment-submitted/);
 });

@@ -99,6 +99,7 @@ export function submissionFromRow(row: {
     link_url: unpacked.link_url,
     status: asStatus(row.status),
     updated_at: unpacked.updated_at,
+    submitted_at: String(row.submitted_at || "").trim() || undefined,
     feedback: String(row.feedback || ""),
     feedbackFileUrl: String(row.feedback_file_url || ""),
     gradedAt: String(row.graded_at || ""),

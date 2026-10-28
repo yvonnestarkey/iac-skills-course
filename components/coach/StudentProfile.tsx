@@ -457,14 +457,21 @@ function AssignmentRow({
   const reviewed = item.status === "approved" || item.status === "rejected" || hasWrittenFeedback(item.feedback);
   const written = hasWrittenFeedback(item.feedback);
   const pdfName = item.link_url ? fileNameFromUrl(item.link_url) : "";
+  const submittedAt = formatSastDateTime(item.submitted_at || (!item.gradedAt ? item.updated_at : undefined));
+  const gradedAt = formatSastDateTime(item.gradedAt || (reviewed ? item.updated_at : undefined));
   return (
     <div className="work-item">
-      <div className="work-head">
+      <div className="work-head assignment-head">
         <strong>{title}</strong>
-        <span className={`badge ${surveyResponseStatusClass(queueStatus)}`}>
-          {surveyResponseStatusLabel(queueStatus)}
-          {item.updated_at ? ` · ${formatSastDateTime(item.updated_at)}` : ""}
-        </span>
+        <div className="assignment-dates">
+          {submittedAt && (gradedAt || reviewed) ? (
+            <span className="assignment-submitted-date">Submitted · {submittedAt}</span>
+          ) : null}
+          <span className={`badge ${surveyResponseStatusClass(queueStatus)}`}>
+            {surveyResponseStatusLabel(queueStatus)}
+            {gradedAt ? ` · ${gradedAt}` : submittedAt && !reviewed ? ` · ${submittedAt}` : ""}
+          </span>
+        </div>
       </div>
       {item.link_url ? (
         <p>
