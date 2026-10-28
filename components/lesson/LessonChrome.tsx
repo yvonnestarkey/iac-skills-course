@@ -1,6 +1,7 @@
 "use client";
 
 import LessonTypeIcon from "@/components/lesson/LessonTypeIcon";
+import { INTERACTIVE_LESSON_LABEL, isInteractiveLesson } from "@/lib/reading-drills";
 import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
 import { useRouter } from "next/navigation";
 import { allLessons } from "@/lib/course";
@@ -12,8 +13,8 @@ export function LessonHeader({ lesson, kicker }: { lesson: FlatLesson; kicker?: 
   return (
     <>
       <p className="kicker">
-        <LessonTypeIcon type={kind} title={lesson.title} size={13} />
-        {kicker || lessonTypeLabel(kind)}
+        <LessonTypeIcon type={kind} title={lesson.title} tool={lesson.tool} id={lesson.id} size={13} />
+        {kicker || (isInteractiveLesson(lesson) ? INTERACTIVE_LESSON_LABEL : lessonTypeLabel(kind))}
       </p>
       <h1>{lesson.title}</h1>
     </>

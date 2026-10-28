@@ -3,6 +3,7 @@
  * Pure logic only (no React, no Supabase), so it runs in the browser, the API route and the tests.
  * Spec: Obsidian "Reading and Comprehension Tool / Read the Required - Tool Spec".
  */
+import { isVarianceBakeryLesson } from "@/lib/variance-bakery";
 import config from "@/lib/data/reading-drills/config.json";
 import mopane from "@/lib/data/reading-drills/mopane.json";
 import ubuntu from "@/lib/data/reading-drills/ubuntu.json";
@@ -497,6 +498,18 @@ export function parseLessonTool(value: string | null | undefined): LessonTool | 
   }
   return null;
 }
+
+/** Variance Bakery, reading check, and reading drills in the course tree. */
+export function isInteractiveLesson(lesson: {
+  id?: string | null;
+  title?: string | null;
+  tool?: string | null;
+} | null | undefined): boolean {
+  if (!lesson) return false;
+  return Boolean(parseLessonTool(lesson.tool)) || isVarianceBakeryLesson(lesson);
+}
+
+export const INTERACTIVE_LESSON_LABEL = "Practice tool";
 
 /* ---------------------------------------------------------------- teaching the Direct / Indirect difference */
 

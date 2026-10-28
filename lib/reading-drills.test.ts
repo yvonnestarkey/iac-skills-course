@@ -10,6 +10,7 @@ import {
   caseWords,
   getExercise,
   gradeBand,
+  isInteractiveLesson,
   markingCostUsd,
   normaliseMarking,
   paceBand,
@@ -115,6 +116,19 @@ test("a lesson's tool setting resolves to the right tool, and unknown values sho
   assert.equal(parseLessonTool(""), null);
   assert.equal(parseLessonTool(null), null);
   for (const option of lessonToolOptions()) assert.ok(parseLessonTool(option.value), `${option.value} resolves`);
+});
+
+test("interactive tools use a pointer icon in the course sidebar", () => {
+  assert.equal(isInteractiveLesson({ tool: "variance-bakery" }), true);
+  assert.equal(isInteractiveLesson({ tool: "reading-check" }), true);
+  assert.equal(isInteractiveLesson({ tool: "reading-drill:mopane" }), true);
+  assert.equal(isInteractiveLesson({ id: "ch10-l12", title: "Variance Bakery" }), true);
+  assert.equal(isInteractiveLesson({ title: "A lecture" }), false);
+  const icon = readFileSync(resolve("components/lesson/LessonTypeIcon.tsx"), "utf8");
+  const nav = readFileSync(resolve("components/course/CoursePhaseAccordions.tsx"), "utf8");
+  assert.match(icon, /MousePointerClick/);
+  assert.match(icon, /isInteractiveLesson/);
+  assert.match(nav, /tool=\{lesson\.tool\}/);
 });
 
 test("each reading exercise can only be recommended once all unused ones are gone", () => {

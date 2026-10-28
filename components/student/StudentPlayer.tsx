@@ -22,6 +22,7 @@ import { catalogFromOutline, checkLessonAccess, outlineToGate, type AccessResult
 import { composeLessonAvailability } from "@/lib/lesson-availability";
 import { findResumeLesson, isChapterSequentiallyLocked, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
+import { INTERACTIVE_LESSON_LABEL, isInteractiveLesson } from "@/lib/reading-drills";
 import { displayLessonType, lessonTypeLabel } from "@/lib/lesson-type";
 import LessonCarryForwardCheckpoint from "@/components/lesson/LessonCarryForwardCheckpoint";
 import LessonVideoParts from "@/components/lesson/LessonVideoParts";
@@ -264,8 +265,8 @@ export default function StudentPlayer({
           </div>
         ) : null}
         <p className="kicker">
-          <LessonTypeIcon type={kind} title={lesson.title} size={13} />
-          {lessonTypeLabel(kind)}
+          <LessonTypeIcon type={kind} title={lesson.title} tool={lesson.tool} id={lesson.id} size={13} />
+          {isInteractiveLesson(lesson) ? INTERACTIVE_LESSON_LABEL : lessonTypeLabel(kind)}
           {lesson.is_assignment ? <span className="badge assignment-flag">Assignment</span> : null}
         </p>
         <h1>{lesson.title}</h1>

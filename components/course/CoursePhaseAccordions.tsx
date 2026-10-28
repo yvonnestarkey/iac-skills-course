@@ -57,7 +57,7 @@ function LessonEntry({
   const reviewText = review ? surveyReviewSummary(review) : "";
   const showLock = (locked && !previewOverride) || purchaseLocked;
   const icon = (
-    <LessonTypeIcon type={kind} title={lesson.title} done={done && !showLock} size={13} />
+    <LessonTypeIcon type={kind} title={lesson.title} tool={lesson.tool} id={lesson.id} done={done && !showLock} size={13} />
   );
   const title = (
     <span className="lesson-title">
