@@ -31,6 +31,7 @@ import { fetchCourseOutline, type OutlineChapter } from "@/lib/student-lesson";
 import { hasWrittenFeedback } from "@/lib/feedback-log";
 import {
   fetchStudentSubmissions,
+  fileNameFromUrl,
   lessonQueuePath,
   lessonStatusToQueue,
   type StudentSubmission,
@@ -419,48 +420,14 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         <h2>Assignment submissions</h2>
         {submissions.length ? (
           <div className="work-list">
-            {submissions.map((item) => {
-              const queueStatus = lessonStatusToQueue(item.status);
-              const reviewed = item.status === "approved" || item.status === "rejected" || hasWrittenFeedback(item.feedback);
-              return (
-              <div className="work-item" key={item.id || `${item.student_id}-${item.lesson_id}`}>
-                <div className="work-head">
-                  <strong>{lessonTitles[item.lesson_id] || item.lesson_id}</strong>
-                  <span className={`badge ${surveyResponseStatusClass(queueStatus)}`}>
-                    {surveyResponseStatusLabel(queueStatus)}
-                    {item.updated_at ? ` · ${formatSastDateTime(item.updated_at)}` : ""}
-                  </span>
-                </div>
-                {item.link_url ? (
-                  <p>
-                    <a href={item.link_url} target="_blank" rel="noopener noreferrer">
-                      {item.link_url}
-                    </a>
-                  </p>
-                ) : null}
-                <div className={`submission ${item.body.trim() ? "" : "empty"}`}>
-                  {item.body.trim() || (item.link_url ? "" : "No written response.")}
-                </div>
-                {hasWrittenFeedback(item.feedback) ? <FeedbackLog raw={item.feedback} /> : null}
-                {item.feedbackFileUrl ? (
-                  <p>
-                    <a href={item.feedbackFileUrl} target="_blank" rel="noopener noreferrer">
-                      Open coach file ↗
-                    </a>
-                  </p>
-                ) : null}
-                <div className="actions">
-                  <button
-                    className={reviewed ? "primary" : "ghost"}
-                    type="button"
-                    onClick={() => router.push(lessonQueuePath(item.id || `${item.student_id}:${item.lesson_id}`))}
-                  >
-                    {reviewed ? "Feedback" : "Review"}
-                  </button>
-                </div>
-              </div>
-              );
-            })}
+            {submissions.map((item) => (
+              <AssignmentRow
+                key={item.id || `${item.student_id}-${item.lesson_id}`}
+                item={item}
+                title={lessonTitles[item.lesson_id] || item.lesson_id}
+                onReview={() => router.push(lessonQueuePath(item.id || `${item.student_id}:${item.lesson_id}`))}
+              />
+            ))}
           </div>
         ) : (
           <p className="empty">No assignment submissions yet.</p>
@@ -472,6 +439,72 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       <ScriptEvaluationsPanel studentId={student.id} />
 
       <BmcrEvaluationsPanel studentId={student.id} />
+    </div>
+  );
+}
+
+function AssignmentRow({
+  item,
+  title,
+  onReview,
+}: {
+  item: StudentSubmission;
+  title: string;
+  onReview: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const queueStatus = lessonStatusToQueue(item.status);
+  const reviewed = item.status === "approved" || item.status === "rejected" || hasWrittenFeedback(item.feedback);
+  const written = hasWrittenFeedback(item.feedback);
+  const pdfName = item.link_url ? fileNameFromUrl(item.link_url) : "";
+  return (
+    <div className="work-item">
+      <div className="work-head">
+        <strong>{title}</strong>
+        <span className={`badge ${surveyResponseStatusClass(queueStatus)}`}>
+          {surveyResponseStatusLabel(queueStatus)}
+          {item.updated_at ? ` · ${formatSastDateTime(item.updated_at)}` : ""}
+        </span>
+      </div>
+      {item.link_url ? (
+        <p>
+          <a href={item.link_url} target="_blank" rel="noopener noreferrer">
+            Open student PDF{pdfName ? `: ${pdfName}` : ""} ↗
+          </a>
+        </p>
+      ) : item.body.trim() ? (
+        <div className="submission">{item.body}</div>
+      ) : (
+        <p className="muted small">No written response.</p>
+      )}
+      <div className="actions">
+        {written ? (
+          <button
+            className="primary assignment-feedback-toggle"
+            type="button"
+            aria-expanded={open}
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? "Hide feedback" : "Feedback"}
+            {open ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
+          </button>
+        ) : null}
+        <button className={reviewed && written ? "ghost" : "primary"} type="button" onClick={onReview}>
+          {reviewed ? "Open review" : "Review"}
+        </button>
+      </div>
+      {open && written ? (
+        <div className="assignment-feedback-preview">
+          <FeedbackLog raw={item.feedback} />
+          {item.feedbackFileUrl ? (
+            <p>
+              <a href={item.feedbackFileUrl} target="_blank" rel="noopener noreferrer">
+                Open coach file ↗
+              </a>
+            </p>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }

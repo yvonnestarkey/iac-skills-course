@@ -311,7 +311,7 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
           </p>
           {parseFeedbackLog(lesson?.feedback || response?.feedback).length ? (
             <div className="logged-feedback">
-              <p className="student-notes-label">Logged feedback</p>
+              <p className="student-notes-label">Comments</p>
               <FeedbackLog raw={lesson?.feedback || response?.feedback} />
             </div>
           ) : null}

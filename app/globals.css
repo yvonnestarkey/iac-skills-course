@@ -2435,30 +2435,38 @@ input[type="tel"]:focus {
 }
 
 .feedback-log {
-  list-style: none;
   margin: 8px 0 0;
-  padding: 0;
   display: grid;
-  gap: 12px;
+  gap: 16px;
 }
 
-.feedback-log li {
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: #f7f8f7;
+.feedback-log-entry + .feedback-log-entry {
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
 }
 
-.feedback-log li p {
+.feedback-log-entry .muted.small {
+  margin: 0 0 6px;
+}
+
+.feedback-log-body {
   margin: 0;
-}
-
-.feedback-log li .muted.small {
-  margin-bottom: 6px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .logged-feedback {
   margin: 12px 0 16px;
+}
+
+.assignment-feedback-preview {
+  margin-top: 12px;
+}
+
+.assignment-feedback-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .script-eval-files {

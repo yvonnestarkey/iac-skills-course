@@ -13,20 +13,19 @@ export default function FeedbackLog({
 }) {
   const log = entries || parseFeedbackLog(raw);
   if (!log.length) return <p className="muted small">{empty}</p>;
+  const dated = log.length > 1;
   return (
-    <ol className="feedback-log">
+    <div className="feedback-log">
       {log.map((entry, index) => (
-        <li key={`${entry.at}-${index}`}>
-          {entry.at ? (
-            <p className="muted small">{formatSastDateTime(entry.at) || entry.at}</p>
-          ) : (
-            <p className="muted small">Earlier feedback</p>
-          )}
-          <p>
+        <article className="feedback-log-entry" key={`${entry.at}-${index}`}>
+          {dated ? (
+            <p className="muted small">{entry.at ? formatSastDateTime(entry.at) || "Follow-up" : "Original comments"}</p>
+          ) : null}
+          <div className="feedback-log-body">
             <LinkedText text={entry.text} />
-          </p>
-        </li>
+          </div>
+        </article>
       ))}
-    </ol>
+    </div>
   );
 }
