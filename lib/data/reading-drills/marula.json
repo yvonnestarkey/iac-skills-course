@@ -1,0 +1,235 @@
+{
+  "id": "marula",
+  "title": "Marula Beverages",
+  "area": "Financial reporting: IFRS 18",
+  "marks": 6,
+  "answer_minutes": 8,
+  "trains": [
+    "dir",
+    "lens",
+    "indirect"
+  ],
+  "case": [
+    {
+      "heading": "1 Background",
+      "sentences": [
+        {
+          "id": "m0",
+          "text": "You are the financial manager of Marula Beverages (Pty) Ltd (Marula), an unlisted manufacturer and distributor of bottled fruit juices in Limpopo.",
+          "kind": null
+        },
+        {
+          "id": "m1",
+          "text": "Marula has chosen to apply IFRS 18 Presentation and Disclosure in Financial Statements early, in its financial statements for the year ended 31 December 2026.",
+          "kind": null
+        },
+        {
+          "id": "m2",
+          "text": "Marula's main business activities do not include investing in assets or providing finance to customers.",
+          "kind": "indirect"
+        }
+      ]
+    },
+    {
+      "heading": "2 The draft statement of profit or loss",
+      "sentences": [
+        {
+          "id": "m3",
+          "text": "During 2026, Marula incurred a foreign exchange loss of R6,2 million on payables for imported fruit juice concentrate, which the senior financial accountant classified in the financing category.",
+          "kind": "direct"
+        },
+        {
+          "id": "m4",
+          "text": "The accountant reasoned that foreign exchange risk is a treasury risk, outside factory operations.",
+          "kind": "indirect"
+        },
+        {
+          "id": "m5",
+          "text": "Dividend income of R2,5 million from a 5% unlisted shareholding in a bottle supplier, and interest of R1,1 million earned on operational call accounts, were included in operating profit, because the CFO argued that both relate to daily commercial operations.",
+          "kind": "direct"
+        },
+        {
+          "id": "m6",
+          "text": "Marula also incurred R14 million in severance costs on closing an inefficient bottling line, and presented them as a separate line below operating profit, which the draft labels \"Operating profit before restructuring\".",
+          "kind": "direct"
+        }
+      ]
+    },
+    {
+      "heading": "3 Investor presentation",
+      "sentences": [
+        {
+          "id": "m7",
+          "text": "The CEO included a measure called \"Adjusted operational EBITDA\" in the draft investor presentation, without reconciling it to operating profit or disclosing its tax effects.",
+          "kind": "excluded"
+        }
+      ]
+    }
+  ],
+  "required": "Critically evaluate the classification of items and the subtotals in Marula's draft statement of profit or loss for the year ended 31 December 2026, in terms of IFRS 18 Presentation and Disclosure in Financial Statements. Do not discuss the disclosure requirements for management-defined performance measures (paragraph 3).",
+  "recall": [
+    {
+      "question": "What kind of business is Marula Beverages?",
+      "options": [
+        "A fruit juice manufacturer and distributor",
+        "An investment and treasury company",
+        "A bottle manufacturer",
+        "A retail bank"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is your role?",
+      "options": [
+        "The financial manager preparing the financial statements",
+        "The external audit partner",
+        "An investor relations consultant",
+        "The treasury manager"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is changing in how Marula prepares its statements this year?",
+      "options": [
+        "It is applying IFRS 18 early to present its statement of profit or loss",
+        "It is moving from IFRS for SMEs to full IFRS",
+        "It is deconsolidating a subsidiary",
+        "It is applying hyperinflation accounting for the first time"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What does the draft do with the R14 million severance costs?",
+      "options": [
+        "Shows them below operating profit",
+        "Capitalises them as property, plant and equipment",
+        "Leaves them out of the financial statements",
+        "Classifies them as financing costs"
+      ],
+      "correct": 0
+    }
+  ],
+  "rtfq": {
+    "shape": {
+      "options": [
+        "Evaluate each classification and subtotal against IFRS 18: say whether the draft is right, why, and what the correct presentation is, and conclude",
+        "A calculation of the income tax and deferred tax on the exchange loss",
+        "A discussion of whether Marula is an investment entity under IFRS 10",
+        "A list of audit procedures on the interest income"
+      ],
+      "correct": 0,
+      "why": "\"Critically evaluate\" means judging each item: is the draft treatment right, what does IFRS 18 require, and what is the correct presentation, ending with a conclusion on the draft as a whole."
+    },
+    "directions": {
+      "options": [
+        {
+          "text": "Leave out the disclosure requirements for management-defined performance measures in paragraph 3",
+          "required": true
+        },
+        {
+          "text": "Cover both the classification of items and the subtotals",
+          "required": true
+        },
+        {
+          "text": "Apply IFRS 18 (Marula is applying it early)",
+          "required": true
+        },
+        {
+          "text": "Discuss the CEO's \"Adjusted operational EBITDA\"",
+          "required": false
+        },
+        {
+          "text": "Redraft the statement of cash flows",
+          "required": false
+        },
+        {
+          "text": "Calculate earnings per share",
+          "required": false
+        }
+      ],
+      "why": "The exclusion is the trap: the EBITDA measure in paragraph 3 invites a discussion of performance measures, which earns nothing here. The required names two things to cover, classification and subtotals, so an answer that only reclassifies items is incomplete."
+    },
+    "lens": {
+      "options": [
+        "Marula's financial manager: does the draft comply with IFRS 18, for a company whose main business is not investing or financing?",
+        "The external auditor: audit risk and materiality",
+        "An investor: is management's EBITDA measure useful?",
+        "The CFO: defending the draft presentation"
+      ],
+      "correct": 0,
+      "why": "You are preparing the statements, so the angle is compliance with IFRS 18. The fact that Marula's main business is not investing or financing decides where the dividends and interest go."
+    }
+  },
+  "rows": [
+    {
+      "id": "r1",
+      "proximity": "direct",
+      "point": "The exchange loss belongs in the operating category: exchange differences go in the same category as the item that gave rise to them, and payables for concentrate are operating",
+      "clues": [
+        "m3"
+      ],
+      "marks": 1,
+      "topic": "ifrs18-categories"
+    },
+    {
+      "id": "r2",
+      "proximity": "indirect",
+      "point": "The accountant's reasoning is wrong: the category follows the item that caused the difference, not the type of risk (an exchange loss on a bank loan would be financing; on trade payables it is operating)",
+      "clues": [
+        "m4"
+      ],
+      "marks": 1,
+      "topic": "ifrs18-categories"
+    },
+    {
+      "id": "r3",
+      "proximity": "direct",
+      "point": "The dividend income belongs in the investing category, not in operating profit: an equity investment is an asset that generates a return largely on its own, and Marula's main business is not investing",
+      "clues": [
+        "m5",
+        "m2"
+      ],
+      "marks": 1,
+      "topic": "ifrs18-categories"
+    },
+    {
+      "id": "r4",
+      "proximity": "indirect",
+      "point": "The interest on the call accounts belongs in the investing category: it is income on cash and cash equivalents, for a company whose main business is not investing or financing, even though the accounts are used in operations",
+      "clues": [
+        "m5",
+        "m2"
+      ],
+      "marks": 1,
+      "topic": "ifrs18-categories"
+    },
+    {
+      "id": "r5",
+      "proximity": "indirect",
+      "point": "The severance costs are operating expenses: operating is the default category, and closing a production line is part of Marula's operations",
+      "clues": [
+        "m6"
+      ],
+      "marks": 1,
+      "topic": "ifrs18-categories"
+    },
+    {
+      "id": "r6",
+      "proximity": "direct",
+      "point": "They cannot be shown below operating profit: operating profit must include every item in the operating category, so the draft's operating profit is misstated; an extra subtotal is allowed only if operating profit still includes all operating items",
+      "clues": [
+        "m6"
+      ],
+      "marks": 1,
+      "topic": "ifrs18-categories"
+    },
+    {
+      "id": "r7",
+      "proximity": "thinking",
+      "point": "Conclusion: the statement must present the required subtotals, operating profit and profit before financing and income taxes (Marula has no specified main business activity), with the items above corrected",
+      "clues": [],
+      "marks": 1,
+      "topic": "ifrs18-categories"
+    }
+  ]
+}
