@@ -66,7 +66,11 @@ export default function TopBar() {
             Student course
           </button>
         ) : null}
-        {isCoach ? <span className="coach-view-pill">Coach tools</span> : null}
+        {isCoach ? (
+          <button className="coach-view-pill" type="button" onClick={() => router.push("/coach")}>
+            Coach tools
+          </button>
+        ) : null}
         {isCoach ? (
           <button className="coach-signout" type="button" onClick={() => void signOut()}>
             <LogOut size={16} aria-hidden="true" />

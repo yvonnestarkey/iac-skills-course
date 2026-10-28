@@ -87,5 +87,6 @@ test("students and coaches can edit their own profile", () => {
   assert.match(coach, /ProfileEditor/);
   assert.match(shell, /\/student\/account/);
   assert.match(topbar, /\/coach\/account/);
+  assert.match(topbar, /onClick=\{\(\) => router.push\("\/coach"\)\}/);
   assert.match(profiles, /keptProfileIdentity/);
 });

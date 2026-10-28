@@ -207,6 +207,7 @@ h1 {
 .coach-view-pill {
   display: inline-flex;
   align-items: center;
+  border: 0;
   border-radius: 999px;
   padding: 5px 11px;
   background: #4f46e5;
@@ -215,6 +216,17 @@ h1 {
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.coach-topbar button.coach-view-pill {
+  background: #4f46e5;
+  color: #fff;
+}
+
+.coach-topbar button.coach-view-pill:hover,
+.coach-topbar button.coach-view-pill:focus-visible {
+  background: #4338ca;
+  color: #fff;
 }
 
 .coach-signout {
