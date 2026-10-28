@@ -10,6 +10,7 @@ import ubuntu from "@/lib/data/reading-drills/ubuntu.json";
 import baobab from "@/lib/data/reading-drills/baobab.json";
 import lindiwe from "@/lib/data/reading-drills/lindiwe.json";
 import highveld from "@/lib/data/reading-drills/highveld.json";
+import marula from "@/lib/data/reading-drills/marula.json";
 import khanyisa from "@/lib/data/reading-drills/reading-check-khanyisa.json";
 
 /* ---------------------------------------------------------------- types */
@@ -102,7 +103,7 @@ export type ReadingCheckResult = {
 /* ---------------------------------------------------------------- data */
 
 const ALL: Record<string, DrillExercise> = Object.fromEntries(
-  [mopane, ubuntu, baobab, lindiwe, highveld].map((ex) => [ex.id, ex as unknown as DrillExercise])
+  [mopane, ubuntu, baobab, lindiwe, highveld, marula].map((ex) => [ex.id, ex as unknown as DrillExercise])
 );
 export const EXERCISES: DrillExercise[] = config.exercises.map((id) => ALL[id]).filter(Boolean);
 export const READING_CHECK = khanyisa as unknown as ReadingCheckCase;
