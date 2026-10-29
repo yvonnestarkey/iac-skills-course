@@ -104,27 +104,34 @@ export function canonicalCourseSlug(slugOrId: string): string | null {
   return getLmsCourse(slugOrId)?.slug ?? null;
 }
 
-/** IAC Skills always leaves this app’s catalog and opens iac. Other courses stay under /courses/<slug>. */
-export function coursePublicHref(course: LmsCourse): string {
+/** Prefer the short public path on class. (e.g. Controls → auditrisk). */
+export function coursePublicSlug(course: LmsCourse): string {
+  return course.aliases[0] || course.slug;
+}
+
+/** IAC Skills always opens iac. Other courses are /<slug> on class. (e.g. /auditrisk). */
+export function coursePublicHref(course: LmsCourse, front: LmsFront = "class"): string {
   if (course.id === DEFAULT_LMS_COURSE_ID) return iacSalesUrl();
+  if (front === "class") return `/${coursePublicSlug(course)}`;
   return `/courses/${course.slug}`;
 }
 
-export function courseClassroomHref(course: LmsCourse): string {
+export function courseClassroomHref(course: LmsCourse, front: LmsFront = "class"): string {
   if (course.id === DEFAULT_LMS_COURSE_ID) return iacClassroomUrl();
+  if (front === "class") return `/${coursePublicSlug(course)}/learn`;
   return `/courses/${course.slug}/learn`;
 }
 
-export function coursePublicPath(course: LmsCourse, _front: LmsFront = "catalog"): string {
-  return coursePublicHref(course);
+export function coursePublicPath(course: LmsCourse, front: LmsFront = "class"): string {
+  return coursePublicHref(course, front);
 }
 
-export function courseClassroomPath(course: LmsCourse, _front: LmsFront = "catalog"): string {
-  return courseClassroomHref(course);
+export function courseClassroomPath(course: LmsCourse, front: LmsFront = "class"): string {
+  return courseClassroomHref(course, front);
 }
 
-export function catalogHref(_front?: LmsFront): string {
-  return "/courses";
+export function catalogHref(front: LmsFront = "class"): string {
+  return front === "class" ? "/" : "/courses";
 }
 
 type ChapterRow = { id: string; course_id?: string | null };

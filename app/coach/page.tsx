@@ -33,7 +33,7 @@ export default function CoachHomePage() {
             }}
           >
             <strong>All courses</strong>
-            <span className="muted">Catalog at accountingstudyadvice.com/courses. IAC Skills stays on iac.</span>
+            <span className="muted">Catalog at class.accountingstudyadvice.com. IAC Skills stays on iac.</span>
           </button>
           <button onClick={() => router.push("/coach/referrals")}>
             <strong>Referrals</strong>

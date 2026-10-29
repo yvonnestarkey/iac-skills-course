@@ -1,10 +1,11 @@
 import Link from "next/link";
 import BrandMark from "@/components/BrandMark";
 import { catalogHref, courseClassroomHref, type LmsCourse } from "@/lib/lms-catalog";
+import type { LmsFront } from "@/lib/lms-hosts";
 
-export default function CourseHome({ course }: { course: LmsCourse }) {
-  const homeHref = catalogHref();
-  const classroom = courseClassroomHref(course);
+export default function CourseHome({ course, front = "class" }: { course: LmsCourse; front?: LmsFront }) {
+  const homeHref = catalogHref(front);
+  const classroom = courseClassroomHref(course, front);
   return (
     <div className="sales-page catalog-page">
       <header className="topbar sales-topbar">

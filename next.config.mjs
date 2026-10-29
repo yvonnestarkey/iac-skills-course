@@ -1,5 +1,4 @@
 const CLASS_HOSTS = ["class.accountingstudyadvice.com", "class.localhost", "class.local"];
-const APEX_HOSTS = ["accountingstudyadvice.com", "www.accountingstudyadvice.com"];
 
 /** Other courses on class. map to /courses/<slug>. IAC is never kept on class. */
 const CLASS_COURSES = [
@@ -28,15 +27,6 @@ function classHostRules() {
   return rules;
 }
 
-function apexHomeRedirects() {
-  return APEX_HOSTS.map((host) => ({
-    source: "/",
-    has: [{ type: "host", value: host }],
-    destination: "/courses",
-    permanent: false,
-  }));
-}
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -49,9 +39,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-  async redirects() {
-    return apexHomeRedirects();
   },
   async rewrites() {
     return classHostRules();

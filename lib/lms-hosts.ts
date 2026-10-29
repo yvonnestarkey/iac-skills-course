@@ -18,7 +18,7 @@ const CLASS_HOSTS = new Set([
   "class.127.0.0.1.nip.io",
 ]);
 
-const CATALOG_HOSTS = new Set([APEX_HOST, `www.${APEX_HOST}`]);
+/** Apex is WordPress on Kinsta. The LMS catalog is class., not the homepage. */
 
 export function hostnameOf(hostHeader: string | null | undefined): string {
   return String(hostHeader || "")
@@ -40,7 +40,7 @@ export function isClassLmsHost(hostHeader: string | null | undefined): boolean {
 }
 
 export function isCatalogHost(hostHeader: string | null | undefined): boolean {
-  return CATALOG_HOSTS.has(hostnameOf(hostHeader));
+  return isClassLmsHost(hostHeader);
 }
 
 export function isIacLmsHost(hostHeader: string | null | undefined): boolean {
@@ -49,7 +49,6 @@ export function isIacLmsHost(hostHeader: string | null | undefined): boolean {
 }
 
 export function lmsFrontFromHost(hostHeader: string | null | undefined): LmsFront {
-  if (isCatalogHost(hostHeader)) return "catalog";
   if (isClassLmsHost(hostHeader)) return "class";
   return "iac";
 }
@@ -59,20 +58,23 @@ export function iacLmsOrigin(): string {
 }
 
 export function catalogOrigin(): string {
-  return (process.env.NEXT_PUBLIC_CATALOG_URL || APEX_ORIGIN).replace(/\/$/, "");
+  return (process.env.NEXT_PUBLIC_CATALOG_URL || process.env.NEXT_PUBLIC_CLASS_LMS_URL || CLASS_LMS_ORIGIN).replace(
+    /\/$/,
+    ""
+  );
 }
 
 export function classLmsOrigin(): string {
   return (process.env.NEXT_PUBLIC_CLASS_LMS_URL || CLASS_LMS_ORIGIN).replace(/\/$/, "");
 }
 
-/** Public catalog: accountingstudyadvice.com/courses */
-export function catalogPath(_front?: LmsFront): string {
-  return "/courses";
+/** Public catalog: class.accountingstudyadvice.com/ */
+export function catalogPath(front: LmsFront = "class"): string {
+  return front === "class" ? "/" : "/courses";
 }
 
 export function publicCatalogUrl(): string {
-  return `${catalogOrigin()}/courses`;
+  return `${catalogOrigin()}/`;
 }
 
 export function iacSalesUrl(): string {

@@ -1,14 +1,21 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { isAuthPasswordPath } from "@/lib/invite-session";
-import { classCanonicalStudentPath, DEFAULT_LMS_COURSE_ID, isLmsClassroomPath } from "@/lib/lms-catalog";
 import {
-  catalogOrigin,
+  classCanonicalStudentPath,
+  coursePublicSlug,
+  DEFAULT_LMS_COURSE_ID,
+  getLmsCourse,
+  isLmsClassroomPath,
+} from "@/lib/lms-catalog";
+import {
+  classLmsOrigin,
   iacClassroomUrl,
   iacSalesUrl,
   isClassLmsHost,
   isIacLmsHost,
   isLocalDevHost,
+  publicCatalogUrl,
 } from "@/lib/lms-hosts";
 import { ONBOARDING_SKIP_COOKIE, onboardingSkipCookieClear } from "@/lib/onboarding-session";
 import { isCoachAccount } from "@/lib/roles";
@@ -32,8 +39,8 @@ function requestHost(request: NextRequest): string {
  * Cookie session + onboarding gate. Incomplete students cannot open classroom
  * paths unless this browser session set `onboarding_skipped_session`.
  *
- * iac. is IAC-only. Catalog lives at accountingstudyadvice.com/courses.
- * Other courses stay under /courses/<slug>. IAC catalog links go to iac.
+ * iac. is IAC-only. Catalog lives on class.accountingstudyadvice.com.
+ * Other courses are /<slug> on class. (e.g. /auditrisk). IAC catalog links go to iac.
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -45,7 +52,12 @@ export async function middleware(request: NextRequest) {
       const toIacClassroom = pathname.includes("/learn");
       return NextResponse.redirect(new URL(toIacClassroom ? iacClassroomUrl() : iacSalesUrl()));
     }
-    return NextResponse.redirect(new URL(`${catalogOrigin()}${pathname}`));
+    const parts = pathname.split("/").filter(Boolean);
+    const course = getLmsCourse(parts[1]);
+    if (!course) return NextResponse.redirect(new URL(publicCatalogUrl()));
+    const rest = parts.slice(2);
+    const dest = `/${coursePublicSlug(course)}${rest.length ? `/${rest.join("/")}` : ""}`;
+    return NextResponse.redirect(new URL(`${classLmsOrigin()}${dest}`));
   }
 
   if (classHost) {
