@@ -16,6 +16,9 @@ test("Variance Bakery is a lesson tool with branded static HTML", () => {
   assert.doesNotMatch(html, /fonts\.googleapis\.com/);
   assert.match(html, /variance-bakery:height/);
   assert.match(html, /variance-bakery:result/);
+  assert.match(html, /variance-bakery:calc/);
+  assert.match(html, /Now calculate it yourself/);
+  assert.match(html, /--warn:#9A6212/);
 
   assert.equal(isVarianceBakeryLesson({ id: "ch10-l12", title: "Variance Bakery" }), true);
   const embed = readFileSync(resolve("components/lesson/VarianceBakeryEmbed.tsx"), "utf8");

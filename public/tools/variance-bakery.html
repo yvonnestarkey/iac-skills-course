@@ -1,12 +1,13 @@
 <title>Variance Bakery</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-/* Layout: one column "staircase" down the page: standard cost card and actual results on top, predictions, picture helper (unlocks after two rounds with mistakes), four cost steps, then the story. */
+/* Layout: one column flow: standard cost card + actual results → predict → picture helper (unlocks after two rounds with mistakes) → calculate it yourself → staircase with full workings → story. */
 /* ===== BRAND TOKENS: replace these values with the course's brand colours (light + both dark blocks) ===== */
 :root{
   --bg:#eef3f1; --paper:#ffffff; --ink:#000000; --muted:rgba(0,0,0,0.62); --line:#cfd9d5;
   --accent:#990f49; --accent-soft:#f6e4ec;
   --fav:#2d7a4e; --fav-soft:#e3f2e8; --adv:#b03f37; --adv-soft:#f8e4e2; --none:#7A8296;
+  --warn:#9A6212; --warn-soft:#F7ECD8;
   --flour:#C9A66B; --sugar:#7FA7D9; --cake:#D9739A; --money:#4E9A6A;
   --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
   --body:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
@@ -16,11 +17,13 @@
   --bg:#eef3f1; --paper:#ffffff; --ink:#000000; --muted:rgba(0,0,0,0.62); --line:#cfd9d5;
   --accent:#990f49; --accent-soft:#f6e4ec;
   --fav:#2d7a4e; --fav-soft:#e3f2e8; --adv:#b03f37; --adv-soft:#f8e4e2; --none:#7A8296;
+  --warn:#9A6212; --warn-soft:#F7ECD8;
   --flour:#C9A66B; --sugar:#7FA7D9; --cake:#D9739A; --money:#4E9A6A}}
 :root[data-theme="dark"]{
   --bg:#eef3f1; --paper:#ffffff; --ink:#000000; --muted:rgba(0,0,0,0.62); --line:#cfd9d5;
   --accent:#990f49; --accent-soft:#f6e4ec;
   --fav:#2d7a4e; --fav-soft:#e3f2e8; --adv:#b03f37; --adv-soft:#f8e4e2; --none:#7A8296;
+  --warn:#9A6212; --warn-soft:#F7ECD8;
   --flour:#C9A66B; --sugar:#7FA7D9; --cake:#D9739A; --money:#4E9A6A}
 /* ===== end brand tokens ===== */
 
@@ -73,9 +76,8 @@ button{font:inherit;cursor:pointer}
 .seg button{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;padding:6px 2px;font-size:13px}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .mark{font-family:var(--mono);font-size:13px}
-.mark.ok{color:var(--fav)} .mark.no{color:var(--adv)}
+.mark.ok{color:var(--fav)} .mark.no{color:var(--adv)} .mark.ft{color:var(--warn)}
 .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-#nextWrap{margin:8px 0 28px}
 .primary{background:var(--accent);color:var(--paper);border:0;border-radius:8px;padding:9px 16px;font-weight:700}
 .primary[disabled]{opacity:.45;cursor:not-allowed}
 .ghost{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px 14px}
@@ -97,6 +99,32 @@ button{font:inherit;cursor:pointer}
 .legend{font-size:13px;color:var(--muted);margin-top:8px}
 .ghosticon{opacity:.25}
 
+/* calculate it yourself */
+.calc{display:flex;flex-direction:column;gap:14px}
+.tablewrap{overflow-x:auto}
+.ctable{width:100%;border-collapse:collapse;font-size:15px;min-width:480px}
+.ctable th{text-align:left;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:400;padding:6px 8px 6px 0;border-bottom:1px solid var(--line)}
+.ctable td{padding:8px 8px 8px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.ctable .rowlabel b{font-family:var(--display);font-size:17px;color:var(--accent);margin-right:6px}
+.ctable .rowlabel span{font-size:13px;color:var(--muted)}
+.ctable .tot{font-family:var(--mono);font-weight:600;white-space:nowrap}
+.cin{width:100%;max-width:120px;font-family:var(--mono);font-size:15px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.csel{font:inherit;font-size:14px;padding:6px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.cell-ok .cin,.cell-ok .csel{border-color:var(--fav);background:var(--fav-soft)}
+.cell-no .cin,.cell-no .csel{border-color:var(--adv);background:var(--adv-soft)}
+.cell-ft .cin{border-color:var(--warn);background:var(--warn-soft)}
+.hints{display:flex;flex-direction:column;gap:8px;max-width:70ch}
+.hintitem{padding:8px 12px;border-radius:8px;background:var(--bg);font-size:15px}
+.hintitem b{font-family:var(--mono);font-size:13px}
+.hintitem.ft{background:var(--warn-soft)}
+.hintitem .work{font-family:var(--mono);font-size:14px;display:block;margin-top:2px}
+.score{font-weight:700}
+.map{border-top:1px solid var(--line);padding-top:12px}
+.map table{width:100%;border-collapse:collapse;font-size:15px;margin-top:8px;min-width:480px}
+.map td,.map th{text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.map th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:400}
+.map code{font-family:var(--mono);font-size:14px}
+
 .stairs{display:flex;flex-direction:column}
 .col{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:start;padding:12px 0}
 .letter{font-family:var(--display);font-weight:700;font-size:24px;width:44px;height:44px;border-radius:8px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
@@ -117,6 +145,7 @@ button{font:inherit;cursor:pointer}
 .say{max-width:65ch}
 .look{font-size:14px;color:var(--muted)}
 .look b{color:var(--ink)}
+.locked-note{font-size:14px;color:var(--muted);margin-top:4px}
 .total{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:2px solid var(--ink);padding-top:12px;margin-top:6px}
 .total .step-name{font-size:18px}
 
@@ -125,7 +154,6 @@ button{font:inherit;cursor:pointer}
 .qcard{width:100%;border-collapse:collapse;font-size:15px;margin-top:10px}
 .qcard th,.qcard td{text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
 .qcard th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:400}
-.tablewrap{overflow-x:auto}
 @media (prefers-reduced-motion:reduce){.bar{transition:none}}
 </style>
 
@@ -167,14 +195,16 @@ button{font:inherit;cursor:pointer}
   <section class="panel predict">
     <div class="predict-head">
       <div>
-        <div class="eyebrow">Picture it first</div>
+        <div class="eyebrow">Step 1 · Picture it first</div>
         <h2>Predict before you look</h2>
       </div>
+      <label class="toggle"><input type="checkbox" id="predictMode" checked> Practice mode (predict, then calculate)</label>
     </div>
     <p class="lede" id="predictLede" style="margin:0">Read the scenario. For each variance, decide: compared with standard, did this make costs higher (adverse), lower (favourable), or no different?</p>
     <div class="guesses" id="guesses"></div>
     <div class="actions" id="actions">
-      <button class="primary" id="reveal" type="button">Reveal the answers</button>
+      <button class="primary" id="reveal" type="button">Reveal the directions</button>
+      <button class="ghost" id="next" type="button" hidden>Try the next scenario</button>
     </div>
     <div class="feedback" id="feedback"></div>
   </section>
@@ -191,6 +221,39 @@ button{font:inherit;cursor:pointer}
     <div class="pics-grid" id="picsGrid"></div>
   </section>
   <div id="showPicsWrap" hidden><button class="ghost" id="showPics" type="button">Show the picture helper</button></div>
+
+  <section class="panel calc" id="calc" hidden>
+    <div>
+      <div class="eyebrow">Step 2 · Do the calculation</div>
+      <h2>Now calculate it yourself</h2>
+      <p class="lede">Use the standard cost card and the actual figures above. Fill in each column of the staircase, then work out each variance as the gap between two columns. Enter amounts without a sign and choose the direction.</p>
+    </div>
+    <div class="tablewrap">
+      <table class="ctable" id="colTable"></table>
+    </div>
+    <div class="tablewrap">
+      <table class="ctable" id="varTable"></table>
+    </div>
+    <div class="actions">
+      <button class="primary" id="check" type="button">Check my workings</button>
+      <button class="ghost" id="giveUp" type="button">Show me the workings</button>
+    </div>
+    <div class="feedback score" id="calcScore"></div>
+    <div class="hints" id="hints"></div>
+    <div class="map" id="map" hidden>
+      <div class="eyebrow">The formulas you learnt</div>
+      <h3 style="font-size:18px;margin-top:4px">Each formula is just the gap between two columns</h3>
+      <div class="tablewrap">
+        <table>
+          <tr><th>Variance</th><th>Formula</th><th>On the staircase</th></tr>
+          <tr><td><b>Price</b></td><td><code>AQ × (SP − AP)</code></td><td>A to B. Same actual quantity, only the price changes.</td></tr>
+          <tr><td><b>Mix</b></td><td><code>(Actual total in standard mix − AQ) × SP</code>, per ingredient</td><td>B to C. Same actual total, only the proportions change.</td></tr>
+          <tr><td><b>Yield</b></td><td><code>(SQ for actual output − actual total in standard mix) × SP</code>, or <code>(standard output from actual input − actual output) × standard cost per unit</code></td><td>C to D. Same standard mix and prices, only the output changes.</td></tr>
+        </table>
+      </div>
+      <p class="lede">Don't rely on the sign. Ask which side is bigger: if the column nearer actual costs more than the column nearer standard, it's adverse.</p>
+    </div>
+  </section>
 
   <section class="panel">
     <div class="eyebrow">Change one thing at a time</div>
@@ -216,16 +279,13 @@ button{font:inherit;cursor:pointer}
       </table>
     </div>
   </section>
-
-  <div class="actions" id="nextWrap">
-    <button class="primary" id="next" type="button" hidden>Try the next scenario</button>
-  </div>
 </div>
 
 <script>
 const STD = {fp:10, sp:30, fq:2, sq:1, out:25};
 const STD_IN = 3, STD_COST = 50, STD_UNIT = 2, FLOUR_SHARE = 2/3;
 const WRONG_ROUNDS_TO_UNLOCK = 2;   // picture helper appears after this many rounds with a mistake
+const TOL = 0.05;                   // rounding tolerance on entered amounts
 
 const PRESETS = [
   {id:"flour", name:"Flour price rise", v:{fp:12,sp:30,fq:2,sq:1,out:25},
@@ -245,16 +305,22 @@ const PRESETS = [
 const $ = id => document.getElementById(id);
 const R = n => "R" + Math.abs(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g," ");
 const kg = n => (+n).toFixed(1) + " kg";
+const kg2 = n => (Math.abs(n - Math.round(n*10)/10) < 1e-9 ? (+n).toFixed(1) : (+n).toFixed(2)) + " kg";
 const pct = n => Math.round(n*100) + "%";
 const fa = v => Math.abs(v) < 0.005 ? "" : (v > 0 ? "A" : "F");
 const round2 = n => Math.round(n*100)/100;
 const fmtN = n => Number.isInteger(round2(n)) ? String(round2(n)) : n.toFixed(1);
+const WORD = {A:"adverse", F:"favourable", N:"none"};
 
 let state = {...PRESETS[0].v};
 let activePreset = "flour";
-let predict = true, revealed = false;
+let predict = true;
+let stage = "predict";             // predict → calc → done
 let guesses = {price:null, mix:null, yield:null};
 let wrongRounds = 0, picsUnlocked = false, picsHidden = false;
+
+const CALC_FIELDS = ["aF","aS","bF","bS","cF","cS","d","pv","pd","mv","md","yv","yd"];
+let calcIn = {}, calcStatus = {}, calcAttempts = {}, calcChecks = 0, gaveUp = false;
 
 function calc(s){
   const total = s.fq + s.sq;
@@ -265,6 +331,7 @@ function calc(s){
   const expOut = total/STD_IN*STD.out;
   const D = s.out*STD_UNIT;
   return {total,A,B,C,D,stdF,stdS,expOut,
+    aF:s.fq*s.fp, aS:s.sq*s.sp, bF:s.fq*STD.fp, bS:s.sq*STD.sp, cF:stdF*STD.fp, cS:stdS*STD.sp,
     price:round2(A-B), mix:round2(B-C), yld:round2(C-D), tot:round2(A-D),
     priceF:round2(s.fq*(s.fp-STD.fp)), priceS:round2(s.sq*(s.sp-STD.sp))};
 }
@@ -277,18 +344,22 @@ function buildPresets(){
 }
 function loadPreset(id){
   const p = PRESETS.find(x => x.id === id);
-  state = {...p.v}; activePreset = p.id; resetGuesses(); syncInputs(); render();
+  state = {...p.v}; activePreset = p.id; resetRound(); syncInputs(); render();
 }
 function syncInputs(){ for (const k of ["fp","sp","fq","sq","out"]) $(k).value = state[k]; }
 ["fp","sp","fq","sq","out"].forEach(k => $(k).addEventListener("input", e => {
-  state[k] = parseFloat(e.target.value); activePreset = null; resetGuesses(); render();
+  state[k] = parseFloat(e.target.value); activePreset = null; resetRound(); render();
 }));
-function resetGuesses(){ guesses = {price:null,mix:null,yield:null}; revealed = false; }
+function resetRound(){
+  guesses = {price:null,mix:null,yield:null}; stage = "predict";
+  calcIn = {}; calcStatus = {}; calcAttempts = {}; calcChecks = 0; gaveUp = false;
+}
 
+$("predictMode").addEventListener("change", e => { predict = e.target.checked; resetRound(); render(); });
 $("reveal").addEventListener("click", () => {
   const c = calc(state);
   const wrong = wrongCount(c);
-  revealed = true;
+  stage = "calc";
   if (wrong > 0) wrongRounds++;
   if (!picsUnlocked && wrongRounds >= WRONG_ROUNDS_TO_UNLOCK) { picsUnlocked = true; picsHidden = false; }
   postToCourse({type:"variance-bakery:result", scenario:activePreset, wrong, wrongRounds, picturesUnlocked:picsUnlocked});
@@ -301,19 +372,26 @@ $("next").addEventListener("click", () => {
 });
 $("hidePics").addEventListener("click", () => { picsHidden = true; render(); });
 $("showPics").addEventListener("click", () => { picsHidden = false; render(); });
+$("check").addEventListener("click", checkCalc);
+$("giveUp").addEventListener("click", () => {
+  gaveUp = true; stage = "done";
+  postToCourse({type:"variance-bakery:calc", scenario:activePreset, correct:countCorrect(), total:10, checks:calcChecks, gaveUp:true});
+  render();
+});
 
 function truth(c){ return {price:fa(c.price)||"N", mix:fa(c.mix)||"N", yield:fa(c.yld)||"N"}; }
 function wrongCount(c){ const t = truth(c); return ["price","mix","yield"].filter(k => guesses[k] !== t[k]).length; }
-function hidden(){ return predict && !revealed; }
+const dirsLocked = () => predict && stage === "predict";
+const numsLocked = () => predict && stage !== "done";
 
 function buildGuesses(c){
   const t = truth(c), names = {price:"Price", mix:"Mix", yield:"Yield"};
-  const word = {A:"adverse", F:"favourable", N:"none"};
+  const shown = predict && stage !== "predict";
   $("guesses").innerHTML = Object.keys(names).map(k => {
     const g = guesses[k];
     let mark = "";
-    if (predict && revealed && g) mark = g === t[k] ? `<span class="mark ok">✓ correct</span>` : `<span class="mark no">✗ it was ${word[t[k]]}</span>`;
-    const opt = (v,l) => `<button type="button" data-k="${k}" data-v="${v}" aria-pressed="${g===v}" ${revealed?"disabled":""}>${l}</button>`;
+    if (shown && g) mark = g === t[k] ? `<span class="mark ok">✓ correct</span>` : `<span class="mark no">✗ it was ${WORD[t[k]]}</span>`;
+    const opt = (v,l) => `<button type="button" data-k="${k}" data-v="${v}" aria-pressed="${g===v}" ${shown?"disabled":""}>${l}</button>`;
     return `<div class="guess"><h3>${names[k]} variance ${mark}</h3><div class="seg">${opt("A","Adverse")}${opt("N","None")}${opt("F","Favourable")}</div></div>`;
   }).join("");
   $("guesses").querySelectorAll("button").forEach(b => b.onclick = () => { guesses[b.dataset.k] = b.dataset.v; render(); });
@@ -321,23 +399,24 @@ function buildGuesses(c){
   $("guesses").hidden = !predict;
   $("actions").hidden = !predict;
   $("predictLede").hidden = !predict;
-  $("reveal").disabled = !(guesses.price && guesses.mix && guesses.yield) || revealed;
-  $("reveal").hidden = revealed;
-  $("next").hidden = !revealed;
+  $("reveal").disabled = !(guesses.price && guesses.mix && guesses.yield) || shown;
+  $("reveal").hidden = shown;
+  $("next").hidden = !shown;
 
   let fb = "";
-  if (predict && revealed) {
+  if (shown) {
     const w = wrongCount(c);
-    if (w === 0) fb = "All three right. Read the story below and check you can say <i>why</i> in a sentence each.";
-    else if (picsUnlocked && wrongRounds === WRONG_ROUNDS_TO_UNLOCK && w > 0) fb = `${w} of 3 not quite. The picture helper is now switched on below. Compare the piles, then try the next scenario.`;
-    else fb = `${w} of 3 not quite. Look at which column changed on the staircase below, then try the next scenario.`;
+    if (w === 0) fb = "All three directions right. Now prove it with the numbers in step 2.";
+    else if (picsUnlocked && wrongRounds === WRONG_ROUNDS_TO_UNLOCK) fb = `${w} of 3 not quite. The picture helper is now switched on. Compare the piles, then do the calculation in step 2.`;
+    else fb = `${w} of 3 not quite. Keep the right directions in mind and work out the numbers in step 2.`;
   }
   $("feedback").innerHTML = fb;
 }
 
 function pill(v){
-  if (hidden()) return `<span class="pill hide">?</span>`;
+  if (dirsLocked()) return `<span class="pill hide">?</span>`;
   const t = fa(v);
+  if (numsLocked()) return `<span class="pill ${t}">${t ? WORD[t] : "none"}</span>`;
   return `<span class="pill ${t}">${t ? R(v)+" "+t : "R0.00"}</span>`;
 }
 
@@ -349,10 +428,7 @@ const ICON = {
   note:`<svg width="30" height="16" viewBox="0 0 30 16" aria-hidden="true"><rect x="0.5" y="0.5" width="29" height="15" rx="2" fill="var(--money)"/><circle cx="15" cy="8" r="4" fill="none" stroke="var(--paper)" stroke-width="1.5"/><text x="15" y="10.5" text-anchor="middle" font-size="6" font-family="var(--mono)" font-weight="700" fill="var(--paper)">R5</text></svg>`
 };
 const repeat = (icon, n, cls="") => Array.from({length:Math.max(0,Math.round(n))}, () => cls ? `<span class="${cls}">${icon}</span>` : icon).join("");
-
-function side(label, amount, inner){
-  return `<div class="side"><div class="side-label"><span>${label}</span><b>${amount}</b></div><div class="icons">${inner}</div></div>`;
-}
+const side = (label, amount, inner) => `<div class="side"><div class="side-label"><span>${label}</span><b>${amount}</b></div><div class="icons">${inner}</div></div>`;
 
 function buildPics(c){
   const s = state;
@@ -363,7 +439,7 @@ function buildPics(c){
 
   const bags = (q, icon) => repeat(icon, q/0.5);
   const notes = r => repeat(ICON.note, r/5);
-
+  const money = v => numsLocked() ? "" : R(v);
   const expOut = c.expOut, lost = Math.max(0, Math.round(expOut) - s.out), extra = Math.max(0, s.out - Math.round(expOut));
   const cakesStd = repeat(ICON.cake, Math.round(expOut));
   const cakesAct = repeat(ICON.cake, Math.min(s.out, Math.round(expOut))) + repeat(ICON.cake, extra) + repeat(ICON.cake, lost, "ghosticon");
@@ -373,16 +449,16 @@ function buildPics(c){
       <h3>Price: same bags, different price tag</h3>
       <p class="hint">The actual bags used, paid for at the standard price (left) and the actual price (right).</p>
       <div class="compare">
-        ${side("At standard price", R(c.B), notes(c.B))}
-        ${side("At actual price", R(c.A), notes(c.A))}
+        ${side("At standard price", money(c.B), notes(c.B))}
+        ${side("At actual price", money(c.A), notes(c.A))}
       </div>
-      <div class="legend">Each note is R5. More notes on the right means adverse.</div>
+      <div class="legend">Each note is roughly R5. More notes on the right means adverse.</div>
     </div>
     <div class="pic">
       <h3>Mix: same number of bags, different blend</h3>
       <p class="hint">The actual ${kg(c.total)} of input, split in the standard mix (left) and as actually used (right).</p>
       <div class="compare">
-        ${side("Standard mix", `${kg(c.stdF)} F · ${kg(c.stdS)} S`, bags(c.stdF, ICON.flour) + bags(c.stdS, ICON.sugar))}
+        ${side("Standard mix", `${kg2(c.stdF)} F · ${kg2(c.stdS)} S`, bags(c.stdF, ICON.flour) + bags(c.stdS, ICON.sugar))}
         ${side("Actual mix", `${kg(s.fq)} F · ${kg(s.sq)} S`, bags(s.fq, ICON.flour) + bags(s.sq, ICON.sugar))}
       </div>
       <div class="legend">Each bag is 0.5 kg. Sugar (S) costs three times as much as flour (F). Swapping sugar bags for flour bags makes the mix cheaper.</div>
@@ -398,6 +474,159 @@ function buildPics(c){
     </div>`;
 }
 
+/* ---------- calculate it yourself ---------- */
+function parseAmt(v){
+  if (v == null) return NaN;
+  let s = String(v).replace(/[Rr\s]/g,"");
+  if (/^-?\d+,\d{1,2}$/.test(s)) s = s.replace(",", ".");
+  s = s.replace(/,/g,"");
+  if (s === "" ) return NaN;
+  return Math.abs(Number(s));
+}
+const close = (a,b) => !isNaN(a) && Math.abs(a - Math.abs(b)) <= TOL;
+const colSum = (a,b) => { const x = parseAmt(calcIn[a]), y = parseAmt(calcIn[b]); return (isNaN(x)||isNaN(y)) ? NaN : x+y; };
+
+function cellClass(f){ return calcStatus[f] ? "cell-" + calcStatus[f] : ""; }
+function inputCell(f, label){
+  return `<td class="${cellClass(f)}"><input class="cin" id="ci-${f}" data-f="${f}" inputmode="decimal" autocomplete="off" aria-label="${label}" value="${(calcIn[f]??"").toString().replace(/"/g,"&quot;")}" ${stage==="done"?"readonly":""}></td>`;
+}
+function dirCell(f, label){
+  const v = calcIn[f] || "";
+  const o = (val,txt) => `<option value="${val}" ${v===val?"selected":""}>${txt}</option>`;
+  return `<td class="${cellClass(f)}"><select class="csel" id="ci-${f}" data-f="${f}" aria-label="${label}" ${stage==="done"?"disabled":""}>${o("","Choose")}${o("A","Adverse")}${o("F","Favourable")}${o("N","None")}</select></td>`;
+}
+function totText(a,b){ const t = colSum(a,b); return isNaN(t) ? "–" : R(t); }
+
+function buildCalc(c){
+  const show = predict && stage !== "predict";
+  $("calc").hidden = !show;
+  if (!show) return;
+
+  $("colTable").innerHTML = `
+    <tr><th>Column</th><th>Flour</th><th>Sugar</th><th>Total</th></tr>
+    <tr><td class="rowlabel"><b>A</b><span>Actual quantity × actual price</span></td>${inputCell("aF","Column A flour")}${inputCell("aS","Column A sugar")}<td class="tot" id="tA">${totText("aF","aS")}</td></tr>
+    <tr><td class="rowlabel"><b>B</b><span>Actual quantity × standard price</span></td>${inputCell("bF","Column B flour")}${inputCell("bS","Column B sugar")}<td class="tot" id="tB">${totText("bF","bS")}</td></tr>
+    <tr><td class="rowlabel"><b>C</b><span>Actual total in standard mix × standard price</span></td>${inputCell("cF","Column C flour")}${inputCell("cS","Column C sugar")}<td class="tot" id="tC">${totText("cF","cS")}</td></tr>
+    <tr><td class="rowlabel"><b>D</b><span>Standard quantity for actual output × standard price</span></td><td colspan="2" style="color:var(--muted);font-size:14px">Total only</td>${inputCell("d","Column D total")}</tr>`;
+
+  $("varTable").innerHTML = `
+    <tr><th>Variance</th><th>Amount</th><th>Direction</th></tr>
+    <tr><td class="rowlabel"><b>Price</b><span>gap between A and B</span></td>${inputCell("pv","Price variance amount")}${dirCell("pd","Price variance direction")}</tr>
+    <tr><td class="rowlabel"><b>Mix</b><span>gap between B and C</span></td>${inputCell("mv","Mix variance amount")}${dirCell("md","Mix variance direction")}</tr>
+    <tr><td class="rowlabel"><b>Yield</b><span>gap between C and D</span></td>${inputCell("yv","Yield variance amount")}${dirCell("yd","Yield variance direction")}</tr>`;
+
+  document.querySelectorAll("#calc .cin, #calc .csel").forEach(el => {
+    el.addEventListener("input", e => {
+      calcIn[e.target.dataset.f] = e.target.value;
+      $("tA") && ($("tA").textContent = totText("aF","aS"));
+      $("tB") && ($("tB").textContent = totText("bF","bS"));
+      $("tC") && ($("tC").textContent = totText("cF","cS"));
+    });
+  });
+
+  $("check").hidden = stage === "done";
+  $("giveUp").hidden = stage === "done";
+  $("map").hidden = stage !== "done";
+  renderHints(c);
+}
+
+/* expected values, hints and full workings for each field */
+function spec(c){
+  const s = state;
+  const dir = v => fa(v) || "N";
+  return {
+    aF:{label:"A · flour", exp:c.aF, hint:"Actual flour used × actual flour price.", work:`${kg(s.fq)} × ${R(s.fp)} = ${R(c.aF)}`},
+    aS:{label:"A · sugar", exp:c.aS, hint:"Actual sugar used × actual sugar price.", work:`${kg(s.sq)} × ${R(s.sp)} = ${R(c.aS)}`},
+    bF:{label:"B · flour", exp:c.bF, hint:"The same actual flour quantity as column A, but at the standard price of R10.00/kg.", work:`${kg(s.fq)} × R10.00 = ${R(c.bF)}`},
+    bS:{label:"B · sugar", exp:c.bS, hint:"The same actual sugar quantity as column A, but at the standard price of R30.00/kg.", work:`${kg(s.sq)} × R30.00 = ${R(c.bS)}`},
+    cF:{label:"C · flour", exp:c.cF, hint:`Add up the actual total input (flour + sugar), then split it in the standard mix: flour is 2/3 of the total. Price it at standard.`, work:`(${kg(s.fq)} + ${kg(s.sq)}) = ${kg(c.total)} × 2/3 = ${kg2(c.stdF)} × R10.00 = ${R(c.cF)}`},
+    cS:{label:"C · sugar", exp:c.cS, hint:`Same actual total input, split in the standard mix: sugar is 1/3 of the total. Price it at standard.`, work:`${kg(c.total)} × 1/3 = ${kg2(c.stdS)} × R30.00 = ${R(c.cS)}`},
+    d:{label:"D · total", exp:c.D, hint:"What should the actual output have cost at standard? Start from the actual number of good cupcakes, not from the input.", work:`${s.out} cupcakes × R2.00 standard cost each = ${R(c.D)} (or ${s.out}/25 × 3 kg = ${kg2(s.out/25*3)} of input in the standard mix, at standard prices)`},
+    pv:{label:"Price amount", exp:c.price, gap:["aF","aS","bF","bS"], hint:"The gap between your column A total and column B total.", work:`A ${R(c.A)} − B ${R(c.B)} = ${R(c.price)}`},
+    pd:{label:"Price direction", dir:dir(c.price), amt:c.price, a:"A", b:"B", work:fa(c.price)?`A (${R(c.A)}) is ${c.A>c.B?"bigger":"smaller"} than B (${R(c.B)}): actual prices cost ${c.A>c.B?"more":"less"} than standard, so ${WORD[dir(c.price)]}.`:"A equals B, so there is no price variance."},
+    mv:{label:"Mix amount", exp:c.mix, gap:["bF","bS","cF","cS"], hint:"The gap between your column B total and column C total.", work:`B ${R(c.B)} − C ${R(c.C)} = ${R(c.mix)}`},
+    md:{label:"Mix direction", dir:dir(c.mix), amt:c.mix, a:"B", b:"C", work:fa(c.mix)?`B (${R(c.B)}) is ${c.B>c.C?"bigger":"smaller"} than C (${R(c.C)}): the actual mix cost ${c.B>c.C?"more":"less"} than the standard mix, so ${WORD[dir(c.mix)]}.`:"B equals C, so there is no mix variance."},
+    yv:{label:"Yield amount", exp:c.yld, gap:["cF","cS","d"], hint:"The gap between your column C total and column D.", work:`C ${R(c.C)} − D ${R(c.D)} = ${R(c.yld)}`},
+    yd:{label:"Yield direction", dir:dir(c.yld), amt:c.yld, a:"C", b:"D", work:fa(c.yld)?`C (${R(c.C)}) is ${c.C>c.D?"bigger":"smaller"} than D (${R(c.D)}): the input should have made ${c.C>c.D?"more":"less"} output than it did, so ${WORD[dir(c.yld)]}.`:"C equals D, so there is no yield variance."}
+  };
+}
+
+/* follow-through: is the student's variance the right gap between THEIR OWN columns? */
+function studentGap(f){
+  if (f === "pv") { const a = colSum("aF","aS"), b = colSum("bF","bS"); return a - b; }
+  if (f === "mv") { const b = colSum("bF","bS"), c2 = colSum("cF","cS"); return b - c2; }
+  if (f === "yv") { const c2 = colSum("cF","cS"), d = parseAmt(calcIn.d); return c2 - d; }
+  return NaN;
+}
+
+function checkCalc(){
+  const c = calc(state), sp = spec(c);
+  calcChecks++;
+  for (const f of CALC_FIELDS) {
+    const sf = sp[f];
+    let ok;
+    if (sf.dir) ok = calcIn[f] === sf.dir;
+    else ok = close(parseAmt(calcIn[f]), sf.exp);
+    if (ok) { calcStatus[f] = "ok"; continue; }
+    calcAttempts[f] = (calcAttempts[f]||0) + 1;
+    calcStatus[f] = "no";
+    if (["pv","mv","yv"].includes(f)) {
+      const g = studentGap(f);
+      if (!isNaN(g) && close(parseAmt(calcIn[f]), g)) calcStatus[f] = "ft";
+    }
+  }
+  const correct = countCorrect();
+  if (correct === 10) stage = "done";
+  postToCourse({type:"variance-bakery:calc", scenario:activePreset, correct, total:10, checks:calcChecks, gaveUp:false});
+  render();
+  $("calcScore").scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+/* 10 marks: 7 column cells + 3 variances (amount and direction both needed) */
+function countCorrect(){
+  let n = ["aF","aS","bF","bS","cF","cS","d"].filter(f => calcStatus[f]==="ok").length;
+  for (const [v,d] of [["pv","pd"],["mv","md"],["yv","yd"]]) if (calcStatus[v]==="ok" && calcStatus[d]==="ok") n++;
+  return n;
+}
+
+function renderHints(c){
+  const sp = spec(c);
+  if (stage === "done") {
+    const n = countCorrect();
+    $("calcScore").innerHTML = gaveUp
+      ? `Here are the full workings. ${calcChecks ? `You had ${n} of 10 right before you asked.` : ""} Compare them with yours, then try the next scenario.`
+      : `All 10 right${calcChecks > 1 ? ` after ${calcChecks} checks` : " first time"}. The staircase below now shows the full workings.`;
+    $("hints").innerHTML = gaveUp ? CALC_FIELDS.filter(f => calcStatus[f] !== "ok").map(f =>
+      `<div class="hintitem"><b>${sp[f].label}</b><span class="work">${sp[f].work}</span></div>`).join("") : "";
+    return;
+  }
+  if (!calcChecks) { $("calcScore").innerHTML = ""; $("hints").innerHTML = ""; return; }
+
+  $("calcScore").innerHTML = `${countCorrect()} of 10 right. ${countCorrect() < 10 ? "Fix the red boxes and check again." : ""}`;
+  const items = [];
+  for (const f of CALC_FIELDS) {
+    const st = calcStatus[f], sf = sp[f];
+    if (st === "ok") continue;
+    const tries = calcAttempts[f] || 0;
+    if (st === "ft") {
+      items.push(`<div class="hintitem ft"><b>${sf.label}</b> Your method is right: this is the gap between your own columns. The problem is in a column above, so fix that first.</div>`);
+    } else if (sf.dir) {
+      const amtField = f.replace("d","v");
+      const amtRight = calcStatus[amtField] === "ok";
+      if (!calcIn[f]) items.push(`<div class="hintitem"><b>${sf.label}</b> Choose a direction.</div>`);
+      else if (tries >= 2) items.push(`<div class="hintitem"><b>${sf.label}</b><span class="work">${sf.work}</span></div>`);
+      else items.push(`<div class="hintitem"><b>${sf.label}</b> ${amtRight ? "The amount is right but the direction isn't. " : ""}Which is bigger: column ${sf.a} (nearer actual) or column ${sf.b} (nearer standard)? If the actual side costs more, it's adverse. Check it against the direction you saw in step 1.</div>`);
+    } else if (calcIn[f] == null || calcIn[f] === "") {
+      items.push(`<div class="hintitem"><b>${sf.label}</b> Fill this in. ${sf.hint}</div>`);
+    } else if (tries >= 2) {
+      items.push(`<div class="hintitem"><b>${sf.label}</b><span class="work">${sf.work}</span></div>`);
+    } else {
+      items.push(`<div class="hintitem"><b>${sf.label}</b> ${sf.hint}</div>`);
+    }
+  }
+  $("hints").innerHTML = items.join("");
+}
+
 /* ---------- staircase + story ---------- */
 function render(){
   const s = state, c = calc(s);
@@ -408,24 +637,27 @@ function render(){
   $("scenarioText").textContent = sc ? sc.text : "Your own scenario. Read the sliders and picture what happened before you predict.";
   buildGuesses(c);
   buildPics(c);
+  buildCalc(c);
 
+  const locked = numsLocked();
   const max = Math.max(c.A,c.B,c.C,c.D,1);
   const col = (L,title,sub,calcTxt,val) => `
     <div class="col"><div class="letter">${L}</div><div>
       <div class="col-title">${title}</div>
       <div class="col-sub">${sub}</div>
-      <div class="col-calc">${calcTxt}</div>
-      <div class="barrow"><div class="track"><div class="bar" style="width:${val/max*100}%"></div></div><div class="amt">${R(val)}</div></div>
+      ${locked ? "" : `<div class="col-calc">${calcTxt}</div>
+      <div class="barrow"><div class="track"><div class="bar" style="width:${val/max*100}%"></div></div><div class="amt">${R(val)}</div></div>`}
     </div></div>`;
   const step = (name,changed,v,say,look) => `
     <div class="step">
       <div class="step-head"><span class="step-name">${name}</span>${pill(v)}<span class="changed">${changed}</span></div>
-      ${hidden() ? "" : `<div class="say">${say}</div>`}
+      ${locked ? "" : `<div class="say">${say}</div>`}
       <div class="look"><b>Ask in a real case:</b> ${look}</div>
     </div>`;
   const share = c.total ? s.fq/c.total : 0;
 
   $("stairs").innerHTML =
+    (locked ? `<div class="locked-note">${stage==="predict" ? "Predict the directions in step 1 first." : "Do the calculation in step 2 first. The full workings appear here once you've checked your answers."}</div>` : "") +
     col("A","Actual quantity × actual price","What we actually used, at what we actually paid",
         `${kg(s.fq)} flour × ${R(s.fp)} + ${kg(s.sq)} sugar × ${R(s.sp)}`, c.A) +
     step("Price variance","Only the price changes: actual price → standard price", c.price, priceSay(s,c),
@@ -435,7 +667,7 @@ function render(){
     step("Mix variance","Only the proportions change: actual mix → standard mix", c.mix, mixSay(s,c,share),
         "Was a machine set up wrongly? Was an ingredient substituted or short?") +
     col("C","Actual total quantity in standard mix × standard price","The same actual total, in the standard proportions",
-        `${kg(c.total)} split 2:1 → ${kg(c.stdF)} flour + ${kg(c.stdS)} sugar, at standard prices`, c.C) +
+        `${kg(c.total)} split 2:1 → ${kg2(c.stdF)} flour + ${kg2(c.stdS)} sugar, at standard prices`, c.C) +
     step("Yield variance","Only the output changes: actual input → standard input for actual output", c.yld, yieldSay(s,c),
         "Where was product lost? Were inputs poor quality? When were losses detected?") +
     col("D","Standard quantity for actual output × standard price","What the actual output should have cost at standard",
@@ -469,7 +701,7 @@ function yieldSay(s,c){
 }
 
 function storyHtml(s,c){
-  if (hidden()) return `<p>Make your predictions above, then reveal the answers to see the story.</p>`;
+  if (numsLocked()) return `<p>${stage==="predict" ? "Make your predictions in step 1" : "Finish the calculation in step 2"} to see the story.</p>`;
   const p = [];
   if (!fa(c.price) && !fa(c.mix) && !fa(c.yld)) {
     p.push(`No variances. ${c.A > STD_COST + 0.005 ? `Actual cost was ${R(c.A)}, more than the R50.00 standard cost of one batch, but only because more was produced. Variances compare actual cost with the standard cost of the <i>actual output</i> (column D), not with the original budget.` : "The kitchen ran exactly to standard."}`);
