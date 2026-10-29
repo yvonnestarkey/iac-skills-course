@@ -6575,6 +6575,35 @@ a.planner-video-btn:visited:hover {
   font-size: 14.5px;
 }
 
+.sales-feature-spotlight {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) minmax(220px, 320px);
+  gap: 16px 18px;
+  align-items: start;
+  margin-top: 16px;
+}
+
+.sales-feature-spotlight .sales-feature-icon {
+  grid-row: 1;
+}
+
+.sales-feature-clip {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #1b2430;
+  aspect-ratio: 16 / 9;
+  min-width: 0;
+}
+
+.sales-feature-clip iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .sales-dates {
   padding-bottom: 12px;
 }
@@ -6776,6 +6805,14 @@ a.planner-video-btn:visited:hover {
 
   .sales-hero-copy h1 {
     max-width: none;
+  }
+
+  .sales-feature-spotlight {
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  .sales-feature-clip {
+    grid-column: 1 / -1;
   }
 }
 

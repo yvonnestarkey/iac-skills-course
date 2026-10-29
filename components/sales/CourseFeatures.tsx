@@ -1,7 +1,7 @@
 "use client";
 
-import { ClipboardCheck, Compass, Laptop, Mic, PenTool, Video, Wrench, type LucideIcon } from "lucide-react";
-import { COURSE_FEATURES } from "@/lib/sales-copy";
+import { ClipboardCheck, Compass, Laptop, Mic, MousePointerClick, PenTool, Video, Wrench, type LucideIcon } from "lucide-react";
+import { COURSE_FEATURES, INTERACTIVE_PRACTICE_FEATURE } from "@/lib/sales-copy";
 
 const ICONS: Record<(typeof COURSE_FEATURES)[number]["icon"], LucideIcon> = {
   pen: PenTool,
@@ -33,6 +33,23 @@ export default function CourseFeatures() {
           );
         })}
       </div>
+      <article className="sales-feature sales-feature-spotlight">
+        <span className="sales-feature-icon" aria-hidden="true">
+          <MousePointerClick size={22} />
+        </span>
+        <div>
+          <h3>{INTERACTIVE_PRACTICE_FEATURE.title}</h3>
+          <p>{INTERACTIVE_PRACTICE_FEATURE.body}</p>
+        </div>
+        <div className="sales-feature-clip">
+          <iframe
+            src={INTERACTIVE_PRACTICE_FEATURE.video.src}
+            title={INTERACTIVE_PRACTICE_FEATURE.video.title}
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
+            allowFullScreen
+          />
+        </div>
+      </article>
     </section>
   );
 }

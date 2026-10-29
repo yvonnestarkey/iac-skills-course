@@ -64,8 +64,8 @@ export const COURSE_FEATURES = [
     icon: "mic",
   },
   {
-    title: "Script Evaluation Tools",
-    body: "Script Evaluation Tools to help you evaluate the areas you need to work on for past attempts, both Skills and Topics.",
+    title: "Script Evaluation Report",
+    body: "You'll get a detailed report of the Skills that cost you the most marks, and whether theory was your challenge in each question. This will help you understand what you need to work on for the next exam.",
     icon: "clipboard",
   },
   {
@@ -84,6 +84,15 @@ export const COURSE_FEATURES = [
     icon: "compass",
   },
 ] as const;
+
+export const INTERACTIVE_PRACTICE_FEATURE = {
+  title: "Interactive Practice Tools",
+  body: "Tools to help you improve and practice your Skills - they're approx 10 minutes, with AI feedback to help you identify what to work on. There are multiple exercises to help you improve your Skills. Check out the video.",
+  video: {
+    title: "Interactive Practice Tools",
+    src: "https://player.vimeo.com/video/1240641656?badge=0&autopause=0&player_id=0&app_id=58479",
+  },
+} as const;
 
 export const COURSE_SKILLS = [
   {
