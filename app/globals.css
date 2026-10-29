@@ -8193,3 +8193,46 @@ a.planner-video-btn:visited:hover {
 .rd-prox-group h3 { display: flex; gap: 8px; align-items: center; margin: 8px 0 0; font-size: 15px; }
 .rd-prox-table td.rd-quote { font-family: var(--serif); font-size: 15px; width: 36%; }
 .rd-prox-table td.rd-quote div + div { margin-top: 6px; }
+
+/* Data choices (Eve training, research): tickbox with the detail collapsed underneath. */
+.consent-choices {
+  display: grid;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.consent-choice {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.consent-tick {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.consent-tick input {
+  margin-top: 3px;
+  flex: none;
+  width: auto;
+}
+
+.consent-more {
+  margin: 6px 0 0 26px;
+  font-size: 13.5px;
+}
+
+.consent-more summary {
+  cursor: pointer;
+  color: var(--link);
+}
+
+.consent-more p {
+  margin: 8px 0 0;
+  color: var(--muted, #555);
+}

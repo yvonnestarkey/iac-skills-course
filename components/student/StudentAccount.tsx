@@ -3,6 +3,7 @@
 import ProfileEditor from "@/components/account/ProfileEditor";
 import PurchaseCta from "@/components/commerce/PurchaseCta";
 import ReferralCard from "@/components/commerce/ReferralCard";
+import DataConsentCard from "@/components/student/DataConsentCard";
 import { useBypassLessonLocks } from "@/lib/course-preview";
 import { accountAccessCopy } from "@/lib/account-access";
 import { shouldShowBuyCourseCta } from "@/lib/lesson-availability";
@@ -32,6 +33,8 @@ export default function StudentAccount() {
         <h2>{accessCopy.title}</h2>
         <p className="muted">{accessCopy.body}</p>
       </section>
+
+      <DataConsentCard mode="account" />
 
       {preview ? <PurchaseCta compact /> : null}
       <ReferralCard />

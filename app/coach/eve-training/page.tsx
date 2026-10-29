@@ -19,7 +19,7 @@ export default async function EveTrainingPage() {
   const client = getServiceSupabase();
   if (!client) return <div className="coach-page"><p>The database is not configured.</p></div>;
 
-  const { examples, warnings, excludedStudents } = await loadTrainingCorpus(client);
+  const { examples, warnings, excludedStudents, consent } = await loadTrainingCorpus(client);
   const s = corpusSummary(examples);
   const tags = Object.entries(s.byTag).sort((a, b) => b[1] - a[1]);
   const recent = examples.slice(0, 8);
@@ -33,6 +33,11 @@ export default async function EveTrainingPage() {
         Every comment you have written to students in the course, paired with what the student sent, with names, emails,
         phone numbers and links removed. It is built fresh each time you open this page, so it is always up to date.
         Staff and test accounts are left out{excludedStudents ? ` (${excludedStudents} accounts)` : ""}.
+      </p>
+      <p>
+        <strong>Only students who ticked “yes” to Eve training are included.</strong> Of the students you have written
+        feedback to: {consent.yes} said yes, {consent.no} said no, {consent.unanswered} have not answered yet. Students
+        are asked on their course overview and in onboarding, and can change their answer under Account.
       </p>
 
       <div className="people hub-choices" style={{ marginTop: 16 }}>

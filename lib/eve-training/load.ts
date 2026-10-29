@@ -30,7 +30,12 @@ async function rows(client: SupabaseClient, table: string, select = "*"): Promis
   return { data: (data ?? []) as unknown as Row[] };
 }
 
-export async function loadTrainingCorpus(client: SupabaseClient): Promise<{ examples: CorpusExample[]; warnings: string[]; excludedStudents: number }> {
+export type ConsentCounts = { yes: number; no: number; unanswered: number; checked: boolean };
+
+/** Only students who ticked "yes" to Eve training are included (opt-in). */
+export async function loadTrainingCorpus(
+  client: SupabaseClient
+): Promise<{ examples: CorpusExample[]; warnings: string[]; excludedStudents: number; consent: ConsentCounts }> {
   const warnings: string[] = [];
   const [profiles, lessons, inbox, submissions, surveys, responses] = await Promise.all([
     rows(client, "profiles", "id, email, full_name"),
@@ -40,6 +45,10 @@ export async function loadTrainingCorpus(client: SupabaseClient): Promise<{ exam
     rows(client, "custom_surveys", "id, title, questions"),
     rows(client, "custom_survey_responses"),
   ]);
+  const consentRows = await rows(client, "student_profiles", "student_id, eve_training_consent");
+  const consentChecked = !consentRows.warning;
+  if (consentRows.warning) warnings.push(`${consentRows.warning} (run supabase/data-consent.sql; until then nobody is included)`);
+  const consentBy = new Map(consentRows.data.map((r) => [str(r.student_id), r.eve_training_consent as boolean | null]));
   for (const r of [profiles, lessons, inbox, submissions, surveys, responses]) if (r.warning) warnings.push(r.warning);
 
   const people = new Map<string, StudentIdentity>();
@@ -53,7 +62,15 @@ export async function loadTrainingCorpus(client: SupabaseClient): Promise<{ exam
       if (who.email) excluded.add(who.email.toLowerCase());
     }
   }
-  const keep = (id: string, email = "") => !excluded.has(id) && !(email && isTrainingExcluded(email)) && !excluded.has(email.toLowerCase());
+  const isStaffOrTest = (id: string, email = "") => excluded.has(id) || Boolean(email && isTrainingExcluded(email)) || excluded.has(email.toLowerCase());
+  const idFor = (id: string, email = "") => id || str(people.get(email.toLowerCase())?.id);
+  const seenStudents = new Set<string>();
+  const keep = (id: string, email = "") => {
+    if (isStaffOrTest(id, email)) return false;
+    const sid = idFor(id, email);
+    if (sid) seenStudents.add(sid);
+    return Boolean(sid) && consentBy.get(sid) === true;
+  };
 
   const lessonTitles = new Map(lessons.data.map((l) => [str(l.id), str(l.title)]));
 
@@ -115,5 +132,12 @@ export async function loadTrainingCorpus(client: SupabaseClient): Promise<{ exam
     ...surveyExamples(responseRows, surveyMap, people),
   ]);
   const excludedStudents = new Set([...excluded].filter((k) => !k.includes("@"))).size;
-  return { examples, warnings, excludedStudents };
+  const consent: ConsentCounts = { yes: 0, no: 0, unanswered: 0, checked: consentChecked };
+  for (const sid of seenStudents) {
+    const v = consentBy.get(sid);
+    if (v === true) consent.yes += 1;
+    else if (v === false) consent.no += 1;
+    else consent.unanswered += 1;
+  }
+  return { examples, warnings, excludedStudents, consent };
 }

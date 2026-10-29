@@ -3,6 +3,7 @@
 import Link from "next/link";
 import PurchaseCta from "@/components/commerce/PurchaseCta";
 import CoursePhaseAccordions from "@/components/course/CoursePhaseAccordions";
+import DataConsentCard from "@/components/student/DataConsentCard";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { usePreviewNavState } from "@/lib/preview-nav";
@@ -46,6 +47,8 @@ export default function StudentOverview() {
           </Link>
         </section>
       ) : null}
+
+      <DataConsentCard mode="prompt" />
 
       <CoursePhaseAccordions
         chapters={chapters}

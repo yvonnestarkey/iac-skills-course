@@ -16,6 +16,8 @@ import {
 import { isCoachAccount } from "@/lib/roles";
 import { goToStudentLogin } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
+import DataConsentChoices from "@/components/student/DataConsentChoices";
+import { saveMyConsent } from "@/lib/data-consent";
 
 const STEPS = ["IAC exam", "CTA / PGDA", "Notes", "Contact"] as const;
 const LAST_STEP = STEPS.length - 1;
@@ -65,6 +67,7 @@ export default function OnboardingForm({
   const [yearPassed, setYearPassed] = useState("");
   const [ctaAttempts, setCtaAttempts] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
+  const [consent, setConsent] = useState({ eve: false, research: false });
 
   useEffect(() => {
     if (!ready) return;
@@ -154,6 +157,10 @@ export default function OnboardingForm({
         additional_notes: additionalNotes.trim(),
       },
     });
+    if (result.ok) {
+      // Data choices are saved separately so a missing consent column never blocks starting the course.
+      await saveMyConsent(user.id, consent);
+    }
     setBusy(false);
     if (!result.ok) {
       setError(result.error || "Could not save your answers.");
@@ -408,6 +415,11 @@ export default function OnboardingForm({
                 />
               </div>
               <p className="muted small">You can leave these blank.</p>
+              <div className="onboarding-field">
+                <p className="student-notes-label">Your data (optional)</p>
+                <DataConsentChoices value={consent} onChange={setConsent} disabled={busy} />
+                <p className="muted small">You can change these at any time under Account.</p>
+              </div>
             </fieldset>
           ) : null}
 
