@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import DataConsentChoices from "@/components/student/DataConsentChoices";
-import { loadMyConsent, saveMyConsent, type ConsentKey } from "@/lib/data-consent";
+import { loadMyConsent, saveMyConsent, type ConsentChoice } from "@/lib/data-consent";
 import { isCoachAccount } from "@/lib/roles";
 import { useStudentSession } from "@/lib/student-session";
 
@@ -14,7 +14,7 @@ export default function DataConsentCard({ mode }: { mode: "account" | "prompt" }
   const { user } = useStudentSession();
   const [loaded, setLoaded] = useState(false);
   const [answered, setAnswered] = useState(false);
-  const [value, setValue] = useState<Record<ConsentKey, boolean>>({ eve: false, research: false });
+  const [value, setValue] = useState<ConsentChoice>({ eve: false, research: false, researchReview: false });
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [unavailable, setUnavailable] = useState(false);
@@ -25,7 +25,7 @@ export default function DataConsentCard({ mode }: { mode: "account" | "prompt" }
     loadMyConsent(user.id).then((r) => {
       if (cancelled) return;
       if (!r.ok) setUnavailable(true);
-      setValue({ eve: r.consent.eve === true, research: r.consent.research === true });
+      setValue({ eve: r.consent.eve === true, research: r.consent.research === true, researchReview: r.consent.researchReview === true });
       setAnswered(Boolean(r.consent.updatedAt));
       setLoaded(true);
     });

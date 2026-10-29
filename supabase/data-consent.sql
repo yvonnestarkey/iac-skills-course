@@ -4,6 +4,7 @@
 
 alter table public.student_profiles add column if not exists eve_training_consent boolean;
 alter table public.student_profiles add column if not exists research_consent boolean;
+alter table public.student_profiles add column if not exists research_review_before_publish boolean;
 alter table public.student_profiles add column if not exists consent_updated_at timestamptz;
 alter table public.student_profiles add column if not exists consent_updated_by text;
 

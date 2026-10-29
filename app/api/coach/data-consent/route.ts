@@ -15,13 +15,14 @@ export async function GET(request: NextRequest) {
   if (!client || !studentId) return NextResponse.json({ error: "Missing student." }, { status: 400 });
   const { data, error } = await client
     .from("student_profiles")
-    .select("eve_training_consent, research_consent, consent_updated_at, consent_updated_by")
+    .select("eve_training_consent, research_consent, research_review_before_publish, consent_updated_at, consent_updated_by")
     .eq("student_id", studentId)
     .maybeSingle();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({
     eve: data?.eve_training_consent ?? null,
     research: data?.research_consent ?? null,
+    researchReview: data?.research_review_before_publish ?? null,
     updatedAt: data?.consent_updated_at ?? null,
     updatedBy: data?.consent_updated_by ?? null,
   });
@@ -31,7 +32,7 @@ export async function POST(request: NextRequest) {
   const user = await getRequestUser();
   if (!isStaffUser(user)) return NextResponse.json({ error: "Coach access only." }, { status: 403 });
   const client = getServiceSupabase();
-  const body = (await request.json().catch(() => null)) as { student_id?: string; eve?: unknown; research?: unknown } | null;
+  const body = (await request.json().catch(() => null)) as { student_id?: string; eve?: unknown; research?: unknown; researchReview?: unknown } | null;
   if (!client || !body?.student_id) return NextResponse.json({ error: "Missing student." }, { status: 400 });
   const patch: Record<string, unknown> = {
     student_id: body.student_id,
@@ -39,7 +40,10 @@ export async function POST(request: NextRequest) {
     consent_updated_by: `coach:${user?.email || "staff"}`,
   };
   if ("eve" in body) patch.eve_training_consent = asChoice(body.eve);
-  if ("research" in body) patch.research_consent = asChoice(body.research);
+  if ("research" in body) {
+    patch.research_consent = asChoice(body.research);
+    patch.research_review_before_publish = patch.research_consent === true ? asChoice(body.researchReview) === true : null;
+  }
   const { error } = await client.from("student_profiles").upsert(patch, { onConflict: "student_id" });
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ ok: true });

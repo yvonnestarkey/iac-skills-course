@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { consentLabel } from "@/lib/data-consent";
 
-type State = { eve: boolean | null; research: boolean | null; updatedAt: string | null; updatedBy: string | null };
+type State = { eve: boolean | null; research: boolean | null; researchReview: boolean | null; updatedAt: string | null; updatedBy: string | null };
 
 /** Coach panel on the student profile: shows the student's data choices and lets the coach change them on request. */
 export default function DataConsentPanel({ studentId }: { studentId: string }) {
@@ -22,12 +22,12 @@ export default function DataConsentPanel({ studentId }: { studentId: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studentId]);
 
-  const change = async (key: "eve" | "research", value: boolean) => {
+  const change = async (key: "eve" | "research", value: boolean, researchReview = false) => {
     setBusy(true);
     const r = await fetch("/api/coach/data-consent", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ student_id: studentId, [key]: value }),
+      body: JSON.stringify({ student_id: studentId, [key]: value, ...(key === "research" ? { researchReview } : {}) }),
     }).then((x) => x.json());
     setBusy(false);
     if (r.error) setError(r.error);
@@ -36,14 +36,23 @@ export default function DataConsentPanel({ studentId }: { studentId: string }) {
 
   const row = (key: "eve" | "research", title: string) => {
     const v = state?.[key] ?? null;
+    const review = key === "research" ? state?.researchReview ?? null : null;
     return (
       <div>
         <dt>{title}</dt>
         <dd>
-          {consentLabel(v)}{" "}
+          {consentLabel(v, review)}{" "}
           <button className="link-btn" type="button" disabled={busy} onClick={() => change(key, v !== true)}>
             {v === true ? "Change to No" : "Change to Yes"}
           </button>
+          {key === "research" && v === true ? (
+            <>
+              {" · "}
+              <button className="link-btn" type="button" disabled={busy} onClick={() => change("research", true, !review)}>
+                {review ? "Remove the see-before-publishing condition" : "Add: see data before publishing"}
+              </button>
+            </>
+          ) : null}
         </dd>
       </div>
     );

@@ -5,7 +5,11 @@
 import { getSupabase } from "./supabase";
 
 export type ConsentKey = "eve" | "research";
-export type DataConsent = { eve: boolean | null; research: boolean | null; updatedAt: string | null };
+export type DataConsent = { eve: boolean | null; research: boolean | null; researchReview: boolean | null; updatedAt: string | null };
+export type ConsentChoice = { eve: boolean; research: boolean; researchReview: boolean };
+
+/** The optional condition under the research tickbox. */
+export const RESEARCH_REVIEW_LABEL = "Yes, as long as I can see my data before you publish it";
 
 export const CONSENT_TEXT: Record<ConsentKey, { label: string; more: string; paragraphs: string[] }> = {
   eve: {
@@ -18,12 +22,12 @@ export const CONSENT_TEXT: Record<ConsentKey, { label: string; more: string; par
     ],
   },
   research: {
-    label: "Can I use your de-identified course work in my academic research?",
+    label: "Can I use your anonymised data in my academic research?",
     more: "Read here to see what this means",
     paragraphs: [
-      "I study how students develop exam technique, to improve how accounting qualifications are taught. This research may be published in academic journals, conference papers, books and teaching material.",
-      "By ticking ‘yes’, your course work, feedback, script evaluations and survey answers may be included in this research. They are de-identified before analysis: your name and contact details are removed and replaced with a code. Results are reported as group findings or as anonymous examples, and nothing published will identify you. The research follows the ethical approval and data-protection requirements of the institution overseeing it.",
-      "Taking part is voluntary. Saying no has no effect on your access to the course, your feedback or how you are treated. You may withdraw at any time by emailing yvonne@accountingstudyadvice.com. Information already de-identified and included in published findings cannot be removed, but nothing new will be added.",
+      "I study mindset and learning in accounting education to help improve how accounting qualifications are taught. This research may be published in academic journals, conference papers, books and teaching material.",
+      "If you agree, your data may be included in this research. It will be anonymised before analysis. Results are reported as group findings or as anonymous examples, and nothing published will identify you. The research follows ethical approval and data-protection requirements.",
+      "Taking part is voluntary. Saying no has no effect on your access to the course, your feedback or how you are treated. You may withdraw at any time by emailing yvonne@accountingstudyadvice.com.",
     ],
   },
 };
@@ -31,21 +35,21 @@ export const CONSENT_TEXT: Record<ConsentKey, { label: string; more: string; par
 export const MISSING_CONSENT_SQL = "Paste supabase/data-consent.sql in the Supabase SQL editor, then try again.";
 
 export async function loadMyConsent(userId: string): Promise<{ ok: boolean; consent: DataConsent; error?: string }> {
-  const empty: DataConsent = { eve: null, research: null, updatedAt: null };
+  const empty: DataConsent = { eve: null, research: null, researchReview: null, updatedAt: null };
   const client = getSupabase();
   if (!client) return { ok: false, consent: empty, error: "Supabase is not configured." };
   const { data, error } = await client
     .from("student_profiles")
-    .select("eve_training_consent, research_consent, consent_updated_at")
+    .select("eve_training_consent, research_consent, research_review_before_publish, consent_updated_at")
     .eq("student_id", userId)
     .maybeSingle();
   if (error) return { ok: false, consent: empty, error: /consent/i.test(error.message) ? MISSING_CONSENT_SQL : error.message };
-  const row = (data ?? {}) as { eve_training_consent?: boolean | null; research_consent?: boolean | null; consent_updated_at?: string | null };
-  return { ok: true, consent: { eve: row.eve_training_consent ?? null, research: row.research_consent ?? null, updatedAt: row.consent_updated_at ?? null } };
+  const row = (data ?? {}) as { eve_training_consent?: boolean | null; research_consent?: boolean | null; research_review_before_publish?: boolean | null; consent_updated_at?: string | null };
+  return { ok: true, consent: { eve: row.eve_training_consent ?? null, research: row.research_consent ?? null, researchReview: row.research_review_before_publish ?? null, updatedAt: row.consent_updated_at ?? null } };
 }
 
 /** Saves both answers (an unticked box is a "no"). */
-export async function saveMyConsent(userId: string, choice: { eve: boolean; research: boolean }): Promise<{ ok: boolean; error?: string }> {
+export async function saveMyConsent(userId: string, choice: ConsentChoice): Promise<{ ok: boolean; error?: string }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
   const now = new Date().toISOString();
@@ -54,6 +58,7 @@ export async function saveMyConsent(userId: string, choice: { eve: boolean; rese
       student_id: userId,
       eve_training_consent: choice.eve,
       research_consent: choice.research,
+      research_review_before_publish: choice.research ? choice.researchReview : null,
       consent_updated_at: now,
       consent_updated_by: "student",
       updated_at: now,
@@ -64,6 +69,7 @@ export async function saveMyConsent(userId: string, choice: { eve: boolean; rese
   return { ok: true };
 }
 
-export function consentLabel(value: boolean | null): string {
+export function consentLabel(value: boolean | null, review?: boolean | null): string {
+  if (value === true && review) return "Yes, if they see their data before publication";
   return value === true ? "Yes" : value === false ? "No" : "Not answered yet";
 }

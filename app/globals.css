@@ -8222,6 +8222,11 @@ a.planner-video-btn:visited:hover {
   width: auto;
 }
 
+.consent-sub {
+  margin: 8px 0 0 26px;
+  font-weight: 500;
+}
+
 .consent-more {
   margin: 6px 0 0 26px;
   font-size: 13.5px;

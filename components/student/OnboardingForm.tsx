@@ -67,7 +67,7 @@ export default function OnboardingForm({
   const [yearPassed, setYearPassed] = useState("");
   const [ctaAttempts, setCtaAttempts] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
-  const [consent, setConsent] = useState({ eve: false, research: false });
+  const [consent, setConsent] = useState({ eve: false, research: false, researchReview: false });
 
   useEffect(() => {
     if (!ready) return;
