@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   applyCannedResponse,
+  cannedResponseText,
   deleteFeedbackTemplate,
   fetchFeedbackTemplates,
   saveFeedbackTemplate,
@@ -62,7 +63,7 @@ export default function CannedResponsePicker({
 
   const insert = (mode: "replace" | "append") => {
     if (!selected) return;
-    onChange(applyCannedResponse(value, selected.body, mode));
+    onChange(applyCannedResponse(value, cannedResponseText(selected), mode));
     setNotice(mode === "replace" ? "Canned response loaded. Edit it before you send." : "Canned response added below your comments.");
   };
 

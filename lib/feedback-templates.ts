@@ -45,6 +45,20 @@ export function templatesInGroup(templates: FeedbackTemplate[], group: string): 
   return templates.filter((item) => item.group === group);
 }
 
+export function cannedResponseText(template: { title?: string; body?: string }): string {
+  const title = String(template.title || "").trim();
+  const body = String(template.body || "").trim();
+  if (!title) return body;
+  if (!body) return `**${title}**`;
+  const firstLine = body
+    .split("\n")[0]
+    .replace(/^#+\s*/, "")
+    .replace(/^\*\*(.+)\*\*$/, "$1")
+    .trim();
+  if (firstLine.toLowerCase() === title.toLowerCase()) return body;
+  return `**${title}**\n\n${body}`;
+}
+
 export function applyCannedResponse(current: string, canned: string, mode: "replace" | "append"): string {
   const next = String(canned || "").trim();
   if (!next) return String(current || "");

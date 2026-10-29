@@ -5,6 +5,7 @@ import { test } from "node:test";
 import { SEEDED_FEEDBACK_TEMPLATES } from "./feedback-templates-seed";
 import {
   applyCannedResponse,
+  cannedResponseText,
   suggestedTemplateGroup,
   templatesInGroup,
 } from "./feedback-templates";
@@ -17,6 +18,8 @@ test("canned responses start from the task and can be stacked", () => {
   assert.ok(SEEDED_FEEDBACK_TEMPLATES.some((item) => /numbers don’t ‘speak’/i.test(item.body)));
   assert.equal(applyCannedResponse("", "Hi hi", "replace"), "Hi hi");
   assert.equal(applyCannedResponse("Keep this.", "Add this.", "append"), "Keep this.\n\nAdd this.");
+  const variances = SEEDED_FEEDBACK_TEMPLATES.find((item) => item.title === "Variances");
+  assert.match(cannedResponseText(variances || {}), /^\*\*Variances\*\*\n\n/);
 });
 
 test("assignment review uses a full-page document and canned starts", () => {
