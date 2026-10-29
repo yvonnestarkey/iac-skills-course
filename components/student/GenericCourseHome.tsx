@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import StudentDashboardBanner from "@/components/student/StudentDashboardBanner";
 import { findResumeLesson } from "@/lib/course-phases";
 import { useCoursePreview } from "@/lib/course-preview";
 import { useLmsCourse } from "@/lib/lms-course-context";
@@ -22,6 +23,7 @@ export default function GenericCourseHome() {
 
   return (
     <article className="lesson-body wide student-dash">
+      <StudentDashboardBanner />
       <p className="kicker">{course.title}</p>
       <h1>Welcome back, {name}</h1>
       {empty ? (

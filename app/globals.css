@@ -5076,7 +5076,7 @@ a.planner-video-btn:visited:hover {
   padding: 18px 20px;
   margin: 18px 0 8px;
   border-radius: 16px;
-  background: var(--dark);
+  background: var(--resume-banner, var(--dark));
   color: #fff;
 }
 
@@ -5098,7 +5098,7 @@ a.planner-video-btn:visited:hover {
 .resume-banner .primary:hover,
 .resume-banner a.primary:hover {
   background: #fff;
-  color: var(--dark);
+  color: var(--resume-banner, var(--dark));
 }
 
 .purchase-cta-compact {

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Mail, MessageCircle } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import CoachToolsBar from "@/components/coach/CoachToolsBar";
@@ -73,6 +73,9 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
   }, [pathname, markAllRead, router, inboxWaiting, unreadCount]);
 
   const showAsk = ASK_QUESTION_ENABLED && course.id === DEFAULT_LMS_COURSE_ID;
+  const theme = course.resumeBannerColor
+    ? ({ ["--resume-banner"]: course.resumeBannerColor } as CSSProperties)
+    : undefined;
 
   const leave = async () => {
     await signOut();
@@ -80,7 +83,7 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="student-player">
+    <div className="student-player" style={theme}>
       {isCoachAccount(user) ? <CoachToolsBar /> : null}
       <header className="topbar">
         <BrandMark href={classroomPath} title={course.shortTitle} />

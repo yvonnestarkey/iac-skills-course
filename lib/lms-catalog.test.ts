@@ -60,6 +60,10 @@ test("catalog slugs are IAC plus the nine Thinkific courses Yvonne named", () =>
   assert.equal(getLmsCourse("cta-skills"), null);
   assert.equal(getLmsCourse("auditrisk")?.slug, "audit-risk-and-planning");
   assert.equal(canonicalCourseSlug("growthmindseteducators"), "teaching-mindset-skills");
+  assert.equal(getLmsCourse("teaching-mindset-skills")?.dashboardBannerUrl, "/teaching-mindset-skills-dashboard.jpg");
+  assert.equal(getLmsCourse("teaching-mindset-skills")?.resumeBannerColor, "#1f2e37");
+  assert.equal(getLmsCourse("iac-skills")?.dashboardBannerUrl, "/student-dashboard-banner.jpg");
+  assert.equal(getLmsCourse("iac-skills")?.resumeBannerColor, undefined);
   assert.equal(isLmsCourseSlug("login"), false);
   for (const course of LMS_COURSES.filter((row) => row.id !== DEFAULT_LMS_COURSE_ID)) {
     assert.match(course.thinkificUrl || "", /^https:\/\/courses\.accountingstudyadvice\.com\/courses\//);

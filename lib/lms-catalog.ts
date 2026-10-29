@@ -18,6 +18,10 @@ export type LmsCourse = {
   thinkificSchool: string;
   /** Public Thinkific sales page. Player (/take/…) URLs are not guessed. */
   thinkificUrl: string | null;
+  /** Student dashboard hero. Null until the course has its own image. */
+  dashboardBannerUrl?: string | null;
+  /** Resume-course banner colour. Null keeps the IAC teal. */
+  resumeBannerColor?: string | null;
 };
 
 const THINKIFIC_SCHOOL = "courses.accountingstudyadvice.com";
@@ -36,6 +40,7 @@ export const LMS_COURSES: LmsCourse[] = [
     summary: "The live January 2027 IAC Skills classroom on iac.accountingstudyadvice.com. Not imported from Thinkific.",
     thinkificSchool: THINKIFIC_SCHOOL,
     thinkificUrl: null,
+    dashboardBannerUrl: "/student-dashboard-banner.jpg",
   },
   {
     id: "mindset-masterclass",
@@ -60,6 +65,8 @@ export const LMS_COURSES: LmsCourse[] = [
     summary: "Imported from Thinkific. Open the classroom to work through the lessons.",
     thinkificSchool: THINKIFIC_SCHOOL,
     thinkificUrl: "https://courses.accountingstudyadvice.com/courses/growthmindseteducators",
+    dashboardBannerUrl: "/teaching-mindset-skills-dashboard.jpg",
+    resumeBannerColor: "#1f2e37",
   },
   {
     id: "what-firms-want",
