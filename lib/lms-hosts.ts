@@ -57,11 +57,20 @@ export function iacLmsOrigin(): string {
   return (process.env.NEXT_PUBLIC_SITE_URL || IAC_LMS_ORIGIN).replace(/\/$/, "");
 }
 
+/** WordPress owns the apex. Never treat it as the LMS catalog. */
+export function resolvedCatalogOrigin(candidate: string | null | undefined): string {
+  const raw = String(candidate || CLASS_LMS_ORIGIN).replace(/\/$/, "");
+  try {
+    const host = new URL(raw.includes("://") ? raw : `https://${raw}`).hostname.replace(/^www\./, "");
+    if (host === APEX_HOST) return CLASS_LMS_ORIGIN;
+  } catch {
+    return CLASS_LMS_ORIGIN;
+  }
+  return raw;
+}
+
 export function catalogOrigin(): string {
-  return (process.env.NEXT_PUBLIC_CATALOG_URL || process.env.NEXT_PUBLIC_CLASS_LMS_URL || CLASS_LMS_ORIGIN).replace(
-    /\/$/,
-    ""
-  );
+  return resolvedCatalogOrigin(process.env.NEXT_PUBLIC_CATALOG_URL || process.env.NEXT_PUBLIC_CLASS_LMS_URL || CLASS_LMS_ORIGIN);
 }
 
 export function classLmsOrigin(): string {

@@ -22,12 +22,15 @@ import {
   isClassLmsHost,
   lmsFrontFromHost,
   publicCatalogUrl,
+  resolvedCatalogOrigin,
 } from "./lms-hosts";
 
 test("iac. stays IAC-only; catalog is class.accountingstudyadvice.com", () => {
   assert.equal(IAC_LMS_HOST, "iac.accountingstudyadvice.com");
   assert.equal(CLASS_LMS_HOST, "class.accountingstudyadvice.com");
   assert.equal(publicCatalogUrl(), `${CLASS_LMS_ORIGIN}/`);
+  assert.equal(resolvedCatalogOrigin("https://accountingstudyadvice.com"), CLASS_LMS_ORIGIN);
+  assert.equal(resolvedCatalogOrigin("https://class.accountingstudyadvice.com"), CLASS_LMS_ORIGIN);
   assert.equal(isCatalogHost("class.accountingstudyadvice.com"), true);
   assert.equal(isCatalogHost("accountingstudyadvice.com"), false);
   assert.equal(isCatalogHost("iac.accountingstudyadvice.com"), false);

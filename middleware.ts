@@ -47,6 +47,15 @@ export async function middleware(request: NextRequest) {
   const host = requestHost(request);
   const classHost = isClassLmsHost(host);
 
+  if (pathname === "/" || pathname === "") {
+    if (classHost) {
+      const catalog = request.nextUrl.clone();
+      catalog.pathname = "/courses";
+      return NextResponse.rewrite(catalog);
+    }
+    return NextResponse.next({ request });
+  }
+
   if (isIacLmsHost(host) && !isLocalDevHost(host) && (pathname === "/courses" || pathname.startsWith("/courses/"))) {
     if (pathname === `/courses/${DEFAULT_LMS_COURSE_ID}` || pathname.startsWith(`/courses/${DEFAULT_LMS_COURSE_ID}/`)) {
       const toIacClassroom = pathname.includes("/learn");
@@ -144,6 +153,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/",
     "/student",
     "/student/:path*",
     "/courses",
