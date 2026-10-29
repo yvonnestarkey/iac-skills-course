@@ -7,7 +7,6 @@ import {
   DEFAULT_LMS_COURSE_ID,
   getLmsCourse,
   isLmsClassroomPath,
-  lmsCourseSlugs,
 } from "@/lib/lms-catalog";
 import {
   classLmsOrigin,
@@ -152,10 +151,6 @@ export async function middleware(request: NextRequest) {
   return copyCookies(response, redirect);
 }
 
-const classSlugMatchers = lmsCourseSlugs()
-  .filter((slug) => slug !== DEFAULT_LMS_COURSE_ID)
-  .flatMap((slug) => [`/${slug}`, `/${slug}/:path*`]);
-
 export const config = {
   matcher: [
     "/",
@@ -165,7 +160,34 @@ export const config = {
     "/courses/:path*",
     "/iac-skills",
     "/iac-skills/:path*",
-    ...classSlugMatchers,
+    "/mindset-masterclass",
+    "/mindset-masterclass/:path*",
+    "/teaching-mindset-skills",
+    "/teaching-mindset-skills/:path*",
+    "/growthmindseteducators",
+    "/growthmindseteducators/:path*",
+    "/what-firms-want",
+    "/what-firms-want/:path*",
+    "/trainee-course",
+    "/trainee-course/:path*",
+    "/isa-520-analytical-review",
+    "/isa-520-analytical-review/:path*",
+    "/navigating-reference-books",
+    "/navigating-reference-books/:path*",
+    "/audit-risk-and-planning",
+    "/audit-risk-and-planning/:path*",
+    "/auditrisk",
+    "/auditrisk/:path*",
+    "/finalisation-of-the-audit",
+    "/finalisation-of-the-audit/:path*",
+    "/auditing-controls",
+    "/auditing-controls/:path*",
+    "/controls",
+    "/controls/:path*",
+    "/auditing-substantive-procedures",
+    "/auditing-substantive-procedures/:path*",
+    "/substantive",
+    "/substantive/:path*",
     "/onboarding",
     "/onboarding/:path*",
     "/coach",
