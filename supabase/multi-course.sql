@@ -32,7 +32,7 @@ create policy "courses writable by anon"
 insert into public.courses (id, slug, title, status, product_id, thinkific_url) values
   ('iac-skills', 'iac-skills', 'IAC Skills', 'live', 'jan27-iac', null),
   ('mindset-masterclass', 'mindset-masterclass', 'Mindset Masterclass', 'import-ready', null, 'https://courses.accountingstudyadvice.com/courses/mindset-masterclass'),
-  ('teaching-mindset-skills', 'teaching-mindset-skills', 'Teaching Mindset & Skills', 'import-ready', null, 'https://courses.accountingstudyadvice.com/courses/growthmindseteducators'),
+  ('teaching-mindset-skills', 'teaching-mindset-skills', 'Teaching Mindset & Skills', 'live', null, 'https://courses.accountingstudyadvice.com/courses/growthmindseteducators'),
   ('what-firms-want', 'what-firms-want', 'What firms want you to know', 'import-ready', null, 'https://courses.accountingstudyadvice.com/courses/trainee-course'),
   ('isa-520-analytical-review', 'isa-520-analytical-review', 'Auditing: ISA520 Analytical Review', 'import-ready', null, 'https://courses.accountingstudyadvice.com/courses/isa-520-analytical-review'),
   ('navigating-reference-books', 'navigating-reference-books', 'Navigating Reference Books', 'import-ready', null, 'https://courses.accountingstudyadvice.com/courses/navigating-reference-books'),

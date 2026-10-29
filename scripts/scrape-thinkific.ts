@@ -25,6 +25,7 @@ function argValue(flag: string): string | undefined {
 }
 
 const OUT_FILE = path.resolve(process.cwd(), argValue("--out") || "iac-skills-course.json");
+const COURSE_NAME = argValue("--name") || "Imported course";
 const GO_FILE = path.join(process.cwd(), ".thinkific-scrape-go");
 const PROFILE_DIR = path.join(process.cwd(), ".thinkific-chrome");
 const START_URL =
@@ -144,12 +145,21 @@ async function collectOutline(page: Page, origin: string): Promise<OutlineItem[]
         let node = link.parentElement;
         for (let i = 0; i < 14 && node; i += 1) {
           const label = node.querySelector(
-            ":scope > h2, :scope > h3, :scope > h4, :scope > [class*='section__title'], :scope > [class*='chapter-title'], :scope > [class*='ChapterTitle']"
+            "h2, h3, h4, [class*='section__title'], [class*='chapter-title'], [class*='ChapterTitle'], [class*='chapter__title'], [class*='chapter-header']"
           );
           if (label) {
             const text = (label.innerText || "").replace(/\\s+/g, " ").trim();
-            if (text && text.length < 120 && !/complete|search by lesson/i.test(text)) return text;
+            if (
+              text &&
+              text.length < 160 &&
+              !/^(chapters|chapter|search by lesson title|completed)$/i.test(text) &&
+              !/complete|search by lesson/i.test(text)
+            ) {
+              return text;
+            }
           }
+          const heading = node.getAttribute && (node.getAttribute("data-chapter-title") || node.getAttribute("aria-label"));
+          if (heading && heading.length < 160) return heading.replace(/\\s+/g, " ").trim();
           node = node.parentElement;
         }
         return "Untitled chapter";
@@ -185,9 +195,10 @@ async function collectOutline(page: Page, origin: string): Promise<OutlineItem[]
 async function extractLesson(page: Page): Promise<{ title: string; body: string[]; videoUrls: string[]; kind: string }> {
   const result = await page.evaluate(`(() => {
     const titleEl = document.querySelector(
-      "h1, .course-player__content-header-title, .lecture-title, .lesson-title, [class*='LessonTitle']"
+      "h1, .course-player__content-header-title, .lecture-title, .lesson-title, [class*='LessonTitle'], [class*='content-header'] h2, [data-testid='lesson-title']"
     );
-    const title = (titleEl && titleEl.innerText && titleEl.innerText.trim()) || document.title;
+    const rawTitle = (titleEl && titleEl.innerText && titleEl.innerText.trim()) || "";
+    const title = /accounting study advice/i.test(rawTitle) ? "" : rawTitle;
 
     const videoUrls = [
       ...Array.from(document.querySelectorAll("iframe[src]")).map((el) => el.getAttribute("src") || ""),
@@ -211,15 +222,24 @@ async function extractLesson(page: Page): Promise<{ title: string; body: string[
     const uniqueVideos = [...new Set(videoUrls)];
 
     const root =
-      document.querySelector(
-        ".fr-view, .lecture-content, .course-player__content, .lesson-content, article, main, [class*='LessonContent']"
-      ) || document.body;
+      document.querySelector(".fr-view, .lecture-content, .lesson-content, [class*='LessonContent']") ||
+      document.querySelector("article, main") ||
+      document.body;
 
-    const body = Array.from(root.querySelectorAll("p, li"))
+    const body = Array.from(root.querySelectorAll("p, li, h2, h3, .fr-view div"))
       .map((node) => node.innerText.replace(/\\s+/g, " ").trim())
-      .filter((text) => text.length > 40)
+      .filter((text) => text.length > 24)
       .filter((text, index, list) => list.indexOf(text) === index)
-      .slice(0, 40);
+      .slice(0, 60);
+    if (!body.length && root && root.innerText) {
+      body.push(
+        ...root.innerText
+          .split(/\\n+/)
+          .map((text) => text.replace(/\\s+/g, " ").trim())
+          .filter((text) => text.length > 24)
+          .slice(0, 40)
+      );
+    }
 
     const kindEl = document.querySelector("[class*='lesson-type'], .content-type, .lecture-type");
     const kind = (kindEl && kindEl.textContent && kindEl.textContent.trim()) || (uniqueVideos.length ? "video" : "reading");
@@ -234,6 +254,26 @@ async function extractLesson(page: Page): Promise<{ title: string; body: string[
       kind: "reading",
     }
   );
+}
+
+async function waitForCoursePlayer(page: Page, origin: string): Promise<OutlineItem[]> {
+  const deadline = Date.now() + 8 * 60 * 1000;
+  let lastCount = 0;
+  while (Date.now() < deadline) {
+    await expandChapters(page);
+    const outline = await collectOutline(page, origin);
+    if (outline.length >= 3) return outline;
+    if (outline.length !== lastCount) {
+      lastCount = outline.length;
+      console.log(`Waiting for the Thinkific player… ${outline.length} lesson link(s) so far.`);
+    }
+    const body = ((await page.textContent("body").catch(() => "")) || "").toLowerCase();
+    if (body.includes("sign in") || body.includes("log in")) {
+      console.log("Thinkific is asking you to sign in in the Chrome window this script opened. Log in there; I will continue when the course appears.");
+    }
+    await page.waitForTimeout(2500);
+  }
+  return collectOutline(page, origin);
 }
 
 async function expandChapters(page: Page): Promise<void> {
@@ -264,31 +304,32 @@ async function main() {
   const alreadyInPlayer = /\/courses\/take\//i.test(START_URL);
   console.log(`Opening ${START_URL}`);
   if (!alreadyInPlayer) {
-    console.log("Log into Thinkific in the browser window, then open the IAC Skills Course player.");
+    console.log("Log into Thinkific in the Chrome window this script opened, then open the course player.");
   }
   await page.goto(START_URL, { waitUntil: "domcontentloaded", timeout: 60000 });
   await page.waitForTimeout(2500);
-  if (!alreadyInPlayer) {
-    await waitForEnter("Press Enter here when you are logged in and the course is visible… ");
-  }
 
   const origin = new URL(page.url()).origin;
-  await expandChapters(page);
-  await page.waitForTimeout(500);
-
-  const outline = await collectOutline(page, origin);
+  const outline = await waitForCoursePlayer(page, origin);
   if (!outline.length) {
+    if (!alreadyInPlayer) {
+      await waitForEnter("Press Enter here when you are logged in and the course is visible… ");
+    }
+    await expandChapters(page);
+  }
+  const readyOutline = outline.length ? outline : await collectOutline(page, origin);
+  if (!readyOutline.length) {
     console.error("No chapter/lesson links found on this page. Stay on the Thinkific course player and try again.");
     await context.close();
     process.exit(1);
   }
 
-  console.log(`Found ${outline.length} lessons. Crawling…`);
+  console.log(`Found ${readyOutline.length} lessons. Crawling…`);
 
   const chapters: ScrapedChapter[] = [];
   const chapterIndex = new Map<string, ScrapedChapter>();
 
-  for (const item of outline) {
+  for (const item of readyOutline) {
     const href = absUrl(item.href, origin);
     if (!href) continue;
 
@@ -307,7 +348,8 @@ async function main() {
     console.log(`  ${chapter.title} · ${item.lessonTitle || href}`);
     try {
       await page.goto(href, { waitUntil: "domcontentloaded", timeout: 45000 });
-      await page.waitForTimeout(450);
+      await page.waitForSelector(".fr-view, iframe[src*='vimeo'], iframe[src*='wistia'], video", { timeout: 8000 }).catch(() => {});
+      await page.waitForTimeout(400);
       const extracted = await extractLesson(page);
       const type = extracted.videoUrls.length
         ? "video"
@@ -318,7 +360,7 @@ async function main() {
       chapter.lessons.push({
         id: `${slug(chapter.id, "ch")}-l${lessonNumber}`,
         type,
-        title: extracted.title || item.lessonTitle || `Lesson ${lessonNumber}`,
+        title: item.lessonTitle || extracted.title || `Lesson ${lessonNumber}`,
         videoUrls: extracted.videoUrls,
         body: extracted.body,
         thinkificUrl: href,
@@ -331,7 +373,7 @@ async function main() {
 
   const payload = {
     company: "Accounting Study Advice",
-    className: "IAC Skills Course",
+    className: COURSE_NAME,
     source: "thinkific",
     scrapedAt: new Date().toISOString(),
     startUrl: page.url(),
