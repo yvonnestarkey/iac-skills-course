@@ -18,6 +18,7 @@ import {
   professionalPayoutCents,
 } from "@/lib/affiliate-partners";
 import { futurePlanInvoiceDrafts, voidActionForInvoiceStatus } from "@/lib/plan-installments";
+import { notifyYvonneOfReferralExtraDiscount } from "@/lib/referral-arrangement-notify";
 
 export function stripeSecretKeyError(key: string | undefined): string | null {
   const value = key?.trim() || "";
@@ -199,7 +200,17 @@ export async function earnReferralReward(params: {
     .select("id")
     .eq("purchase_id", params.purchaseId)
     .maybeSingle();
-  if (existing) return;
+  if (existing) {
+    if (!professional && attribution.referrer_user_id) {
+      await notifyYvonneOfReferralExtraDiscount({
+        referrerUserId: String(attribution.referrer_user_id),
+        rewardId: String(existing.id),
+        creditCents: amount,
+        product: params.product,
+      });
+    }
+    return;
+  }
   const payload = {
     referrer_user_id: professional ? null : attribution.referrer_user_id,
     partner_id: professional ? found?.partner_id || attributionPartnerId : null,
@@ -237,6 +248,12 @@ export async function earnReferralReward(params: {
       note: "Qualifying referred purchase",
     });
     await applyEarnedCreditToOpenPlan(String(payload.referrer_user_id));
+    await notifyYvonneOfReferralExtraDiscount({
+      referrerUserId: String(payload.referrer_user_id),
+      rewardId: String(reward.id),
+      creditCents: amount,
+      product: params.product,
+    });
   }
 }
 

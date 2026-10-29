@@ -39,6 +39,12 @@ import {
 } from "@/lib/student-submissions";
 import { surveyResponseStatusClass, surveyResponseStatusLabel } from "@/lib/custom-surveys";
 import FeedbackLog from "@/components/feedback/FeedbackLog";
+import {
+  arrangementForEmail,
+  extraDiscountCents,
+  referralArrangementBanner,
+  type ReferralArrangementStatus,
+} from "@/lib/referral-arrangements";
 import { useStore } from "@/lib/store";
 
 export default function StudentProfile({ studentId }: { studentId: string }) {
@@ -55,6 +61,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const [setupBusy, setSetupBusy] = useState(false);
   const [setupNotice, setSetupNotice] = useState("");
   const [activityOpen, setActivityOpen] = useState(false);
+  const [arrangementStatus, setArrangementStatus] = useState<ReferralArrangementStatus>("waiting");
 
   useEffect(() => {
     let cancelled = false;
@@ -93,6 +100,27 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   }, [studentId]);
 
   useEffect(() => {
+    const email = live?.email;
+    if (!email || !arrangementForEmail(email)) return;
+    let cancelled = false;
+    fetch("/api/coach/referral-arrangements")
+      .then(async (response) => {
+        const payload = (await response.json().catch(() => ({}))) as {
+          arrangements?: { email: string; status: ReferralArrangementStatus }[];
+        };
+        if (!response.ok || cancelled) return;
+        const match = (payload.arrangements || []).find(
+          (row) => row.email.toLowerCase() === email.toLowerCase()
+        );
+        if (match?.status) setArrangementStatus(match.status);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [live?.email]);
+
+  useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.location.hash === "#activity") {
       setActivityOpen(true);
@@ -121,6 +149,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const byLesson = useMemo(() => engagementByLesson(engagement), [engagement]);
 
   const student = live;
+  const extraArrangement = student ? arrangementForEmail(student.email) : null;
   if (loadingLive) {
     return (
       <div className="coach-page">
@@ -224,6 +253,11 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         </div>
       </div>
       {notice ? <div className="notice">{notice}</div> : null}
+      {extraArrangement ? (
+        <div className="dash-alert">
+          {referralArrangementBanner(arrangementStatus, extraDiscountCents(extraArrangement.extraBps))}
+        </div>
+      ) : null}
 
       <StudentAccessPanel
         student={student}

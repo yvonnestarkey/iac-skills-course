@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRequestUser, isStaffUser } from "@/lib/auth-server";
 import { ensureProfessionalAffiliates, ROELIEN_AFFILIATE } from "@/lib/affiliate-partners";
+import { loadReferralArrangementViews } from "@/lib/referral-arrangement-notify";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +21,7 @@ export async function GET() {
       partners: partners.map((row) => ({ ...row, owed_cents: 0, successful_count: 0 })),
       students: [],
       successes: [],
+      arrangements: await loadReferralArrangementViews(),
     });
   }
 
@@ -120,5 +122,6 @@ export async function GET() {
     partners: partnerStats,
     students: [...studentMap.values()].sort((a, b) => b.successful_count - a.successful_count || a.name.localeCompare(b.name)),
     successes,
+    arrangements: await loadReferralArrangementViews(),
   });
 }

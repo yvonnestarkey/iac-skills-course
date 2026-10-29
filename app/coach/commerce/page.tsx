@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { formatUsdCents } from "@/lib/format-money";
 
 type CommercePayload = {
   profiles: { id: string; email: string; full_name: string | null; role: string }[];
@@ -16,6 +17,7 @@ type CommercePayload = {
   }[];
   rewards: { id: string; referrer_user_id: string; amount_cents: number; status: string; updated_at: string }[];
   refund_due: { id: string; referrer_user_id: string; amount_cents: number }[];
+  extra_discount_due?: { email: string; extraCents: number; name: string | null; userId: string | null }[];
 };
 
 export default function CoachCommercePage() {
@@ -85,6 +87,11 @@ export default function CoachCommercePage() {
               ) : (
                 <li>None</li>
               )}
+              {(data.extra_discount_due || []).map((row) => (
+                <li key={row.email}>
+                  {row.name || row.email} — add extra 5% ({formatUsdCents(row.extraCents)}) as agreed
+                </li>
+              ))}
             </ul>
           </>
         ) : null}

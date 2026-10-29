@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import { formatUsdCents } from "@/lib/format-money";
+import { referralArrangementBanner, type ReferralArrangementStatus } from "@/lib/referral-arrangements";
 
 type PartnerRow = {
   id: string;
@@ -37,10 +38,22 @@ type SuccessRow = {
   rate_label: string;
 };
 
+type ArrangementRow = {
+  email: string;
+  extraBps: number;
+  extraCents: number;
+  creditCents: number;
+  action: string;
+  status: ReferralArrangementStatus;
+  userId: string | null;
+  name: string | null;
+};
+
 type Payload = {
   partners: PartnerRow[];
   students: StudentRow[];
   successes: SuccessRow[];
+  arrangements?: ArrangementRow[];
 };
 
 function money(cents: number) {
@@ -83,6 +96,33 @@ export default function CoachReferralsPage() {
 
       {data ? (
         <>
+          {data.arrangements?.length ? (
+            <section className="card">
+              <h2>Special extra-discount arrangements</h2>
+              <p className="muted small">
+                When the standard 10% referral credit activates, add the extra 5% yourself. You will also get an inbox
+                notification and email.
+              </p>
+              <div className="work-list">
+                {data.arrangements.map((row) => (
+                  <article className="work-item" key={row.email}>
+                    <div className="work-head">
+                      <strong>
+                        {row.userId ? (
+                          <StudentProfileLink studentId={row.userId}>{row.name || row.email}</StudentProfileLink>
+                        ) : (
+                          row.name || row.email
+                        )}
+                      </strong>
+                      <span className="muted small">{row.status === "action_needed" ? "Add extra 5%" : "Waiting"}</span>
+                    </div>
+                    <p className="muted small">{row.email}</p>
+                    <p>{referralArrangementBanner(row.status, row.extraCents)}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ) : null}
           <section className="card">
             <h2>Professional colleagues</h2>
             <p className="muted small">

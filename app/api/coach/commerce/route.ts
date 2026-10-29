@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRequestUser, isStaffUser } from "@/lib/auth-server";
 import { grantFullEntitlement } from "@/lib/commerce";
+import { loadReferralArrangementViews } from "@/lib/referral-arrangement-notify";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
@@ -40,6 +41,7 @@ export async function GET() {
     purchases: purchases || [],
     rewards: rewards || [],
     refund_due: (rewards || []).filter((row) => row.status === "refund_due"),
+    extra_discount_due: (await loadReferralArrangementViews()).filter((row) => row.status === "action_needed"),
   });
 }
 
