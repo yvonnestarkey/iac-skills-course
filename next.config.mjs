@@ -1,12 +1,21 @@
 const CLASS_HOSTS = ["class.accountingstudyadvice.com", "class.localhost", "class.local"];
 
-/** Other courses on class. map to /courses/<slug>. IAC is never kept on class. */
+/** Other courses on class. map to /courses/<slug>. IAC is never kept on class. Keep in sync with classHostCoursePaths(). */
 const CLASS_COURSES = [
-  { slug: "cta-skills", internal: "cta-skills" },
-  { slug: "controls", internal: "controls" },
-  { slug: "auditrisk", internal: "controls" },
-  { slug: "substantive", internal: "substantive" },
-  { slug: "strategy-mindset", internal: "strategy-mindset" },
+  { slug: "mindset-masterclass", internal: "mindset-masterclass" },
+  { slug: "teaching-mindset-skills", internal: "teaching-mindset-skills" },
+  { slug: "growthmindseteducators", internal: "teaching-mindset-skills" },
+  { slug: "what-firms-want", internal: "what-firms-want" },
+  { slug: "trainee-course", internal: "what-firms-want" },
+  { slug: "isa-520-analytical-review", internal: "isa-520-analytical-review" },
+  { slug: "navigating-reference-books", internal: "navigating-reference-books" },
+  { slug: "audit-risk-and-planning", internal: "audit-risk-and-planning" },
+  { slug: "auditrisk", internal: "audit-risk-and-planning" },
+  { slug: "finalisation-of-the-audit", internal: "finalisation-of-the-audit" },
+  { slug: "auditing-controls", internal: "auditing-controls" },
+  { slug: "controls", internal: "auditing-controls" },
+  { slug: "auditing-substantive-procedures", internal: "auditing-substantive-procedures" },
+  { slug: "substantive", internal: "auditing-substantive-procedures" },
 ];
 
 function classHostRules() {

@@ -7,6 +7,7 @@ import {
   DEFAULT_LMS_COURSE_ID,
   getLmsCourse,
   isLmsClassroomPath,
+  lmsCourseSlugs,
 } from "@/lib/lms-catalog";
 import {
   classLmsOrigin,
@@ -40,7 +41,7 @@ function requestHost(request: NextRequest): string {
  * paths unless this browser session set `onboarding_skipped_session`.
  *
  * iac. is IAC-only. Catalog lives on class.accountingstudyadvice.com.
- * Other courses are /<slug> on class. (e.g. /auditrisk). IAC catalog links go to iac.
+ * Other courses are /<slug> on class. IAC catalog links go to iac.
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -151,6 +152,10 @@ export async function middleware(request: NextRequest) {
   return copyCookies(response, redirect);
 }
 
+const classSlugMatchers = lmsCourseSlugs()
+  .filter((slug) => slug !== DEFAULT_LMS_COURSE_ID)
+  .flatMap((slug) => [`/${slug}`, `/${slug}/:path*`]);
+
 export const config = {
   matcher: [
     "/",
@@ -160,16 +165,7 @@ export const config = {
     "/courses/:path*",
     "/iac-skills",
     "/iac-skills/:path*",
-    "/cta-skills",
-    "/cta-skills/:path*",
-    "/controls",
-    "/controls/:path*",
-    "/auditrisk",
-    "/auditrisk/:path*",
-    "/substantive",
-    "/substantive/:path*",
-    "/strategy-mindset",
-    "/strategy-mindset/:path*",
+    ...classSlugMatchers,
     "/onboarding",
     "/onboarding/:path*",
     "/coach",

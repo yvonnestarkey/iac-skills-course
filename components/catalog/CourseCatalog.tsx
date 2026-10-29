@@ -22,8 +22,8 @@ export default function CourseCatalog({ front = "class" }: { front?: LmsFront })
         <p className="sales-badge">Accounting Study Advice</p>
         <h1>Courses</h1>
         <p className="lead">
-          IAC Skills lives on iac.accountingstudyadvice.com. The other classrooms stay here — for example
-          /auditrisk — and fill in when their Thinkific content is imported.
+          IAC Skills lives on iac.accountingstudyadvice.com. The other classrooms stay here and fill in when their
+          Thinkific content is imported.
         </p>
       </section>
 

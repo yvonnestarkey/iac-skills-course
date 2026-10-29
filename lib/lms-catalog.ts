@@ -16,7 +16,13 @@ export type LmsCourse = {
   productId: string | null;
   summary: string;
   thinkificSchool: string;
+  /** Public Thinkific sales page. Player (/take/…) URLs are not guessed. */
+  thinkificUrl: string | null;
 };
+
+const THINKIFIC_SCHOOL = "courses.accountingstudyadvice.com";
+const IMPORT_SUMMARY =
+  "Classroom ready. Lessons appear here once this Thinkific course is imported — no lesson copy has been added yet.";
 
 export const LMS_COURSES: LmsCourse[] = [
   {
@@ -27,52 +33,117 @@ export const LMS_COURSES: LmsCourse[] = [
     shortTitle: "IAC Skills Course",
     status: "live",
     productId: "jan27-iac",
-    summary: "The live January 2027 IAC Skills classroom on iac.accountingstudyadvice.com.",
-    thinkificSchool: "courses.accountingstudyadvice.com",
+    summary: "The live January 2027 IAC Skills classroom on iac.accountingstudyadvice.com. Not imported from Thinkific.",
+    thinkificSchool: THINKIFIC_SCHOOL,
+    thinkificUrl: null,
   },
   {
-    id: "cta-skills",
-    slug: "cta-skills",
+    id: "mindset-masterclass",
+    slug: "mindset-masterclass",
     aliases: [],
-    title: "CTA Skills",
-    shortTitle: "CTA Skills",
+    title: "Mindset Masterclass",
+    shortTitle: "Mindset Masterclass",
     status: "import-ready",
     productId: null,
-    summary: "Classroom ready. Lessons appear here once this Thinkific course is imported — no lesson copy has been added yet.",
-    thinkificSchool: "courses.accountingstudyadvice.com",
+    summary: IMPORT_SUMMARY,
+    thinkificSchool: THINKIFIC_SCHOOL,
+    thinkificUrl: "https://courses.accountingstudyadvice.com/courses/mindset-masterclass",
   },
   {
-    id: "controls",
-    slug: "controls",
+    id: "teaching-mindset-skills",
+    slug: "teaching-mindset-skills",
+    aliases: ["growthmindseteducators"],
+    title: "Teaching Mindset & Skills",
+    shortTitle: "Teaching Mindset & Skills",
+    status: "import-ready",
+    productId: null,
+    summary: IMPORT_SUMMARY,
+    thinkificSchool: THINKIFIC_SCHOOL,
+    thinkificUrl: "https://courses.accountingstudyadvice.com/courses/growthmindseteducators",
+  },
+  {
+    id: "what-firms-want",
+    slug: "what-firms-want",
+    aliases: ["trainee-course"],
+    title: "What firms want you to know",
+    shortTitle: "What firms want you to know",
+    status: "import-ready",
+    productId: null,
+    summary: IMPORT_SUMMARY,
+    thinkificSchool: THINKIFIC_SCHOOL,
+    thinkificUrl: "https://courses.accountingstudyadvice.com/courses/trainee-course",
+  },
+  {
+    id: "isa-520-analytical-review",
+    slug: "isa-520-analytical-review",
+    aliases: [],
+    title: "Auditing: ISA520 Analytical Review",
+    shortTitle: "ISA520 Analytical Review",
+    status: "import-ready",
+    productId: null,
+    summary: IMPORT_SUMMARY,
+    thinkificSchool: THINKIFIC_SCHOOL,
+    thinkificUrl: "https://courses.accountingstudyadvice.com/courses/isa-520-analytical-review",
+  },
+  {
+    id: "navigating-reference-books",
+    slug: "navigating-reference-books",
+    aliases: [],
+    title: "Navigating Reference Books",
+    shortTitle: "Navigating Reference Books",
+    status: "import-ready",
+    productId: null,
+    summary: IMPORT_SUMMARY,
+    thinkificSchool: THINKIFIC_SCHOOL,
+    thinkificUrl: "https://courses.accountingstudyadvice.com/courses/navigating-reference-books",
+  },
+  {
+    id: "audit-risk-and-planning",
+    slug: "audit-risk-and-planning",
     aliases: ["auditrisk"],
-    title: "Controls",
-    shortTitle: "Controls",
+    title: "Audit: Risk and Planning",
+    shortTitle: "Audit: Risk and Planning",
     status: "import-ready",
     productId: null,
-    summary: "Classroom ready. Lessons appear here once this Thinkific course is imported — no lesson copy has been added yet.",
-    thinkificSchool: "courses.accountingstudyadvice.com",
+    summary: IMPORT_SUMMARY,
+    thinkificSchool: THINKIFIC_SCHOOL,
+    thinkificUrl: "https://courses.accountingstudyadvice.com/courses/audit-risk-and-planning",
   },
   {
-    id: "substantive",
-    slug: "substantive",
+    id: "finalisation-of-the-audit",
+    slug: "finalisation-of-the-audit",
     aliases: [],
-    title: "Substantive Procedures",
-    shortTitle: "Substantive Procedures",
+    title: "Finalisation of the Audit",
+    shortTitle: "Finalisation of the Audit",
     status: "import-ready",
     productId: null,
-    summary: "Classroom ready. Lessons appear here once this Thinkific course is imported — no lesson copy has been added yet.",
-    thinkificSchool: "courses.accountingstudyadvice.com",
+    summary: IMPORT_SUMMARY,
+    thinkificSchool: THINKIFIC_SCHOOL,
+    thinkificUrl: "https://courses.accountingstudyadvice.com/courses/finalisation-of-the-audit",
   },
   {
-    id: "strategy-mindset",
-    slug: "strategy-mindset",
-    aliases: [],
-    title: "Strategy & Mindset",
-    shortTitle: "Strategy & Mindset",
+    id: "auditing-controls",
+    slug: "auditing-controls",
+    aliases: ["controls"],
+    title: "Auditing: Controls",
+    shortTitle: "Auditing: Controls",
     status: "import-ready",
     productId: null,
-    summary: "Classroom ready. Lessons appear here once this Thinkific course is imported — no lesson copy has been added yet.",
-    thinkificSchool: "courses.accountingstudyadvice.com",
+    summary: IMPORT_SUMMARY,
+    thinkificSchool: THINKIFIC_SCHOOL,
+    thinkificUrl: "https://courses.accountingstudyadvice.com/courses/auditing-controls",
+  },
+  {
+    id: "auditing-substantive-procedures",
+    slug: "auditing-substantive-procedures",
+    aliases: ["substantive"],
+    title: "Auditing: Substantive Procedures",
+    shortTitle: "Auditing: Substantive Procedures",
+    status: "import-ready",
+    productId: null,
+    summary: IMPORT_SUMMARY,
+    thinkificSchool: THINKIFIC_SCHOOL,
+    thinkificUrl: "https://courses.accountingstudyadvice.com/courses/auditing-substantive-procedures",
   },
 ];
 
@@ -96,6 +167,13 @@ export function lmsCourseSlugs(): string[] {
   return LMS_COURSES.flatMap((course) => [course.slug, ...course.aliases]);
 }
 
+/** class. public paths for every non-IAC course, including aliases. */
+export function classHostCoursePaths(): { slug: string; internal: string }[] {
+  return LMS_COURSES.filter((course) => course.id !== DEFAULT_LMS_COURSE_ID).flatMap((course) =>
+    [course.slug, ...course.aliases].map((slug) => ({ slug, internal: course.slug }))
+  );
+}
+
 export function isLmsCourseSlug(value: string | null | undefined): boolean {
   return Boolean(value && bySlug.has(value));
 }
@@ -104,12 +182,11 @@ export function canonicalCourseSlug(slugOrId: string): string | null {
   return getLmsCourse(slugOrId)?.slug ?? null;
 }
 
-/** Prefer the short public path on class. (e.g. Controls → auditrisk). */
 export function coursePublicSlug(course: LmsCourse): string {
-  return course.aliases[0] || course.slug;
+  return course.slug;
 }
 
-/** IAC Skills always opens iac. Other courses are /<slug> on class. (e.g. /auditrisk). */
+/** IAC Skills always opens iac. Other courses are /<slug> on class. */
 export function coursePublicHref(course: LmsCourse, front: LmsFront = "class"): string {
   if (course.id === DEFAULT_LMS_COURSE_ID) return iacSalesUrl();
   if (front === "class") return `/${coursePublicSlug(course)}`;

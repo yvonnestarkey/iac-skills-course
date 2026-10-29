@@ -7,7 +7,7 @@
  *   npx tsx scripts/seed-supabase.ts
  *
  * Another course:
- *   npx tsx scripts/seed-supabase.ts --course=cta-skills --file=cta-skills-course.json
+ *   npx tsx scripts/seed-supabase.ts --course=mindset-masterclass --file=mindset-masterclass.json
  */
 
 import { readFileSync, existsSync } from "node:fs";
