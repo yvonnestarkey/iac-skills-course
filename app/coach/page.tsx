@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { publicCatalogUrl } from "@/lib/lms-hosts";
 import { useStore } from "@/lib/store";
 
 export default function CoachHomePage() {
@@ -24,9 +25,15 @@ export default function CoachHomePage() {
             <strong>Student course</strong>
             <span className="muted">The live student dashboard, lessons, live sessions, and Script Evaluator</span>
           </button>
-          <button onClick={() => router.push("/courses")}>
+          <button
+            onClick={() => {
+              const host = typeof window === "undefined" ? "" : window.location.hostname;
+              const local = host === "localhost" || host === "127.0.0.1";
+              router.push(local ? "/courses" : publicCatalogUrl());
+            }}
+          >
             <strong>All courses</strong>
-            <span className="muted">Catalog for IAC Skills plus import-ready classrooms. On class.accountingstudyadvice.com this is the home page.</span>
+            <span className="muted">Catalog at accountingstudyadvice.com/courses. IAC Skills stays on iac.</span>
           </button>
           <button onClick={() => router.push("/coach/referrals")}>
             <strong>Referrals</strong>

@@ -1,8 +1,8 @@
 const CLASS_HOSTS = ["class.accountingstudyadvice.com", "class.localhost", "class.local"];
+const APEX_HOSTS = ["accountingstudyadvice.com", "www.accountingstudyadvice.com"];
 
-/** Short public slugs on class. Internal app routes live under /courses/[slug]. */
+/** Other courses on class. map to /courses/<slug>. IAC is never kept on class. */
 const CLASS_COURSES = [
-  { slug: "iac-skills", internal: "iac-skills", iacClassroom: true },
   { slug: "cta-skills", internal: "cta-skills" },
   { slug: "controls", internal: "controls" },
   { slug: "auditrisk", internal: "controls" },
@@ -17,12 +17,6 @@ function classHostRules() {
     const has = [{ type: "host", value: host }];
     rules.push({ source: "/", has, destination: "/courses" });
     for (const course of CLASS_COURSES) {
-      if (course.iacClassroom) {
-        rules.push({ source: `/${course.slug}/learn`, has, destination: "/student" });
-        rules.push({ source: `/${course.slug}/learn/:path*`, has, destination: "/student/:path*" });
-        rules.push({ source: `/${course.slug}`, has, destination: `/courses/${course.internal}` });
-        continue;
-      }
       rules.push({ source: `/${course.slug}`, has, destination: `/courses/${course.internal}` });
       rules.push({
         source: `/${course.slug}/:path*`,
@@ -32,6 +26,15 @@ function classHostRules() {
     }
   }
   return rules;
+}
+
+function apexHomeRedirects() {
+  return APEX_HOSTS.map((host) => ({
+    source: "/",
+    has: [{ type: "host", value: host }],
+    destination: "/courses",
+    permanent: false,
+  }));
 }
 
 /** @type {import('next').NextConfig} */
@@ -46,6 +49,9 @@ const nextConfig = {
         ],
       },
     ];
+  },
+  async redirects() {
+    return apexHomeRedirects();
   },
   async rewrites() {
     return classHostRules();

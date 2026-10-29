@@ -59,6 +59,9 @@ test("IAC sales landing stays the iac. home page and does not become the course 
   assert.doesNotMatch(home, /CourseCatalog/);
   const sales = readFileSync(resolve("components/sales/SalesLanding.tsx"), "utf8");
   assert.doesNotMatch(sales, /href="\/courses"/);
+  const catalog = readFileSync(resolve("lib/lms-catalog.ts"), "utf8");
+  assert.match(catalog, /iac\.accountingstudyadvice\.com/);
+  assert.match(catalog, /coursePublicHref/);
 });
 
 test("landing course features include the script report and interactive practice clip", () => {

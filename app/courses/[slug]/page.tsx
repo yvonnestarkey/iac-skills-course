@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import CourseHome from "@/components/catalog/CourseHome";
-import { canonicalCourseSlug, getLmsCourse } from "@/lib/lms-catalog";
-import { currentLmsFront } from "@/lib/lms-front";
+import { canonicalCourseSlug, DEFAULT_LMS_COURSE_ID, getLmsCourse } from "@/lib/lms-catalog";
+import { iacSalesUrl } from "@/lib/lms-hosts";
 
 export const dynamic = "force-dynamic";
 
@@ -18,8 +18,8 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
   const { slug } = await params;
   const course = getLmsCourse(slug);
   if (!course) notFound();
+  if (course.id === DEFAULT_LMS_COURSE_ID) redirect(iacSalesUrl());
   const canonical = canonicalCourseSlug(slug);
   if (canonical && canonical !== slug) redirect(`/courses/${canonical}`);
-  const front = await currentLmsFront();
-  return <CourseHome course={course} front={front} />;
+  return <CourseHome course={course} />;
 }

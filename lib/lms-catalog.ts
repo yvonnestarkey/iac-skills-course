@@ -1,4 +1,5 @@
-import { CLASS_LMS_HOST, IAC_LMS_ORIGIN, catalogPath, type LmsFront } from "./lms-hosts";
+import { iacClassroomUrl, iacSalesUrl, type LmsFront } from "./lms-hosts";
+export { iacClassroomUrl, iacSalesUrl, publicCatalogUrl } from "./lms-hosts";
 
 export const DEFAULT_LMS_COURSE_ID = "iac-skills";
 
@@ -7,7 +8,7 @@ export type LmsCourseStatus = "live" | "import-ready";
 export type LmsCourse = {
   id: string;
   slug: string;
-  /** Extra public paths on class. that resolve to this course. */
+  /** Extra public paths that resolve to this course. */
   aliases: string[];
   title: string;
   shortTitle: string;
@@ -26,7 +27,7 @@ export const LMS_COURSES: LmsCourse[] = [
     shortTitle: "IAC Skills Course",
     status: "live",
     productId: "jan27-iac",
-    summary: "The live January 2027 IAC Skills classroom. Same course students already use on iac.accountingstudyadvice.com.",
+    summary: "The live January 2027 IAC Skills classroom on iac.accountingstudyadvice.com.",
     thinkificSchool: "courses.accountingstudyadvice.com",
   },
   {
@@ -103,27 +104,27 @@ export function canonicalCourseSlug(slugOrId: string): string | null {
   return getLmsCourse(slugOrId)?.slug ?? null;
 }
 
-export function coursePublicPath(course: LmsCourse, front: LmsFront = "class"): string {
-  return front === "class" ? `/${course.slug}` : `/courses/${course.slug}`;
+/** IAC Skills always leaves this app’s catalog and opens iac. Other courses stay under /courses/<slug>. */
+export function coursePublicHref(course: LmsCourse): string {
+  if (course.id === DEFAULT_LMS_COURSE_ID) return iacSalesUrl();
+  return `/courses/${course.slug}`;
 }
 
-export function courseClassroomPath(course: LmsCourse, front: LmsFront = "class"): string {
-  if (course.id === DEFAULT_LMS_COURSE_ID) {
-    return front === "class" ? "/iac-skills/learn" : "/student";
-  }
-  return front === "class" ? `/${course.slug}/learn` : `/courses/${course.slug}/learn`;
+export function courseClassroomHref(course: LmsCourse): string {
+  if (course.id === DEFAULT_LMS_COURSE_ID) return iacClassroomUrl();
+  return `/courses/${course.slug}/learn`;
 }
 
-export function iacClassroomUrl(): string {
-  return `${IAC_LMS_ORIGIN}/student`;
+export function coursePublicPath(course: LmsCourse, _front: LmsFront = "catalog"): string {
+  return coursePublicHref(course);
 }
 
-export function classCourseUrl(course: LmsCourse): string {
-  return `https://${CLASS_LMS_HOST}${coursePublicPath(course, "class")}`;
+export function courseClassroomPath(course: LmsCourse, _front: LmsFront = "catalog"): string {
+  return courseClassroomHref(course);
 }
 
-export function catalogHref(front: LmsFront): string {
-  return catalogPath(front);
+export function catalogHref(_front?: LmsFront): string {
+  return "/courses";
 }
 
 type ChapterRow = { id: string; course_id?: string | null };
@@ -153,9 +154,9 @@ const CLASS_CLASSROOM_PREFIX = /^\/([a-z0-9-]+)\/learn(?:\/.*)?$/;
 export function isLmsClassroomPath(pathname: string): boolean {
   if (pathname === "/student" || pathname.startsWith("/student/")) return true;
   const courses = pathname.match(CLASSROOM_PREFIX);
-  if (courses && getLmsCourse(courses[1])) return true;
+  if (courses && getLmsCourse(courses[1]) && courses[1] !== DEFAULT_LMS_COURSE_ID) return true;
   const classHost = pathname.match(CLASS_CLASSROOM_PREFIX);
-  return Boolean(classHost && getLmsCourse(classHost[1]));
+  return Boolean(classHost && getLmsCourse(classHost[1]) && classHost[1] !== DEFAULT_LMS_COURSE_ID);
 }
 
 export function rewriteClassPathToInternal(pathname: string): string | null {
@@ -164,17 +165,20 @@ export function rewriteClassPathToInternal(pathname: string): string | null {
   const slug = parts[0];
   if (!slug || !isLmsCourseSlug(slug)) return null;
   const course = getLmsCourse(slug);
-  if (!course) return null;
+  if (!course || course.id === DEFAULT_LMS_COURSE_ID) return null;
   const rest = parts.slice(1);
-  if (course.id === DEFAULT_LMS_COURSE_ID && rest[0] === "learn") {
-    const afterLearn = rest.slice(1).join("/");
-    return afterLearn ? `/student/${afterLearn}` : "/student";
-  }
   return `/courses/${course.slug}${rest.length ? `/${rest.join("/")}` : ""}`;
 }
 
+/** On class., send leftover IAC student URLs to the real IAC host instead of keeping a second classroom. */
 export function classCanonicalStudentPath(pathname: string): string | null {
-  if (pathname === "/student" || pathname === "/student/") return "/iac-skills/learn";
-  if (pathname.startsWith("/student/")) return `/iac-skills/learn${pathname.slice("/student".length)}`;
+  if (pathname === "/student" || pathname === "/student/" || pathname.startsWith("/student/")) {
+    return iacClassroomUrl() + (pathname === "/student" || pathname === "/student/" ? "" : pathname.slice("/student".length));
+  }
+  if (pathname === "/iac-skills" || pathname === "/iac-skills/") return iacSalesUrl();
+  if (pathname === "/iac-skills/learn" || pathname.startsWith("/iac-skills/learn/")) {
+    const rest = pathname.slice("/iac-skills/learn".length);
+    return rest && rest !== "/" ? `${iacClassroomUrl()}${rest}` : iacClassroomUrl();
+  }
   return null;
 }

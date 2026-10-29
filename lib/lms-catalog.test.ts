@@ -5,21 +5,34 @@ import {
   LMS_COURSES,
   canonicalCourseSlug,
   classCanonicalStudentPath,
-  courseClassroomPath,
+  courseClassroomHref,
+  coursePublicHref,
   getLmsCourse,
   isLmsClassroomPath,
   isLmsCourseSlug,
   rewriteClassPathToInternal,
   scopeChapterRows,
 } from "./lms-catalog";
-import { CLASS_LMS_HOST, IAC_LMS_HOST, isClassLmsHost, lmsFrontFromHost } from "./lms-hosts";
+import {
+  APEX_HOST,
+  IAC_LMS_HOST,
+  IAC_LMS_ORIGIN,
+  isCatalogHost,
+  isClassLmsHost,
+  lmsFrontFromHost,
+  publicCatalogUrl,
+} from "./lms-hosts";
 
-test("class. is the multi-course host and iac. stays the IAC Skills host", () => {
-  assert.equal(CLASS_LMS_HOST, "class.accountingstudyadvice.com");
+test("iac. stays IAC-only; catalog is accountingstudyadvice.com/courses", () => {
   assert.equal(IAC_LMS_HOST, "iac.accountingstudyadvice.com");
-  assert.equal(isClassLmsHost("class.accountingstudyadvice.com"), true);
+  assert.equal(APEX_HOST, "accountingstudyadvice.com");
+  assert.equal(publicCatalogUrl(), "https://accountingstudyadvice.com/courses");
+  assert.equal(isCatalogHost("accountingstudyadvice.com"), true);
+  assert.equal(isCatalogHost("www.accountingstudyadvice.com"), true);
+  assert.equal(isCatalogHost("iac.accountingstudyadvice.com"), false);
   assert.equal(isClassLmsHost("iac.accountingstudyadvice.com"), false);
   assert.equal(lmsFrontFromHost("localhost:3000"), "iac");
+  assert.equal(lmsFrontFromHost("accountingstudyadvice.com"), "catalog");
 });
 
 test("catalog slugs cover the known Accounting Study Advice courses", () => {
@@ -32,21 +45,25 @@ test("catalog slugs cover the known Accounting Study Advice courses", () => {
   assert.equal(isLmsCourseSlug("login"), false);
 });
 
-test("class. public paths rewrite to internal /courses routes", () => {
-  assert.equal(rewriteClassPathToInternal("/"), "/courses");
-  assert.equal(rewriteClassPathToInternal("/iac-skills"), "/courses/iac-skills");
-  assert.equal(rewriteClassPathToInternal("/iac-skills/learn"), "/student");
-  assert.equal(rewriteClassPathToInternal("/iac-skills/learn/ch3-l1"), "/student/ch3-l1");
-  assert.equal(rewriteClassPathToInternal("/cta-skills/learn"), "/courses/cta-skills/learn");
-  assert.equal(rewriteClassPathToInternal("/auditrisk"), "/courses/controls");
-  assert.equal(rewriteClassPathToInternal("/login"), null);
+test("IAC catalog links go to iac.; other courses stay under /courses/<slug>", () => {
+  const iac = getLmsCourse("iac-skills")!;
+  const cta = getLmsCourse("cta-skills")!;
+  assert.equal(coursePublicHref(iac), `${IAC_LMS_ORIGIN}/`);
+  assert.equal(courseClassroomHref(iac), `${IAC_LMS_ORIGIN}/student`);
+  assert.equal(coursePublicHref(cta), "/courses/cta-skills");
+  assert.equal(courseClassroomHref(cta), "/courses/cta-skills/learn");
 });
 
-test("IAC classroom on class. is the same /student app via a slug path", () => {
-  assert.equal(courseClassroomPath(getLmsCourse("iac-skills")!, "class"), "/iac-skills/learn");
-  assert.equal(courseClassroomPath(getLmsCourse("iac-skills")!, "iac"), "/student");
-  assert.equal(classCanonicalStudentPath("/student/dashboard"), "/iac-skills/learn/dashboard");
+test("class. short paths rewrite to /courses except IAC, which is not kept on class.", () => {
+  assert.equal(rewriteClassPathToInternal("/"), "/courses");
+  assert.equal(rewriteClassPathToInternal("/cta-skills/learn"), "/courses/cta-skills/learn");
+  assert.equal(rewriteClassPathToInternal("/auditrisk"), "/courses/controls");
+  assert.equal(rewriteClassPathToInternal("/iac-skills"), null);
+  assert.equal(rewriteClassPathToInternal("/login"), null);
+  assert.equal(classCanonicalStudentPath("/student"), `${IAC_LMS_ORIGIN}/student`);
+  assert.equal(classCanonicalStudentPath("/iac-skills"), `${IAC_LMS_ORIGIN}/`);
   assert.equal(isLmsClassroomPath("/courses/cta-skills/learn/ch1-l1"), true);
+  assert.equal(isLmsClassroomPath("/courses/iac-skills/learn"), false);
 });
 
 test("chapters without course_id stay on IAC Skills until the SQL migration runs", () => {

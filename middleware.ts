@@ -1,8 +1,15 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { isAuthPasswordPath } from "@/lib/invite-session";
-import { classCanonicalStudentPath, isLmsClassroomPath } from "@/lib/lms-catalog";
-import { isClassLmsHost } from "@/lib/lms-hosts";
+import { classCanonicalStudentPath, DEFAULT_LMS_COURSE_ID, isLmsClassroomPath } from "@/lib/lms-catalog";
+import {
+  catalogOrigin,
+  iacClassroomUrl,
+  iacSalesUrl,
+  isClassLmsHost,
+  isIacLmsHost,
+  isLocalDevHost,
+} from "@/lib/lms-hosts";
 import { ONBOARDING_SKIP_COOKIE, onboardingSkipCookieClear } from "@/lib/onboarding-session";
 import { isCoachAccount } from "@/lib/roles";
 
@@ -25,18 +32,26 @@ function requestHost(request: NextRequest): string {
  * Cookie session + onboarding gate. Incomplete students cannot open classroom
  * paths unless this browser session set `onboarding_skipped_session`.
  *
- * class.accountingstudyadvice.com `/` and `/<slug>` are rewritten in next.config.
- * This middleware keeps iac. `/student` URLs working and canonicalises `/student`
- * on class. to `/iac-skills/learn`.
+ * iac. is IAC-only. Catalog lives at accountingstudyadvice.com/courses.
+ * Other courses stay under /courses/<slug>. IAC catalog links go to iac.
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const classHost = isClassLmsHost(requestHost(request));
+  const host = requestHost(request);
+  const classHost = isClassLmsHost(host);
+
+  if (isIacLmsHost(host) && !isLocalDevHost(host) && (pathname === "/courses" || pathname.startsWith("/courses/"))) {
+    if (pathname === `/courses/${DEFAULT_LMS_COURSE_ID}` || pathname.startsWith(`/courses/${DEFAULT_LMS_COURSE_ID}/`)) {
+      const toIacClassroom = pathname.includes("/learn");
+      return NextResponse.redirect(new URL(toIacClassroom ? iacClassroomUrl() : iacSalesUrl()));
+    }
+    return NextResponse.redirect(new URL(`${catalogOrigin()}${pathname}`));
+  }
 
   if (classHost) {
     const canonical = classCanonicalStudentPath(pathname);
     if (canonical) {
-      return NextResponse.redirect(new URL(canonical, request.url));
+      return NextResponse.redirect(new URL(canonical));
     }
   }
 
@@ -86,7 +101,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isCoachPath) {
-    const studentHome = classHost ? "/iac-skills/learn" : "/student";
+    const studentHome = classHost ? iacClassroomUrl() : "/student";
     if (!staff) return copyCookies(response, NextResponse.redirect(new URL(studentHome, request.url)));
     return response;
   }
@@ -119,6 +134,7 @@ export const config = {
   matcher: [
     "/student",
     "/student/:path*",
+    "/courses",
     "/courses/:path*",
     "/iac-skills",
     "/iac-skills/:path*",
