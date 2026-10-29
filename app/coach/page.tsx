@@ -61,6 +61,10 @@ export default function CoachHomePage() {
             <strong>Script Evaluator reports</strong>
             <span className="muted">Student submissions on the new evaluator: progress per paper, review and release reports, and the on/off switch</span>
           </button>
+          <button onClick={() => router.push("/coach/eve-training")}>
+            <strong>Eve training data</strong>
+            <span className="muted">Your feedback to students, anonymised and paired with their work, ready to train Eve</span>
+          </button>
           <button onClick={() => router.push("/coach/drips")}>
             <strong>Drip-feed messages</strong>
             <span className="muted">Automate student notifications after enrolment, on a date, or when they complete a lesson or task</span>
