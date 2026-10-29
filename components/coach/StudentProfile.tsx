@@ -307,7 +307,9 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
             </div>
             <p className="activity-here">
               {position.current
-                ? `Currently on ${position.current.phaseLabel} · ${position.current.chapterTitle} · ${position.current.title}.`
+                ? `Currently on ${[position.current.phaseLabel, position.current.chapterTitle, position.current.title]
+                    .filter(Boolean)
+                    .join(" · ")}.`
                 : "No lesson activity recorded yet."}
               {position.lastItem?.lastOpenedAt
                 ? ` Last activity ${formatSastDateTime(position.lastItem.lastOpenedAt)}.`
@@ -322,7 +324,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
               {chapterGroups.map((group) => (
                 <div key={group.id} className="activity-chapter-block">
                   <h3>
-                    {group.phaseLabel} · {group.title}
+                    {[group.phaseLabel, group.title].filter(Boolean).join(" · ")}
                   </h3>
                   <table>
                     <thead>

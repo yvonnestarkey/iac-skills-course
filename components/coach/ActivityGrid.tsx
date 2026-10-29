@@ -39,6 +39,8 @@ export default function ActivityGrid({
   selectable?: boolean;
 }) {
   const { phases, chapters } = activityHeaderGroups(columns);
+  const showPhaseRow = phases.some((phase) => phase.label);
+  const headerRows = showPhaseRow ? 3 : 2;
   const chosen = selectedIds || rows.map((row) => row.student.id);
   const allSelected = rows.length > 0 && rows.every((row) => chosen.includes(row.student.id));
   const visible = rows.filter((row) => chosen.includes(row.student.id));
@@ -52,7 +54,7 @@ export default function ActivityGrid({
       <table className="activity-grid">
         <thead>
           <tr>
-            <th className="activity-sticky activity-head-select" rowSpan={3}>
+            <th className="activity-sticky activity-head-select" rowSpan={headerRows}>
               {selectable ? (
                 <label>
                   <input type="checkbox" checked={allSelected} onChange={onToggleAll} />
@@ -62,12 +64,19 @@ export default function ActivityGrid({
                 "Student"
               )}
             </th>
-            {phases.map((phase) => (
-              <th key={phase.key} className="activity-group" colSpan={phase.span} title={phase.title}>
-                {phase.label}
-              </th>
-            ))}
+            {showPhaseRow
+              ? phases.map((phase) => (
+                  <th key={phase.key} className="activity-group" colSpan={phase.span} title={phase.title}>
+                    {phase.label}
+                  </th>
+                ))
+              : chapters.map((chapter) => (
+                  <th key={chapter.key} className="activity-group activity-chapter" colSpan={chapter.span} title={chapter.title}>
+                    {chapter.label}
+                  </th>
+                ))}
           </tr>
+          {showPhaseRow ? (
           <tr>
             {chapters.map((chapter) => (
               <th key={chapter.key} className="activity-group activity-chapter" colSpan={chapter.span} title={chapter.title}>
@@ -75,6 +84,7 @@ export default function ActivityGrid({
               </th>
             ))}
           </tr>
+          ) : null}
           <tr>
             {columns.map((column) => (
               <th key={column.id} className="activity-lesson" title={column.title}>

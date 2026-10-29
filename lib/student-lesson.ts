@@ -2,9 +2,9 @@ import { COURSE_COHORTS, CURRENT_COHORT_TERM } from "./cohorts";
 import { findLesson } from "./course";
 import { DEFAULT_LMS_COURSE_ID, getLmsCourse, isLmsCourseSlug, scopeChapterRows } from "./lms-catalog";
 import {
+  courseHasNamedPhases,
   isDiyLesson,
   isMainTaskAssignment,
-  isSectionChapter,
   isTask1Chapter,
   isTaskChapter,
   isTaskSubmissionAssignment,
@@ -239,9 +239,7 @@ export function applyCourseProgressionGates(chapters: OutlineChapter[]): Outline
 
 function withSubmissionPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
   const firstTask = chapters.findIndex((chapter) => isTaskChapter(chapter.title));
-  const hasNamedPhases = chapters.some(
-    (chapter) => isSectionChapter(chapter.title) || isTaskChapter(chapter.title)
-  );
+  const hasNamedPhases = courseHasNamedPhases(chapters);
 
   const flagged = chapters.map((chapter) => ({
     ...chapter,

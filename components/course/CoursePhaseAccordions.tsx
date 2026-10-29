@@ -178,28 +178,31 @@ export default function CoursePhaseAccordions({
   return (
     <div className={`course-phases course-phases-${variant}`}>
       {phases.map((phase) => {
+        const showPhaseHeader = Boolean(phase.title);
         const progress = phaseUnitProgress(phase, completed);
         const phaseLocked = !unlocked && !isPhaseUnlocked(phases, phase.id, completed);
-        const phaseOpen = Boolean(openPhases[phase.id]);
+        const phaseOpen = showPhaseHeader ? Boolean(openPhases[phase.id]) : true;
         return (
           <section
             key={phase.id}
-            className={`course-phase course-phase-${phase.id} ${phaseOpen ? "open" : "collapsed"} ${
-              phaseLocked ? "locked" : ""
-            }`}
+            className={`course-phase ${showPhaseHeader ? `course-phase-${phase.id}` : "course-phase-flat"} ${
+              phaseOpen ? "open" : "collapsed"
+            } ${phaseLocked ? "locked" : ""}`}
           >
-            <button className="phase-toggle" type="button" aria-expanded={phaseOpen} onClick={() => togglePhase(phase.id)}>
-              <span>
-                <h2>
-                  {phaseLocked ? <Lock size={14} className="phase-lock" aria-label="Locked" /> : null}
-                  {phase.title}
-                </h2>
-                <span className="phase-badge">
-                  {progress.done} of {progress.total} {phase.unit} Completed
+            {showPhaseHeader ? (
+              <button className="phase-toggle" type="button" aria-expanded={phaseOpen} onClick={() => togglePhase(phase.id)}>
+                <span>
+                  <h2>
+                    {phaseLocked ? <Lock size={14} className="phase-lock" aria-label="Locked" /> : null}
+                    {phase.title}
+                  </h2>
+                  <span className="phase-badge">
+                    {progress.done} of {progress.total} {phase.unit} Completed
+                  </span>
                 </span>
-              </span>
-              <span className="chapter-caret">{phaseOpen ? "▾" : "▸"}</span>
-            </button>
+                <span className="chapter-caret">{phaseOpen ? "▾" : "▸"}</span>
+              </button>
+            ) : null}
             {phaseOpen
               ? phase.chapters.map((chapter) => {
                   const stats = chapterProgress(chapter, gatedCompleted);

@@ -5140,6 +5140,17 @@ a.planner-video-btn:visited:hover {
   border: 2px solid var(--medium);
 }
 
+.course-phase-flat {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 8px 0 0;
+}
+
+.course-phase-flat .phase-chapter {
+  border-color: #d5dddb;
+}
+
 .phase-toggle {
   width: 100%;
   display: flex;

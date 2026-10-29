@@ -5,7 +5,7 @@ export type CoursePhaseId = "phase1" | "phase2";
 export interface CoursePhase {
   id: CoursePhaseId;
   title: string;
-  unit: "Sections" | "Tasks";
+  unit: "Sections" | "Tasks" | "Chapters";
   chapters: OutlineChapter[];
 }
 
@@ -60,18 +60,32 @@ export function isMainTaskAssignment(chapterTitle: string, lesson: { title: stri
   return isNumberedTaskChapter(chapterTitle) && isTaskSubmissionAssignment(chapterTitle, lesson);
 }
 
+export function courseHasNamedPhases(chapters: OutlineChapter[] | null | undefined): boolean {
+  return (chapters || []).some(
+    (chapter) => isSectionChapter(chapter.title || "") || isTaskChapter(chapter.title || "")
+  );
+}
+
 export function splitCoursePhases(chapters: OutlineChapter[] | null | undefined): CoursePhase[] {
   const list = (chapters || []).filter(Boolean);
-  const firstTask = list.findIndex((chapter) => isTaskChapter(chapter.title || ""));
-  let phase1 = firstTask === -1 ? list : list.slice(0, firstTask);
-  let phase2 = firstTask === -1 ? [] : list.slice(firstTask);
+  if (!list.length) return [];
 
-  const hasNamedPhases = list.some((chapter) => isSectionChapter(chapter.title || "") || isTaskChapter(chapter.title || ""));
-  if (!hasNamedPhases && list.length > 1) {
-    const mid = Math.max(1, Math.ceil(list.length / 2));
-    phase1 = list.slice(0, mid);
-    phase2 = list.slice(mid);
+  // IAC Skills uses S# / Task chapter titles. Other courses (Teaching Mindset, etc.)
+  // keep their Thinkific chapters and must not inherit IAC Phase 1 / Phase 2.
+  if (!courseHasNamedPhases(list)) {
+    return [
+      {
+        id: "phase1",
+        title: "",
+        unit: "Chapters",
+        chapters: list,
+      },
+    ];
   }
+
+  const firstTask = list.findIndex((chapter) => isTaskChapter(chapter.title || ""));
+  const phase1 = firstTask === -1 ? list : list.slice(0, firstTask);
+  const phase2 = firstTask === -1 ? [] : list.slice(firstTask);
 
   const phases: CoursePhase[] = [
     {

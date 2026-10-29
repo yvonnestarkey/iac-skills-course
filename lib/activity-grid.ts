@@ -1,4 +1,4 @@
-import { splitCoursePhases } from "./course-phases";
+import { courseHasNamedPhases, splitCoursePhases } from "./course-phases";
 import { publishedOutline } from "./lesson-drafts";
 import { activityLevel, type LessonEngagement } from "./lesson-progress";
 import type { OutlineChapter } from "./student-lesson";
@@ -29,8 +29,9 @@ function shortChapterLabel(title: string, index: number): string {
 
 export function activityColumnsFromOutline(chapters: OutlineChapter[]): ActivityColumn[] {
   const columns: ActivityColumn[] = [];
+  const namedPhases = courseHasNamedPhases(publishedOutline(chapters));
   splitCoursePhases(publishedOutline(chapters)).forEach((phase, phaseIndex) => {
-    const phaseLabel = `Phase ${phaseIndex + 1}`;
+    const phaseLabel = namedPhases ? `Phase ${phaseIndex + 1}` : "";
     phase.chapters.forEach((chapter, chapterIndex) => {
       const chapterLabel = shortChapterLabel(chapter.title || chapter.id, chapterIndex + 1);
       (chapter.lessons || []).forEach((lesson, lessonIndex) => {
