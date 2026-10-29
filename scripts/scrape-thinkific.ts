@@ -18,11 +18,17 @@ import { access, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium, type Page } from "playwright";
 
-const OUT_FILE = path.join(process.cwd(), "iac-skills-course.json");
+function argValue(flag: string): string | undefined {
+  const prefix = `${flag}=`;
+  const hit = process.argv.slice(2).find((arg) => arg.startsWith(prefix));
+  return hit ? hit.slice(prefix.length).trim() : undefined;
+}
+
+const OUT_FILE = path.resolve(process.cwd(), argValue("--out") || "iac-skills-course.json");
 const GO_FILE = path.join(process.cwd(), ".thinkific-scrape-go");
 const PROFILE_DIR = path.join(process.cwd(), ".thinkific-chrome");
 const START_URL =
-  process.argv[2] ||
+  process.argv.slice(2).find((arg) => !arg.startsWith("--")) ||
   process.env.THINKIFIC_COURSE_URL ||
   "https://courses.accountingstudyadvice.com/courses/take/iac-skills-course-jan-2027/texts/78028899-course-dates-details";
 

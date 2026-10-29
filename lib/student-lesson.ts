@@ -1,5 +1,6 @@
 import { COURSE_COHORTS, CURRENT_COHORT_TERM } from "./cohorts";
 import { findLesson } from "./course";
+import { DEFAULT_LMS_COURSE_ID, getLmsCourse, isLmsCourseSlug, scopeChapterRows } from "./lms-catalog";
 import {
   isDiyLesson,
   isMainTaskAssignment,
@@ -101,7 +102,11 @@ const OUTLINE_TTL_MS = 120_000;
 const OUTLINE_STORAGE_KEY = "iac-course-outline-v5";
 
 type OutlineCacheEntry = { at: number; data: OutlineChapter[] };
-let memoryOutline: OutlineCacheEntry | null = null;
+const memoryOutlines = new Map<string, OutlineCacheEntry>();
+
+function outlineCacheKey(courseId: string): string {
+  return courseId || DEFAULT_LMS_COURSE_ID;
+}
 
 function asStringList(value: unknown): string[] | undefined {
   if (Array.isArray(value)) return value.map((item) => String(item)).filter(Boolean);
@@ -357,38 +362,64 @@ const GATE_COLUMNS = `${OUTLINE_COLUMNS}, requires_submission, requires_coach_ap
 const DRIP_COLUMNS = `${GATE_COLUMNS}, unlock_at`;
 const DRAFT_COLUMNS = `${DRIP_COLUMNS}, is_draft`;
 
-function readOutlineCache(): OutlineChapter[] | null {
-  if (memoryOutline && Date.now() - memoryOutline.at < OUTLINE_TTL_MS) {
-    return withoutRetiredChapters(memoryOutline.data);
+function outlineStorageKey(courseId: string): string {
+  const key = outlineCacheKey(courseId);
+  return key === DEFAULT_LMS_COURSE_ID ? OUTLINE_STORAGE_KEY : `lms-outline-v1:${key}`;
+}
+
+function readOutlineCache(courseId: string): OutlineChapter[] | null {
+  const key = outlineCacheKey(courseId);
+  const memory = memoryOutlines.get(key);
+  if (memory && Date.now() - memory.at < OUTLINE_TTL_MS) {
+    return key === DEFAULT_LMS_COURSE_ID ? withoutRetiredChapters(memory.data) : memory.data;
   }
   if (typeof window === "undefined") return null;
   try {
-    const raw = sessionStorage.getItem(OUTLINE_STORAGE_KEY);
+    const raw = sessionStorage.getItem(outlineStorageKey(key));
     if (!raw) return null;
     const parsed = JSON.parse(raw) as OutlineCacheEntry;
     if (!Array.isArray(parsed?.data) || Date.now() - parsed.at >= OUTLINE_TTL_MS) return null;
-    memoryOutline = parsed;
-    return withoutRetiredChapters(parsed.data);
+    memoryOutlines.set(key, parsed);
+    return key === DEFAULT_LMS_COURSE_ID ? withoutRetiredChapters(parsed.data) : parsed.data;
   } catch {
     return null;
   }
 }
 
-function writeOutlineCache(data: OutlineChapter[]) {
-  memoryOutline = { at: Date.now(), data };
+function writeOutlineCache(courseId: string, data: OutlineChapter[]) {
+  const key = outlineCacheKey(courseId);
+  const entry = { at: Date.now(), data };
+  memoryOutlines.set(key, entry);
   if (typeof window === "undefined") return;
   try {
-    sessionStorage.setItem(OUTLINE_STORAGE_KEY, JSON.stringify(memoryOutline));
+    sessionStorage.setItem(outlineStorageKey(key), JSON.stringify(entry));
   } catch {
     // Ignore quota errors; in-memory cache still covers this tab session.
   }
 }
 
-export function invalidateCourseOutline() {
-  memoryOutline = null;
-  if (typeof window === "undefined") return;
+export function invalidateCourseOutline(courseId?: string) {
+  if (typeof window === "undefined") {
+    if (courseId) memoryOutlines.delete(outlineCacheKey(courseId));
+    else memoryOutlines.clear();
+    return;
+  }
+  if (!courseId) {
+    memoryOutlines.clear();
+    try {
+      sessionStorage.removeItem(OUTLINE_STORAGE_KEY);
+      Object.keys(sessionStorage)
+        .filter((key) => key.startsWith("lms-outline-v1:"))
+        .forEach((key) => sessionStorage.removeItem(key));
+    } catch {
+      /* ignore */
+    }
+    return;
+  }
+  const key = outlineCacheKey(courseId);
+  memoryOutlines.delete(key);
   try {
-    sessionStorage.removeItem(OUTLINE_STORAGE_KEY);
+    sessionStorage.removeItem(outlineStorageKey(key));
   } catch {
     /* ignore */
   }
@@ -475,15 +506,61 @@ function outlineClient() {
   return getSupabase();
 }
 
-async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
+type ChapterMeta = { id: string; title: string; summary?: string | null; position?: number; course_id?: string | null };
+
+async function loadScopedChapters(
+  client: NonNullable<ReturnType<typeof outlineClient>>,
+  courseId: string
+) {
+  const withCourse = await client
+    .from("chapters")
+    .select("id, title, summary, position, course_id")
+    .order("position", { ascending: true });
+  if (!withCourse.error) {
+    return scopeChapterRows((withCourse.data || []) as ChapterMeta[], courseId, true);
+  }
+  const fallback = await client.from("chapters").select("id, title, summary, position").order("position", { ascending: true });
+  return scopeChapterRows((fallback.data || []) as ChapterMeta[], courseId, false);
+}
+
+async function finishLoadedOutline(
+  client: NonNullable<ReturnType<typeof outlineClient>>,
+  courseId: string,
+  grouped: Map<string, OutlineLesson[]>,
+  scoped: { rows: ChapterMeta[]; includeOrphans: boolean }
+): Promise<OutlineChapter[]> {
+  const chapterMeta = new Map(scoped.rows.map((row) => [row.id, row]));
+  const ids = scoped.rows.map((row) => row.id);
+  const extra = scoped.includeOrphans ? [...grouped.keys()].filter((id) => !ids.includes(id)) : [];
+  const allowEmpty = courseId !== DEFAULT_LMS_COURSE_ID;
+  const chapters: OutlineChapter[] = [...ids, ...extra]
+    .filter((id) => allowEmpty || grouped.has(id))
+    .map((id) => {
+      const lessons = grouped.get(id) || [];
+      const live = chapterMeta.get(id);
+      const seed = courseId === DEFAULT_LMS_COURSE_ID ? SEED.chapters.find((chapter) => chapter.id === id) : undefined;
+      return {
+        id,
+        title: live?.title || seed?.title || id,
+        summary: live?.summary || seed?.summary || undefined,
+        lessons,
+      };
+    });
+  if (courseId !== DEFAULT_LMS_COURSE_ID) {
+    return withAssignmentFlags(chapters);
+  }
+  return withTask2ReadingGates(
+    client,
+    await withAssignmentFlags(withSubmissionPrereqs(withoutRetiredChapters(chapters)))
+  );
+}
+
+async function loadCourseOutlineUncached(courseId: string): Promise<OutlineChapter[]> {
   const client = outlineClient();
   if (client) {
+    const scoped = await loadScopedChapters(client, courseId);
     const catalog = await client.rpc("list_lesson_catalog");
     if (!catalog.error && Array.isArray(catalog.data) && catalog.data.length) {
-      const { data: chapterRows } = await client
-        .from("chapters")
-        .select("id, title, summary, position")
-        .order("position", { ascending: true });
       const grouped = new Map<string, OutlineLesson[]>();
       catalog.data.forEach((row) => {
         const item = row as {
@@ -508,29 +585,7 @@ async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
         list.push(outlineLessonFromRow(item));
         grouped.set(String(item.chapter_id), list);
       });
-      const chapterMeta = new Map((chapterRows || []).map((row) => [row.id, row]));
-      const ids = chapterRows?.length ? chapterRows.map((row) => row.id) : [...grouped.keys()];
-      const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
-      return withTask2ReadingGates(
-        client,
-        await withAssignmentFlags(
-          withSubmissionPrereqs(
-            withoutRetiredChapters(
-              [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
-                const lessons = grouped.get(id) || [];
-                const live = chapterMeta.get(id);
-                const seed = SEED.chapters.find((chapter) => chapter.id === id);
-                return {
-                  id,
-                  title: live?.title || seed?.title || id,
-                  summary: live?.summary || seed?.summary,
-                  lessons,
-                };
-              })
-            )
-          )
-        )
-      );
+      return finishLoadedOutline(client, courseId, grouped, scoped);
     }
     let rows: Array<{
       id: string;
@@ -591,52 +646,29 @@ async function loadCourseOutlineUncached(): Promise<OutlineChapter[]> {
       error = fallback.error;
     }
     if (!error && rows && rows.length) {
-      const { data: chapterRows } = await client
-        .from("chapters")
-        .select("id, title, summary, position")
-        .order("position", { ascending: true });
       const grouped = new Map<string, OutlineLesson[]>();
       rows.forEach((row) => {
         const list = grouped.get(row.chapter_id) || [];
         list.push(outlineLessonFromRow(row));
         grouped.set(row.chapter_id, list);
       });
-      const chapterMeta = new Map((chapterRows || []).map((row) => [row.id, row]));
-      const ids = chapterRows?.length ? chapterRows.map((row) => row.id) : [...grouped.keys()];
-      const extra = [...grouped.keys()].filter((id) => !ids.includes(id));
-      return withTask2ReadingGates(
-        client,
-        await withAssignmentFlags(
-          withSubmissionPrereqs(
-            withoutRetiredChapters(
-              [...ids, ...extra].filter((id) => grouped.has(id)).map((id) => {
-                const lessons = grouped.get(id) || [];
-                const live = chapterMeta.get(id);
-                const seed = SEED.chapters.find((chapter) => chapter.id === id);
-                return {
-                  id,
-                  title: live?.title || seed?.title || id,
-                  summary: live?.summary || seed?.summary,
-                  lessons,
-                };
-              })
-            )
-          )
-        )
-      );
+      return finishLoadedOutline(client, courseId, grouped, scoped);
     }
+    if (courseId !== DEFAULT_LMS_COURSE_ID) return scoped.rows.length ? finishLoadedOutline(client, courseId, new Map(), scoped) : [];
   }
+  if (courseId !== DEFAULT_LMS_COURSE_ID) return [];
   return outlineFromSeed();
 }
 
 /** Shared course tree for the sidebar and lesson pages. Cached in-memory (and sessionStorage in the browser). */
-export async function fetchCourseOutline(options?: { fresh?: boolean }): Promise<OutlineChapter[]> {
+export async function fetchCourseOutline(options?: { fresh?: boolean; courseId?: string }): Promise<OutlineChapter[]> {
+  const courseId = options?.courseId || DEFAULT_LMS_COURSE_ID;
   if (!options?.fresh) {
-    const cached = readOutlineCache();
+    const cached = readOutlineCache(courseId);
     if (cached) return cached;
   }
-  const data = await loadCourseOutlineUncached();
-  writeOutlineCache(data);
+  const data = await loadCourseOutlineUncached(courseId);
+  writeOutlineCache(courseId, data);
   return data;
 }
 
@@ -685,10 +717,13 @@ export async function fetchCompletedLessonIds(userId: string): Promise<string[]>
 
 /** Only allow in-app student paths through the login `next` query. */
 export function safeStudentPath(value: string | null | undefined): string {
-  if (!value || !value.startsWith("/student") || value.startsWith("//") || value.includes("://")) {
-    return "/student";
-  }
-  return value;
+  if (!value || value.startsWith("//") || value.includes("://")) return "/student";
+  if (value.startsWith("/student")) return value;
+  const nested = value.match(/^\/courses\/([a-z0-9-]+)\/learn(?:\/.*)?$/);
+  if (nested && getLmsCourse(nested[1])) return value;
+  const classHost = value.match(/^\/([a-z0-9-]+)\/learn(?:\/.*)?$/);
+  if (classHost && isLmsCourseSlug(classHost[1])) return value;
+  return "/student";
 }
 
 const LESSON_ROW_COLUMNS =
@@ -703,9 +738,12 @@ async function loadLessonRow(client: NonNullable<ReturnType<typeof getSupabase>>
 /** Prefer the lessons table; fall back to the seeded course so local still works. */
 export async function fetchStudentLesson(
   lessonId: string,
-  outline?: OutlineChapter[]
+  outline?: OutlineChapter[],
+  courseId = DEFAULT_LMS_COURSE_ID
 ): Promise<StudentLesson | null> {
-  const tree = outline ?? (await fetchCourseOutline());
+  const tree = outline ?? (await fetchCourseOutline({ courseId }));
+  const inThisCourse = tree.some((chapter) => chapter.lessons.some((lesson) => lesson.id === lessonId));
+  if (courseId !== DEFAULT_LMS_COURSE_ID && tree.length && !inThisCourse) return null;
   const client = getServiceSupabase() || getSupabase();
   if (client) {
     const { data, error } = await loadLessonRow(client, lessonId);
@@ -763,6 +801,7 @@ export async function fetchStudentLesson(
       );
     }
   }
+  if (courseId !== DEFAULT_LMS_COURSE_ID) return null;
   const seed = fromSeed(lessonId);
   if (!seed || isRetiredCourseChapter({ id: seed.chapterId, title: seed.chapterTitle })) return null;
   return applyOutlineGates(seed, tree);

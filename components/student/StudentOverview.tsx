@@ -7,10 +7,13 @@ import DataConsentCard from "@/components/student/DataConsentCard";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { usePreviewNavState } from "@/lib/preview-nav";
+import { DEFAULT_LMS_COURSE_ID } from "@/lib/lms-catalog";
+import { useLmsCourse } from "@/lib/lms-course-context";
 import { useStudentSession } from "@/lib/student-session";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 export default function StudentOverview() {
+  const { course } = useLmsCourse();
   const { completed, submissions, surveyReviews } = useStudentSession();
   const outline = useVisibleCourseOutline();
   const { basePath } = useCoursePreview();
@@ -33,7 +36,7 @@ export default function StudentOverview() {
           : "Expand any section to preview upcoming titles. Locked lessons stay closed until you finish the work before them."}
       </p>
 
-      {bypassLocks ? null : <PurchaseCta compact />}
+      {bypassLocks || course.id !== DEFAULT_LMS_COURSE_ID ? null : <PurchaseCta compact />}
 
       {resume?.lesson && resume.chapter ? (
         <section className="resume-banner">

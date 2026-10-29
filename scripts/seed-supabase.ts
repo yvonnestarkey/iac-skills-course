@@ -1,21 +1,35 @@
 /**
- * Load iac-skills-course.json into Supabase chapters + lessons.
+ * Load a Thinkific export JSON into Supabase chapters + lessons.
  *
- * Run the chapters SQL once first:
- *   supabase/chapters.sql  (paste into the Supabase SQL editor)
+ * Run supabase/chapters.sql (and supabase/multi-course.sql for other courses) first.
  *
- * Then:
+ * IAC Skills (default):
  *   npx tsx scripts/seed-supabase.ts
+ *
+ * Another course:
+ *   npx tsx scripts/seed-supabase.ts --course=cta-skills --file=cta-skills-course.json
  */
 
 import { readFileSync, existsSync } from "node:fs";
 import path from "node:path";
 import { createClient } from "@supabase/supabase-js";
+import { DEFAULT_LMS_COURSE_ID, getLmsCourse } from "../lib/lms-catalog";
 import { defaultMinutesForType } from "../lib/lesson-duration";
 import { parseLessonVideos } from "../lib/lesson-videos";
 
 const ROOT = process.cwd();
-const JSON_FILE = path.join(ROOT, "iac-skills-course.json");
+
+function argValue(flag: string): string | undefined {
+  const prefix = `${flag}=`;
+  const hit = process.argv.slice(2).find((arg) => arg.startsWith(prefix));
+  return hit ? hit.slice(prefix.length).trim() : undefined;
+}
+
+function namespacedId(courseId: string, id: string): string {
+  if (courseId === DEFAULT_LMS_COURSE_ID) return id;
+  if (id.startsWith(`${courseId}-`)) return id;
+  return `${courseId}-${id}`.slice(0, 80);
+}
 const ALLOWED_TYPES = new Set(["video", "reading", "assignment", "upload", "download", "ask", "survey"]);
 
 interface ScrapedLesson {
@@ -71,21 +85,29 @@ async function main() {
   if (!url || !key) {
     throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local");
   }
-  if (!existsSync(JSON_FILE)) {
-    throw new Error(`Missing ${JSON_FILE}. Run the Thinkific scrape first.`);
+  const courseId = getLmsCourse(argValue("--course") || DEFAULT_LMS_COURSE_ID)?.id || DEFAULT_LMS_COURSE_ID;
+  const jsonFile = path.resolve(ROOT, argValue("--file") || `${courseId}-course.json`);
+  if (!existsSync(jsonFile) && courseId === DEFAULT_LMS_COURSE_ID && existsSync(path.join(ROOT, "iac-skills-course.json"))) {
+    // existing default filename
+  }
+  const jsonPath =
+    existsSync(jsonFile) ? jsonFile : courseId === DEFAULT_LMS_COURSE_ID ? path.join(ROOT, "iac-skills-course.json") : jsonFile;
+  if (!existsSync(jsonPath)) {
+    throw new Error(`Missing ${jsonPath}. Scrape Thinkific with --out=${path.basename(jsonPath)} first.`);
   }
 
-  const course = JSON.parse(readFileSync(JSON_FILE, "utf8")) as CourseFile;
+  const course = JSON.parse(readFileSync(jsonPath, "utf8")) as CourseFile;
   const chapters = course.chapters || [];
-  if (!chapters.length) throw new Error("iac-skills-course.json has no chapters.");
+  if (!chapters.length) throw new Error(`${path.basename(jsonPath)} has no chapters.`);
 
   const client = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
 
   const chapterRows = chapters.map((chapter, position) => ({
-    id: chapter.id,
+    id: namespacedId(courseId, chapter.id),
     title: chapter.title,
     summary: chapter.summary || "",
     position,
+    course_id: courseId,
   }));
 
   const lessonRows = chapters.flatMap((chapter) =>
@@ -95,8 +117,8 @@ async function main() {
       const videoUrls = uniqueVideos(lesson.videoUrls);
       const durationMinutes = defaultMinutesForType(type);
       return {
-        id: lesson.id,
-        chapter_id: chapter.id,
+        id: namespacedId(courseId, lesson.id),
+        chapter_id: namespacedId(courseId, chapter.id),
         position,
         type,
         title: lesson.title,
@@ -121,9 +143,16 @@ async function main() {
 
   const chapterResult = await client.from("chapters").upsert(chapterRows, { onConflict: "id" });
   if (chapterResult.error) {
-    throw new Error(
-      `chapters: ${chapterResult.error.message}. Run supabase/chapters.sql in the Supabase SQL editor first.`
-    );
+    const withoutCourse = chapterRows.map(({ course_id: _courseId, ...row }) => row);
+    const retryChapters = await client.from("chapters").upsert(withoutCourse, { onConflict: "id" });
+    if (retryChapters.error) {
+      throw new Error(
+        `chapters: ${chapterResult.error.message}. Run supabase/chapters.sql and supabase/multi-course.sql in the Supabase SQL editor first.`
+      );
+    }
+    if (courseId !== DEFAULT_LMS_COURSE_ID) {
+      console.log("Chapters saved without course_id. Run supabase/multi-course.sql before importing other courses.");
+    }
   }
 
   const lessonResult = await client.from("lessons").upsert(lessonRows, { onConflict: "id" });

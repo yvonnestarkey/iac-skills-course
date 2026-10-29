@@ -108,7 +108,7 @@ test("study planner reloads the live course outline so duration_minutes changes 
   const fetch = readFileSync(resolve("lib/student-lesson.ts"), "utf8");
   const minutes = readFileSync(resolve("lib/lesson-duration.ts"), "utf8");
   assert.match(planner, /reloadOutline/);
-  assert.match(session, /fetchCourseOutline\(\{ fresh: true \}\)/);
+  assert.match(session, /fetchCourseOutline\(\{ fresh: true, courseId \}\)/);
   assert.match(feed, /fetchCourseOutline\(\{ fresh: true \}\)/);
   assert.match(fetch, /options\?\.fresh/);
   assert.match(minutes, /const stored = asPositive\(lesson.duration_minutes\)/);

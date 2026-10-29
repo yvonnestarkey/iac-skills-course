@@ -10,7 +10,7 @@ export const COURSE_PREVIEW_BASE = "/coach/preview";
 
 export interface CoursePreviewValue {
   unlocked: boolean;
-  basePath: "/student" | "/learn" | "/coach/preview";
+  basePath: string;
 }
 
 const CoursePreviewContext = createContext<CoursePreviewValue>({
@@ -28,6 +28,11 @@ export function CoursePreviewProvider({
   return (
     <CoursePreviewContext.Provider value={{ unlocked: true, basePath }}>{children}</CoursePreviewContext.Provider>
   );
+}
+
+/** Set the classroom URL prefix without unlocking lesson gates (used on class. course shells). */
+export function CourseBasePathProvider({ basePath, children }: { basePath: string; children: ReactNode }) {
+  return <CoursePreviewContext.Provider value={{ unlocked: false, basePath }}>{children}</CoursePreviewContext.Provider>;
 }
 
 export function useCoursePreview(): CoursePreviewValue {

@@ -11,6 +11,7 @@ import { displayLessonType } from "./lesson-type";
 import { getLessonPdfUrl } from "./getLessonPdf";
 import { protectLessonResourceFields } from "./lesson-assets";
 import { canViewDraftLessons, isDraftLesson, publishedOutline } from "./lesson-drafts";
+import { DEFAULT_LMS_COURSE_ID } from "./lms-catalog";
 import { fetchCourseOutline, fetchStudentLesson, type StudentLesson } from "./student-lesson";
 import { isVarianceBakeryLesson } from "./variance-bakery";
 import type { SubmissionStatus } from "./student-submissions";
@@ -38,14 +39,18 @@ const loadCachedOutline = cache(
  */
 export const getLessonData = cache(async (
   lessonId: string,
-  options?: { studentId?: string | null; overrideLocks?: boolean; skipProgression?: boolean }
+  options?: { studentId?: string | null; overrideLocks?: boolean; skipProgression?: boolean; courseId?: string }
 ): Promise<LessonData> => {
-  const [user, outline] = await Promise.all([getRequestUser(), loadCachedOutline()]);
+  const courseId = options?.courseId || DEFAULT_LMS_COURSE_ID;
+  const [user, outline] = await Promise.all([
+    getRequestUser(),
+    courseId === DEFAULT_LMS_COURSE_ID ? loadCachedOutline() : fetchCourseOutline({ courseId }),
+  ]);
   const staffView = await getStaffCourseView();
   const staffOverride = staffOverrideApplies(user, staffView) || Boolean(options?.overrideLocks && user && staffOverrideApplies(user, "override"));
   const includeDrafts = canViewDraftLessons(user, staffView, Boolean(options?.overrideLocks));
   const visibleOutline = includeDrafts ? outline : publishedOutline(outline);
-  const lesson = await fetchStudentLesson(lessonId, visibleOutline);
+  const lesson = await fetchStudentLesson(lessonId, visibleOutline, courseId);
   if (!lesson || (isDraftLesson(lesson) && !includeDrafts)) {
     return {
       lesson: null,
@@ -56,10 +61,13 @@ export const getLessonData = cache(async (
       access: { isLocked: false },
     };
   }
-  const content = await resolveLessonContentAccess(user, lessonId, {
-    overrideLocks: staffOverride,
-    staffView,
-  });
+  const content =
+    courseId === DEFAULT_LMS_COURSE_ID
+      ? await resolveLessonContentAccess(user, lessonId, {
+          overrideLocks: staffOverride,
+          staffView,
+        })
+      : { canReadBody: true, preview: false, keepStoredTeachingUrls: true };
   const skipProgression = staffOverride || Boolean(options?.skipProgression);
   const pedagogical =
     user && !skipProgression

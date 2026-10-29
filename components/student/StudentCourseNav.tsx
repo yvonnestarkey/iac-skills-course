@@ -7,11 +7,14 @@ import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import { usePreviewNavState } from "@/lib/preview-nav";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentNav } from "@/lib/student-nav";
+import { DEFAULT_LMS_COURSE_ID } from "@/lib/lms-catalog";
+import { useLmsCourse } from "@/lib/lms-course-context";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator", "dashboard", "account", "bmcr", "volume-accuracy", "buried-treasure", "reading", "study-clinic"]);
 
 export default function StudentCourseNav() {
+  const { course, classroomPath } = useLmsCourse();
   const { completed, submissions, surveyReviews } = useStudentSession();
   const outline = useVisibleCourseOutline();
   const { unlocked, basePath } = useCoursePreview();
@@ -23,7 +26,9 @@ export default function StudentCourseNav() {
   const chapters = outline || [];
   const segment = pathname.startsWith(prefix) ? pathname.slice(prefix.length).split("/")[0] : null;
   const activeLessonId = segment && !RESERVED.has(segment) ? segment : null;
-  const onDashboard = pathname === basePath || pathname === "/student/dashboard";
+  const iac = course.id === DEFAULT_LMS_COURSE_ID;
+  const dashHref = unlocked ? basePath : iac ? "/student/dashboard" : classroomPath || basePath;
+  const onDashboard = pathname === basePath || pathname === dashHref || pathname === "/student/dashboard";
   const onStudyClinic = pathname.startsWith("/student/study-clinic");
   const onOverview = pathname === `${basePath}/overview`;
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
@@ -36,18 +41,20 @@ export default function StudentCourseNav() {
     <>
       <div className="course-head">
         <nav className="student-nav-buttons" aria-label="Student pages">
-          <Link href={unlocked ? basePath : "/student/dashboard"} className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
+          <Link href={dashHref} className={`dash-link ${onDashboard ? "active" : ""}`} onClick={close}>
             Student Dashboard
           </Link>
-          <Link href="/student/study-clinic" className={`dash-link ${onStudyClinic ? "active" : ""}`} onClick={close}>
-            Study Clinic
-          </Link>
+          {iac ? (
+            <Link href="/student/study-clinic" className={`dash-link ${onStudyClinic ? "active" : ""}`} onClick={close}>
+              Study Clinic
+            </Link>
+          ) : null}
           <Link href={`${basePath}/overview`} className={`dash-link ${onOverview ? "active" : ""}`} onClick={close}>
             Course Overview
           </Link>
         </nav>
         <h2>Course modules</h2>
-        <p className="muted">IAC Skills Course</p>
+        <p className="muted">{course.shortTitle}</p>
         <div className="bar">
           <span style={{ width: `${pct}%` }} />
         </div>

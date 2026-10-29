@@ -11,6 +11,8 @@ import AskQuestionDrawer from "@/components/student/AskQuestionDrawer";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import StudentNotifyMenu from "@/components/student/StudentNotifyMenu";
 import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
+import { DEFAULT_LMS_COURSE_ID } from "@/lib/lms-catalog";
+import { useLmsCourse } from "@/lib/lms-course-context";
 import { isCoachAccount } from "@/lib/roles";
 import { goToStudentLogin, safeStudentPath } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
@@ -18,10 +20,11 @@ import { useStudentInbox, StudentInboxProvider } from "@/lib/use-student-inbox";
 import { StudentNavProvider, useStudentNav } from "@/lib/student-nav";
 
 function LoadingFrame({ label }: { label: string }) {
+  const { course, classroomPath } = useLmsCourse();
   return (
     <div className="student-player">
       <header className="student-player-bar">
-        <BrandMark />
+        <BrandMark href={classroomPath} title={course.shortTitle} />
       </header>
       <p className="student-loading">{label}</p>
     </div>
@@ -37,6 +40,7 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
 }
 
 function AuthenticatedChrome({ children }: { children: ReactNode }) {
+  const { course, classroomPath } = useLmsCourse();
   const { user, signOut } = useStudentSession();
   const { inboxWaiting, unreadCount, markAllRead } = useStudentInbox();
   const nav = useStudentNav();
@@ -50,11 +54,11 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
   }, [pathname, closeNav]);
 
   useEffect(() => {
-    if (!ASK_QUESTION_ENABLED) return;
+    if (!ASK_QUESTION_ENABLED || course.id !== DEFAULT_LMS_COURSE_ID) return;
     const openAsk = () => setAskOpen(true);
     window.addEventListener("open-ask-question", openAsk);
     return () => window.removeEventListener("open-ask-question", openAsk);
-  }, []);
+  }, [course.id]);
 
   useEffect(() => {
     if (!pathname.startsWith("/student/inbox")) return;
@@ -68,6 +72,8 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
     };
   }, [pathname, markAllRead, router, inboxWaiting, unreadCount]);
 
+  const showAsk = ASK_QUESTION_ENABLED && course.id === DEFAULT_LMS_COURSE_ID;
+
   const leave = async () => {
     await signOut();
     goToStudentLogin();
@@ -77,9 +83,9 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
     <div className="student-player">
       {isCoachAccount(user) ? <CoachToolsBar /> : null}
       <header className="topbar">
-        <BrandMark />
+        <BrandMark href={classroomPath} title={course.shortTitle} />
         <div className="topbar-right flex items-center gap-2 flex-wrap">
-          {ASK_QUESTION_ENABLED ? (
+          {showAsk ? (
             <button
               className={`notify-btn ${askOpen ? "on" : ""}`}
               type="button"
@@ -138,7 +144,7 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
         </aside>
         <main className="main">{children}</main>
       </div>
-      {ASK_QUESTION_ENABLED ? <AskQuestionDrawer isOpen={askOpen} onClose={() => setAskOpen(false)} /> : null}
+      {showAsk ? <AskQuestionDrawer isOpen={askOpen} onClose={() => setAskOpen(false)} /> : null}
     </div>
   );
 }

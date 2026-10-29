@@ -7,6 +7,7 @@ import { lessonIsAssignment } from "./lesson-type";
 import { firstLessonVideoUrl } from "./lesson-videos";
 import { getSupabase } from "./supabase";
 import { asDraftFlag, LESSON_DRAFTS_SQL_HINT } from "./lesson-drafts";
+import { DEFAULT_LMS_COURSE_ID, scopeChapterRows } from "./lms-catalog";
 import type { Chapter, CourseData, FlatLesson, Lesson, LessonType } from "./types";
 
 export const LESSON_TYPES: LessonType[] = ["video", "reading", "assignment", "upload", "download", "ask", "survey"];
@@ -573,7 +574,20 @@ function duplicateId(originalId: string, taken: Set<string>): string {
 export async function fetchManagedCourse(): Promise<DbResult<ManagedChapter[]>> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured.", data: [] };
-  const chapters = await client.from("chapters").select("id, title, position").order("position", { ascending: true });
+  const withCourse = await client
+    .from("chapters")
+    .select("id, title, position, course_id")
+    .order("position", { ascending: true });
+  const chapters = withCourse.error
+    ? await client.from("chapters").select("id, title, position").order("position", { ascending: true })
+    : {
+        ...withCourse,
+        data: scopeChapterRows(
+          (withCourse.data || []) as Array<{ id: string; title: string; position: number; course_id?: string | null }>,
+          DEFAULT_LMS_COURSE_ID,
+          true
+        ).rows,
+      };
   const pageSize = 1000;
   const lessonRows: Record<string, unknown>[] = [];
   for (let from = 0; from < 20000; from += pageSize) {

@@ -8241,3 +8241,35 @@ a.planner-video-btn:visited:hover {
   margin: 8px 0 0;
   color: var(--muted, #555);
 }
+
+/* Multi-course catalog (class. home, or /courses on iac. until DNS cutover) */
+.catalog-page .catalog-hero {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 36px 22px 12px;
+}
+
+.catalog-page .catalog-hero h1 {
+  font-size: clamp(30px, 4.2vw, 46px);
+  margin-bottom: 14px;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px 22px 56px;
+}
+
+.catalog-card h2 {
+  margin-bottom: 8px;
+}
+
+.catalog-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}

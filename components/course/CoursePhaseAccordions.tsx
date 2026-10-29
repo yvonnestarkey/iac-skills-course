@@ -128,7 +128,7 @@ export default function CoursePhaseAccordions({
   chapters: OutlineChapter[];
   completed: Record<string, boolean>;
   activeLessonId?: string | null;
-  basePath: "/student" | "/learn" | "/coach/preview";
+  basePath: string;
   onNavigate?: () => void;
   variant?: "nav" | "hub";
   submissions?: Record<string, StudentSubmission | undefined>;

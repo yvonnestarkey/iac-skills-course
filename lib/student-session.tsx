@@ -50,7 +50,7 @@ interface StudentSessionValue {
 
 const StudentSessionContext = createContext<StudentSessionValue | null>(null);
 
-export function StudentSessionProvider({ children }: { children: ReactNode }) {
+export function StudentSessionProvider({ children, courseId }: { children: ReactNode; courseId?: string }) {
   const [ready, setReady] = useState(false);
   const [user, setUser] = useState<StudentUser | null>(null);
   const [outline, setOutline] = useState<OutlineChapter[]>([]);
@@ -118,7 +118,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
 
     const start = async () => {
-      const [nextUser, nextOutline] = await Promise.all([getStudentUser(), fetchCourseOutline()]);
+      const [nextUser, nextOutline] = await Promise.all([getStudentUser(), fetchCourseOutline({ courseId })]);
       if (cancelled) return;
       setUser(nextUser);
       setOutline(isCoachAccount(nextUser) ? nextOutline : publishedOutline(nextOutline));
@@ -189,7 +189,7 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
       cancelled = true;
       subscription?.data.subscription.unsubscribe();
     };
-  }, [loadCommerce, loadProgress]);
+  }, [courseId, loadCommerce, loadProgress]);
 
   const setLessonCompleted = useCallback((lessonId: string, done: boolean) => {
     setCompleted((current) => ({ ...current, [lessonId]: done }));
@@ -204,10 +204,10 @@ export function StudentSessionProvider({ children }: { children: ReactNode }) {
   }, [loadProgress, user]);
 
   const reloadOutline = useCallback(async () => {
-    invalidateCourseOutline();
-    const next = await fetchCourseOutline({ fresh: true });
+    invalidateCourseOutline(courseId);
+    const next = await fetchCourseOutline({ fresh: true, courseId });
     setOutline(isCoachAccount(user) ? next : publishedOutline(next));
-  }, [user]);
+  }, [courseId, user]);
 
   const signOut = useCallback(async () => {
     await signOutStudent();

@@ -53,6 +53,14 @@ test("enrolment offer shows the live prices and sends new visitors to register",
   assert.match(registration, /SALES_VIDEO[\s\S]*EnrolmentOffer/);
 });
 
+test("IAC sales landing stays the iac. home page and does not become the course catalog", () => {
+  const home = readFileSync(resolve("app/page.tsx"), "utf8");
+  assert.match(home, /SalesLanding/);
+  assert.doesNotMatch(home, /CourseCatalog/);
+  const sales = readFileSync(resolve("components/sales/SalesLanding.tsx"), "utf8");
+  assert.doesNotMatch(sales, /href="\/courses"/);
+});
+
 test("landing course features include the script report and interactive practice clip", () => {
   const script = COURSE_FEATURES.find((feature) => feature.title === "Script Evaluation Report");
   assert.ok(script);

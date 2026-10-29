@@ -24,6 +24,10 @@ export default function CoachHomePage() {
             <strong>Student course</strong>
             <span className="muted">The live student dashboard, lessons, live sessions, and Script Evaluator</span>
           </button>
+          <button onClick={() => router.push("/courses")}>
+            <strong>All courses</strong>
+            <span className="muted">Catalog for IAC Skills plus import-ready classrooms. On class.accountingstudyadvice.com this is the home page.</span>
+          </button>
           <button onClick={() => router.push("/coach/referrals")}>
             <strong>Referrals</strong>
             <span className="muted">Successful student and professional colleague referrals, including payout records</span>
