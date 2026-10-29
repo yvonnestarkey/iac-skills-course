@@ -2615,6 +2615,138 @@ input[type="tel"]:focus {
   }
 }
 
+.coach-page.submission-review {
+  max-width: 920px;
+}
+
+.submission-review-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.feedback-review-card {
+  min-width: 0;
+}
+
+.canned-responses {
+  margin: 12px 0 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #f7f8f7;
+}
+
+.canned-responses-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+.canned-field {
+  display: grid;
+  gap: 4px;
+  min-width: 160px;
+}
+
+.canned-field span,
+.canned-save summary {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.canned-field-wide {
+  flex: 1 1 260px;
+}
+
+.canned-actions {
+  margin-top: 0;
+}
+
+.canned-save {
+  margin-top: 14px;
+}
+
+.canned-save summary {
+  cursor: pointer;
+}
+
+.canned-custom-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.canned-custom-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.feedback-document {
+  margin: 8px 0 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(63, 98, 92, 0.08);
+  overflow: hidden;
+}
+
+.feedback-document-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  background: #f4f7f6;
+}
+
+.feedback-document-toolbar .ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+}
+
+.feedback-document-toolbar .emoji-picker,
+.feedback-document-toolbar .link-insert {
+  position: relative;
+  right: auto;
+  bottom: auto;
+}
+
+.feedback-document-page {
+  display: block;
+  width: 100%;
+  min-height: min(68vh, 820px);
+  padding: 28px 36px 48px;
+  border: 0;
+  resize: vertical;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.feedback-document-page:focus {
+  outline: none;
+}
+
+.feedback-review-save {
+  position: sticky;
+  bottom: 0;
+  margin-top: 16px;
+  padding-top: 12px;
+  background: #fff;
+}
+
 .kicker .assignment-flag,
 .duration-badge.assignment-flag {
   background: var(--dark);

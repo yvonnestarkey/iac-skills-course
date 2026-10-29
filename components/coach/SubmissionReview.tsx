@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import CannedResponsePicker from "@/components/coach/CannedResponsePicker";
+import FeedbackDocument from "@/components/coach/FeedbackDocument";
 import BmcrCalculator from "@/components/lesson/BmcrCalculator";
-import ComposerBox from "@/components/ui/ComposerBox";
 import LinkedText from "@/components/ui/LinkedText";
 import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
 import {
@@ -242,7 +243,7 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
       ) : null}
       {error ? <div className="notice">{error}</div> : null}
 
-      <div className="submission-review-grid">
+      <div className="submission-review-stack">
         <section className="card survey-rich-text">
           <h2>Student submission</h2>
           <div className="work-list">
@@ -302,12 +303,12 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
           </div>
         </section>
 
-        <section className="card">
+        <section className="card feedback-review-card">
           <h2>Feedback & grading</h2>
           <p className="muted small">
             {survey?.requiresGrade
               ? "This form requires a numeric score as well as a status."
-              : "Previous comments stay in the log. Add a new note if you need to follow up, without rewriting what you already sent."}
+              : "Previous comments stay in the log. Start from a canned response, edit it on the page, and send. Follow-up notes are added without rewriting what you already sent."}
           </p>
           {parseFeedbackLog(lesson?.feedback || response?.feedback).length ? (
             <div className="logged-feedback">
@@ -315,6 +316,24 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
               <FeedbackLog raw={lesson?.feedback || response?.feedback} />
             </div>
           ) : null}
+          <CannedResponsePicker
+            lessonTitle={title}
+            value={feedback}
+            onChange={setFeedback}
+          />
+          <label className="student-notes-label" htmlFor="submission-feedback">
+            {parseFeedbackLog(lesson?.feedback || response?.feedback).length ? "Add notes" : "Feedback"}
+          </label>
+          <FeedbackDocument
+            id="submission-feedback"
+            value={feedback}
+            onChange={setFeedback}
+            placeholder={
+              parseFeedbackLog(lesson?.feedback || response?.feedback).length
+                ? "Add a follow-up note, or pick a canned response above. This is saved as a new log entry; earlier comments stay as they are."
+                : "Pick a canned response above, or write here. Bold, lists, links and emoji work the same way the student will see them."
+            }
+          />
           <p className="student-notes-label">Status</p>
           {outcomeOpen ? (
             <div className="filters">
@@ -363,20 +382,6 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
               </div>
             )
           ) : null}
-          <label className="student-notes-label" htmlFor="submission-feedback">
-            {parseFeedbackLog(lesson?.feedback || response?.feedback).length ? "Add notes" : "Feedback"}
-          </label>
-          <ComposerBox
-            id="submission-feedback"
-            rows={8}
-            value={feedback}
-            onChange={setFeedback}
-            placeholder={
-              parseFeedbackLog(lesson?.feedback || response?.feedback).length
-                ? "Add a follow-up note. This is saved as a new log entry; earlier comments stay as they are."
-                : "Write feedback. URLs and [text](https://…) links become clickable, and you can add emoji."
-            }
-          />
           <label className="student-notes-label" htmlFor="submission-feedback-file">
             File attachment
           </label>
@@ -415,7 +420,7 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
               {response?.gradedByName ? ` by ${response.gradedByName}` : ""}.
             </p>
           ) : null}
-          <div className="actions">
+          <div className="actions feedback-review-save">
             <button className="primary" type="button" disabled={busy || uploading} onClick={() => void save()}>
               {busy ? "Saving…" : "Save review"}
             </button>
