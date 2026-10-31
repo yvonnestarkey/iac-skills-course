@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { parseTextMarks, wrapSelectedText } from "./rich-text";
+import { isInternalCourseHref, parseTextMarks, resolveCourseHref, wrapSelectedText } from "./rich-text";
 import { readingHeroDuration as heroDuration } from "./lesson-duration";
 import { firstLessonWebLink } from "./getLessonPdf";
 
@@ -30,6 +30,25 @@ test("reading hero hides a bare number duration", () => {
   assert.equal(heroDuration("2"), null);
   assert.equal(heroDuration("2 min read"), "2 min read");
   assert.equal(heroDuration(""), null);
+});
+
+test("WordPress and other site links keep the host the author pasted", () => {
+  assert.equal(
+    resolveCourseHref("https://accountingstudyadvice.com/student-testimonials/"),
+    "https://accountingstudyadvice.com/student-testimonials/"
+  );
+  assert.equal(
+    resolveCourseHref("https://www.accountingstudyadvice.com/student-testimonials/"),
+    "https://www.accountingstudyadvice.com/student-testimonials/"
+  );
+  assert.equal(
+    resolveCourseHref("https://class.accountingstudyadvice.com/auditrisk"),
+    "https://class.accountingstudyadvice.com/auditrisk"
+  );
+  assert.equal(isInternalCourseHref("https://accountingstudyadvice.com/student-testimonials/"), false);
+  assert.equal(resolveCourseHref("https://iac.accountingstudyadvice.com/student/overview"), "https://iac.accountingstudyadvice.com/student/overview");
+  assert.equal(resolveCourseHref("/lessons/ch3-l1"), "/student/ch3-l1");
+  assert.equal(isInternalCourseHref("/student/overview"), true);
 });
 
 test("firstLessonWebLink skips PDFs and returns the first page link", () => {

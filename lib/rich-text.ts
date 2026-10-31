@@ -1,11 +1,14 @@
+import { IAC_LMS_HOST, isIacLmsHost, isLocalDevHost } from "./lms-hosts";
+
+/** IAC classroom only. The WordPress homepage (apex) and class. are different sites. */
 const INTERNAL_HOSTS = new Set([
-  "iac.accountingstudyadvice.com",
-  "www.iac.accountingstudyadvice.com",
-  "accountingstudyadvice.com",
-  "www.accountingstudyadvice.com",
+  IAC_LMS_HOST,
+  `www.${IAC_LMS_HOST}`,
   "localhost",
   "127.0.0.1",
 ]);
+
+const COURSE_PATH = /^(?:\/lessons|\/learn|\/student|\/coach|\/surveys|\/events|\/planner|\/coaching)\b/;
 
 export function safeHref(raw: string | null | undefined): string | null {
   const href = String(raw || "").trim();
@@ -37,18 +40,18 @@ export function isInternalCourseHref(raw: string | null | undefined): boolean {
   const href = safeHref(raw);
   if (!href) return false;
   const { host, path } = partsFromHref(href);
-  if (host && !INTERNAL_HOSTS.has(host)) return false;
-  if (host && INTERNAL_HOSTS.has(host)) return true;
-  return /^(?:\/lessons|\/learn|\/student|\/coach|\/surveys|\/events|\/planner|\/coaching)\b/.test(path);
+  if (host && !INTERNAL_HOSTS.has(host) && !isIacLmsHost(host) && !isLocalDevHost(host)) return false;
+  return COURSE_PATH.test(path);
 }
 
 export function resolveCourseHref(raw: string | null | undefined): string | null {
   const href = safeHref(raw);
   if (!href) return null;
   const { host, path } = partsFromHref(href);
-  if (isInternalCourseHref(href)) return rewriteCoursePath(path || "/");
-  if (host && INTERNAL_HOSTS.has(host)) return rewriteCoursePath(path || "/");
-  return href;
+  // Keep the host the author pasted. WordPress, Thinkific, class., and other
+  // sites must not be rewritten onto iac.
+  if (host) return href;
+  return rewriteCoursePath(path || "/");
 }
 
 export function linkDisplayLabel(raw: string, explicit?: string): string {
