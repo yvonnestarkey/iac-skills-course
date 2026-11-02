@@ -123,7 +123,7 @@ export function cohortName(data: CourseData, id: string): string {
   return c ? c.name : displayCohortName(id);
 }
 
-export function lastActiveLabel(student: Student): string {
+export function lastActiveLabel(student: { lastActive?: string }): string {
   const days = daysAgo(student.lastActive);
   if (days === null) return "unknown";
   if (days <= 0) return "today";

@@ -427,6 +427,51 @@ export function matchRosterRules(
   return logic === "or" ? matches.some(Boolean) : matches.every(Boolean);
 }
 
+/** Same search, inactive hiding, and filter rules the student roster uses. */
+export function matchesRosterStudent(
+  student: Parameters<typeof rosterRuleValue>[0],
+  input: { search: string; rules: RosterFilterRule[]; logic: RosterFilterLogic }
+): boolean {
+  const query = input.search.trim().toLowerCase();
+  if (query) {
+    const haystack = [student.name, student.email, student.phone || ""].join(" ").toLowerCase();
+    if (!haystack.includes(query)) return false;
+  } else if (student.accessActive === false) {
+    const asksClosed = input.rules.some(
+      (rule) => rule.field === "courseAccess" && (rule.values || []).includes("deregistered")
+    );
+    if (!asksClosed) return false;
+  }
+  return matchRosterRules(student, input.rules, input.logic);
+}
+
+export function buildRosterFilterOptions(input: {
+  students: Array<Parameters<typeof rosterRuleValue>[0]>;
+  cohortDefaults?: RosterFilterOption[];
+  cohortLabel?: (value: string) => string;
+  courseAccessLabel?: (value: string) => string;
+}): Partial<Record<RosterFilterField, RosterFilterOption[]>> {
+  const map: Partial<Record<RosterFilterField, RosterFilterOption[]>> = {};
+  ROSTER_FILTER_FIELDS.forEach((field) => {
+    if (field.kind !== "categorical") return;
+    map[field.id] = uniqueRosterOptions(
+      input.students,
+      field.id,
+      field.id === "cohort"
+        ? input.cohortLabel
+        : field.id === "courseAccess"
+          ? input.courseAccessLabel
+          : undefined,
+      field.id === "cohort"
+        ? input.cohortDefaults
+        : field.id === "courseAccess"
+          ? [...ROSTER_COURSE_ACCESS_OPTIONS]
+          : undefined
+    ).filter((option) => Boolean(cleanRosterOptionValue(option.value)));
+  });
+  return map;
+}
+
 export function csvEscape(value: string): string {
   if (/[",\n\r]/.test(value)) return `"${value.replace(/"/g, '""')}"`;
   return value;

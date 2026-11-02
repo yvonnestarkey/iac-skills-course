@@ -8,7 +8,13 @@ import {
   describeProgressReasons,
   watchedEnough,
 } from "./lesson-progress";
-import { activityColumnsFromOutline, currentActivityPosition } from "./activity-grid";
+import {
+  activityColumnsFromOutline,
+  currentActivityPosition,
+  engagementHeat,
+  lastCourseVisitAt,
+  lastCourseVisitLabel,
+} from "./activity-grid";
 
 test("80 percent watched counts as complete", () => {
   assert.equal(watchedEnough(79), false);
@@ -93,4 +99,41 @@ test("current activity is the next incomplete lesson after the last complete one
   assert.equal(position.last?.id, "b");
   assert.equal(position.current?.id, "b");
   assert.equal(position.current?.chapterLabel, "S1");
+});
+
+test("name-cell heat is red with no work and green when lessons are complete", () => {
+  const columns = [{ id: "a" }, { id: "b" }];
+  const none = engagementHeat(columns, {});
+  assert.equal(none.score, 0);
+  assert.equal(none.complete, 0);
+  assert.match(none.background, /^hsl\(0 /);
+
+  const done = engagementHeat(columns, {
+    a: buildLessonEngagement("a", { user_id: "u1", lesson_id: "a", completed: true }),
+    b: buildLessonEngagement("b", { user_id: "u1", lesson_id: "b", completed: true }),
+  });
+  assert.equal(done.score, 1);
+  assert.equal(done.complete, 2);
+  assert.match(done.background, /^hsl\(142 /);
+
+  const mixed = engagementHeat(columns, {
+    a: buildLessonEngagement("a", { user_id: "u1", lesson_id: "a", completed: true }),
+  });
+  assert.ok(mixed.score > none.score && mixed.score < done.score);
+});
+
+test("last course visit prefers a later lesson open over profile last-active", () => {
+  assert.equal(lastCourseVisitAt("2026-10-01", {}), "2026-10-01");
+  assert.equal(
+    lastCourseVisitAt("2026-10-01", {
+      a: buildLessonEngagement("a", {
+        user_id: "u1",
+        lesson_id: "a",
+        last_opened_at: "2026-11-01T08:00:00.000Z",
+      }),
+    }),
+    "2026-11-01T08:00:00.000Z"
+  );
+  assert.equal(lastCourseVisitLabel(null).text, "unknown");
+  assert.equal(lastCourseVisitLabel("2026-11-02").text.length > 0, true);
 });

@@ -16,25 +16,21 @@ import {
 import { daysAgo, isoDate, today } from "@/lib/dates";
 import { completionProgress } from "@/lib/metrics";
 import { courseAccessLabel } from "@/lib/course-access";
-import { accountStatusLabel, isCourseAccessClosed, showInactiveOnRoster } from "@/lib/student-registration";
+import { accountStatusLabel, isCourseAccessClosed } from "@/lib/student-registration";
 import {
   DEFAULT_ROSTER_COLUMNS,
   ROSTER_COLUMNS,
-  ROSTER_COURSE_ACCESS_OPTIONS,
-  ROSTER_FILTER_FIELDS,
+  buildRosterFilterOptions,
   downloadRosterCsv,
-  matchRosterRule,
+  matchesRosterStudent,
   newRosterFilterRule,
   onboardingStatus,
   onboardingStatusLabel,
   rosterColumnLabel,
   sanitizeRosterColumns,
   cleanRosterOptionValue,
-  uniqueRosterOptions,
   type RosterColumnId,
-  type RosterFilterField,
   type RosterFilterLogic,
-  type RosterFilterOption,
   type RosterFilterRule,
   type RosterSortDir,
 } from "@/lib/roster";
@@ -242,32 +238,16 @@ export default function RosterTab({
     const cohortDefaults = COURSE_COHORTS.map((cohort) => ({ value: cohort.id, label: cohort.name })).filter(
       (option) => Boolean(cleanRosterOptionValue(option.value) && cleanRosterOptionValue(option.label))
     );
-    const map: Partial<Record<RosterFilterField, RosterFilterOption[]>> = {};
-    ROSTER_FILTER_FIELDS.forEach((field) => {
-      if (field.kind !== "categorical") return;
-      map[field.id] = uniqueRosterOptions(
-        source,
-        field.id,
-        field.id === "cohort"
-          ? (value) => cohortName(data, value)
-          : field.id === "courseAccess"
-            ? (value) =>
-                value === "deregistered"
-                  ? "Deregistered"
-                  : courseAccessLabel(value === "full" ? "full" : "free_preview")
-            : undefined,
-        field.id === "cohort"
-          ? cohortDefaults
-          : field.id === "courseAccess"
-            ? [...ROSTER_COURSE_ACCESS_OPTIONS]
-            : undefined
-      ).filter((option) => Boolean(cleanRosterOptionValue(option.value)));
+    return buildRosterFilterOptions({
+      students: source,
+      cohortDefaults,
+      cohortLabel: (value) => cohortName(data, value),
+      courseAccessLabel: (value) =>
+        value === "deregistered" ? "Deregistered" : courseAccessLabel(value === "full" ? "full" : "free_preview"),
     });
-    return map;
   }, [data, optionStudents, students]);
 
   const rows = useMemo(() => {
-    const query = search.trim().toLowerCase();
     const enriched: RosterRow[] = students.map((row) => {
       const student = { ...row, ...accessPatch[row.id] };
       const progress = completionProgress(student.completed, lessonIds);
@@ -287,26 +267,9 @@ export default function RosterTab({
       };
     });
 
-    const activeRules = rules.filter((rule) => {
-      if (rule.operator === "is_empty" || rule.operator === "is_not_empty") return true;
-      return (rule.values || []).some((value) => value.trim());
-    });
-
-    const filtered = enriched.filter((row) => {
-      const { student } = row;
-      if (query) {
-        const haystack = [student.name, student.email, student.phone || ""].join(" ").toLowerCase();
-        if (!haystack.includes(query)) return false;
-      } else if (student.accessActive === false && !showInactiveOnRoster(search)) {
-        const asksClosed = activeRules.some(
-          (rule) => rule.field === "courseAccess" && (rule.values || []).includes("deregistered")
-        );
-        if (!asksClosed) return false;
-      }
-      if (!activeRules.length) return true;
-      const matches = activeRules.map((rule) => matchRosterRule(student, rule));
-      return logic === "or" ? matches.some(Boolean) : matches.every(Boolean);
-    });
+    const filtered = enriched.filter((row) =>
+      matchesRosterStudent(row.student, { search, rules, logic })
+    );
 
     const direction = sortDir === "asc" ? 1 : -1;
     return filtered.sort((a, b) => {

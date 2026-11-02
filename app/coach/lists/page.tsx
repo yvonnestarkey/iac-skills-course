@@ -248,7 +248,13 @@ export default function StudentListsPage() {
           onOpenProfile={openProfile}
         />
       ) : coach.tab === "activity" ? (
-        <ActivityTab students={students} outline={outline} progress={progress} onOpenProfile={openProfile} />
+        <ActivityTab
+          students={students}
+          optionStudents={liveStudents}
+          outline={outline}
+          progress={progress}
+          onOpenProfile={openProfile}
+        />
       ) : coach.tab === "bmcr" ? (
         <BmcrAnalyticsTab
           students={students}

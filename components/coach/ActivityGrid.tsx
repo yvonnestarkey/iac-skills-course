@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { activityHeaderGroups, type ActivityColumn } from "@/lib/activity-grid";
+import {
+  activityHeaderGroups,
+  engagementHeat,
+  lastCourseVisitAt,
+  lastCourseVisitLabel,
+  type ActivityColumn,
+} from "@/lib/activity-grid";
 import { formatSastDateTime } from "@/lib/dates";
 import {
   EMPTY_COACH_SENT_STAT,
@@ -49,9 +55,9 @@ export default function ActivityGrid({
   const { phases, chapters } = activityHeaderGroups(columns);
   const showPhaseRow = phases.some((phase) => phase.label);
   const headerRows = showPhaseRow ? 3 : 2;
-  const chosen = selectedIds || rows.map((row) => row.student.id);
+  const chosen = selectedIds || [];
   const allSelected = rows.length > 0 && rows.every((row) => chosen.includes(row.student.id));
-  const visible = rows.filter((row) => chosen.includes(row.student.id));
+  const stickyCols = 3;
 
   if (!columns.length) {
     return <p className="empty">No published lessons to show yet.</p>;
@@ -74,6 +80,9 @@ export default function ActivityGrid({
             </th>
             <th className="activity-sticky activity-head-messages" rowSpan={headerRows}>
               Messages
+            </th>
+            <th className="activity-sticky activity-head-login" rowSpan={headerRows} title="Last time they were in the course">
+              Last login
             </th>
             {showPhaseRow
               ? phases.map((phase) => (
@@ -105,13 +114,19 @@ export default function ActivityGrid({
           </tr>
         </thead>
         <tbody>
-          {visible.length ? (
-            visible.map((row) => {
+          {rows.length ? (
+            rows.map((row) => {
               const stat = messageStats[row.student.id] || EMPTY_COACH_SENT_STAT;
               const last = stat.lastAt ? `Last sent ${formatSastDateTime(stat.lastAt)}` : "No messages sent yet";
+              const heat = engagementHeat(columns, row.byLesson);
+              const visit = lastCourseVisitLabel(lastCourseVisitAt(row.student.lastActive, row.byLesson));
               return (
               <tr key={row.student.id}>
-                <th className="activity-sticky activity-name">
+                <th
+                  className="activity-sticky activity-name is-heat"
+                  style={{ background: heat.background }}
+                  title={heat.label}
+                >
                   {selectable ? (
                     <label>
                       <input
@@ -136,6 +151,9 @@ export default function ActivityGrid({
                     {stat.count}
                   </Link>
                 </td>
+                <td className="activity-sticky activity-login" title={visit.title}>
+                  {visit.text}
+                </td>
                 {columns.map((column) => {
                   const item = row.byLesson[column.id];
                   const level = activityLevel(item);
@@ -152,8 +170,8 @@ export default function ActivityGrid({
             })
           ) : (
             <tr>
-              <td className="activity-empty" colSpan={columns.length + 2}>
-                Select one or more students to see their activity.
+              <td className="activity-empty" colSpan={columns.length + stickyCols}>
+                No students match these filters.
               </td>
             </tr>
           )}

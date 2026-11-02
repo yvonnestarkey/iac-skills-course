@@ -5,6 +5,7 @@ import {
   DEFAULT_ROSTER_COLUMNS,
   ROSTER_COLUMNS,
   matchRosterRule,
+  matchesRosterStudent,
   onboardingSurveyAnswers,
   parseRosterOnboarding,
   rosterColumnLabel,
@@ -52,6 +53,22 @@ test("roster course access distinguishes full and preview students", () => {
   );
   assert.equal(rosterRuleValue({ ...full, accessActive: false }, "courseAccess"), "deregistered");
   assert.equal(courseAccessLabel(full.courseAccess, false), "Deregistered");
+});
+
+test("activity and roster hide inactive students unless searched or filtered", () => {
+  const inactive = { ...full, accessActive: false as const };
+  const empty = { search: "", rules: [], logic: "and" as const };
+  assert.equal(matchesRosterStudent(full, empty), true);
+  assert.equal(matchesRosterStudent(inactive, empty), false);
+  assert.equal(matchesRosterStudent(inactive, { ...empty, search: "full" }), true);
+  assert.equal(
+    matchesRosterStudent(inactive, {
+      search: "",
+      logic: "and",
+      rules: [{ id: "r1", field: "courseAccess", operator: "is", values: ["deregistered"] }],
+    }),
+    true
+  );
 });
 
 test("student profile surveys include onboarding details and background", () => {

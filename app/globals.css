@@ -2187,9 +2187,9 @@ input[type="tel"]:focus {
   z-index: 4;
   text-align: left;
   min-width: 200px;
-  max-width: 240px;
+  max-width: 200px;
+  width: 200px;
   background: var(--paper);
-  box-shadow: 4px 0 8px -6px rgba(0, 0, 0, 0.25);
 }
 
 .activity-grid thead .activity-sticky {
@@ -2202,23 +2202,48 @@ input[type="tel"]:focus {
   font-weight: 600;
 }
 
+.activity-grid .activity-name.is-heat,
+.activity-grid .activity-name.is-heat .link-btn {
+  color: #1a1a1a;
+}
+
 .activity-grid .activity-head-messages,
 .activity-grid .activity-messages {
   left: 200px;
-  min-width: 92px;
-  max-width: 110px;
+  min-width: 88px;
+  max-width: 88px;
+  width: 88px;
   z-index: 4;
   background: var(--paper);
-  box-shadow: 4px 0 8px -6px rgba(0, 0, 0, 0.25);
+  box-shadow: none;
 }
 
-.activity-grid thead .activity-head-messages {
+.activity-grid thead .activity-head-messages,
+.activity-grid thead .activity-head-login {
   z-index: 5;
   top: 0;
 }
 
 .activity-grid .activity-messages {
   background: var(--card);
+}
+
+.activity-grid .activity-head-login,
+.activity-grid .activity-login {
+  left: 288px;
+  min-width: 108px;
+  max-width: 120px;
+  width: 112px;
+  z-index: 4;
+  background: var(--paper);
+  box-shadow: 4px 0 8px -6px rgba(0, 0, 0, 0.25);
+}
+
+.activity-grid .activity-login {
+  background: var(--card);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .activity-messages-link {
@@ -2296,6 +2321,21 @@ input[type="tel"]:focus {
 
 .activity-dot.is-none {
   background: #fff;
+}
+
+.activity-heat-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.activity-heat-swatch {
+  display: inline-block;
+  width: 72px;
+  height: 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: linear-gradient(90deg, hsl(0 72% 86%), hsl(48 78% 82%), hsl(142 78% 78%));
 }
 
 .profile-grid {

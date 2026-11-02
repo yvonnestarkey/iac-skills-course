@@ -4,6 +4,7 @@ import {
   coachSentStatsByStudentId,
   mergeThread,
   notificationRowToMessage,
+  postInboxMessagesToStudents,
   studentMessagesHref,
   type InboxMessage,
 } from "./inbox";
@@ -43,6 +44,12 @@ test("coach sent stats count Yvonne's inbox messages and keep the latest date", 
   assert.equal(stats.s3.count, 0);
   assert.equal(stats.s3.lastAt, null);
   assert.equal(studentMessagesHref("s1"), "/coach/students/s1/messages");
+});
+
+test("bulk inbox send refuses an empty body", async () => {
+  const result = await postInboxMessagesToStudents([{ id: "s1", email: "ada@example.com" }], "  ");
+  assert.equal(result.ok, false);
+  assert.equal(result.sent, 0);
 });
 
 test("mergeThread keeps one copy when a coach reply exists in inbox and notifications", () => {

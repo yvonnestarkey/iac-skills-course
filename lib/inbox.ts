@@ -467,6 +467,34 @@ export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean
   return { ok: true, message };
 }
 
+export async function postInboxMessagesToStudents(
+  students: Array<{ id: string; email: string }>,
+  body: string
+): Promise<{ ok: boolean; sent: number; error?: string }> {
+  const text = body.trim();
+  if (!text) return { ok: false, sent: 0, error: "Write a message first." };
+  if (!students.length) return { ok: false, sent: 0, error: "Pick at least one student." };
+  let sent = 0;
+  let lastError = "";
+  for (const student of students) {
+    const result = await postInboxMessage({
+      studentId: student.id,
+      studentEmail: student.email,
+      from: "coach",
+      kind: "reply",
+      body: text,
+      context: "Coach reply",
+    });
+    if (result.ok) sent += 1;
+    else lastError = result.error || lastError;
+  }
+  return {
+    ok: sent === students.length,
+    sent,
+    error: sent === students.length ? undefined : lastError || "Could not send every message.",
+  };
+}
+
 export function messageLabel(message: InboxMessage, viewer: InboxRole): string {
   if (message.kind === "feedback") return "Assignment feedback";
   if (message.from === "student") return viewer === "student" ? "You asked" : "Student asked";
