@@ -37,6 +37,46 @@ export interface InboxDraft {
   lessonId?: string;
 }
 
+export type CoachSentMessageStat = {
+  count: number;
+  lastAt: string | null;
+};
+
+export const EMPTY_COACH_SENT_STAT: CoachSentMessageStat = { count: 0, lastAt: null };
+
+export function studentMessagesHref(studentId: string): string {
+  return `/coach/students/${studentId}/messages`;
+}
+
+/** How many inbox messages Yvonne has sent each student, keyed by student id. */
+export function coachSentStatsByStudentId(
+  messages: Array<Pick<InboxMessage, "from" | "studentId" | "studentEmail" | "createdAt">>,
+  students: Array<{ id: string; email: string }>
+): Record<string, CoachSentMessageStat> {
+  const sent = messages.filter((message) => message.from === "coach");
+  const out: Record<string, CoachSentMessageStat> = {};
+  for (const student of students) {
+    const email = String(student.email || "")
+      .trim()
+      .toLowerCase();
+    const mine = sent.filter(
+      (message) =>
+        (message.studentId && message.studentId === student.id) ||
+        String(message.studentEmail || "")
+          .trim()
+          .toLowerCase() === email
+    );
+    out[student.id] = {
+      count: mine.length,
+      lastAt: mine.reduce<string | null>((latest, message) => {
+        if (!latest || message.createdAt > latest) return message.createdAt;
+        return latest;
+      }, null),
+    };
+  }
+  return out;
+}
+
 interface InboxRow {
   id: string;
   student_id: string | null;
@@ -137,6 +177,16 @@ export async function fetchInboxMessages(studentEmail?: string): Promise<{ ok: b
   if (studentEmail) query = query.eq("student_email", studentEmail);
 
   const { data, error } = await query;
+  if (error) return { ok: false, error: describe(error), data: [] };
+  return { ok: true, data: ((data || []) as InboxRow[]).map(fromRow) };
+}
+
+export async function fetchCoachSentMessages(): Promise<{ ok: boolean; error?: string; data: InboxMessage[] }> {
+  const { client, user, error: authError } = await authClient();
+  if (!client) return { ok: false, error: authError || "Supabase is not configured.", data: [] };
+  if (!user) return { ok: false, error: authError || "Sign in required.", data: [] };
+
+  const { data, error } = await client.from("inbox_messages").select("*").eq("from_role", "coach").order("created_at", { ascending: true });
   if (error) return { ok: false, error: describe(error), data: [] };
   return { ok: true, data: ((data || []) as InboxRow[]).map(fromRow) };
 }

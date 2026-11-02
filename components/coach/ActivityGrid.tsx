@@ -1,7 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { activityHeaderGroups, type ActivityColumn } from "@/lib/activity-grid";
 import { formatSastDateTime } from "@/lib/dates";
+import {
+  EMPTY_COACH_SENT_STAT,
+  studentMessagesHref,
+  type CoachSentMessageStat,
+} from "@/lib/inbox";
 import {
   activityLevel,
   activityLevelLabel,
@@ -29,6 +35,7 @@ export default function ActivityGrid({
   onToggleAll,
   onOpenProfile,
   selectable = true,
+  messageStats = {},
 }: {
   columns: ActivityColumn[];
   rows: ActivityStudentRow[];
@@ -37,6 +44,7 @@ export default function ActivityGrid({
   onToggleAll?: () => void;
   onOpenProfile?: (id: string) => void;
   selectable?: boolean;
+  messageStats?: Record<string, CoachSentMessageStat>;
 }) {
   const { phases, chapters } = activityHeaderGroups(columns);
   const showPhaseRow = phases.some((phase) => phase.label);
@@ -63,6 +71,9 @@ export default function ActivityGrid({
               ) : (
                 "Student"
               )}
+            </th>
+            <th className="activity-sticky activity-head-messages" rowSpan={headerRows}>
+              Messages
             </th>
             {showPhaseRow
               ? phases.map((phase) => (
@@ -95,7 +106,10 @@ export default function ActivityGrid({
         </thead>
         <tbody>
           {visible.length ? (
-            visible.map((row) => (
+            visible.map((row) => {
+              const stat = messageStats[row.student.id] || EMPTY_COACH_SENT_STAT;
+              const last = stat.lastAt ? `Last sent ${formatSastDateTime(stat.lastAt)}` : "No messages sent yet";
+              return (
               <tr key={row.student.id}>
                 <th className="activity-sticky activity-name">
                   {selectable ? (
@@ -113,6 +127,15 @@ export default function ActivityGrid({
                     <span>{row.student.name}</span>
                   )}
                 </th>
+                <td className="activity-sticky activity-messages">
+                  <Link
+                    href={studentMessagesHref(row.student.id)}
+                    className="activity-messages-link"
+                    title={`${stat.count} sent · ${last}`}
+                  >
+                    {stat.count}
+                  </Link>
+                </td>
                 {columns.map((column) => {
                   const item = row.byLesson[column.id];
                   const level = activityLevel(item);
@@ -125,10 +148,11 @@ export default function ActivityGrid({
                   );
                 })}
               </tr>
-            ))
+              );
+            })
           ) : (
             <tr>
-              <td className="activity-empty" colSpan={columns.length + 1}>
+              <td className="activity-empty" colSpan={columns.length + 2}>
                 Select one or more students to see their activity.
               </td>
             </tr>

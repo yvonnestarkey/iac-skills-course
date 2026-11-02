@@ -22,6 +22,7 @@ import {
   engagementByLesson,
   type LessonEngagement,
 } from "@/lib/lesson-progress";
+import { coachSentStatsByStudentId, fetchCoachSentMessages, type CoachSentMessageStat } from "@/lib/inbox";
 import { fetchCoachProgressBundle, fetchLiveLessonIds, fetchRosterStudent } from "@/lib/profiles";
 import type { Student } from "@/lib/types";
 import { cohortName, initials, lastActiveLabel } from "@/lib/course";
@@ -61,6 +62,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const [setupBusy, setSetupBusy] = useState(false);
   const [setupNotice, setSetupNotice] = useState("");
   const [activityOpen, setActivityOpen] = useState(false);
+  const [messageStats, setMessageStats] = useState<Record<string, CoachSentMessageStat>>({});
   const [arrangementStatus, setArrangementStatus] = useState<ReferralArrangementStatus>("waiting");
 
   useEffect(() => {
@@ -72,9 +74,13 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       fetchStudentSubmissions(studentId),
       fetchCourseOutline(),
       fetchCoachProgressBundle(studentId),
-    ]).then(([found, ids, submitted, outline, progress]) => {
+      fetchCoachSentMessages(),
+    ]).then(([found, ids, submitted, outline, progress, sent]) => {
       if (cancelled) return;
       setLive(found);
+      if (found && sent.ok) {
+        setMessageStats(coachSentStatsByStudentId(sent.data, [{ id: found.id, email: found.email }]));
+      }
       setLessonIds(ids);
       setSubmissions(Object.values(submitted));
       const titles: Record<string, string> = {};
@@ -319,6 +325,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
               columns={columns}
               rows={[{ student, byLesson }]}
               selectable={false}
+              messageStats={messageStats}
             />
             <div className="progress-report">
               {chapterGroups.map((group) => (

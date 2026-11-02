@@ -2202,6 +2202,46 @@ input[type="tel"]:focus {
   font-weight: 600;
 }
 
+.activity-grid .activity-head-messages,
+.activity-grid .activity-messages {
+  left: 200px;
+  min-width: 92px;
+  max-width: 110px;
+  z-index: 4;
+  background: var(--paper);
+  box-shadow: 4px 0 8px -6px rgba(0, 0, 0, 0.25);
+}
+
+.activity-grid thead .activity-head-messages {
+  z-index: 5;
+  top: 0;
+}
+
+.activity-grid .activity-messages {
+  background: var(--card);
+}
+
+.activity-messages-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.activity-messages-link:hover {
+  background: #fff;
+  color: var(--link);
+  text-decoration: none;
+}
+
 .activity-grid .activity-head-select label,
 .activity-grid .activity-name label {
   display: flex;

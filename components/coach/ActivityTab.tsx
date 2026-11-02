@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import ActivityGrid, { type ActivityStudentRow } from "@/components/coach/ActivityGrid";
 import { activityColumnsFromOutline } from "@/lib/activity-grid";
+import { coachSentStatsByStudentId, fetchCoachSentMessages, type CoachSentMessageStat } from "@/lib/inbox";
 import { engagementByLesson, type CoachProgressBundle } from "@/lib/lesson-progress";
 import type { OutlineChapter } from "@/lib/student-lesson";
 import type { Student } from "@/lib/types";
@@ -21,6 +22,7 @@ export default function ActivityTab({
   const columns = useMemo(() => activityColumnsFromOutline(outline), [outline]);
   const [query, setQuery] = useState("");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [messageStats, setMessageStats] = useState<Record<string, CoachSentMessageStat>>({});
 
   useEffect(() => {
     const ids = students.map((student) => student.id);
@@ -29,6 +31,22 @@ export default function ActivityTab({
       const keep = current.filter((id) => ids.includes(id));
       return keep.length ? keep : ids;
     });
+  }, [students]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchCoachSentMessages().then((result) => {
+      if (cancelled || !result.ok) return;
+      setMessageStats(
+        coachSentStatsByStudentId(
+          result.data,
+          students.map((student) => ({ id: student.id, email: student.email }))
+        )
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [students]);
 
   const filtered = useMemo(() => {
@@ -61,8 +79,9 @@ export default function ActivityTab({
         <div>
           <h2>Activity</h2>
           <p className="muted small">
-            Green is complete, yellow is about halfway, red is a brief click. Hover a block for the date and watch
-            percent, or a lesson number for the title.
+            Green is complete, yellow is about halfway, red is a brief click. Messages is how many times you have
+            written to that student — hover for the last sent date, or open the number to go to the thread. Hover a
+            lesson block for the date and watch percent.
           </p>
         </div>
       </div>
@@ -111,6 +130,7 @@ export default function ActivityTab({
           setSelectedIds(allVisibleSelected ? selectedIds.filter((id) => !visibleIds.includes(id)) : [...new Set([...selectedIds, ...visibleIds])])
         }
         onOpenProfile={onOpenProfile}
+        messageStats={messageStats}
       />
     </section>
   );
