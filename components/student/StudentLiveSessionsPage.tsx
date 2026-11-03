@@ -9,7 +9,7 @@ import {
   sanitizeLiveSessionsForAccess,
   type LiveSession,
 } from "@/lib/live-sessions";
-import { LIVE_SESSION_CALENDAR_NAME, liveSessionCalendarUrls } from "@/lib/live-sessions-calendar";
+import { liveSessionCalendarUrls } from "@/lib/live-sessions-calendar";
 import InfoTooltip from "@/components/ui/InfoTooltip";
 import PurchaseCta from "@/components/commerce/PurchaseCta";
 import { useStudentSession } from "@/lib/student-session";
@@ -98,10 +98,7 @@ export default function StudentLiveSessionsPage() {
         {fullAccess ? (
           <div className="live-sessions-ics">
             <a className="primary coaching-book-btn" href={calendarUrls.webcal}>
-              {LIVE_SESSION_CALENDAR_NAME}
-            </a>
-            <a className="ghost" href={calendarUrls.google} target="_blank" rel="noopener noreferrer">
-              Google Calendar
+              Subscribe to calendar
             </a>
             <a className="ghost" href={calendarUrls.http} target="_blank" rel="noopener noreferrer">
               Download .ics

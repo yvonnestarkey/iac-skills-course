@@ -36,7 +36,7 @@ const FALLBACKS: Record<string, HelpContent> = {
     key: "live_calendar_subscription",
     title: "Calendar subscription",
     description:
-      "IAC Skills Live Session is a live subscription — it adds the calls to Apple or Outlook and stays up to date when the schedule changes. Use Google Calendar for Google, or Download .ics for a one-off file.",
+      "Subscribe to calendar adds the live calls to Apple, Google, or Outlook and stays up to date when the schedule changes. Download .ics is a one-off file you import yourself.",
     video_url: null,
   },
   referral_programme_info: {
