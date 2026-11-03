@@ -4571,6 +4571,11 @@ a.student-account-link {
   max-width: 62ch;
 }
 
+.coaching-booking-note {
+  margin: 0 0 14px;
+  max-width: 62ch;
+}
+
 .coaching-cta {
   margin: 8px 0 8px;
 }

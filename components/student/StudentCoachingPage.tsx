@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import {
+  COACHING_BOOKING_NOTE,
   DEFAULT_COACHING_CONFIG,
   fetchCoachingPageConfig,
   fetchLatestStudentCoachingSession,
@@ -73,6 +74,7 @@ export default function StudentCoachingPage() {
         ) : null}
         <p className="kicker">1-on-1 coaching</p>
         <h1>{config.title}</h1>
+        <p className="coaching-booking-note">{COACHING_BOOKING_NOTE}</p>
         <DescriptionBlock text={config.description} />
         {config.calendly_url ? (
           <p className="coaching-cta">

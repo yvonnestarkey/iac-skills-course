@@ -34,6 +34,9 @@ export const COACHING_CONFIG_ID = 1;
 export const DEFAULT_LIVE_CALENDAR_TOOLTIP =
   "Subscribing adds all live calls directly to your Apple, Google, or Outlook calendar. Any schedule updates or room changes will sync automatically.";
 
+export const COACHING_BOOKING_NOTE =
+  "Click on the link to find a time that works for you and book your session. Please note that you need to set up ONE session. Additional sessions will be agreed upon if they're needed and if you're submitting tasks.";
+
 export const DEFAULT_COACHING_CONFIG: CoachingPageConfig = {
   title: "1-on-1 Coaching Session",
   description:
