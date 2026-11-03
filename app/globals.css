@@ -2495,6 +2495,12 @@ input[type="tel"]:focus {
   margin-top: 7px;
 }
 
+.student-pdfs-upload {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 16px;
+}
+
 .work-list {
   display: flex;
   flex-direction: column;

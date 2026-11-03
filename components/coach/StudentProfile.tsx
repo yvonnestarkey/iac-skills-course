@@ -12,6 +12,7 @@ import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
 import ReadingAttemptsPanel from "@/components/coach/ReadingAttemptsPanel";
 import ScriptEvaluationsPanel from "@/components/coach/ScriptEvaluationsPanel";
 import DataConsentPanel from "@/components/coach/DataConsentPanel";
+import StudentPdfsPanel from "@/components/coach/StudentPdfsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { accountStatusLabel } from "@/lib/student-registration";
 import { activityColumnsFromOutline, currentActivityPosition } from "@/lib/activity-grid";
@@ -459,6 +460,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           )}
         </section>
       </div>
+
+      <StudentPdfsPanel studentId={studentId} />
 
       <DataConsentPanel studentId={studentId} />
 
