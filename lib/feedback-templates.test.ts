@@ -36,5 +36,7 @@ test("assignment review uses a full-page document and canned starts", () => {
   assert.match(picker, /Save canned/);
   assert.match(editor, /feedback-document-page/);
   assert.match(css, /min-height:\s*min\(68vh/);
+  assert.match(css, /\.feedback-document-toolbar \.emoji-picker-panel/);
+  assert.match(css, /top:\s*calc\(100% \+ 6px\)/);
   assert.match(sql, /feedback_templates/);
 });

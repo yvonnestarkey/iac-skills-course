@@ -2778,6 +2778,8 @@ input[type="tel"]:focus {
 }
 
 .feedback-document-toolbar {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -2799,6 +2801,13 @@ input[type="tel"]:focus {
   position: relative;
   right: auto;
   bottom: auto;
+}
+
+.feedback-document-toolbar .emoji-picker-panel,
+.feedback-document-toolbar .link-insert-panel {
+  top: calc(100% + 6px);
+  bottom: auto;
+  z-index: 6;
 }
 
 .feedback-document-page {
