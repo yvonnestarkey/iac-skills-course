@@ -2027,9 +2027,9 @@ input[type="tel"]:focus {
 }
 
 .diagnosis-pill {
-  border: 1px solid var(--line);
-  background: var(--paper);
-  color: var(--ink);
+  border: 1px solid var(--link);
+  background: #f8e8ef;
+  color: var(--link);
   border-radius: 99px;
   padding: 5px 11px;
   font-size: 13px;
@@ -2041,8 +2041,8 @@ button.diagnosis-pill {
 }
 
 .diagnosis-pill.on {
-  background: var(--dark);
-  border-color: var(--dark);
+  background: var(--link);
+  border-color: var(--link);
   color: #fff;
 }
 
