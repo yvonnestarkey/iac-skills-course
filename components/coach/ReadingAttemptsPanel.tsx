@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { formatSastDateTime } from "@/lib/dates";
-import { getExercise, READING_CHECK, type DrillAttempt, type ReadingCheckResult } from "@/lib/reading-drills";
+import { CheckReview, DrillReview } from "@/components/coach/CoachReadingReview";
+import { getExercise, READING_CHECK, type DrillAttempt, type DrillExercise, type ReadingCheckResult } from "@/lib/reading-drills";
 import { listCoachReadingHistory, resetCoachReadingTask } from "@/lib/reading-drills-store";
+import { exerciseForAttempt } from "@/lib/reading-review";
 
 export default function ReadingAttemptsPanel({ studentId }: { studentId: string }) {
   const [attempts, setAttempts] = useState<DrillAttempt[]>([]);
@@ -11,6 +13,7 @@ export default function ReadingAttemptsPanel({ studentId }: { studentId: string 
   const [error, setError] = useState("");
   const [busy, setBusy] = useState("");
   const [ready, setReady] = useState(false);
+  const [extras, setExtras] = useState<DrillExercise[]>([]);
 
   const load = async () => {
     const result = await listCoachReadingHistory(studentId);
@@ -23,6 +26,16 @@ export default function ReadingAttemptsPanel({ studentId }: { studentId: string 
   useEffect(() => {
     void load();
   }, [studentId]);
+
+  useEffect(() => {
+    fetch("/api/coach/reading-exercises")
+      .then(async (response) => {
+        const payload = (await response.json().catch(() => ({}))) as { exercises?: { payload?: DrillExercise }[] };
+        if (!response.ok) return;
+        setExtras((payload.exercises || []).map((row) => row.payload).filter((item): item is DrillExercise => Boolean(item?.id)));
+      })
+      .catch(() => undefined);
+  }, []);
 
   const reset = async (kind: "exercise" | "check", key: string, label: string) => {
     if (!window.confirm(`Reset “${label}”? The score is removed and they can do this task once more.`)) return;
@@ -41,7 +54,10 @@ export default function ReadingAttemptsPanel({ studentId }: { studentId: string 
       <div className="panel-head">
         <div>
           <h2>Reading tasks</h2>
-          <p className="muted small">One attempt each. Reset if they mess up the process and message you.</p>
+          <p className="muted small">
+            One attempt each. Open Notes & review to see what they wrote, how it compared to the required, and what they missed.
+            Reset if they mess up the process and message you.
+          </p>
         </div>
       </div>
       {error ? <p className="waiting">{error}</p> : null}
@@ -57,6 +73,7 @@ export default function ReadingAttemptsPanel({ studentId }: { studentId: string 
           <p className="muted small">
             {check.wpm} words a minute · absorbed {check.absorb} of {check.absorb_n} · {check.notes} notes
           </p>
+          <CheckReview check={check} />
           <div className="actions">
             <button
               className="ghost"
@@ -71,7 +88,7 @@ export default function ReadingAttemptsPanel({ studentId }: { studentId: string 
       ))}
 
       {attempts.map((attempt) => {
-        const exercise = getExercise(attempt.exercise_id);
+        const exercise = exerciseForAttempt(attempt, extras) || getExercise(attempt.exercise_id);
         const title = exercise ? `${exercise.title} · ${exercise.area}` : attempt.exercise_id;
         const key = `exercise:${attempt.exercise_id}`;
         return (
@@ -88,6 +105,7 @@ export default function ReadingAttemptsPanel({ studentId }: { studentId: string 
               {attempt.signals?.length ? ` · ${attempt.signals.join(" · ")}` : ""}
               {attempt.marked_by === "model" ? " · marked automatically" : " · self-marked"}
             </p>
+            <DrillReview attempt={attempt} exercise={exercise} />
             <div className="actions">
               <button
                 className="ghost"

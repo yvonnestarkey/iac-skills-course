@@ -8238,6 +8238,20 @@ a.planner-video-btn:visited:hover {
 .rd-table th { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
 .rd-table td.c { text-align: center; white-space: nowrap; }
 
+.reading-review { margin-top: 10px; }
+.reading-review-body { display: grid; gap: 16px; margin-top: 12px; }
+.reading-review-body h3 { margin: 0 0 6px; font-size: 16px; }
+.reading-note-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.reading-note-text { white-space: pre-wrap; margin: 0; }
+.reading-note-crossed { opacity: 0.72; }
+.reading-answer {
+  white-space: pre-wrap;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
 .rd-result { border: 2px solid var(--dark); border-radius: 8px; padding: 16px 18px; background: var(--card); display: flex; flex-direction: column; gap: 6px; }
 .rd-range { font-family: var(--serif); font-size: 30px; font-weight: 600; line-height: 1.15; }
 .rd-scale { position: relative; height: 10px; border-radius: 99px; background: linear-gradient(to right, var(--rd-bad-soft) 0 50%, var(--rd-good-soft) 50% 100%); margin-top: 6px; }

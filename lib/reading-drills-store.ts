@@ -36,9 +36,17 @@ export async function saveReadingCheck(userId: string, result: ReadingCheckResul
   if (!db) return { ok: false, error: "The course database is not connected." };
   const existing = await db.from("reading_checks").select("id").eq("user_id", userId).eq("check_id", result.check_id).maybeSingle();
   if (existing.data) return { ok: false, error: READING_ONCE_COPY };
-  const { error } = await db.from("reading_checks").insert({ user_id: userId, ...result });
-  if (error && alreadyDone(error.message)) return { ok: false, error: READING_ONCE_COPY };
-  return error ? { ok: false, error: error.message } : { ok: true };
+  const payload = { user_id: userId, ...result };
+  const first = await db.from("reading_checks").insert(payload);
+  if (!first.error) return { ok: true };
+  if (alreadyDone(first.error.message)) return { ok: false, error: READING_ONCE_COPY };
+  if (!/notes_detail|schema cache|column/i.test(first.error.message)) {
+    return { ok: false, error: first.error.message };
+  }
+  const { notes_detail: _notes, ...withoutNotes } = payload;
+  const retry = await db.from("reading_checks").insert(withoutNotes);
+  if (retry.error && alreadyDone(retry.error.message)) return { ok: false, error: READING_ONCE_COPY };
+  return retry.error ? { ok: false, error: retry.error.message } : { ok: true };
 }
 
 export async function listCoachReadingHistory(studentId: string): Promise<{ attempts: DrillAttempt[]; checks: ReadingCheckResult[]; error?: string }> {

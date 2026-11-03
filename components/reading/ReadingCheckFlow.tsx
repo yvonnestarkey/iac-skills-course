@@ -74,6 +74,7 @@ export default function ReadingCheckFlow({ embedded = false, onComplete }: { emb
       absorb_n: rc.recall.length,
       missed: rc.recall.map((q, i) => (picks[i] === q.correct ? -1 : i)).filter((i) => i >= 0),
       notes: notes.filter((n) => !n.crossed).length,
+      notes_detail: notes.map(({ id: _id, ...rest }) => rest),
       profile: readingProfile(wpm, absorb / rc.recall.length).title,
     };
     setResult(r);

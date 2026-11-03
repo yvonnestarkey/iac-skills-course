@@ -97,6 +97,8 @@ export type ReadingCheckResult = {
   absorb_n: number;
   missed: number[];
   notes: number;
+  /** The actual notes. Older attempts only stored the count in `notes`. */
+  notes_detail?: Omit<DrillNote, "id">[];
   profile: string;
 };
 
