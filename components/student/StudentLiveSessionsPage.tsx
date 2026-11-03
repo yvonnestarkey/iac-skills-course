@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { DEFAULT_COACHING_CONFIG, fetchCoachingPageConfig, type CoachingPageConfig } from "@/lib/coaching";
 import {
   canAccessAllLiveSessionLinks,
   fetchLiveSessions,
@@ -10,6 +9,7 @@ import {
   sanitizeLiveSessionsForAccess,
   type LiveSession,
 } from "@/lib/live-sessions";
+import { LIVE_SESSION_CALENDAR_NAME, liveSessionCalendarUrls } from "@/lib/live-sessions-calendar";
 import InfoTooltip from "@/components/ui/InfoTooltip";
 import PurchaseCta from "@/components/commerce/PurchaseCta";
 import { useStudentSession } from "@/lib/student-session";
@@ -61,7 +61,6 @@ function SessionRow({ session, fullAccess }: { session: LiveSession; fullAccess:
 
 export default function StudentLiveSessionsPage() {
   const { ready: sessionReady, entitlement } = useStudentSession();
-  const [config, setConfig] = useState<CoachingPageConfig>(DEFAULT_COACHING_CONFIG);
   const [sessions, setSessions] = useState<LiveSession[]>([]);
   const [ready, setReady] = useState(false);
   const fullAccess = canAccessAllLiveSessionLinks(entitlement);
@@ -72,9 +71,8 @@ export default function StudentLiveSessionsPage() {
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([fetchCoachingPageConfig(), fetchLiveSessions()]).then(([nextConfig, nextSessions]) => {
+    fetchLiveSessions().then((nextSessions) => {
       if (cancelled) return;
-      setConfig(nextConfig);
       setSessions(nextSessions);
       setReady(true);
     });
@@ -84,6 +82,8 @@ export default function StudentLiveSessionsPage() {
   }, []);
 
   if (!ready || !sessionReady) return <p className="student-loading">Loading live sessions…</p>;
+
+  const calendarUrls = liveSessionCalendarUrls(window.location.origin);
 
   return (
     <article className="lesson-body wide live-sessions-page">
@@ -95,15 +95,16 @@ export default function StudentLiveSessionsPage() {
             ? "Access upcoming Zoom links, past meeting recordings, summaries, and scribbles from the session."
             : "Free preview includes the first live session recording. Unlock the full course for Zoom links and later sessions."}
         </p>
-        {fullAccess && config.live_calendar_ics_url ? (
+        {fullAccess ? (
           <div className="live-sessions-ics">
-            <a
-              className="primary coaching-book-btn"
-              href={config.live_calendar_ics_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Add All Sessions to Calendar (.ics)
+            <a className="primary coaching-book-btn" href={calendarUrls.webcal}>
+              {LIVE_SESSION_CALENDAR_NAME}
+            </a>
+            <a className="ghost" href={calendarUrls.google} target="_blank" rel="noopener noreferrer">
+              Google Calendar
+            </a>
+            <a className="ghost" href={calendarUrls.http} target="_blank" rel="noopener noreferrer">
+              Download .ics
             </a>
             <InfoTooltip contentKey="live_calendar_subscription" />
           </div>

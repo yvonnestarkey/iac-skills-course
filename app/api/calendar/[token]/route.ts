@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
 import { buildCalendarIcs } from "@/lib/calendar-feed";
+import { buildLiveSessionsCalendarIcs, LIVE_SESSION_CALENDAR_TOKEN } from "@/lib/live-sessions-calendar";
 
 // The browser owns the .ics generator, so it publishes the finished feed here
 // and this route just hosts it for subscribers.
@@ -34,9 +35,12 @@ function calendarResponse(ics: string) {
 
 export async function GET(request: Request, { params }: Context) {
   const { token } = await params;
+  const origin = new URL(request.url).origin;
+  if (token.replace(/\.ics$/i, "") === LIVE_SESSION_CALENDAR_TOKEN) {
+    return calendarResponse(await buildLiveSessionsCalendarIcs(origin));
+  }
   const file = feedPath(token);
   if (!file) return NextResponse.json({ error: "Bad feed token" }, { status: 400, headers: CORS });
-  const origin = new URL(request.url).origin;
   const generated = await buildCalendarIcs(token.replace(/\.ics$/i, ""), origin);
   if (generated) return calendarResponse(generated);
   try {

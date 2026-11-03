@@ -11,6 +11,12 @@ import {
   sanitizeLiveSessionsForAccess,
   sessionFromRow,
 } from "./live-sessions";
+import {
+  buildLiveSessionsIcs,
+  calendarSessions,
+  ensureCalendarName,
+  liveSessionCalendarUrls,
+} from "./live-sessions-calendar";
 
 test("22 September 18:00 SAST stores as UTC and displays the same for every browser", () => {
   const iso = sastDateAndTimeToIso("2026-09-22", "18:00");
@@ -132,4 +138,38 @@ test("preview students only keep the first session recording", () => {
   const full = sanitizeLiveSessionsForAccess([first, later], "full");
   assert.equal(full[1].zoomUrl, "https://zoom.us/j/later");
   assert.equal(full[0].summaryPdfUrl, "https://example.com/summary.pdf");
+});
+
+test("live session subscribe feed is named IAC Skills Live Session", () => {
+  const ics = buildLiveSessionsIcs(
+    [
+      sessionFromRow({
+        id: "sept",
+        title: "Intro Session: 22 September 2026",
+        description: "We chatted about shifting study approaches.",
+        session_at: "2026-09-22T16:00:00.000Z",
+        status: "completed",
+        zoom_url: "https://zoom.us/j/secret",
+      }),
+      sessionFromRow({
+        id: "skip",
+        title: "Cancelled",
+        session_at: "2026-10-01T16:00:00.000Z",
+        status: "cancelled",
+      }),
+    ],
+    "https://iac.accountingstudyadvice.com"
+  );
+  assert.match(ics, /X-WR-CALNAME:IAC Skills Live Session/);
+  assert.match(ics, /SUMMARY:Intro Session: 22 September 2026/);
+  assert.match(ics, /DTSTART:20260922T160000Z/);
+  assert.match(ics, /DTEND:20260922T173000Z/);
+  assert.doesNotMatch(ics, /zoom\.us/);
+  assert.doesNotMatch(ics, /Cancelled/);
+  assert.equal(calendarSessions([{ ...sessionFromRow({ id: "x", title: "x", status: "cancelled", session_at: "2026-10-01T16:00:00.000Z" }) }]).length, 0);
+
+  const urls = liveSessionCalendarUrls("https://iac.accountingstudyadvice.com");
+  assert.equal(urls.http, "https://iac.accountingstudyadvice.com/api/calendar/live-sessions.ics");
+  assert.equal(urls.webcal, "webcal://iac.accountingstudyadvice.com/api/calendar/live-sessions.ics");
+  assert.match(ensureCalendarName("BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR"), /X-WR-CALNAME:IAC Skills Live Session/);
 });
