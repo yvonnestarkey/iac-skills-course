@@ -44,8 +44,18 @@ const bmcrRow = (label: string, t: Tot, bold = false): string[] => {
   return [b(label), b(num(t.total)), b(num(t.earned)), b(pct(t.earned, t.total)), b(num(t.basic)), b(pct(t.basic, t.total)), b(pct(t.earned, t.basic)), b(verdictText(t.earned, t.basic, t.total))];
 };
 
+/** True when the student has not completed any BMCR form yet: every requirement's Basic count is missing. */
+export function bmcrMissing(datasets: EvaluationDataset[]): boolean {
+  const reqs = datasets.flatMap((d) => d.requirements);
+  return reqs.length > 0 && reqs.every((r) => r.bmcr.student_known === null || r.bmcr.student_known === undefined);
+}
+
+export const BMCR_MISSING_NOTE =
+  "Your BMCR forms have not been completed yet, so the Basic marks columns are left out for now. Once you complete them, this step shows whether theory or converting your knowledge into marks is the bigger problem.";
+
 function bmcrStep(datasets: EvaluationDataset[], o: ReportOptions): string[] {
   const s = OVERALL_STEPS.bmcr;
+  const missing = bmcrMissing(datasets);
   const rows: string[][] = [];
   for (const d of datasets) {
     const n = paperNumber(d);
@@ -57,6 +67,10 @@ function bmcrStep(datasets: EvaluationDataset[], o: ReportOptions): string[] {
   }
   const exam = tot(datasets.flatMap((d) => d.requirements));
   rows.push(bmcrRow(`The exam (${datasets.length === 3 ? "three papers" : `${datasets.length} paper${datasets.length === 1 ? "" : "s"}`})`, exam, true));
+  if (missing) {
+    const short = rows.map((r) => r.slice(0, 4));
+    return [`## ${s.title}`, "", `**What it asks:** ${s.asks}`, "", `**${BMCR_MISSING_NOTE}**`, "", ...mdTable(["", "Required Total", "Marks Earned", "% Earned"], short), ""];
+  }
   return [`## ${s.title}`, "", `**What it asks:** ${s.asks}`, "", `**Do it yourself:** ${s.how}`, "", ...mdTable(["", "Required Total", "Marks Earned", "% Earned", "Basic Marks", "% Basic", "% Knowledge Converted", "BMCR verdict"], rows), ""];
 }
 

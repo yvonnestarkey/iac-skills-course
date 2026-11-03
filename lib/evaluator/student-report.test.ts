@@ -81,6 +81,13 @@ test("Overall Report: BMCR caps Basic at the Required Total and counts professio
   assert.ok(s1.includes("The exam (1 paper)"));
 });
 
+test("Overall Report: with no BMCR forms the Basic columns are left out and a note explains why", () => {
+  const md = buildOverallReport([dataset(1, [req({ bmcr: { student_known: null, available: 22 } })])]);
+  assert.ok(md.includes("Your BMCR forms have not been completed yet"));
+  assert.ok(!md.includes("% Knowledge Converted"));
+  assert.ok(md.includes("| Required Total | Marks Earned | % Earned |"));
+});
+
 test("Overall Report: types and pillars use marks without the professional marks; under 35% is High Risk; PVAAs have their own row", () => {
   const md = buildOverallReport([dataset(1, [req(), req({ code: "P1Q2_f", label: "Q2(f)", discussion_basis: "compliance", total_marks: 11, technical_awarded: 9, pvaa_awarded: 1 })])]);
   const s2 = md.slice(md.indexOf("## Step 2"), md.indexOf("## Step 3"));
