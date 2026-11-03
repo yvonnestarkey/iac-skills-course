@@ -16,6 +16,7 @@ import {
 import { daysAgo, isoDate, today } from "@/lib/dates";
 import { completionProgress } from "@/lib/metrics";
 import { courseAccessLabel } from "@/lib/course-access";
+import { diagnosisLabel } from "@/lib/student-diagnoses";
 import { accountStatusLabel, isCourseAccessClosed } from "@/lib/student-registration";
 import {
   DEFAULT_ROSTER_COLUMNS,
@@ -102,6 +103,8 @@ function sortValue(row: RosterRow, column: RosterColumnId): string | number {
       return student.coachingGoals || "";
     case "struggleAreas":
       return student.struggleAreas || "";
+    case "diagnoses":
+      return (student.diagnoses || []).map((id) => diagnosisLabel(id)).join(", ");
     case "progress":
       return row.progressPct;
     case "lastActive":
@@ -150,6 +153,8 @@ function plainCell(id: RosterColumnId, row: RosterRow, gradedTotal: number): str
       return student.coachingGoals || "";
     case "struggleAreas":
       return student.struggleAreas || "";
+    case "diagnoses":
+      return (student.diagnoses || []).map((id) => diagnosisLabel(id)).join(", ");
     case "progress":
       return `${row.progressDone} of ${row.progressTotal} (${row.progressPct}%) · ${row.openedCount} opened`;
     case "lastActive":
@@ -593,6 +598,12 @@ function cellFor(
       return <span className="muted small">{student.coachingGoals || "—"}</span>;
     case "struggleAreas":
       return <span className="muted small">{student.struggleAreas || "—"}</span>;
+    case "diagnoses":
+      return (
+        <span className="muted small">
+          {(student.diagnoses || []).map((id) => diagnosisLabel(id)).join(", ") || "—"}
+        </span>
+      );
     case "progress":
       return (
         <button

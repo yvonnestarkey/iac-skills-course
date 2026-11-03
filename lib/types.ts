@@ -107,6 +107,7 @@ export interface Student {
   coachingGoals?: string | null;
   struggleAreas?: string | null;
   additionalNotes?: string | null;
+  diagnoses?: string[];
   // All optional: the UI reads them defensively and seeds may omit them.
   completed?: string[];
   opened?: string[];

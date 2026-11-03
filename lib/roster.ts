@@ -1,3 +1,5 @@
+import { diagnosisLabel, STUDENT_DIAGNOSIS_TYPES } from "./student-diagnoses";
+
 export const ROSTER_COLUMNS = [
   { id: "name", label: "Full Name" },
   { id: "courseAccess", label: "Course Access" },
@@ -13,6 +15,7 @@ export const ROSTER_COLUMNS = [
   { id: "repeatStudent", label: "Repeat Student" },
   { id: "coachingGoals", label: "Coaching Goals" },
   { id: "struggleAreas", label: "Struggle Areas" },
+  { id: "diagnoses", label: "Diagnoses" },
   { id: "progress", label: "Course Progress" },
   { id: "lastActive", label: "Last Active Date" },
   { id: "status", label: "Account Status" },
@@ -52,6 +55,7 @@ export const ROSTER_FILTER_FIELDS = [
   { id: "repeatStudent", label: "Repeat Student", kind: "boolean" },
   { id: "coachingGoals", label: "Coaching Goals", kind: "text" },
   { id: "struggleAreas", label: "Struggle Areas", kind: "text" },
+  { id: "diagnosis", label: "Diagnosis", kind: "categorical" },
 ] as const;
 
 export type RosterFilterField = (typeof ROSTER_FILTER_FIELDS)[number]["id"];
@@ -261,7 +265,9 @@ export function uniqueRosterOptions(
 
   (defaults || []).forEach((item) => add(item.value, item.label));
   (ROSTER_FILTER_DEFAULTS[field] || []).forEach((item) => add(item));
-  students.forEach((student) => add(rosterRuleValue(student, field), undefined, true));
+  students.forEach((student) => {
+    rosterRuleValues(student, field).forEach((value) => add(value, undefined, true));
+  });
 
   extras.sort((a, b) => a.label.localeCompare(b.label, undefined, { numeric: true, sensitivity: "base" }));
   const base = Array.from(seen.values()).filter((option) => extras.every((extra) => optionKey(extra.value) !== optionKey(option.value)));
@@ -360,6 +366,7 @@ export function rosterRuleValue(student: {
   repeatStudent?: boolean;
   coachingGoals?: string | null;
   struggleAreas?: string | null;
+  diagnoses?: string[];
 }, field: RosterFilterField): string {
   switch (field) {
     case "name":
@@ -391,22 +398,37 @@ export function rosterRuleValue(student: {
       return student.coachingGoals || "";
     case "struggleAreas":
       return student.struggleAreas || "";
+    case "diagnosis":
+      return (student.diagnoses || []).join(" | ");
     default:
       return "";
   }
+}
+
+export function rosterRuleValues(
+  student: Parameters<typeof rosterRuleValue>[0],
+  field: RosterFilterField
+): string[] {
+  if (field === "diagnosis") return (student.diagnoses || []).map(String).filter(Boolean);
+  const value = rosterRuleValue(student, field);
+  return value ? [value] : [];
 }
 
 export function matchRosterRule(
   student: Parameters<typeof rosterRuleValue>[0],
   rule: RosterFilterRule
 ): boolean {
-  const raw = rosterRuleValue(student, rule.field).trim();
-  const empty = !raw;
+  const values = rosterRuleValues(student, rule.field).map((value) => value.trim()).filter(Boolean);
+  const empty = !values.length;
   if (rule.operator === "is_empty") return empty;
   if (rule.operator === "is_not_empty") return !empty;
   const selected = (rule.values || []).map((value) => value.trim()).filter(Boolean);
   if (!selected.length) return true;
-  const hay = raw.toLowerCase();
+  if (rule.field === "diagnosis") {
+    const ids = values.map((value) => value.toLowerCase());
+    return selected.some((value) => ids.includes(value.toLowerCase()));
+  }
+  const hay = values[0].toLowerCase();
   if (rule.operator === "contains") return hay.includes(selected[0].toLowerCase());
   if (rule.operator === "starts_with") return hay.startsWith(selected[0].toLowerCase());
   if (rule.operator === "equals" || rule.operator === "is") return hay === selected[0].toLowerCase();
@@ -461,12 +483,16 @@ export function buildRosterFilterOptions(input: {
         ? input.cohortLabel
         : field.id === "courseAccess"
           ? input.courseAccessLabel
-          : undefined,
+          : field.id === "diagnosis"
+            ? (value) => diagnosisLabel(value)
+            : undefined,
       field.id === "cohort"
         ? input.cohortDefaults
         : field.id === "courseAccess"
           ? [...ROSTER_COURSE_ACCESS_OPTIONS]
-          : undefined
+          : field.id === "diagnosis"
+            ? STUDENT_DIAGNOSIS_TYPES.map((item) => ({ value: item.id, label: item.label }))
+            : undefined
     ).filter((option) => Boolean(cleanRosterOptionValue(option.value)));
   });
   return map;

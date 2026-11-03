@@ -12,6 +12,7 @@ import BmcrEvaluationsPanel from "@/components/coach/BmcrEvaluationsPanel";
 import ReadingAttemptsPanel from "@/components/coach/ReadingAttemptsPanel";
 import ScriptEvaluationsPanel from "@/components/coach/ScriptEvaluationsPanel";
 import DataConsentPanel from "@/components/coach/DataConsentPanel";
+import StudentDiagnosesPanel, { DiagnosisPills } from "@/components/coach/StudentDiagnosesPanel";
 import StudentPdfsPanel from "@/components/coach/StudentPdfsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { accountStatusLabel } from "@/lib/student-registration";
@@ -65,6 +66,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const [activityOpen, setActivityOpen] = useState(false);
   const [messageStats, setMessageStats] = useState<Record<string, CoachSentMessageStat>>({});
   const [arrangementStatus, setArrangementStatus] = useState<ReferralArrangementStatus>("waiting");
+  const [adminView, setAdminView] = useState<"" | "registration" | "password" | "data">("");
 
   useEffect(() => {
     let cancelled = false;
@@ -218,14 +220,15 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
             <AccountActivationBadge status={student.accountActivation} />
           </h1>
           <p className="muted">
-            {student.email} · {cohortName(data, student.cohort)} · joined {student.joined || "—"}
+            {student.email} · {cohortName(data, student.cohort)} · joined {student.joined || "—"} · last active{" "}
+            {lastActiveLabel(student)}
           </p>
+          <DiagnosisPills ids={student.diagnoses || []} />
         </div>
         <div className="profile-tags">
           <span className={`badge ${accountStatusLabel(student) === "Active" ? "ok" : "warn"}`}>
             {accountStatusLabel(student)}
           </span>
-          <span className="muted small">Last active {lastActiveLabel(student)}</span>
           <button className="primary" type="button" onClick={() => router.push(`/coach/students/${student.id}/surveys`)}>
             Surveys
           </button>
@@ -235,28 +238,27 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           <button className="ghost" type="button" onClick={() => router.push(`/coach/students/${student.id}/notifications`)}>
             Notifications
           </button>
-          {canSendPasswordSetupLink(student.accountActivation) ? (
-            <button
-              className="ghost"
-              type="button"
-              disabled={setupBusy}
-              onClick={async () => {
-                setSetupBusy(true);
-                setSetupNotice("");
-                const response = await fetch("/api/coach/account-recovery", {
-                  method: "POST",
-                  headers: { "content-type": "application/json" },
-                  body: JSON.stringify({ user_id: student.id, email: student.email }),
-                });
-                const payload = await response.json().catch(() => ({}));
-                setSetupBusy(false);
-                setSetupNotice(payload.message || payload.error || "Could not send the password setup link.");
-              }}
-            >
-              {setupBusy ? "Sending…" : "Send password setup link"}
-            </button>
-          ) : null}
-          {setupNotice ? <p className="muted small">{setupNotice}</p> : null}
+          <button
+            className={adminView === "registration" ? "primary" : "ghost"}
+            type="button"
+            onClick={() => setAdminView((current) => (current === "registration" ? "" : "registration"))}
+          >
+            Registration
+          </button>
+          <button
+            className={adminView === "password" ? "primary" : "ghost"}
+            type="button"
+            onClick={() => setAdminView((current) => (current === "password" ? "" : "password"))}
+          >
+            Password
+          </button>
+          <button
+            className={adminView === "data" ? "primary" : "ghost"}
+            type="button"
+            onClick={() => setAdminView((current) => (current === "data" ? "" : "data"))}
+          >
+            Data choices
+          </button>
         </div>
       </div>
       {notice ? <div className="notice">{notice}</div> : null}
@@ -266,12 +268,50 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         </div>
       ) : null}
 
-      <StudentAccessPanel
-        student={student}
-        onUpdated={(next) => setLive((current) => (current ? { ...current, ...next } : current))}
-      />
-
-      <SetTemporaryPasswordPanel userId={student.id} studentName={student.name} />
+      {adminView === "registration" ? (
+        <StudentAccessPanel
+          student={student}
+          onUpdated={(next) => setLive((current) => (current ? { ...current, ...next } : current))}
+        />
+      ) : null}
+      {adminView === "password" ? (
+        <>
+          {canSendPasswordSetupLink(student.accountActivation) ? (
+            <section className="card">
+              <div className="panel-head">
+                <div>
+                  <h2>Password setup link</h2>
+                  <p className="muted small">Emails the student a link to set their own password.</p>
+                </div>
+              </div>
+              <div className="actions">
+                <button
+                  className="ghost"
+                  type="button"
+                  disabled={setupBusy}
+                  onClick={async () => {
+                    setSetupBusy(true);
+                    setSetupNotice("");
+                    const response = await fetch("/api/coach/account-recovery", {
+                      method: "POST",
+                      headers: { "content-type": "application/json" },
+                      body: JSON.stringify({ user_id: student.id, email: student.email }),
+                    });
+                    const payload = await response.json().catch(() => ({}));
+                    setSetupBusy(false);
+                    setSetupNotice(payload.message || payload.error || "Could not send the password setup link.");
+                  }}
+                >
+                  {setupBusy ? "Sending…" : "Send password setup link"}
+                </button>
+              </div>
+              {setupNotice ? <p className="muted small">{setupNotice}</p> : null}
+            </section>
+          ) : null}
+          <SetTemporaryPasswordPanel userId={student.id} studentName={student.name} />
+        </>
+      ) : null}
+      {adminView === "data" ? <DataConsentPanel studentId={studentId} /> : null}
 
       <section className="card" id="activity">
         <div className="panel-head">
@@ -429,6 +469,11 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         <section className="card notes-card">
           <h2>Coach notes</h2>
           <p className="muted small">Private to you — students never see these.</p>
+          <StudentDiagnosesPanel
+            studentId={student.id}
+            selected={student.diagnoses || []}
+            onChange={(diagnoses) => setLive((current) => (current ? { ...current, diagnoses } : current))}
+          />
           <textarea
             id="note-text"
             rows={4}
@@ -462,8 +507,6 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
       </div>
 
       <StudentPdfsPanel studentId={studentId} />
-
-      <DataConsentPanel studentId={studentId} />
 
       <section className="card">
         <h2>Assignment submissions</h2>

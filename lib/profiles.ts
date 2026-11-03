@@ -15,6 +15,7 @@ import {
 import { parseRosterOnboarding } from "./roster";
 import { isCoachAccount } from "./roles";
 import { isCourseAccessClosed } from "./student-registration";
+import { fetchDiagnosesByStudent } from "./student-diagnoses";
 import { getSupabase } from "./supabase";
 import type { Student } from "./types";
 import type { UserProfile } from "../types/database";
@@ -63,6 +64,7 @@ export function profileToStudent(
     coachingGoals: onboarding.coachingGoals,
     struggleAreas: onboarding.struggleAreas,
     additionalNotes: onboarding.additionalNotes,
+    diagnoses: Array.isArray(extras.diagnoses) ? extras.diagnoses.map(String) : [],
     completed,
     opened: Array.isArray(extras.opened) ? extras.opened.map(String) : [],
     courseAccess: extras.courseAccess === "full" ? "full" : "free_preview",
@@ -358,12 +360,13 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured.", students: [] };
 
-  const [onboarding, progress, profileResult, access, activation] = await Promise.all([
+  const [onboarding, progress, profileResult, access, activation, diagnoses] = await Promise.all([
     fetchOnboardingByUser(),
     fetchCoachProgressBundle(),
     fetchStudentProfiles(),
     fetchCourseAccessByUser(),
     fetchAccountActivationByUser(),
+    fetchDiagnosesByStudent(),
   ]);
   const completed = Object.fromEntries(
     Object.entries(progress.byUser).map(([userId, view]) => [userId, view.completed])
@@ -403,6 +406,7 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
         deregisteredAt: access[row.id]?.deregisteredAt || null,
         accessActive: access[row.id]?.accessActive !== false,
         accountActivation: activation[row.id],
+        diagnoses: diagnoses[row.id] || [],
       })
     );
 
@@ -412,11 +416,12 @@ export async function fetchRosterStudents(): Promise<{ ok: boolean; error?: stri
 export async function fetchRosterStudent(id: string): Promise<Student | null> {
   const client = getSupabase();
   if (!client) return null;
-  const [progress, onboarding, access, activation] = await Promise.all([
+  const [progress, onboarding, access, activation, diagnoses] = await Promise.all([
     fetchCoachProgressBundle(id),
     fetchOnboardingByUser(),
     fetchCourseAccessByUser(),
     fetchAccountActivationByUser(),
+    fetchDiagnosesByStudent(),
   ]);
   const completed = progress.byUser[id] || emptyStudentProgress();
   const onboardingRow = onboarding[id] || {};
@@ -428,6 +433,7 @@ export async function fetchRosterStudent(id: string): Promise<Student | null> {
     deregisteredAt: access[id]?.deregisteredAt || null,
     accessActive: access[id]?.accessActive !== false,
     accountActivation: activation[id],
+    diagnoses: diagnoses[id] || [],
   };
   const { data } = await client.from("profiles").select("*").eq("id", id).maybeSingle();
   if (data) {

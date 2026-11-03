@@ -2009,9 +2009,45 @@ input[type="tel"]:focus {
 
 .profile-tags {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.diagnosis-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.profile-diagnosis-pills {
+  margin-top: 8px;
+}
+
+.diagnosis-pill {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 99px;
+  padding: 5px 11px;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+button.diagnosis-pill {
+  cursor: pointer;
+}
+
+.diagnosis-pill.on {
+  background: var(--dark);
+  border-color: var(--dark);
+  color: #fff;
+}
+
+.student-diagnoses {
+  margin-bottom: 16px;
 }
 
 .progress-wide {
