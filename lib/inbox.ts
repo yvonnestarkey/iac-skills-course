@@ -1,5 +1,7 @@
+import { shouldNotifyCoachOfStudentMessage } from "./inbox-notify";
 import { getSupabase } from "./supabase";
-import { insertCoachNotifications, isUserId, notifyAssignmentFeedback } from "./notifications";
+import { isUserId, notifyAssignmentFeedback } from "./notifications";
+import { requestClassroomEmails } from "./student-classroom-email";
 
 export type InboxRole = "student" | "coach";
 export type InboxKind = "question" | "reply" | "feedback";
@@ -410,7 +412,9 @@ export async function markCoachThreadResolved(student: {
   return { ok: false, error: lastError || "Could not resolve this thread." };
 }
 
-export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean; error?: string; message?: InboxMessage }> {
+export async function postInboxMessage(
+  draft: InboxDraft
+): Promise<{ ok: boolean; error?: string; message?: InboxMessage; emailError?: string }> {
   const { client, user, error: authError } = await authClient();
   if (!client) return { ok: false, error: authError || "Supabase is not configured." };
   if (!user) return { ok: false, error: authError || "Sign in required." };
@@ -441,41 +445,54 @@ export async function postInboxMessage(draft: InboxDraft): Promise<{ ok: boolean
       studentEmail: message.studentEmail,
     });
   }
+  let emailError = "";
+  if (draft.from === "coach" && message.studentEmail.includes("@")) {
+    const emailed = await requestClassroomEmails({
+      kind: draft.kind === "feedback" ? "assignment_feedback" : "message",
+      title: draft.context || (draft.kind === "feedback" ? "Assignment feedback" : "Message from your coach"),
+      message: body,
+      recipients: [
+        {
+          email: message.studentEmail,
+          userId: message.studentId,
+          recordId: message.id,
+        },
+      ],
+    });
+    if (emailed.failed && !emailed.sent) {
+      emailError = emailed.error || "The student email was not sent.";
+    }
+  }
   if (draft.kind === "feedback" && draft.from === "coach") {
     await notifyAssignmentFeedback({
       studentId: message.studentId,
       studentEmail: message.studentEmail,
       title: draft.context || "Assignment feedback",
       message: body,
+      sendEmail: false,
     });
-  } else if (draft.from === "coach" && draft.kind === "reply") {
-    let studentId = message.studentId || draft.studentId || "";
-    if (!isUserId(studentId) && message.studentEmail) {
-      const profile = await client.from("profiles").select("id").ilike("email", message.studentEmail).maybeSingle();
-      studentId = profile.data?.id || "";
-    }
-    if (isUserId(studentId)) {
-      await insertCoachNotifications({
-        students: [{ id: studentId, email: message.studentEmail }],
-        title: draft.context || "Coach reply",
-        message: body,
-        kind: "reply",
-        audience: "student",
-      });
-    }
   }
-  return { ok: true, message };
+  if (draft.from === "student" && shouldNotifyCoachOfStudentMessage(message.studentEmail) && message.id) {
+    void fetch("/api/student/inbox-message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ messageId: message.id, context: draft.context || "" }),
+    });
+  }
+  return { ok: true, message, emailError: emailError || undefined };
 }
 
 export async function postInboxMessagesToStudents(
   students: Array<{ id: string; email: string }>,
   body: string
-): Promise<{ ok: boolean; sent: number; error?: string }> {
+): Promise<{ ok: boolean; sent: number; error?: string; emailError?: string }> {
   const text = body.trim();
   if (!text) return { ok: false, sent: 0, error: "Write a message first." };
   if (!students.length) return { ok: false, sent: 0, error: "Pick at least one student." };
   let sent = 0;
   let lastError = "";
+  let emailError = "";
   for (const student of students) {
     const result = await postInboxMessage({
       studentId: student.id,
@@ -487,11 +504,13 @@ export async function postInboxMessagesToStudents(
     });
     if (result.ok) sent += 1;
     else lastError = result.error || lastError;
+    if (result.emailError) emailError = result.emailError;
   }
   return {
     ok: sent === students.length,
     sent,
     error: sent === students.length ? undefined : lastError || "Could not send every message.",
+    emailError: emailError || undefined,
   };
 }
 

@@ -89,7 +89,9 @@ export function classroomEmailIdempotencyKey(
 ): string {
   const recordId = (recipient.recordId || "").trim();
   if (recordId) return `iac-classroom-${kind}-${recordId}`.slice(0, 256);
-  return `iac-classroom-${kind}-${recipient.email.trim().toLowerCase()}`.slice(0, 256);
+  const email = recipient.email.trim().toLowerCase();
+  const unique = typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : String(Date.now());
+  return `iac-classroom-${kind}-${email}-${unique}`.slice(0, 256);
 }
 
 export function absoluteClassroomHref(href: string, origin?: string | null): string {
@@ -179,11 +181,13 @@ export function buildClassroomEmail(input: {
   return { subject, text, html };
 }
 
+export type ClassroomEmailSendResult = { sent: number; failed: number; error?: string };
+
 export async function sendClassroomEmails(
   input: ClassroomEmailBatch,
   sendEmail: typeof sendResendEmail = sendResendEmail,
   env: Record<string, string | undefined> = process.env
-): Promise<{ sent: number; failed: number }> {
+): Promise<ClassroomEmailSendResult> {
   const recipients = input.recipients.filter((recipient) => recipient.email.includes("@"));
   if (!recipients.length) return { sent: 0, failed: 0 };
 
@@ -218,33 +222,44 @@ export async function sendClassroomEmails(
 
   let sent = 0;
   let failed = 0;
+  let error = "";
   results.forEach((result) => {
     if (result.status === "fulfilled") sent += 1;
     else {
       failed += 1;
+      if (!error) error = result.reason instanceof Error ? result.reason.message : String(result.reason);
       console.error("classroom-email", result.reason);
     }
   });
-  return { sent, failed };
+  return { sent, failed, error: error || undefined };
 }
 
-export async function requestClassroomEmails(input: ClassroomEmailBatch): Promise<void> {
+export async function requestClassroomEmails(input: ClassroomEmailBatch): Promise<ClassroomEmailSendResult> {
   try {
     if (typeof window === "undefined") {
-      await sendClassroomEmails(input);
-      return;
+      return await sendClassroomEmails(input);
     }
     const response = await fetch("/api/classroom/email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(input),
     });
+    const body = (await response.json().catch(() => ({}))) as ClassroomEmailSendResult & { error?: string };
+    const sent = Number(body.sent || 0);
+    const failed = Number(body.failed || 0);
     if (!response.ok) {
-      const body = (await response.json().catch(() => ({}))) as { error?: string };
-      throw new Error(body.error || `Classroom email failed (${response.status}).`);
+      return {
+        sent,
+        failed: failed || input.recipients.length,
+        error: body.error || `Classroom email failed (${response.status}).`,
+      };
     }
+    return { sent, failed, error: body.error };
   } catch (error) {
+    const message = error instanceof Error ? error.message : "Could not send the email.";
     console.error("classroom-email", error);
+    return { sent: 0, failed: input.recipients.length, error: message };
   }
 }
 

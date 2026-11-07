@@ -99,12 +99,40 @@ test("notifications, messages, assignment feedback, and script evaluations all s
   const evaluate = readFileSync(resolve("app/api/evaluate-script/route.ts"), "utf8");
   const inbox = readFileSync(resolve("lib/inbox.ts"), "utf8");
   const surveys = readFileSync(resolve("lib/custom-surveys.ts"), "utf8");
+  const classroomApi = readFileSync(resolve("app/api/classroom/email/route.ts"), "utf8");
   assert.match(notifications, /requestClassroomEmails/);
   assert.match(notifications, /kind === "reply"\) return "message"/);
+  assert.match(notifications, /Saved in the classroom, but the email was not sent/);
   assert.match(composer, /insertCoachNotifications/);
   assert.match(inbox, /notifyAssignmentFeedback/);
-  assert.match(inbox, /insertCoachNotifications/);
+  assert.match(inbox, /requestClassroomEmails/);
+  assert.match(inbox, /\/api\/student\/inbox-message/);
   assert.match(surveys, /notifyAssignmentFeedback/);
   assert.match(evaluate, /emailScriptEvaluationToStudent/);
+  assert.match(classroomApi, /status: 502/);
   assert.equal(readFileSync(resolve("lib/notification-catchup-admin.ts"), "utf8").includes("requestClassroomEmails"), false);
+});
+
+test("a missing classroom record id does not reuse the same Resend idempotency key", () => {
+  const first = classroomEmailIdempotencyKey("message", { email: "ada@example.com" });
+  const second = classroomEmailIdempotencyKey("message", { email: "ada@example.com" });
+  assert.notEqual(first, second);
+  assert.match(first, /^iac-classroom-message-ada@example.com-/);
+});
+
+test("classroom email failures are counted instead of looking like a send", async () => {
+  const result = await sendClassroomEmails(
+    {
+      kind: "message",
+      title: "Coach reply",
+      message: "Please upload your BMCR.",
+      recipients: [{ email: "ada@example.com", recordId: "inbox-1" }],
+    },
+    async () => {
+      throw new Error("RESEND_API_KEY is not configured.");
+    }
+  );
+  assert.equal(result.sent, 0);
+  assert.equal(result.failed, 1);
+  assert.match(String(result.error), /RESEND_API_KEY/);
 });

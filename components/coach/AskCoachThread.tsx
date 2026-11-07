@@ -74,6 +74,9 @@ export default function AskCoachThread({ student }: { student: Student }) {
       return;
     }
     setText("");
+    if (result.emailError) {
+      setStatus(`Saved in the classroom, but the student email was not sent. ${result.emailError}`);
+    }
     await load();
   };
 

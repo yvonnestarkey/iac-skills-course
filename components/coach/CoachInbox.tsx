@@ -112,7 +112,13 @@ export default function CoachInbox() {
       return;
     }
     setText("");
-    setStatus(kind === "feedback" ? "Feedback sent to the student dashboard." : "Reply sent.");
+    setStatus(
+      result.emailError
+        ? `Saved in the classroom, but the student email was not sent. ${result.emailError}`
+        : kind === "feedback"
+          ? "Feedback sent to the student dashboard."
+          : "Reply sent."
+    );
     refreshCoachAlerts();
     await load();
   };

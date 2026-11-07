@@ -35,5 +35,11 @@ export async function POST(request: Request) {
       attemptId: recipient?.attemptId ? String(recipient.attemptId) : null,
     })),
   });
+  if (result.failed > 0 && result.sent === 0) {
+    return NextResponse.json(
+      { error: result.error || "Could not send the email.", ...result },
+      { status: 502 }
+    );
+  }
   return NextResponse.json({ ok: true, ...result });
 }

@@ -359,6 +359,7 @@ export async function insertCoachNotifications(input: {
   message: string;
   kind: NotificationType;
   audience?: CommunicationAudience;
+  sendEmail?: boolean;
 }): Promise<{ ok: boolean; count: number; error?: string }> {
   const client = getSupabase();
   if (!client) return { ok: false, count: 0, error: "Supabase is not configured." };
@@ -380,10 +381,13 @@ export async function insertCoachNotifications(input: {
     return { ok: false, count: 0, error };
   }
 
-  const first = await client.from("notifications").insert(rows).select("id");
+  const first = await client.from("notifications").insert(rows).select("id, user_id, student_email");
   if (!first.error) {
-    await emailInsertedNotifications(input.kind, title, message, input.students, first.data);
-    return { ok: true, count: first.data?.length || rows.length };
+    const emailed =
+      input.sendEmail === false
+        ? { sent: 0, failed: 0 }
+        : await emailInsertedNotifications(input.kind, title, message, input.students, first.data);
+    return notificationInsertResult(first.data?.length || rows.length, emailed);
   }
 
   logInsertError(first.error, rows);
@@ -397,14 +401,36 @@ export async function insertCoachNotifications(input: {
       kind: row.kind,
       body: row.body,
     }))
-  ).select("id");
+  ).select("id, user_id, student_email");
   if (!fallback.error) {
-    await emailInsertedNotifications(input.kind, title, message, input.students, fallback.data);
-    return { ok: true, count: fallback.data?.length || rows.length };
+    const emailed =
+      input.sendEmail === false
+        ? { sent: 0, failed: 0 }
+        : await emailInsertedNotifications(input.kind, title, message, input.students, fallback.data);
+    return notificationInsertResult(fallback.data?.length || rows.length, emailed);
   }
 
   logInsertError(fallback.error, rows);
   return { ok: false, count: 0, error: describe(fallback.error) };
+}
+
+function notificationInsertResult(
+  count: number,
+  emailed: { sent: number; failed: number; error?: string }
+): { ok: true; count: number; error?: string } {
+  if (!emailed.failed) return { ok: true, count };
+  if (emailed.sent) {
+    return {
+      ok: true,
+      count,
+      error: `Saved. ${emailed.sent} emailed, ${emailed.failed} could not be emailed.`,
+    };
+  }
+  return {
+    ok: true,
+    count,
+    error: `Saved in the classroom, but the email was not sent${emailed.error ? `: ${emailed.error}` : "."}`,
+  };
 }
 
 async function emailInsertedNotifications(
@@ -415,8 +441,8 @@ async function emailInsertedNotifications(
   inserted: Array<{ id?: string; user_id?: string; student_email?: string }> | null | undefined
 ) {
   const classroomKind = classroomKindFromNotification(kind);
-  if (!classroomKind) return;
-  await requestClassroomEmails({
+  if (!classroomKind) return { sent: 0, failed: 0 };
+  return requestClassroomEmails({
     kind: classroomKind,
     title,
     message,
@@ -430,6 +456,7 @@ export async function notifyAssignmentFeedback(input: {
   studentEmail?: string;
   title: string;
   message: string;
+  sendEmail?: boolean;
 }): Promise<{ ok: boolean; count: number; error?: string }> {
   let userId = input.studentId || "";
   if (!isUserId(userId) && input.studentEmail) {
@@ -446,6 +473,7 @@ export async function notifyAssignmentFeedback(input: {
     message: input.message,
     kind: "assignment_feedback",
     audience: "student",
+    sendEmail: input.sendEmail,
   });
 }
 

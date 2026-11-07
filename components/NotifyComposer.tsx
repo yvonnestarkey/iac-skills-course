@@ -64,7 +64,7 @@ export default function NotifyComposer() {
         recipientIds: notifyDraft.recipientIds,
       });
     });
-    setNotice(`Sent to ${audienceCopy(notifyDraft.audience, result.count)}.`);
+    setNotice(result.error || `Sent to ${audienceCopy(notifyDraft.audience, result.count)}.`);
     setNotifyDraft(null);
     setBusy(false);
   };

@@ -39,6 +39,10 @@ export default function ActivityMessageModal({
       );
       return;
     }
+    if (result.emailError) {
+      setError(`Saved in the classroom, but the student email was not sent. ${result.emailError}`);
+      return;
+    }
     onClose();
   };
 

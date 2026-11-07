@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import test from "node:test";
 import {
   coachSentStatsByStudentId,
@@ -8,6 +10,11 @@ import {
   studentMessagesHref,
   type InboxMessage,
 } from "./inbox";
+import {
+  shouldNotifyCoachOfStudentMessage,
+  studentInboxNotifyKey,
+  studentInboxNotifySubject,
+} from "./inbox-notify";
 
 function message(partial: Partial<InboxMessage> & Pick<InboxMessage, "id" | "body">): InboxMessage {
   return {
@@ -50,6 +57,18 @@ test("bulk inbox send refuses an empty body", async () => {
   const result = await postInboxMessagesToStudents([{ id: "s1", email: "ada@example.com" }], "  ");
   assert.equal(result.ok, false);
   assert.equal(result.sent, 0);
+});
+
+test("student inbox messages email Yvonne and skip test accounts", () => {
+  assert.equal(shouldNotifyCoachOfStudentMessage("keagan@example.com"), true);
+  assert.equal(shouldNotifyCoachOfStudentMessage("s1@test.com"), false);
+  assert.match(studentInboxNotifySubject("Nyasham Ncube"), /Nyasham Ncube/);
+  assert.equal(studentInboxNotifyKey("abc"), "student-inbox-abc");
+  const inbox = readFileSync(resolve("lib/inbox.ts"), "utf8");
+  const route = readFileSync(resolve("app/api/student/inbox-message/route.ts"), "utf8");
+  assert.match(inbox, /\/api\/student\/inbox-message/);
+  assert.match(route, /STUDENT_INBOX_NOTIFY_TO/);
+  assert.match(route, /sendResendEmail/);
 });
 
 test("mergeThread keeps one copy when a coach reply exists in inbox and notifications", () => {
