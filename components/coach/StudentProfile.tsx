@@ -35,9 +35,9 @@ import { fetchCourseOutline, type OutlineChapter } from "@/lib/student-lesson";
 import { hasWrittenFeedback } from "@/lib/feedback-log";
 import {
   fetchStudentSubmissions,
-  fileNameFromUrl,
   lessonQueuePath,
   lessonStatusToQueue,
+  submissionFiles,
   type StudentSubmission,
 } from "@/lib/student-submissions";
 import { surveyResponseStatusClass, surveyResponseStatusLabel } from "@/lib/custom-surveys";
@@ -548,7 +548,7 @@ function AssignmentRow({
   const queueStatus = lessonStatusToQueue(item.status);
   const reviewed = item.status === "approved" || item.status === "rejected" || hasWrittenFeedback(item.feedback);
   const written = hasWrittenFeedback(item.feedback);
-  const pdfName = item.link_url ? fileNameFromUrl(item.link_url) : "";
+  const pdfs = submissionFiles(item);
   const submittedAt = formatSastDateTime(item.submitted_at || (!item.gradedAt ? item.updated_at : undefined));
   const gradedAt = formatSastDateTime(item.gradedAt || (reviewed ? item.updated_at : undefined));
   return (
@@ -565,11 +565,13 @@ function AssignmentRow({
           </span>
         </div>
       </div>
-      {item.link_url ? (
-        <p>
-          <a href={item.link_url} target="_blank" rel="noopener noreferrer">
-            Open student PDF{pdfName ? `: ${pdfName}` : ""} ↗
-          </a>
+      {pdfs.length ? (
+        <p className="assignment-pdf-links">
+          {pdfs.map((file) => (
+            <a key={file.url} href={file.url} target="_blank" rel="noopener noreferrer">
+              Open student PDF{file.name ? `: ${file.name}` : ""} ↗
+            </a>
+          ))}
         </p>
       ) : item.body.trim() ? (
         <div className="submission">{item.body}</div>

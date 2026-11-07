@@ -3,9 +3,9 @@ import { surveyResponseStatusLabel } from "./custom-surveys";
 import { nextFeedbackLog } from "./feedback-log";
 import { notifyAssignmentFeedback } from "./notifications";
 import { getSupabase } from "./supabase";
-import type { Submission, SubmissionStatus } from "../types/database";
+import type { Submission, SubmissionFile, SubmissionStatus } from "../types/database";
 
-export type { Submission, SubmissionStatus };
+export type { Submission, SubmissionFile, SubmissionStatus };
 export type StudentSubmission = Submission;
 
 export const LESSON_QUEUE_PREFIX = "lesson:";
@@ -36,44 +36,125 @@ function isMissingColumn(message: string, column: string): boolean {
   return new RegExp(`'${column}' column`, "i").test(message);
 }
 
-/** Live table stores work in `content`; the repo schema uses `body` + `link_url`. */
+export function fileNameFromUrl(url: string): string {
+  try {
+    const last = decodeURIComponent(new URL(url).pathname.split("/").pop() || "");
+    return last.replace(/^\d+-/, "") || "Uploaded PDF";
+  } catch {
+    return "Uploaded PDF";
+  }
+}
+
+function asSubmissionFile(url: string, name = ""): SubmissionFile | null {
+  const trimmed = String(url || "").trim();
+  if (!trimmed || !looksLikeUrl(trimmed)) return null;
+  return { url: trimmed, name: String(name || "").trim() || fileNameFromUrl(trimmed) };
+}
+
+export function mergeSubmissionFiles(existing: SubmissionFile[], next: SubmissionFile | SubmissionFile[]): SubmissionFile[] {
+  const extras = Array.isArray(next) ? next : [next];
+  const out = [...existing];
+  const seen = new Set(out.map((file) => file.url));
+  for (const extra of extras) {
+    const file = asSubmissionFile(extra?.url || "", extra?.name || "");
+    if (!file || seen.has(file.url)) continue;
+    seen.add(file.url);
+    out.push(file);
+  }
+  return out;
+}
+
+export function submissionFiles(item: { files?: SubmissionFile[] | null; link_url?: string | null } | null | undefined): SubmissionFile[] {
+  if (!item) return [];
+  if (item.files?.length) return item.files;
+  const one = asSubmissionFile(String(item.link_url || ""));
+  return one ? [one] : [];
+}
+
+function filesFromUnknown(value: unknown, fallbackUrl = ""): SubmissionFile[] {
+  const parsed: SubmissionFile[] = [];
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      if (typeof item === "string") {
+        const file = asSubmissionFile(item);
+        if (file) parsed.push(file);
+        continue;
+      }
+      if (item && typeof item === "object") {
+        const rec = item as { url?: unknown; name?: unknown; link_url?: unknown };
+        const file = asSubmissionFile(String(rec.url || rec.link_url || ""), String(rec.name || ""));
+        if (file) parsed.push(file);
+      }
+    }
+  }
+  const fallback = asSubmissionFile(fallbackUrl);
+  return fallback ? mergeSubmissionFiles(parsed, fallback) : mergeSubmissionFiles(parsed, []);
+}
+
+/** Live table stores work in `content`; the repo schema uses `body` + `link_url`. Extra PDFs live in `files`. */
 export function unpackSubmissionContent(row: {
   body?: string | null;
   link_url?: string | null;
   content?: string | null;
   submitted_at?: string | null;
   updated_at?: string | null;
-}): { body: string; link_url: string; updated_at?: string } {
-  const body = String(row.body || "").trim();
-  const linkUrl = String(row.link_url || "").trim();
+}): { body: string; link_url: string; files: SubmissionFile[]; updated_at?: string } {
+  const columnBody = String(row.body || "").trim();
+  const columnLink = String(row.link_url || "").trim();
   const stamp = row.updated_at || row.submitted_at || undefined;
-  if (body || linkUrl) return { body, link_url: linkUrl, updated_at: stamp };
-
   const content = String(row.content || "").trim();
-  if (!content) return { body: "", link_url: "", updated_at: stamp };
+
+  let parsedBody = "";
+  let parsedLink = "";
+  let parsedFiles: SubmissionFile[] = [];
   if (content.startsWith("{")) {
     try {
-      const parsed = JSON.parse(content) as { body?: unknown; link_url?: unknown; url?: unknown };
+      const parsed = JSON.parse(content) as { body?: unknown; link_url?: unknown; url?: unknown; files?: unknown };
       if (parsed && typeof parsed === "object") {
-        const parsedBody = String(parsed.body || "").trim();
-        const parsedLink = String(parsed.link_url || parsed.url || "").trim();
-        if (parsedBody || parsedLink) return { body: parsedBody, link_url: parsedLink, updated_at: stamp };
+        parsedBody = String(parsed.body || "").trim();
+        parsedLink = String(parsed.link_url || parsed.url || "").trim();
+        parsedFiles = filesFromUnknown(parsed.files, parsedLink);
       }
     } catch {
       /* treat as plain text */
     }
   }
-  if (looksLikeUrl(content)) return { body: "", link_url: content, updated_at: stamp };
-  return { body: content, link_url: "", updated_at: stamp };
+
+  const body = columnBody || parsedBody;
+  let files = parsedFiles;
+  if (!files.length) {
+    const fromPlainContent = content && !content.startsWith("{") && looksLikeUrl(content) ? asSubmissionFile(content) : null;
+    const one = fromPlainContent || asSubmissionFile(columnLink) || asSubmissionFile(parsedLink);
+    files = one ? [one] : [];
+  }
+  const primary = files[0]?.url || columnLink || parsedLink;
+  if (body || primary) return { body, link_url: primary, files, updated_at: stamp };
+  if (!content) return { body: "", link_url: "", files: [], updated_at: stamp };
+  if (looksLikeUrl(content)) {
+    const file = asSubmissionFile(content);
+    return { body: "", link_url: file?.url || content, files: file ? [file] : [], updated_at: stamp };
+  }
+  return { body: content, link_url: "", files: [], updated_at: stamp };
 }
 
-export function packSubmissionContent(body: string, linkUrl: string): string {
+export function packSubmissionContent(body: string, linkUrl: string, files?: SubmissionFile[]): string {
   const trimmedBody = body.trim();
-  const trimmedLink = linkUrl.trim();
-  if (trimmedLink && !trimmedBody) return trimmedLink;
-  if (trimmedBody && !trimmedLink) return trimmedBody;
-  if (!trimmedBody && !trimmedLink) return "";
-  return JSON.stringify({ body: trimmedBody, link_url: trimmedLink });
+  const packed = mergeSubmissionFiles(
+    [],
+    files?.length ? files : linkUrl.trim() ? [{ url: linkUrl.trim(), name: fileNameFromUrl(linkUrl.trim()) }] : []
+  );
+  const primary = packed[0]?.url || linkUrl.trim();
+  if (packed.length > 1) {
+    return JSON.stringify({
+      ...(trimmedBody ? { body: trimmedBody } : {}),
+      link_url: primary,
+      files: packed,
+    });
+  }
+  if (primary && !trimmedBody) return primary;
+  if (trimmedBody && !primary) return trimmedBody;
+  if (!trimmedBody && !primary) return "";
+  return JSON.stringify({ body: trimmedBody, link_url: primary, ...(packed.length ? { files: packed } : {}) });
 }
 
 export function submissionFromRow(row: {
@@ -97,6 +178,7 @@ export function submissionFromRow(row: {
     lesson_id: row.lesson_id,
     body: unpacked.body,
     link_url: unpacked.link_url,
+    files: unpacked.files,
     status: asStatus(row.status),
     updated_at: unpacked.updated_at,
     submitted_at: String(row.submitted_at || "").trim() || undefined,
@@ -442,15 +524,6 @@ function storageUploadError(message: string): string {
   return message || "Could not upload that file.";
 }
 
-export function fileNameFromUrl(url: string): string {
-  try {
-    const last = decodeURIComponent(new URL(url).pathname.split("/").pop() || "");
-    return last.replace(/^\d+-/, "") || "Uploaded PDF";
-  } catch {
-    return "Uploaded PDF";
-  }
-}
-
 export async function uploadAssignmentFile(
   studentId: string,
   lessonId: string,
@@ -509,17 +582,28 @@ export async function saveStudentSubmission(input: {
   lessonId: string;
   body: string;
   linkUrl: string;
+  files?: SubmissionFile[];
+  status?: SubmissionStatus;
 }): Promise<{ ok: boolean; error?: string; submission?: StudentSubmission }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
 
   const body = input.body.trim();
-  const linkUrl = input.linkUrl.trim();
+  const files = mergeSubmissionFiles(
+    [],
+    input.files?.length
+      ? input.files
+      : input.linkUrl.trim()
+        ? [{ url: input.linkUrl.trim(), name: fileNameFromUrl(input.linkUrl.trim()) }]
+        : []
+  );
+  const linkUrl = files[0]?.url || input.linkUrl.trim();
+  const status = input.status || "submitted";
   const liveRow = {
     student_id: input.studentId,
     lesson_id: input.lessonId,
-    content: packSubmissionContent(body, linkUrl),
-    status: "submitted" as const,
+    content: packSubmissionContent(body, linkUrl, files),
+    status,
   };
   let { data, error } = await writeStudentSubmissionRow(client, liveRow);
   if (error && isMissingColumn(error.message, "content")) {
@@ -528,7 +612,7 @@ export async function saveStudentSubmission(input: {
       lesson_id: input.lessonId,
       body,
       link_url: linkUrl,
-      status: "submitted" as const,
+      status,
       updated_at: new Date().toISOString(),
     }));
   }
@@ -542,7 +626,8 @@ export async function saveStudentSubmission(input: {
           lesson_id: input.lessonId,
           body,
           link_url: linkUrl,
-          status: "submitted",
+          files,
+          status,
         },
   };
 }

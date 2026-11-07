@@ -7,9 +7,11 @@ import {
   isLessonQueueId,
   lessonQueuePath,
   lessonStatusToQueue,
+  mergeSubmissionFiles,
   packSubmissionContent,
   queueStatusToLesson,
   shouldNotifyCoachOfLessonSubmission,
+  submissionFiles,
   submissionFromRow,
   unpackSubmissionContent,
 } from "./student-submissions";
@@ -20,6 +22,8 @@ test("live content column stores a PDF URL as link_url", () => {
   });
   assert.equal(unpacked.body, "");
   assert.match(unpacked.link_url, /Blessing-Task-1\.pdf$/);
+  assert.equal(unpacked.files.length, 1);
+  assert.match(unpacked.files[0].url, /Blessing-Task-1\.pdf$/);
 });
 
 test("legacy body and link_url columns still unpack", () => {
@@ -30,10 +34,29 @@ test("legacy body and link_url columns still unpack", () => {
   });
   assert.equal(unpacked.body, "Working notes");
   assert.equal(unpacked.link_url, "https://example.com/file.pdf");
+  assert.equal(unpacked.files.length, 1);
+  assert.equal(unpacked.files[0].url, "https://example.com/file.pdf");
 });
 
 test("pack stores a PDF-only submission as a plain URL", () => {
   assert.equal(packSubmissionContent("", "https://cdn.example/file.pdf"), "https://cdn.example/file.pdf");
+});
+
+test("extra assignment PDFs are kept instead of overwriting the first", () => {
+  const first = { url: "https://cdn.example/task1.pdf", name: "task1.pdf" };
+  const extra = { url: "https://cdn.example/workings.pdf", name: "workings.pdf" };
+  const packed = packSubmissionContent("", first.url, [first, extra]);
+  const unpacked = unpackSubmissionContent({ content: packed });
+  assert.equal(unpacked.files.length, 2);
+  assert.equal(unpacked.files[0].url, first.url);
+  assert.equal(unpacked.files[1].url, extra.url);
+  assert.equal(unpacked.link_url, first.url);
+  assert.equal(mergeSubmissionFiles([first], extra).length, 2);
+  assert.equal(mergeSubmissionFiles([first], first).length, 1);
+  assert.deepEqual(
+    submissionFiles({ link_url: first.url, files: [first, extra] }).map((file) => file.url),
+    [first.url, extra.url]
+  );
 });
 
 test("submissionFromRow maps live content into the student form fields", () => {
@@ -45,6 +68,7 @@ test("submissionFromRow maps live content into the student form fields", () => {
     submitted_at: "2026-09-21T15:00:00.000Z",
   });
   assert.equal(row.link_url, "https://cdn.example/file.pdf");
+  assert.equal(row.files?.[0]?.url, "https://cdn.example/file.pdf");
   assert.equal(row.body, "");
   assert.equal(row.updated_at, "2026-09-21T15:00:00.000Z");
   assert.equal(row.submitted_at, "2026-09-21T15:00:00.000Z");
@@ -70,6 +94,7 @@ test("lesson uploads map onto the submissions queue and notify the coach", () =>
   assert.match(tab, /fetchLessonSubmissionsForCoach/);
   assert.match(review, /isLessonQueueId/);
   assert.match(review, /Open student PDF/);
+  assert.match(review, /submissionFiles\(lesson\)/);
   assert.match(review, /Comments/);
   assert.match(review, /setFeedback\(""\)/);
   assert.match(saver, /nextFeedbackLog/);
@@ -77,6 +102,10 @@ test("lesson uploads map onto the submissions queue and notify the coach", () =>
   assert.match(profile, /Hide feedback/);
   assert.match(profile, /Submitted ·/);
   assert.match(profile, /assignment-submitted-date/);
+  assert.match(profile, /submissionFiles\(item\)/);
   const form = readFileSync(resolve("components/student/LessonSubmissionForm.tsx"), "utf8");
   assert.match(form, /\/api\/student\/assignment-submitted/);
+  assert.match(form, /Add another PDF/);
+  assert.match(form, /multiple/);
+  assert.match(form, /mergeSubmissionFiles/);
 });

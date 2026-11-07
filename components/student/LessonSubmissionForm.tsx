@@ -14,10 +14,12 @@ import {
 import FeedbackLog from "@/components/feedback/FeedbackLog";
 import { hasWrittenFeedback } from "@/lib/feedback-log";
 import {
-  fileNameFromUrl,
+  mergeSubmissionFiles,
   saveStudentSubmission,
+  submissionFiles,
   uploadAssignmentFile,
   type StudentSubmission,
+  type SubmissionFile,
 } from "@/lib/student-submissions";
 
 export default function LessonSubmissionForm({
@@ -36,18 +38,19 @@ export default function LessonSubmissionForm({
   practiceOnly?: boolean;
 }) {
   const [body, setBody] = useState(saved?.body || "");
-  const [linkUrl, setLinkUrl] = useState(saved?.link_url || "");
-  const [fileName, setFileName] = useState("");
+  const [files, setFiles] = useState(() => submissionFiles(saved));
   const [bmcr, setBmcr] = useState<BmcrValue>(EMPTY_BMCR_VALUE);
   const [bmcrId, setBmcrId] = useState<string | undefined>();
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
+  const savedFileKey = submissionFiles(saved)
+    .map((file) => file.url)
+    .join("|");
 
   useEffect(() => {
     setBody(saved?.body || "");
-    setLinkUrl(saved?.link_url || "");
-    setFileName(saved?.link_url ? fileNameFromUrl(saved.link_url) : "");
-  }, [lessonId, saved?.body, saved?.link_url]);
+    setFiles(submissionFiles(saved));
+  }, [lessonId, saved?.body, saved?.link_url, savedFileKey]);
 
   useEffect(() => {
     let cancelled = false;
@@ -61,20 +64,58 @@ export default function LessonSubmissionForm({
     };
   }, [studentId, lessonId]);
 
-  const pickFile = async (file: File | undefined) => {
-    if (!file) return;
-    setFileName(file.name);
+  const persistFiles = async (nextFiles: SubmissionFile[], alreadySubmitted: boolean) => {
+    if (!alreadySubmitted) return true;
+    const result = await saveStudentSubmission({
+      studentId,
+      lessonId,
+      body,
+      linkUrl: nextFiles[0]?.url || "",
+      files: nextFiles,
+      status: saved?.status,
+    });
+    if (!result.ok || !result.submission) {
+      setStatus(result.error || "The extra PDF uploaded, but it could not be saved on your submission.");
+      return false;
+    }
+    void fetch("/api/student/assignment-submitted", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lessonId }),
+    });
+    onSaved?.(result.submission);
+    return true;
+  };
+
+  const pickFiles = async (chosen: File[]) => {
+    if (!chosen.length) return;
     setBusy(true);
-    setStatus("Uploading PDF…");
-    const result = await uploadAssignmentFile(studentId, lessonId, file);
+    setStatus(chosen.length > 1 ? "Uploading PDFs…" : "Uploading PDF…");
+    const added: SubmissionFile[] = [];
+    for (const file of chosen) {
+      const result = await uploadAssignmentFile(studentId, lessonId, file);
+      if (result.ok === false) {
+        if (added.length) setFiles((current) => mergeSubmissionFiles(current, added));
+        setBusy(false);
+        setStatus(result.error);
+        return;
+      }
+      added.push({ url: result.url, name: result.name });
+    }
+    const nextFiles = mergeSubmissionFiles(files, added);
+    setFiles(nextFiles);
+    const savedExtra = await persistFiles(nextFiles, Boolean(saved));
     setBusy(false);
-    if (result.ok === false) {
-      setStatus(result.error);
+    if (!savedExtra) return;
+    if (saved) {
+      setStatus(nextFiles.length > 1 ? "PDF added. Your earlier files are still saved." : "PDF uploaded.");
       return;
     }
-    setLinkUrl(result.url);
-    setFileName(result.name);
-    setStatus("PDF uploaded. Complete the BMCR, then submit.");
+    setStatus(
+      nextFiles.length > 1
+        ? "PDFs uploaded. Complete the BMCR, then submit."
+        : "PDF uploaded. Complete the BMCR, then submit."
+    );
   };
 
   const savePracticeBmcr = async () => {
@@ -105,13 +146,19 @@ export default function LessonSubmissionForm({
       await savePracticeBmcr();
       return;
     }
-    if (!linkUrl.trim()) {
+    if (!files.length) {
       setStatus("Upload your PDF before submitting.");
       return;
     }
     setBusy(true);
     setStatus("");
-    const result = await saveStudentSubmission({ studentId, lessonId, body, linkUrl });
+    const result = await saveStudentSubmission({
+      studentId,
+      lessonId,
+      body,
+      linkUrl: files[0]?.url || "",
+      files,
+    });
     if (!result.ok || !result.submission) {
       setBusy(false);
       setStatus(result.error || "Could not save your submission.");
@@ -164,7 +211,7 @@ export default function LessonSubmissionForm({
       ) : requiresCoachApproval ? (
         <p className="muted">Your coach must approve this before later lessons unlock.</p>
       ) : (
-        <p className="muted">Upload your marked PDF and complete the BMCR.</p>
+        <p className="muted">Upload your marked PDF and complete the BMCR. If you forget a file, add it here — it will not replace the ones you already uploaded.</p>
       )}
       {practiceOnly ? null : saved?.status === "approved" ? <p className="notice">Your coach approved this submission.</p> : null}
       {practiceOnly ? null : saved?.status === "rejected" ? <p className="notice">Your coach asked for an update. Resubmit when you are ready.</p> : null}
@@ -185,31 +232,40 @@ export default function LessonSubmissionForm({
 
       {practiceOnly ? null : (
         <>
-          {linkUrl ? (
-            <div className="file-card">
-              <span className="file-icon">PDF</span>
-              <div className="file-meta">
-                <strong>{fileName || "Uploaded PDF"}</strong>
-                <span className="muted small">Ready to submit</span>
-              </div>
-              <a className="ghost" href={linkUrl} target="_blank" rel="noopener noreferrer">
-                Open PDF
-              </a>
+          {files.length ? (
+            <div className="submission-files">
+              {files.map((file, index) => (
+                <div className="file-card" key={file.url}>
+                  <span className="file-icon">PDF</span>
+                  <div className="file-meta">
+                    <strong>{file.name || "Uploaded PDF"}</strong>
+                    <span className="muted small">
+                      {index === 0 && files.length === 1 ? "Ready to submit" : `File ${index + 1} of ${files.length}`}
+                    </span>
+                  </div>
+                  <a className="ghost" href={file.url} target="_blank" rel="noopener noreferrer">
+                    Open PDF
+                  </a>
+                </div>
+              ))}
             </div>
           ) : null}
           <label className="dropzone" htmlFor="submission-file">
-            <strong>{linkUrl ? "Replace your PDF" : "Choose a PDF to upload"}</strong>
-            <span className="muted small">{busy ? "Uploading…" : "PDF only · scans are fine"}</span>
-            {fileName && !linkUrl ? <span className="muted small">Selected: {fileName}</span> : null}
+            <strong>{files.length ? "Add another PDF" : "Choose a PDF to upload"}</strong>
+            <span className="muted small">
+              {busy ? "Uploading…" : files.length ? "Your earlier files stay saved · PDF only" : "PDF only · scans are fine"}
+            </span>
             <input
               id="submission-file"
               type="file"
               accept="application/pdf,.pdf"
+              multiple
               disabled={busy}
               onChange={(event) => {
-                const chosen = event.target.files?.[0];
-                if (!chosen) return;
-                void pickFile(chosen);
+                const chosen = Array.from(event.target.files || []);
+                event.target.value = "";
+                if (!chosen.length) return;
+                void pickFiles(chosen);
               }}
             />
           </label>

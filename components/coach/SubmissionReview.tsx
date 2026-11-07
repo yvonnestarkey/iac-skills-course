@@ -27,9 +27,9 @@ import { fetchLessonBmcrEvaluation, parseBmcrAnswer, withDiagnostics, type BmcrV
 import { formatSastDateTime } from "@/lib/dates";
 import {
   fetchLessonSubmissionReview,
-  fileNameFromUrl,
   isLessonQueueId,
   saveLessonSubmissionReview,
+  submissionFiles,
   type LessonSubmissionReview,
 } from "@/lib/student-submissions";
 
@@ -207,7 +207,7 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
   }
 
   const pdfs = survey && response ? surveyPdfUploads(survey, response.answers) : [];
-  if (lesson?.link_url) pdfs.unshift({ url: lesson.link_url, name: fileNameFromUrl(lesson.link_url) });
+  if (lesson) pdfs.unshift(...submissionFiles(lesson));
   const title = lesson?.lessonTitle || survey?.title || "Submission";
   const studentName = lesson?.studentName || response?.studentName || "Student";
   const studentId = lesson?.student_id || response?.studentId || "";

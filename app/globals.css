@@ -1357,6 +1357,16 @@ input[type="tel"]:focus {
   margin-top: 16px;
 }
 
+.submission-files {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.submission-files .file-card {
+  margin-top: 0;
+}
+
 .file-icon {
   width: 42px;
   height: 50px;
@@ -2585,6 +2595,11 @@ button.diagnosis-pill {
   color: #8a9692;
   font-size: 12px;
   font-weight: 500;
+}
+
+.assignment-pdf-links {
+  display: grid;
+  gap: 6px;
 }
 
 .feedback-log {

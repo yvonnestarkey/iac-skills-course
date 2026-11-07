@@ -56,6 +56,8 @@ export interface BmcrEvaluation {
   submitted_at?: string;
 }
 
+export type SubmissionFile = { url: string; name: string };
+
 /** Student work submitted for a gated lesson. */
 export interface Submission {
   id?: string;
@@ -63,6 +65,7 @@ export interface Submission {
   lesson_id: string;
   body: string;
   link_url: string;
+  files?: SubmissionFile[];
   status: SubmissionStatus;
   updated_at?: string;
   submitted_at?: string;
