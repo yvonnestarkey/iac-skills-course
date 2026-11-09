@@ -11,6 +11,7 @@ import {
   clipsForStudyClinicSection,
   emptyStudyClinicPage,
   inferStudyClinicKind,
+  mergeStudyClinicClips,
   studyClinicIntro,
   studyClinicKindLabel,
   studyClinicPageForSection,
@@ -30,13 +31,29 @@ export default function StudyClinicLibrary({ section }: { section: StudyClinicSe
   const intro = studyClinicIntro(page, section.id);
   const notes = (page.body || "").trim();
 
-  const load = useCallback(async () => {
-    const response = await fetch("/api/study-clinic");
+  const load = useCallback(async (extras: StudyClinicClip[] = []) => {
+    const response = await fetch("/api/study-clinic", { cache: "no-store" });
     const payload = await response.json().catch(() => ({}));
-    setClips(Array.isArray(payload.clips) ? payload.clips : []);
-    setPage(studyClinicPageForSection(Array.isArray(payload.pages) ? payload.pages : [], section.id));
+    const incoming = Array.isArray(payload.clips) ? payload.clips : [];
+    setClips((current) => mergeStudyClinicClips([...current, ...extras], incoming, section.id));
+    const nextPage = studyClinicPageForSection(Array.isArray(payload.pages) ? payload.pages : [], section.id);
+    setPage((current) => {
+      if (!nextPage.intro && !nextPage.body && (current.intro || current.body)) return current;
+      return nextPage;
+    });
     setReady(true);
   }, [section.id]);
+
+  const applySave = useCallback(
+    async (next?: { clip?: StudyClinicClip; page?: StudyClinicPage; removedId?: string }) => {
+      if (next?.removedId) {
+        setClips((current) => current.filter((clip) => clip.id !== next.removedId));
+      }
+      if (next?.page) setPage(next.page);
+      await load(next?.clip ? [next.clip] : []);
+    },
+    [load]
+  );
 
   useEffect(() => {
     void load();
@@ -49,7 +66,7 @@ export default function StudyClinicLibrary({ section }: { section: StudyClinicSe
       </p>
       <p className="kicker">Study Clinic</p>
       <h1>{section.title}</h1>
-      {coach ? <StudyClinicPageEditor section={section} clips={inSection} page={page} onChanged={load} /> : null}
+      {coach ? <StudyClinicPageEditor section={section} clips={inSection} page={page} onChanged={applySave} /> : null}
       <p className="lead">
         <LinkedText text={intro} />
       </p>

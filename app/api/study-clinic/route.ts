@@ -12,5 +12,5 @@ export async function GET() {
     fetchStudyClinicClips({ includeDrafts: staff }),
     fetchStudyClinicPages(),
   ]);
-  return NextResponse.json({ clips, pages });
+  return NextResponse.json({ clips, pages }, { headers: { "cache-control": "no-store" } });
 }

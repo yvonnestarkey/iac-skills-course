@@ -274,8 +274,39 @@ export function studyClinicMissingResourceSqlError(message: string | null | unde
   return /column .* (kind|resource_url|resource_label)/i.test(message || "") || /could not find the '(kind|resource_url|resource_label)'/i.test(message || "");
 }
 
+export function studyClinicMissingSectionSqlError(message: string | null | undefined): boolean {
+  return /could not find the 'section'/i.test(message || "") || /column .*['"]section['"]/i.test(message || "");
+}
+
 export function studyClinicMissingPageSqlError(message: string | null | undefined): boolean {
   return /study_clinic_pages/i.test(message || "") && /does not exist|schema cache|relation/i.test(message || "");
+}
+
+export function mergeStudyClinicClips(
+  current: StudyClinicClip[],
+  incoming: StudyClinicClip[],
+  preferSection?: StudyClinicSectionId
+): StudyClinicClip[] {
+  const byId = new Map<string, StudyClinicClip>();
+  for (const clip of incoming) byId.set(clip.id, clip);
+  for (const clip of current) {
+    const existing = byId.get(clip.id);
+    if (!existing) {
+      if (preferSection && clip.section === preferSection) byId.set(clip.id, clip);
+      continue;
+    }
+    const keepLocalSection = Boolean(preferSection) && clip.section === preferSection && existing.section !== preferSection;
+    const keepLocalResource = Boolean(clip.resource_url) && !existing.resource_url;
+    byId.set(clip.id, {
+      ...existing,
+      ...(keepLocalSection ? { section: clip.section } : {}),
+      ...(keepLocalResource ? { kind: clip.kind, resource_url: clip.resource_url, resource_label: clip.resource_label } : {}),
+    });
+  }
+  return [...byId.values()].sort((left, right) => {
+    if (left.position !== right.position) return left.position - right.position;
+    return left.title.localeCompare(right.title);
+  });
 }
 
 export async function fetchStudyClinicClips(options?: { includeDrafts?: boolean }): Promise<StudyClinicClip[]> {

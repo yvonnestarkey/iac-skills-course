@@ -24,7 +24,7 @@ export default function StudyClinicPageEditor({
   section: StudyClinicSection;
   clips: StudyClinicClip[];
   page: StudyClinicPage;
-  onChanged: () => Promise<void> | void;
+  onChanged: (next?: { clip?: StudyClinicClip; page?: StudyClinicPage; removedId?: string }) => Promise<void> | void;
 }) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -59,7 +59,7 @@ export default function StudyClinicPageEditor({
       return;
     }
     setStatus("Library copy saved.");
-    await onChanged();
+    await onChanged({ page: payload.page || { section: section.id, intro, body } });
   };
 
   const saveResource = async () => {
@@ -81,9 +81,10 @@ export default function StudyClinicPageEditor({
       setStatus(payload.error || "Could not save.");
       return;
     }
-    setDraft(draftFromClip(payload.clip));
-    setStatus("Saved to this library.");
-    await onChanged();
+    const clip = payload.clip || parsed.clip;
+    setDraft(emptyClinicDraft(section.id));
+    setStatus(`Saved “${clip.title}” to ${section.title}.`);
+    await onChanged({ clip });
   };
 
   const remove = async (id: string) => {
@@ -97,7 +98,7 @@ export default function StudyClinicPageEditor({
       return;
     }
     if (draft.id === id) setDraft(emptyClinicDraft(section.id));
-    await onChanged();
+    await onChanged({ removedId: id });
   };
 
   return (
@@ -108,8 +109,9 @@ export default function StudyClinicPageEditor({
       {open ? (
         <div className="coach-lesson-editor-form">
           <p className="muted small">
-            Add videos, PDFs, and links as you create them. Uncheck published until you are ready for students to see
-            an item. Paste supabase/study-clinic-resources.sql once so PDFs, links, and this page copy can save.
+            The lead line is page copy. A PDF, video, or link is a resource in the form below — use Save to this
+            library. Paste supabase/study-clinic-sections.sql and supabase/study-clinic-resources.sql once if a save
+            asks you to.
           </p>
           {status ? <p className="notice">{status}</p> : null}
 
@@ -132,8 +134,8 @@ export default function StudyClinicPageEditor({
             />
           </div>
           <div className="actions">
-            <button className="primary" type="button" disabled={busy} onClick={() => void saveCopy()}>
-              {busy ? "Saving…" : "Save library copy"}
+            <button className="ghost" type="button" disabled={busy} onClick={() => void saveCopy()}>
+              {busy ? "Saving…" : "Save page copy"}
             </button>
           </div>
 

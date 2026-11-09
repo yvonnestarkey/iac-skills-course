@@ -11,8 +11,10 @@ import {
   inferStudyClinicSection,
   isRetiredCourseChapter,
   isStudyClinicSectionId,
+  mergeStudyClinicClips,
   slugifyClinicId,
   studyClinicIntro,
+  studyClinicMissingSectionSqlError,
   STUDY_CLINIC_SECTIONS,
   withoutRetiredChapters,
   type StudyClinicClip,
@@ -99,6 +101,9 @@ test("Study Clinic is a table, sidebar page, and Tools editor", () => {
   assert.match(pdfRoute, /course-pdfs/);
   assert.match(tools, /study-clinic/);
   assert.match(manager, /StudyClinicResourceForm/);
+  const coachRoute = readFileSync(resolve("app/api/coach/study-clinic/route.ts"), "utf8");
+  assert.match(coachRoute, /studyClinicMissingSectionSqlError/);
+  assert.doesNotMatch(coachRoute, /withoutSection/);
 });
 
 test("Study Clinic files FinMan clips into Financial Management and the rest into Study Advice", () => {
@@ -130,4 +135,25 @@ test("Study Clinic files FinMan clips into Financial Management and the rest int
     ["ch11-l2"]
   );
   assert.equal(clipsForStudyClinicSection(clips, "auditing").length, 0);
+  const saved = {
+    id: "fr-link",
+    title: "Conceptual Framework",
+    duration: null,
+    blurb: null,
+    video_urls: [],
+    position: 1,
+    published: true,
+    section: "financial-reporting" as const,
+    kind: "link" as const,
+    resource_url: "https://example.com/framework",
+    resource_label: "Open",
+  };
+  const misfiled = { ...saved, section: "study-advice" as const, kind: "video" as const, resource_url: null };
+  const merged = mergeStudyClinicClips([saved], [misfiled], "financial-reporting");
+  assert.equal(merged[0]?.section, "financial-reporting");
+  assert.equal(merged[0]?.resource_url, "https://example.com/framework");
+  assert.equal(
+    studyClinicMissingSectionSqlError("Could not find the 'section' column of 'study_clinic' in the schema cache"),
+    true
+  );
 });
