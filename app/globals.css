@@ -4352,16 +4352,19 @@ a.student-account-link {
   width: 100%;
   box-sizing: border-box;
   padding: 16px 18px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--sand-line);
   border-radius: 14px;
-  background: #fff;
+  background: var(--sand);
   color: var(--ink);
   text-align: left;
   text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(63, 98, 92, 0.08);
 }
 
 .study-clinic-btn:hover {
   border-color: var(--link);
+  background: #dcc9b0;
   color: var(--ink);
   text-decoration: none;
 }

@@ -88,6 +88,8 @@ test("Study Clinic is a table, sidebar page, and Tools editor", () => {
   assert.match(page, /STUDY_CLINIC_SECTIONS/);
   assert.match(library, /\/api\/study-clinic/);
   assert.match(library, /study-clinic-btn/);
+  const styles = readFileSync(resolve("app/globals.css"), "utf8");
+  assert.match(styles, /\.study-clinic-btn[\s\S]*background:\s*var\(--sand\)/);
   assert.match(library, /StudyClinicPageEditor/);
   assert.match(editor, /Edit this library/);
   assert.match(form, /Video URLs/);
