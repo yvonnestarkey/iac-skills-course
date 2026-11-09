@@ -93,6 +93,10 @@ test("Study Clinic is a table, sidebar page, and Tools editor", () => {
   assert.match(form, /Link URL/);
   assert.match(form, /Library/);
   assert.match(form, /Save Study Clinic resource/);
+  assert.match(form, /Choose PDF/);
+  const pdfRoute = readFileSync(resolve("app/api/coach/pdf/route.ts"), "utf8");
+  assert.match(pdfRoute, /getServiceSupabase/);
+  assert.match(pdfRoute, /course-pdfs/);
   assert.match(tools, /study-clinic/);
   assert.match(manager, /StudyClinicResourceForm/);
 });

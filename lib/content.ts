@@ -775,13 +775,12 @@ export async function uploadLessonBanner(file: File): Promise<DbResult<string>> 
 }
 
 export async function uploadLessonPdf(file: File): Promise<DbResult<string>> {
-  const client = getSupabase();
-  if (!client) return { ok: false, error: "Supabase is not configured." };
-  const ext = (file.name.split(".").pop() || "pdf").toLowerCase().replace(/[^a-z0-9]/g, "") || "pdf";
-  const path = `lesson-pdfs/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-  const uploaded = await client.storage.from("course-pdfs").upload(path, file, { upsert: true, contentType: file.type || "application/pdf" });
-  if (uploaded.error) return { ok: false, error: uploaded.error.message || "Could not upload that PDF." };
-  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
-  if (data?.publicUrl) return { ok: true, data: data.publicUrl };
+  if (typeof window === "undefined") return { ok: false, error: "PDF uploads need a signed-in coach browser." };
+  const form = new FormData();
+  form.append("file", file);
+  const response = await fetch("/api/coach/pdf", { method: "POST", body: form });
+  const payload = (await response.json().catch(() => ({}))) as { error?: string; url?: string };
+  if (!response.ok) return { ok: false, error: payload.error || "Could not upload that PDF." };
+  if (payload.url) return { ok: true, data: payload.url };
   return { ok: false, error: "Could not upload that PDF. Paste a public URL instead." };
 }

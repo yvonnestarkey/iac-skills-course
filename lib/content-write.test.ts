@@ -34,6 +34,7 @@ test("coach lesson saves go through a staff service-role route", () => {
   assert.match(route, /getServiceSupabase/);
   assert.match(route, /revalidateTag\("course-outline"\)/);
   assert.match(writer, /\/api\/coach\/lessons/);
+  assert.match(writer, /\/api\/coach\/pdf/);
   assert.match(writer, /normalizeLessonWriteRow/);
   assert.match(writer, /persistLessonDraftFlags/);
   assert.match(writer, /set_lesson_draft/);

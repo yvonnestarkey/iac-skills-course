@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { uploadLessonPdf } from "@/lib/content";
 import {
   inferStudyClinicSection,
@@ -27,15 +28,25 @@ export default function StudyClinicResourceForm({
   lockSection?: boolean;
   saveLabel?: string;
 }) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
   const pickPdf = async (file: File | null) => {
     if (!file) return;
+    setUploading(true);
+    onStatus?.("Uploading PDF…");
     const result = await uploadLessonPdf(file);
+    setUploading(false);
     if (!result.ok || !result.data) {
       onStatus?.(result.error || "Could not upload that PDF.");
       return;
     }
-    onChange({ resourceUrl: result.data, kind: "pdf" });
-    onStatus?.("PDF uploaded.");
+    const titleFromFile = file.name.replace(/\.pdf$/i, "").trim();
+    onChange({
+      resourceUrl: result.data,
+      kind: "pdf",
+      title: draft.title.trim() || titleFromFile,
+    });
+    onStatus?.("PDF uploaded. Save to add it to this library.");
   };
 
   return (
@@ -103,6 +114,7 @@ export default function StudyClinicResourceForm({
       {draft.kind === "pdf" ? (
         <label className="rd-span">
           PDF
+          <span className="muted small">Choose a file from your computer, or paste a public URL.</span>
           <input
             type="url"
             value={draft.resourceUrl}
@@ -110,6 +122,8 @@ export default function StudyClinicResourceForm({
             placeholder="https://…"
           />
           <input
+            ref={fileRef}
+            className="visually-hidden"
             type="file"
             accept="application/pdf"
             onChange={(event) => {
@@ -117,6 +131,14 @@ export default function StudyClinicResourceForm({
               event.target.value = "";
             }}
           />
+          <button
+            type="button"
+            className="ghost"
+            disabled={busy || uploading}
+            onClick={() => fileRef.current?.click()}
+          >
+            {uploading ? "Uploading…" : draft.resourceUrl ? "Replace PDF" : "Choose PDF"}
+          </button>
         </label>
       ) : null}
       {draft.kind === "link" ? (
@@ -145,7 +167,7 @@ export default function StudyClinicResourceForm({
         Published to students
       </label>
       <div className="actions">
-        <button type="button" className="primary" disabled={busy} onClick={onSave}>
+        <button type="button" className="primary" disabled={busy || uploading} onClick={onSave}>
           {busy ? "Saving…" : saveLabel || "Save Study Clinic resource"}
         </button>
       </div>
