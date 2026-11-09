@@ -4,7 +4,14 @@ import Link from "next/link";
 import LessonVideoParts from "@/components/lesson/LessonVideoParts";
 import VideoPlayer from "@/components/lesson/VideoPlayer";
 import { isMultiVideoLesson, parseLessonVideos } from "@/lib/lesson-videos";
-import { studyClinicSectionById, studyClinicSectionHref, type StudyClinicClip } from "@/lib/study-clinic";
+import {
+  clinicResourceHref,
+  inferStudyClinicKind,
+  studyClinicKindLabel,
+  studyClinicSectionById,
+  studyClinicSectionHref,
+  type StudyClinicClip,
+} from "@/lib/study-clinic";
 import type { StudentLesson } from "@/lib/student-lesson";
 
 function asWatchLesson(clip: StudyClinicClip): StudentLesson {
@@ -29,6 +36,8 @@ export default function StudyClinicWatch({ clip }: { clip: StudyClinicClip }) {
   const videos = lesson.videos || [];
   const multi = isMultiVideoLesson("video", videos);
   const section = studyClinicSectionById(clip.section);
+  const kind = inferStudyClinicKind(clip);
+  const resource = clinicResourceHref(clip);
 
   return (
     <article className="lesson-body wide">
@@ -40,10 +49,16 @@ export default function StudyClinicWatch({ clip }: { clip: StudyClinicClip }) {
       <p className="kicker">Study Clinic{section ? ` · ${section.title}` : ""}</p>
       <h1>{clip.title}</h1>
       {clip.blurb ? <p className="lead">{clip.blurb}</p> : null}
-      {videos.length ? (
+      {kind === "video" && videos.length ? (
         multi ? <LessonVideoParts lesson={lesson} videos={videos} /> : <VideoPlayer lesson={lesson} src={videos[0]?.url} />
+      ) : resource?.external ? (
+        <p>
+          <a className="primary" href={resource.href} target="_blank" rel="noopener noreferrer">
+            Open {studyClinicKindLabel(kind)}
+          </a>
+        </p>
       ) : (
-        <p className="empty">This clip does not have a video URL yet.</p>
+        <p className="empty">This item does not have a file or video yet.</p>
       )}
     </article>
   );

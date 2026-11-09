@@ -14,7 +14,8 @@ export default function StudyClinicEditorPage() {
       <p className="kicker">Tools</p>
       <h1>Study Clinic</h1>
       <p className="muted small" style={{ marginBottom: 16 }}>
-        Edit the library videos here. They live in the study_clinic table, not in Course content.
+        Add videos, PDFs, and links here, or on each student library page. They live in study_clinic, not in Course
+        content.
       </p>
       <section className="card">
         <StudyClinicManager />

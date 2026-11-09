@@ -17,7 +17,7 @@ export const COURSE_TOOLS: CourseTool[] = [
   {
     id: "study-clinic",
     title: "Study Clinic",
-    description: "Subject libraries on the student Study Clinic page. Edit the videos here, not in Course content.",
+    description: "Subject libraries on the student Study Clinic page. Add videos, PDFs, and links on each library page, or here.",
     href: "/coach/tools/study-clinic",
     editable: true,
   },

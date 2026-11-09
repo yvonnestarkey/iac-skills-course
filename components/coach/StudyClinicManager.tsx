@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import StudyClinicResourceForm from "@/components/coach/StudyClinicResourceForm";
 import {
   clipFromDraft,
   draftFromClip,
   emptyClinicDraft,
+  inferStudyClinicKind,
   inferStudyClinicSection,
   STUDY_CLINIC_SECTIONS,
+  studyClinicKindLabel,
   type StudyClinicClip,
   type StudyClinicDraft,
 } from "@/lib/study-clinic";
@@ -21,7 +24,7 @@ export default function StudyClinicManager() {
     const response = await fetch("/api/coach/study-clinic");
     const payload = await response.json().catch(() => ({}));
     if (response.ok) setRows(payload.clips || []);
-    else setStatus(payload.error || "Could not load Study Clinic videos. Paste supabase/study-clinic.sql first.");
+    else setStatus(payload.error || "Could not load Study Clinic. Paste supabase/study-clinic.sql first.");
   };
 
   useEffect(() => {
@@ -33,7 +36,7 @@ export default function StudyClinicManager() {
   const save = async () => {
     const parsed = clipFromDraft(draft);
     if (!parsed.clip) {
-      setStatus(parsed.error || "Fix the video before saving.");
+      setStatus(parsed.error || "Fix this resource before saving.");
       return;
     }
     setBusy(true);
@@ -55,7 +58,7 @@ export default function StudyClinicManager() {
   };
 
   const remove = async (id: string) => {
-    if (!window.confirm("Remove this video from Study Clinic?")) return;
+    if (!window.confirm("Remove this from Study Clinic?")) return;
     setBusy(true);
     const response = await fetch(`/api/coach/study-clinic/${encodeURIComponent(id)}`, { method: "DELETE" });
     setBusy(false);
@@ -71,8 +74,8 @@ export default function StudyClinicManager() {
   return (
     <div className="rd-practice-admin">
       <p className="muted small">
-        These videos appear in the student Study Clinic libraries. Assign each clip to a subject so it lands on the
-        right page. Paste supabase/study-clinic-sections.sql once so the library field can save.
+        These items appear on the student Study Clinic library pages. You can also add videos, PDFs, and links while
+        you are on each library page. Paste supabase/study-clinic-resources.sql once so PDFs and links can save.
       </p>
       {status ? <p className="notice">{status}</p> : null}
 
@@ -85,6 +88,7 @@ export default function StudyClinicManager() {
                 <div className="muted small">
                   {STUDY_CLINIC_SECTIONS.find((section) => section.id === inferStudyClinicSection(row))?.title ||
                     "Study Advice"}
+                  {` · ${studyClinicKindLabel(inferStudyClinicKind(row))}`}
                   {` · ${row.id}`}
                   {row.duration ? ` · ${row.duration}` : ""}
                   {row.published ? "" : " · hidden"}
@@ -101,67 +105,20 @@ export default function StudyClinicManager() {
             </div>
           ))
         ) : (
-          <p className="empty">No Study Clinic videos yet. Paste supabase/study-clinic.sql, then refresh.</p>
+          <p className="empty">No Study Clinic resources yet. Paste supabase/study-clinic.sql, then refresh.</p>
         )}
         <button type="button" className="ghost" onClick={() => setDraft(emptyClinicDraft())}>
-          New video
+          New resource
         </button>
       </div>
 
-      <div className="rd-practice-form">
-        <label>
-          Title
-          <input value={draft.title} onChange={(event) => set({ title: event.target.value })} />
-        </label>
-        <label>
-          Id
-          <input value={draft.id} onChange={(event) => set({ id: event.target.value })} placeholder="auto from title" />
-        </label>
-        <label>
-          Library
-          <select
-            value={draft.section}
-            onChange={(event) => set({ section: inferStudyClinicSection({ section: event.target.value }) })}
-          >
-            {STUDY_CLINIC_SECTIONS.map((section) => (
-              <option key={section.id} value={section.id}>
-                {section.title}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Duration
-          <input value={draft.duration} onChange={(event) => set({ duration: event.target.value })} placeholder="8 min" />
-        </label>
-        <label>
-          Order
-          <input value={draft.position} onChange={(event) => set({ position: event.target.value })} placeholder="1" />
-        </label>
-        <label className="rd-span">
-          Blurb
-          <textarea rows={3} value={draft.blurb} onChange={(event) => set({ blurb: event.target.value })} />
-        </label>
-        <label className="rd-span">
-          Video URLs
-          <span className="muted small">One Vimeo or YouTube URL per line, in the order students should watch them.</span>
-          <textarea
-            rows={6}
-            value={draft.videoUrlsText}
-            onChange={(event) => set({ videoUrlsText: event.target.value })}
-            placeholder="https://player.vimeo.com/video/123"
-          />
-        </label>
-        <label className="rd-check">
-          <input type="checkbox" checked={draft.published} onChange={(event) => set({ published: event.target.checked })} />
-          Published to students
-        </label>
-        <div className="actions">
-          <button type="button" className="primary" disabled={busy} onClick={() => void save()}>
-            {busy ? "Saving…" : "Save Study Clinic video"}
-          </button>
-        </div>
-      </div>
+      <StudyClinicResourceForm
+        draft={draft}
+        onChange={set}
+        onSave={() => void save()}
+        onStatus={setStatus}
+        busy={busy}
+      />
     </div>
   );
 }

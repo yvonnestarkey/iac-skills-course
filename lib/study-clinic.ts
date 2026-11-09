@@ -67,6 +67,57 @@ export function studyClinicWatchHref(clipId: string): string {
   return `/student/study-clinic/${clipId}`;
 }
 
+export const STUDY_CLINIC_KINDS = ["video", "pdf", "link"] as const;
+
+export type StudyClinicKind = (typeof STUDY_CLINIC_KINDS)[number];
+
+export function isStudyClinicKind(value: string | null | undefined): value is StudyClinicKind {
+  return STUDY_CLINIC_KINDS.includes(String(value || "") as StudyClinicKind);
+}
+
+export function inferStudyClinicKind(clip: {
+  kind?: string | null;
+  video_urls?: unknown;
+  resource_url?: string | null;
+}): StudyClinicKind {
+  if (isStudyClinicKind(clip.kind)) return clip.kind;
+  const resource = (clip.resource_url || "").trim();
+  if (resource) return /\.pdf(\?|#|$)/i.test(resource) ? "pdf" : "link";
+  return "video";
+}
+
+export function studyClinicKindLabel(kind: StudyClinicKind): string {
+  if (kind === "pdf") return "PDF";
+  if (kind === "link") return "Link";
+  return "Video";
+}
+
+export type StudyClinicPage = {
+  section: StudyClinicSectionId;
+  intro: string;
+  body: string;
+};
+
+export function defaultStudyClinicIntro(section: StudyClinicSectionId): string {
+  if (section === "study-advice") {
+    return "Short videos for the study problems that get in the way. Open the one you need.";
+  }
+  return "Resources for this library. Open the one you need.";
+}
+
+export function emptyStudyClinicPage(section: StudyClinicSectionId): StudyClinicPage {
+  return { section, intro: "", body: "" };
+}
+
+export function studyClinicPageForSection(pages: StudyClinicPage[], section: StudyClinicSectionId): StudyClinicPage {
+  return pages.find((page) => page.section === section) || emptyStudyClinicPage(section);
+}
+
+export function studyClinicIntro(page: StudyClinicPage | null | undefined, section: StudyClinicSectionId): string {
+  const intro = (page?.intro || "").trim();
+  return intro || defaultStudyClinicIntro(section);
+}
+
 export type StudyClinicClip = {
   id: string;
   title: string;
@@ -76,6 +127,9 @@ export type StudyClinicClip = {
   position: number;
   published: boolean;
   section: StudyClinicSectionId;
+  kind: StudyClinicKind;
+  resource_url: string | null;
+  resource_label: string | null;
 };
 
 export type StudyClinicDraft = {
@@ -87,16 +141,38 @@ export type StudyClinicDraft = {
   position: string;
   published: boolean;
   section: StudyClinicSectionId;
+  kind: StudyClinicKind;
+  resourceUrl: string;
+  resourceLabel: string;
 };
+
+export function clinicResourceHref(clip: StudyClinicClip): { href: string; external: boolean } | null {
+  const kind = inferStudyClinicKind(clip);
+  if (kind === "video") {
+    const videos = parseLessonVideos(clip.video_urls);
+    if (!videos.length) return null;
+    return { href: studyClinicWatchHref(clip.id), external: false };
+  }
+  const url = (clip.resource_url || "").trim();
+  if (!url) return null;
+  return { href: url, external: true };
+}
 
 function db() {
   return getServiceSupabase() || getSupabase();
+}
+
+function asText(value: unknown): string | null {
+  if (value == null) return null;
+  const text = String(value).trim();
+  return text || null;
 }
 
 function asClip(row: Record<string, unknown>): StudyClinicClip | null {
   const id = typeof row.id === "string" ? row.id : "";
   const title = typeof row.title === "string" ? row.title.trim() : "";
   if (!id || !title) return null;
+  const resource_url = asText(row.resource_url);
   return {
     id,
     title,
@@ -106,10 +182,26 @@ function asClip(row: Record<string, unknown>): StudyClinicClip | null {
     position: Number(row.position || 0),
     published: row.published !== false,
     section: inferStudyClinicSection({ id, title, section: row.section != null ? String(row.section) : null }),
+    kind: inferStudyClinicKind({
+      kind: row.kind != null ? String(row.kind) : null,
+      video_urls: row.video_urls,
+      resource_url,
+    }),
+    resource_url,
+    resource_label: asText(row.resource_label),
   };
 }
 
-export function emptyClinicDraft(): StudyClinicDraft {
+function asPage(row: Record<string, unknown>): StudyClinicPage | null {
+  if (!isStudyClinicSectionId(String(row.section || ""))) return null;
+  return {
+    section: row.section as StudyClinicSectionId,
+    intro: row.intro != null ? String(row.intro) : "",
+    body: row.body != null ? String(row.body) : "",
+  };
+}
+
+export function emptyClinicDraft(section?: StudyClinicSectionId): StudyClinicDraft {
   return {
     id: "",
     title: "",
@@ -118,7 +210,10 @@ export function emptyClinicDraft(): StudyClinicDraft {
     videoUrlsText: "",
     position: "",
     published: true,
-    section: DEFAULT_STUDY_CLINIC_SECTION,
+    section: section && isStudyClinicSectionId(section) ? section : DEFAULT_STUDY_CLINIC_SECTION,
+    kind: "video",
+    resourceUrl: "",
+    resourceLabel: "",
   };
 }
 
@@ -133,6 +228,9 @@ export function draftFromClip(clip: StudyClinicClip): StudyClinicDraft {
     position: clip.position ? String(clip.position) : "",
     published: clip.published,
     section: inferStudyClinicSection(clip),
+    kind: inferStudyClinicKind(clip),
+    resourceUrl: clip.resource_url || "",
+    resourceLabel: clip.resource_label || "",
   };
 }
 
@@ -144,25 +242,40 @@ export function slugifyClinicId(title: string): string {
     .slice(0, 48);
 }
 
-export function clipFromDraft(draft: StudyClinicDraft): { clip?: Omit<StudyClinicClip, "published"> & { published: boolean }; error?: string } {
+export function clipFromDraft(draft: StudyClinicDraft): { clip?: StudyClinicClip; error?: string } {
   const title = draft.title.trim();
   const id = draft.id.trim() || slugifyClinicId(title);
   const videos = parseLessonVideos(draft.videoUrlsText.split(/\n/).map((line) => line.trim()).filter(Boolean));
+  const resourceUrl = draft.resourceUrl.trim();
+  const kind = inferStudyClinicKind({ kind: draft.kind, video_urls: videos, resource_url: resourceUrl });
   if (!title) return { error: "Title is required." };
-  if (!id) return { error: "Give the video an id or title." };
-  if (!videos.length) return { error: "Add at least one video URL." };
+  if (!id) return { error: "Give this resource an id or title." };
+  if (kind === "video" && !videos.length) return { error: "Add at least one video URL." };
+  if (kind === "pdf" && !resourceUrl) return { error: "Upload or paste a PDF URL." };
+  if (kind === "link" && !resourceUrl) return { error: "Add a link URL." };
   return {
     clip: {
       id,
       title,
       duration: draft.duration.trim() || null,
       blurb: draft.blurb.trim() || null,
-      video_urls: videos,
+      video_urls: kind === "video" ? videos : [],
       position: Math.max(0, Number(draft.position) || 0),
       published: draft.published,
       section: inferStudyClinicSection({ id, title, section: draft.section }),
+      kind,
+      resource_url: kind === "video" ? null : resourceUrl,
+      resource_label: kind === "link" ? draft.resourceLabel.trim() || null : null,
     },
   };
+}
+
+export function studyClinicMissingResourceSqlError(message: string | null | undefined): boolean {
+  return /column .* (kind|resource_url|resource_label)/i.test(message || "") || /could not find the '(kind|resource_url|resource_label)'/i.test(message || "");
+}
+
+export function studyClinicMissingPageSqlError(message: string | null | undefined): boolean {
+  return /study_clinic_pages/i.test(message || "") && /does not exist|schema cache|relation/i.test(message || "");
 }
 
 export async function fetchStudyClinicClips(options?: { includeDrafts?: boolean }): Promise<StudyClinicClip[]> {
@@ -184,4 +297,20 @@ export async function fetchStudyClinicClip(id: string, options?: { includeDrafts
   if (!clip) return null;
   if (!options?.includeDrafts && !clip.published) return null;
   return clip;
+}
+
+export async function fetchStudyClinicPages(): Promise<StudyClinicPage[]> {
+  const client = db();
+  if (!client) return [];
+  const { data, error } = await client.from("study_clinic_pages").select("*");
+  if (error || !data) return [];
+  return data.map((row) => asPage(row as Record<string, unknown>)).filter((row): row is StudyClinicPage => Boolean(row));
+}
+
+export async function fetchStudyClinicPage(section: StudyClinicSectionId): Promise<StudyClinicPage> {
+  const client = db();
+  if (!client) return emptyStudyClinicPage(section);
+  const { data, error } = await client.from("study_clinic_pages").select("*").eq("section", section).maybeSingle();
+  if (error || !data) return emptyStudyClinicPage(section);
+  return asPage(data as Record<string, unknown>) || emptyStudyClinicPage(section);
 }

@@ -3,15 +3,19 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { test } from "node:test";
 import {
+  clinicResourceHref,
   clipFromDraft,
   clipsForStudyClinicSection,
   emptyClinicDraft,
+  inferStudyClinicKind,
   inferStudyClinicSection,
   isRetiredCourseChapter,
   isStudyClinicSectionId,
   slugifyClinicId,
+  studyClinicIntro,
   STUDY_CLINIC_SECTIONS,
   withoutRetiredChapters,
+  type StudyClinicClip,
 } from "./study-clinic";
 
 test("Study Clinic drafts require a title and at least one video URL", () => {
@@ -23,6 +27,23 @@ test("Study Clinic drafts require a title and at least one video URL", () => {
   assert.equal(parsed.clip?.id, slugifyClinicId(draft.title));
   assert.equal(Array.isArray(parsed.clip?.video_urls) && parsed.clip.video_urls.length, 2);
   assert.equal(clipFromDraft(emptyClinicDraft()).error, "Title is required.");
+  const missingVideo = emptyClinicDraft();
+  missingVideo.title = "Why don't I do questions?";
+  assert.equal(clipFromDraft(missingVideo).error, "Add at least one video URL.");
+  const pdf = emptyClinicDraft("auditing");
+  pdf.title = "IFRS 15 reminder";
+  pdf.kind = "pdf";
+  assert.equal(clipFromDraft(pdf).error, "Upload or paste a PDF URL.");
+  pdf.resourceUrl = "https://example.com/ifrs-15.pdf";
+  assert.equal(clipFromDraft(pdf).clip?.kind, "pdf");
+  assert.equal(clipFromDraft(pdf).clip?.section, "auditing");
+  const link = emptyClinicDraft("taxation");
+  link.title = "SARS guide";
+  link.kind = "link";
+  link.resourceUrl = "https://example.com/sars";
+  link.resourceLabel = "Open SARS guide";
+  assert.equal(clipFromDraft(link).clip?.kind, "link");
+  assert.equal(clipFromDraft(link).clip?.resource_label, "Open SARS guide");
 });
 
 test("the old Common Fixes chapter is retired from the course", () => {
@@ -44,25 +65,36 @@ test("the old Common Fixes chapter is retired from the course", () => {
 test("Study Clinic is a table, sidebar page, and Tools editor", () => {
   const sql = readFileSync(resolve("supabase/study-clinic.sql"), "utf8");
   const sections = readFileSync(resolve("supabase/study-clinic-sections.sql"), "utf8");
+  const resources = readFileSync(resolve("supabase/study-clinic-resources.sql"), "utf8");
   const remove = readFileSync(resolve("supabase/study-clinic-remove-from-lessons.sql"), "utf8");
   const nav = readFileSync(resolve("components/student/StudentCourseNav.tsx"), "utf8");
   const page = readFileSync(resolve("components/student/StudyClinic.tsx"), "utf8");
   const library = readFileSync(resolve("components/student/StudyClinicLibrary.tsx"), "utf8");
+  const editor = readFileSync(resolve("components/coach/StudyClinicPageEditor.tsx"), "utf8");
+  const form = readFileSync(resolve("components/coach/StudyClinicResourceForm.tsx"), "utf8");
   const tools = readFileSync(resolve("lib/course-tools.ts"), "utf8");
   const manager = readFileSync(resolve("components/coach/StudyClinicManager.tsx"), "utf8");
   assert.match(sql, /create table if not exists public.study_clinic/);
   assert.match(sql, /from public.lessons/);
   assert.match(sections, /add column if not exists section/);
   assert.match(sections, /financial-management/);
+  assert.match(resources, /add column if not exists kind/);
+  assert.match(resources, /study_clinic_pages/);
   assert.match(remove, /delete from public.lessons/);
   assert.match(nav, /Study Clinic/);
   assert.match(page, /study-clinic-card/);
   assert.match(page, /STUDY_CLINIC_SECTIONS/);
   assert.match(library, /\/api\/study-clinic/);
   assert.match(library, /study-clinic-btn/);
+  assert.match(library, /StudyClinicPageEditor/);
+  assert.match(editor, /Edit this library/);
+  assert.match(form, /Video URLs/);
+  assert.match(form, /PDF/);
+  assert.match(form, /Link URL/);
+  assert.match(form, /Library/);
+  assert.match(form, /Save Study Clinic resource/);
   assert.match(tools, /study-clinic/);
-  assert.match(manager, /Save Study Clinic video/);
-  assert.match(manager, /Library/);
+  assert.match(manager, /StudyClinicResourceForm/);
 });
 
 test("Study Clinic files FinMan clips into Financial Management and the rest into Study Advice", () => {
@@ -72,10 +104,19 @@ test("Study Clinic files FinMan clips into Financial Management and the rest int
   assert.equal(inferStudyClinicSection({ id: "ch11-l8", title: '"I struggle with FinMan topics"' }), "financial-management");
   assert.equal(inferStudyClinicSection({ id: "ch11-l2", title: "Why don't I do questions?" }), "study-advice");
   assert.equal(inferStudyClinicSection({ id: "ch11-l2", title: "Why don't I do questions?", section: "taxation" }), "taxation");
-  const clips = [
-    { id: "ch11-l8", title: "I struggle with FinMan topics", duration: null, blurb: null, video_urls: [], position: 7, published: true, section: inferStudyClinicSection({ id: "ch11-l8", title: "I struggle with FinMan topics" }) },
-    { id: "ch11-l2", title: "Why don't I do questions?", duration: null, blurb: null, video_urls: [], position: 1, published: true, section: inferStudyClinicSection({ id: "ch11-l2", title: "Why don't I do questions?" }) },
+  const clips: StudyClinicClip[] = [
+    { id: "ch11-l8", title: "I struggle with FinMan topics", duration: null, blurb: null, video_urls: [{ url: "https://player.vimeo.com/video/1" }], position: 7, published: true, section: inferStudyClinicSection({ id: "ch11-l8", title: "I struggle with FinMan topics" }), kind: "video", resource_url: null, resource_label: null },
+    { id: "ch11-l2", title: "Why don't I do questions?", duration: null, blurb: null, video_urls: [{ url: "https://player.vimeo.com/video/2" }], position: 1, published: true, section: inferStudyClinicSection({ id: "ch11-l2", title: "Why don't I do questions?" }), kind: "video", resource_url: null, resource_label: null },
+    { id: "fr-notes", title: "FR notes", duration: null, blurb: null, video_urls: [], position: 1, published: true, section: "financial-reporting", kind: "pdf", resource_url: "https://example.com/fr.pdf", resource_label: null },
   ];
+  assert.equal(inferStudyClinicKind({ resource_url: "https://example.com/guide.pdf" }), "pdf");
+  assert.equal(clinicResourceHref(clips[2])?.href, "https://example.com/fr.pdf");
+  assert.equal(clinicResourceHref(clips[0])?.href, "/student/study-clinic/ch11-l8");
+  assert.equal(studyClinicIntro({ section: "auditing", intro: "", body: "" }, "auditing"), "Resources for this library. Open the one you need.");
+  assert.deepEqual(
+    clipsForStudyClinicSection(clips, "financial-reporting").map((clip) => clip.id),
+    ["fr-notes"]
+  );
   assert.deepEqual(
     clipsForStudyClinicSection(clips, "financial-management").map((clip) => clip.id),
     ["ch11-l8"]

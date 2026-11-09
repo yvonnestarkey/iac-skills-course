@@ -11,7 +11,7 @@ export default function StudyClinic() {
       </p>
       <p className="kicker">Study Clinic</p>
       <h1>Study Clinic</h1>
-      <p className="lead">A library of short videos, grouped by subject. Open the area you need.</p>
+      <p className="lead">A library of videos, PDFs, and links, grouped by subject. Open the area you need.</p>
       <nav className="study-clinic-cards" aria-label="Study Clinic libraries">
         {STUDY_CLINIC_SECTIONS.map((section) => (
           <Link key={section.id} className="study-clinic-card" href={studyClinicSectionHref(section.id)}>
