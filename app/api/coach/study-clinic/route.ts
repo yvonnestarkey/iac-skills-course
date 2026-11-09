@@ -21,10 +21,12 @@ export async function POST(request: Request) {
   const parsed = clipFromDraft(body || ({} as StudyClinicDraft));
   if (!parsed.clip) return NextResponse.json({ error: parsed.error || "Invalid video." }, { status: 400 });
   const now = new Date().toISOString();
-  const { error } = await db.from("study_clinic").upsert({
-    ...parsed.clip,
-    updated_at: now,
-  });
+  const row = { ...parsed.clip, updated_at: now };
+  let { error } = await db.from("study_clinic").upsert(row);
+  if (error && /section/i.test(error.message)) {
+    const { section: _section, ...withoutSection } = row;
+    ({ error } = await db.from("study_clinic").upsert(withoutSection));
+  }
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ ok: true, clip: parsed.clip });
 }

@@ -5,6 +5,8 @@ import {
   clipFromDraft,
   draftFromClip,
   emptyClinicDraft,
+  inferStudyClinicSection,
+  STUDY_CLINIC_SECTIONS,
   type StudyClinicClip,
   type StudyClinicDraft,
 } from "@/lib/study-clinic";
@@ -69,8 +71,8 @@ export default function StudyClinicManager() {
   return (
     <div className="rd-practice-admin">
       <p className="muted small">
-        These videos appear on the student Study Clinic page. They no longer belong in Course content once you have
-        copied them with the Study Clinic SQL.
+        These videos appear in the student Study Clinic libraries. Assign each clip to a subject so it lands on the
+        right page. Paste supabase/study-clinic-sections.sql once so the library field can save.
       </p>
       {status ? <p className="notice">{status}</p> : null}
 
@@ -81,7 +83,9 @@ export default function StudyClinicManager() {
               <div>
                 <b>{row.title}</b>
                 <div className="muted small">
-                  {row.id}
+                  {STUDY_CLINIC_SECTIONS.find((section) => section.id === inferStudyClinicSection(row))?.title ||
+                    "Study Advice"}
+                  {` · ${row.id}`}
                   {row.duration ? ` · ${row.duration}` : ""}
                   {row.published ? "" : " · hidden"}
                 </div>
@@ -112,6 +116,19 @@ export default function StudyClinicManager() {
         <label>
           Id
           <input value={draft.id} onChange={(event) => set({ id: event.target.value })} placeholder="auto from title" />
+        </label>
+        <label>
+          Library
+          <select
+            value={draft.section}
+            onChange={(event) => set({ section: inferStudyClinicSection({ section: event.target.value }) })}
+          >
+            {STUDY_CLINIC_SECTIONS.map((section) => (
+              <option key={section.id} value={section.id}>
+                {section.title}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           Duration

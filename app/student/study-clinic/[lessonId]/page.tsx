@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
+import StudyClinicLibrary from "@/components/student/StudyClinicLibrary";
 import StudyClinicWatch from "@/components/student/StudyClinicWatch";
-import { fetchStudyClinicClip } from "@/lib/study-clinic";
+import { fetchStudyClinicClip, studyClinicSectionById } from "@/lib/study-clinic";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function generateMetadata({ params }: { params: Promise<{ lessonId: string }> }): Promise<Metadata> {
   const { lessonId } = await params;
+  const section = studyClinicSectionById(lessonId);
+  if (section) return { title: `${section.title} · Study Clinic` };
   const clip = await fetchStudyClinicClip(lessonId);
   return { title: clip ? `${clip.title} · Study Clinic` : "Study Clinic · IAC Skills Course" };
 }
 
 export default async function StudentStudyClinicWatchPage({ params }: { params: Promise<{ lessonId: string }> }) {
   const { lessonId } = await params;
+  const section = studyClinicSectionById(lessonId);
+  if (section) return <StudyClinicLibrary section={section} />;
   const clip = await fetchStudyClinicClip(lessonId);
   if (!clip) {
     return (

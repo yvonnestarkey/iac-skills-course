@@ -14,7 +14,7 @@ export default function StudyClinicEditorPage() {
       <p className="kicker">Tools</p>
       <h1>Study Clinic</h1>
       <p className="muted small" style={{ marginBottom: 16 }}>
-        Edit the Common Fixes videos here. They live in the study_clinic table, not in Course content.
+        Edit the library videos here. They live in the study_clinic table, not in Course content.
       </p>
       <section className="card">
         <StudyClinicManager />

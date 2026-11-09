@@ -4,7 +4,7 @@ import Link from "next/link";
 import LessonVideoParts from "@/components/lesson/LessonVideoParts";
 import VideoPlayer from "@/components/lesson/VideoPlayer";
 import { isMultiVideoLesson, parseLessonVideos } from "@/lib/lesson-videos";
-import type { StudyClinicClip } from "@/lib/study-clinic";
+import { studyClinicSectionById, studyClinicSectionHref, type StudyClinicClip } from "@/lib/study-clinic";
 import type { StudentLesson } from "@/lib/student-lesson";
 
 function asWatchLesson(clip: StudyClinicClip): StudentLesson {
@@ -28,13 +28,16 @@ export default function StudyClinicWatch({ clip }: { clip: StudyClinicClip }) {
   const lesson = asWatchLesson(clip);
   const videos = lesson.videos || [];
   const multi = isMultiVideoLesson("video", videos);
+  const section = studyClinicSectionById(clip.section);
 
   return (
     <article className="lesson-body wide">
       <p>
-        <Link href="/student/study-clinic">← Study Clinic</Link>
+        <Link href={section ? studyClinicSectionHref(section.id) : "/student/study-clinic"}>
+          ← {section ? section.title : "Study Clinic"}
+        </Link>
       </p>
-      <p className="kicker">Study Clinic</p>
+      <p className="kicker">Study Clinic{section ? ` · ${section.title}` : ""}</p>
       <h1>{clip.title}</h1>
       {clip.blurb ? <p className="lead">{clip.blurb}</p> : null}
       {videos.length ? (

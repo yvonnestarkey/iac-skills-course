@@ -14,6 +14,59 @@ export function withoutRetiredChapters<T extends { id?: string | null; title?: s
   return (chapters || []).filter((chapter) => !isRetiredCourseChapter(chapter));
 }
 
+export const STUDY_CLINIC_SECTION_IDS = [
+  "financial-reporting",
+  "auditing",
+  "financial-management",
+  "taxation",
+  "study-advice",
+] as const;
+
+export type StudyClinicSectionId = (typeof STUDY_CLINIC_SECTION_IDS)[number];
+
+export type StudyClinicSection = {
+  id: StudyClinicSectionId;
+  title: string;
+  image: string;
+};
+
+export const STUDY_CLINIC_SECTIONS: StudyClinicSection[] = [
+  { id: "financial-reporting", title: "Financial Reporting", image: "/study-clinic/financial-reporting.jpg" },
+  { id: "auditing", title: "Auditing", image: "/study-clinic/auditing.jpg" },
+  { id: "financial-management", title: "Financial Management", image: "/study-clinic/financial-management.jpg" },
+  { id: "taxation", title: "Taxation", image: "/study-clinic/taxation.jpg" },
+  { id: "study-advice", title: "Study Advice", image: "/study-clinic/study-advice.jpg" },
+];
+
+export const DEFAULT_STUDY_CLINIC_SECTION: StudyClinicSectionId = "study-advice";
+
+export function isStudyClinicSectionId(value: string | null | undefined): value is StudyClinicSectionId {
+  return STUDY_CLINIC_SECTION_IDS.includes(String(value || "") as StudyClinicSectionId);
+}
+
+export function studyClinicSectionById(id: string | null | undefined): StudyClinicSection | null {
+  return STUDY_CLINIC_SECTIONS.find((section) => section.id === id) || null;
+}
+
+export function inferStudyClinicSection(clip: { id?: string | null; title?: string | null; section?: string | null }): StudyClinicSectionId {
+  if (isStudyClinicSectionId(clip.section)) return clip.section;
+  const blob = `${clip.id || ""} ${clip.title || ""}`;
+  if (/\bfinman\b|financial management|struggle with finman/i.test(blob)) return "financial-management";
+  return DEFAULT_STUDY_CLINIC_SECTION;
+}
+
+export function clipsForStudyClinicSection(clips: StudyClinicClip[], section: StudyClinicSectionId): StudyClinicClip[] {
+  return clips.filter((clip) => inferStudyClinicSection(clip) === section);
+}
+
+export function studyClinicSectionHref(section: StudyClinicSectionId): string {
+  return `/student/study-clinic/${section}`;
+}
+
+export function studyClinicWatchHref(clipId: string): string {
+  return `/student/study-clinic/${clipId}`;
+}
+
 export type StudyClinicClip = {
   id: string;
   title: string;
@@ -22,6 +75,7 @@ export type StudyClinicClip = {
   video_urls: unknown;
   position: number;
   published: boolean;
+  section: StudyClinicSectionId;
 };
 
 export type StudyClinicDraft = {
@@ -32,6 +86,7 @@ export type StudyClinicDraft = {
   videoUrlsText: string;
   position: string;
   published: boolean;
+  section: StudyClinicSectionId;
 };
 
 function db() {
@@ -50,6 +105,7 @@ function asClip(row: Record<string, unknown>): StudyClinicClip | null {
     video_urls: row.video_urls ?? [],
     position: Number(row.position || 0),
     published: row.published !== false,
+    section: inferStudyClinicSection({ id, title, section: row.section != null ? String(row.section) : null }),
   };
 }
 
@@ -62,6 +118,7 @@ export function emptyClinicDraft(): StudyClinicDraft {
     videoUrlsText: "",
     position: "",
     published: true,
+    section: DEFAULT_STUDY_CLINIC_SECTION,
   };
 }
 
@@ -75,6 +132,7 @@ export function draftFromClip(clip: StudyClinicClip): StudyClinicDraft {
     videoUrlsText: videos.map((video) => video.url).join("\n"),
     position: clip.position ? String(clip.position) : "",
     published: clip.published,
+    section: inferStudyClinicSection(clip),
   };
 }
 
@@ -102,6 +160,7 @@ export function clipFromDraft(draft: StudyClinicDraft): { clip?: Omit<StudyClini
       video_urls: videos,
       position: Math.max(0, Number(draft.position) || 0),
       published: draft.published,
+      section: inferStudyClinicSection({ id, title, section: draft.section }),
     },
   };
 }
