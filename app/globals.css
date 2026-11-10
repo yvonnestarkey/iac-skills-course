@@ -4978,8 +4978,6 @@ a.student-dash-resume-btn {
 
 .student-upcoming-events-art,
 .student-task-dates-art {
-  display: grid;
-  grid-template-rows: auto auto minmax(160px, 1fr);
   min-height: 560px;
   padding: 22px 0 20px;
   border: 1px solid var(--line);
@@ -4988,15 +4986,23 @@ a.student-dash-resume-btn {
 }
 
 .student-upcoming-events-art {
+  display: grid;
+  grid-template-rows: auto auto minmax(160px, 1fr);
   background:
     linear-gradient(180deg, rgba(238, 243, 241, 0.08), rgba(63, 98, 92, 0.12)),
     url("/events-banner.jpg") center / cover no-repeat;
 }
 
 .student-task-dates-art {
+  display: flex;
+  flex-direction: column;
   background:
     linear-gradient(180deg, rgba(238, 243, 241, 0.08), rgba(63, 98, 92, 0.12)),
     url("/task-dates-banner.jpg") center / cover no-repeat;
+}
+
+.student-task-dates-top + .student-task-date-list {
+  margin-top: 12px;
 }
 
 .student-upcoming-events-top,

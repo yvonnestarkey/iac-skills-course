@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { longDate, parseISO } from "@/lib/dates";
 import {
@@ -42,8 +42,9 @@ export default function StudentTaskDueDates() {
       })),
     [outline, submissions]
   );
+  const completed = items.filter((item) => item.completed);
   const next = items.find((item) => !item.completed) || null;
-  const later = items.filter((item) => item.id !== next?.id);
+  const later = items.filter((item) => !item.completed && item.id !== next?.id);
   const [dates, setDates] = useState<Record<string, string>>({});
   const [history, setHistory] = useState<TaskDueDateHistoryRow[]>([]);
   const [openHistory, setOpenHistory] = useState<string | null>(null);
@@ -120,6 +121,71 @@ export default function StudentTaskDueDates() {
     return { rows, previous };
   };
 
+  const renderTaskList = (rows: TaskRow[], extra?: ReactNode) => {
+    if (!rows.length && !extra) return null;
+    return (
+      <ul className="student-task-date-list">
+        {rows.map((item) => {
+          const href = hrefFor(item);
+          const dueOn = dates[item.id] || "";
+          const { rows: historyRows, previous } = historyFor(item.id);
+          return (
+            <li key={item.id} className={item.completed ? "is-complete" : undefined}>
+              <div className="student-task-date-row">
+                <span className="student-task-date-label">
+                  {href ? <Link href={href}>{taskLabel(item)}</Link> : taskLabel(item)}
+                  {item.completed ? (
+                    <span className="task-complete-mark">
+                      <span className="task-complete-tick" aria-hidden="true">
+                        ✓
+                      </span>
+                      <span className="task-complete-stamp">completed!</span>
+                    </span>
+                  ) : null}
+                </span>
+                {editing ? (
+                  <input
+                    id={`task-due-${item.id}`}
+                    type="date"
+                    className="select-line"
+                    value={dueOn}
+                    disabled={busyId === item.id}
+                    aria-label={`${item.label} due date`}
+                    onChange={(event) => void save(item.id, event.target.value)}
+                  />
+                ) : (
+                  <span className="student-task-date-value">{dueOn ? longDate(parseISO(dueOn)) : "—"}</span>
+                )}
+              </div>
+              {editing && previous.length ? (
+                <div className="student-task-date-history">
+                  <button
+                    type="button"
+                    onClick={() => setOpenHistory((current) => (current === item.id ? null : item.id))}
+                  >
+                    {openHistory === item.id ? "Hide previous dates" : `${previous.length} previous date${previous.length === 1 ? "" : "s"}`}
+                  </button>
+                  {openHistory === item.id ? (
+                    <ol>
+                      {historyRows.map((row) => (
+                        <li key={row.id}>
+                          {formatDue(row.dueOn)}
+                          {row.previousDueOn ? ` · was ${formatDue(row.previousDueOn)}` : " · first set"}
+                          {row.changedAt ? ` · ${new Date(row.changedAt).toLocaleString()}` : ""}
+                        </li>
+                      ))}
+                    </ol>
+                  ) : null}
+                </div>
+              ) : null}
+            </li>
+          );
+        })}
+        {extra}
+      </ul>
+    );
+  };
+
   if (!user) return null;
 
   return (
@@ -134,6 +200,8 @@ export default function StudentTaskDueDates() {
             {editing ? "Done" : "Edit"}
           </button>
         </div>
+
+        {renderTaskList(completed)}
 
         <div className="student-task-dates-featured">
           {next ? (
@@ -171,69 +239,14 @@ export default function StudentTaskDueDates() {
           )}
         </div>
 
-        <ul className="student-task-date-list">
-          {later.map((item) => {
-            const href = hrefFor(item);
-            const dueOn = dates[item.id] || "";
-            const { rows, previous } = historyFor(item.id);
-            return (
-              <li key={item.id} className={item.completed ? "is-complete" : undefined}>
-                <div className="student-task-date-row">
-                  <span className="student-task-date-label">
-                    {href ? <Link href={href}>{taskLabel(item)}</Link> : taskLabel(item)}
-                    {item.completed ? (
-                      <span className="task-complete-mark">
-                        <span className="task-complete-tick" aria-hidden="true">
-                          ✓
-                        </span>
-                        <span className="task-complete-stamp">completed!</span>
-                      </span>
-                    ) : null}
-                  </span>
-                  {editing ? (
-                    <input
-                      id={`task-due-${item.id}`}
-                      type="date"
-                      className="select-line"
-                      value={dueOn}
-                      disabled={busyId === item.id}
-                      aria-label={`${item.label} due date`}
-                      onChange={(event) => void save(item.id, event.target.value)}
-                    />
-                  ) : (
-                    <span className="student-task-date-value">{dueOn ? longDate(parseISO(dueOn)) : "—"}</span>
-                  )}
-                </div>
-                {editing && previous.length ? (
-                  <div className="student-task-date-history">
-                    <button
-                      type="button"
-                      onClick={() => setOpenHistory((current) => (current === item.id ? null : item.id))}
-                    >
-                      {openHistory === item.id ? "Hide previous dates" : `${previous.length} previous date${previous.length === 1 ? "" : "s"}`}
-                    </button>
-                    {openHistory === item.id ? (
-                      <ol>
-                        {rows.map((row) => (
-                          <li key={row.id}>
-                            {formatDue(row.dueOn)}
-                            {row.previousDueOn ? ` · was ${formatDue(row.previousDueOn)}` : " · first set"}
-                            {row.changedAt ? ` · ${new Date(row.changedAt).toLocaleString()}` : ""}
-                          </li>
-                        ))}
-                      </ol>
-                    ) : null}
-                  </div>
-                ) : null}
-              </li>
-            );
-          })}
-          {status ? (
+        {renderTaskList(
+          later,
+          status ? (
             <li>
               <p className="muted small">{status}</p>
             </li>
-          ) : null}
-        </ul>
+          ) : null
+        )}
       </div>
     </section>
   );
