@@ -4963,22 +4963,13 @@ a.student-dash-resume-btn {
 .student-upcoming-events,
 .student-task-dates {
   min-height: 100%;
-}
-
-.student-task-dates {
-  padding: 18px 18px 14px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-}
-
-.student-upcoming-events {
   padding: 0;
   background: transparent;
   border: 0;
 }
 
-.student-upcoming-events-art {
+.student-upcoming-events-art,
+.student-task-dates-art {
   display: grid;
   grid-template-rows: auto auto minmax(160px, 1fr);
   min-height: 560px;
@@ -4986,41 +4977,61 @@ a.student-dash-resume-btn {
   border: 1px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
+}
+
+.student-upcoming-events-art {
   background:
     linear-gradient(180deg, rgba(238, 243, 241, 0.08), rgba(63, 98, 92, 0.12)),
     url("/events-banner.jpg") center / cover no-repeat;
 }
 
+.student-task-dates-art {
+  background:
+    linear-gradient(180deg, rgba(238, 243, 241, 0.08), rgba(63, 98, 92, 0.12)),
+    url("/task-dates-banner.jpg") center / cover no-repeat;
+}
+
 .student-upcoming-events-top,
-.student-upcoming-event-list {
+.student-task-dates-top,
+.student-upcoming-event-list,
+.student-task-date-list {
   margin: 0 8%;
   padding: 14px 16px;
   background: rgba(214, 226, 228, 0.9);
   border-radius: 6px;
 }
 
-.student-upcoming-events-top {
+.student-upcoming-events-top,
+.student-task-dates-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
 }
 
-.student-upcoming-events-top .kicker {
+.student-upcoming-events-top .kicker,
+.student-task-dates-top .kicker {
   margin-bottom: 2px;
 }
 
-.student-upcoming-events-top h2 {
+.student-upcoming-events-top h2,
+.student-task-dates-top h2 {
   margin: 0;
   font-size: 26px;
 }
 
-.student-upcoming-events-top a {
+.student-upcoming-events-top a,
+.student-task-dates-top button {
   flex-shrink: 0;
   font-weight: 600;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--link);
 }
 
-.student-upcoming-featured {
+.student-upcoming-featured,
+.student-task-dates-featured {
   position: relative;
   display: grid;
   justify-items: start;
@@ -5033,7 +5044,8 @@ a.student-dash-resume-btn {
   box-shadow: 0 10px 24px rgba(153, 15, 73, 0.28);
 }
 
-.student-upcoming-featured::before {
+.student-upcoming-featured::before,
+.student-task-dates-featured::before {
   content: "";
   position: absolute;
   left: 0;
@@ -5046,7 +5058,8 @@ a.student-dash-resume-btn {
   transform: translateY(-50%);
 }
 
-.student-upcoming-featured .student-event-countdown {
+.student-upcoming-featured .student-event-countdown,
+.student-task-dates-featured .student-event-countdown {
   margin: 0;
   color: #fff;
   font-size: 22px;
@@ -5061,7 +5074,8 @@ a.student-dash-resume-btn {
   color: rgba(255, 255, 255, 0.86);
 }
 
-.student-upcoming-featured strong {
+.student-upcoming-featured strong,
+.student-task-dates-featured strong {
   display: block;
   margin: 0 0 8px;
   font-family: var(--serif);
@@ -5073,17 +5087,30 @@ a.student-dash-resume-btn {
 .student-upcoming-featured .primary:hover,
 .student-upcoming-featured a.primary:hover,
 .student-upcoming-featured a.primary:link,
-.student-upcoming-featured a.primary:visited {
+.student-upcoming-featured a.primary:visited,
+.student-task-dates-featured .primary,
+.student-task-dates-featured .primary:hover,
+.student-task-dates-featured a.primary:hover,
+.student-task-dates-featured a.primary:link,
+.student-task-dates-featured a.primary:visited {
   background: #fff;
   border-color: #fff;
   color: var(--link);
 }
 
 .student-upcoming-featured .primary:hover,
-.student-upcoming-featured a.primary:hover {
+.student-upcoming-featured a.primary:hover,
+.student-task-dates-featured .primary:hover,
+.student-task-dates-featured a.primary:hover {
   background: var(--sand);
   border-color: var(--sand);
   color: var(--link);
+}
+
+.student-task-dates-featured .select-line {
+  width: min(100%, 170px);
+  margin: 4px 0 0;
+  background: #fff;
 }
 
 .student-dash-block-head {
@@ -5153,18 +5180,32 @@ a.student-dash-resume-btn {
 
 .student-task-date-list {
   list-style: none;
-  margin: 16px 0 0;
-  padding: 0;
   display: grid;
-  gap: 10px;
+  align-content: start;
+  gap: 0;
+}
+
+.student-task-date-list > li + li {
+  border-top: 1px solid rgba(63, 98, 92, 0.18);
 }
 
 .student-task-date-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 132px;
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) 120px;
+  gap: 10px 12px;
   align-items: center;
   min-height: 34px;
+  padding: 10px 0;
+}
+
+.student-task-dates-featured .task-complete-stamp {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: #fff;
+  color: #fff;
+}
+
+.student-task-dates-featured .task-complete-tick {
+  color: #fff;
 }
 
 .student-task-date-label {
@@ -5250,7 +5291,8 @@ a.student-dash-resume-btn {
     justify-self: start;
   }
 
-  .student-upcoming-events-art {
+  .student-upcoming-events-art,
+  .student-task-dates-art {
     min-height: 0;
   }
 
