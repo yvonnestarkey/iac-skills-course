@@ -65,22 +65,13 @@ export default function StudentDashboard() {
 
   return (
     <article className="lesson-body wide student-dash">
-      <StudentDashboardBanner />
-      <section className="student-dash-resume">
-        <Link className="primary student-dash-resume-btn" href={resumeHref}>
-          {resumeLabel}
-        </Link>
-        <div>
-          <h1>Welcome back, {name}</h1>
-          <div className="student-progress-row">
-            <strong className="student-progress-pct">{pct}% Complete</strong>
-            <div className="student-progress" aria-hidden="true">
-              <span style={{ width: `${pct}%` }} />
-            </div>
-          </div>
-          {paceReady && pace.message ? <p className="muted small student-dash-pace">{pace.message}</p> : null}
-        </div>
-      </section>
+      <StudentDashboardBanner
+        name={name}
+        resumeHref={resumeHref}
+        resumeLabel={resumeLabel}
+        pct={pct}
+        paceMessage={paceReady ? pace.message : ""}
+      />
 
       {unlocked ? null : <PurchaseCta />}
 

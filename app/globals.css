@@ -4014,7 +4014,26 @@ button.diagnosis-pill {
   }
 
   .dashboard-banner {
-    max-height: 420px;
+    max-height: 480px;
+  }
+
+  .dashboard-banner-resume,
+  a.dashboard-banner-resume {
+    left: 16px;
+    top: 24%;
+    min-height: 44px;
+    padding: 10px 18px;
+  }
+
+  .dashboard-banner-welcome {
+    top: 12px;
+    right: 12px;
+    width: min(320px, 52%);
+    padding: 10px 12px;
+  }
+
+  .dashboard-banner-welcome h1 {
+    font-size: 22px;
   }
 
   .dashboard-banner-quote {
@@ -4647,11 +4666,77 @@ a.student-account-link {
 .dashboard-banner {
   display: block;
   width: 100%;
-  max-height: 460px;
+  max-height: 500px;
   object-fit: cover;
   object-position: left center;
   border-radius: 16px;
   border: 1px solid var(--line);
+}
+
+.dashboard-banner-resume,
+a.dashboard-banner-resume,
+a.dashboard-banner-resume:link,
+a.dashboard-banner-resume:visited {
+  position: absolute;
+  z-index: 2;
+  left: 28px;
+  top: 26%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--sand-line);
+  background: var(--sand);
+  color: var(--dark);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dashboard-banner-resume:hover,
+a.dashboard-banner-resume:hover,
+a.dashboard-banner-resume:visited:hover {
+  background: #d9c4a6;
+  border-color: var(--sand-line);
+  color: var(--dark);
+  text-decoration: none;
+}
+
+.dashboard-banner-welcome {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  right: 24px;
+  width: min(440px, 46%);
+  padding: 14px 16px 12px;
+  border-radius: 18px;
+  background: rgba(238, 243, 241, 0.58);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  box-shadow: 0 0 28px 12px rgba(238, 243, 241, 0.28);
+  text-align: right;
+}
+
+.dashboard-banner-welcome h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  color: var(--dark);
+}
+
+.dashboard-banner-welcome .student-progress-row {
+  margin-bottom: 6px;
+}
+
+.dashboard-banner-welcome .student-progress {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.dashboard-banner-welcome .student-dash-pace {
+  color: var(--dark);
+  opacity: 0.82;
 }
 
 .dashboard-banner-quote {
@@ -5303,6 +5388,18 @@ a.student-dash-resume-btn {
 }
 
 @media (max-width: 640px) {
+  .dashboard-banner-welcome {
+    width: min(250px, 58%);
+  }
+
+  .dashboard-banner-welcome h1 {
+    font-size: 18px;
+  }
+
+  .dashboard-banner-welcome .student-progress-pct {
+    font-size: 16px;
+  }
+
   .student-task-date-row {
     grid-template-columns: 1fr;
   }
