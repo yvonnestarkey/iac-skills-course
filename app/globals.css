@@ -4013,6 +4013,17 @@ button.diagnosis-pill {
     justify-self: start;
   }
 
+  .dashboard-banner {
+    max-height: 220px;
+  }
+
+  .dashboard-banner-quote {
+    left: 12px;
+    right: 12px;
+    bottom: 10px;
+    max-width: none;
+  }
+
   .inbox-layout {
     grid-template-columns: 1fr;
   }
@@ -4617,6 +4628,7 @@ a.student-account-link {
 }
 
 .dashboard-banner-wrap {
+  position: relative;
   margin: 0 0 16px;
 }
 
@@ -4627,11 +4639,48 @@ a.student-account-link {
 .dashboard-banner {
   display: block;
   width: 100%;
-  max-height: 360px;
+  max-height: 380px;
   object-fit: cover;
   object-position: left center;
   border-radius: 16px;
   border: 1px solid var(--line);
+}
+
+.dashboard-banner-wrap::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 46%;
+  pointer-events: none;
+  border-radius: 0 0 16px 16px;
+  background: linear-gradient(180deg, transparent, rgba(238, 243, 241, 0.78) 72%);
+}
+
+.dashboard-banner-quote {
+  position: absolute;
+  z-index: 1;
+  left: 20px;
+  right: 20px;
+  bottom: 16px;
+  max-width: min(42rem, calc(100% - 40px));
+  margin: 0;
+}
+
+.dashboard-banner-quote blockquote {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(15px, 2.2vw, 26px);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.28;
+  text-wrap: pretty;
+}
+
+.dashboard-banner-quote figcaption {
+  margin-top: 6px;
+  font-size: clamp(12px, 1.35vw, 15px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .coaching-overview-card {
