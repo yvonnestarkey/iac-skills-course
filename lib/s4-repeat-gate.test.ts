@@ -9,6 +9,7 @@ import {
   S4_REPEAT_GATE_LESSON_ID,
   S4_REPEAT_QUESTION_ID,
   S4_SITTING_QUESTION_ID,
+  S4_UNANSWERED_MESSAGE,
   S4_YES,
   s4RepeatAnswer,
   s4RepeatSubmittedMessage,
@@ -60,11 +61,12 @@ test("S4 follow-on lessons stay locked until the student says they have done the
   assert.equal(followOn?.repeat_chapter_gate_id, S4_REPEAT_GATE_LESSON_ID);
   const closed = checkLessonAccess(followOn!, catalog, {}, { outline: gated });
   assert.equal(closed.isLocked, true);
-  assert.match(closed.reason || "", /L1/);
+  assert.equal(closed.reason, S4_UNANSWERED_MESSAGE);
+  assert.equal(closed.prereqTitle, "L1");
   const declined = checkLessonAccess(followOn!, catalog, {}, { outline: gated, surveyReviews: review("No") });
   assert.equal(declined.isLocked, true);
   assert.equal(declined.reason, S4_NO_MESSAGE);
-  assert.equal(declined.prereqTitle, "Task 1 - Question & Submission");
+  assert.equal(declined.prereqTitle, "Task 1");
   const opened = checkLessonAccess(followOn!, catalog, {}, { outline: gated, surveyReviews: review("Yes") });
   assert.equal(opened.isLocked, false);
 });

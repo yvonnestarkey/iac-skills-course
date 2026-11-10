@@ -39,8 +39,8 @@ const QUESTIONS = [
   {
     id: S4_REPEAT_QUESTION_ID,
     type: "radio",
-    label: "Have you worked through / completed this IAC Skills Course with Yvonne before?",
-    helperText: "This section is only for students who have already completed this course with me and are back after an exam sitting.",
+    label: "",
+    helperText: "",
     required: true,
     options: [S4_YES, S4_NO],
     resourceUrl: "",
@@ -73,8 +73,7 @@ async function main() {
   if (existingSurvey.error) throw new Error(`survey lookup: ${existingSurvey.error.message}`);
   const surveyRow = {
     title: "Have you done this course with Yvonne before?",
-    description:
-      "This section is only for students who have already completed this IAC Skills Course with me and are back after an exam sitting. If this is your first time, start with Task 1.",
+    description: "",
     slug: S4_REPEAT_SURVEY_SLUG,
     is_active: true,
     is_assignment: false,
@@ -109,10 +108,8 @@ async function main() {
     title: "L1 - Have you worked through this IAC Skills Course with Yvonne before?",
     duration: "2 min",
     seconds: 120,
-    blurb: "Only continue in this section if you have already completed this course with me.",
-    body: [
-      "If you have not worked through this IAC Skills Course with me before, you should start with Task 1 instead of this section.",
-    ],
+    blurb: "",
+    body: [],
     brief: S4_REPEAT_SURVEY_SLUG,
     survey_id: surveyId,
     requires_submission: false,

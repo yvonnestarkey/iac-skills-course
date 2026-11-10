@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import BmcrCalculator from "@/components/lesson/BmcrCalculator";
 import {
   fetchCustomSurvey,
@@ -34,6 +35,8 @@ import { notificationMentionsSurvey } from "@/lib/notifications";
 import {
   S4_REPEAT_QUESTION_ID,
   S4_REPEAT_SURVEY_SLUG,
+  S4_SITTING_QUESTION_ID,
+  S4_YES,
   s4RepeatSubmittedMessage,
   s4Task1Href,
 } from "@/lib/s4-repeat-gate";
@@ -72,6 +75,7 @@ export default function StudentSurveyForm({
   onSubmittedRef.current = onSubmitted;
   const inbox = useStudentInbox();
   const session = useOptionalStudentSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (!survey || !existing || !hasCoachReview(existing)) return;
@@ -115,14 +119,23 @@ export default function StudentSurveyForm({
   }, [slug, surveyId, allowInactive]);
 
   const setAnswer = (id: string, value: string) => {
-    setAnswers((current) => ({ ...current, [id]: value }));
+    setAnswers((current) => {
+      const next = { ...current, [id]: value };
+      if (id === S4_REPEAT_QUESTION_ID && value !== S4_YES) delete next[S4_SITTING_QUESTION_ID];
+      return next;
+    });
+  };
+
+  const questionIsVisible = (question: SurveyQuestion, current: Record<string, string>) => {
+    if (question.id === S4_SITTING_QUESTION_ID) return current[S4_REPEAT_QUESTION_ID] === S4_YES;
+    return surveyQuestionIsVisible(question, current);
   };
 
   const submit = async () => {
     if (!survey) return;
     const missing = survey.questions.find(
       (question) =>
-        surveyQuestionIsVisible(question, answers) &&
+        questionIsVisible(question, answers) &&
         questionCollectsAnswer(question.type) &&
         question.required &&
         !formatSurveyAnswer(answers[question.id], question.type)
@@ -131,7 +144,9 @@ export default function StudentSurveyForm({
       setError(
         isPdfUploadBlock(missing.type)
           ? `Please upload a PDF for “${missing.label}”.`
-          : `Please answer “${missing.label}”.`
+          : missing.label.trim()
+            ? `Please answer “${missing.label}”.`
+            : "Please choose Yes or No."
       );
       return;
     }
@@ -139,7 +154,7 @@ export default function StudentSurveyForm({
     setError("");
     const payload: Record<string, string> = {};
     survey.questions.forEach((question) => {
-      if (questionCollectsAnswer(question.type) && surveyQuestionIsVisible(question, answers)) {
+      if (questionCollectsAnswer(question.type) && questionIsVisible(question, answers)) {
         payload[question.id] = (answers[question.id] || "").trim();
       }
     });
@@ -166,9 +181,14 @@ export default function StudentSurveyForm({
       createdAt: "",
       updatedAt: "",
     } as CustomSurveyResponse;
+    const isS4Yes = payload[S4_REPEAT_QUESTION_ID] === S4_YES;
+    onSubmitted?.(stub);
+    if (isS4Yes && nextHref) {
+      router.push(nextHref);
+      return;
+    }
     setExisting((current) => current || stub);
     setDone(true);
-    onSubmitted?.(stub);
   };
 
   const nextAction = (href: string | null | undefined, title: string | null | undefined) =>
@@ -222,12 +242,6 @@ export default function StudentSurveyForm({
               ? "Your coach asked you to resubmit."
               : "Your coach has left feedback."
         : "Thank you. Your response has been saved. Your coach has not reviewed it yet.";
-    const outcomeNext =
-      declinedLead
-        ? { href: s4Task1Href(session?.outline), title: "Task 1" }
-        : nextHref && nextTitle
-          ? { href: nextHref, title: nextTitle }
-          : null;
     return (
       <Frame embedded={embedded} className="survey-rich-text">
         {!hideTitle ? (
@@ -237,18 +251,20 @@ export default function StudentSurveyForm({
           </>
         ) : null}
         <p className="lead">{lead}</p>
-        {existing ? <CoachReviewCard response={existing} /> : null}
+        {existing && !declinedLead ? <CoachReviewCard response={existing} /> : null}
         <SurveyQuestionPdf survey={survey} submitted />
-        {existing ? (
+        {existing && !declinedLead ? (
           <div className="work-list">
-            {survey.questions.filter((question) => surveyQuestionIsVisible(question, existing.answers)).map((question) =>
+            {survey.questions.filter((question) => questionIsVisible(question, existing.answers)).map((question) =>
               isInfoBlock(question.type) ? (
                 <SurveyInfoCard key={question.id} question={question} />
               ) : (
                 <article className="work-item" key={question.id}>
-                  <strong>
-                    <LinkedText text={question.label} />
-                  </strong>
+                  {question.label.trim() ? (
+                    <strong>
+                      <LinkedText text={question.label} />
+                    </strong>
+                  ) : null}
                   {isBmcrBlock(question.type) ? (
                     <BmcrCalculator value={parseBmcrAnswer(existing.answers[question.id])} readOnly idPrefix={`saved-${question.id}`} />
                   ) : (
@@ -262,7 +278,13 @@ export default function StudentSurveyForm({
           </div>
         ) : null}
         <div className="actions">
-          {nextAction(outcomeNext?.href, outcomeNext?.title)}
+          {declinedLead ? (
+            <Link className="primary" href={s4Task1Href(session?.outline)}>
+              Start with Task 1 →
+            </Link>
+          ) : isS4Gate ? null : (
+            nextAction(nextHref, nextTitle)
+          )}
           {embedded ? null : (
             <Link className="ghost" href="/student/feedback">
               ← All feedback
@@ -295,7 +317,7 @@ export default function StudentSurveyForm({
           void submit();
         }}
       >
-        {survey.questions.filter((question) => surveyQuestionIsVisible(question, answers)).map((question) =>
+        {survey.questions.filter((question) => questionIsVisible(question, answers)).map((question) =>
           isInfoBlock(question.type) ? (
             <SurveyInfoCard key={question.id} question={question} />
           ) : (
@@ -312,7 +334,7 @@ export default function StudentSurveyForm({
           <button className="primary" type="submit" disabled={busy}>
             {busy ? "Submitting…" : "Submit"}
           </button>
-          {embedded && !isS4Gate ? nextAction(nextHref, nextTitle) : embedded ? null : (
+          {embedded || isS4Gate ? null : (
             <Link className="ghost" href="/student/feedback">
               Cancel
             </Link>
@@ -405,14 +427,17 @@ function SurveyField({
   surveyId: string;
 }) {
   const fieldId = `survey-${question.id}`;
+  const label = question.label.trim();
   return (
     <div className="plan-field">
+      {label ? (
       <label htmlFor={question.type === "radio" || question.type === "rating" || question.type === "multi_select" || isBmcrBlock(question.type) || isPdfUploadBlock(question.type) ? undefined : fieldId}>
         <strong>
-          <LinkedText text={question.label} />
+          <LinkedText text={label} />
           {question.required ? " *" : ""}
         </strong>
       </label>
+      ) : null}
       {question.helperText ? (
         <p className="muted small">
           <LinkedText text={question.helperText} />
@@ -429,7 +454,7 @@ function SurveyField({
         </select>
       ) : null}
       {question.type === "radio" ? (
-        <div className="survey-choice-list" role="radiogroup" aria-label={question.label}>
+        <div className="survey-choice-list" role="radiogroup" aria-label={label || "Yes or No"}>
           {question.options.map((option, optionIndex) => (
             <label className="roster-check" key={`${question.id}-${optionIndex}`}>
               <input

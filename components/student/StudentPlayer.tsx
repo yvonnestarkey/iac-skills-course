@@ -28,6 +28,7 @@ import LessonCarryForwardCheckpoint from "@/components/lesson/LessonCarryForward
 import LessonVideoParts from "@/components/lesson/LessonVideoParts";
 import LessonTool from "@/components/reading/LessonTool";
 import { isProgressiveCheckpoint } from "@/lib/lesson-checkpoint";
+import { isS4GateLesson } from "@/lib/s4-repeat-gate";
 import { isMultiVideoLesson, parseLessonVideos } from "@/lib/lesson-videos";
 import LinkedText from "@/components/ui/LinkedText";
 import { firstLessonWebLink } from "@/lib/getLessonPdf";
@@ -279,7 +280,7 @@ export default function StudentPlayer({
         {status ? <p className="notice">{status}</p> : null}
         {kind === "survey" ? (
           <>
-            {lesson.blurb ? (
+            {lesson.blurb && !isS4GateLesson(lesson, outline) ? (
               <p className="lead">
                 <LinkedText text={lesson.blurb} />
               </p>
@@ -297,7 +298,7 @@ export default function StudentPlayer({
                 void reloadProgress();
               }}
               nextHref={lesson.next ? `${basePath}/${lesson.next.id}` : null}
-              nextTitle={lesson.next?.title || null}
+              nextTitle={isS4GateLesson(lesson, outline) ? null : lesson.next?.title || null}
             />
           </>
         ) : (

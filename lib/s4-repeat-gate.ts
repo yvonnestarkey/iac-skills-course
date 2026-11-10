@@ -9,7 +9,8 @@ export const S4_SITTING_QUESTION_ID = "q-which-sitting";
 export const S4_YES = "Yes";
 export const S4_NO = "No";
 export const S4_NO_MESSAGE =
-  "Great, you need to start with Task 1. This question will be waiting for you when you complete the rest of the Tasks";
+  "This question is only intended for students who have already completed the Skills in this course, and is designed to assess which Skills they need to work on the most for this sitting. It will be waiting for you once you're done with your Tasks. For now, please start with Task 1";
+export const S4_UNANSWERED_MESSAGE = "Please complete the question in L1 first.";
 export const S4_SITTING_OPTIONS = [
   "Jan 2026",
   "June 2025",

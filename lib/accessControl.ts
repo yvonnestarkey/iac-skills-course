@@ -1,5 +1,5 @@
 import type { CustomSurveyResponse } from "./custom-surveys";
-import { S4_NO_MESSAGE, s4RepeatAnswer } from "./s4-repeat-gate";
+import { S4_NO_MESSAGE, S4_UNANSWERED_MESSAGE, s4RepeatAnswer } from "./s4-repeat-gate";
 import type { OutlineChapter, OutlineLesson } from "./student-lesson";
 import type { StudentSubmission } from "./student-submissions";
 import { task1AssignmentFromOutline } from "./task1-gate";
@@ -85,14 +85,14 @@ export function checkLessonAccess(
           isLocked: true,
           reason: S4_NO_MESSAGE,
           prereqLessonId: task1.lessonId,
-          prereqTitle: task1.lessonTitle,
+          prereqTitle: "Task 1",
         };
       }
       return {
         isLocked: true,
-        reason: "Answer the question in L1 first.",
+        reason: S4_UNANSWERED_MESSAGE,
         prereqLessonId: gateId,
-        prereqTitle: gate?.title || "L1",
+        prereqTitle: "L1",
       };
     }
   }
