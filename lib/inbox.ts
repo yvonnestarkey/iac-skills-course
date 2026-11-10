@@ -124,15 +124,19 @@ export function formatInboxTime(iso: string | null | undefined): string {
   return date.toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 }
 
+export const INBOX_MARKED_READ_CONTEXT = "inbox:marked-read";
+
+export function isInboxReceipt(message: Pick<InboxMessage, "from" | "context">): boolean {
+  return message.from === "coach" && message.context === INBOX_MARKED_READ_CONTEXT;
+}
+
 export function isWaiting(messages: InboxMessage[]): boolean {
   const last = messages[messages.length - 1];
   return Boolean(last && last.from === "student");
 }
 
 export function threadNeedsCoachAction(messages: InboxMessage[]): boolean {
-  if (!messages.length) return false;
-  if (isWaiting(messages)) return true;
-  return messages.some((item) => item.from === "student" && !item.read);
+  return isWaiting(messages);
 }
 
 export function groupInboxByStudent(messages: InboxMessage[]): InboxThread[] {
@@ -357,9 +361,7 @@ export async function markOwnInboxRead(): Promise<{ ok: boolean; error?: string 
 }
 
 export function unreadStudentThreadCount(messages: InboxMessage[]): number {
-  return groupInboxByStudent(messages).filter((thread) =>
-    thread.messages.some((item) => item.from === "student" && !item.read)
-  ).length;
+  return groupInboxByStudent(messages).filter((thread) => thread.queued).length;
 }
 
 export const COACH_ALERTS_EVENT = "coach-alerts-refresh";
@@ -410,6 +412,28 @@ export async function markCoachThreadResolved(student: {
   }
 
   return { ok: false, error: lastError || "Could not resolve this thread." };
+}
+
+export async function markCoachThreadRead(student: {
+  studentId?: string | null;
+  studentEmail: string;
+}): Promise<{ ok: boolean; error?: string }> {
+  const resolved = await markCoachThreadResolved(student);
+  if (!resolved.ok) return resolved;
+
+  const { client, user, error: authError } = await authClient();
+  if (!client || !user) return { ok: false, error: authError || "Sign in required." };
+
+  const receipt = await client.from("inbox_messages").insert({
+    student_id: student.studentId || null,
+    student_email: student.studentEmail,
+    from_role: "coach",
+    kind: "reply",
+    body: "Marked as read.",
+    context: INBOX_MARKED_READ_CONTEXT,
+  });
+  if (receipt.error) return { ok: false, error: describe(receipt.error) };
+  return { ok: true };
 }
 
 export async function postInboxMessage(

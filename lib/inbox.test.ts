@@ -8,6 +8,9 @@ import {
   notificationRowToMessage,
   postInboxMessagesToStudents,
   studentMessagesHref,
+  INBOX_MARKED_READ_CONTEXT,
+  threadNeedsCoachAction,
+  unreadStudentThreadCount,
   type InboxMessage,
 } from "./inbox";
 import {
@@ -30,6 +33,28 @@ function message(partial: Partial<InboxMessage> & Pick<InboxMessage, "id" | "bod
     ...partial,
   };
 }
+
+test("marking a waiting student thread as read takes it out of the unread queue", () => {
+  const question = message({
+    id: "q1",
+    from: "student",
+    kind: "question",
+    body: "How do I slow down?",
+    read: false,
+    readAt: null,
+  });
+  const receipt = message({
+    id: "r1",
+    from: "coach",
+    kind: "reply",
+    body: "Marked as read.",
+    context: INBOX_MARKED_READ_CONTEXT,
+  });
+  assert.equal(threadNeedsCoachAction([question]), true);
+  assert.equal(threadNeedsCoachAction([question, receipt]), false);
+  assert.equal(unreadStudentThreadCount([question]), 1);
+  assert.equal(unreadStudentThreadCount([question, receipt]), 0);
+});
 
 test("coach sent stats count Yvonne's inbox messages and keep the latest date", () => {
   const stats = coachSentStatsByStudentId(

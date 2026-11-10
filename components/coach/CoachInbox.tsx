@@ -10,8 +10,7 @@ import {
   fetchInboxMessages,
   formatInboxTime,
   groupInboxByStudent,
-  markAllCoachInboxRead,
-  markCoachThreadResolved,
+  markCoachThreadRead,
   postInboxMessage,
   refreshCoachAlerts,
   type InboxKind,
@@ -48,7 +47,6 @@ export default function CoachInbox() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      await markAllCoachInboxRead();
       if (cancelled) return;
       refreshCoachAlerts();
       await load();
@@ -119,6 +117,24 @@ export default function CoachInbox() {
           ? "Feedback sent to the student dashboard."
           : "Reply sent."
     );
+    refreshCoachAlerts();
+    await load();
+  };
+
+  const markRead = async () => {
+    if (!selected) return;
+    setBusy(true);
+    setStatus("");
+    const result = await markCoachThreadRead({
+      studentId: selected.studentId,
+      studentEmail: selected.studentEmail,
+    });
+    setBusy(false);
+    if (!result.ok) {
+      setStatus(result.error || "Could not mark this as read.");
+      return;
+    }
+    setStatus("Marked as read.");
     refreshCoachAlerts();
     await load();
   };
@@ -209,6 +225,9 @@ export default function CoachInbox() {
                 </button>
                 <button className="ghost" type="button" disabled={busy || !text.trim()} onClick={() => send("feedback")}>
                   Leave assignment feedback
+                </button>
+                <button className="ghost" type="button" disabled={busy || !selected.queued} onClick={() => void markRead()}>
+                  Mark as read
                 </button>
               </div>
             </>

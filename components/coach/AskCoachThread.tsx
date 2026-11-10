@@ -7,7 +7,9 @@ import LinkedText from "@/components/ui/LinkedText";
 import {
   fetchCoachStudentThread,
   isWaiting,
+  markCoachThreadRead,
   postInboxMessage,
+  refreshCoachAlerts,
   studentRowMatches,
   type InboxMessage,
 } from "@/lib/inbox";
@@ -80,6 +82,23 @@ export default function AskCoachThread({ student }: { student: Student }) {
     await load();
   };
 
+  const markRead = async () => {
+    setBusy(true);
+    setStatus("");
+    const result = await markCoachThreadRead({
+      studentId: student.id,
+      studentEmail: student.email,
+    });
+    setBusy(false);
+    if (!result.ok) {
+      setStatus(result.error || "Could not mark this as read.");
+      return;
+    }
+    setStatus("Marked as read.");
+    refreshCoachAlerts();
+    await load();
+  };
+
   return (
     <section className="card">
       <h2>Message thread</h2>
@@ -107,6 +126,11 @@ export default function AskCoachThread({ student }: { student: Student }) {
         <button className="primary" id="send-coach" type="button" disabled={busy || !text.trim()} onClick={send}>
           {pending ? "Reply" : "Send message"}
         </button>
+        {pending ? (
+          <button className="ghost" type="button" disabled={busy} onClick={() => void markRead()}>
+            Mark as read
+          </button>
+        ) : null}
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import { formatInboxTime, messageLabel, type InboxMessage, type InboxRole } from "@/lib/inbox";
+import { formatInboxTime, isInboxReceipt, messageLabel, type InboxMessage, type InboxRole } from "@/lib/inbox";
 import LinkedText from "@/components/ui/LinkedText";
 
 export default function InboxThreadView({
@@ -10,11 +10,12 @@ export default function InboxThreadView({
   viewer: InboxRole;
   empty?: string;
 }) {
-  if (!messages.length) return <p className="empty">{empty}</p>;
+  const visible = messages.filter((message) => !isInboxReceipt(message));
+  if (!visible.length) return <p className="empty">{empty}</p>;
 
   return (
     <div className="thread">
-      {messages.map((message) => (
+      {visible.map((message) => (
         <div
           key={message.id}
           className={`bubble ${message.from} ${message.kind === "question" ? "question" : ""} ${
