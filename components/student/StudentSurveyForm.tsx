@@ -280,7 +280,7 @@ export default function StudentSurveyForm({
         <div className="actions">
           {declinedLead ? (
             <Link className="primary" href={s4Task1Href(session?.outline)}>
-              Start with Task 1 →
+              Start with Task 1 L1 →
             </Link>
           ) : isS4Gate ? null : (
             nextAction(nextHref, nextTitle)

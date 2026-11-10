@@ -1,5 +1,5 @@
 import type { CustomSurveyResponse } from "./custom-surveys";
-import { task1AssignmentFromOutline } from "./task1-gate";
+import { task1StartFromOutline } from "./task1-gate";
 import type { OutlineChapter, OutlineLesson } from "./student-lesson";
 
 export const S4_REPEAT_SURVEY_SLUG = "s4-repeat-student-gate";
@@ -102,5 +102,5 @@ export function s4RepeatSubmittedMessage(answers: Record<string, string> | null 
 }
 
 export function s4Task1Href(chapters?: OutlineChapter[] | null): string {
-  return `/student/${task1AssignmentFromOutline(chapters).lessonId}`;
+  return `/student/${task1StartFromOutline(chapters).lessonId}`;
 }

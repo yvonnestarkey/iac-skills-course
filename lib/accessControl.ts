@@ -2,7 +2,7 @@ import type { CustomSurveyResponse } from "./custom-surveys";
 import { S4_NO_MESSAGE, S4_UNANSWERED_MESSAGE, s4RepeatAnswer } from "./s4-repeat-gate";
 import type { OutlineChapter, OutlineLesson } from "./student-lesson";
 import type { StudentSubmission } from "./student-submissions";
-import { task1AssignmentFromOutline } from "./task1-gate";
+import { task1StartFromOutline } from "./task1-gate";
 
 export interface LessonGate {
   id: string;
@@ -80,12 +80,12 @@ export function checkLessonAccess(
     const answer = s4RepeatAnswer(options.surveyReviews, options.outline);
     if (answer !== "yes") {
       if (answer === "no") {
-        const task1 = task1AssignmentFromOutline(options.outline);
+        const task1 = task1StartFromOutline(options.outline);
         return {
           isLocked: true,
           reason: S4_NO_MESSAGE,
           prereqLessonId: task1.lessonId,
-          prereqTitle: "Task 1",
+          prereqTitle: "Task 1 L1",
         };
       }
       return {

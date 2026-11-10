@@ -13,6 +13,7 @@ import {
   S4_YES,
   s4RepeatAnswer,
   s4RepeatSubmittedMessage,
+  s4Task1Href,
 } from "./s4-repeat-gate";
 
 const s4: OutlineChapter[] = [
@@ -66,7 +67,8 @@ test("S4 follow-on lessons stay locked until the student says they have done the
   const declined = checkLessonAccess(followOn!, catalog, {}, { outline: gated, surveyReviews: review("No") });
   assert.equal(declined.isLocked, true);
   assert.equal(declined.reason, S4_NO_MESSAGE);
-  assert.equal(declined.prereqTitle, "Task 1");
+  assert.equal(declined.prereqTitle, "Task 1 L1");
+  assert.equal(declined.prereqLessonId, "ch10-l1");
   const opened = checkLessonAccess(followOn!, catalog, {}, { outline: gated, surveyReviews: review("Yes") });
   assert.equal(opened.isLocked, false);
 });
@@ -85,6 +87,7 @@ test("S4 No thank-you copy points students to Task 1", () => {
   assert.equal(s4RepeatAnswer(review("No"), s4), "no");
   assert.equal(s4RepeatSubmittedMessage({ [S4_REPEAT_QUESTION_ID]: "No" }), S4_NO_MESSAGE);
   assert.equal(s4RepeatSubmittedMessage({ [S4_REPEAT_QUESTION_ID]: "Yes" }), null);
+  assert.equal(s4Task1Href(), "/student/ch10-l1");
 });
 
 test("S4 stays open when L1 is still the study-approach video", () => {

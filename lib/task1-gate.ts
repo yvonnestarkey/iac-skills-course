@@ -3,6 +3,8 @@ import type { OutlineChapter, OutlineLesson } from "@/lib/student-lesson";
 
 /** Fallback when the live outline has not loaded yet. Matches the Task 1 assignment in the course seed. */
 export const TASK_1_ASSIGNMENT_FALLBACK_ID = "ch10-l7";
+export const TASK_1_START_FALLBACK_ID = "ch10-l1";
+export const TASK_1_START_FALLBACK_TITLE = "L1 - What will we cover in Task 1?";
 
 export type Task1Assignment = {
   chapterId: string;
@@ -43,6 +45,36 @@ export function task1AssignmentFromOutline(outline?: OutlineChapter[] | null): T
       chapterTitle: "Task 1 - How to evaluate whether you need revision",
       lessonId: TASK_1_ASSIGNMENT_FALLBACK_ID,
       lessonTitle: "Task 1 - Question & Submission",
+    }
+  );
+}
+
+export function findTask1Start(outline: OutlineChapter[] | null | undefined): Task1Assignment | null {
+  for (const chapter of outline || []) {
+    if (!isTask1Chapter(chapter.title || "")) continue;
+    const lessons = chapter.lessons || [];
+    const lesson =
+      lessons.find((item) => /^L1\b/i.test(item.title || "")) ||
+      lessons.find((item) => /what will we cover in task 1/i.test(item.title || "")) ||
+      lessons[0];
+    if (!lesson) continue;
+    return {
+      chapterId: chapter.id,
+      chapterTitle: chapter.title,
+      lessonId: lesson.id,
+      lessonTitle: lesson.title,
+    };
+  }
+  return null;
+}
+
+export function task1StartFromOutline(outline?: OutlineChapter[] | null): Task1Assignment {
+  return (
+    findTask1Start(outline) || {
+      chapterId: "ch10",
+      chapterTitle: "Task 1 - How to evaluate whether you need revision",
+      lessonId: TASK_1_START_FALLBACK_ID,
+      lessonTitle: TASK_1_START_FALLBACK_TITLE,
     }
   );
 }
