@@ -4014,14 +4014,14 @@ button.diagnosis-pill {
   }
 
   .dashboard-banner {
-    max-height: 220px;
+    max-height: 420px;
   }
 
   .dashboard-banner-quote {
-    left: 12px;
-    right: 12px;
-    bottom: 10px;
-    max-width: none;
+    left: 16px;
+    right: 16px;
+    bottom: 14px;
+    padding: 16px 18px;
   }
 
   .inbox-layout {
@@ -4630,6 +4630,8 @@ a.student-account-link {
 .dashboard-banner-wrap {
   position: relative;
   margin: 0 0 16px;
+  overflow: hidden;
+  border-radius: 16px;
 }
 
 .dashboard-banner-wrap:empty {
@@ -4639,37 +4641,43 @@ a.student-account-link {
 .dashboard-banner {
   display: block;
   width: 100%;
-  max-height: 380px;
+  max-height: 460px;
   object-fit: cover;
   object-position: left center;
   border-radius: 16px;
   border: 1px solid var(--line);
 }
 
-.dashboard-banner-wrap::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 46%;
-  pointer-events: none;
-  border-radius: 0 0 16px 16px;
-  background: linear-gradient(180deg, transparent, rgba(238, 243, 241, 0.78) 72%);
-}
-
 .dashboard-banner-quote {
   position: absolute;
   z-index: 1;
-  left: 20px;
-  right: 20px;
-  bottom: 16px;
-  max-width: min(42rem, calc(100% - 40px));
+  left: 28px;
+  right: 28px;
+  bottom: 22px;
+  max-width: none;
   margin: 0;
+  padding: 22px 28px 20px;
+  border-radius: 32px;
+  background: rgba(238, 243, 241, 0.52);
+  backdrop-filter: blur(18px) saturate(1.12);
+  -webkit-backdrop-filter: blur(18px) saturate(1.12);
+  box-shadow: 0 0 52px 28px rgba(238, 243, 241, 0.32);
+}
+
+.dashboard-banner-quote::before {
+  content: "";
+  position: absolute;
+  inset: -18px;
+  z-index: -1;
+  border-radius: 48px;
+  background: rgba(255, 255, 255, 0.28);
+  filter: blur(22px);
 }
 
 .dashboard-banner-quote blockquote {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(15px, 2.2vw, 26px);
+  font-size: 32px;
   font-style: italic;
   font-weight: 600;
   line-height: 1.28;
@@ -4677,8 +4685,8 @@ a.student-account-link {
 }
 
 .dashboard-banner-quote figcaption {
-  margin-top: 6px;
-  font-size: clamp(12px, 1.35vw, 15px);
+  margin-top: 10px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.01em;
 }
