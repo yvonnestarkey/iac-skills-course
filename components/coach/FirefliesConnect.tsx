@@ -81,7 +81,7 @@ export default function FirefliesConnect() {
     }
     if (action === "sync") {
       setNotice(
-        `Checked ${payload?.scanned || 0} Fireflies meetings with student emails: ${payload?.imported || 0} added to profiles${payload?.skipped ? `, ${payload.skipped} already imported` : ""}${payload?.errors ? `, ${payload.errors} failed` : ""}.`
+        `Looked up IAC student emails in Fireflies: ${payload?.imported || 0} added to profiles${payload?.skipped ? `, ${payload.skipped} already imported` : ""}${payload?.errors ? `, ${payload.errors} failed` : ""}.`
       );
       await load();
       return;
@@ -107,11 +107,13 @@ export default function FirefliesConnect() {
       <p className="kicker">Integrations</p>
       <h1>Fireflies</h1>
       <p className="muted">
-        After a 1-on-1 Zoom, Fireflies sends the transcript and summary here. Import only asks Fireflies for meetings
-        that include a student email, then puts those notes on that student’s profile and coaching page.
+        After a 1-on-1 Zoom, Fireflies sends the transcript and summary here. Import looks up each IAC student’s email
+        in Fireflies (calls from 2026) and saves that 1-on-1 on their profile. It does not scan your whole Fireflies
+        library.
       </p>
       <p className="muted small">
-        Paste <code>supabase/fireflies-coaching.sql</code> in Supabase before the first import.
+        If an import mentions a missing column, paste <code>supabase/fireflies-coaching.sql</code> in Supabase and try
+        again.
       </p>
 
       <ol className="fireflies-steps">
@@ -194,7 +196,7 @@ export default function FirefliesConnect() {
       {notice ? <p className="muted">{notice}</p> : null}
       {error ? <p className="waiting">{error}</p> : null}
 
-      <h2>Recent imports</h2>
+      <h2>This import</h2>
       {settings?.imports?.length ? (
         <ul className="note-list">
           {settings.imports.map((row) => (

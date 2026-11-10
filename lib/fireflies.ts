@@ -57,8 +57,10 @@ export type FirefliesImportStatus = "imported" | "unmatched" | "skipped" | "erro
 
 export const FIREFLIES_PAGE_SIZE = 50;
 export const FIREFLIES_SYNC_MAX_PAGES = 3;
-export const FIREFLIES_SYNC_BUDGET_MS = 20000;
+export const FIREFLIES_SYNC_BUDGET_MS = 25000;
 export const FIREFLIES_EMAIL_BATCH = 15;
+export const FIREFLIES_PER_STUDENT_LIMIT = 15;
+export const FIREFLIES_IMPORT_FROM_DATE = "2026-01-01T00:00:00.000Z";
 
 const TRANSCRIPT_FIELDS = `id
     title
@@ -87,15 +89,35 @@ const TRANSCRIPT_QUERY = `query Transcript($transcriptId: String!) {
   }
 }`;
 
-const TRANSCRIPTS_LIST_QUERY = `query Transcripts($limit: Int, $skip: Int, $participants: [String!]) {
-  transcripts(limit: $limit, skip: $skip, participants: $participants) {
-    id
+const TRANSCRIPT_LIST_FIELDS = `id
     title
     date
     host_email
     organizer_email
     participants
-    meeting_attendees { displayName email name }
+    meeting_attendees { displayName email name }`;
+
+const TRANSCRIPTS_LIST_QUERY = `query Transcripts($limit: Int, $skip: Int, $participants: [String!]) {
+  transcripts(limit: $limit, skip: $skip, participants: $participants) {
+    ${TRANSCRIPT_LIST_FIELDS}
+  }
+}`;
+
+const TRANSCRIPTS_BY_EMAIL_QUERY = `query Transcripts($limit: Int, $email: String!, $fromDate: DateTime) {
+  transcripts(limit: $limit, skip: 0, participant_email: $email, fromDate: $fromDate) {
+    ${TRANSCRIPT_LIST_FIELDS}
+  }
+}`;
+
+const TRANSCRIPTS_BY_EMAIL_NO_DATE_QUERY = `query Transcripts($limit: Int, $email: String!) {
+  transcripts(limit: $limit, skip: 0, participant_email: $email) {
+    ${TRANSCRIPT_LIST_FIELDS}
+  }
+}`;
+
+const TRANSCRIPTS_BY_PARTICIPANT_QUERY = `query Transcripts($limit: Int, $participants: [String!], $fromDate: DateTime) {
+  transcripts(limit: $limit, skip: 0, participants: $participants, fromDate: $fromDate) {
+    ${TRANSCRIPT_LIST_FIELDS}
   }
 }`;
 
@@ -311,6 +333,22 @@ export function chunkEmails(emails: string[], size = FIREFLIES_EMAIL_BATCH): str
   return batches;
 }
 
+export function missingSchemaColumn(message: string): string | null {
+  const match =
+    message.match(/Could not find the '([^']+)' column/i) ||
+    message.match(/'([^']+)' column of '/i);
+  return match?.[1] || null;
+}
+
+export function isFirefliesMeetingInImportWindow(
+  transcript: Pick<FirefliesTranscript, "date">,
+  fromDate = FIREFLIES_IMPORT_FROM_DATE
+): boolean {
+  const at = firefliesMeetingAt(transcript.date);
+  if (!at) return false;
+  return new Date(at).getTime() >= Date.parse(fromDate);
+}
+
 const TRANSCRIPTS_FALLBACK_QUERY = `query Transcripts($limit: Int, $skip: Int, $participants: [String!]) {
   transcripts(limit: $limit, skip: $skip, participants: $participants) {
     id
@@ -322,6 +360,15 @@ const TRANSCRIPTS_FALLBACK_QUERY = `query Transcripts($limit: Int, $skip: Int, $
   }
 }`;
 
+async function listTranscripts(
+  apiKey: string,
+  query: string,
+  variables: Record<string, unknown>
+): Promise<FirefliesTranscript[]> {
+  const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, query, variables);
+  return data.transcripts || [];
+}
+
 export async function listFirefliesTranscriptPage(
   apiKey: string,
   skip = 0,
@@ -330,14 +377,41 @@ export async function listFirefliesTranscriptPage(
 ): Promise<FirefliesTranscript[]> {
   const variables = { limit, skip, participants };
   try {
-    const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, TRANSCRIPTS_LIST_QUERY, variables);
-    return data.transcripts || [];
+    return await listTranscripts(apiKey, TRANSCRIPTS_LIST_QUERY, variables);
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
     if (!/meeting_attendees|Cannot query field/i.test(message)) throw error;
-    const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, TRANSCRIPTS_FALLBACK_QUERY, variables);
-    return data.transcripts || [];
+    return listTranscripts(apiKey, TRANSCRIPTS_FALLBACK_QUERY, variables);
   }
+}
+
+/** Ask Fireflies for meetings that include this one student email, from 2026 onward. */
+export async function listFirefliesMeetingsForEmail(apiKey: string, email: string): Promise<FirefliesTranscript[]> {
+  const participant = normalizeEmail(email);
+  if (!participant.includes("@")) return [];
+  const limit = FIREFLIES_PER_STUDENT_LIMIT;
+  let rows: FirefliesTranscript[] = [];
+  try {
+    rows = await listTranscripts(apiKey, TRANSCRIPTS_BY_EMAIL_QUERY, {
+      limit,
+      email: participant,
+      fromDate: FIREFLIES_IMPORT_FROM_DATE,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    if (/fromDate|DateTime/i.test(message)) {
+      rows = await listTranscripts(apiKey, TRANSCRIPTS_BY_EMAIL_NO_DATE_QUERY, { limit, email: participant });
+    } else if (/participant_email/i.test(message)) {
+      rows = await listTranscripts(apiKey, TRANSCRIPTS_BY_PARTICIPANT_QUERY, {
+        limit,
+        participants: [participant],
+        fromDate: FIREFLIES_IMPORT_FROM_DATE,
+      });
+    } else {
+      throw error;
+    }
+  }
+  return rows.filter((row) => isFirefliesMeetingInImportWindow(row));
 }
 
 export async function testFirefliesApiKey(apiKey: string): Promise<{ ok: boolean; error?: string }> {
@@ -436,6 +510,7 @@ export async function listFirefliesImports(): Promise<
   const { data, error } = await client
     .from("fireflies_imports")
     .select("*")
+    .in("status", ["imported", "error"])
     .order("created_at", { ascending: false })
     .limit(40);
   if (error) return [];
@@ -477,9 +552,23 @@ async function logImport(row: {
 async function loadStudents(): Promise<FirefliesStudentMatch[]> {
   const client = getServiceSupabase();
   if (!client) return [];
+  let entitled = await client
+    .from("course_entitlements")
+    .select("user_id, status")
+    .eq("product_id", "jan27-iac")
+    .eq("status", "full");
+  if (entitled.error) {
+    entitled = await client.from("course_entitlements").select("user_id, status").eq("product_id", "jan27-iac");
+  }
+  const allowedIds = new Set(
+    ((entitled.data || []) as Array<{ user_id?: string | null; status?: string | null }>)
+      .filter((row) => !row.status || row.status === "full")
+      .map((row) => asText(row.user_id))
+      .filter(Boolean)
+  );
   const { data } = await client.from("profiles").select("id, email, full_name, role");
   return ((data || []) as Array<{ id?: string; email?: string | null; full_name?: string | null; role?: string | null }>)
-    .filter((row) => row.id && !isCoachAccount(row))
+    .filter((row) => row.id && allowedIds.has(String(row.id)) && !isCoachAccount(row))
     .map((row) => ({
       id: String(row.id),
       email: asText(row.email),
@@ -510,24 +599,32 @@ async function upsertCoachingSession(input: {
 }) {
   const client = getServiceSupabase();
   if (!client) throw new Error("Supabase is not configured.");
-  const { data: existingByMeeting } = await client
+  type ExistingSession = { id?: string; coach_notes?: string | null };
+  let existing: ExistingSession | null = null;
+  const byMeeting = await client
     .from("student_coaching_sessions")
     .select("id, coach_notes")
     .eq("fireflies_meeting_id", input.meetingId)
     .maybeSingle();
-  let existing = existingByMeeting as { id?: string; coach_notes?: string | null } | null;
+  if (byMeeting.error) {
+    if (missingSchemaColumn(byMeeting.error.message) !== "fireflies_meeting_id") {
+      throw new Error(byMeeting.error.message);
+    }
+  } else {
+    existing = (byMeeting.data as ExistingSession | null) || null;
+  }
   if (!existing && input.sessionAt) {
     const start = new Date(input.sessionAt).getTime() - 36 * 60 * 60 * 1000;
     const end = new Date(input.sessionAt).getTime() + 36 * 60 * 60 * 1000;
-    const { data: nearby } = await client
+    const nearby = await client
       .from("student_coaching_sessions")
-      .select("id, coach_notes, fireflies_meeting_id, session_at")
+      .select("id, coach_notes, session_at")
       .eq("student_id", input.studentId)
       .gte("session_at", new Date(start).toISOString())
       .lte("session_at", new Date(end).toISOString())
       .order("session_at", { ascending: false })
       .limit(1);
-    existing = (nearby || [])[0] || null;
+    if (!nearby.error) existing = ((nearby.data || [])[0] as ExistingSession | undefined) || null;
   }
   const patch: Record<string, unknown> = {
     student_id: input.studentId,
@@ -544,15 +641,20 @@ async function upsertCoachingSession(input: {
     transcript_text: input.transcript || null,
     updated_at: new Date().toISOString(),
   };
-  for (let attempt = 0; attempt < 8; attempt += 1) {
+  if (!asText(existing?.coach_notes) && input.summary) patch.coach_notes = input.summary;
+  for (let attempt = 0; attempt < 12; attempt += 1) {
     const result = existing?.id
-      ? await client.from("student_coaching_sessions").update(patch).eq("id", existing.id)
-      : await client.from("student_coaching_sessions").insert(patch);
+      ? await client.from("student_coaching_sessions").update(patch).eq("id", existing.id).select("id")
+      : await client.from("student_coaching_sessions").insert(patch).select("id");
     if (!result.error) return;
-    const missing = result.error.message.match(/'([^']+)' column/i);
-    if (!missing?.[1] || !(missing[1] in patch)) throw new Error(result.error.message);
-    delete patch[missing[1]];
+    const missing = missingSchemaColumn(result.error.message);
+    if (missing && missing in patch) {
+      delete patch[missing];
+      continue;
+    }
+    throw new Error(result.error.message);
   }
+  throw new Error("Could not save the Fireflies session. Paste supabase/fireflies-coaching.sql in Supabase, then import again.");
 }
 
 export async function importFirefliesTranscript(
@@ -606,8 +708,18 @@ export async function importFirefliesMeeting(meetingId: string, event = "meeting
 async function alreadyImportedMeetingIds(): Promise<Set<string>> {
   const client = getServiceSupabase();
   if (!client) return new Set();
-  const { data } = await client.from("student_coaching_sessions").select("fireflies_meeting_id").not("fireflies_meeting_id", "is", null);
+  const { data, error } = await client
+    .from("student_coaching_sessions")
+    .select("fireflies_meeting_id")
+    .not("fireflies_meeting_id", "is", null);
+  if (error) return new Set();
   return new Set(((data || []) as Array<{ fireflies_meeting_id?: string | null }>).map((row) => asText(row.fireflies_meeting_id)).filter(Boolean));
+}
+
+async function clearPastSyncImports() {
+  const client = getServiceSupabase();
+  if (!client) return;
+  await client.from("fireflies_imports").delete().eq("event", "past_sync");
 }
 
 export async function syncPastFirefliesMeetings(): Promise<{
@@ -622,8 +734,9 @@ export async function syncPastFirefliesMeetings(): Promise<{
   const settings = await loadSettings();
   if (!settings.apiKey) return { ok: false, error: "Fireflies API key is not set.", scanned: 0, imported: 0, unmatched: 0, skipped: 0, errors: 0 };
   const students = await loadStudents();
-  const emails = students.map((student) => student.email).filter((email) => email.includes("@"));
-  if (!emails.length) return { ok: false, error: "No student emails to match in Fireflies.", scanned: 0, imported: 0, unmatched: 0, skipped: 0, errors: 0 };
+  const withEmail = students.filter((student) => student.email.includes("@"));
+  if (!withEmail.length) return { ok: false, error: "No IAC student emails to look up in Fireflies.", scanned: 0, imported: 0, unmatched: 0, skipped: 0, errors: 0 };
+  await clearPastSyncImports();
   const importedIds = await alreadyImportedMeetingIds();
   const seen = new Set<string>(importedIds);
   const deadline = Date.now() + FIREFLIES_SYNC_BUDGET_MS;
@@ -633,51 +746,44 @@ export async function syncPastFirefliesMeetings(): Promise<{
   let skipped = 0;
   let errors = 0;
 
-  for (const batch of chunkEmails(emails)) {
+  for (const student of withEmail) {
     if (Date.now() > deadline) break;
-    let skip = 0;
-    for (let page = 0; page < FIREFLIES_SYNC_MAX_PAGES; page += 1) {
+    const rows = await listFirefliesMeetingsForEmail(settings.apiKey, student.email);
+    for (const row of rows) {
       if (Date.now() > deadline) break;
-      const rows = await listFirefliesTranscriptPage(settings.apiKey, skip, FIREFLIES_PAGE_SIZE, batch);
-      if (!rows.length) break;
-      for (const row of rows) {
-        if (Date.now() > deadline) break;
-        const meetingId = asText(row.id);
-        if (!meetingId) continue;
-        scanned += 1;
-        if (seen.has(meetingId)) {
-          skipped += 1;
+      const meetingId = asText(row.id);
+      if (!meetingId) continue;
+      scanned += 1;
+      if (seen.has(meetingId)) {
+        skipped += 1;
+        continue;
+      }
+      seen.add(meetingId);
+      try {
+        const preview = matchStudent(students, row);
+        if (!preview.student) {
+          unmatched += 1;
           continue;
         }
-        seen.add(meetingId);
-        try {
-          const preview = matchStudent(students, row);
-          if (!preview.student) {
-            unmatched += 1;
-            continue;
-          }
-          const transcript = (await fetchFirefliesTranscript(settings.apiKey, meetingId)) || row;
-          const result = await importFirefliesTranscript({ ...transcript, id: meetingId }, "past_sync", students);
-          if (result.status === "imported") {
-            imported += 1;
-            importedIds.add(meetingId);
-          } else if (result.status === "unmatched") unmatched += 1;
-          else errors += 1;
-        } catch (error) {
-          errors += 1;
-          await logImport({
-            meetingId,
-            event: "past_sync",
-            title: asText(row.title),
-            status: "error",
-            attendeeEmails: attendeeEmails(row),
-            error: error instanceof Error ? error.message : "Could not import that meeting.",
-          });
-        }
+        const transcript = (await fetchFirefliesTranscript(settings.apiKey, meetingId)) || row;
+        const result = await importFirefliesTranscript({ ...transcript, id: meetingId }, "past_sync", students);
+        if (result.status === "imported") {
+          imported += 1;
+          importedIds.add(meetingId);
+        } else if (result.status === "unmatched") unmatched += 1;
+        else errors += 1;
+      } catch (error) {
+        errors += 1;
+        await logImport({
+          meetingId,
+          event: "past_sync",
+          title: asText(row.title),
+          studentId: student.id,
+          status: "error",
+          attendeeEmails: attendeeEmails(row),
+          error: error instanceof Error ? error.message : "Could not import that meeting.",
+        });
       }
-      const next = nextFirefliesSkip(rows.length, skip);
-      if (next == null) break;
-      skip = next;
     }
   }
 

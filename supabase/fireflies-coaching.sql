@@ -1,5 +1,6 @@
 -- Fireflies 1-on-1 coaching import (API key + webhook + session transcript/summary).
 -- Paste into the Supabase SQL editor (Dashboard → SQL Editor → New query).
+-- Safe to re-run: it only adds missing tables/columns.
 
 create table if not exists public.fireflies_settings (
   id integer primary key default 1,

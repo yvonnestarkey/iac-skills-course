@@ -13,6 +13,8 @@ import {
   isPdfUrl,
   maskSecret,
   chunkEmails,
+  isFirefliesMeetingInImportWindow,
+  missingSchemaColumn,
   nextFirefliesSkip,
   parseFirefliesWebhook,
   shouldImportFirefliesEvent,
@@ -106,9 +108,26 @@ test("coach Fireflies page and webhook route are wired", () => {
   assert.match(connect, /Import past calls/);
   assert.match(webhook, /importFirefliesMeeting/);
   assert.match(coachApi, /syncPastFirefliesMeetings/);
-  assert.match(readFileSync(resolve("lib/fireflies.ts"), "utf8"), /participants: \$participants/);
+  const fireflies = readFileSync(resolve("lib/fireflies.ts"), "utf8");
+  assert.match(fireflies, /participant_email: \$email/);
+  assert.match(fireflies, /FIREFLIES_IMPORT_FROM_DATE/);
+  assert.match(fireflies, /course_entitlements/);
+  assert.match(fireflies, /jan27-iac/);
   assert.match(sql, /fireflies_settings/);
   assert.match(sql, /transcript_text/);
+});
+
+test("schema-cache errors name the missing column so the import can drop it and retry", () => {
+  assert.equal(
+    missingSchemaColumn("Could not find the 'deliverables_seen_at' column of 'student_coaching_sessions' in the schema cache"),
+    "deliverables_seen_at"
+  );
+  assert.equal(missingSchemaColumn("unrelated"), null);
+});
+
+test("past import keeps 2026 1-on-1s and drops older Fireflies meetings", () => {
+  assert.equal(isFirefliesMeetingInImportWindow({ date: "2026-03-12T10:00:00.000Z" }), true);
+  assert.equal(isFirefliesMeetingInImportWindow({ date: "2024-08-01T10:00:00.000Z" }), false);
 });
 
 test("Fireflies listing pages until a short page", () => {
