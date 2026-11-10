@@ -20,18 +20,21 @@ export default function StudentDashboardBanner({
 }) {
   const { course } = useLmsCourse();
   if (!course.dashboardBannerUrl) return null;
-  const quote = course.id === DEFAULT_LMS_COURSE_ID ? dashboardQuoteForDate() : null;
-  const showChrome = Boolean(name || resumeHref);
+  const iac = course.id === DEFAULT_LMS_COURSE_ID;
+  const quote = iac ? dashboardQuoteForDate() : null;
   return (
     <div className="dashboard-banner-wrap">
       <img className="dashboard-banner" src={course.dashboardBannerUrl} alt={`${course.title} dashboard`} />
-      {showChrome ? (
-        <>
-          {resumeHref ? (
-            <Link className="dashboard-banner-resume" href={resumeHref}>
-              {resumeLabel}
-            </Link>
-          ) : null}
+      <div className="dashboard-banner-overlay">
+        <div className="dashboard-banner-top">
+          <div className="dashboard-banner-heading">
+            {iac ? <p className="dashboard-banner-title">Your Dashboard</p> : null}
+            {resumeHref ? (
+              <Link className="dashboard-banner-resume" href={resumeHref}>
+                {resumeLabel}
+              </Link>
+            ) : null}
+          </div>
           {name ? (
             <div className="dashboard-banner-welcome">
               <h1>Welcome back, {name}</h1>
@@ -46,14 +49,14 @@ export default function StudentDashboardBanner({
               {paceMessage ? <p className="muted small student-dash-pace">{paceMessage}</p> : null}
             </div>
           ) : null}
-        </>
-      ) : null}
-      {quote ? (
-        <figure className="dashboard-banner-quote" style={{ color: quote.color }}>
-          <blockquote>“{quote.text}”</blockquote>
-          <figcaption>— {quote.source}</figcaption>
-        </figure>
-      ) : null}
+        </div>
+        {quote ? (
+          <figure className="dashboard-banner-quote" style={{ color: quote.color }}>
+            <blockquote>“{quote.text}”</blockquote>
+            <figcaption>— {quote.source}</figcaption>
+          </figure>
+        ) : null}
+      </div>
     </div>
   );
 }
