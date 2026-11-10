@@ -1,5 +1,7 @@
 import { catalogFromOutline, checkLessonAccess, type AccessResult } from "./accessControl";
 import { isChapterSequentiallyLocked } from "./course-phases";
+import type { CustomSurveyResponse } from "./custom-surveys";
+import { surveyResponseFromRow } from "./custom-surveys";
 import type { DrillAttempt, ReadingCheckResult } from "./reading-drills";
 import { fetchCourseOutline, type OutlineChapter } from "./student-lesson";
 import { fetchStudentSubmissions, submissionFromRow, type StudentSubmission } from "./student-submissions";
@@ -12,17 +14,26 @@ async function loadStudentAccessState(studentId: string): Promise<{
   completed: Record<string, boolean>;
   attempts: DrillAttempt[];
   checks: ReadingCheckResult[];
+  surveyReviews: Record<string, CustomSurveyResponse>;
 }> {
   const client = getServiceSupabase() || getSupabase();
   if (!client) {
-    return { submissions: await fetchStudentSubmissions(studentId), completed: {}, attempts: [], checks: [] };
+    return {
+      submissions: await fetchStudentSubmissions(studentId),
+      completed: {},
+      attempts: [],
+      checks: [],
+      surveyReviews: {},
+    };
   }
-  const [{ data: subRows }, { data: progressRows }, { data: attemptRows }, { data: checkRows }] = await Promise.all([
-    client.from("student_submissions").select("*").eq("student_id", studentId),
-    client.from("lesson_progress").select("lesson_id").eq("user_id", studentId).eq("completed", true),
-    client.from("reading_attempts").select("exercise_id").eq("user_id", studentId),
-    client.from("reading_checks").select("check_id").eq("user_id", studentId),
-  ]);
+  const [{ data: subRows }, { data: progressRows }, { data: attemptRows }, { data: checkRows }, { data: surveyRows }] =
+    await Promise.all([
+      client.from("student_submissions").select("*").eq("student_id", studentId),
+      client.from("lesson_progress").select("lesson_id").eq("user_id", studentId).eq("completed", true),
+      client.from("reading_attempts").select("exercise_id").eq("user_id", studentId),
+      client.from("reading_checks").select("check_id").eq("user_id", studentId),
+      client.from("custom_survey_responses").select("*").eq("student_id", studentId),
+    ]);
   const submissions: Record<string, StudentSubmission> = {};
   (subRows || []).forEach((row) => {
     const item = submissionFromRow(row);
@@ -32,11 +43,17 @@ async function loadStudentAccessState(studentId: string): Promise<{
   (progressRows || []).forEach((row) => {
     completed[String(row.lesson_id)] = true;
   });
+  const surveyReviews: Record<string, CustomSurveyResponse> = {};
+  (surveyRows || []).forEach((row) => {
+    const item = surveyResponseFromRow(row as Record<string, unknown>);
+    if (item.surveyId) surveyReviews[item.surveyId] = item;
+  });
   return {
     submissions,
     completed,
     attempts: (attemptRows || []) as DrillAttempt[],
     checks: (checkRows || []) as ReadingCheckResult[],
+    surveyReviews,
   };
 }
 
@@ -49,9 +66,11 @@ export async function getLessonAccess(
   const outline = options?.outline || (await fetchCourseOutline());
   const catalog = catalogFromOutline(outline);
   const target = catalog.find((lesson) => lesson.id === targetLessonId);
-  const { submissions, completed, attempts, checks } = await loadStudentAccessState(studentId);
+  const { submissions, completed, attempts, checks, surveyReviews } = await loadStudentAccessState(studentId);
   const gatedCompleted = mergeCompletedWithReading(completed, outline, { attempts, checks });
-  const lessonAccess = target ? checkLessonAccess(target, catalog, submissions, { completed: gatedCompleted }) : { isLocked: false };
+  const lessonAccess = target
+    ? checkLessonAccess(target, catalog, submissions, { completed: gatedCompleted, surveyReviews, outline })
+    : { isLocked: false };
   if (lessonAccess.isLocked) return lessonAccess;
   const chapterId =
     options?.chapterId || outline.find((chapter) => chapter.lessons.some((lesson) => lesson.id === targetLessonId))?.id;

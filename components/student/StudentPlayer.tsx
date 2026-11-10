@@ -68,6 +68,8 @@ export default function StudentPlayer({
     previewLessonIds,
     readingAttempts,
     readingChecks,
+    surveyReviews,
+    setSurveyReview,
     reloadProgress,
   } = useStudentSession();
   const outline = useVisibleCourseOutline();
@@ -160,7 +162,11 @@ export default function StudentPlayer({
     attempts: readingAttempts,
     checks: readingChecks,
   });
-  const liveAccess = checkLessonAccess(gatedTarget, catalog, submissions || {}, { completed: gatedCompleted });
+  const liveAccess = checkLessonAccess(gatedTarget, catalog, submissions || {}, {
+    completed: gatedCompleted,
+    surveyReviews,
+    outline,
+  });
   const chapterLocked =
     Boolean(lesson.chapterId) &&
     (outline || []).length > 0 &&
@@ -285,8 +291,10 @@ export default function StudentPlayer({
               lessonId={lesson.id}
               surveyId={lesson.survey_id}
               slug={lesson.survey_slug || undefined}
-              onSubmitted={() => {
+              onSubmitted={(response) => {
+                if (response?.surveyId) setSurveyReview(response.surveyId, response);
                 void completeSurveyLesson();
+                void reloadProgress();
               }}
               nextHref={lesson.next ? `${basePath}/${lesson.next.id}` : null}
               nextTitle={lesson.next?.title || null}

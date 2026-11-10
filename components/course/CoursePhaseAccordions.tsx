@@ -251,7 +251,15 @@ export default function CoursePhaseAccordions({
                                     locked={
                                       !unlocked &&
                                       (chapterLocked ||
-                                        checkLessonAccess(lesson, catalog, submissions, { completed: gatedCompleted }).isLocked)
+                                        checkLessonAccess(
+                                          catalog.find((item) => item.id === lesson.id) || lesson,
+                                          catalog,
+                                          submissions,
+                                          {
+                                          completed: gatedCompleted,
+                                          surveyReviews,
+                                          outline: chapters,
+                                        }).isLocked)
                                     }
                                     purchaseLocked={purchaseLocked}
                                     previewOverride={previewOverride}
@@ -278,7 +286,15 @@ export default function CoursePhaseAccordions({
                                 locked={
                                   !unlocked &&
                                   (chapterLocked ||
-                                    checkLessonAccess(lesson, catalog, submissions, { completed: gatedCompleted }).isLocked)
+                                    checkLessonAccess(
+                                      catalog.find((item) => item.id === lesson.id) || lesson,
+                                      catalog,
+                                      submissions,
+                                      {
+                                      completed: gatedCompleted,
+                                      surveyReviews,
+                                      outline: chapters,
+                                    }).isLocked)
                                 }
                                 purchaseLocked={purchaseLocked}
                                 previewOverride={previewOverride}

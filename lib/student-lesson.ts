@@ -21,6 +21,7 @@ import { getServiceSupabase } from "./supabase-admin";
 import { firstLessonVideoUrl, parseLessonVideos, type LessonVideo } from "./lesson-videos";
 import { asLessonType, displayLessonType, lessonIsAssignment } from "./lesson-type";
 import { fetchSurveyAssignmentFlags } from "./custom-surveys";
+import { applyS4RepeatGate } from "./s4-repeat-gate";
 import type { UserProfile } from "../types/database";
 import type { CourseData, Lesson, LessonType } from "./types";
 
@@ -87,6 +88,7 @@ export interface OutlineLesson {
   is_draft?: boolean;
   tool?: string | null;
   extra_prereq_lesson_ids?: string[];
+  repeat_chapter_gate_id?: string;
 }
 
 export interface OutlineChapter {
@@ -234,7 +236,7 @@ function outlineLessonFromRow(row: {
 }
 
 export function applyCourseProgressionGates(chapters: OutlineChapter[]): OutlineChapter[] {
-  return withSubmissionPrereqs(chapters);
+  return applyS4RepeatGate(withSubmissionPrereqs(chapters));
 }
 
 function withSubmissionPrereqs(chapters: OutlineChapter[]): OutlineChapter[] {
@@ -328,7 +330,8 @@ export function courseDataFromOutline(outline: OutlineChapter[]): CourseData {
 }
 
 export function outlineFromSeed(): OutlineChapter[] {
-  return applyTask2ReadingAssignmentPrereqs(
+  return applyS4RepeatGate(
+    applyTask2ReadingAssignmentPrereqs(
     withSubmissionPrereqs(
     withoutRetiredChapters(SEED.chapters).map((chapter) => ({
       id: chapter.id,
@@ -350,6 +353,7 @@ export function outlineFromSeed(): OutlineChapter[] {
         })
       ),
     }))
+    )
     )
   );
 }
@@ -547,9 +551,11 @@ async function finishLoadedOutline(
   if (courseId !== DEFAULT_LMS_COURSE_ID) {
     return withAssignmentFlags(chapters);
   }
-  return withTask2ReadingGates(
-    client,
-    await withAssignmentFlags(withSubmissionPrereqs(withoutRetiredChapters(chapters)))
+  return applyS4RepeatGate(
+    await withTask2ReadingGates(
+      client,
+      await withAssignmentFlags(withSubmissionPrereqs(withoutRetiredChapters(chapters)))
+    )
   );
 }
 

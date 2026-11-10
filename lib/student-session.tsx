@@ -43,6 +43,7 @@ interface StudentSessionValue {
   onboarding: OnboardingGate;
   setLessonCompleted: (lessonId: string, completed: boolean) => void;
   setSubmission: (lessonId: string, submission: StudentSubmission) => void;
+  setSurveyReview: (surveyId: string, review: CustomSurveyResponse) => void;
   reloadProgress: () => Promise<void>;
   reloadOutline: () => Promise<void>;
   signOut: () => Promise<void>;
@@ -199,6 +200,11 @@ export function StudentSessionProvider({ children, courseId }: { children: React
     setSubmissions((current) => ({ ...current, [lessonId]: submission }));
   }, []);
 
+  const setSurveyReview = useCallback((surveyId: string, review: CustomSurveyResponse) => {
+    if (!surveyId) return;
+    setSurveyReviews((current) => ({ ...current, [surveyId]: review }));
+  }, []);
+
   const reloadProgress = useCallback(async () => {
     if (user) await loadProgress(user.id);
   }, [loadProgress, user]);
@@ -241,11 +247,12 @@ export function StudentSessionProvider({ children, courseId }: { children: React
       onboarding,
       setLessonCompleted,
       setSubmission,
+      setSurveyReview,
       reloadProgress,
       reloadOutline,
       signOut,
     }),
-    [ready, user, outline, completed, submissions, surveyReviews, readingAttempts, readingChecks, entitlement, entitlementSource, previewLessonIds, onboarding, setLessonCompleted, setSubmission, reloadProgress, reloadOutline, signOut]
+    [ready, user, outline, completed, submissions, surveyReviews, readingAttempts, readingChecks, entitlement, entitlementSource, previewLessonIds, onboarding, setLessonCompleted, setSubmission, setSurveyReview, reloadProgress, reloadOutline, signOut]
   );
 
   return <StudentSessionContext.Provider value={value}>{children}</StudentSessionContext.Provider>;

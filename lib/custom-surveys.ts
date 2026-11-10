@@ -39,6 +39,11 @@ export const SURVEY_QUESTION_TYPES: { id: SurveyQuestionType; label: string }[] 
   { id: "pdf_upload", label: "PDF Upload" },
 ];
 
+export type SurveyQuestionVisibleWhen = {
+  id: string;
+  equals: string;
+};
+
 export interface SurveyQuestion {
   id: string;
   type: SurveyQuestionType;
@@ -47,6 +52,7 @@ export interface SurveyQuestion {
   required: boolean;
   options: string[];
   resourceUrl: string;
+  visibleWhen?: SurveyQuestionVisibleWhen;
 }
 
 export interface CustomSurvey {
@@ -167,6 +173,12 @@ export function stringifyPdfUploadAnswer(file: SurveyPdfUploadAnswer): string {
 
 export function questionCollectsAnswer(type: SurveyQuestionType): boolean {
   return !isInfoBlock(type);
+}
+
+export function surveyQuestionIsVisible(question: SurveyQuestion, answers: Record<string, string>): boolean {
+  const rule = question.visibleWhen;
+  if (!rule?.id) return true;
+  return String(answers[rule.id] || "").trim() === rule.equals;
 }
 
 export function slugifySurveyTitle(title: string): string {
@@ -297,6 +309,15 @@ export function asSurveyQuestions(value: unknown): SurveyQuestion[] {
         : [];
       const id = String(row.id || "").trim();
       if (!id) return null;
+      const visibleRaw =
+        row.visibleWhen && typeof row.visibleWhen === "object"
+          ? (row.visibleWhen as Record<string, unknown>)
+          : row.visible_when && typeof row.visible_when === "object"
+            ? (row.visible_when as Record<string, unknown>)
+            : null;
+      const visibleWhen = visibleRaw?.id
+        ? { id: String(visibleRaw.id), equals: String(visibleRaw.equals ?? visibleRaw.equals_value ?? "") }
+        : undefined;
       return {
         id,
         type,
@@ -305,6 +326,7 @@ export function asSurveyQuestions(value: unknown): SurveyQuestion[] {
         required: isInfoBlock(type) ? false : Boolean(row.required),
         options,
         resourceUrl: String(row.resourceUrl || row.resource_url || "").trim(),
+        ...(visibleWhen ? { visibleWhen } : {}),
       } satisfies SurveyQuestion;
     })
     .filter((item): item is SurveyQuestion => Boolean(item));
@@ -347,6 +369,14 @@ function asGrade(value: unknown): number | null {
   if (value == null || value === "") return null;
   const n = Number(value);
   return Number.isFinite(n) ? n : null;
+}
+
+export function surveyResponseFromRow(
+  row: Record<string, unknown>,
+  profile?: { name: string; email: string },
+  graderName?: string
+): CustomSurveyResponse {
+  return responseFromRow(row, profile, graderName);
 }
 
 function responseFromRow(

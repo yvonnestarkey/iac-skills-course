@@ -1,5 +1,8 @@
+import type { CustomSurveyResponse } from "./custom-surveys";
+import { S4_NO_MESSAGE, s4RepeatAnswer } from "./s4-repeat-gate";
 import type { OutlineChapter, OutlineLesson } from "./student-lesson";
 import type { StudentSubmission } from "./student-submissions";
+import { task1AssignmentFromOutline } from "./task1-gate";
 
 export interface LessonGate {
   id: string;
@@ -9,6 +12,8 @@ export interface LessonGate {
   prereq_lesson_id?: string | null;
   extra_prereq_lesson_ids?: string[];
   unlock_at?: string | null;
+  survey_id?: string | null;
+  repeat_chapter_gate_id?: string;
 }
 
 export interface AccessResult {
@@ -21,6 +26,8 @@ export interface AccessResult {
 export interface AccessCheckOptions {
   completed?: Record<string, boolean>;
   now?: Date;
+  surveyReviews?: Record<string, CustomSurveyResponse>;
+  outline?: OutlineChapter[];
 }
 
 export function catalogFromOutline(chapters: OutlineChapter[] | null | undefined): LessonGate[] {
@@ -36,6 +43,8 @@ export function outlineToGate(lesson: LessonGate | OutlineLesson): LessonGate {
     prereq_lesson_id: lesson.prereq_lesson_id || null,
     extra_prereq_lesson_ids: "extra_prereq_lesson_ids" in lesson ? lesson.extra_prereq_lesson_ids || [] : [],
     unlock_at: lesson.unlock_at || null,
+    survey_id: "survey_id" in lesson ? lesson.survey_id || null : null,
+    repeat_chapter_gate_id: "repeat_chapter_gate_id" in lesson ? lesson.repeat_chapter_gate_id : undefined,
   };
 }
 
@@ -57,6 +66,7 @@ export function isValidSubmission(prereq: LessonGate, submission: StudentSubmiss
  * 2. Self-submission gate (`requires_submission` on the prereq)
  * 3. Coach approval gate (`requires_coach_approval` on the prereq)
  * 4. Date/drip bounds (`unlock_at` on the target)
+ * 5. S4 returning-student gate (`repeat_chapter_gate_id`)
  */
 export function checkLessonAccess(
   target: LessonGate,
@@ -64,6 +74,29 @@ export function checkLessonAccess(
   submissions: Record<string, StudentSubmission | undefined>,
   options: AccessCheckOptions = {}
 ): AccessResult {
+  const gateId = target.repeat_chapter_gate_id || "";
+  if (gateId) {
+    const gate = catalog.find((lesson) => lesson.id === gateId);
+    const answer = s4RepeatAnswer(options.surveyReviews, options.outline);
+    if (answer !== "yes") {
+      if (answer === "no") {
+        const task1 = task1AssignmentFromOutline(options.outline);
+        return {
+          isLocked: true,
+          reason: S4_NO_MESSAGE,
+          prereqLessonId: task1.lessonId,
+          prereqTitle: task1.lessonTitle,
+        };
+      }
+      return {
+        isLocked: true,
+        reason: "Answer the question in L1 first.",
+        prereqLessonId: gateId,
+        prereqTitle: gate?.title || "L1",
+      };
+    }
+  }
+
   const prereqId = target.prereq_lesson_id || "";
   if (prereqId) {
     const prereq = catalog.find((lesson) => lesson.id === prereqId) || {

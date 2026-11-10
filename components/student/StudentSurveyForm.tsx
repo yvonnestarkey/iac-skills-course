@@ -17,6 +17,7 @@ import {
   safeHref,
   stringifyPdfUploadAnswer,
   submitCustomSurveyResponse,
+  surveyQuestionIsVisible,
   surveyResponseStatusClass,
   surveyResponseStatusLabel,
   uploadSurveyResponsePdf,
@@ -30,6 +31,13 @@ import FeedbackLog from "@/components/feedback/FeedbackLog";
 import LinkedText from "@/components/ui/LinkedText";
 import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
 import { notificationMentionsSurvey } from "@/lib/notifications";
+import {
+  S4_REPEAT_QUESTION_ID,
+  S4_REPEAT_SURVEY_SLUG,
+  s4RepeatSubmittedMessage,
+  s4Task1Href,
+} from "@/lib/s4-repeat-gate";
+import { useOptionalStudentSession } from "@/lib/student-session";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 
 export default function StudentSurveyForm({
@@ -49,7 +57,7 @@ export default function StudentSurveyForm({
   embedded?: boolean;
   allowInactive?: boolean;
   hideTitle?: boolean;
-  onSubmitted?: () => void;
+  onSubmitted?: (response?: CustomSurveyResponse) => void;
   nextHref?: string | null;
   nextTitle?: string | null;
 }) {
@@ -63,6 +71,7 @@ export default function StudentSurveyForm({
   const onSubmittedRef = useRef(onSubmitted);
   onSubmittedRef.current = onSubmitted;
   const inbox = useStudentInbox();
+  const session = useOptionalStudentSession();
 
   useEffect(() => {
     if (!survey || !existing || !hasCoachReview(existing)) return;
@@ -97,7 +106,7 @@ export default function StudentSurveyForm({
       if (cancelled) return;
       setExisting(own.response);
       setLoading(false);
-      if (own.response) onSubmittedRef.current?.();
+      if (own.response) onSubmittedRef.current?.(own.response);
     };
     void load();
     return () => {
@@ -113,6 +122,7 @@ export default function StudentSurveyForm({
     if (!survey) return;
     const missing = survey.questions.find(
       (question) =>
+        surveyQuestionIsVisible(question, answers) &&
         questionCollectsAnswer(question.type) &&
         question.required &&
         !formatSurveyAnswer(answers[question.id], question.type)
@@ -129,7 +139,9 @@ export default function StudentSurveyForm({
     setError("");
     const payload: Record<string, string> = {};
     survey.questions.forEach((question) => {
-      if (questionCollectsAnswer(question.type)) payload[question.id] = (answers[question.id] || "").trim();
+      if (questionCollectsAnswer(question.type) && surveyQuestionIsVisible(question, answers)) {
+        payload[question.id] = (answers[question.id] || "").trim();
+      }
     });
     const result = await submitCustomSurveyResponse(survey.id, payload, lessonId);
     setBusy(false);
@@ -137,16 +149,37 @@ export default function StudentSurveyForm({
       setError(result.error || "Could not submit.");
       return;
     }
+    const stub = {
+      id: "local",
+      surveyId: survey.id,
+      studentId: "",
+      studentName: "",
+      studentEmail: "",
+      answers: payload,
+      status: "submitted",
+      grade: null,
+      feedback: "",
+      feedbackFileUrl: "",
+      gradedBy: "",
+      gradedByName: "",
+      gradedAt: "",
+      createdAt: "",
+      updatedAt: "",
+    } as CustomSurveyResponse;
+    setExisting((current) => current || stub);
     setDone(true);
-    onSubmitted?.();
+    onSubmitted?.(stub);
   };
 
-  const nextAction =
-    nextHref && nextTitle ? (
-      <Link className="primary" href={nextHref}>
-        Next: {nextTitle} →
+  const nextAction = (href: string | null | undefined, title: string | null | undefined) =>
+    href && title ? (
+      <Link className="primary" href={href}>
+        Next: {title} →
       </Link>
     ) : null;
+  const isS4Gate =
+    survey?.slug === S4_REPEAT_SURVEY_SLUG ||
+    Boolean(survey?.questions.some((question) => question.id === S4_REPEAT_QUESTION_ID));
 
   if (loading) {
     return (
@@ -166,7 +199,7 @@ export default function StudentSurveyForm({
           </>
         ) : null}
         <p className="empty">{error || "This survey could not be found."}</p>
-        {embedded ? nextAction : (
+        {embedded ? nextAction(nextHref, nextTitle) : (
           <Link className="ghost" href="/student/feedback">
             ← All feedback
           </Link>
@@ -177,15 +210,24 @@ export default function StudentSurveyForm({
 
   if (existing || done) {
     const review = existing && hasCoachReview(existing) ? existing : null;
-    const lead = review
-      ? review.status === "graded"
-        ? "Your coach has graded this."
-        : review.status === "rejected"
-          ? "Your coach rejected this submission."
-          : review.status === "resubmit"
-            ? "Your coach asked you to resubmit."
-            : "Your coach has left feedback."
-      : "Thank you. Your response has been saved. Your coach has not reviewed it yet.";
+    const declinedLead = s4RepeatSubmittedMessage(existing?.answers || answers);
+    const lead = declinedLead
+      ? declinedLead
+      : review
+        ? review.status === "graded"
+          ? "Your coach has graded this."
+          : review.status === "rejected"
+            ? "Your coach rejected this submission."
+            : review.status === "resubmit"
+              ? "Your coach asked you to resubmit."
+              : "Your coach has left feedback."
+        : "Thank you. Your response has been saved. Your coach has not reviewed it yet.";
+    const outcomeNext =
+      declinedLead
+        ? { href: s4Task1Href(session?.outline), title: "Task 1" }
+        : nextHref && nextTitle
+          ? { href: nextHref, title: nextTitle }
+          : null;
     return (
       <Frame embedded={embedded} className="survey-rich-text">
         {!hideTitle ? (
@@ -199,7 +241,7 @@ export default function StudentSurveyForm({
         <SurveyQuestionPdf survey={survey} submitted />
         {existing ? (
           <div className="work-list">
-            {survey.questions.map((question) =>
+            {survey.questions.filter((question) => surveyQuestionIsVisible(question, existing.answers)).map((question) =>
               isInfoBlock(question.type) ? (
                 <SurveyInfoCard key={question.id} question={question} />
               ) : (
@@ -220,7 +262,7 @@ export default function StudentSurveyForm({
           </div>
         ) : null}
         <div className="actions">
-          {nextAction}
+          {nextAction(outcomeNext?.href, outcomeNext?.title)}
           {embedded ? null : (
             <Link className="ghost" href="/student/feedback">
               ← All feedback
@@ -253,7 +295,7 @@ export default function StudentSurveyForm({
           void submit();
         }}
       >
-        {survey.questions.map((question) =>
+        {survey.questions.filter((question) => surveyQuestionIsVisible(question, answers)).map((question) =>
           isInfoBlock(question.type) ? (
             <SurveyInfoCard key={question.id} question={question} />
           ) : (
@@ -270,7 +312,7 @@ export default function StudentSurveyForm({
           <button className="primary" type="submit" disabled={busy}>
             {busy ? "Submitting…" : "Submit"}
           </button>
-          {embedded ? nextAction : (
+          {embedded && !isS4Gate ? nextAction(nextHref, nextTitle) : embedded ? null : (
             <Link className="ghost" href="/student/feedback">
               Cancel
             </Link>
