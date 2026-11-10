@@ -89,30 +89,6 @@ export default function StudentDashboard() {
         <StudentTaskDueDates />
       </div>
 
-      {coach ? (
-        <nav className="student-hub" aria-label="Coach tools">
-          <p className="kicker" style={{ width: "100%" }}>
-            Coach tools
-          </p>
-          <Link href="/coach" className="student-hub-card">
-            <strong>Coach tools</strong>
-            <p>Referrals, Add Student, student lists, payments, and course admin.</p>
-          </Link>
-          <Link href="/coach/referrals" className="student-hub-card">
-            <strong>Referrals</strong>
-            <p>Successful student and professional colleague referrals.</p>
-          </Link>
-          <Link href="/coach/students/new" className="student-hub-card">
-            <strong>Add Student</strong>
-            <p>Invite someone to free preview or complimentary full access.</p>
-          </Link>
-          <Link href="/coach/lists" className="student-hub-card">
-            <strong>Students</strong>
-            <p>Roster, submissions, surveys, and BMCR analytics.</p>
-          </Link>
-        </nav>
-      ) : null}
-
       <nav className="student-hub" aria-label="Student shortcuts">
         <Link href="/student/evaluator" className="student-hub-card">
           <strong>Script Evaluator</strong>
@@ -174,6 +150,30 @@ export default function StudentDashboard() {
         </Link>
       </nav>
       <StudentPersonalNotes />
+
+      {coach ? (
+        <nav className="student-hub student-hub-coach" aria-label="Coach">
+          <p className="kicker" style={{ width: "100%" }}>
+            Coach
+          </p>
+          <Link href="/coach" className="student-hub-card">
+            <strong>Coach tools</strong>
+            <p>Referrals, Add Student, student lists, payments, and course admin.</p>
+          </Link>
+          <Link href="/coach/referrals" className="student-hub-card">
+            <strong>Referrals</strong>
+            <p>Successful student and professional colleague referrals.</p>
+          </Link>
+          <Link href="/coach/students/new" className="student-hub-card">
+            <strong>Add Student</strong>
+            <p>Invite someone to free preview or complimentary full access.</p>
+          </Link>
+          <Link href="/coach/lists" className="student-hub-card">
+            <strong>Students</strong>
+            <p>Roster, submissions, surveys, and BMCR analytics.</p>
+          </Link>
+        </nav>
+      ) : null}
     </article>
   );
 }

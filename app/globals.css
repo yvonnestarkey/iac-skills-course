@@ -4507,6 +4507,12 @@ a.student-account-link {
   margin: 8px 0 8px;
 }
 
+.student-hub-coach {
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
 .student-hub-card {
   display: block;
   width: 100%;
