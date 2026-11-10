@@ -5,7 +5,7 @@ import { formatSastDateTime } from "@/lib/dates";
 import {
   attemptCardStatus,
   attemptDisplayTitle,
-  attemptUploadedFiles,
+  attemptProfileFiles,
   fetchOwnExamAttempts,
   type ExamAttempt,
 } from "@/lib/exam-attempts";
@@ -27,7 +27,7 @@ export default function ScriptEvaluationsPanel({ studentId }: { studentId: strin
         setLoading(false);
         return;
       }
-      setAttempts(result.attempts.filter((attempt) => attemptUploadedFiles(attempt).length > 0));
+      setAttempts(result.attempts.filter((attempt) => attemptProfileFiles(attempt).length > 0));
       setLoading(false);
     });
     return () => {
@@ -46,7 +46,7 @@ export default function ScriptEvaluationsPanel({ studentId }: { studentId: strin
       {!loading && attempts.length ? (
         <div className="work-list">
           {attempts.map((attempt) => {
-            const files = attemptUploadedFiles(attempt);
+            const files = attemptProfileFiles(attempt);
             const when = attempt.submitted_at || attempt.updated_at || attempt.created_at;
             return (
               <div className="work-item" key={attempt.id}>

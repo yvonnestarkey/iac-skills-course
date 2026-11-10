@@ -10,6 +10,7 @@ import {
   attemptScriptSlotLocked,
   attemptStatusLabel,
   attemptStudentLabel,
+  attemptProfileFiles,
   attemptUploadedFiles,
   deriveAttemptStatus,
   examAttemptFromRow,
@@ -81,7 +82,24 @@ test("coach profile lists only the PDFs the student uploaded on an attempt", () 
   assert.match(profile, /ScriptEvaluationsPanel/);
   assert.match(panel, /Script Evaluations/);
   assert.match(panel, /Download \{file\.label\}/);
+  assert.match(panel, /attemptProfileFiles/);
   assert.match(panel, /fetchOwnExamAttempts/);
+});
+
+test("a manual script evaluation PDF sits at the top of the profile document list", () => {
+  const files = attemptProfileFiles(
+    attempt({
+      coach_report_url: "https://x/kyle-report.pdf",
+      coach_report_name: "kyle-June 2026 IAC Script Report.pdf",
+      marked_script_url: "https://x/p1.pdf",
+      marking_report_url: "https://x/marks.pdf",
+    })
+  );
+  assert.equal(files[0]?.kind, "coach_report");
+  assert.equal(files[0]?.label, "Script evaluation report");
+  assert.equal(files[0]?.name, "kyle-June 2026 IAC Script Report.pdf");
+  assert.equal(files[1]?.kind, "marked_script");
+  assert.equal(attemptProfileFiles(attempt({ marked_script_url: "https://x/p1.pdf" }))[0]?.kind, "marked_script");
 });
 
 test("attempt paper name is sitting plus paper for the evaluation route", () => {

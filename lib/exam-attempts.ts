@@ -127,8 +127,10 @@ export function attemptHasFile(attempt: ExamAttempt, kind: ExamAttemptFileKind):
   return Boolean(attempt[`${kind}_url`] || attempt[`${kind}_path`]);
 }
 
+export type AttemptDocKind = ExamAttemptFileKind | "coach_report";
+
 export type AttemptUploadedFile = {
-  kind: ExamAttemptFileKind;
+  kind: AttemptDocKind;
   label: string;
   url: string;
   name: string;
@@ -142,6 +144,22 @@ export function attemptUploadedFiles(attempt: ExamAttempt): AttemptUploadedFile[
     const name = String(attempt[`${kind}_name`] || "").trim() || `${EXAM_ATTEMPT_FILE_LABELS[kind]}.pdf`;
     return [{ kind, label: EXAM_ATTEMPT_FILE_LABELS[kind], url, name }];
   });
+}
+
+export function attemptCoachReportFile(
+  attempt: Pick<ExamAttempt, "coach_report_url" | "coach_report_name">
+): AttemptUploadedFile | null {
+  const url = String(attempt.coach_report_url || "").trim();
+  if (!url) return null;
+  const name = String(attempt.coach_report_name || "").trim() || "Script evaluation.pdf";
+  return { kind: "coach_report", label: "Script evaluation report", url, name };
+}
+
+/** Student-profile Script Evaluations list: coach PDF first, then the uploaded papers. */
+export function attemptProfileFiles(attempt: ExamAttempt): AttemptUploadedFile[] {
+  const report = attemptCoachReportFile(attempt);
+  const files = attemptUploadedFiles(attempt);
+  return report ? [report, ...files] : files;
 }
 
 export function attemptScriptSlotLocked(attempt: ExamAttempt, kind: ExamAttemptFileKind): boolean {
