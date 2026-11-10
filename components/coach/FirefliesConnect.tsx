@@ -54,12 +54,25 @@ export default function FirefliesConnect() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action, apiKey, webhookSecret: settings?.webhookSecret || "" }),
     });
-    const payload = (await response.json().catch(() => null)) as
-      | (Settings & { ok?: boolean; error?: string; scanned?: number; imported?: number; unmatched?: number; skipped?: number; errors?: number })
-      | null;
+    const raw = await response.text();
+    const payload = (() => {
+      try {
+        return JSON.parse(raw) as Settings & {
+          ok?: boolean;
+          error?: string;
+          scanned?: number;
+          imported?: number;
+          unmatched?: number;
+          skipped?: number;
+          errors?: number;
+        };
+      } catch {
+        return null;
+      }
+    })();
     setBusy("");
     if (!response.ok || payload?.ok === false) {
-      setError(payload?.error || "Could not update Fireflies.");
+      setError(payload?.error || raw.slice(0, 280) || `Could not import Fireflies calls (${response.status}).`);
       return;
     }
     if (action === "test") {

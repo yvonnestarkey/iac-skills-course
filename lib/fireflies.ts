@@ -56,7 +56,8 @@ export type FirefliesStudentMatch = {
 export type FirefliesImportStatus = "imported" | "unmatched" | "skipped" | "error";
 
 export const FIREFLIES_PAGE_SIZE = 50;
-export const FIREFLIES_SYNC_MAX_PAGES = 4;
+export const FIREFLIES_SYNC_MAX_PAGES = 2;
+export const FIREFLIES_SYNC_BUDGET_MS = 20000;
 
 const TRANSCRIPT_FIELDS = `id
     title
@@ -90,22 +91,10 @@ const TRANSCRIPTS_LIST_QUERY = `query Transcripts($limit: Int, $skip: Int) {
     id
     title
     date
-    transcript_url
-    audio_url
-    video_url
     host_email
     organizer_email
     participants
     meeting_attendees { displayName email name }
-    summary {
-      overview
-      short_summary
-      short_overview
-      action_items
-      shorthand_bullet
-      outline
-      gist
-    }
   }
 }`;
 
@@ -266,17 +255,38 @@ export function isPdfUrl(url: string | null | undefined): boolean {
 }
 
 async function firefliesGraphql<T>(apiKey: string, query: string, variables: Record<string, unknown>): Promise<T> {
-  const response = await fetch(FIREFLIES_GRAPHQL_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({ query, variables }),
-  });
-  const payload = (await response.json().catch(() => null)) as { data?: T; errors?: Array<{ message?: string }> } | null;
-  if (!response.ok) throw new Error(`Fireflies API ${response.status}`);
-  if (payload?.errors?.length) throw new Error(payload.errors[0]?.message || "Fireflies GraphQL error.");
+  let response: Response;
+  try {
+    response = await fetch(FIREFLIES_GRAPHQL_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({ query, variables }),
+      signal: AbortSignal.timeout(15000),
+    });
+  } catch (error) {
+    if (error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError")) {
+      throw new Error("Fireflies took too long to respond. Click Import past calls again.");
+    }
+    throw error;
+  }
+  const raw = await response.text();
+  const payload = (() => {
+    try {
+      return JSON.parse(raw) as { data?: T; errors?: Array<{ message?: string; extensions?: { code?: string } }> };
+    } catch {
+      return null;
+    }
+  })();
+  if (!response.ok) {
+    throw new Error(payload?.errors?.[0]?.message || `Fireflies API ${response.status}${raw ? `: ${raw.slice(0, 180)}` : ""}`);
+  }
+  if (payload?.errors?.length) {
+    const first = payload.errors[0];
+    throw new Error([first?.extensions?.code, first?.message || "Fireflies GraphQL error."].filter(Boolean).join(": "));
+  }
   if (!payload?.data) throw new Error("Fireflies returned no data.");
   return payload.data;
 }
@@ -293,16 +303,37 @@ export function nextFirefliesSkip(fetched: number, skip: number, pageSize = FIRE
   return skip + pageSize;
 }
 
+const TRANSCRIPTS_FALLBACK_QUERY = `query Transcripts($limit: Int, $skip: Int) {
+  transcripts(limit: $limit, skip: $skip) {
+    id
+    title
+    date
+    host_email
+    organizer_email
+    participants
+  }
+}`;
+
 export async function listFirefliesTranscriptPage(
   apiKey: string,
   skip = 0,
   limit = FIREFLIES_PAGE_SIZE
 ): Promise<FirefliesTranscript[]> {
-  const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, TRANSCRIPTS_LIST_QUERY, {
-    limit,
-    skip,
-  });
-  return data.transcripts || [];
+  try {
+    const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, TRANSCRIPTS_LIST_QUERY, {
+      limit,
+      skip,
+    });
+    return data.transcripts || [];
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    if (!/meeting_attendees|Cannot query field/i.test(message)) throw error;
+    const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, TRANSCRIPTS_FALLBACK_QUERY, {
+      limit,
+      skip,
+    });
+    return data.transcripts || [];
+  }
 }
 
 export async function testFirefliesApiKey(apiKey: string): Promise<{ ok: boolean; error?: string }> {
@@ -597,6 +628,7 @@ export async function syncPastFirefliesMeetings(): Promise<{
   if (!settings.apiKey) return { ok: false, error: "Fireflies API key is not set.", scanned: 0, imported: 0, unmatched: 0, skipped: 0, errors: 0 };
   const students = await loadStudents();
   const importedIds = await alreadyImportedMeetingIds();
+  const deadline = Date.now() + FIREFLIES_SYNC_BUDGET_MS;
   let skip = 0;
   let scanned = 0;
   let imported = 0;
@@ -605,9 +637,11 @@ export async function syncPastFirefliesMeetings(): Promise<{
   let errors = 0;
 
   for (let page = 0; page < FIREFLIES_SYNC_MAX_PAGES; page += 1) {
+    if (Date.now() > deadline) break;
     const rows = await listFirefliesTranscriptPage(settings.apiKey, skip);
     if (!rows.length) break;
     for (const row of rows) {
+      if (Date.now() > deadline) break;
       const meetingId = asText(row.id);
       if (!meetingId) continue;
       scanned += 1;

@@ -12,6 +12,7 @@ import {
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
+export const runtime = "nodejs";
 
 export async function GET() {
   const user = await getRequestUser();
