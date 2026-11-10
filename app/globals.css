@@ -5328,6 +5328,24 @@ a.student-dash-resume-btn {
   font-weight: 600;
 }
 
+.student-task-date-value.is-submitted {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  white-space: normal;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.student-task-date-kind {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--medium);
+}
+
 .student-task-date-row input {
   width: 100%;
   margin-top: 0;
@@ -5406,6 +5424,11 @@ a.student-dash-resume-btn {
 
   .student-task-date-value {
     justify-self: start;
+  }
+
+  .student-task-date-value.is-submitted {
+    align-items: flex-start;
+    text-align: left;
   }
 
   .student-upcoming-events-art,

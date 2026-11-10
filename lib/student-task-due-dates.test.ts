@@ -5,7 +5,9 @@ import {
   isTaskSubmitted,
   suggestedTaskDueDates,
   TASK_DUE_DEFINITIONS,
+  taskDateToShow,
   taskDueItemsFromOutline,
+  taskSubmittedOn,
 } from "./student-task-due-dates";
 import type { OutlineChapter } from "./student-lesson";
 
@@ -67,6 +69,35 @@ test("submitted Tasks use the main assignment, not the DIY extra in Task 1", () 
   const task1 = items.find((item) => item.id === "task-1");
   assert.equal(isTaskSubmitted(task1!, { "ch10-l8": { body: "DIY only" } }), false);
   assert.equal(isTaskSubmitted(task1!, { "ch10-l7": { body: "Submitted Task 1" } }), true);
+});
+
+test("completed Tasks show the submission date instead of the planned due date", () => {
+  const items = taskDueItemsFromOutline(outline);
+  const task1 = items.find((item) => item.id === "task-1")!;
+  const planned = "2026-11-15";
+  assert.equal(taskSubmittedOn(task1, {}), null);
+  assert.deepEqual(taskDateToShow(task1, {}, planned), { date: planned, kind: "due" });
+  assert.equal(
+    taskSubmittedOn(task1, { "ch10-l7": { body: "Submitted Task 1", submitted_at: "2026-09-21T15:00:00.000Z" } }),
+    "2026-09-21"
+  );
+  assert.deepEqual(
+    taskDateToShow(
+      task1,
+      { "ch10-l7": { body: "Submitted Task 1", submitted_at: "2026-09-21T15:00:00.000Z" } },
+      planned
+    ),
+    { date: "2026-09-21", kind: "submitted" }
+  );
+  assert.equal(
+    taskSubmittedOn(task1, { "ch10-l7": { body: "Submitted Task 1", submitted_at: "2026-09-21T22:30:00.000Z" } }),
+    "2026-09-22"
+  );
+  assert.equal(taskSubmittedOn(task1, { "ch10-l8": { body: "DIY", submitted_at: "2026-09-21T15:00:00.000Z" } }), null);
+  assert.deepEqual(
+    taskDateToShow(task1, { "ch10-l7": { body: "Submitted Task 1" } }, planned),
+    { date: null, kind: "submitted" }
+  );
 });
 
 test("new students get a Task due every 5 days from registration", () => {

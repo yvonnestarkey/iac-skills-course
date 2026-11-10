@@ -143,11 +143,37 @@ export function taskDueItemsFromOutline(chapters: OutlineChapter[] | null | unde
   });
 }
 
+type TaskSubmissionStamp = {
+  body?: string | null;
+  link_url?: string | null;
+  submitted_at?: string | null;
+  updated_at?: string | null;
+};
+
 export function isTaskSubmitted(
   item: Pick<TaskDueItem, "assignmentLessonId">,
-  submissions: Record<string, { body?: string | null; link_url?: string | null } | undefined> | null | undefined
+  submissions: Record<string, TaskSubmissionStamp | undefined> | null | undefined
 ): boolean {
   return Boolean(item.assignmentLessonId && hasSubmissionContent(submissions?.[item.assignmentLessonId]));
+}
+
+/** SAST calendar date of the Task assignment submission, or null if it has not been submitted. */
+export function taskSubmittedOn(
+  item: Pick<TaskDueItem, "assignmentLessonId">,
+  submissions: Record<string, TaskSubmissionStamp | undefined> | null | undefined
+): string | null {
+  if (!isTaskSubmitted(item, submissions) || !item.assignmentLessonId) return null;
+  const row = submissions?.[item.assignmentLessonId];
+  return isoToSastDateAndTime(row?.submitted_at || row?.updated_at || "").date || null;
+}
+
+export function taskDateToShow(
+  item: Pick<TaskDueItem, "assignmentLessonId">,
+  submissions: Record<string, TaskSubmissionStamp | undefined> | null | undefined,
+  plannedDueOn?: string | null
+): { date: string | null; kind: "submitted" | "due" } {
+  if (isTaskSubmitted(item, submissions)) return { date: taskSubmittedOn(item, submissions), kind: "submitted" };
+  return { date: plannedDueOn || null, kind: "due" };
 }
 
 export function portalToday(now: Date = new Date()): string {

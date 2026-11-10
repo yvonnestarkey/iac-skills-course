@@ -11,6 +11,7 @@ import {
   saveStudentTaskDueDate,
   saveStudentTaskDueDates,
   suggestedTaskDueDates,
+  taskDateToShow,
   taskDueItemsFromOutline,
   type TaskDueDateHistoryRow,
   type TaskDueItem,
@@ -128,6 +129,7 @@ export default function StudentTaskDueDates() {
         {rows.map((item) => {
           const href = hrefFor(item);
           const dueOn = dates[item.id] || "";
+          const shown = taskDateToShow(item, submissions, dueOn);
           const { rows: historyRows, previous } = historyFor(item.id);
           return (
             <li key={item.id} className={item.completed ? "is-complete" : undefined}>
@@ -143,7 +145,12 @@ export default function StudentTaskDueDates() {
                     </span>
                   ) : null}
                 </span>
-                {editing ? (
+                {shown.kind === "submitted" ? (
+                  <span className="student-task-date-value is-submitted">
+                    <span className="student-task-date-kind">Submitted</span>
+                    {shown.date ? longDate(parseISO(shown.date)) : "—"}
+                  </span>
+                ) : editing ? (
                   <input
                     id={`task-due-${item.id}`}
                     type="date"
@@ -154,7 +161,7 @@ export default function StudentTaskDueDates() {
                     onChange={(event) => void save(item.id, event.target.value)}
                   />
                 ) : (
-                  <span className="student-task-date-value">{dueOn ? longDate(parseISO(dueOn)) : "—"}</span>
+                  <span className="student-task-date-value">{shown.date ? longDate(parseISO(shown.date)) : "—"}</span>
                 )}
               </div>
               {editing && previous.length ? (
