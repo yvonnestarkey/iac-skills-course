@@ -4917,6 +4917,55 @@ a.dashboard-banner-resume:visited:hover {
   background: #fff;
 }
 
+.coaching-session-card {
+  margin-top: 18px;
+  padding-top: 8px;
+}
+
+.coaching-session-card + .coaching-session-card {
+  border-top: 1px solid var(--line);
+}
+
+.coaching-summary,
+.coaching-transcript pre {
+  white-space: pre-wrap;
+  max-width: 72ch;
+}
+
+.coaching-transcript {
+  margin-top: 12px;
+}
+
+.coaching-transcript summary {
+  cursor: pointer;
+  color: var(--link);
+  font-weight: 600;
+}
+
+.fireflies-steps {
+  max-width: 68ch;
+  padding-left: 20px;
+}
+
+.fireflies-steps li + li {
+  margin-top: 8px;
+}
+
+.fireflies-copy-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px 16px;
+  margin: 14px 0;
+}
+
+.fireflies-copy-value {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
 .live-sessions-header .lead {
   max-width: 62ch;
 }

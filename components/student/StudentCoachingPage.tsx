@@ -5,7 +5,7 @@ import {
   COACHING_BOOKING_NOTE,
   DEFAULT_COACHING_CONFIG,
   fetchCoachingPageConfig,
-  fetchLatestStudentCoachingSession,
+  fetchStudentCoachingSessions,
   markCoachingDeliverablesSeen,
   sessionHasDeliverables,
   type CoachingPageConfig,
@@ -13,6 +13,10 @@ import {
 } from "@/lib/coaching";
 import { formatSastDateTime } from "@/lib/dates";
 import { useStudentSession } from "@/lib/student-session";
+
+function looksLikePdf(url: string): boolean {
+  return /\.pdf(?:$|[?#])/i.test(url);
+}
 
 function DescriptionBlock({ text }: { text: string }) {
   const paragraphs = text
@@ -37,19 +41,19 @@ function sessionIsReady(session: StudentCoachingSession | null): session is Stud
 export default function StudentCoachingPage() {
   const { user } = useStudentSession();
   const [config, setConfig] = useState<CoachingPageConfig>(DEFAULT_COACHING_CONFIG);
-  const [session, setSession] = useState<StudentCoachingSession | null>(null);
+  const [sessions, setSessions] = useState<StudentCoachingSession[]>([]);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (!user?.id) return;
     let cancelled = false;
-    Promise.all([fetchCoachingPageConfig(), fetchLatestStudentCoachingSession(user.id)]).then(
-      ([nextConfig, nextSession]) => {
+    Promise.all([fetchCoachingPageConfig(), fetchStudentCoachingSessions(user.id)]).then(
+      ([nextConfig, nextSessions]) => {
         if (cancelled) return;
         setConfig(nextConfig);
-        setSession(nextSession);
+        setSessions(nextSessions);
         setReady(true);
-        if (nextSession && nextSession.status === "completed" && sessionHasDeliverables(nextSession)) {
+        if (nextSessions.some((session) => session.status === "completed" && sessionHasDeliverables(session))) {
           void markCoachingDeliverablesSeen(user.id);
         }
       }
@@ -61,8 +65,7 @@ export default function StudentCoachingPage() {
 
   if (!ready) return <p className="student-loading">Loading coaching…</p>;
 
-  const showDeliverables = sessionIsReady(session);
-  const sessionWhen = formatSastDateTime(session?.sessionAt);
+  const readySessions = sessions.filter(sessionIsReady);
 
   return (
     <article className="lesson-body wide coaching-page">
@@ -89,39 +92,58 @@ export default function StudentCoachingPage() {
 
       <section className="coaching-recordings">
         <h2>{config.recording_section_title}</h2>
-        {sessionWhen ? <p className="live-session-when coaching-session-when">{sessionWhen}</p> : null}
         <DescriptionBlock text={config.recording_section_description} />
 
-        {showDeliverables ? (
-          <>
-            <div className="coaching-actions">
-              {session.recordingUrl ? (
-                <a className="primary" href={session.recordingUrl} target="_blank" rel="noopener noreferrer">
-                  {config.recording_button_label}
-                </a>
-              ) : null}
-              {session.pdfSummaryUrl ? (
-                <a
-                  className="ghost"
-                  href={session.pdfSummaryUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  download
-                >
-                  {config.pdf_button_label}
-                </a>
-              ) : null}
-            </div>
-            {session.coachNotes ? (
-              <div className="coaching-notes">
-                <h3>Coach notes</h3>
-                <DescriptionBlock text={session.coachNotes} />
-              </div>
-            ) : null}
-          </>
+        {readySessions.length ? (
+          readySessions.map((session) => {
+            const sessionWhen = formatSastDateTime(session.sessionAt);
+            const summaryHref = session.pdfSummaryUrl || session.firefliesTranscriptUrl;
+            return (
+              <article key={session.id} className="coaching-session-card">
+                {session.title ? <h3>{session.title}</h3> : null}
+                {sessionWhen ? <p className="live-session-when coaching-session-when">{sessionWhen}</p> : null}
+                <div className="coaching-actions">
+                  {session.recordingUrl ? (
+                    <a className="primary" href={session.recordingUrl} target="_blank" rel="noopener noreferrer">
+                      {config.recording_button_label}
+                    </a>
+                  ) : null}
+                  {summaryHref ? (
+                    <a
+                      className="ghost"
+                      href={summaryHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download={looksLikePdf(summaryHref) ? true : undefined}
+                    >
+                      {looksLikePdf(summaryHref) ? config.pdf_button_label : "Open meeting notes"}
+                    </a>
+                  ) : null}
+                </div>
+                {session.summaryText ? (
+                  <div className="coaching-notes">
+                    <h3>Summary</h3>
+                    <DescriptionBlock text={session.summaryText} />
+                  </div>
+                ) : null}
+                {session.coachNotes ? (
+                  <div className="coaching-notes">
+                    <h3>Coach notes</h3>
+                    <DescriptionBlock text={session.coachNotes} />
+                  </div>
+                ) : null}
+                {session.transcriptText ? (
+                  <details className="coaching-transcript">
+                    <summary>Transcript</summary>
+                    <pre>{session.transcriptText}</pre>
+                  </details>
+                ) : null}
+              </article>
+            );
+          })
         ) : (
           <div className="coaching-placeholder" role="status">
-            Your meeting recording and PDF summary will appear here after your scheduled session.
+            Your meeting recording and summary will appear here after your scheduled session.
           </div>
         )}
       </section>

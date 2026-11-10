@@ -84,6 +84,10 @@ export default function CoachHomePage() {
             <strong>Inbox</strong>
             <span className="muted">Student questions and assignment feedback</span>
           </button>
+          <button onClick={() => router.push("/coach/fireflies")}>
+            <strong>Fireflies</strong>
+            <span className="muted">Connect transcripts and summaries from 1-on-1 coaching calls</span>
+          </button>
           <button onClick={() => router.push("/coach/builder")}>
             <strong>Course creator</strong>
             <span className="muted">Add lessons, live Zoom sessions, and import CSV content</span>

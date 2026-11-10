@@ -134,10 +134,15 @@ export interface StudentCoachingSession {
   student_id: string;
   status: "scheduled" | "completed" | "cancelled";
   session_at?: string | null;
+  title?: string | null;
+  fireflies_meeting_id?: string | null;
   fireflies_pdf_url?: string | null;
+  fireflies_transcript_url?: string | null;
   vimeo_recording_url?: string | null;
   recording_url?: string | null;
   pdf_summary_url?: string | null;
+  summary_text?: string | null;
+  transcript_text?: string | null;
   coach_notes?: string | null;
   deliverables_seen_at?: string | null;
 }

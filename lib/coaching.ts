@@ -21,10 +21,15 @@ export interface StudentCoachingSession {
   studentId: string;
   status: CoachingSessionStatus;
   sessionAt: string | null;
+  title: string | null;
+  firefliesMeetingId: string | null;
   firefliesPdfUrl: string | null;
+  firefliesTranscriptUrl: string | null;
   vimeoRecordingUrl: string | null;
   recordingUrl: string | null;
   pdfSummaryUrl: string | null;
+  summaryText: string | null;
+  transcriptText: string | null;
   coachNotes: string | null;
   deliverablesSeenAt: string | null;
 }
@@ -77,10 +82,15 @@ function sessionFromRow(row: Record<string, unknown>): StudentCoachingSession {
     studentId: String(row.student_id),
     status: asStatus(row.status),
     sessionAt: asTimestamp(row.session_at),
+    title: asText(row.title),
+    firefliesMeetingId: asText(row.fireflies_meeting_id),
     firefliesPdfUrl: asText(row.fireflies_pdf_url) || asText(row.pdf_summary_url),
+    firefliesTranscriptUrl: asText(row.fireflies_transcript_url),
     vimeoRecordingUrl: asText(row.vimeo_recording_url) || asText(row.recording_url),
     recordingUrl: asText(row.recording_url) || asText(row.vimeo_recording_url),
     pdfSummaryUrl: asText(row.pdf_summary_url) || asText(row.fireflies_pdf_url),
+    summaryText: asText(row.summary_text),
+    transcriptText: asText(row.transcript_text),
     coachNotes: asText(row.coach_notes),
     deliverablesSeenAt: asText(row.deliverables_seen_at),
   };
@@ -91,7 +101,14 @@ function tableMissing(message: string): boolean {
 }
 
 export function sessionHasDeliverables(session: StudentCoachingSession): boolean {
-  return Boolean(session.recordingUrl || session.pdfSummaryUrl || session.coachNotes);
+  return Boolean(
+    session.recordingUrl ||
+      session.pdfSummaryUrl ||
+      session.summaryText ||
+      session.transcriptText ||
+      session.firefliesTranscriptUrl ||
+      session.coachNotes
+  );
 }
 
 export function sessionHasUnseenDeliverables(session: StudentCoachingSession): boolean {
