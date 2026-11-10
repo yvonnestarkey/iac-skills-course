@@ -5,11 +5,14 @@ import {
   canAccessAllLiveSessionLinks,
   emptyLiveSessionWrite,
   firstLiveSessionId,
+  formatCountdown,
   liveSessionIsRecorded,
+  liveSessionIsSoon,
   liveSessionToWrite,
   liveSessionWriteRow,
   sanitizeLiveSessionsForAccess,
   sessionFromRow,
+  upcomingLiveSessions,
 } from "./live-sessions";
 import {
   buildLiveSessionsIcs,
@@ -172,4 +175,51 @@ test("live session subscribe feed is named IAC Skills Live Session", () => {
   assert.equal(urls.http, "https://iac.accountingstudyadvice.com/api/calendar/live-sessions.ics");
   assert.equal(urls.webcal, "webcal://iac.accountingstudyadvice.com/api/calendar/live-sessions.ics");
   assert.match(ensureCalendarName("BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR"), /X-WR-CALNAME:IAC Skills Live Session/);
+});
+
+test("dashboard preview keeps the next 3 upcoming sessions and flags the next 48 hours", () => {
+  const now = new Date("2026-11-10T12:00:00.000Z");
+  const past = sessionFromRow({
+    id: "past",
+    title: "Already happened",
+    session_at: "2026-11-09T16:00:00.000Z",
+    status: "upcoming",
+    zoom_url: "https://zoom.us/j/past",
+  });
+  const soon = sessionFromRow({
+    id: "soon",
+    title: "Tomorrow",
+    session_at: "2026-11-11T16:00:00.000Z",
+    status: "upcoming",
+    zoom_url: "https://zoom.us/j/soon",
+  });
+  const later = sessionFromRow({
+    id: "later",
+    title: "Next week",
+    session_at: "2026-11-17T16:00:00.000Z",
+    status: "upcoming",
+    zoom_url: "https://zoom.us/j/later",
+  });
+  const recorded = sessionFromRow({
+    id: "done",
+    title: "Recording",
+    session_at: "2026-11-12T16:00:00.000Z",
+    status: "completed",
+    recording_url: "https://vimeo.com/done",
+  });
+  const fourth = sessionFromRow({
+    id: "fourth",
+    title: "Too far",
+    session_at: "2026-11-24T16:00:00.000Z",
+    status: "upcoming",
+  });
+  const preview = upcomingLiveSessions([fourth, recorded, later, soon, past], now, 3);
+  assert.deepEqual(
+    preview.map((session) => session.id),
+    ["soon", "later", "fourth"]
+  );
+  assert.equal(liveSessionIsSoon(soon, now), true);
+  assert.equal(liveSessionIsSoon(later, now), false);
+  assert.equal(formatCountdown(26 * 60 * 60 * 1000), "Starts in 1 day 2 hours");
+  assert.equal(formatCountdown(90 * 1000), "Starts in 1 min");
 });

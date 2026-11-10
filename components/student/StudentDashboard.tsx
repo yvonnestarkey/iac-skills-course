@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import StudentDashboardBanner from "@/components/student/StudentDashboardBanner";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
 import StudentTaskDueDates from "@/components/student/StudentTaskDueDates";
+import StudentUpcomingEvents from "@/components/student/StudentUpcomingEvents";
 import { fetchCoachingDashboardHint } from "@/lib/coaching";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
@@ -71,7 +72,10 @@ export default function StudentDashboard() {
 
       {unlocked ? null : <PurchaseCta />}
 
-      <StudentTaskDueDates />
+      <div className="student-dash-columns">
+        <StudentUpcomingEvents />
+        <StudentTaskDueDates />
+      </div>
 
       {coach ? (
         <nav className="student-hub" aria-label="Coach tools">

@@ -4868,17 +4868,89 @@ a.live-session-watch:hover {
   margin: 0;
 }
 
-.student-task-dates {
+.student-dash-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
   margin-top: 28px;
+  align-items: start;
+}
+
+.student-upcoming-events,
+.student-task-dates {
   padding: 18px 18px 14px;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 16px;
+  min-height: 100%;
 }
 
-.student-task-dates h2 {
+.student-dash-block-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.student-dash-block-head h2 {
   font-size: 22px;
   margin-bottom: 4px;
+}
+
+.student-dash-block-head .ghost {
+  padding: 6px 12px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.student-event-countdown {
+  margin: 14px 0 0;
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.student-event-countdown.is-soon,
+.student-upcoming-event.is-soon,
+.student-upcoming-event.is-soon a,
+.student-upcoming-event.is-soon .student-upcoming-event-when,
+.student-upcoming-event.is-soon .student-upcoming-event-join {
+  color: var(--link);
+}
+
+.student-upcoming-event-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+.student-upcoming-event {
+  display: grid;
+  gap: 2px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+
+.student-upcoming-event-when {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.student-upcoming-event a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.student-upcoming-event a:hover {
+  text-decoration: underline;
+}
+
+.student-upcoming-event-join {
+  font-size: 13px;
 }
 
 .student-task-date-list {
@@ -4886,19 +4958,64 @@ a.live-session-watch:hover {
   margin: 16px 0 0;
   padding: 0;
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .student-task-date-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 170px;
+  grid-template-columns: minmax(0, 1fr) 132px;
   gap: 12px;
   align-items: center;
+  min-height: 34px;
+}
+
+.student-task-date-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.student-task-date-value {
+  justify-self: end;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-weight: 600;
 }
 
 .student-task-date-row input {
   width: 100%;
   margin-top: 0;
+  padding: 7px 10px;
+}
+
+.task-complete-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-complete-tick {
+  color: var(--medium);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 0.8;
+}
+
+.task-complete-stamp {
+  display: inline-block;
+  transform: rotate(-12deg);
+  border: 2px solid var(--link);
+  color: var(--link);
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  padding: 4px 7px 3px;
+  border-radius: 4px;
+  background: rgba(153, 15, 73, 0.06);
 }
 
 .student-task-date-history {
@@ -4920,9 +5037,19 @@ a.live-session-watch:hover {
   font-size: 13px;
 }
 
+@media (max-width: 860px) {
+  .student-dash-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
   .student-task-date-row {
     grid-template-columns: 1fr;
+  }
+
+  .student-task-date-value {
+    justify-self: start;
   }
 }
 

@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   formatApproxDuration,
+  isTaskSubmitted,
+  suggestedTaskDueDates,
+  TASK_DUE_DEFINITIONS,
   taskDueItemsFromOutline,
 } from "./student-task-due-dates";
 import type { OutlineChapter } from "./student-lesson";
@@ -13,6 +16,8 @@ const outline: OutlineChapter[] = [
     lessons: [
       { id: "ch10-l1", title: "L1", type: "video", duration_minutes: 60 },
       { id: "ch10-l2", title: "L2", type: "reading", duration_minutes: 240 },
+      { id: "ch10-l7", title: "Task 1 - Question & Submission", type: "assignment", duration_minutes: 30 },
+      { id: "ch10-l8", title: "Task 1 DIY", type: "assignment", duration_minutes: 20 },
     ],
   },
   {
@@ -44,14 +49,55 @@ test("Task due rows follow the dashboard list and use chapter durations", () => 
     ["Task 1", "Task 2", "Task 3", "Task 3DIY", "Task 4", "Task 5", "Task 5Extra", "Task 6", "Sim Exam"]
   );
   const byId = Object.fromEntries(items.map((item) => [item.id, item]));
-  assert.equal(byId["task-1"].minutes, 300);
-  assert.equal(byId["task-1"].approx, "Approx 5 hours");
+  assert.equal(byId["task-1"].minutes, 350);
+  assert.equal(byId["task-1"].approx, "Approx 6 hours");
   assert.equal(byId["task-3"].minutes, 90);
   assert.equal(byId["task-3-diy"].minutes, 120);
   assert.equal(byId["task-5-extra"].minutes, 45);
   assert.equal(byId["sim-exam"].minutes, 180);
   assert.equal(byId["task-2"].minutes, 0);
   assert.equal(byId["task-1"].firstLessonId, "ch10-l1");
+  assert.equal(byId["task-1"].assignmentLessonId, "ch10-l7");
+  assert.equal(byId["task-3-diy"].assignmentLessonId, "ch14-l1");
+  assert.equal(byId["sim-exam"].assignmentLessonId, "ch19-l1");
+});
+
+test("submitted Tasks use the main assignment, not the DIY extra in Task 1", () => {
+  const items = taskDueItemsFromOutline(outline);
+  const task1 = items.find((item) => item.id === "task-1");
+  assert.equal(isTaskSubmitted(task1!, { "ch10-l8": { body: "DIY only" } }), false);
+  assert.equal(isTaskSubmitted(task1!, { "ch10-l7": { body: "Submitted Task 1" } }), true);
+});
+
+test("new students get a Task due every 5 days from registration", () => {
+  const dates = suggestedTaskDueDates({
+    today: "2026-11-10",
+    registeredOn: "2026-11-10",
+    items: TASK_DUE_DEFINITIONS.map((item) => ({ id: item.id })),
+  });
+  assert.equal(dates["task-1"], "2026-11-15");
+  assert.equal(dates["task-2"], "2026-11-20");
+  assert.equal(dates["task-3"], "2026-11-25");
+  assert.equal(dates["sim-exam"], "2026-12-25");
+});
+
+test("current students get the next incomplete Task in 3 days, then every 5 days", () => {
+  const dates = suggestedTaskDueDates({
+    today: "2026-11-10",
+    registeredOn: "2026-09-01",
+    items: [
+      { id: "task-1", completed: true },
+      { id: "task-2", completed: true },
+      { id: "task-3", completed: false },
+      { id: "task-3-diy", completed: false },
+      { id: "task-4", completed: false },
+    ],
+  });
+  assert.equal(dates["task-1"], undefined);
+  assert.equal(dates["task-2"], undefined);
+  assert.equal(dates["task-3"], "2026-11-13");
+  assert.equal(dates["task-3-diy"], "2026-11-18");
+  assert.equal(dates["task-4"], "2026-11-23");
 });
 
 test("approx duration rounds to half hours", () => {

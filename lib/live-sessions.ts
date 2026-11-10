@@ -138,6 +138,43 @@ export function liveSessionIsRecorded(session: LiveSession): boolean {
   return session.status === "completed" || Boolean(session.recordingUrl);
 }
 
+export const SOON_EVENT_MS = 2 * 24 * 60 * 60 * 1000;
+
+export function upcomingLiveSessions(
+  sessions: LiveSession[] | null | undefined,
+  now: Date = new Date(),
+  limit = 3
+): LiveSession[] {
+  const stamp = now.getTime();
+  return [...(sessions || [])]
+    .filter((session) => {
+      if (session.status === "cancelled") return false;
+      if (liveSessionIsRecorded(session)) return false;
+      if (!session.sessionAt) return false;
+      return new Date(session.sessionAt).getTime() >= stamp;
+    })
+    .sort((left, right) => (left.sessionAt || "").localeCompare(right.sessionAt || "") || left.id.localeCompare(right.id))
+    .slice(0, limit);
+}
+
+export function liveSessionIsSoon(session: Pick<LiveSession, "sessionAt">, now: Date = new Date()): boolean {
+  if (!session.sessionAt) return false;
+  const delta = new Date(session.sessionAt).getTime() - now.getTime();
+  return delta >= 0 && delta <= SOON_EVENT_MS;
+}
+
+export function formatCountdown(ms: number): string {
+  if (ms <= 0) return "Starting now";
+  const totalMinutes = Math.floor(ms / 60000);
+  const days = Math.floor(totalMinutes / (24 * 60));
+  const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
+  const minutes = totalMinutes % 60;
+  if (days) return hours ? `Starts in ${days} day${days === 1 ? "" : "s"} ${hours} hour${hours === 1 ? "" : "s"}` : `Starts in ${days} day${days === 1 ? "" : "s"}`;
+  if (hours) return minutes ? `Starts in ${hours} hour${hours === 1 ? "" : "s"} ${minutes} min` : `Starts in ${hours} hour${hours === 1 ? "" : "s"}`;
+  if (minutes) return `Starts in ${minutes} min`;
+  return "Starts in less than a minute";
+}
+
 export function canAccessAllLiveSessionLinks(entitlement: string | null | undefined): boolean {
   return entitlement === "full" || entitlement === "staff";
 }

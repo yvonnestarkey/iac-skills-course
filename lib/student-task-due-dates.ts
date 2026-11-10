@@ -1,6 +1,9 @@
+import { isDiyLesson, isNumberedTaskChapter } from "./course-phases";
+import { addDays, isoDate, isoToSastDateAndTime, parseISO } from "./dates";
 import { lessonMinutes } from "./lesson-duration";
-import type { OutlineChapter } from "./student-lesson";
+import type { OutlineChapter, OutlineLesson } from "./student-lesson";
 import { getSupabase } from "./supabase";
+import { hasSubmissionContent } from "./task1-gate";
 
 export type TaskDueItemId =
   | "task-1"
@@ -26,7 +29,11 @@ export type TaskDueItem = {
   approx: string;
   chapterId: string | null;
   firstLessonId: string | null;
+  assignmentLessonId: string | null;
 };
+
+export const TASK_DUE_CADENCE_DAYS = 5;
+export const CURRENT_STUDENT_FIRST_DUE_DAYS = 3;
 
 export type TaskDueDateRow = {
   taskId: string;
@@ -106,12 +113,24 @@ export function chapterMinutes(chapter: OutlineChapter | null | undefined): numb
   return (chapter?.lessons || []).reduce((sum, lesson) => sum + lessonMinutes(lesson), 0);
 }
 
+export function findTaskSubmitLesson(chapter: OutlineChapter | null | undefined): OutlineLesson | null {
+  if (!chapter) return null;
+  const allowDiy = !isNumberedTaskChapter(chapter.title || "");
+  const eligible = (chapter.lessons || []).filter((lesson) => {
+    if (!allowDiy && isDiyLesson(lesson.title || "")) return false;
+    if (lesson.type === "assignment" || lesson.requires_submission) return true;
+    return lesson.type === "upload" && /submission/i.test(lesson.title || "");
+  });
+  return eligible.find((lesson) => /submission|question/i.test(lesson.title || "")) || eligible[0] || null;
+}
+
 export function taskDueItemsFromOutline(chapters: OutlineChapter[] | null | undefined): TaskDueItem[] {
   const list = chapters || [];
   return TASK_DUE_DEFINITIONS.map((definition) => {
     const matched = list.filter((chapter) => definition.match(chapter.title || ""));
     const minutes = matched.reduce((sum, chapter) => sum + chapterMinutes(chapter), 0);
     const first = matched[0];
+    const assignment = matched.map(findTaskSubmitLesson).find(Boolean) || null;
     return {
       id: definition.id,
       label: definition.label,
@@ -119,8 +138,51 @@ export function taskDueItemsFromOutline(chapters: OutlineChapter[] | null | unde
       approx: formatApproxDuration(minutes),
       chapterId: first?.id || null,
       firstLessonId: first?.lessons?.[0]?.id || null,
+      assignmentLessonId: assignment?.id || null,
     };
   });
+}
+
+export function isTaskSubmitted(
+  item: Pick<TaskDueItem, "assignmentLessonId">,
+  submissions: Record<string, { body?: string | null; link_url?: string | null } | undefined> | null | undefined
+): boolean {
+  return Boolean(item.assignmentLessonId && hasSubmissionContent(submissions?.[item.assignmentLessonId]));
+}
+
+export function portalToday(now: Date = new Date()): string {
+  return isoToSastDateAndTime(now).date;
+}
+
+export function addCalendarDays(iso: string, days: number): string {
+  return isoDate(addDays(parseISO(iso), days));
+}
+
+export function suggestedTaskDueDates(input: {
+  today: string;
+  registeredOn: string;
+  items: Array<{ id: string; completed?: boolean }>;
+}): Record<string, string> {
+  const today = String(input.today || "").slice(0, 10);
+  const registeredOn = String(input.registeredOn || today).slice(0, 10);
+  const dates: Record<string, string> = {};
+  if (!today || !registeredOn) return dates;
+
+  const currentStudent = registeredOn < today;
+  if (currentStudent) {
+    let remaining = 0;
+    input.items.forEach((item) => {
+      if (item.completed) return;
+      dates[item.id] = addCalendarDays(today, CURRENT_STUDENT_FIRST_DUE_DAYS + remaining * TASK_DUE_CADENCE_DAYS);
+      remaining += 1;
+    });
+    return dates;
+  }
+
+  input.items.forEach((item, index) => {
+    dates[item.id] = addCalendarDays(registeredOn, (index + 1) * TASK_DUE_CADENCE_DAYS);
+  });
+  return dates;
 }
 
 function asDate(value: unknown): string | null {
@@ -173,20 +235,38 @@ export async function fetchStudentTaskDueDates(studentId: string): Promise<{
   };
 }
 
+export async function fetchStudentRegisteredOn(studentId: string): Promise<string | null> {
+  const client = getSupabase();
+  if (!client) return null;
+  const profile = await client.from("profiles").select("created_at").eq("id", studentId).maybeSingle();
+  const fromProfile = isoToSastDateAndTime(String(profile.data?.created_at || "")).date;
+  if (fromProfile) return fromProfile;
+  const auth = await client.auth.getUser();
+  return isoToSastDateAndTime(auth.data.user?.created_at || "").date || null;
+}
+
 export async function saveStudentTaskDueDate(
   studentId: string,
   taskId: string,
   dueOn: string | null
 ): Promise<{ ok: boolean; error?: string }> {
+  return saveStudentTaskDueDates(studentId, [{ taskId, dueOn }]);
+}
+
+export async function saveStudentTaskDueDates(
+  studentId: string,
+  rows: Array<{ taskId: string; dueOn: string | null }>
+): Promise<{ ok: boolean; error?: string }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
+  if (!rows.length) return { ok: true };
   const { error } = await client.from("student_task_due_dates").upsert(
-    {
+    rows.map((row) => ({
       student_id: studentId,
-      task_id: taskId,
-      due_on: dueOn,
+      task_id: row.taskId,
+      due_on: row.dueOn,
       updated_at: new Date().toISOString(),
-    },
+    })),
     { onConflict: "student_id,task_id" }
   );
   if (error) return { ok: false, error: error.message };
