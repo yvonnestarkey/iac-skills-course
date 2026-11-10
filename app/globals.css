@@ -4004,6 +4004,15 @@ button.diagnosis-pill {
     gap: 8px;
   }
 
+  .student-dash-resume {
+    grid-template-columns: 1fr;
+  }
+
+  .student-dash-resume-btn,
+  a.student-dash-resume-btn {
+    justify-self: start;
+  }
+
   .inbox-layout {
     grid-template-columns: 1fr;
   }
@@ -4843,12 +4852,38 @@ a.live-session-watch:hover {
   color: var(--ink);
 }
 
+.student-dash-resume {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px 24px;
+  align-items: center;
+  margin: 4px 0 20px;
+}
+
+.student-dash-resume h1 {
+  margin-bottom: 8px;
+}
+
+.student-dash-resume-btn,
+a.student-dash-resume-btn {
+  min-height: 52px;
+  padding: 14px 22px;
+  font-size: 16px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.student-dash-pace {
+  margin: 0;
+  max-width: 62ch;
+}
+
 .student-progress-row {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 14px;
   align-items: center;
-  margin: 10px 0 18px;
+  margin: 0 0 8px;
 }
 
 .student-progress-pct {

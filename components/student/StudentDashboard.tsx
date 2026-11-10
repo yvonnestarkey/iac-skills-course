@@ -7,7 +7,9 @@ import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
 import StudentTaskDueDates from "@/components/student/StudentTaskDueDates";
 import StudentUpcomingEvents from "@/components/student/StudentUpcomingEvents";
 import { fetchCoachingDashboardHint } from "@/lib/coaching";
+import { courseStudyMinutes, estimateCourseFinish, fetchStudentStartedOn } from "@/lib/course-pace";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
+import { portalToday } from "@/lib/student-task-due-dates";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
 import Task2ReadingResults from "@/components/reading/Task2ReadingResults";
 import { hasTask2Submission } from "@/lib/task2-gate";
@@ -26,6 +28,8 @@ export default function StudentDashboard() {
   const bypassLocks = useBypassLessonLocks();
   const { inboxWaiting, unreadCount } = useStudentInbox();
   const [coachingUnseen, setCoachingUnseen] = useState(false);
+  const [startedOn, setStartedOn] = useState<string | null>(null);
+  const [paceReady, setPaceReady] = useState(false);
   const chapters = outline || [];
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
   const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
@@ -34,6 +38,15 @@ export default function StudentDashboard() {
   const ordered = splitCoursePhases(chapters).flatMap((phase) => phase.chapters || []);
   const resume = findResumeLesson(ordered, completed || {});
   const allDone = lessons.length > 0 && done === lessons.length;
+  const study = courseStudyMinutes(lessons, completed);
+  const pace = estimateCourseFinish({
+    today: portalToday(),
+    startedOn,
+    totalMinutes: study.total,
+    doneMinutes: study.done,
+  });
+  const resumeHref = resume?.lesson ? `${basePath}/${resume.lesson.id}` : `${basePath}/overview`;
+  const resumeLabel = allDone ? "Review last lesson" : done ? "Resume Course" : "Start Course";
   const inboxHref = "/student/inbox";
   const notifyHref = "/student/notifications";
   const coach = isCoachAccount(user);
@@ -41,34 +54,33 @@ export default function StudentDashboard() {
   const readingUnlocked = hasTask2Submission(submissions, outline) || unlocked || bypassLocks || coach;
 
   useEffect(() => {
-    if (!user?.id || unlocked) return;
+    if (!user?.id) return;
+    void fetchStudentStartedOn(user.id).then((value) => {
+      setStartedOn(value);
+      setPaceReady(true);
+    });
+    if (unlocked) return;
     fetchCoachingDashboardHint(user.id).then((hint) => setCoachingUnseen(hint.unseenDeliverables));
   }, [user?.id, unlocked]);
 
   return (
     <article className="lesson-body wide student-dash">
       <StudentDashboardBanner />
-      <p className="kicker">Student dashboard</p>
-      <h1>Welcome back, {name}</h1>
-      <div className="student-progress-row">
-        <strong className="student-progress-pct">{pct}% Complete</strong>
-        <div className="student-progress" aria-hidden="true">
-          <span style={{ width: `${pct}%` }} />
-        </div>
-      </div>
-
-      {resume?.lesson && resume.chapter ? (
-        <section className="resume-banner">
-          <div>
-            <p className="kicker">{allDone ? "Course complete" : "Resume course"}</p>
-            <strong>{resume.lesson.title}</strong>
-            <p className="muted small">{resume.chapter.title}</p>
+      <section className="student-dash-resume">
+        <Link className="primary student-dash-resume-btn" href={resumeHref}>
+          {resumeLabel}
+        </Link>
+        <div>
+          <h1>Welcome back, {name}</h1>
+          <div className="student-progress-row">
+            <strong className="student-progress-pct">{pct}% Complete</strong>
+            <div className="student-progress" aria-hidden="true">
+              <span style={{ width: `${pct}%` }} />
+            </div>
           </div>
-          <Link className="primary" href={`${basePath}/${resume.lesson.id}`}>
-            {allDone ? "Review last lesson" : done ? "Resume Course" : "Start Course"}
-          </Link>
-        </section>
-      ) : null}
+          {paceReady && pace.message ? <p className="muted small student-dash-pace">{pace.message}</p> : null}
+        </div>
+      </section>
 
       {unlocked ? null : <PurchaseCta />}
 
