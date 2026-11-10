@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import StudentDashboardBanner from "@/components/student/StudentDashboardBanner";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
+import StudentTaskDueDates from "@/components/student/StudentTaskDueDates";
 import { fetchCoachingDashboardHint } from "@/lib/coaching";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
@@ -69,6 +70,8 @@ export default function StudentDashboard() {
       ) : null}
 
       {unlocked ? null : <PurchaseCta />}
+
+      <StudentTaskDueDates />
 
       {coach ? (
         <nav className="student-hub" aria-label="Coach tools">

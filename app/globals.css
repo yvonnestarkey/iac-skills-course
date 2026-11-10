@@ -4868,6 +4868,64 @@ a.live-session-watch:hover {
   margin: 0;
 }
 
+.student-task-dates {
+  margin-top: 28px;
+  padding: 18px 18px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.student-task-dates h2 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.student-task-date-list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.student-task-date-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px;
+  gap: 12px;
+  align-items: center;
+}
+
+.student-task-date-row input {
+  width: 100%;
+  margin-top: 0;
+}
+
+.student-task-date-history {
+  margin: 4px 0 0;
+}
+
+.student-task-date-history button {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--link);
+  font-size: 13px;
+}
+
+.student-task-date-history ol {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media (max-width: 640px) {
+  .student-task-date-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 .student-personal-notes {
   margin-top: 28px;
 }
