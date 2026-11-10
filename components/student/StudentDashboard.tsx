@@ -108,10 +108,6 @@ export default function StudentDashboard() {
           <p>Book a private session or access your meeting summaries and recordings.</p>
           {coachingUnseen ? <span className="pill">Meeting Summary & Recording Available</span> : null}
         </Link>
-        <Link href="/student/events" className="student-hub-card">
-          <strong>Live Sessions & Events</strong>
-          <p>Join upcoming live calls, download calendar invites, and view past recordings.</p>
-        </Link>
         <Link href={`${basePath}/overview`} className="student-hub-card">
           <strong>Course Overview</strong>
           <p>Browse every section and task, including locked upcoming titles.</p>
