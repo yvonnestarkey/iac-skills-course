@@ -45,7 +45,7 @@ export default function FirefliesConnect() {
     void load();
   }, []);
 
-  const save = async (action: "save" | "test") => {
+  const save = async (action: "save" | "test" | "sync") => {
     setBusy(action);
     setNotice("");
     setError("");
@@ -54,7 +54,9 @@ export default function FirefliesConnect() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action, apiKey, webhookSecret: settings?.webhookSecret || "" }),
     });
-    const payload = (await response.json().catch(() => null)) as (Settings & { ok?: boolean; error?: string }) | null;
+    const payload = (await response.json().catch(() => null)) as
+      | (Settings & { ok?: boolean; error?: string; scanned?: number; imported?: number; unmatched?: number; skipped?: number; errors?: number })
+      | null;
     setBusy("");
     if (!response.ok || payload?.ok === false) {
       setError(payload?.error || "Could not update Fireflies.");
@@ -62,6 +64,13 @@ export default function FirefliesConnect() {
     }
     if (action === "test") {
       setNotice("Fireflies accepted the API key.");
+      return;
+    }
+    if (action === "sync") {
+      setNotice(
+        `Looked at ${payload?.scanned || 0} Fireflies calls: ${payload?.imported || 0} added to student profiles, ${payload?.unmatched || 0} unmatched, ${payload?.skipped || 0} already imported${payload?.errors ? `, ${payload.errors} failed` : ""}.`
+      );
+      await load();
       return;
     }
     setApiKey("");
@@ -159,6 +168,14 @@ export default function FirefliesConnect() {
         </button>
         <button type="button" className="ghost" disabled={Boolean(busy)} onClick={() => void save("test")}>
           {busy === "test" ? "Testing…" : "Test API key"}
+        </button>
+        <button
+          type="button"
+          className="ghost"
+          disabled={Boolean(busy) || !settings?.apiKeySet}
+          onClick={() => void save("sync")}
+        >
+          {busy === "sync" ? "Importing past calls…" : "Import past calls"}
         </button>
       </p>
       {notice ? <p className="muted">{notice}</p> : null}

@@ -12,6 +12,7 @@ import {
   guestEmails,
   isPdfUrl,
   maskSecret,
+  nextFirefliesSkip,
   parseFirefliesWebhook,
   shouldImportFirefliesEvent,
   uniqueNameMatch,
@@ -96,10 +97,20 @@ test("summary and transcript formatting keep overview, actions, and speakers", (
 
 test("coach Fireflies page and webhook route are wired", () => {
   const page = readFileSync(resolve("app/coach/fireflies/page.tsx"), "utf8");
+  const connect = readFileSync(resolve("components/coach/FirefliesConnect.tsx"), "utf8");
   const webhook = readFileSync(resolve("app/api/fireflies/webhook/route.ts"), "utf8");
+  const coachApi = readFileSync(resolve("app/api/coach/fireflies/route.ts"), "utf8");
   const sql = readFileSync(resolve("supabase/fireflies-coaching.sql"), "utf8");
   assert.match(page, /FirefliesConnect/);
+  assert.match(connect, /Import past calls/);
   assert.match(webhook, /importFirefliesMeeting/);
+  assert.match(coachApi, /syncPastFirefliesMeetings/);
   assert.match(sql, /fireflies_settings/);
   assert.match(sql, /transcript_text/);
+});
+
+test("Fireflies listing pages until a short page", () => {
+  assert.equal(nextFirefliesSkip(50, 0), 50);
+  assert.equal(nextFirefliesSkip(50, 50), 100);
+  assert.equal(nextFirefliesSkip(12, 100), null);
 });

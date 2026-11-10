@@ -55,8 +55,38 @@ export type FirefliesStudentMatch = {
 
 export type FirefliesImportStatus = "imported" | "unmatched" | "skipped" | "error";
 
+export const FIREFLIES_PAGE_SIZE = 50;
+export const FIREFLIES_SYNC_MAX_PAGES = 4;
+
+const TRANSCRIPT_FIELDS = `id
+    title
+    date
+    transcript_url
+    audio_url
+    video_url
+    host_email
+    organizer_email
+    participants
+    meeting_attendees { displayName email name }
+    summary {
+      overview
+      short_summary
+      short_overview
+      action_items
+      shorthand_bullet
+      outline
+      gist
+    }
+    sentences { speaker_name text }`;
+
 const TRANSCRIPT_QUERY = `query Transcript($transcriptId: String!) {
   transcript(id: $transcriptId) {
+    ${TRANSCRIPT_FIELDS}
+  }
+}`;
+
+const TRANSCRIPTS_LIST_QUERY = `query Transcripts($limit: Int, $skip: Int) {
+  transcripts(limit: $limit, skip: $skip) {
     id
     title
     date
@@ -76,7 +106,6 @@ const TRANSCRIPT_QUERY = `query Transcript($transcriptId: String!) {
       outline
       gist
     }
-    sentences { speaker_name text }
   }
 }`;
 
@@ -259,6 +288,23 @@ export async function fetchFirefliesTranscript(apiKey: string, meetingId: string
   return data.transcript || null;
 }
 
+export function nextFirefliesSkip(fetched: number, skip: number, pageSize = FIREFLIES_PAGE_SIZE): number | null {
+  if (fetched < pageSize) return null;
+  return skip + pageSize;
+}
+
+export async function listFirefliesTranscriptPage(
+  apiKey: string,
+  skip = 0,
+  limit = FIREFLIES_PAGE_SIZE
+): Promise<FirefliesTranscript[]> {
+  const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, TRANSCRIPTS_LIST_QUERY, {
+    limit,
+    skip,
+  });
+  return data.transcripts || [];
+}
+
 export async function testFirefliesApiKey(apiKey: string): Promise<{ ok: boolean; error?: string }> {
   try {
     await firefliesGraphql(apiKey, "query { user { email name } }", {});
@@ -356,7 +402,7 @@ export async function listFirefliesImports(): Promise<
     .from("fireflies_imports")
     .select("*")
     .order("created_at", { ascending: false })
-    .limit(20);
+    .limit(40);
   if (error) return [];
   return ((data || []) as Record<string, unknown>[]).map((row) => ({
     id: String(row.id),
@@ -473,20 +519,15 @@ async function upsertCoachingSession(input: {
   if (error) throw new Error(error.message);
 }
 
-export async function importFirefliesMeeting(meetingId: string, event = "meeting.transcribed"): Promise<{
-  ok: boolean;
-  status: FirefliesImportStatus;
-  error?: string;
-}> {
-  const settings = await loadSettings();
-  if (!settings.apiKey) return { ok: false, status: "error", error: "Fireflies API key is not set." };
-  const transcript = await fetchFirefliesTranscript(settings.apiKey, meetingId);
-  if (!transcript) {
-    await logImport({ meetingId, event, status: "unmatched", error: "Fireflies had no transcript for that meeting yet." });
-    return { ok: true, status: "unmatched" };
-  }
-  const students = await loadStudents();
-  const match = matchStudent(students, transcript);
+export async function importFirefliesTranscript(
+  transcript: FirefliesTranscript,
+  event = "meeting.transcribed",
+  students?: FirefliesStudentMatch[]
+): Promise<{ ok: boolean; status: FirefliesImportStatus; error?: string }> {
+  const meetingId = asText(transcript.id);
+  if (!meetingId) return { ok: false, status: "error", error: "Fireflies meeting is missing an id." };
+  const roster = students || (await loadStudents());
+  const match = matchStudent(roster, transcript);
   const emails = attendeeEmails(transcript);
   const title = asText(transcript.title) || "1-on-1 coaching";
   if (!match.student) {
@@ -519,4 +560,88 @@ export async function importFirefliesMeeting(meetingId: string, event = "meeting
     attendeeEmails: emails,
   });
   return { ok: true, status: "imported" };
+}
+
+export async function importFirefliesMeeting(meetingId: string, event = "meeting.transcribed"): Promise<{
+  ok: boolean;
+  status: FirefliesImportStatus;
+  error?: string;
+}> {
+  const settings = await loadSettings();
+  if (!settings.apiKey) return { ok: false, status: "error", error: "Fireflies API key is not set." };
+  const transcript = await fetchFirefliesTranscript(settings.apiKey, meetingId);
+  if (!transcript) {
+    await logImport({ meetingId, event, status: "unmatched", error: "Fireflies had no transcript for that meeting yet." });
+    return { ok: true, status: "unmatched" };
+  }
+  return importFirefliesTranscript({ ...transcript, id: transcript.id || meetingId }, event);
+}
+
+async function alreadyImportedMeetingIds(): Promise<Set<string>> {
+  const client = getServiceSupabase();
+  if (!client) return new Set();
+  const { data } = await client.from("student_coaching_sessions").select("fireflies_meeting_id").not("fireflies_meeting_id", "is", null);
+  return new Set(((data || []) as Array<{ fireflies_meeting_id?: string | null }>).map((row) => asText(row.fireflies_meeting_id)).filter(Boolean));
+}
+
+export async function syncPastFirefliesMeetings(): Promise<{
+  ok: boolean;
+  error?: string;
+  scanned: number;
+  imported: number;
+  unmatched: number;
+  skipped: number;
+  errors: number;
+}> {
+  const settings = await loadSettings();
+  if (!settings.apiKey) return { ok: false, error: "Fireflies API key is not set.", scanned: 0, imported: 0, unmatched: 0, skipped: 0, errors: 0 };
+  const students = await loadStudents();
+  const importedIds = await alreadyImportedMeetingIds();
+  let skip = 0;
+  let scanned = 0;
+  let imported = 0;
+  let unmatched = 0;
+  let skipped = 0;
+  let errors = 0;
+
+  for (let page = 0; page < FIREFLIES_SYNC_MAX_PAGES; page += 1) {
+    const rows = await listFirefliesTranscriptPage(settings.apiKey, skip);
+    if (!rows.length) break;
+    for (const row of rows) {
+      const meetingId = asText(row.id);
+      if (!meetingId) continue;
+      scanned += 1;
+      if (importedIds.has(meetingId)) {
+        skipped += 1;
+        continue;
+      }
+      try {
+        const preview = matchStudent(students, row);
+        const transcript = preview.student
+          ? (await fetchFirefliesTranscript(settings.apiKey, meetingId)) || row
+          : row;
+        const result = await importFirefliesTranscript({ ...transcript, id: meetingId }, "past_sync", students);
+        if (result.status === "imported") {
+          imported += 1;
+          importedIds.add(meetingId);
+        } else if (result.status === "unmatched") unmatched += 1;
+        else errors += 1;
+      } catch (error) {
+        errors += 1;
+        await logImport({
+          meetingId,
+          event: "past_sync",
+          title: asText(row.title),
+          status: "error",
+          attendeeEmails: attendeeEmails(row),
+          error: error instanceof Error ? error.message : "Could not import that meeting.",
+        });
+      }
+    }
+    const next = nextFirefliesSkip(rows.length, skip);
+    if (next == null) break;
+    skip = next;
+  }
+
+  return { ok: true, scanned, imported, unmatched, skipped, errors };
 }

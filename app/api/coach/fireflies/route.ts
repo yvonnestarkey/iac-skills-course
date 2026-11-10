@@ -6,10 +6,12 @@ import {
   listFirefliesImports,
   resolveFirefliesApiKey,
   saveFirefliesSettings,
+  syncPastFirefliesMeetings,
   testFirefliesApiKey,
 } from "@/lib/fireflies";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 export async function GET() {
   const user = await getRequestUser();
@@ -35,6 +37,17 @@ export async function POST(request: Request) {
     if (!useKey) return NextResponse.json({ ok: false, error: "Paste a Fireflies API key first." }, { status: 400 });
     const result = await testFirefliesApiKey(useKey);
     return NextResponse.json(result, { status: result.ok ? 200 : 400 });
+  }
+
+  if (action === "sync") {
+    try {
+      const result = await syncPastFirefliesMeetings();
+      const latest = await getFirefliesSettings();
+      return NextResponse.json({ ...latest, imports: await listFirefliesImports(), ...result }, { status: result.ok ? 200 : 400 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not import past Fireflies calls.";
+      return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    }
   }
 
   const saved = await saveFirefliesSettings({
