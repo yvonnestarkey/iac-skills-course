@@ -12,6 +12,7 @@ import {
   guestEmails,
   isPdfUrl,
   maskSecret,
+  chunkEmails,
   nextFirefliesSkip,
   parseFirefliesWebhook,
   shouldImportFirefliesEvent,
@@ -105,6 +106,7 @@ test("coach Fireflies page and webhook route are wired", () => {
   assert.match(connect, /Import past calls/);
   assert.match(webhook, /importFirefliesMeeting/);
   assert.match(coachApi, /syncPastFirefliesMeetings/);
+  assert.match(readFileSync(resolve("lib/fireflies.ts"), "utf8"), /participants: \$participants/);
   assert.match(sql, /fireflies_settings/);
   assert.match(sql, /transcript_text/);
 });
@@ -113,4 +115,11 @@ test("Fireflies listing pages until a short page", () => {
   assert.equal(nextFirefliesSkip(50, 0), 50);
   assert.equal(nextFirefliesSkip(50, 50), 100);
   assert.equal(nextFirefliesSkip(12, 100), null);
+});
+
+test("student emails are sent to Fireflies in batches", () => {
+  assert.deepEqual(chunkEmails(["Ada@example.com", "not-an-email", "ben@example.com"], 1), [
+    ["ada@example.com"],
+    ["ben@example.com"],
+  ]);
 });

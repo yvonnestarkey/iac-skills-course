@@ -81,7 +81,7 @@ export default function FirefliesConnect() {
     }
     if (action === "sync") {
       setNotice(
-        `Looked at ${payload?.scanned || 0} Fireflies calls: ${payload?.imported || 0} added to student profiles, ${payload?.unmatched || 0} unmatched, ${payload?.skipped || 0} already imported${payload?.errors ? `, ${payload.errors} failed` : ""}.`
+        `Checked ${payload?.scanned || 0} Fireflies meetings with student emails: ${payload?.imported || 0} added to profiles${payload?.skipped ? `, ${payload.skipped} already imported` : ""}${payload?.errors ? `, ${payload.errors} failed` : ""}.`
       );
       await load();
       return;
@@ -107,8 +107,8 @@ export default function FirefliesConnect() {
       <p className="kicker">Integrations</p>
       <h1>Fireflies</h1>
       <p className="muted">
-        After a 1-on-1 Zoom, Fireflies sends the transcript and summary here. We match the student’s calendar email to
-        their profile and put the notes on that profile and on their coaching page.
+        After a 1-on-1 Zoom, Fireflies sends the transcript and summary here. Import only asks Fireflies for meetings
+        that include a student email, then puts those notes on that student’s profile and coaching page.
       </p>
       <p className="muted small">
         Paste <code>supabase/fireflies-coaching.sql</code> in Supabase before the first import.

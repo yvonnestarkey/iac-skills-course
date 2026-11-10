@@ -56,8 +56,9 @@ export type FirefliesStudentMatch = {
 export type FirefliesImportStatus = "imported" | "unmatched" | "skipped" | "error";
 
 export const FIREFLIES_PAGE_SIZE = 50;
-export const FIREFLIES_SYNC_MAX_PAGES = 2;
+export const FIREFLIES_SYNC_MAX_PAGES = 3;
 export const FIREFLIES_SYNC_BUDGET_MS = 20000;
+export const FIREFLIES_EMAIL_BATCH = 15;
 
 const TRANSCRIPT_FIELDS = `id
     title
@@ -86,8 +87,8 @@ const TRANSCRIPT_QUERY = `query Transcript($transcriptId: String!) {
   }
 }`;
 
-const TRANSCRIPTS_LIST_QUERY = `query Transcripts($limit: Int, $skip: Int) {
-  transcripts(limit: $limit, skip: $skip) {
+const TRANSCRIPTS_LIST_QUERY = `query Transcripts($limit: Int, $skip: Int, $participants: [String!]) {
+  transcripts(limit: $limit, skip: $skip, participants: $participants) {
     id
     title
     date
@@ -303,8 +304,15 @@ export function nextFirefliesSkip(fetched: number, skip: number, pageSize = FIRE
   return skip + pageSize;
 }
 
-const TRANSCRIPTS_FALLBACK_QUERY = `query Transcripts($limit: Int, $skip: Int) {
-  transcripts(limit: $limit, skip: $skip) {
+export function chunkEmails(emails: string[], size = FIREFLIES_EMAIL_BATCH): string[][] {
+  const list = emails.map(normalizeEmail).filter((email) => email.includes("@"));
+  const batches: string[][] = [];
+  for (let i = 0; i < list.length; i += size) batches.push(list.slice(i, i + size));
+  return batches;
+}
+
+const TRANSCRIPTS_FALLBACK_QUERY = `query Transcripts($limit: Int, $skip: Int, $participants: [String!]) {
+  transcripts(limit: $limit, skip: $skip, participants: $participants) {
     id
     title
     date
@@ -317,21 +325,17 @@ const TRANSCRIPTS_FALLBACK_QUERY = `query Transcripts($limit: Int, $skip: Int) {
 export async function listFirefliesTranscriptPage(
   apiKey: string,
   skip = 0,
-  limit = FIREFLIES_PAGE_SIZE
+  limit = FIREFLIES_PAGE_SIZE,
+  participants: string[] = []
 ): Promise<FirefliesTranscript[]> {
+  const variables = { limit, skip, participants };
   try {
-    const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, TRANSCRIPTS_LIST_QUERY, {
-      limit,
-      skip,
-    });
+    const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, TRANSCRIPTS_LIST_QUERY, variables);
     return data.transcripts || [];
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
     if (!/meeting_attendees|Cannot query field/i.test(message)) throw error;
-    const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, TRANSCRIPTS_FALLBACK_QUERY, {
-      limit,
-      skip,
-    });
+    const data = await firefliesGraphql<{ transcripts: FirefliesTranscript[] | null }>(apiKey, TRANSCRIPTS_FALLBACK_QUERY, variables);
     return data.transcripts || [];
   }
 }
@@ -525,7 +529,7 @@ async function upsertCoachingSession(input: {
       .limit(1);
     existing = (nearby || [])[0] || null;
   }
-  const patch = {
+  const patch: Record<string, unknown> = {
     student_id: input.studentId,
     status: "completed",
     session_at: input.sessionAt,
@@ -538,16 +542,17 @@ async function upsertCoachingSession(input: {
     vimeo_recording_url: input.recordingUrl || null,
     summary_text: input.summary || null,
     transcript_text: input.transcript || null,
-    deliverables_seen_at: null,
     updated_at: new Date().toISOString(),
   };
-  if (existing?.id) {
-    const { error } = await client.from("student_coaching_sessions").update(patch).eq("id", existing.id);
-    if (error) throw new Error(error.message);
-    return;
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const result = existing?.id
+      ? await client.from("student_coaching_sessions").update(patch).eq("id", existing.id)
+      : await client.from("student_coaching_sessions").insert(patch);
+    if (!result.error) return;
+    const missing = result.error.message.match(/'([^']+)' column/i);
+    if (!missing?.[1] || !(missing[1] in patch)) throw new Error(result.error.message);
+    delete patch[missing[1]];
   }
-  const { error } = await client.from("student_coaching_sessions").insert(patch);
-  if (error) throw new Error(error.message);
 }
 
 export async function importFirefliesTranscript(
@@ -561,17 +566,7 @@ export async function importFirefliesTranscript(
   const match = matchStudent(roster, transcript);
   const emails = attendeeEmails(transcript);
   const title = asText(transcript.title) || "1-on-1 coaching";
-  if (!match.student) {
-    await logImport({
-      meetingId,
-      event,
-      title,
-      status: "unmatched",
-      attendeeEmails: emails,
-      error: match.reason,
-    });
-    return { ok: true, status: "unmatched" };
-  }
+  if (!match.student) return { ok: true, status: "unmatched" };
   await upsertCoachingSession({
     studentId: match.student.id,
     meetingId,
@@ -627,54 +622,63 @@ export async function syncPastFirefliesMeetings(): Promise<{
   const settings = await loadSettings();
   if (!settings.apiKey) return { ok: false, error: "Fireflies API key is not set.", scanned: 0, imported: 0, unmatched: 0, skipped: 0, errors: 0 };
   const students = await loadStudents();
+  const emails = students.map((student) => student.email).filter((email) => email.includes("@"));
+  if (!emails.length) return { ok: false, error: "No student emails to match in Fireflies.", scanned: 0, imported: 0, unmatched: 0, skipped: 0, errors: 0 };
   const importedIds = await alreadyImportedMeetingIds();
+  const seen = new Set<string>(importedIds);
   const deadline = Date.now() + FIREFLIES_SYNC_BUDGET_MS;
-  let skip = 0;
   let scanned = 0;
   let imported = 0;
   let unmatched = 0;
   let skipped = 0;
   let errors = 0;
 
-  for (let page = 0; page < FIREFLIES_SYNC_MAX_PAGES; page += 1) {
+  for (const batch of chunkEmails(emails)) {
     if (Date.now() > deadline) break;
-    const rows = await listFirefliesTranscriptPage(settings.apiKey, skip);
-    if (!rows.length) break;
-    for (const row of rows) {
+    let skip = 0;
+    for (let page = 0; page < FIREFLIES_SYNC_MAX_PAGES; page += 1) {
       if (Date.now() > deadline) break;
-      const meetingId = asText(row.id);
-      if (!meetingId) continue;
-      scanned += 1;
-      if (importedIds.has(meetingId)) {
-        skipped += 1;
-        continue;
+      const rows = await listFirefliesTranscriptPage(settings.apiKey, skip, FIREFLIES_PAGE_SIZE, batch);
+      if (!rows.length) break;
+      for (const row of rows) {
+        if (Date.now() > deadline) break;
+        const meetingId = asText(row.id);
+        if (!meetingId) continue;
+        scanned += 1;
+        if (seen.has(meetingId)) {
+          skipped += 1;
+          continue;
+        }
+        seen.add(meetingId);
+        try {
+          const preview = matchStudent(students, row);
+          if (!preview.student) {
+            unmatched += 1;
+            continue;
+          }
+          const transcript = (await fetchFirefliesTranscript(settings.apiKey, meetingId)) || row;
+          const result = await importFirefliesTranscript({ ...transcript, id: meetingId }, "past_sync", students);
+          if (result.status === "imported") {
+            imported += 1;
+            importedIds.add(meetingId);
+          } else if (result.status === "unmatched") unmatched += 1;
+          else errors += 1;
+        } catch (error) {
+          errors += 1;
+          await logImport({
+            meetingId,
+            event: "past_sync",
+            title: asText(row.title),
+            status: "error",
+            attendeeEmails: attendeeEmails(row),
+            error: error instanceof Error ? error.message : "Could not import that meeting.",
+          });
+        }
       }
-      try {
-        const preview = matchStudent(students, row);
-        const transcript = preview.student
-          ? (await fetchFirefliesTranscript(settings.apiKey, meetingId)) || row
-          : row;
-        const result = await importFirefliesTranscript({ ...transcript, id: meetingId }, "past_sync", students);
-        if (result.status === "imported") {
-          imported += 1;
-          importedIds.add(meetingId);
-        } else if (result.status === "unmatched") unmatched += 1;
-        else errors += 1;
-      } catch (error) {
-        errors += 1;
-        await logImport({
-          meetingId,
-          event: "past_sync",
-          title: asText(row.title),
-          status: "error",
-          attendeeEmails: attendeeEmails(row),
-          error: error instanceof Error ? error.message : "Could not import that meeting.",
-        });
-      }
+      const next = nextFirefliesSkip(rows.length, skip);
+      if (next == null) break;
+      skip = next;
     }
-    const next = nextFirefliesSkip(rows.length, skip);
-    if (next == null) break;
-    skip = next;
   }
 
   return { ok: true, scanned, imported, unmatched, skipped, errors };

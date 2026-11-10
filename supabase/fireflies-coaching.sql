@@ -32,6 +32,9 @@ alter table public.student_coaching_sessions add column if not exists fireflies_
 alter table public.student_coaching_sessions add column if not exists fireflies_transcript_url text;
 alter table public.student_coaching_sessions add column if not exists summary_text text;
 alter table public.student_coaching_sessions add column if not exists transcript_text text;
+alter table public.student_coaching_sessions add column if not exists deliverables_seen_at timestamptz;
+alter table public.student_coaching_sessions add column if not exists recording_url text;
+alter table public.student_coaching_sessions add column if not exists pdf_summary_url text;
 
 create unique index if not exists student_coaching_sessions_fireflies_meeting_idx
   on public.student_coaching_sessions (fireflies_meeting_id)
