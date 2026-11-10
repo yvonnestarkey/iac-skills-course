@@ -1,3 +1,5 @@
+import { isoToSastDateAndTime, sastDateAndTimeToIso } from "./dates";
+import { isUserId } from "./notifications";
 import { getSupabase } from "./supabase";
 
 export interface CoachingPageConfig {
@@ -182,4 +184,133 @@ export async function markCoachingDeliverablesSeen(studentId: string): Promise<v
 export async function fetchCoachingDashboardHint(studentId: string): Promise<{ unseenDeliverables: boolean }> {
   const sessions = await fetchStudentCoachingSessions(studentId);
   return { unseenDeliverables: sessions.some(sessionHasUnseenDeliverables) };
+}
+
+export type CoachingSessionWrite = {
+  id?: string;
+  studentId: string;
+  title: string;
+  date: string;
+  recordingUrl: string;
+  pdfSummaryUrl: string;
+};
+
+export function emptyCoachingSessionWrite(studentId: string): CoachingSessionWrite {
+  return { studentId, title: "", date: "", recordingUrl: "", pdfSummaryUrl: "" };
+}
+
+export function coachingSessionToWrite(session: StudentCoachingSession): CoachingSessionWrite {
+  return {
+    id: session.id,
+    studentId: session.studentId,
+    title: session.title || "",
+    date: isoToSastDateAndTime(session.sessionAt).date,
+    recordingUrl: session.recordingUrl || "",
+    pdfSummaryUrl: session.pdfSummaryUrl || "",
+  };
+}
+
+export function missingCoachingColumn(message: string): string | null {
+  const match =
+    message.match(/Could not find the '([^']+)' column/i) ||
+    message.match(/'([^']+)' column of '/i);
+  return match?.[1] || null;
+}
+
+function asHttpUrl(value: string): string | null {
+  const text = value.trim();
+  if (!text) return null;
+  try {
+    const url = new URL(text);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
+export function coachingSessionWriteRow(
+  input: CoachingSessionWrite
+): { ok: true; row: Record<string, unknown> } | { ok: false; error: string } {
+  const studentId = input.studentId.trim();
+  if (!isUserId(studentId)) return { ok: false, error: "Missing student." };
+  const recordingUrl = asHttpUrl(input.recordingUrl);
+  const pdfSummaryUrl = asHttpUrl(input.pdfSummaryUrl);
+  if (input.recordingUrl.trim() && !recordingUrl) {
+    return { ok: false, error: "Paste a full recording URL, starting with https://." };
+  }
+  if (input.pdfSummaryUrl.trim() && !pdfSummaryUrl) {
+    return { ok: false, error: "The summary PDF URL looks invalid. Upload the file again." };
+  }
+  if (!recordingUrl && !pdfSummaryUrl) {
+    return { ok: false, error: "Upload a PDF summary or paste a recording link." };
+  }
+  const sessionAt = input.date.trim() ? sastDateAndTimeToIso(input.date, "12:00") : null;
+  if (input.date.trim() && !sessionAt) return { ok: false, error: "That session date looks invalid." };
+  const row: Record<string, unknown> = {
+    student_id: studentId,
+    status: "completed",
+    title: input.title.trim() || "1-on-1 coaching",
+    recording_url: recordingUrl,
+    vimeo_recording_url: recordingUrl,
+    pdf_summary_url: pdfSummaryUrl,
+    fireflies_pdf_url: pdfSummaryUrl,
+    updated_at: new Date().toISOString(),
+  };
+  if (sessionAt) row.session_at = sessionAt;
+  else if (!input.id) row.session_at = new Date().toISOString();
+  return { ok: true, row };
+}
+
+export async function uploadCoachingSummaryPdf(
+  studentId: string,
+  file: File
+): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  if (!isUserId(studentId)) return { ok: false, error: "Missing student." };
+  const name = file.name.toLowerCase();
+  if (!file.size) return { ok: false, error: "That file looks empty. Choose the PDF again." };
+  if (file.size > 50 * 1024 * 1024) return { ok: false, error: "That PDF is larger than 50 MB. Compress it, then try again." };
+  if (!file.type.includes("pdf") && !name.endsWith(".pdf")) return { ok: false, error: "Please upload a PDF file." };
+  const path = `coaching-sessions/${studentId}/${Date.now()}-summary.pdf`;
+  const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
+    upsert: true,
+    contentType: file.type || "application/pdf",
+  });
+  if (uploaded.error) return { ok: false, error: "Could not upload that PDF. Try again, or paste a public PDF URL." };
+  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
+  if (!data?.publicUrl) return { ok: false, error: "Could not get a URL for that PDF." };
+  return { ok: true, url: data.publicUrl };
+}
+
+export async function saveManualCoachingSession(
+  input: CoachingSessionWrite
+): Promise<{ ok: true; session: StudentCoachingSession } | { ok: false; error: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const built = coachingSessionWriteRow(input);
+  if (built.ok === false) return built;
+  const patch = { ...built.row };
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const result = input.id
+      ? await client.from("student_coaching_sessions").update(patch).eq("id", input.id).eq("student_id", input.studentId).select("*").maybeSingle()
+      : await client.from("student_coaching_sessions").insert(patch).select("*").maybeSingle();
+    if (!result.error && result.data) return { ok: true, session: sessionFromRow(result.data as Record<string, unknown>) };
+    const missing = missingCoachingColumn(result.error?.message || "");
+    if (missing && missing in patch) {
+      delete patch[missing];
+      continue;
+    }
+    return { ok: false, error: result.error?.message || "Could not save that coaching session." };
+  }
+  return { ok: false, error: "Could not save that coaching session." };
+}
+
+export async function deleteCoachingSession(id: string): Promise<{ ok: true } | { ok: false; error: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: false, error: "Supabase is not configured." };
+  const { error } = await client.from("student_coaching_sessions").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
 }

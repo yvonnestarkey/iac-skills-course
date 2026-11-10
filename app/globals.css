@@ -2547,6 +2547,16 @@ button.diagnosis-pill {
   margin: 8px 0 16px;
 }
 
+.coaching-manual-form {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0 20px;
+}
+
+.coaching-manual-form .student-notes-label {
+  margin-top: 12px;
+}
+
 .work-list {
   display: flex;
   flex-direction: column;
