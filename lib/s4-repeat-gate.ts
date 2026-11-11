@@ -24,6 +24,12 @@ export function isS4Chapter(title: string | null | undefined): boolean {
   return /^S4\b/i.test(String(title || "").trim());
 }
 
+export function isS4RepeatSurvey(survey: { slug?: string | null; questions?: Array<{ id?: string }> } | null | undefined): boolean {
+  if (!survey) return false;
+  if (survey.slug === S4_REPEAT_SURVEY_SLUG) return true;
+  return Boolean(survey.questions?.some((question) => question.id === S4_REPEAT_QUESTION_ID));
+}
+
 export function findS4Chapter(chapters: OutlineChapter[] | null | undefined): OutlineChapter | null {
   return (chapters || []).find((chapter) => isS4Chapter(chapter.title)) || null;
 }

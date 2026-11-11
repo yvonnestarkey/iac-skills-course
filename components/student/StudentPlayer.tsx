@@ -273,8 +273,14 @@ export default function StudentPlayer({
         ) : null}
         <p className="kicker">
           <LessonTypeIcon type={kind} title={lesson.title} tool={lesson.tool} id={lesson.id} size={13} />
-          {isInteractiveLesson(lesson) ? INTERACTIVE_LESSON_LABEL : lessonTypeLabel(kind)}
-          {lesson.is_assignment ? <span className="badge assignment-flag">Assignment</span> : null}
+          {isS4GateLesson(lesson, outline)
+            ? "Question"
+            : isInteractiveLesson(lesson)
+              ? INTERACTIVE_LESSON_LABEL
+              : lessonTypeLabel(kind)}
+          {lesson.is_assignment && !isS4GateLesson(lesson, outline) ? (
+            <span className="badge assignment-flag">Assignment</span>
+          ) : null}
         </p>
         <h1>{lesson.title}</h1>
         {status ? <p className="notice">{status}</p> : null}
@@ -298,7 +304,7 @@ export default function StudentPlayer({
                 void reloadProgress();
               }}
               nextHref={lesson.next ? `${basePath}/${lesson.next.id}` : null}
-              nextTitle={isS4GateLesson(lesson, outline) ? null : lesson.next?.title || null}
+              nextTitle={lesson.next?.title || null}
             />
           </>
         ) : (

@@ -37,6 +37,7 @@ import {
   S4_REPEAT_SURVEY_SLUG,
   S4_SITTING_QUESTION_ID,
   S4_YES,
+  isS4RepeatSurvey,
   s4RepeatSubmittedMessage,
   s4Task1Href,
 } from "@/lib/s4-repeat-gate";
@@ -197,14 +198,12 @@ export default function StudentSurveyForm({
         Next: {title} →
       </Link>
     ) : null;
-  const isS4Gate =
-    survey?.slug === S4_REPEAT_SURVEY_SLUG ||
-    Boolean(survey?.questions.some((question) => question.id === S4_REPEAT_QUESTION_ID));
+  const isS4Gate = isS4RepeatSurvey(survey);
 
   if (loading) {
     return (
       <Frame embedded={embedded}>
-        <p className="empty">Loading survey…</p>
+        <p className="empty">Loading…</p>
       </Frame>
     );
   }
@@ -214,8 +213,8 @@ export default function StudentSurveyForm({
       <Frame embedded={embedded}>
         {!hideTitle ? (
           <>
-            <p className="kicker">Survey</p>
-            <h1>Survey unavailable</h1>
+            <p className="kicker">{slug === S4_REPEAT_SURVEY_SLUG ? "Question" : "Survey"}</p>
+            <h1>{slug === S4_REPEAT_SURVEY_SLUG ? "This question is unavailable" : "Survey unavailable"}</h1>
           </>
         ) : null}
         <p className="empty">{error || "This survey could not be found."}</p>
@@ -233,27 +232,29 @@ export default function StudentSurveyForm({
     const declinedLead = s4RepeatSubmittedMessage(existing?.answers || answers);
     const lead = declinedLead
       ? declinedLead
-      : review
-        ? review.status === "graded"
-          ? "Your coach has graded this."
-          : review.status === "rejected"
-            ? "Your coach rejected this submission."
-            : review.status === "resubmit"
-              ? "Your coach asked you to resubmit."
-              : "Your coach has left feedback."
-        : "Thank you. Your response has been saved. Your coach has not reviewed it yet.";
+      : isS4Gate
+        ? "Saved. You can continue with this section."
+        : review
+          ? review.status === "graded"
+            ? "Your coach has graded this."
+            : review.status === "rejected"
+              ? "Your coach rejected this submission."
+              : review.status === "resubmit"
+                ? "Your coach asked you to resubmit."
+                : "Your coach has left feedback."
+          : "Thank you. Your response has been saved. Your coach has not reviewed it yet.";
     return (
       <Frame embedded={embedded} className="survey-rich-text">
         {!hideTitle ? (
           <>
-            <p className="kicker">Survey</p>
+            <p className="kicker">{isS4Gate ? "Question" : "Survey"}</p>
             <h1>{survey.title}</h1>
           </>
         ) : null}
         <p className="lead">{lead}</p>
-        {existing && !declinedLead ? <CoachReviewCard response={existing} /> : null}
-        <SurveyQuestionPdf survey={survey} submitted />
-        {existing && !declinedLead ? (
+        {existing && !declinedLead && !isS4Gate ? <CoachReviewCard response={existing} /> : null}
+        {isS4Gate ? null : <SurveyQuestionPdf survey={survey} submitted />}
+        {existing && !declinedLead && !isS4Gate ? (
           <div className="work-list">
             {survey.questions.filter((question) => questionIsVisible(question, existing.answers)).map((question) =>
               isInfoBlock(question.type) ? (
@@ -282,10 +283,10 @@ export default function StudentSurveyForm({
             <Link className="primary" href={s4Task1Href(session?.outline)}>
               Start with Task 1 L1 →
             </Link>
-          ) : isS4Gate ? null : (
+          ) : (
             nextAction(nextHref, nextTitle)
           )}
-          {embedded ? null : (
+          {embedded || isS4Gate ? null : (
             <Link className="ghost" href="/student/feedback">
               ← All feedback
             </Link>
@@ -299,7 +300,7 @@ export default function StudentSurveyForm({
     <Frame embedded={embedded} className="survey-rich-text">
       {!hideTitle ? (
         <>
-          <p className="kicker">Survey</p>
+          <p className="kicker">{isS4Gate ? "Question" : "Survey"}</p>
           <h1>{survey.title}</h1>
         </>
       ) : null}
@@ -332,7 +333,7 @@ export default function StudentSurveyForm({
         )}
         <div className="actions">
           <button className="primary" type="submit" disabled={busy}>
-            {busy ? "Submitting…" : "Submit"}
+            {busy ? "Saving…" : isS4Gate ? "Continue" : "Submit"}
           </button>
           {embedded || isS4Gate ? null : (
             <Link className="ghost" href="/student/feedback">

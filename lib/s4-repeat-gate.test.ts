@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { test } from "node:test";
 import { catalogFromOutline, checkLessonAccess } from "./accessControl";
+import { hasStartedTaskWork, findResumeLesson } from "./course-phases";
 import { applyCourseProgressionGates, type OutlineChapter } from "./student-lesson";
 import { surveyQuestionIsVisible, type CustomSurveyResponse } from "./custom-surveys";
 import {
@@ -11,6 +14,7 @@ import {
   S4_SITTING_QUESTION_ID,
   S4_UNANSWERED_MESSAGE,
   S4_YES,
+  isS4RepeatSurvey,
   s4RepeatAnswer,
   s4RepeatSubmittedMessage,
   s4Task1Href,
@@ -106,6 +110,45 @@ test("S4 stays open when L1 is still the study-approach video", () => {
   const followOn = catalog.find((lesson) => lesson.id === "ch7-l2");
   assert.equal(followOn?.repeat_chapter_gate_id, undefined);
   assert.equal(checkLessonAccess(followOn!, catalog, {}, { outline: gated }).isLocked, false);
+});
+
+test("Resume skips S4 once the student has already started a Task", () => {
+  const chapters: OutlineChapter[] = [
+    {
+      id: "ch7",
+      title: "S4 - MY Repeat Students - Auditing Paper",
+      lessons: [
+        { id: S4_REPEAT_GATE_LESSON_ID, title: "Have you worked through this IAC Skills Course with Yvonne before?", type: "survey" },
+        { id: "ch7-l2", title: "L2", type: "video" },
+      ],
+    },
+    {
+      id: "ch10",
+      title: "Task 1 - How to evaluate whether you need revision",
+      lessons: [
+        { id: "ch10-l1", title: "L1 - What will we cover in Task 1?", type: "video" },
+        { id: "ch10-l2", title: "L2", type: "video" },
+      ],
+    },
+  ];
+  assert.equal(hasStartedTaskWork(chapters, { "ch10-l1": true }), true);
+  const resume = findResumeLesson(chapters, { "ch10-l1": true });
+  assert.equal(resume?.lesson.id, "ch10-l2");
+  const fresh = findResumeLesson(chapters, {});
+  assert.equal(fresh?.lesson.id, S4_REPEAT_GATE_LESSON_ID);
+});
+
+test("S4 gate is a question, not a graded survey", () => {
+  const form = readFileSync(resolve("components/student/StudentSurveyForm.tsx"), "utf8");
+  const player = readFileSync(resolve("components/student/StudentPlayer.tsx"), "utf8");
+  const hub = readFileSync(resolve("components/student/StudentFeedbackHub.tsx"), "utf8");
+  assert.match(form, /isS4Gate \? "Continue"/);
+  assert.match(form, /Saved\. You can continue with this section\./);
+  assert.match(player, /\? "Question"/);
+  assert.match(hub, /isS4RepeatSurvey/);
+  assert.equal(isS4RepeatSurvey({ slug: "s4-repeat-student-gate", questions: [] }), true);
+  assert.equal(isS4RepeatSurvey({ slug: "other", questions: [{ id: S4_REPEAT_QUESTION_ID }] }), true);
+  assert.equal(isS4RepeatSurvey({ slug: "other", questions: [{ id: "q-else" }] }), false);
 });
 
 test("the sitting question only appears after Yes", () => {

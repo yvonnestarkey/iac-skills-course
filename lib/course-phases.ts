@@ -188,11 +188,29 @@ export function isPhaseUnlocked(phases: CoursePhase[], phaseId: CoursePhaseId, c
   return isChapterUnlocked(ordered, first.id, completed);
 }
 
+export function hasStartedTaskWork(
+  chapters: OutlineChapter[] | null | undefined,
+  completed: Record<string, boolean> | undefined
+): boolean {
+  const map = asCompletedMap(completed);
+  let afterS4 = false;
+  for (const chapter of chapters || []) {
+    const title = chapter.title || "";
+    if (afterS4 || isTaskChapter(title)) {
+      if ((chapter.lessons || []).some((lesson) => map[lesson.id])) return true;
+    }
+    if (/^S4\b/i.test(title.trim())) afterS4 = true;
+  }
+  return false;
+}
+
 export function findResumeLesson(
   chapters: OutlineChapter[],
   completed: Record<string, boolean>
 ): { chapter: OutlineChapter; lesson: OutlineLesson } | null {
+  const skipS4 = hasStartedTaskWork(chapters, completed);
   for (const chapter of chapters || []) {
+    if (skipS4 && /^S4\b/i.test((chapter.title || "").trim())) continue;
     const lesson = (chapter.lessons || []).find((item) => !completed[item.id]);
     if (lesson) return { chapter, lesson };
   }

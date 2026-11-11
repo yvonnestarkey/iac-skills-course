@@ -16,6 +16,7 @@ import {
 } from "@/lib/custom-surveys";
 import { formatSastDateTime } from "@/lib/dates";
 import { useStudentSession } from "@/lib/student-session";
+import { isS4RepeatSurvey } from "@/lib/s4-repeat-gate";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 type FilterId = "all" | "assignments" | "surveys" | "reviewed";
@@ -82,6 +83,7 @@ export default function StudentFeedbackHub() {
   }, [user?.id]);
 
   const filteredPacks = packs.filter((pack) => {
+    if (isS4RepeatSurvey(pack.survey)) return false;
     if (filter === "assignments") return pack.survey.isAssignment;
     if (filter === "surveys") return !pack.survey.isAssignment;
     if (filter === "reviewed") return hasCoachReview(pack.response);

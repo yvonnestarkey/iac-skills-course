@@ -21,7 +21,7 @@ import { getServiceSupabase } from "./supabase-admin";
 import { firstLessonVideoUrl, parseLessonVideos, type LessonVideo } from "./lesson-videos";
 import { asLessonType, displayLessonType, lessonIsAssignment } from "./lesson-type";
 import { fetchSurveyAssignmentFlags } from "./custom-surveys";
-import { applyS4RepeatGate } from "./s4-repeat-gate";
+import { applyS4RepeatGate, isS4GateLesson } from "./s4-repeat-gate";
 import type { UserProfile } from "../types/database";
 import type { CourseData, Lesson, LessonType } from "./types";
 
@@ -494,10 +494,12 @@ async function withAssignmentFlags(chapters: OutlineChapter[]): Promise<OutlineC
       return {
         ...lesson,
         survey_id: surveyId,
-        is_assignment: lessonIsAssignment({
-          type: lesson.type,
-          is_assignment: Boolean(surveyId && flags[surveyId]),
-        }),
+        is_assignment: isS4GateLesson(lesson, chapters)
+          ? false
+          : lessonIsAssignment({
+              type: lesson.type,
+              is_assignment: Boolean(surveyId && flags[surveyId]),
+            }),
       };
     }),
   }));
