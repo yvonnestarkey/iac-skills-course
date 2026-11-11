@@ -83,7 +83,10 @@ export default function StudentDashboard() {
       <nav className="student-hub" aria-label="Student shortcuts">
         <Link href="/student/evaluator" className="student-hub-card">
           <strong>Script Evaluator</strong>
-          <p>After Task 1, choose a sitting, print one BMCR for all three papers, then upload that worksheet with Paper 1, Paper 2, Paper 3, and the marking report.</p>
+          <p>
+            After Task 1 — or if you have done this course before — choose a sitting, print one BMCR for all three papers,
+            then upload that worksheet with Paper 1, Paper 2, Paper 3, and the marking report.
+          </p>
         </Link>
         <Link href="/student/reading" className={`student-hub-card${readingUnlocked ? "" : " is-locked"}`}>
           <strong>Reading &amp; RTFQ Tool</strong>

@@ -85,9 +85,9 @@ export function hasSubmissionContent(submission: { body?: string | null; link_ur
 }
 
 /**
- * Script Evaluator unlocks when the real Task 1 assignment has a submission
- * (`student_submissions` for `ch10-l7` / the live Task 1 assignment lesson).
- * BMCR / Volume / Buried Treasure are not prerequisites.
+ * Task 1 assignment has a submission (`student_submissions` for `ch10-l7` /
+ * the live Task 1 assignment lesson). One of the Script Evaluator unlocks;
+ * see `canOpenScriptEvaluator`.
  */
 export function hasTask1Submission(
   submissions: Record<string, { body?: string | null; link_url?: string | null } | undefined> | null | undefined,

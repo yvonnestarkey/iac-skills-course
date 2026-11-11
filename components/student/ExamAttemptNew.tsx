@@ -16,18 +16,20 @@ import { isEvaluatorReadySitting } from "@/lib/evaluator/ready-sittings";
 
 /** Only sittings the Script Evaluator has been set up for are offered (Yvonne, 20 Oct 2026). */
 const EVALUATOR_SITTINGS = PAST_PAPER_SITTINGS.filter((item) => isEvaluatorReadySitting(item.id));
-import { hasTask1Submission, task1LessonHref } from "@/lib/task1-gate";
+import { canOpenScriptEvaluator } from "@/lib/script-evaluator-access";
+import { s4GateHref } from "@/lib/s4-repeat-gate";
+import { task1LessonHref } from "@/lib/task1-gate";
 import { useStudentSession } from "@/lib/student-session";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 export default function ExamAttemptNew() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { ready, user, submissions } = useStudentSession();
+  const { ready, user, submissions, surveyReviews } = useStudentSession();
   const outline = useVisibleCourseOutline();
   const { unlocked } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
-  const canUse = hasTask1Submission(submissions, outline) || unlocked || bypassLocks;
+  const canUse = canOpenScriptEvaluator({ submissions, outline, surveyReviews }) || unlocked || bypassLocks;
   const [sittingId, setSittingId] = useState(
     () => {
       const requested = resolveBmcrSittingId(searchParams.get("sitting"));
@@ -80,10 +82,16 @@ export default function ExamAttemptNew() {
         <p>
           <Link href="/student/evaluator">← Script evaluator</Link>
         </p>
-        <p className="notice">Submit Task 1 first. The Script Evaluator stays locked until that assignment is in.</p>
-        <p>
+        <p className="notice">
+          Submit Task 1 first, or if you have done this course before, answer yes on the S4 question (Grassroots also
+          unlocks it).
+        </p>
+        <p className="coaching-actions">
           <Link className="primary" href={task1LessonHref(outline)}>
             Go to Task 1
+          </Link>
+          <Link className="ghost" href={s4GateHref(outline)}>
+            I&apos;ve done this course before
           </Link>
         </p>
       </article>

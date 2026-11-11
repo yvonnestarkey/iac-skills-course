@@ -15,12 +15,14 @@ import {
   type ExamAttempt,
 } from "@/lib/exam-attempts";
 import { isCoachAccount } from "@/lib/roles";
-import { hasTask1Submission, task1AssignmentFromOutline, task1LessonHref } from "@/lib/task1-gate";
+import { canOpenScriptEvaluator } from "@/lib/script-evaluator-access";
+import { s4GateHref } from "@/lib/s4-repeat-gate";
+import { task1AssignmentFromOutline, task1LessonHref } from "@/lib/task1-gate";
 import { useStudentSession } from "@/lib/student-session";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 export default function ScriptEvaluatorHub() {
-  const { ready, user, submissions, entitlement } = useStudentSession();
+  const { ready, user, submissions, surveyReviews, entitlement } = useStudentSession();
   const outline = useVisibleCourseOutline();
   const { unlocked } = useCoursePreview();
   const bypassLocks = useBypassLessonLocks();
@@ -31,9 +33,9 @@ export default function ScriptEvaluatorHub() {
   const [loaded, setLoaded] = useState(false);
 
   const task1 = task1AssignmentFromOutline(outline);
-  const unlockedByTask1 = hasTask1Submission(submissions, outline);
+  const unlockedByPrereq = canOpenScriptEvaluator({ submissions, outline, surveyReviews });
   const bypass = unlocked || bypassLocks;
-  const canUse = (entitlement !== "none" && unlockedByTask1) || bypass;
+  const canUse = (entitlement !== "none" && unlockedByPrereq) || bypass;
 
   useEffect(() => {
     if (!user?.id || !canUse) return;
@@ -73,18 +75,20 @@ export default function ScriptEvaluatorHub() {
           <Link href="/student/dashboard">← Student dashboard</Link>
         </p>
         <p className="kicker">Script evaluator</p>
-        <h1>Locked until Task 1 is submitted</h1>
+        <h1>Locked until you know BMCR</h1>
         <p>
-          Task 1 is the gate. You first evaluate your own performance with evidence, then the Script Evaluator opens so
-          you can submit a script.
+          Script evaluation needs BMCR. Task 1 teaches that. If you have done this course with Yvonne before, you already
+          know it — answer the S4 question, or submit Grassroots, and this tool opens.
         </p>
         <p className="notice">
-          Submit <strong>{task1.lessonTitle}</strong> to unlock this tool. BMCR, Volume vs Accuracy, and Buried Treasure
-          are not required here.
+          First time here? Submit <strong>{task1.lessonTitle}</strong>. Returning student? Say yes on the S4 question.
         </p>
-        <p>
+        <p className="coaching-actions">
           <Link className="primary" href={task1LessonHref(outline)}>
             Go to Task 1
+          </Link>
+          <Link className="ghost" href={s4GateHref(outline)}>
+            I&apos;ve done this course before
           </Link>
         </p>
       </article>
@@ -105,8 +109,8 @@ export default function ScriptEvaluatorHub() {
       <p className="muted small">
         Each attempt stays separate. If you have written IAC more than once, submit each sitting on its own.
       </p>
-      {bypass && !unlockedByTask1 ? (
-        <p className="notice">Coach view: Task 1 submission is not required on this account.</p>
+      {bypass && !unlockedByPrereq ? (
+        <p className="notice">Coach view: Task 1 / Grassroots / S4 yes is not required on this account.</p>
       ) : null}
 
       <p>

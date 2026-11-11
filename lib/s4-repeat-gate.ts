@@ -110,3 +110,8 @@ export function s4RepeatSubmittedMessage(answers: Record<string, string> | null 
 export function s4Task1Href(chapters?: OutlineChapter[] | null): string {
   return `/student/${task1StartFromOutline(chapters).lessonId}`;
 }
+
+export function s4GateHref(chapters?: OutlineChapter[] | null): string {
+  const gate = findS4GateLesson(chapters);
+  return gate ? `/student/${gate.id}` : `/student/${S4_REPEAT_GATE_LESSON_ID}`;
+}
