@@ -1,6 +1,11 @@
 import { courseAccessFromEntitlementStatus } from "./course-access";
 import type { SurveySubmissionRow } from "./custom-surveys";
-import { isoToSastDateAndTime } from "./dates";
+import { daysAgo, isoToSastDateAndTime, parsePortalTimestamp } from "./dates";
+import { EXAM_ATTEMPT_STATUSES, isAttemptSubmitted, type ExamAttemptStatus } from "./exam-attempts";
+import { fetchCoachSentMessages } from "./inbox";
+import { STAFF_TEST_ATTEMPT_SOURCE } from "./staff-access";
+import { getSupabase } from "./supabase";
+import type { Student } from "./types";
 
 export type CoachDashTab = "bmcr";
 
@@ -34,7 +39,16 @@ export type CoachMarkingItem = {
   createdAt: string;
 };
 
-export const COACH_MARKING_PREVIEW = 8;
+export const COACH_STALE_DAYS = 7;
+
+export type CoachWatchKind = "disengaged" | "quiet";
+
+export type CoachWatchStudent = {
+  id: string;
+  name: string;
+  lastActive?: string | null;
+  lastHeardAt?: string | null;
+};
 
 export const COACH_DASHBOARD_GROUPS: CoachDashGroup[] = [
   {
@@ -213,4 +227,144 @@ export function coachMarkingItems(rows: SurveySubmissionRow[]): CoachMarkingItem
 
 export function coachDashboardTools(): CoachDashTool[] {
   return COACH_DASHBOARD_GROUPS.flatMap((group) => group.items);
+}
+
+export function isActiveRosterStudent(student: { accessActive?: boolean; status?: string }): boolean {
+  return student.accessActive !== false && student.status !== "paused";
+}
+
+export function isDisengagedStudent(student: Pick<Student, "lastActive" | "accessActive" | "status">): boolean {
+  if (!isActiveRosterStudent(student)) return false;
+  const days = daysAgo(student.lastActive);
+  return days === null || days >= COACH_STALE_DAYS;
+}
+
+export function heardFromCoachWithinDays(
+  lastHeardAt: string | null | undefined,
+  days = COACH_STALE_DAYS,
+  now: Date = new Date()
+): boolean {
+  if (!lastHeardAt) return false;
+  const at = parsePortalTimestamp(lastHeardAt)?.getTime() || Date.parse(lastHeardAt);
+  if (!at || Number.isNaN(at)) return false;
+  return now.getTime() - at < days * 86400000;
+}
+
+export function isQuietStudent(
+  student: Pick<Student, "lastActive" | "accessActive" | "status">,
+  lastHeardAt: string | null | undefined,
+  now: Date = new Date()
+): boolean {
+  if (!isActiveRosterStudent(student)) return false;
+  if (isDisengagedStudent(student)) return false;
+  return !heardFromCoachWithinDays(lastHeardAt, COACH_STALE_DAYS, now);
+}
+
+export function coachWatchStudents(
+  students: Student[],
+  kind: CoachWatchKind,
+  lastHeardById: Record<string, string | null> = {},
+  now: Date = new Date()
+): CoachWatchStudent[] {
+  return students
+    .filter((student) =>
+      kind === "disengaged" ? isDisengagedStudent(student) : isQuietStudent(student, lastHeardById[student.id], now)
+    )
+    .map((student) => ({
+      id: student.id,
+      name: student.name,
+      lastActive: student.lastActive || null,
+      lastHeardAt: lastHeardById[student.id] || null,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export function isAwaitingEvaluatorReport(row: {
+  status?: string | null;
+  evaluator_report_released_at?: string | null;
+  source?: string | null;
+}): boolean {
+  if (row.source === STAFF_TEST_ATTEMPT_SOURCE) return false;
+  if (row.evaluator_report_released_at) return false;
+  const status = EXAM_ATTEMPT_STATUSES.includes(row.status as ExamAttemptStatus)
+    ? (row.status as ExamAttemptStatus)
+    : "started";
+  return isAttemptSubmitted(status);
+}
+
+export function awaitingEvaluatorReportCount(
+  rows: Array<{ status?: string | null; evaluator_report_released_at?: string | null; source?: string | null }>
+): number {
+  return rows.filter(isAwaitingEvaluatorReport).length;
+}
+
+export function laterStamp(left: string | null | undefined, right: string | null | undefined): string | null {
+  const a = String(left || "");
+  const b = String(right || "");
+  if (!a) return b || null;
+  if (!b) return a;
+  return a > b ? a : b;
+}
+
+export function mergeLastHeardByStudent(
+  students: Array<{ id: string; email?: string | null }>,
+  contacts: Array<{ studentId?: string | null; studentEmail?: string | null; at?: string | null }>
+): Record<string, string | null> {
+  const byId = new Map<string, string | null>(students.map((student) => [student.id, null]));
+  const emailToId = new Map<string, string>();
+  for (const student of students) {
+    const email = String(student.email || "").trim().toLowerCase();
+    if (email) emailToId.set(email, student.id);
+  }
+  for (const contact of contacts) {
+    const at = String(contact.at || "");
+    if (!at) continue;
+    const fromId = contact.studentId && byId.has(contact.studentId) ? contact.studentId : "";
+    const fromEmail = emailToId.get(String(contact.studentEmail || "").trim().toLowerCase()) || "";
+    const id = fromId || fromEmail;
+    if (!id) continue;
+    byId.set(id, laterStamp(byId.get(id), at));
+  }
+  return Object.fromEntries(byId);
+}
+
+export async function fetchAwaitingEvaluatorReports(): Promise<number> {
+  const client = getSupabase();
+  if (!client) return 0;
+  const { data, error } = await client
+    .from("exam_attempts")
+    .select("status, evaluator_report_released_at, source")
+    .is("evaluator_report_released_at", null);
+  if (error || !data) return 0;
+  return awaitingEvaluatorReportCount(data as Array<{ status?: string; evaluator_report_released_at?: string | null; source?: string | null }>);
+}
+
+export async function fetchLastHeardByStudent(
+  students: Array<{ id: string; email?: string | null }>
+): Promise<Record<string, string | null>> {
+  const client = getSupabase();
+  const contacts: Array<{ studentId?: string | null; studentEmail?: string | null; at?: string | null }> = [];
+  const inbox = await fetchCoachSentMessages();
+  if (inbox.ok) {
+    inbox.data.forEach((message) => {
+      if (message.from !== "coach") return;
+      contacts.push({ studentId: message.studentId, studentEmail: message.studentEmail, at: message.createdAt });
+    });
+  }
+  if (client) {
+    const since = new Date(Date.now() - COACH_STALE_DAYS * 86400000).toISOString();
+    const { data } = await client
+      .from("notifications")
+      .select("user_id, student_id, student_email, created_at, from_role")
+      .eq("from_role", "coach")
+      .gte("created_at", since);
+    (data || []).forEach((row) => {
+      contacts.push({
+        studentId: String(row.student_id || row.user_id || "") || null,
+        studentEmail: String(row.student_email || "") || null,
+        at: String(row.created_at || ""),
+      });
+    });
+  }
+  return mergeLastHeardByStudent(students, contacts);
 }

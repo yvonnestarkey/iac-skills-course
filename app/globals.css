@@ -1503,8 +1503,23 @@ input[type="tel"]:focus {
   background: linear-gradient(180deg, #f7eef2 0%, #fff 70%);
 }
 
-.coach-dash-stat.is-mark.has-work b {
+.coach-dash-stat.is-mark.has-work b,
+.coach-dash-stat.is-reports.has-work b,
+.coach-dash-stat.is-disengaged.has-work b,
+.coach-dash-stat.is-quiet.has-work b {
   color: var(--link);
+}
+
+.coach-dash-stat.is-reports {
+  background: linear-gradient(180deg, #e7f0ee 0%, #fff 72%);
+}
+
+.coach-dash-stat.is-disengaged {
+  background: linear-gradient(180deg, #f3e6d4 0%, #fff 72%);
+}
+
+.coach-dash-stat.is-quiet {
+  background: linear-gradient(180deg, #eef3f1 0%, #fff 72%);
 }
 
 .coach-dash-queue {
@@ -1521,6 +1536,143 @@ input[type="tel"]:focus {
 
 .coach-dash-queue-head h2 {
   margin: 0;
+}
+
+.coach-dash-queue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.coach-dash-watch-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.coach-dash-watch-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.4fr) auto;
+  gap: 8px 16px;
+  align-items: baseline;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #f7faf9;
+}
+
+.coach-dash-reminders {
+  margin-bottom: 22px;
+}
+
+.coach-reminder-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px;
+  margin: 8px 0 12px;
+}
+
+.coach-reminder-meta input[type="date"] {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.coach-reminder-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 8px;
+}
+
+.coach-reminder-chip {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.coach-reminder-matches {
+  display: grid;
+  gap: 4px;
+  margin: 6px 0 10px;
+}
+
+.coach-reminder-matches button {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  text-align: left;
+}
+
+.coach-reminder-list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.coach-reminder-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #f7faf9;
+}
+
+.coach-reminder-item.is-due {
+  border-color: var(--link);
+  background: #f7eef2;
+}
+
+.coach-reminder-item.is-done {
+  opacity: 0.62;
+}
+
+.coach-reminder-item label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.coach-reminder-item strong {
+  display: block;
+}
+
+.coach-reminder-item em {
+  display: block;
+  margin-top: 4px;
+  font-style: normal;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.coach-reminder-people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.coach-reminder-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .coach-dash-queue-list {
@@ -1627,12 +1779,18 @@ input[type="tel"]:focus {
 @media (max-width: 900px) {
   .coach-dash-stats,
   .coach-dash-grid,
-  .coach-dash-queue-list button {
+  .coach-dash-queue-list button,
+  .coach-dash-watch-list li,
+  .coach-reminder-item {
     grid-template-columns: 1fr;
   }
 
   .coach-dash-queue-list em {
     white-space: normal;
+  }
+
+  .coach-reminder-item {
+    flex-direction: column;
   }
 }
 

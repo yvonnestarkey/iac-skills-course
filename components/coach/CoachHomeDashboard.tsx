@@ -21,21 +21,28 @@ import {
   Video,
   Wallet,
 } from "lucide-react";
+import CoachReminders from "@/components/coach/CoachReminders";
+import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import {
   COACH_DASHBOARD_GROUPS,
-  COACH_MARKING_PREVIEW,
   coachDashboardGreeting,
   coachMarkingItems,
   coachStudentCounts,
+  coachWatchStudents,
+  fetchAwaitingEvaluatorReports,
+  fetchLastHeardByStudent,
   type CoachDashTool,
-  type CoachMarkingItem,
+  type CoachWatchKind,
+  type CoachWatchStudent,
 } from "@/lib/coach-dashboard";
+import { lastActiveLabel } from "@/lib/course";
 import { fetchAllSurveySubmissions } from "@/lib/custom-surveys";
-import { formatSastDateTime } from "@/lib/dates";
+import { labelForGroup } from "@/lib/comms";
 import { publicCatalogUrl } from "@/lib/lms-hosts";
 import { fetchRosterStudents } from "@/lib/profiles";
 import { fetchLessonSubmissionsForCoach } from "@/lib/student-submissions";
 import { useStore } from "@/lib/store";
+import type { Student } from "@/lib/types";
 
 const TOOL_ICONS: Record<string, LucideIcon> = {
   lists: ClipboardList,
@@ -59,30 +66,45 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
 };
 
 export default function CoachHomeDashboard() {
-  const { data, setCoach } = useStore();
+  const { data, setCoach, setNotifyDraft } = useStore();
   const router = useRouter();
   const [ready, setReady] = useState(false);
+  const [students, setStudents] = useState<Student[]>([]);
   const [counts, setCounts] = useState(coachStudentCounts([]));
-  const [marking, setMarking] = useState<CoachMarkingItem[]>([]);
+  const [marking, setMarking] = useState(0);
+  const [reports, setReports] = useState(0);
+  const [disengaged, setDisengaged] = useState<CoachWatchStudent[]>([]);
+  const [quiet, setQuiet] = useState<CoachWatchStudent[]>([]);
+  const [watch, setWatch] = useState<CoachWatchKind | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([fetchRosterStudents(), fetchLessonSubmissionsForCoach(), fetchAllSurveySubmissions()]).then(
-      ([roster, lessons, surveys]) => {
-        if (cancelled) return;
-        setCounts(coachStudentCounts(roster.ok ? roster.students : []));
-        setMarking(coachMarkingItems([...(lessons.ok ? lessons.data : []), ...(surveys.ok ? surveys.data : [])]));
-        setReady(true);
-      }
-    );
+    Promise.all([
+      fetchRosterStudents(),
+      fetchLessonSubmissionsForCoach(),
+      fetchAllSurveySubmissions(),
+      fetchAwaitingEvaluatorReports(),
+    ]).then(async ([roster, lessons, surveys, awaitingReports]) => {
+      if (cancelled) return;
+      const live = roster.ok ? roster.students : [];
+      const heard = await fetchLastHeardByStudent(live);
+      if (cancelled) return;
+      setStudents(live);
+      setCounts(coachStudentCounts(live));
+      setMarking(coachMarkingItems([...(lessons.ok ? lessons.data : []), ...(surveys.ok ? surveys.data : [])]).length);
+      setReports(awaitingReports);
+      setDisengaged(coachWatchStudents(live, "disengaged", heard));
+      setQuiet(coachWatchStudents(live, "quiet", heard));
+      setReady(true);
+    });
     return () => {
       cancelled = true;
     };
   }, []);
 
   const greeting = useMemo(() => coachDashboardGreeting(), []);
-  const preview = marking.slice(0, COACH_MARKING_PREVIEW);
-  const extra = Math.max(0, marking.length - preview.length);
+  const watchList = watch === "quiet" ? quiet : watch === "disengaged" ? disengaged : [];
+  const watchLabel = watch === "quiet" ? "Quiet students" : "Disengaged students";
 
   const go = (item: CoachDashTool) => {
     if (item.tab) setCoach({ tab: item.tab });
@@ -98,6 +120,16 @@ export default function CoachHomeDashboard() {
   const openLists = (tab?: "assignments" | "roster" | "bmcr") => {
     if (tab) setCoach({ tab });
     router.push("/coach/lists");
+  };
+
+  const messageStudents = (ids: string[], label: string) => {
+    const picked = students.filter((student) => ids.includes(student.id));
+    if (!ids.length) return;
+    setNotifyDraft({
+      audience: ids.length === 1 ? "student" : "filtered",
+      audienceLabel: picked.length ? labelForGroup(data, picked, ids.length === 1 ? "student" : "filtered", label) : label,
+      recipientIds: ids,
+    });
   };
 
   return (
@@ -123,50 +155,90 @@ export default function CoachHomeDashboard() {
         </button>
         <button
           type="button"
-          className={`coach-dash-stat is-mark${marking.length ? " has-work" : ""}`}
+          className={`coach-dash-stat is-mark${marking ? " has-work" : ""}`}
           onClick={() => openLists("assignments")}
         >
           <span className="kicker">To mark</span>
-          <b>{ready ? marking.length : "—"}</b>
+          <b>{ready ? marking : "—"}</b>
           <span className="muted small">Assignments waiting for you</span>
+        </button>
+        <button
+          type="button"
+          className={`coach-dash-stat is-reports${reports ? " has-work" : ""}`}
+          onClick={() => router.push("/coach/evaluator")}
+        >
+          <span className="kicker">Awaiting reports</span>
+          <b>{ready ? reports : "—"}</b>
+          <span className="muted small">Script evaluations to release</span>
+        </button>
+        <button
+          type="button"
+          className={`coach-dash-stat is-disengaged${disengaged.length ? " has-work" : ""}`}
+          onClick={() => setWatch((current) => (current === "disengaged" ? null : "disengaged"))}
+        >
+          <span className="kicker">Disengaged</span>
+          <b>{ready ? disengaged.length : "—"}</b>
+          <span className="muted small">No login in a week</span>
+        </button>
+        <button
+          type="button"
+          className={`coach-dash-stat is-quiet${quiet.length ? " has-work" : ""}`}
+          onClick={() => setWatch((current) => (current === "quiet" ? null : "quiet"))}
+        >
+          <span className="kicker">Quiet</span>
+          <b>{ready ? quiet.length : "—"}</b>
+          <span className="muted small">Logged in, not heard from you</span>
         </button>
       </div>
 
-      <section className="card coach-dash-queue">
-        <div className="coach-dash-queue-head">
-          <div>
-            <p className="kicker">Marking</p>
-            <h2>Assignments to mark</h2>
+      {watch ? (
+        <section className="card coach-dash-queue">
+          <div className="coach-dash-queue-head">
+            <div>
+              <p className="kicker">Students</p>
+              <h2>{watchLabel}</h2>
+            </div>
+            <div className="coach-dash-queue-actions">
+              <button
+                type="button"
+                className="primary"
+                disabled={!watchList.length}
+                onClick={() => messageStudents(watchList.map((student) => student.id), watchLabel)}
+              >
+                Send a group message
+              </button>
+              <button type="button" className="ghost" onClick={() => setWatch(null)}>
+                Close
+              </button>
+            </div>
           </div>
-          <button type="button" className="ghost" onClick={() => openLists("assignments")}>
-            Open submissions
-          </button>
-        </div>
-        {!ready ? (
-          <p className="empty">Checking the queue…</p>
-        ) : preview.length ? (
-          <ul className="coach-dash-queue-list">
-            {preview.map((item) => (
-              <li key={item.id}>
-                <button type="button" onClick={() => router.push(item.href)}>
-                  <strong>{item.studentName}</strong>
-                  <span>{item.title}</span>
-                  <em>{formatSastDateTime(item.createdAt) || "Open"}</em>
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="empty">Nothing waiting — you are clear.</p>
-        )}
-        {extra ? (
-          <p className="muted small">
-            <button type="button" className="link-btn" onClick={() => openLists("assignments")}>
-              {extra} more in the submissions queue
-            </button>
-          </p>
-        ) : null}
-      </section>
+          {!ready ? (
+            <p className="empty">Checking the roster…</p>
+          ) : watchList.length ? (
+            <ul className="coach-dash-watch-list">
+              {watchList.map((student) => (
+                <li key={student.id}>
+                  <StudentProfileLink studentId={student.id}>{student.name}</StudentProfileLink>
+                  <span className="muted small">
+                    {watch === "disengaged"
+                      ? student.lastActive
+                        ? `Last in ${lastActiveLabel({ lastActive: student.lastActive })}`
+                        : "Never logged in"
+                      : "Active this week, no note from you in 7 days"}
+                  </span>
+                  <button type="button" className="link-btn" onClick={() => messageStudents([student.id], student.name)}>
+                    Message
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="empty">Nobody in this list right now.</p>
+          )}
+        </section>
+      ) : null}
+
+      <CoachReminders students={students} onMessage={messageStudents} />
 
       <div className="coach-dash-grid">
         {COACH_DASHBOARD_GROUPS.map((group) => (
