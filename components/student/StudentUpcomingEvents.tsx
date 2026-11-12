@@ -118,9 +118,7 @@ export default function StudentUpcomingEvents() {
               <LaterEvent key={session.id} session={session} />
             ))}
           </ol>
-        ) : (
-          <div className="student-upcoming-later-spacer" />
-        )}
+        ) : null}
       </div>
     </section>
   );

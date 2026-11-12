@@ -6,6 +6,7 @@ import StudentDashboardBanner from "@/components/student/StudentDashboardBanner"
 import StudentDashboardQuote from "@/components/student/StudentDashboardQuote";
 import StudentDashboardSlide from "@/components/student/StudentDashboardSlide";
 import StudentStudyJournal from "@/components/student/StudentStudyJournal";
+import StudentAssignmentFeedback from "@/components/student/StudentAssignmentFeedback";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
 import StudentReadingPractice from "@/components/student/StudentReadingPractice";
 import StudentTaskDueDates from "@/components/student/StudentTaskDueDates";
@@ -15,7 +16,6 @@ import { courseStudyMinutes, estimateCourseFinish, fetchStudentStartedOn } from 
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { portalToday } from "@/lib/student-task-due-dates";
 import { useCoursePreview } from "@/lib/course-preview";
-import { hasCoachReview } from "@/lib/custom-surveys";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
@@ -24,7 +24,7 @@ import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
 import { isCoachAccount } from "@/lib/roles";
 
 export default function StudentDashboard() {
-  const { user, completed, surveyReviews } = useStudentSession();
+  const { user, completed } = useStudentSession();
   const outline = useVisibleCourseOutline();
   const { unlocked, basePath } = useCoursePreview();
   const { inboxWaiting, unreadCount } = useStudentInbox();
@@ -51,7 +51,6 @@ export default function StudentDashboard() {
   const inboxHref = "/student/inbox";
   const notifyHref = "/student/notifications";
   const coach = isCoachAccount(user);
-  const feedbackCount = Object.values(surveyReviews || {}).filter(hasCoachReview).length;
 
   useEffect(() => {
     if (!user?.id) return;
@@ -74,86 +73,78 @@ export default function StudentDashboard() {
       />
       <StudentDashboardQuote />
       <StudentDashboardSlide />
-      <div className="student-dash-planner">
+      <div className="student-dash-tiles">
         <StudentStudyJournal compact />
         <StudentUpcomingEvents />
         <StudentTaskDueDates />
+        <StudentReadingPractice />
+        <StudentAssignmentFeedback />
       </div>
 
       {unlocked ? null : <PurchaseCta />}
 
-      <StudentReadingPractice />
-
-      <nav className="student-hub" aria-label="Student shortcuts">
-        <Link href="/student/evaluator" className="student-hub-card">
+      <nav className="student-hub-buttons" aria-label="Student shortcuts">
+        <Link href="/student/evaluator" className="student-hub-btn is-dark">
           <strong>Script Evaluator</strong>
-          <p>
-            After Task 1 — or if you have done this course before — choose a sitting, print one BMCR for all three papers,
-            then upload that worksheet with Paper 1, Paper 2, Paper 3, and the marking report.
-          </p>
+          <p>Print a BMCR and upload your papers after Task 1.</p>
         </Link>
         {ASK_QUESTION_ENABLED ? (
-          <button type="button" className="student-hub-card" onClick={() => window.dispatchEvent(new Event("open-ask-question"))}>
+          <button type="button" className="student-hub-btn is-medium" onClick={() => window.dispatchEvent(new Event("open-ask-question"))}>
             <strong>Ask a Question</strong>
-            <p>24/7 IAC Exam &amp; Skills Facilitator. Ask about a required, a mark leak, or how to use the study tools.</p>
+            <p>24/7 IAC exam and skills help.</p>
           </button>
         ) : null}
-        <Link href="/student/coaching" className="student-hub-card">
+        <Link href="/student/coaching" className="student-hub-btn is-sand">
           <strong>1-on-1 Coaching</strong>
-          <p>Book a private session or access your meeting summaries and recordings.</p>
-          {coachingUnseen ? <span className="pill">Meeting Summary & Recording Available</span> : null}
+          <p>Book a session or open summaries.</p>
+          {coachingUnseen ? <span className="pill">Summary ready</span> : null}
         </Link>
-        <Link href={`${basePath}/overview`} className="student-hub-card">
+        <Link href={`${basePath}/overview`} className="student-hub-btn is-link">
           <strong>Course Overview</strong>
-          <p>Browse every section and task, including locked upcoming titles.</p>
+          <p>Every section and task.</p>
         </Link>
-        <Link href="/student/feedback" className="student-hub-card">
-          <strong>Survey & assignment feedback</strong>
-          <p>See every submission, grade, and coach comment in one place.</p>
-          {feedbackCount ? <span className="pill">{feedbackCount} with feedback</span> : null}
-        </Link>
-        <Link href={inboxHref} className="student-hub-card">
+        <Link href={inboxHref} className="student-hub-btn is-dark">
           <strong>Inbox</strong>
-          <p>Questions and replies with your coach.</p>
+          <p>Questions and replies.</p>
           {inboxWaiting ? <span className="pill">New reply</span> : null}
         </Link>
-        <Link href={notifyHref} className="student-hub-card">
+        <Link href={notifyHref} className="student-hub-btn is-medium">
           <strong>Notifications</strong>
-          <p>Course announcements, including anything sent to your cohort before you joined.</p>
+          <p>Course announcements.</p>
           {unreadCount ? <span className="pill">{unreadCount} unread</span> : null}
         </Link>
-        <Link href="/student/planner" className="student-hub-card">
+        <Link href="/student/planner" className="student-hub-btn is-sand">
           <strong>Study planner</strong>
-          <p>Set your hours, slots, and target finish date.</p>
+          <p>Hours, slots, and finish date.</p>
         </Link>
-        <Link href="/student/account" className="student-hub-card">
+        <Link href="/student/account" className="student-hub-btn is-link">
           <strong>Your profile</strong>
-          <p>Edit your name, email, phone number, and accountability contact.</p>
+          <p>Name, email, and contacts.</p>
         </Link>
       </nav>
       <StudentPersonalNotes />
 
       {coach ? (
-        <nav className="student-hub student-hub-coach" aria-label="Coach">
-          <p className="kicker" style={{ width: "100%" }}>
-            Coach
-          </p>
-          <Link href="/coach" className="student-hub-card">
-            <strong>Coach tools</strong>
-            <p>Referrals, Add Student, student lists, payments, and course admin.</p>
-          </Link>
-          <Link href="/coach/referrals" className="student-hub-card">
-            <strong>Referrals</strong>
-            <p>Successful student and professional colleague referrals.</p>
-          </Link>
-          <Link href="/coach/students/new" className="student-hub-card">
-            <strong>Add Student</strong>
-            <p>Invite someone to free preview or complimentary full access.</p>
-          </Link>
-          <Link href="/coach/lists" className="student-hub-card">
-            <strong>Students</strong>
-            <p>Roster, submissions, surveys, and BMCR analytics.</p>
-          </Link>
+        <nav className="student-hub-coach" aria-label="Coach">
+          <p className="kicker">Coach</p>
+          <div className="student-hub-buttons">
+            <Link href="/coach" className="student-hub-btn is-dark">
+              <strong>Coach tools</strong>
+              <p>Referrals, students, and admin.</p>
+            </Link>
+            <Link href="/coach/referrals" className="student-hub-btn is-medium">
+              <strong>Referrals</strong>
+              <p>Successful student referrals.</p>
+            </Link>
+            <Link href="/coach/students/new" className="student-hub-btn is-sand">
+              <strong>Add Student</strong>
+              <p>Invite preview or full access.</p>
+            </Link>
+            <Link href="/coach/lists" className="student-hub-btn is-link">
+              <strong>Students</strong>
+              <p>Roster, submissions, and BMCR.</p>
+            </Link>
+          </div>
         </nav>
       ) : null}
     </article>

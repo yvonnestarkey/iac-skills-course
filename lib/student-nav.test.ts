@@ -24,6 +24,6 @@ test("student screens can collapse the sidebar with double arrows", () => {
   assert.match(preview, /SidebarCollapseButton/);
   assert.match(styles, /grid-template-columns:\s*293px minmax\(0, 1fr\)/);
   assert.match(styles, /\.shell\.sidebar-collapsed[\s\S]*44px/);
-  assert.match(styles, /\.student-dash-planner/);
-  assert.match(styles, /\.shell\.sidebar-collapsed \.student-dash-planner[\s\S]*minmax\(0, 1fr\) minmax\(0, 1fr\)/);
+  assert.match(styles, /\.student-dash-tiles/);
+  assert.match(styles, /\.shell\.sidebar-collapsed \.student-dash-tiles[\s\S]*column-count:\s*3/);
 });
