@@ -4,9 +4,12 @@ import { resolve } from "node:path";
 import test from "node:test";
 import {
   daysUntilExam,
+  emptyJournalPrivacy,
   emptyJournalWeek,
+  journalDayFilled,
   journalMood,
   journalWeekDates,
+  journalWeekFilled,
   journalWeekStart,
   questionsByExamDate,
   shiftJournalWeek,
@@ -83,4 +86,27 @@ test("study journal sits on the dashboard and above Study Clinic in the sidebar"
   const journalAt = nav.indexOf("Study Journal");
   const clinicAt = nav.indexOf("Study Clinic");
   assert.ok(journalAt >= 0 && clinicAt > journalAt);
+});
+
+test("the study journal is visible to Yvonne until the student opts out", () => {
+  assert.deepEqual(emptyJournalPrivacy(), { private: false, promptSeen: false });
+  assert.equal(journalDayFilled(emptyJournalWeek("2026-11-09").days["2026-11-09"]), false);
+  assert.equal(
+    journalWeekFilled(
+      emptyJournalWeek("2026-11-09", { days: { "2026-11-09": { studied: "yes", studiedWhat: "", stuckToPlan: "", mood: "", note: "" } } })
+    ),
+    true
+  );
+  const journal = readFileSync(resolve("components/student/StudentStudyJournal.tsx"), "utf8");
+  const sql = readFileSync(resolve("supabase/student-study-journal.sql"), "utf8");
+  const profile = readFileSync(resolve("components/coach/StudentProfile.tsx"), "utf8");
+  const panel = readFileSync(resolve("components/coach/CoachStudyJournalPanel.tsx"), "utf8");
+  assert.match(journal, /Yvonne can see your planner/);
+  assert.match(journal, /Click here/);
+  assert.match(journal, /keep this private so only you can see it/);
+  assert.match(sql, /student_study_journal_settings/);
+  assert.match(sql, /staff read shared study journals/);
+  assert.match(sql, /s\.private = true/);
+  assert.match(profile, /CoachStudyJournalPanel/);
+  assert.match(panel, /kept their study journal private/);
 });

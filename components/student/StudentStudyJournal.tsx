@@ -10,7 +10,9 @@ import { portalToday } from "@/lib/student-task-due-dates";
 import {
   daysUntilExam,
   emptyJournalDay,
+  emptyJournalPrivacy,
   emptyJournalWeek,
+  fetchJournalPrivacy,
   fetchStudyJournalWeek,
   JOURNAL_MOODS,
   JOURNAL_NEEDS,
@@ -23,9 +25,11 @@ import {
   journalWeekLabel,
   journalWeekStart,
   questionsByExamDate,
+  saveJournalPrivacy,
   saveStudyJournalWeek,
   shiftJournalWeek,
   type JournalDay,
+  type JournalPrivacy,
   type StudyJournalWeek,
 } from "@/lib/study-journal";
 
@@ -111,6 +115,7 @@ export default function StudentStudyJournal() {
   const { user } = useStudentSession();
   const [weekStart, setWeekStart] = useState(journalWeekStart());
   const [week, setWeek] = useState<StudyJournalWeek | null>(null);
+  const [privacy, setPrivacy] = useState<JournalPrivacy>(emptyJournalPrivacy);
   const [status, setStatus] = useState("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -122,10 +127,11 @@ export default function StudentStudyJournal() {
     if (!user?.id || !iac) return;
     let cancelled = false;
     setWeek(emptyJournalWeek(weekStart));
-    fetchStudyJournalWeek(user.id, weekStart).then((result) => {
+    Promise.all([fetchStudyJournalWeek(user.id, weekStart), fetchJournalPrivacy(user.id)]).then(([result, nextPrivacy]) => {
       if (cancelled) return;
       setWeek(result.week);
-      setStatus(result.error || "");
+      setPrivacy(nextPrivacy.privacy);
+      setStatus(result.error || nextPrivacy.error || "");
     });
     return () => {
       cancelled = true;
@@ -140,7 +146,19 @@ export default function StudentStudyJournal() {
       setStatus(result.error);
       return;
     }
-    setStatus("Saved. Private to you.");
+    setPrivacy(result.privacy);
+    setStatus(result.privacy.private ? "Saved. Private to you." : "Saved. Yvonne can see this planner.");
+  };
+
+  const setPrivate = async (nextPrivate: boolean) => {
+    if (!user?.id) return;
+    const result = await saveJournalPrivacy(user.id, { private: nextPrivate, promptSeen: true });
+    if (result.ok === false) {
+      setStatus(result.error);
+      return;
+    }
+    setPrivacy(result.privacy);
+    setStatus(result.privacy.private ? "Saved. Private to you." : "Saved. Yvonne can see this planner.");
   };
 
   const update = (next: StudyJournalWeek) => {
@@ -173,6 +191,22 @@ export default function StudentStudyJournal() {
     <div className="study-journal">
       <StudentCourseProgress />
       <section className="study-journal-sheet">
+        {!privacy.promptSeen ? (
+          <p className="notice study-journal-privacy">
+            Yvonne can see your planner.{" "}
+            <button type="button" className="link-btn" onClick={() => void setPrivate(true)}>
+              Click here
+            </button>{" "}
+            if you want to keep this private so only you can see it.
+          </p>
+        ) : (
+          <p className="muted small study-journal-privacy-status">
+            {privacy.private ? "This planner is private to you." : "Yvonne can see this planner."}{" "}
+            <button type="button" className="link-btn" onClick={() => void setPrivate(!privacy.private)}>
+              {privacy.private ? "Let Yvonne see it" : "Keep it private"}
+            </button>
+          </p>
+        )}
         <div className="study-journal-head">
           <div>
             <p className="kicker">Study journal</p>

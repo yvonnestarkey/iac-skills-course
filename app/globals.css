@@ -5983,6 +5983,41 @@ a.student-dash-resume-btn {
   margin-top: 12px;
 }
 
+.study-journal-privacy .link-btn,
+.study-journal-privacy-status .link-btn {
+  font-size: inherit;
+}
+
+.study-journal-privacy-status {
+  margin: 0 0 14px;
+}
+
+.coach-journal-week {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.coach-journal-week h3,
+.coach-journal-day h3 {
+  margin: 0 0 8px;
+  color: var(--dark);
+}
+
+.coach-journal-days {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.coach-journal-day {
+  padding: 10px 12px;
+  border: 1px solid var(--sand-line);
+  border-radius: 12px;
+  background: #fffdf8;
+}
+
 .study-journal-sheet {
   padding: 22px 22px 18px;
   border-radius: 24px;

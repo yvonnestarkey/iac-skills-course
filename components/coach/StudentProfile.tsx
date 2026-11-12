@@ -14,6 +14,7 @@ import ScriptEvaluationsPanel from "@/components/coach/ScriptEvaluationsPanel";
 import DataConsentPanel from "@/components/coach/DataConsentPanel";
 import StudentDiagnosesPanel, { DiagnosisPills } from "@/components/coach/StudentDiagnosesPanel";
 import StudentCoachingSessionsPanel from "@/components/coach/StudentCoachingSessionsPanel";
+import CoachStudyJournalPanel from "@/components/coach/CoachStudyJournalPanel";
 import StudentPdfsPanel from "@/components/coach/StudentPdfsPanel";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { accountStatusLabel } from "@/lib/student-registration";
@@ -418,6 +419,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           </>
         ) : null}
       </section>
+
+      <CoachStudyJournalPanel studentId={student.id} />
 
       <div className="profile-grid">
         <section className="card">

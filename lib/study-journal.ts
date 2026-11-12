@@ -71,6 +71,36 @@ export type StudyJournalWeek = {
   days: Record<string, JournalDay>;
 };
 
+export type JournalPrivacy = {
+  private: boolean;
+  promptSeen: boolean;
+};
+
+export function emptyJournalPrivacy(): JournalPrivacy {
+  return { private: false, promptSeen: false };
+}
+
+export function journalChoiceLabel(options: ReadonlyArray<{ id: string; label: string }>, id: string): string {
+  return options.find((option) => option.id === id)?.label || "";
+}
+
+export function journalDayFilled(day: JournalDay | undefined): boolean {
+  if (!day) return false;
+  return Boolean(day.studied || day.studiedWhat || day.stuckToPlan || day.mood || day.note);
+}
+
+export function journalWeekFilled(week: StudyJournalWeek): boolean {
+  return Boolean(
+    week.weekGoals ||
+      week.lastQuestion ||
+      week.questionsPerWeek != null ||
+      week.whereIAm ||
+      week.weekNeed ||
+      week.weekNeedOther ||
+      Object.values(week.days).some(journalDayFilled)
+  );
+}
+
 function asText(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
@@ -87,7 +117,7 @@ function asInt(value: unknown): number | null {
 }
 
 function tableMissing(message: string): boolean {
-  return /student_study_journal|does not exist|schema cache|could not find/i.test(message);
+  return /student_study_journal_settings|student_study_journal|does not exist|schema cache|could not find/i.test(message);
 }
 
 function journalError(message: string): string {
@@ -250,13 +280,83 @@ export async function fetchStudyJournalWeek(
 export async function saveStudyJournalWeek(
   userId: string,
   week: StudyJournalWeek
-): Promise<{ ok: true } | { ok: false; error: string }> {
+): Promise<{ ok: true; privacy: JournalPrivacy } | { ok: false; error: string }> {
   const client = getSupabase();
-  if (!client) return { ok: true };
+  if (!client) return { ok: true, privacy: emptyJournalPrivacy() };
   const row = { user_id: userId, ...weekWriteRow(week) };
   const { error } = await client.from("student_study_journal").upsert(row, { onConflict: "user_id,week_start" });
   if (error) return { ok: false, error: journalError(error.message) };
-  return { ok: true };
+  const privacy = await markJournalPromptSeen(userId);
+  return { ok: true, privacy };
+}
+
+export async function fetchJournalPrivacy(userId: string): Promise<{ ok: boolean; error?: string; privacy: JournalPrivacy }> {
+  const privacy = emptyJournalPrivacy();
+  const client = getSupabase();
+  if (!client) return { ok: true, privacy };
+  const { data, error } = await client
+    .from("student_study_journal_settings")
+    .select("private, prompt_seen")
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (error) return { ok: false, error: journalError(error.message), privacy };
+  if (!data) return { ok: true, privacy };
+  const row = data as { private?: boolean; prompt_seen?: boolean };
+  return { ok: true, privacy: { private: Boolean(row.private), promptSeen: Boolean(row.prompt_seen) } };
+}
+
+export async function saveJournalPrivacy(
+  userId: string,
+  privacy: JournalPrivacy
+): Promise<{ ok: true; privacy: JournalPrivacy } | { ok: false; error: string }> {
+  const client = getSupabase();
+  if (!client) return { ok: true, privacy };
+  const { error } = await client.from("student_study_journal_settings").upsert({
+    user_id: userId,
+    private: privacy.private,
+    prompt_seen: privacy.promptSeen,
+    updated_at: new Date().toISOString(),
+  });
+  if (error) return { ok: false, error: journalError(error.message) };
+  return { ok: true, privacy };
+}
+
+export async function markJournalPromptSeen(userId: string): Promise<JournalPrivacy> {
+  const current = await fetchJournalPrivacy(userId);
+  if (current.privacy.promptSeen) return current.privacy;
+  const saved = await saveJournalPrivacy(userId, { ...current.privacy, promptSeen: true });
+  return saved.ok === false ? current.privacy : saved.privacy;
+}
+
+export async function fetchCoachStudyJournal(studentId: string): Promise<{
+  ok: boolean;
+  error?: string;
+  hidden: boolean;
+  privacy: JournalPrivacy;
+  weeks: StudyJournalWeek[];
+}> {
+  const loaded = await fetchJournalPrivacy(studentId);
+  if (loaded.privacy.private) {
+    return { ok: true, hidden: true, privacy: loaded.privacy, weeks: [] };
+  }
+  const client = getSupabase();
+  if (!client) return { ok: loaded.ok, error: loaded.error, hidden: false, privacy: loaded.privacy, weeks: [] };
+  const { data, error } = await client
+    .from("student_study_journal")
+    .select("*")
+    .eq("user_id", studentId)
+    .order("week_start", { ascending: false });
+  if (error) {
+    return { ok: false, error: journalError(error.message), hidden: false, privacy: loaded.privacy, weeks: [] };
+  }
+  return {
+    ok: true,
+    hidden: false,
+    privacy: loaded.privacy,
+    weeks: (data || [])
+      .map((row) => weekFromRow(row as Record<string, unknown>))
+      .filter(journalWeekFilled),
+  };
 }
 
 export async function fetchOwnStudentProgress(userId: string): Promise<StudentProgressView> {
