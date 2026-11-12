@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import StudentDashboardBanner from "@/components/student/StudentDashboardBanner";
 import StudentDashboardQuote from "@/components/student/StudentDashboardQuote";
 import StudentDashboardSlide from "@/components/student/StudentDashboardSlide";
+import StudentStudyJournal from "@/components/student/StudentStudyJournal";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
 import StudentTaskDueDates from "@/components/student/StudentTaskDueDates";
 import StudentUpcomingEvents from "@/components/student/StudentUpcomingEvents";
@@ -76,6 +77,7 @@ export default function StudentDashboard() {
       />
       <StudentDashboardQuote />
       <StudentDashboardSlide />
+      <StudentStudyJournal />
 
       {unlocked ? null : <PurchaseCta />}
 

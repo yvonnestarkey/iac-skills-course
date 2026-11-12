@@ -5969,6 +5969,265 @@ a.student-dash-resume-btn {
   align-items: center;
 }
 
+.study-journal {
+  margin: 24px 0 8px;
+  display: grid;
+  gap: 16px;
+}
+
+.study-journal-progress {
+  padding: 18px 20px 16px;
+}
+
+.study-journal-progress .progress-wide {
+  margin-top: 12px;
+}
+
+.study-journal-sheet {
+  padding: 22px 22px 18px;
+  border-radius: 24px;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 28px rgba(63, 98, 92, 0.08);
+}
+
+.study-journal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.study-journal-head h2 {
+  margin: 0 0 4px;
+  color: var(--dark);
+  font-size: clamp(26px, 3vw, 34px);
+}
+
+.study-journal-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.study-journal-exam {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 16px 24px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--sand) 0%, #fff 78%);
+}
+
+.study-journal-exam label,
+.study-journal-analytics label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.study-journal-exam input[type="date"],
+.study-journal-day input,
+.study-journal-analytics input,
+.study-journal-day textarea,
+.study-journal-goals textarea {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--sand-line);
+  border-radius: 10px;
+  background: #fffaf4;
+}
+
+.study-journal-countdown {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--medium);
+}
+
+.study-journal-days {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.study-journal-day {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 0 0 12px;
+  border-radius: 18px;
+  border: 1px solid var(--sand-line);
+  background: #fffdf8;
+  overflow: hidden;
+}
+
+.study-journal-day.is-today {
+  border-color: var(--link);
+}
+
+.study-journal-day header {
+  padding: 12px 14px 10px;
+  background: var(--medium);
+  color: #fff;
+}
+
+.study-journal-day header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.study-journal-day header p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.study-journal-day > :not(header) {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.journal-field-label {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.journal-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.journal-choices button,
+.journal-mood-trigger,
+.journal-mood-pop button {
+  border: 1px solid var(--sand-line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.journal-choices button.is-on,
+.journal-mood-pop button.is-on {
+  background: var(--medium);
+  border-color: var(--medium);
+  color: #fff;
+}
+
+.journal-mood {
+  position: relative;
+}
+
+.journal-mood-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.journal-mood-pop {
+  position: absolute;
+  z-index: 6;
+  top: calc(100% + 6px);
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  width: min(280px, calc(100vw - 48px));
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.journal-mood-pop button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+  justify-content: flex-start;
+}
+
+.journal-mood-pop span,
+.journal-mood-trigger span {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.study-journal-goals {
+  background: linear-gradient(180deg, #eef6f4 0%, #fff 55%);
+}
+
+.study-journal-goals textarea {
+  min-height: 180px;
+  background: #fff;
+}
+
+.study-journal-analytics {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px dashed var(--medium);
+  background: #f7faf9;
+}
+
+.study-journal-analytics h3 {
+  margin: 0;
+  color: var(--dark);
+}
+
+.study-journal-analytics-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: end;
+}
+
+.study-journal-analytics-row strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 28px;
+  color: var(--medium);
+}
+
+@media (max-width: 1100px) {
+  .study-journal-days {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .study-journal-head,
+  .study-journal-exam,
+  .study-journal-days,
+  .study-journal-analytics-row {
+    grid-template-columns: 1fr;
+  }
+
+  .study-journal-head {
+    flex-direction: column;
+  }
+}
+
 .student-progress span {
   display: block;
   height: 100%;

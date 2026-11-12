@@ -11,7 +11,7 @@ import { DEFAULT_LMS_COURSE_ID } from "@/lib/lms-catalog";
 import { useLmsCourse } from "@/lib/lms-course-context";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
-const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator", "dashboard", "account", "bmcr", "volume-accuracy", "buried-treasure", "reading", "study-clinic"]);
+const RESERVED = new Set(["inbox", "notifications", "planner", "overview", "login", "coaching", "events", "surveys", "feedback", "evaluator", "dashboard", "account", "bmcr", "volume-accuracy", "buried-treasure", "reading", "study-clinic", "journal"]);
 
 export default function StudentCourseNav() {
   const { course, classroomPath } = useLmsCourse();
@@ -30,6 +30,7 @@ export default function StudentCourseNav() {
   const dashHref = unlocked ? basePath : iac ? "/student/dashboard" : classroomPath || basePath;
   const onDashboard = pathname === basePath || pathname === dashHref || pathname === "/student/dashboard";
   const onStudyClinic = pathname.startsWith("/student/study-clinic");
+  const onJournal = pathname === "/student/journal" || pathname.startsWith("/student/journal/");
   const onOverview = pathname === `${basePath}/overview`;
   const lessons = chapters.flatMap((chapter) => chapter.lessons || []);
   const done = lessons.filter((lesson) => completed?.[lesson.id]).length;
@@ -45,9 +46,14 @@ export default function StudentCourseNav() {
             Student Dashboard
           </Link>
           {iac ? (
-            <Link href="/student/study-clinic" className={`dash-link ${onStudyClinic ? "active" : ""}`} onClick={close}>
-              Study Clinic
-            </Link>
+            <>
+              <Link href="/student/journal" className={`dash-link ${onJournal ? "active" : ""}`} onClick={close}>
+                Study Journal
+              </Link>
+              <Link href="/student/study-clinic" className={`dash-link ${onStudyClinic ? "active" : ""}`} onClick={close}>
+                Study Clinic
+              </Link>
+            </>
           ) : null}
           <Link href={`${basePath}/overview`} className={`dash-link ${onOverview ? "active" : ""}`} onClick={close}>
             Course Overview
