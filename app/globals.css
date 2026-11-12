@@ -5976,11 +5976,37 @@ a.student-dash-resume-btn {
 }
 
 .study-journal-progress {
-  padding: 18px 20px 16px;
+  padding: 6px 12px;
+}
+
+.study-journal-progress.is-open {
+  padding-bottom: 14px;
+}
+
+.study-journal-progress .activity-progress-toggle {
+  align-items: center;
+  gap: 10px;
+}
+
+.study-journal-progress-copy {
+  display: grid;
+  grid-template-columns: auto minmax(72px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.study-journal-progress-copy strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dark);
+  white-space: nowrap;
 }
 
 .study-journal-progress .progress-wide {
-  margin-top: 12px;
+  height: 8px;
+  margin: 0;
 }
 
 .study-journal-privacy .link-btn,
@@ -6046,15 +6072,26 @@ a.student-dash-resume-btn {
   gap: 8px;
 }
 
-.study-journal-exam {
+.study-journal-exam,
+.study-journal-need {
   display: flex;
   flex-wrap: wrap;
-  align-items: end;
-  gap: 16px 24px;
-  margin-bottom: 18px;
-  padding: 14px 16px;
+  align-items: center;
+  gap: 12px 20px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
   border-radius: 16px;
   background: linear-gradient(180deg, var(--sand) 0%, #fff 78%);
+}
+
+.study-journal-need {
+  background: #f7faf9;
+  border: 1px dashed var(--medium);
+}
+
+.study-journal-need .journal-select,
+.study-journal-need input {
+  min-width: min(280px, 100%);
 }
 
 .study-journal-exam label,
@@ -6091,6 +6128,7 @@ a.student-dash-resume-btn {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
+  overflow: visible;
 }
 
 .study-journal-day {
@@ -6101,7 +6139,7 @@ a.student-dash-resume-btn {
   border-radius: 18px;
   border: 1px solid var(--sand-line);
   background: #fffdf8;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .study-journal-day.is-today {
@@ -6140,69 +6178,59 @@ a.student-dash-resume-btn {
   color: var(--dark);
 }
 
-.journal-choices {
+.journal-select {
+  width: 100%;
+}
+
+.journal-select-trigger {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.journal-choices button,
-.journal-mood-trigger,
-.journal-mood-pop button {
-  border: 1px solid var(--sand-line);
-  background: #fff;
-  border-radius: 999px;
-  padding: 5px 10px;
-  font-size: 12px;
-}
-
-.journal-choices button.is-on,
-.journal-mood-pop button.is-on {
-  background: var(--medium);
-  border-color: var(--medium);
-  color: #fff;
-}
-
-.journal-mood {
-  position: relative;
-}
-
-.journal-mood-trigger {
-  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 36px;
-  font-weight: 600;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--sand-line);
+  border-radius: 10px;
+  background: #fffaf4;
   color: var(--dark);
+  font-size: 13px;
+  text-align: left;
 }
 
-.journal-mood-pop {
-  position: absolute;
-  z-index: 6;
-  top: calc(100% + 6px);
-  left: 0;
+.journal-select-menu {
+  position: fixed;
+  z-index: 80;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px;
-  width: min(280px, calc(100vw - 48px));
-  padding: 10px;
+  gap: 4px;
+  overflow: auto;
+  padding: 8px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 14px;
   background: #fff;
   box-shadow: var(--shadow);
 }
 
-.journal-mood-pop button {
+.journal-select-menu button {
   display: flex;
   align-items: center;
   gap: 8px;
-  border-radius: 12px;
-  justify-content: flex-start;
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: transparent;
+  color: var(--dark);
+  text-align: left;
 }
 
-.journal-mood-pop span,
-.journal-mood-trigger span {
-  font-size: 22px;
+.journal-select-menu button.is-on,
+.journal-select-menu button:hover {
+  background: var(--sand);
+}
+
+.journal-select-trigger span,
+.journal-select-menu span {
+  font-size: 20px;
   line-height: 1;
 }
 
@@ -6232,9 +6260,9 @@ a.student-dash-resume-btn {
 
 .study-journal-analytics-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
-  align-items: end;
+  align-items: start;
 }
 
 .study-journal-analytics-row strong {
@@ -6254,7 +6282,8 @@ a.student-dash-resume-btn {
   .study-journal-head,
   .study-journal-exam,
   .study-journal-days,
-  .study-journal-analytics-row {
+  .study-journal-analytics-row,
+  .study-journal-progress-copy {
     grid-template-columns: 1fr;
   }
 

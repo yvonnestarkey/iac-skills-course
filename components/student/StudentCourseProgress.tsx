@@ -2,13 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import ActivityGrid from "@/components/coach/ActivityGrid";
+import { activityColumnsFromOutline } from "@/lib/activity-grid";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { completionProgress } from "@/lib/metrics";
+import { engagementByLesson, emptyStudentProgress } from "@/lib/lesson-progress";
 import { fetchOwnStudentProgress, submittedTaskCount } from "@/lib/study-journal";
 import { taskDueItemsFromOutline } from "@/lib/student-task-due-dates";
 import { useStudentSession } from "@/lib/student-session";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
-import { emptyStudentProgress } from "@/lib/lesson-progress";
+import type { Student } from "@/lib/types";
 
 export default function StudentCourseProgress() {
   const { user, completed, submissions } = useStudentSession();
@@ -35,6 +38,21 @@ export default function StudentCourseProgress() {
   const watched = engagement.lessons.filter((item) => item.reasons.includes("watched") && (!lessonIds.length || lessonIds.includes(item.lessonId))).length;
   const assignmentCount = Object.keys(submissions || {}).length;
   const notStarted = Math.max(0, progress.total - opened);
+  const columns = useMemo(() => activityColumnsFromOutline(chapters), [chapters]);
+  const byLesson = useMemo(() => engagementByLesson(engagement.lessons), [engagement.lessons]);
+  const student = useMemo<Student | null>(
+    () =>
+      user
+        ? {
+            id: user.id,
+            name: user.full_name?.trim() || user.email || "You",
+            email: user.email || "",
+            cohort: "jan27",
+            status: "active",
+          }
+        : null,
+    [user]
+  );
 
   useEffect(() => {
     if (!user?.id) return;
@@ -47,31 +65,30 @@ export default function StudentCourseProgress() {
     };
   }, [user?.id]);
 
+  const submittedLabel = tasks.total
+    ? `${tasks.done} of ${tasks.total} task${tasks.total === 1 ? "" : "s"} submitted`
+    : `${progress.done} of ${progress.total} lessons complete`;
+
   return (
-    <section className="card study-journal-progress">
+    <section className={`card study-journal-progress${open ? " is-open" : ""}`}>
       <button
         type="button"
         className="activity-progress-toggle"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
       >
-        <div>
-          <p className="kicker">Course progress</p>
-          <h2>Your progress</h2>
-          <p className="muted small">
-            {tasks.total
-              ? `${tasks.done} of ${tasks.total} task${tasks.total === 1 ? "" : "s"} submitted`
-              : `${progress.done} of ${progress.total} lessons complete`}
-          </p>
+        <div className="study-journal-progress-copy">
+          <strong>Course progress</strong>
+          <div className="progress-wide" aria-hidden="true">
+            <span style={{ width: `${progress.pct}%` }} />
+          </div>
+          <span className="muted small">{submittedLabel}</span>
         </div>
         <span className="activity-progress-meta">
-          <span className="score-chip">{progress.pct}%</span>
-          {open ? <ChevronUp size={18} aria-hidden="true" /> : <ChevronDown size={18} aria-hidden="true" />}
+          <span className="score-chip small">{progress.pct}%</span>
+          {open ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
         </span>
       </button>
-      <div className="progress-wide" aria-hidden="true">
-        <span style={{ width: `${progress.pct}%` }} />
-      </div>
       {open ? (
         <>
           <div className="progress-legend">
@@ -88,6 +105,14 @@ export default function StudentCourseProgress() {
               ? `Currently on ${[resume.chapter.title, resume.lesson.title].filter(Boolean).join(" · ")}.`
               : "No lesson activity recorded yet."}
           </p>
+          {student ? (
+            <ActivityGrid
+              columns={columns}
+              rows={[{ student, byLesson }]}
+              selectable={false}
+              hideCoachColumns
+            />
+          ) : null}
         </>
       ) : null}
     </section>

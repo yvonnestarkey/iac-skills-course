@@ -4,14 +4,17 @@ import { resolve } from "node:path";
 import test from "node:test";
 import {
   daysUntilExam,
+  emptyJournalDay,
   emptyJournalPrivacy,
   emptyJournalWeek,
+  JOURNAL_EXAM_ON,
   journalDayFilled,
   journalMood,
   journalWeekDates,
   journalWeekFilled,
   journalWeekStart,
-  questionsByExamDate,
+  questionStatsFromWeeks,
+  questionsDoneOnDay,
   shiftJournalWeek,
   submittedTaskCount,
   weekFromRow,
@@ -33,24 +36,35 @@ test("journal weeks are Monday to Sunday", () => {
   assert.equal(journalWeekDates("2026-11-09").length, 7);
 });
 
-test("countdown and question projection use the exam date", () => {
-  assert.equal(daysUntilExam("2026-11-19", "2026-11-12"), 7);
-  assert.equal(questionsByExamDate(10, "2026-11-19", "2026-11-12"), 10);
-  assert.equal(questionsByExamDate(10, null, "2026-11-12"), null);
+test("the cohort exam date is 26 January 2027 and daily questions feed the analytics", () => {
+  assert.equal(JOURNAL_EXAM_ON, "2027-01-26");
+  assert.equal(daysUntilExam(JOURNAL_EXAM_ON, "2026-11-12"), 75);
+  const week = emptyJournalWeek("2026-11-09", {
+    days: {
+      "2026-11-09": { ...emptyJournalDay(), studied: "yes", studiedWhat: "P1 Q2", questionsDone: 2, stuckToPlan: "yes", mood: "good", note: "" },
+      "2026-11-11": { ...emptyJournalDay(), studied: "yes", studiedWhat: "P1 Q3", questionsDone: 1, stuckToPlan: "no", mood: "tired", note: "" },
+    },
+  });
+  const stats = questionStatsFromWeeks([week], "2026-11-12", JOURNAL_EXAM_ON);
+  assert.equal(questionsDoneOnDay(week.days["2026-11-09"]), 2);
+  assert.equal(stats.questionsDone, 3);
+  assert.equal(stats.lastQuestion, "P1 Q3");
+  assert.equal(stats.lastQuestionOn, "2026-11-11");
+  assert.equal(stats.estimatedByExam, 59);
   assert.equal(journalMood("overwhelmed")?.emoji, "😭");
 });
 
-test("weeks round-trip seven day cards and keep the exam date", () => {
+test("weeks round-trip seven day cards and keep the cohort exam date", () => {
   const saved = weekWriteRow(
     emptyJournalWeek("2026-11-09", {
-      examOn: "2026-12-01",
-      questionsPerWeek: 8,
-      days: { "2026-11-09": { studied: "yes", studiedWhat: "Task 2", stuckToPlan: "yes", mood: "good", note: "Keep going" } },
+      days: { "2026-11-09": { ...emptyJournalDay(), studied: "yes", studiedWhat: "Task 2", questionsDone: 1, stuckToPlan: "yes", mood: "good", note: "Keep going" } },
     })
   );
   const mapped = weekFromRow({ ...saved, week_start: saved.week_start });
-  assert.equal(mapped.examOn, "2026-12-01");
+  assert.equal(mapped.examOn, JOURNAL_EXAM_ON);
+  assert.equal(saved.exam_on, JOURNAL_EXAM_ON);
   assert.equal(mapped.days["2026-11-09"]?.mood, "good");
+  assert.equal(mapped.days["2026-11-09"]?.questionsDone, 1);
   assert.equal(mapped.days["2026-11-15"]?.studied, "");
   assert.equal(Object.keys(mapped.days).length, 7);
 });
@@ -80,6 +94,7 @@ test("study journal sits on the dashboard and above Study Clinic in the sidebar"
   assert.match(page, /StudentStudyJournal/);
   assert.match(journal, /How did today go\?/);
   assert.match(journal, /JOURNAL_WEEKDAYS/);
+  assert.match(journal, /This week’s goals/);
   assert.match(progress, /task\$\{tasks.total === 1 \? "" : "s"\} submitted/);
   assert.match(progress, /watched to 80%/);
   assert.match(sql, /create table if not exists public\.student_study_journal/);
@@ -93,7 +108,7 @@ test("the study journal is visible to Yvonne until the student opts out", () => 
   assert.equal(journalDayFilled(emptyJournalWeek("2026-11-09").days["2026-11-09"]), false);
   assert.equal(
     journalWeekFilled(
-      emptyJournalWeek("2026-11-09", { days: { "2026-11-09": { studied: "yes", studiedWhat: "", stuckToPlan: "", mood: "", note: "" } } })
+      emptyJournalWeek("2026-11-09", { days: { "2026-11-09": { ...emptyJournalDay(), studied: "yes" } } })
     ),
     true
   );
@@ -109,4 +124,27 @@ test("the study journal is visible to Yvonne until the student opts out", () => 
   assert.match(sql, /s\.private = true/);
   assert.match(profile, /CoachStudyJournalPanel/);
   assert.match(panel, /kept their study journal private/);
+});
+
+test("daily answers are floating dropdowns, goals come first, and analytics are automatic", () => {
+  const journal = readFileSync(resolve("components/student/StudentStudyJournal.tsx"), "utf8");
+  const progress = readFileSync(resolve("components/student/StudentCourseProgress.tsx"), "utf8");
+  const grid = readFileSync(resolve("components/coach/ActivityGrid.tsx"), "utf8");
+  const styles = readFileSync(resolve("app/globals.css"), "utf8");
+  const goalsAt = journal.indexOf("study-journal-goals");
+  const daysMapAt = journal.lastIndexOf("dates.map");
+  const needAt = journal.indexOf("What I need for the week");
+  const daysAt = journal.indexOf("study-journal-days");
+  assert.ok(goalsAt >= 0 && daysMapAt > goalsAt);
+  assert.ok(needAt >= 0 && daysAt > needAt);
+  assert.match(journal, /JournalSelect/);
+  assert.match(journal, /createPortal/);
+  assert.match(journal, /JOURNAL_EXAM_ON/);
+  assert.match(journal, /questionStatsFromWeeks/);
+  assert.doesNotMatch(journal, /type="date"/);
+  assert.match(progress, /hideCoachColumns/);
+  assert.match(progress, /ActivityGrid/);
+  assert.match(grid, /hideCoachColumns/);
+  assert.match(styles, /journal-select-menu/);
+  assert.match(styles, /position:\s*fixed/);
 });

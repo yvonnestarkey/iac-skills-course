@@ -28,12 +28,13 @@ function DaySummary({ date, weekday, week }: { date: string; weekday: string; we
         {weekday} · {date}
       </h3>
       <dl className="fact-list">
-        {studied ? (
+        {studied || day.studiedWhat || day.questionsDone ? (
           <div>
             <dt>Did they study?</dt>
             <dd>
-              {studied}
-              {day.studiedWhat ? ` · ${day.studiedWhat}` : ""}
+              {[studied, day.studiedWhat, day.questionsDone ? `${day.questionsDone} question${day.questionsDone === 1 ? "" : "s"}` : ""]
+                .filter(Boolean)
+                .join(" · ")}
             </dd>
           </div>
         ) : null}

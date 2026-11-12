@@ -7,6 +7,9 @@ import { hasSubmissionContent } from "./task1-gate";
 export const STUDY_JOURNAL_SQL_HINT =
   "Paste supabase/student-study-journal.sql in the Supabase SQL editor, then try again.";
 
+export const JOURNAL_EXAM_ON = "2027-01-26";
+export const JOURNAL_EXAM_LABEL = "26 January 2027";
+
 export const JOURNAL_WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] as const;
 
 export const JOURNAL_MOODS = [
@@ -54,9 +57,17 @@ export const JOURNAL_NEEDS = [
 export type JournalDay = {
   studied: string;
   studiedWhat: string;
+  questionsDone: number | null;
   stuckToPlan: string;
   mood: string;
   note: string;
+};
+
+export type JournalQuestionStats = {
+  lastQuestion: string;
+  lastQuestionOn: string | null;
+  questionsDone: number;
+  estimatedByExam: number | null;
 };
 
 export type StudyJournalWeek = {
@@ -86,7 +97,7 @@ export function journalChoiceLabel(options: ReadonlyArray<{ id: string; label: s
 
 export function journalDayFilled(day: JournalDay | undefined): boolean {
   if (!day) return false;
-  return Boolean(day.studied || day.studiedWhat || day.stuckToPlan || day.mood || day.note);
+  return Boolean(day.studied || day.studiedWhat || day.questionsDone || day.stuckToPlan || day.mood || day.note);
 }
 
 export function journalWeekFilled(week: StudyJournalWeek): boolean {
@@ -128,7 +139,7 @@ function journalError(message: string): string {
 }
 
 export function emptyJournalDay(): JournalDay {
-  return { studied: "", studiedWhat: "", stuckToPlan: "", mood: "", note: "" };
+  return { studied: "", studiedWhat: "", questionsDone: null, stuckToPlan: "", mood: "", note: "" };
 }
 
 export function journalWeekStart(today = portalToday()): string {
@@ -159,6 +170,45 @@ export function daysUntilExam(examOn: string | null | undefined, today = portalT
   return Math.round((parseISO(exam).getTime() - parseISO(today).getTime()) / 86400000);
 }
 
+export function questionsDoneOnDay(day: JournalDay | undefined): number {
+  if (!day) return 0;
+  if (day.questionsDone != null && day.questionsDone > 0) return day.questionsDone;
+  if (day.studiedWhat || day.studied === "yes") return 1;
+  return 0;
+}
+
+export function questionStatsFromWeeks(
+  weeks: StudyJournalWeek[],
+  today = portalToday(),
+  examOn = JOURNAL_EXAM_ON
+): JournalQuestionStats {
+  const entries: Array<{ date: string; question: string; count: number }> = [];
+  weeks.forEach((week) => {
+    Object.entries(week.days || {}).forEach(([date, day]) => {
+      const count = questionsDoneOnDay(day);
+      if (!count && !day?.studiedWhat) return;
+      entries.push({ date, question: asText(day?.studiedWhat), count });
+    });
+  });
+  entries.sort((left, right) => left.date.localeCompare(right.date));
+  const questionsDone = entries.reduce((sum, entry) => sum + entry.count, 0);
+  const last = [...entries].reverse().find((entry) => entry.question || entry.count) || null;
+  const first = entries[0];
+  const remaining = daysUntilExam(examOn, today);
+  let estimatedByExam: number | null = null;
+  if (questionsDone > 0 && first && remaining !== null) {
+    const elapsed = Math.max(1, Math.round((parseISO(today).getTime() - parseISO(first.date).getTime()) / 86400000) + 1);
+    const remainingDays = Math.max(0, remaining);
+    estimatedByExam = remaining < 0 ? questionsDone : Math.round(questionsDone + (questionsDone / elapsed) * remainingDays);
+  }
+  return {
+    lastQuestion: last?.question || "",
+    lastQuestionOn: last?.date || null,
+    questionsDone,
+    estimatedByExam,
+  };
+}
+
 export function questionsByExamDate(
   perWeek: number | null | undefined,
   examOn: string | null | undefined,
@@ -182,7 +232,7 @@ export function emptyJournalWeek(weekStart: string, extras: Partial<StudyJournal
   });
   return {
     weekStart,
-    examOn: extras.examOn || null,
+    examOn: extras.examOn || JOURNAL_EXAM_ON,
     lastQuestion: extras.lastQuestion || "",
     questionsPerWeek: extras.questionsPerWeek ?? null,
     whereIAm: extras.whereIAm || "",
@@ -198,6 +248,7 @@ export function dayFromUnknown(value: unknown): JournalDay {
   return {
     studied: asText(row.studied),
     studiedWhat: asText(row.studiedWhat),
+    questionsDone: asInt(row.questionsDone),
     stuckToPlan: asText(row.stuckToPlan),
     mood: asText(row.mood),
     note: asText(row.note),
@@ -213,7 +264,7 @@ export function weekFromRow(row: Record<string, unknown>, fallbackWeek = journal
   });
   return {
     weekStart,
-    examOn: asDate(row.exam_on),
+    examOn: JOURNAL_EXAM_ON,
     lastQuestion: asText(row.last_question),
     questionsPerWeek: asInt(row.questions_per_week),
     whereIAm: asText(row.where_i_am),
@@ -231,7 +282,7 @@ export function weekWriteRow(week: StudyJournalWeek): Record<string, unknown> {
   });
   return {
     week_start: week.weekStart,
-    exam_on: week.examOn || null,
+    exam_on: JOURNAL_EXAM_ON,
     last_question: week.lastQuestion.trim(),
     questions_per_week: week.questionsPerWeek,
     where_i_am: week.whereIAm,
@@ -258,22 +309,23 @@ export async function fetchStudyJournalWeek(
     .maybeSingle();
   if (error) return { ok: false, error: journalError(error.message), week: empty };
   if (data) return { ok: true, week: weekFromRow(data as Record<string, unknown>, weekStart) };
-  const previous = await client
+  return { ok: true, week: emptyJournalWeek(weekStart) };
+}
+
+export async function fetchStudyJournalWeeks(
+  userId: string
+): Promise<{ ok: boolean; error?: string; weeks: StudyJournalWeek[] }> {
+  const client = getSupabase();
+  if (!client) return { ok: true, weeks: [] };
+  const { data, error } = await client
     .from("student_study_journal")
-    .select("exam_on, last_question, questions_per_week")
+    .select("*")
     .eq("user_id", userId)
-    .lt("week_start", weekStart)
-    .order("week_start", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  const prior = (previous.data || {}) as Record<string, unknown>;
+    .order("week_start", { ascending: true });
+  if (error) return { ok: false, error: journalError(error.message), weeks: [] };
   return {
     ok: true,
-    week: emptyJournalWeek(weekStart, {
-      examOn: asDate(prior.exam_on),
-      lastQuestion: asText(prior.last_question),
-      questionsPerWeek: asInt(prior.questions_per_week),
-    }),
+    weeks: (data || []).map((row) => weekFromRow(row as Record<string, unknown>)),
   };
 }
 

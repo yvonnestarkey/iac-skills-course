@@ -42,6 +42,7 @@ export default function ActivityGrid({
   onOpenProfile,
   selectable = true,
   messageStats = {},
+  hideCoachColumns = false,
 }: {
   columns: ActivityColumn[];
   rows: ActivityStudentRow[];
@@ -51,13 +52,14 @@ export default function ActivityGrid({
   onOpenProfile?: (id: string) => void;
   selectable?: boolean;
   messageStats?: Record<string, CoachSentMessageStat>;
+  hideCoachColumns?: boolean;
 }) {
   const { phases, chapters } = activityHeaderGroups(columns);
   const showPhaseRow = phases.some((phase) => phase.label);
   const headerRows = showPhaseRow ? 3 : 2;
   const chosen = selectedIds || [];
   const allSelected = rows.length > 0 && rows.every((row) => chosen.includes(row.student.id));
-  const stickyCols = 3;
+  const stickyCols = hideCoachColumns ? 0 : 3;
 
   if (!columns.length) {
     return <p className="empty">No published lessons to show yet.</p>;
@@ -68,22 +70,26 @@ export default function ActivityGrid({
       <table className="activity-grid">
         <thead>
           <tr>
-            <th className="activity-sticky activity-head-select" rowSpan={headerRows}>
-              {selectable ? (
-                <label>
-                  <input type="checkbox" checked={allSelected} onChange={onToggleAll} />
-                  Students
-                </label>
-              ) : (
-                "Student"
-              )}
-            </th>
-            <th className="activity-sticky activity-head-messages" rowSpan={headerRows}>
-              Messages
-            </th>
-            <th className="activity-sticky activity-head-login" rowSpan={headerRows} title="Last time they were in the course">
-              Last login
-            </th>
+            {hideCoachColumns ? null : (
+              <>
+                <th className="activity-sticky activity-head-select" rowSpan={headerRows}>
+                  {selectable ? (
+                    <label>
+                      <input type="checkbox" checked={allSelected} onChange={onToggleAll} />
+                      Students
+                    </label>
+                  ) : (
+                    "Student"
+                  )}
+                </th>
+                <th className="activity-sticky activity-head-messages" rowSpan={headerRows}>
+                  Messages
+                </th>
+                <th className="activity-sticky activity-head-login" rowSpan={headerRows} title="Last time they were in the course">
+                  Last login
+                </th>
+              </>
+            )}
             {showPhaseRow
               ? phases.map((phase) => (
                   <th key={phase.key} className="activity-group" colSpan={phase.span} title={phase.title}>
@@ -122,38 +128,42 @@ export default function ActivityGrid({
               const visit = lastCourseVisitLabel(lastCourseVisitAt(row.student.lastActive, row.byLesson));
               return (
               <tr key={row.student.id}>
-                <th
-                  className="activity-sticky activity-name is-heat"
-                  style={{ background: heat.background }}
-                  title={heat.label}
-                >
-                  {selectable ? (
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={chosen.includes(row.student.id)}
-                        onChange={() => onToggleStudent?.(row.student.id)}
-                      />
-                      <button type="button" className="link-btn" onClick={() => onOpenProfile?.(row.student.id)}>
-                        {row.student.name}
-                      </button>
-                    </label>
-                  ) : (
-                    <span>{row.student.name}</span>
-                  )}
-                </th>
-                <td className="activity-sticky activity-messages">
-                  <Link
-                    href={studentMessagesHref(row.student.id)}
-                    className="activity-messages-link"
-                    title={`${stat.count} sent · ${last}`}
-                  >
-                    {stat.count}
-                  </Link>
-                </td>
-                <td className="activity-sticky activity-login" title={visit.title}>
-                  {visit.text}
-                </td>
+                {hideCoachColumns ? null : (
+                  <>
+                    <th
+                      className="activity-sticky activity-name is-heat"
+                      style={{ background: heat.background }}
+                      title={heat.label}
+                    >
+                      {selectable ? (
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={chosen.includes(row.student.id)}
+                            onChange={() => onToggleStudent?.(row.student.id)}
+                          />
+                          <button type="button" className="link-btn" onClick={() => onOpenProfile?.(row.student.id)}>
+                            {row.student.name}
+                          </button>
+                        </label>
+                      ) : (
+                        <span>{row.student.name}</span>
+                      )}
+                    </th>
+                    <td className="activity-sticky activity-messages">
+                      <Link
+                        href={studentMessagesHref(row.student.id)}
+                        className="activity-messages-link"
+                        title={`${stat.count} sent · ${last}`}
+                      >
+                        {stat.count}
+                      </Link>
+                    </td>
+                    <td className="activity-sticky activity-login" title={visit.title}>
+                      {visit.text}
+                    </td>
+                  </>
+                )}
                 {columns.map((column) => {
                   const item = row.byLesson[column.id];
                   const level = activityLevel(item);
