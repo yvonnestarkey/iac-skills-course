@@ -418,6 +418,8 @@ export async function saveStudyJournalWeek(
   const row = { user_id: userId, ...weekWriteRow(week) };
   const { error } = await client.from("student_study_journal").upsert(row, { onConflict: "user_id,week_start" });
   if (error) return { ok: false, error: journalError(error.message) };
+  const { recordJournalNeedChange } = await import("./journal-needs");
+  await recordJournalNeedChange(userId, week.weekStart, week.weekNeed, week.weekNeedOther);
   const privacy = await markJournalPromptSeen(userId);
   return { ok: true, privacy };
 }

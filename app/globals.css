@@ -1625,8 +1625,76 @@ input[type="tel"]:focus {
   background: #f7faf9;
 }
 
-.coach-dash-reminders {
+.coach-dash-reminders,
+.coach-journal-needs {
   margin-bottom: 22px;
+}
+
+.coach-journal-need-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.coach-journal-need-list > li > button {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #f7faf9;
+  text-align: left;
+}
+
+.coach-journal-need-list > li.has-work > button {
+  border-color: var(--sand-line);
+  background: linear-gradient(180deg, #f7eef2 0%, #fff 78%);
+}
+
+.coach-journal-need-list > li > button strong {
+  color: var(--dark);
+}
+
+.coach-journal-need-list > li.has-work > button span {
+  color: var(--link);
+  font-weight: 700;
+}
+
+.coach-journal-need-list .coach-dash-watch-list,
+.coach-journal-need-list .empty {
+  margin-top: 8px;
+}
+
+.coach-journal-need-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-self: end;
+}
+
+.coach-journal-need-audit {
+  margin: 0 0 16px;
+}
+
+.coach-journal-need-audit h3 {
+  margin: 0 0 8px;
+  color: var(--dark);
+}
+
+.coach-journal-need-audit ol {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+
+.coach-journal-need-audit li {
+  display: grid;
 }
 
 .coach-reminder-meta {

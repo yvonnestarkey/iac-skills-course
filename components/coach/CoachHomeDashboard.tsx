@@ -21,6 +21,7 @@ import {
   Video,
   Wallet,
 } from "lucide-react";
+import CoachJournalNeeds from "@/components/coach/CoachJournalNeeds";
 import CoachReminders from "@/components/coach/CoachReminders";
 import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import {
@@ -237,6 +238,8 @@ export default function CoachHomeDashboard() {
           )}
         </section>
       ) : null}
+
+      <CoachJournalNeeds students={students} onMessage={messageStudents} />
 
       <CoachReminders students={students} onMessage={messageStudents} />
 

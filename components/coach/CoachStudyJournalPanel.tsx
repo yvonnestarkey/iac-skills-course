@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react";
 import {
+  fetchCoachJournalNeedAudit,
+  journalNeedAuditLabel,
+  type JournalNeedEvent,
+} from "@/lib/journal-needs";
+import {
   fetchCoachStudyJournal,
   JOURNAL_NEEDS,
   JOURNAL_PLAN,
@@ -66,16 +71,18 @@ function DaySummary({ date, weekday, week }: { date: string; weekday: string; we
 export default function CoachStudyJournalPanel({ studentId }: { studentId: string }) {
   const [hidden, setHidden] = useState(false);
   const [weeks, setWeeks] = useState<StudyJournalWeek[]>([]);
+  const [needs, setNeeds] = useState<JournalNeedEvent[]>([]);
   const [error, setError] = useState("");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    fetchCoachStudyJournal(studentId).then((result) => {
+    Promise.all([fetchCoachStudyJournal(studentId), fetchCoachJournalNeedAudit(studentId)]).then(([result, audit]) => {
       if (cancelled) return;
-      setHidden(result.hidden);
+      setHidden(result.hidden || audit.hidden);
       setWeeks(result.weeks);
-      setError(result.error || "");
+      setNeeds(audit.events);
+      setError(result.error || audit.error || "");
       setReady(true);
     });
     return () => {
@@ -89,7 +96,23 @@ export default function CoachStudyJournalPanel({ studentId }: { studentId: strin
       {!ready ? <p className="muted small">Loading…</p> : null}
       {error ? <p className="muted small">{error}</p> : null}
       {ready && hidden ? <p>This student kept their study journal private.</p> : null}
-      {ready && !hidden && !weeks.length ? <p className="muted">No study journal entries yet.</p> : null}
+      {ready && !hidden && !weeks.length && !needs.length ? <p className="muted">No study journal entries yet.</p> : null}
+      {ready && !hidden && needs.length ? (
+        <div className="coach-journal-need-audit">
+          <h3>Needs history</h3>
+          <ol>
+            {needs.map((event) => (
+              <li key={event.id}>
+                <strong>{journalNeedAuditLabel(event)}</strong>
+                <span className="muted small">
+                  Week of {journalWeekLabel(event.weekStart)}
+                  {event.contactedAt ? " · contacted" : event.clearedAt ? " · changed" : " · waiting"}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ) : null}
       {weeks.map((week) => {
         const dates = journalWeekDates(week.weekStart);
         return (
