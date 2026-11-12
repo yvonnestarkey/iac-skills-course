@@ -67,6 +67,7 @@ test("saved practice questions override built-in drills with the same id", () =>
 
 test("Reading & RTFQ practice is on the dashboard and in the Tools workspace", () => {
   const dashboard = readFileSync(resolve("components/student/StudentDashboard.tsx"), "utf8");
+  const block = readFileSync(resolve("components/student/StudentReadingPractice.tsx"), "utf8");
   const nav = readFileSync(resolve("components/student/StudentCourseNav.tsx"), "utf8");
   const hub = readFileSync(resolve("components/reading/ReadingHub.tsx"), "utf8");
   const creator = readFileSync(resolve("app/coach/builder/page.tsx"), "utf8");
@@ -76,11 +77,18 @@ test("Reading & RTFQ practice is on the dashboard and in the Tools workspace", (
   const manager = readFileSync(resolve("components/coach/ContentManager.tsx"), "utf8");
   const sql = readFileSync(resolve("supabase/reading-practice-exercises.sql"), "utf8");
   const gate = readFileSync(resolve("components/reading/ReadingToolGate.tsx"), "utf8");
-  assert.match(dashboard, /Reading &amp; RTFQ Tool/);
-  assert.match(dashboard, /Unlocks after Task 2/);
+  const dashAt = dashboard.indexOf("StudentReadingPractice");
+  const evalAt = dashboard.indexOf("/student/evaluator");
+  assert.match(dashboard, /StudentReadingPractice/);
+  assert.ok(dashAt >= 0 && evalAt > dashAt);
   assert.doesNotMatch(dashboard, /student-hub-card-featured/);
-  assert.match(dashboard, /hasTask2Submission/);
-  assert.match(dashboard, /Task2ReadingResults/);
+  assert.doesNotMatch(dashboard, /Task2ReadingResults/);
+  assert.match(block, /Reading &amp; RTFQ Tool/);
+  assert.match(block, /Unlocks after Task 2/);
+  assert.match(block, /Practice another one/);
+  assert.match(block, /task-complete-stamp/);
+  assert.match(block, /hasTask2Submission/);
+  assert.doesNotMatch(block, /student-task-dates-featured/);
   assert.match(hub, /Done in Task 2/);
   assert.doesNotMatch(nav, /Reading & RTFQ Tool/);
   assert.match(hub, /mergePracticePool/);

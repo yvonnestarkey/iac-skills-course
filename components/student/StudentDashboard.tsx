@@ -7,15 +7,14 @@ import StudentDashboardQuote from "@/components/student/StudentDashboardQuote";
 import StudentDashboardSlide from "@/components/student/StudentDashboardSlide";
 import StudentStudyJournal from "@/components/student/StudentStudyJournal";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
+import StudentReadingPractice from "@/components/student/StudentReadingPractice";
 import StudentTaskDueDates from "@/components/student/StudentTaskDueDates";
 import StudentUpcomingEvents from "@/components/student/StudentUpcomingEvents";
 import { fetchCoachingDashboardHint } from "@/lib/coaching";
 import { courseStudyMinutes, estimateCourseFinish, fetchStudentStartedOn } from "@/lib/course-pace";
 import { findResumeLesson, splitCoursePhases } from "@/lib/course-phases";
 import { portalToday } from "@/lib/student-task-due-dates";
-import { useBypassLessonLocks, useCoursePreview } from "@/lib/course-preview";
-import Task2ReadingResults from "@/components/reading/Task2ReadingResults";
-import { hasTask2Submission } from "@/lib/task2-gate";
+import { useCoursePreview } from "@/lib/course-preview";
 import { hasCoachReview } from "@/lib/custom-surveys";
 import { useStudentInbox } from "@/lib/use-student-inbox";
 import { useStudentSession } from "@/lib/student-session";
@@ -25,10 +24,9 @@ import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
 import { isCoachAccount } from "@/lib/roles";
 
 export default function StudentDashboard() {
-  const { user, completed, surveyReviews, submissions, readingAttempts, readingChecks } = useStudentSession();
+  const { user, completed, surveyReviews } = useStudentSession();
   const outline = useVisibleCourseOutline();
   const { unlocked, basePath } = useCoursePreview();
-  const bypassLocks = useBypassLessonLocks();
   const { inboxWaiting, unreadCount } = useStudentInbox();
   const [coachingUnseen, setCoachingUnseen] = useState(false);
   const [startedOn, setStartedOn] = useState<string | null>(null);
@@ -54,7 +52,6 @@ export default function StudentDashboard() {
   const notifyHref = "/student/notifications";
   const coach = isCoachAccount(user);
   const feedbackCount = Object.values(surveyReviews || {}).filter(hasCoachReview).length;
-  const readingUnlocked = hasTask2Submission(submissions, outline) || unlocked || bypassLocks || coach;
 
   useEffect(() => {
     if (!user?.id) return;
@@ -85,6 +82,8 @@ export default function StudentDashboard() {
 
       {unlocked ? null : <PurchaseCta />}
 
+      <StudentReadingPractice />
+
       <nav className="student-hub" aria-label="Student shortcuts">
         <Link href="/student/evaluator" className="student-hub-card">
           <strong>Script Evaluator</strong>
@@ -92,18 +91,6 @@ export default function StudentDashboard() {
             After Task 1 — or if you have done this course before — choose a sitting, print one BMCR for all three papers,
             then upload that worksheet with Paper 1, Paper 2, Paper 3, and the marking report.
           </p>
-        </Link>
-        <Link href="/student/reading" className={`student-hub-card${readingUnlocked ? "" : " is-locked"}`}>
-          <strong>Reading &amp; RTFQ Tool</strong>
-          <p>Practice reading pace, RTFQ, and Buried Treasure after the first drills in Task 2.</p>
-          <Task2ReadingResults
-            outline={outline}
-            attempts={readingAttempts}
-            checks={readingChecks}
-            compact
-            links={false}
-          />
-          {readingUnlocked ? null : <span className="pill">Unlocks after Task 2</span>}
         </Link>
         {ASK_QUESTION_ENABLED ? (
           <button type="button" className="student-hub-card" onClick={() => window.dispatchEvent(new Event("open-ask-question"))}>

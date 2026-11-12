@@ -5665,15 +5665,21 @@ a.student-dash-resume-btn {
 }
 
 .student-upcoming-events,
-.student-task-dates {
+.student-task-dates,
+.student-reading-practice {
   min-height: 100%;
   padding: 0;
   background: transparent;
   border: 0;
 }
 
+.student-reading-practice {
+  margin: 16px 0 20px;
+}
+
 .student-upcoming-events-art,
-.student-task-dates-art {
+.student-task-dates-art,
+.student-reading-practice-art {
   min-height: 560px;
   padding: 22px 0 20px;
   border: 1px solid var(--line);
@@ -5697,12 +5703,20 @@ a.student-dash-resume-btn {
     url("/task-dates-banner.jpg") center / cover no-repeat;
 }
 
+.student-reading-practice-art {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: linear-gradient(180deg, #eef6f4 0%, #d6e2e4 100%);
+}
+
 .student-task-dates-top + .student-task-date-list {
   margin-top: 12px;
 }
 
 .student-upcoming-events-top,
 .student-task-dates-top,
+.student-reading-practice-top,
 .student-upcoming-event-list,
 .student-task-date-list {
   margin: 0 8%;
@@ -5712,7 +5726,8 @@ a.student-dash-resume-btn {
 }
 
 .student-upcoming-events-top,
-.student-task-dates-top {
+.student-task-dates-top,
+.student-reading-practice-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -5720,12 +5735,14 @@ a.student-dash-resume-btn {
 }
 
 .student-upcoming-events-top .kicker,
-.student-task-dates-top .kicker {
+.student-task-dates-top .kicker,
+.student-reading-practice-top .kicker {
   margin-bottom: 2px;
 }
 
 .student-upcoming-events-top h2,
-.student-task-dates-top h2 {
+.student-task-dates-top h2,
+.student-reading-practice-top h2 {
   margin: 0;
   font-size: 26px;
 }
@@ -5738,6 +5755,36 @@ a.student-dash-resume-btn {
   border: 0;
   padding: 0;
   color: var(--link);
+}
+
+.student-reading-practice-top + .student-task-date-list {
+  margin-top: 12px;
+}
+
+.student-reading-practice-btn,
+a.student-reading-practice-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 6px 12px;
+  border: 1px solid var(--link);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--link);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.student-reading-practice-btn:hover,
+a.student-reading-practice-btn:hover {
+  background: var(--sand);
+  border-color: var(--link);
+  color: var(--link);
+  text-decoration: none;
 }
 
 .student-upcoming-featured,
@@ -6054,7 +6101,8 @@ a.student-dash-resume-btn {
   }
 
   .student-upcoming-events-art,
-  .student-task-dates-art {
+  .student-task-dates-art,
+  .student-reading-practice-art {
     min-height: 0;
   }
 
