@@ -99,6 +99,9 @@ test("study journal sits on the dashboard and above Study Clinic in the sidebar"
   assert.match(journal, /How did today go\?/);
   assert.match(journal, /JOURNAL_WEEKDAYS/);
   assert.match(journal, /This week’s goals/);
+  assert.match(journal, /keep track of what you&apos;ve actually DONE/);
+  assert.match(journal, /href="\/student\/planner"/);
+  assert.match(journal, /Study Planner/);
   assert.match(progress, /task\$\{tasks.total === 1 \? "" : "s"\} submitted/);
   assert.match(progress, /watched to 80%/);
   assert.match(sql, /create table if not exists public\.student_study_journal/);

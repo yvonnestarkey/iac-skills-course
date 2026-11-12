@@ -6269,6 +6269,28 @@ a.student-reading-practice-btn:hover {
   align-items: center;
 }
 
+.study-tool-switch {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--sand-line);
+  background: linear-gradient(180deg, #f7eef2 0%, #fffdf8 100%);
+}
+
+.study-tool-switch p {
+  margin: 0;
+  color: var(--dark);
+  line-height: 1.5;
+}
+
+.study-tool-switch p + p {
+  margin-top: 8px;
+}
+
+.student-planner .study-tool-switch {
+  margin-bottom: 18px;
+}
+
 .study-journal {
   margin: 24px 0 8px;
   display: grid;

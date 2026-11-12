@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import AdjustPanel from "@/components/planner/AdjustPanel";
 import ScheduleView from "@/components/planner/ScheduleView";
@@ -236,6 +237,16 @@ export default function StudyPlanner() {
 
   return (
     <section className="student-planner" id="study-planner">
+      <aside className="study-tool-switch">
+        <p>
+          The Study Planner is to help you plan your studying in advance. Use this to date the rest of the course before
+          you sit down to work.
+        </p>
+        <p>
+          You can keep track of what you&apos;ve actually DONE using the{" "}
+          <Link href="/student/journal">Study Journal</Link>.
+        </p>
+      </aside>
       {saved ? (
         <>
           <p className="kicker">Study planner</p>

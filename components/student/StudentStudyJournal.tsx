@@ -386,6 +386,15 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
 
   return (
     <div className="study-journal">
+      <aside className="study-tool-switch">
+        <p>
+          The Study Journal is to help you keep track of what you&apos;ve actually DONE. Use this to quickly document
+          your actual studying after you&apos;ve done it.
+        </p>
+        <p>
+          You can plan your studying in advance using the <Link href="/student/planner">Study Planner</Link>.
+        </p>
+      </aside>
       <StudentCourseProgress />
       <section className="study-journal-sheet">
         {privacyNotice}

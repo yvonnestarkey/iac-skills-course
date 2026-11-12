@@ -71,6 +71,9 @@ test("study planner heading and tooltip offer the walkthrough video", () => {
   const sql = readFileSync(resolve("supabase/study-planner-help-video.sql"), "utf8");
   assert.match(planner, /PlannerVideoButton/);
   assert.match(planner, /student-planner-title-row/);
+  assert.match(planner, /plan your studying in advance/);
+  assert.match(planner, /href="\/student\/journal"/);
+  assert.match(planner, /Study Journal/);
   assert.match(tooltip, /PlannerVideoButton/);
   assert.match(help, /player\.vimeo\.com\/video\/1239250910/);
   assert.match(help, /How to use the Study Planner/);
