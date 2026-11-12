@@ -5710,14 +5710,15 @@ a.student-dash-resume-btn {
 
 .student-dash-tiles {
   column-count: 2;
-  column-gap: 16px;
+  column-gap: 22px;
   margin: 24px 0 16px;
 }
 
 .student-dash-tiles > * {
   display: inline-block;
   width: 100%;
-  margin: 0 0 16px;
+  margin: 0 0 22px;
+  padding: 6px;
   break-inside: avoid;
   vertical-align: top;
 }
@@ -5728,9 +5729,19 @@ a.student-dash-resume-btn {
 
 .student-dash-tiles .study-journal,
 .student-dash-tiles .student-reading-practice {
-  margin: 0 0 16px;
+  margin: 0 0 22px;
   max-width: none;
   min-width: 0;
+}
+
+.student-dash-tiles .study-journal-sheet,
+.student-dash-tiles .student-upcoming-events-art,
+.student-dash-tiles .student-task-dates-art,
+.student-dash-tiles .student-reading-practice-art,
+.student-dash-tiles .student-assignment-feedback-art {
+  box-shadow:
+    0 18px 40px rgba(63, 98, 92, 0.28),
+    0 6px 14px rgba(23, 32, 30, 0.14);
 }
 
 .student-upcoming-events,

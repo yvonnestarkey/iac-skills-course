@@ -289,7 +289,9 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
       return;
     }
     setPrivacy(result.privacy);
-    setStatus(result.privacy.private ? "Saved. Private to you." : "Saved. Yvonne can see this planner.");
+    setStatus(
+      compact ? "Saved." : result.privacy.private ? "Saved. Private to you." : "Saved. Yvonne can see this planner."
+    );
   };
 
   const setPrivate = async (nextPrivate: boolean) => {
@@ -354,7 +356,6 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
     return (
       <div className="study-journal is-compact">
         <section className="study-journal-sheet">
-          {privacyNotice}
           <div className="study-journal-head">
             <div>
               <p className="kicker">Study journal</p>

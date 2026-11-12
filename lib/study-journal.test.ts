@@ -170,7 +170,9 @@ test("the dashboard journal is today's card and saves into the full weekly journ
   assert.match(journal, /setDay\(today, patch\)/);
   assert.ok(compactAt >= 0 && weekAt > compactAt);
   assert.doesNotMatch(journal.slice(compactAt, weekAt), /ExamCountdownBadge/);
+  assert.doesNotMatch(journal.slice(compactAt, weekAt), /Yvonne can see/);
   assert.match(journal.slice(weekAt), /ExamCountdownBadge/);
+  assert.match(journal, /\{privacyNotice\}/);
 });
 
 test("daily study options, floating menus, magenta today, and automatic course activity", () => {
