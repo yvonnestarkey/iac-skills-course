@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { dashboardQuoteForDate } from "@/lib/dashboard-quotes";
+import LinkedText from "@/components/ui/LinkedText";
+import { fetchPublishedDashboardPost, type DashboardPost } from "@/lib/dashboard-posts";
 import { DEFAULT_LMS_COURSE_ID } from "@/lib/lms-catalog";
 import { useLmsCourse } from "@/lib/lms-course-context";
 
@@ -19,9 +21,26 @@ export default function StudentDashboardBanner({
   paceMessage?: string;
 }) {
   const { course } = useLmsCourse();
-  if (!course.dashboardBannerUrl) return null;
+  const [announcement, setAnnouncement] = useState<DashboardPost | null>(null);
   const iac = course.id === DEFAULT_LMS_COURSE_ID;
-  const quote = iac ? dashboardQuoteForDate() : null;
+
+  useEffect(() => {
+    if (!iac) return;
+    let cancelled = false;
+    fetchPublishedDashboardPost("announcement").then((next) => {
+      if (!cancelled) setAnnouncement(next);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [iac]);
+
+  if (!course.dashboardBannerUrl) return null;
+  const paragraphs = (announcement?.body || "")
+    .split(/\n+/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
   return (
     <div className="dashboard-banner-wrap">
       <img className="dashboard-banner" src={course.dashboardBannerUrl} alt={`${course.title} dashboard`} />
@@ -50,11 +69,16 @@ export default function StudentDashboardBanner({
             </div>
           ) : null}
         </div>
-        {quote ? (
-          <figure className="dashboard-banner-quote" style={{ color: quote.color }}>
-            <blockquote>“{quote.text}”</blockquote>
-            <figcaption>— {quote.source}</figcaption>
-          </figure>
+        {announcement ? (
+          <div className="dashboard-banner-quote dashboard-banner-announcement">
+            <p className="kicker">Announcement</p>
+            {announcement.title ? <h2>{announcement.title}</h2> : null}
+            {paragraphs.map((paragraph) => (
+              <p key={paragraph}>
+                <LinkedText text={paragraph} />
+              </p>
+            ))}
+          </div>
         ) : null}
       </div>
     </div>

@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import StudentDashboardBanner from "@/components/student/StudentDashboardBanner";
+import StudentDashboardQuote from "@/components/student/StudentDashboardQuote";
+import StudentDashboardSlide from "@/components/student/StudentDashboardSlide";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
 import StudentTaskDueDates from "@/components/student/StudentTaskDueDates";
 import StudentUpcomingEvents from "@/components/student/StudentUpcomingEvents";
@@ -72,6 +74,8 @@ export default function StudentDashboard() {
         pct={pct}
         paceMessage={paceReady ? pace.message : ""}
       />
+      <StudentDashboardQuote />
+      <StudentDashboardSlide />
 
       {unlocked ? null : <PurchaseCta />}
 

@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import CoachToolPanel from "@/components/coach/CoachToolPanel";
 import ReadingPracticeManager from "@/components/coach/ReadingPracticeManager";
 import StudyClinicManager from "@/components/coach/StudyClinicManager";
 import { COURSE_TOOLS } from "@/lib/course-tools";
 
 export default function CourseToolsPanel() {
+  const router = useRouter();
   const [open, setOpen] = useState(true);
   const [editing, setEditing] = useState<string | null>("reading");
 
@@ -24,6 +26,10 @@ export default function CourseToolsPanel() {
             key={tool.id}
             type="button"
             onClick={() => {
+              if (tool.id === "dashboard-posts") {
+                router.push(tool.href);
+                return;
+              }
               if (tool.editable) setEditing(tool.id);
               else document.getElementById("builder-lesson-tool")?.scrollIntoView({ behavior: "smooth" });
             }}
