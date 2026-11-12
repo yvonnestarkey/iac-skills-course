@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
 import Sidebar from "@/components/Sidebar";
+import SidebarCollapseButton from "@/components/student/SidebarCollapseButton";
 import TopBar from "@/components/TopBar";
 import { useStore } from "@/lib/store";
 import { StudentNavProvider, useStudentNav } from "@/lib/student-nav";
@@ -20,12 +21,15 @@ function StudentShell({ children }: { children: ReactNode }) {
   return (
     <>
       <TopBar />
-      <div className="shell">
+      <div className={`shell${nav?.collapsed ? " sidebar-collapsed" : ""}`}>
         {nav?.open ? (
           <button className="nav-backdrop" aria-label="Close course menu" onClick={() => nav.setOpen(false)} />
         ) : null}
-        <aside id="course-nav" className={`sidebar ${nav?.open ? "nav-open" : ""}`}>
-          <Sidebar />
+        <aside id="course-nav" className={`sidebar${nav?.open ? " nav-open" : ""}${nav?.collapsed ? " is-collapsed" : ""}`}>
+          <SidebarCollapseButton />
+          <div className="sidebar-body">
+            <Sidebar />
+          </div>
         </aside>
         <main className="main">{children}</main>
       </div>

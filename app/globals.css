@@ -478,9 +478,13 @@ h1 {
 
 .shell {
   display: grid;
-  grid-template-columns: 312px minmax(0, 1fr);
+  grid-template-columns: 293px minmax(0, 1fr);
   align-items: start;
   min-height: calc(100vh - 53px);
+}
+
+.shell.sidebar-collapsed {
+  grid-template-columns: 44px minmax(0, 1fr);
 }
 
 .coach-shell {
@@ -492,12 +496,70 @@ h1 {
 .sidebar {
   background: #b6c6c3;
   color: var(--ink);
-  padding: 22px 16px 40px;
+  padding: 12px 12px 40px;
   min-height: calc(100vh - 53px);
   position: sticky;
   top: 53px;
   max-height: calc(100vh - 53px);
   overflow-y: auto;
+}
+
+.sidebar-collapse-btn {
+  position: relative;
+  display: flex;
+  margin-left: auto;
+  margin-bottom: 8px;
+  padding: 6px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.sidebar-collapse-btn:hover,
+.sidebar-collapse-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.sidebar-collapse-btn:hover::after,
+.sidebar-collapse-btn:focus-visible::after {
+  content: attr(title);
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--dark);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+  box-shadow: var(--shadow);
+}
+
+.sidebar.is-collapsed {
+  padding: 10px 4px;
+  overflow: visible;
+  z-index: 20;
+}
+
+.sidebar.is-collapsed .sidebar-collapse-btn {
+  margin: 0 auto 8px;
+}
+
+.sidebar.is-collapsed .sidebar-collapse-btn:hover::after,
+.sidebar.is-collapsed .sidebar-collapse-btn:focus-visible::after {
+  top: 50%;
+  right: auto;
+  left: calc(100% + 8px);
+  transform: translateY(-50%);
+}
+
+.sidebar.is-collapsed .sidebar-body {
+  display: none;
 }
 
 .course-head {
@@ -4212,8 +4274,13 @@ button.diagnosis-pill {
 }
 
 @media (max-width: 900px) {
-  .shell {
+  .shell,
+  .shell.sidebar-collapsed {
     grid-template-columns: 1fr;
+  }
+
+  .sidebar.is-collapsed .sidebar-body {
+    display: block;
   }
 
   .course-menu-btn {
@@ -6099,23 +6166,23 @@ a.student-dash-resume-btn {
 .journal-exam-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 }
 
 .journal-exam-cal {
   position: relative;
-  width: 38px;
-  height: 36px;
-  border-radius: 8px;
+  width: 76px;
+  height: 72px;
+  border-radius: 14px;
   background: var(--link);
-  box-shadow: 2px 2px 0 rgba(31, 123, 112, 0.35);
+  box-shadow: 3px 3px 0 rgba(31, 123, 112, 0.35);
 }
 
 .journal-exam-cal-rings {
   position: absolute;
-  top: -5px;
-  left: 8px;
-  right: 8px;
+  top: -8px;
+  left: 16px;
+  right: 16px;
   display: flex;
   justify-content: space-between;
 }
@@ -6123,9 +6190,9 @@ a.student-dash-resume-btn {
 .journal-exam-cal-rings::before,
 .journal-exam-cal-rings::after {
   content: "";
-  width: 7px;
-  height: 9px;
-  border: 2px solid #fff;
+  width: 14px;
+  height: 18px;
+  border: 3px solid #fff;
   border-radius: 99px;
   background: var(--link);
 }
@@ -6135,24 +6202,24 @@ a.student-dash-resume-btn {
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding-top: 4px;
+  padding-top: 8px;
   color: #fff;
-  font-size: 13px;
+  font-size: 26px;
   font-weight: 800;
   line-height: 1;
 }
 
 .journal-exam-tags {
   display: grid;
-  gap: 3px;
+  gap: 6px;
 }
 
 .journal-exam-tags span {
   display: inline-block;
-  padding: 2px 6px;
-  border-radius: 3px;
+  padding: 4px 8px;
+  border-radius: 4px;
   color: #fff;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -6203,7 +6270,9 @@ a.student-dash-resume-btn {
 .study-journal-day textarea,
 .study-journal-goals textarea {
   width: 100%;
-  min-height: 40px;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 36px;
   padding: 8px 10px;
   border: 1px solid var(--sand-line);
   border-radius: 10px;
@@ -6212,8 +6281,9 @@ a.student-dash-resume-btn {
 
 .study-journal-days {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 248px), 1fr));
   gap: 14px;
+  align-items: start;
 }
 
 .study-journal-day {
@@ -6221,11 +6291,13 @@ a.student-dash-resume-btn {
   align-content: start;
   gap: 8px;
   min-width: 0;
-  padding: 0 0 12px;
+  padding: 0 12px 12px;
   border-radius: 18px;
   border: 1px solid var(--sand-line);
   background: #fffdf8;
   overflow: hidden;
+  container-type: inline-size;
+  container-name: journal-day;
 }
 
 .study-journal-day.is-today {
@@ -6238,6 +6310,7 @@ a.student-dash-resume-btn {
 }
 
 .study-journal-day header {
+  margin: 0 -12px;
   padding: 12px 14px 10px;
   background: var(--medium);
   color: #fff;
@@ -6257,16 +6330,13 @@ a.student-dash-resume-btn {
   opacity: 0.9;
 }
 
-.study-journal-day > :not(header) {
-  margin-left: 12px;
-  margin-right: 12px;
-}
-
 .journal-field-label {
   margin: 4px 0 0;
   font-size: 12px;
   font-weight: 700;
   color: var(--dark);
+  overflow-wrap: anywhere;
+  line-height: 1.3;
 }
 
 .journal-select {
@@ -6361,6 +6431,20 @@ a.student-dash-resume-btn {
   line-height: 1;
 }
 
+@container journal-day (max-width: 280px) {
+  .journal-field-label {
+    font-size: 11px;
+  }
+
+  .journal-select-trigger,
+  .study-journal-day input,
+  .study-journal-day textarea {
+    min-height: 34px;
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
+
 .study-journal-goals {
   background: linear-gradient(180deg, #eef6f4 0%, #fff 55%);
 }
@@ -6399,16 +6483,13 @@ a.student-dash-resume-btn {
   color: var(--medium);
 }
 
-@media (max-width: 1100px) {
-  .study-journal-days {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 700px) {
+  .study-journal-days {
+    grid-template-columns: 1fr;
+  }
+
   .study-journal-head,
   .study-journal-tools,
-  .study-journal-days,
   .study-journal-analytics-row,
   .study-journal-progress-copy {
     grid-template-columns: 1fr;
@@ -9522,6 +9603,7 @@ a.planner-video-btn:visited:hover {
 @media print {
   .topbar,
   .sidebar,
+  .sidebar-collapse-btn,
   .nav-backdrop,
   .coach-preview-banner,
   .bmcr-sheet-back,

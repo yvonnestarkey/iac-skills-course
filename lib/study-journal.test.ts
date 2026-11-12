@@ -201,4 +201,16 @@ test("daily study options, floating menus, magenta today, and automatic course a
   assert.match(styles, /text-overflow:\s*ellipsis/);
   assert.match(styles, /journal-exam-badge/);
   assert.match(styles, /\.study-journal-day[\s\S]*overflow:\s*hidden/);
+  assert.match(styles, /repeat\(auto-fit, minmax\(min\(100%, 248px\), 1fr\)\)/);
+  assert.match(styles, /container-type:\s*inline-size/);
+  assert.match(styles, /\.journal-exam-cal[\s\S]*width:\s*76px/);
+});
+
+test("day cards fit inside their block and drop columns on smaller screens", () => {
+  const styles = readFileSync(resolve("app/globals.css"), "utf8");
+  assert.match(styles, /repeat\(auto-fit, minmax\(min\(100%, 248px\), 1fr\)\)/);
+  assert.match(styles, /@container journal-day/);
+  assert.match(styles, /\.journal-field-label[\s\S]*overflow-wrap:\s*anywhere/);
+  assert.match(styles, /\.study-journal-day[\s\S]*padding:\s*0 12px 12px/);
+  assert.doesNotMatch(styles, /\.study-journal-days \{[^}]*repeat\(4,/);
 });

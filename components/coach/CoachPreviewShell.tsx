@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import type { ReactNode } from "react";
 import { Bell, Mail } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
+import SidebarCollapseButton from "@/components/student/SidebarCollapseButton";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import { COURSE_PREVIEW_BASE } from "@/lib/course-preview";
 import { useStudentSession } from "@/lib/student-session";
@@ -85,12 +86,15 @@ export default function CoachPreviewShell({ children }: { children: ReactNode })
           </div>
         </header>
       </div>
-      <div className="shell">
+      <div className={`shell${nav?.collapsed ? " sidebar-collapsed" : ""}`}>
         {nav?.open ? (
           <button className="nav-backdrop" aria-label="Close course menu" type="button" onClick={() => nav.setOpen(false)} />
         ) : null}
-        <aside id="student-course-nav" className={`sidebar ${nav?.open ? "nav-open" : ""}`}>
-          <StudentCourseNav />
+        <aside id="student-course-nav" className={`sidebar${nav?.open ? " nav-open" : ""}${nav?.collapsed ? " is-collapsed" : ""}`}>
+          <SidebarCollapseButton />
+          <div className="sidebar-body">
+            <StudentCourseNav />
+          </div>
         </aside>
         <main className="main">{children}</main>
       </div>

@@ -8,6 +8,7 @@ import { Mail, MessageCircle } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import CoachToolsBar from "@/components/coach/CoachToolsBar";
 import AskQuestionDrawer from "@/components/student/AskQuestionDrawer";
+import SidebarCollapseButton from "@/components/student/SidebarCollapseButton";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
 import StudentNotifyMenu from "@/components/student/StudentNotifyMenu";
 import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
@@ -138,12 +139,15 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
           ) : null}
         </div>
       </header>
-      <div className="shell">
+      <div className={`shell${nav?.collapsed ? " sidebar-collapsed" : ""}`}>
         {nav?.open ? (
           <button className="nav-backdrop" aria-label="Close course menu" type="button" onClick={() => nav.setOpen(false)} />
         ) : null}
-        <aside id="student-course-nav" className={`sidebar ${nav?.open ? "nav-open" : ""}`}>
-          <StudentCourseNav />
+        <aside id="student-course-nav" className={`sidebar${nav?.open ? " nav-open" : ""}${nav?.collapsed ? " is-collapsed" : ""}`}>
+          <SidebarCollapseButton />
+          <div className="sidebar-body">
+            <StudentCourseNav />
+          </div>
         </aside>
         <main className="main">{children}</main>
       </div>
