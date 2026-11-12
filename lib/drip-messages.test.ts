@@ -162,7 +162,10 @@ test("database rows map onto drip messages", () => {
 });
 
 test("coach tools expose drip-feed messages and hide waitlist plus evaluator preview", () => {
-  const home = readFileSync(resolve("app/coach/page.tsx"), "utf8");
+  const home =
+    readFileSync(resolve("app/coach/page.tsx"), "utf8") +
+    readFileSync(resolve("lib/coach-dashboard.ts"), "utf8") +
+    readFileSync(resolve("components/coach/CoachHomeDashboard.tsx"), "utf8");
   const waitlist = readFileSync(resolve("app/coach/waitlist/page.tsx"), "utf8");
   const sql = readFileSync(resolve("supabase/drip-messages.sql"), "utf8");
   const catchup = readFileSync(resolve("app/api/student/notifications/catch-up/route.ts"), "utf8");

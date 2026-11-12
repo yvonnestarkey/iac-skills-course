@@ -98,7 +98,10 @@ test("banner announcements, quote card, login slide, and coach tools stay wired"
   const slide = readFileSync(resolve("components/student/StudentDashboardSlide.tsx"), "utf8");
   const manager = readFileSync(resolve("components/coach/DashboardPostsManager.tsx"), "utf8");
   const page = readFileSync(resolve("app/coach/dashboard-posts/page.tsx"), "utf8");
-  const home = readFileSync(resolve("app/coach/page.tsx"), "utf8");
+  const home =
+    readFileSync(resolve("app/coach/page.tsx"), "utf8") +
+    readFileSync(resolve("lib/coach-dashboard.ts"), "utf8") +
+    readFileSync(resolve("components/coach/CoachHomeDashboard.tsx"), "utf8");
   const tools = readFileSync(resolve("lib/course-tools.ts"), "utf8");
   const sql = readFileSync(resolve("supabase/dashboard-posts.sql"), "utf8");
 

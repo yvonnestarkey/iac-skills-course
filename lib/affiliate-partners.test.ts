@@ -33,7 +33,10 @@ test("a student using Roelien's code still gets 5% off", () => {
 });
 
 test("coach tools expose Referrals instead of Waitlist", () => {
-  const home = readFileSync(resolve("app/coach/page.tsx"), "utf8");
+  const home =
+    readFileSync(resolve("app/coach/page.tsx"), "utf8") +
+    readFileSync(resolve("lib/coach-dashboard.ts"), "utf8") +
+    readFileSync(resolve("components/coach/CoachHomeDashboard.tsx"), "utf8");
   const lists = readFileSync(resolve("app/coach/lists/page.tsx"), "utf8");
   const dash = readFileSync(resolve("components/student/StudentDashboard.tsx"), "utf8");
   assert.match(home, /\/coach\/referrals/);
