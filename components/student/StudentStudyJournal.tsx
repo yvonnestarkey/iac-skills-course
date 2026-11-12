@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import StudentCourseProgress from "@/components/student/StudentCourseProgress";
@@ -157,7 +158,86 @@ function JournalSelect({
   );
 }
 
-export default function StudentStudyJournal() {
+function JournalDayCard({
+  date,
+  weekday,
+  day,
+  isToday,
+  onChange,
+}: {
+  date: string;
+  weekday: string;
+  day: JournalDay;
+  isToday: boolean;
+  onChange: (patch: Partial<JournalDay>) => void;
+}) {
+  return (
+    <article className={`study-journal-day${isToday ? " is-today" : ""}`}>
+      <header>
+        <h3>{weekday}</h3>
+        <p>
+          {Number(date.slice(8, 10))} {MONTHS[Number(date.slice(5, 7)) - 1]}
+        </p>
+      </header>
+      <p className="journal-field-label">Did you study?</p>
+      <JournalSelect
+        name={`Did you study ${weekday}`}
+        placeholder="Yes / No"
+        options={JOURNAL_STUDIED}
+        value={day.studied}
+        onChange={(studied) =>
+          onChange({
+            studied,
+            questionsDone: studied === "yes" ? day.questionsDone || 1 : null,
+          })
+        }
+      />
+      {day.studied === "yes" ? (
+        <>
+          <input
+            type="text"
+            value={day.studiedWhat}
+            onChange={(event) => onChange({ studiedWhat: event.target.value })}
+            placeholder="Course content / question"
+          />
+          <label className="journal-field-label">
+            Questions done
+            <input
+              type="number"
+              min={0}
+              value={day.questionsDone ?? ""}
+              onChange={(event) => onChange({ questionsDone: event.target.value === "" ? null : Number(event.target.value) })}
+            />
+          </label>
+        </>
+      ) : null}
+      <p className="journal-field-label">Did you stick to your plan?</p>
+      <JournalSelect
+        name={`Plan ${weekday}`}
+        placeholder="Yes / No / Didn't have a plan"
+        options={JOURNAL_PLAN}
+        value={day.stuckToPlan}
+        onChange={(stuckToPlan) => onChange({ stuckToPlan })}
+      />
+      <p className="journal-field-label">How did today go?</p>
+      <JournalSelect
+        name={`How did ${weekday} go`}
+        placeholder="How did today go?"
+        options={JOURNAL_MOODS}
+        value={day.mood}
+        onChange={(mood) => onChange({ mood })}
+      />
+      <textarea
+        rows={2}
+        value={day.note}
+        onChange={(event) => onChange({ note: event.target.value })}
+        placeholder="Note for self"
+      />
+    </article>
+  );
+}
+
+export default function StudentStudyJournal({ compact = false }: { compact?: boolean }) {
   const { course } = useLmsCourse();
   const { user } = useStudentSession();
   const [weekStart, setWeekStart] = useState(journalWeekStart());
@@ -178,7 +258,7 @@ export default function StudentStudyJournal() {
     Promise.all([
       fetchStudyJournalWeek(user.id, weekStart),
       fetchJournalPrivacy(user.id),
-      fetchStudyJournalWeeks(user.id),
+      compact ? Promise.resolve({ ok: true, weeks: [] as StudyJournalWeek[], error: "" }) : fetchStudyJournalWeeks(user.id),
     ]).then(([result, nextPrivacy, history]) => {
       if (cancelled) return;
       setWeek(result.week);
@@ -191,7 +271,7 @@ export default function StudentStudyJournal() {
       cancelled = true;
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [user?.id, weekStart, iac]);
+  }, [user?.id, weekStart, iac, compact]);
 
   const persist = async (next: StudyJournalWeek) => {
     if (!user?.id) return;
@@ -241,27 +321,72 @@ export default function StudentStudyJournal() {
   if (!iac || !user) return null;
   const countdown = daysUntilExam(JOURNAL_EXAM_ON, today);
   const stats = questionStatsFromWeeks(weeks, today, JOURNAL_EXAM_ON);
+  const todayIndex = dates.indexOf(today);
+  const todayWeekday = JOURNAL_WEEKDAYS[todayIndex] || JOURNAL_WEEKDAYS[0];
+  const todayDay = week?.days[today] || emptyJournalDay();
+  const countdownLabel =
+    countdown == null
+      ? "Exam date coming soon."
+      : countdown < 0
+        ? "Exam date has passed."
+        : countdown === 0
+          ? "Exam day."
+          : `${countdown} day${countdown === 1 ? "" : "s"} to exam`;
+
+  const privacyNotice = !privacy.promptSeen ? (
+    <p className="notice study-journal-privacy">
+      Yvonne can see your planner.{" "}
+      <button type="button" className="link-btn" onClick={() => void setPrivate(true)}>
+        Click here
+      </button>{" "}
+      if you want to keep this private so only you can see it.
+    </p>
+  ) : (
+    <p className="muted small study-journal-privacy-status">
+      {privacy.private ? "This planner is private to you." : "Yvonne can see this planner."}{" "}
+      <button type="button" className="link-btn" onClick={() => void setPrivate(!privacy.private)}>
+        {privacy.private ? "Let Yvonne see it" : "Keep it private"}
+      </button>
+    </p>
+  );
+
+  if (compact) {
+    return (
+      <div className="study-journal is-compact">
+        <section className="study-journal-sheet">
+          {privacyNotice}
+          <div className="study-journal-head">
+            <div>
+              <p className="kicker">Study journal</p>
+              <h2>Today</h2>
+              <p className="muted small">
+                {todayWeekday} · {countdownLabel}
+              </p>
+            </div>
+            <Link href="/student/journal" className="ghost">
+              Go to journal
+            </Link>
+          </div>
+          <div className="study-journal-days">
+            <JournalDayCard
+              date={today}
+              weekday={todayWeekday}
+              day={todayDay}
+              isToday
+              onChange={(patch) => setDay(today, patch)}
+            />
+          </div>
+          {status ? <p className="muted small">{status}</p> : null}
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="study-journal">
       <StudentCourseProgress />
       <section className="study-journal-sheet">
-        {!privacy.promptSeen ? (
-          <p className="notice study-journal-privacy">
-            Yvonne can see your planner.{" "}
-            <button type="button" className="link-btn" onClick={() => void setPrivate(true)}>
-              Click here
-            </button>{" "}
-            if you want to keep this private so only you can see it.
-          </p>
-        ) : (
-          <p className="muted small study-journal-privacy-status">
-            {privacy.private ? "This planner is private to you." : "Yvonne can see this planner."}{" "}
-            <button type="button" className="link-btn" onClick={() => void setPrivate(!privacy.private)}>
-              {privacy.private ? "Let Yvonne see it" : "Keep it private"}
-            </button>
-          </p>
-        )}
+        {privacyNotice}
         <div className="study-journal-head">
           <div>
             <p className="kicker">Study journal</p>
@@ -283,15 +408,7 @@ export default function StudentStudyJournal() {
 
         <div className="study-journal-exam">
           <p className="journal-field-label">Countdown to exam · {JOURNAL_EXAM_LABEL}</p>
-          <p className="study-journal-countdown">
-            {countdown == null
-              ? "Exam date coming soon."
-              : countdown < 0
-                ? "Exam date has passed."
-                : countdown === 0
-                  ? "Exam day."
-                  : `${countdown} day${countdown === 1 ? "" : "s"} to exam`}
-          </p>
+          <p className="study-journal-countdown">{countdownLabel}</p>
         </div>
 
         <div className="study-journal-need">
@@ -325,77 +442,16 @@ export default function StudentStudyJournal() {
               placeholder="What do you want this week to look like?"
             />
           </article>
-          {dates.map((date, index) => {
-            const day = week?.days[date] || emptyJournalDay();
-            const weekday = JOURNAL_WEEKDAYS[index];
-            const isToday = date === today;
-            return (
-              <article key={date} className={`study-journal-day${isToday ? " is-today" : ""}`}>
-                <header>
-                  <h3>{weekday}</h3>
-                  <p>
-                    {Number(date.slice(8, 10))} {MONTHS[Number(date.slice(5, 7)) - 1]}
-                  </p>
-                </header>
-                <p className="journal-field-label">Did you study?</p>
-                <JournalSelect
-                  name={`Did you study ${weekday}`}
-                  placeholder="Yes / No"
-                  options={JOURNAL_STUDIED}
-                  value={day.studied}
-                  onChange={(studied) =>
-                    setDay(date, {
-                      studied,
-                      questionsDone: studied === "yes" ? day.questionsDone || 1 : null,
-                    })
-                  }
-                />
-                {day.studied === "yes" ? (
-                  <>
-                    <input
-                      type="text"
-                      value={day.studiedWhat}
-                      onChange={(event) => setDay(date, { studiedWhat: event.target.value })}
-                      placeholder="Course content / question"
-                    />
-                    <label className="journal-field-label">
-                      Questions done
-                      <input
-                        type="number"
-                        min={0}
-                        value={day.questionsDone ?? ""}
-                        onChange={(event) =>
-                          setDay(date, { questionsDone: event.target.value === "" ? null : Number(event.target.value) })
-                        }
-                      />
-                    </label>
-                  </>
-                ) : null}
-                <p className="journal-field-label">Did you stick to your plan?</p>
-                <JournalSelect
-                  name={`Plan ${weekday}`}
-                  placeholder="Yes / No / Didn't have a plan"
-                  options={JOURNAL_PLAN}
-                  value={day.stuckToPlan}
-                  onChange={(stuckToPlan) => setDay(date, { stuckToPlan })}
-                />
-                <p className="journal-field-label">How did today go?</p>
-                <JournalSelect
-                  name={`How did ${weekday} go`}
-                  placeholder="How did today go?"
-                  options={JOURNAL_MOODS}
-                  value={day.mood}
-                  onChange={(mood) => setDay(date, { mood })}
-                />
-                <textarea
-                  rows={2}
-                  value={day.note}
-                  onChange={(event) => setDay(date, { note: event.target.value })}
-                  placeholder="Note for self"
-                />
-              </article>
-            );
-          })}
+          {dates.map((date, index) => (
+            <JournalDayCard
+              key={date}
+              date={date}
+              weekday={JOURNAL_WEEKDAYS[index]}
+              day={week?.days[date] || emptyJournalDay()}
+              isToday={date === today}
+              onChange={(patch) => setDay(date, patch)}
+            />
+          ))}
         </div>
 
         <div className="study-journal-analytics">

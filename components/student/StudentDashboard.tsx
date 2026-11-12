@@ -77,7 +77,7 @@ export default function StudentDashboard() {
       />
       <StudentDashboardQuote />
       <StudentDashboardSlide />
-      <StudentStudyJournal />
+      <StudentStudyJournal compact />
 
       {unlocked ? null : <PurchaseCta />}
 

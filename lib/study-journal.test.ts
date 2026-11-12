@@ -90,8 +90,9 @@ test("study journal sits on the dashboard and above Study Clinic in the sidebar"
   const journal = readFileSync(resolve("components/student/StudentStudyJournal.tsx"), "utf8");
   const progress = readFileSync(resolve("components/student/StudentCourseProgress.tsx"), "utf8");
   const sql = readFileSync(resolve("supabase/student-study-journal.sql"), "utf8");
-  assert.match(dash, /StudentStudyJournal/);
+  assert.match(dash, /StudentStudyJournal compact/);
   assert.match(page, /StudentStudyJournal/);
+  assert.doesNotMatch(page, /compact/);
   assert.match(journal, /How did today go\?/);
   assert.match(journal, /JOURNAL_WEEKDAYS/);
   assert.match(journal, /This week’s goals/);
@@ -133,8 +134,8 @@ test("daily answers are floating dropdowns, goals come first, and analytics are 
   const styles = readFileSync(resolve("app/globals.css"), "utf8");
   const goalsAt = journal.indexOf("study-journal-goals");
   const daysMapAt = journal.lastIndexOf("dates.map");
-  const needAt = journal.indexOf("What I need for the week");
-  const daysAt = journal.indexOf("study-journal-days");
+  const needAt = journal.indexOf("study-journal-need");
+  const daysAt = journal.lastIndexOf("study-journal-days");
   assert.ok(goalsAt >= 0 && daysMapAt > goalsAt);
   assert.ok(needAt >= 0 && daysAt > needAt);
   assert.match(journal, /JournalSelect/);
@@ -147,4 +148,14 @@ test("daily answers are floating dropdowns, goals come first, and analytics are 
   assert.match(grid, /hideCoachColumns/);
   assert.match(styles, /journal-select-menu/);
   assert.match(styles, /position:\s*fixed/);
+});
+
+test("the dashboard journal is today's card and saves into the full weekly journal", () => {
+  const journal = readFileSync(resolve("components/student/StudentStudyJournal.tsx"), "utf8");
+  const dash = readFileSync(resolve("components/student/StudentDashboard.tsx"), "utf8");
+  assert.match(dash, /StudentStudyJournal compact/);
+  assert.match(journal, /Go to journal/);
+  assert.match(journal, /compact = false/);
+  assert.match(journal, /is-compact/);
+  assert.match(journal, /setDay\(today, patch\)/);
 });

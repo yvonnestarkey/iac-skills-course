@@ -5975,6 +5975,22 @@ a.student-dash-resume-btn {
   gap: 16px;
 }
 
+.study-journal.is-compact {
+  max-width: 420px;
+}
+
+.study-journal.is-compact .study-journal-sheet {
+  padding: 16px 16px 14px;
+}
+
+.study-journal.is-compact .study-journal-head h2 {
+  font-size: 24px;
+}
+
+.study-journal.is-compact .study-journal-days {
+  grid-template-columns: 1fr;
+}
+
 .study-journal-progress {
   padding: 6px 12px;
 }
