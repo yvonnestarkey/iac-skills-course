@@ -77,14 +77,13 @@ export default function StudentDashboard() {
       />
       <StudentDashboardQuote />
       <StudentDashboardSlide />
-      <StudentStudyJournal compact />
-
-      {unlocked ? null : <PurchaseCta />}
-
-      <div className="student-dash-columns">
+      <div className="student-dash-planner">
+        <StudentStudyJournal compact />
         <StudentUpcomingEvents />
         <StudentTaskDueDates />
       </div>
+
+      {unlocked ? null : <PurchaseCta />}
 
       <nav className="student-hub" aria-label="Student shortcuts">
         <Link href="/student/evaluator" className="student-hub-card">

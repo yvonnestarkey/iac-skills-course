@@ -365,7 +365,6 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
               <Link href="/student/journal" className="ghost">
                 Go to journal
               </Link>
-              <ExamCountdownBadge days={countdown} />
             </div>
           </div>
           <div className="study-journal-days">

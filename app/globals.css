@@ -5638,12 +5638,30 @@ a.student-dash-resume-btn {
   margin: 0;
 }
 
-.student-dash-columns {
+.student-dash-planner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(240px, 340px) minmax(0, 1fr);
   gap: 16px;
-  margin-top: 28px;
+  margin: 24px 0 8px;
   align-items: start;
+}
+
+.student-dash-planner .study-journal {
+  margin: 0;
+  max-width: none;
+  min-width: 0;
+}
+
+.student-dash-planner > .student-task-dates {
+  grid-column: 1 / -1;
+}
+
+.shell.sidebar-collapsed .student-dash-planner {
+  grid-template-columns: minmax(240px, 0.9fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.shell.sidebar-collapsed .student-dash-planner > .student-task-dates {
+  grid-column: auto;
 }
 
 .student-upcoming-events,
@@ -5987,8 +6005,14 @@ a.student-dash-resume-btn {
 }
 
 @media (max-width: 860px) {
-  .student-dash-columns {
+  .student-dash-planner,
+  .shell.sidebar-collapsed .student-dash-planner {
     grid-template-columns: 1fr;
+  }
+
+  .student-dash-planner > .student-task-dates,
+  .shell.sidebar-collapsed .student-dash-planner > .student-task-dates {
+    grid-column: auto;
   }
 }
 
@@ -6064,7 +6088,7 @@ a.student-dash-resume-btn {
 }
 
 .study-journal.is-compact {
-  max-width: 420px;
+  max-width: none;
 }
 
 .study-journal.is-compact .study-journal-sheet {

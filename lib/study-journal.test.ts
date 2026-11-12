@@ -160,11 +160,17 @@ test("daily answers are floating dropdowns, goals come first, and analytics are 
 test("the dashboard journal is today's card and saves into the full weekly journal", () => {
   const journal = readFileSync(resolve("components/student/StudentStudyJournal.tsx"), "utf8");
   const dash = readFileSync(resolve("components/student/StudentDashboard.tsx"), "utf8");
+  const compactAt = journal.indexOf("is-compact");
+  const weekAt = journal.indexOf("My weekly study plan");
   assert.match(dash, /StudentStudyJournal compact/);
+  assert.match(dash, /student-dash-planner/);
   assert.match(journal, /Go to journal/);
   assert.match(journal, /compact = false/);
   assert.match(journal, /is-compact/);
   assert.match(journal, /setDay\(today, patch\)/);
+  assert.ok(compactAt >= 0 && weekAt > compactAt);
+  assert.doesNotMatch(journal.slice(compactAt, weekAt), /ExamCountdownBadge/);
+  assert.match(journal.slice(weekAt), /ExamCountdownBadge/);
 });
 
 test("daily study options, floating menus, magenta today, and automatic course activity", () => {
