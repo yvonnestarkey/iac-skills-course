@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
+import { placeTiles } from "../components/student/StudentDashTiles";
 
 test("student screens can collapse the sidebar with double arrows", () => {
   const nav = readFileSync(resolve("lib/student-nav.tsx"), "utf8");
@@ -26,6 +27,16 @@ test("student screens can collapse the sidebar with double arrows", () => {
   assert.match(styles, /grid-template-columns:\s*293px minmax\(0, 1fr\)/);
   assert.match(styles, /\.shell\.sidebar-collapsed[\s\S]*44px/);
   assert.match(styles, /\.student-dash-tiles/);
-  assert.match(styles, /\.student-dash-tiles-col/);
+  assert.match(styles, /\.student-dash-tile/);
   assert.match(tiles, /collapsed \? 3 : 2/);
+  assert.match(tiles, /placeTiles/);
+});
+
+test("dashboard tiles drop into the shortest column so feedback is not stuck under tasks", () => {
+  const packed = placeTiles([360, 520, 780, 340, 260], 2, 300, 22);
+  assert.equal(packed.positions[0].x, 0);
+  assert.equal(packed.positions[1].x, 322);
+  assert.equal(packed.positions[2].x, 0);
+  assert.equal(packed.positions[4].x, 322);
+  assert.ok(packed.positions[4].y < packed.positions[2].y + 780);
 });

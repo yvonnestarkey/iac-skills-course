@@ -5709,18 +5709,15 @@ a.student-dash-resume-btn {
 }
 
 .student-dash-tiles {
-  display: flex;
-  align-items: flex-start;
-  gap: 22px;
+  position: relative;
   margin: 24px 0 16px;
 }
 
-.student-dash-tiles-col {
-  flex: 1;
+.student-dash-tile {
+  position: absolute;
+  left: 0;
+  top: 0;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
 }
 
 .student-dash-tiles .study-journal,
@@ -6133,7 +6130,7 @@ a.student-reading-practice-btn:hover {
 
 @media (max-width: 860px) {
   .student-dash-tiles {
-    flex-direction: column;
+    min-height: 0;
   }
 }
 

@@ -86,7 +86,7 @@ test("Reading & RTFQ practice is on the dashboard and in the Tools workspace", (
   assert.match(dashboard, /StudentReadingPractice/);
   assert.match(dashboard, /StudentDashTiles/);
   assert.match(dashboard, /student-hub-btn/);
-  assert.match(tiles, /student-dash-tiles-col/);
+  assert.match(tiles, /placeTiles/);
   assert.ok(tilesAt >= 0 && dashAt > tilesAt && feedbackAt > dashAt && evalAt > feedbackAt);
   assert.doesNotMatch(dashboard, /student-hub-card-featured/);
   assert.doesNotMatch(dashboard, /Task2ReadingResults/);
