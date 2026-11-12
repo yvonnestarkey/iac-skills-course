@@ -3,11 +3,14 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 import {
+  courseActivityByDate,
   daysUntilExam,
   emptyJournalDay,
   emptyJournalPrivacy,
   emptyJournalWeek,
   JOURNAL_EXAM_ON,
+  JOURNAL_STUDIED,
+  journalCourseDayLabel,
   journalDayFilled,
   journalMood,
   journalWeekDates,
@@ -41,8 +44,8 @@ test("the cohort exam date is 26 January 2027 and daily questions feed the analy
   assert.equal(daysUntilExam(JOURNAL_EXAM_ON, "2026-11-12"), 75);
   const week = emptyJournalWeek("2026-11-09", {
     days: {
-      "2026-11-09": { ...emptyJournalDay(), studied: "yes", studiedWhat: "P1 Q2", questionsDone: 2, stuckToPlan: "yes", mood: "good", note: "" },
-      "2026-11-11": { ...emptyJournalDay(), studied: "yes", studiedWhat: "P1 Q3", questionsDone: 1, stuckToPlan: "no", mood: "tired", note: "" },
+      "2026-11-09": { ...emptyJournalDay(), studied: "question", studiedWhat: "P1 Q2", questionsDone: 2, stuckToPlan: "yes", mood: "good", note: "" },
+      "2026-11-11": { ...emptyJournalDay(), studied: "question", studiedWhat: "P1 Q3", questionsDone: 1, stuckToPlan: "no", mood: "tired", note: "" },
     },
   });
   const stats = questionStatsFromWeeks([week], "2026-11-12", JOURNAL_EXAM_ON);
@@ -57,7 +60,7 @@ test("the cohort exam date is 26 January 2027 and daily questions feed the analy
 test("weeks round-trip seven day cards and keep the cohort exam date", () => {
   const saved = weekWriteRow(
     emptyJournalWeek("2026-11-09", {
-      days: { "2026-11-09": { ...emptyJournalDay(), studied: "yes", studiedWhat: "Task 2", questionsDone: 1, stuckToPlan: "yes", mood: "good", note: "Keep going" } },
+      days: { "2026-11-09": { ...emptyJournalDay(), studied: "task", studiedWhat: "Task 2", questionsDone: 1, stuckToPlan: "yes", mood: "good", note: "Keep going" } },
     })
   );
   const mapped = weekFromRow({ ...saved, week_start: saved.week_start });
@@ -109,7 +112,7 @@ test("the study journal is visible to Yvonne until the student opts out", () => 
   assert.equal(journalDayFilled(emptyJournalWeek("2026-11-09").days["2026-11-09"]), false);
   assert.equal(
     journalWeekFilled(
-      emptyJournalWeek("2026-11-09", { days: { "2026-11-09": { ...emptyJournalDay(), studied: "yes" } } })
+      emptyJournalWeek("2026-11-09", { days: { "2026-11-09": { ...emptyJournalDay(), studied: "task" } } })
     ),
     true
   );
@@ -158,4 +161,38 @@ test("the dashboard journal is today's card and saves into the full weekly journ
   assert.match(journal, /compact = false/);
   assert.match(journal, /is-compact/);
   assert.match(journal, /setDay\(today, patch\)/);
+});
+
+test("daily study options, floating menus, magenta today, and automatic course activity", () => {
+  assert.deepEqual(
+    JOURNAL_STUDIED.map((option) => option.label),
+    ["Worked on Task", "Revision", "Question", "Class", "No"]
+  );
+  assert.equal(journalCourseDayLabel(undefined), "No login");
+  assert.equal(journalCourseDayLabel({ loggedIn: true, completed: 2, submitted: [] }), "Completed 2 lessons");
+  assert.equal(
+    journalCourseDayLabel({ loggedIn: true, completed: 1, submitted: ["Task 1"] }),
+    "Submitted Task 1 · Completed 1 lesson"
+  );
+  const mapped = courseActivityByDate(
+    [
+      {
+        lesson_id: "ch10-l1",
+        completed: true,
+        opened_at: "2026-11-12T08:00:00.000Z",
+        last_opened_at: "2026-11-12T08:00:00.000Z",
+        updated_at: "2026-11-12T08:00:00.000Z",
+      },
+    ],
+    [{ lesson_id: "ch10-l7", submitted_at: "2026-11-12T10:00:00.000Z", body: "done" }],
+    [{ label: "Task 1", assignmentLessonId: "ch10-l7" }]
+  );
+  assert.equal(journalCourseDayLabel(mapped["2026-11-12"]), "Submitted Task 1 · Completed 1 lesson");
+  const journal = readFileSync(resolve("components/student/StudentStudyJournal.tsx"), "utf8");
+  const styles = readFileSync(resolve("app/globals.css"), "utf8");
+  assert.match(journal, /journal-course-activity/);
+  assert.match(journal, /createPortal/);
+  assert.match(styles, /\.study-journal-day\.is-today header[\s\S]*background:\s*var\(--link\)/);
+  assert.match(styles, /journal-select-menu[\s\S]*z-index:\s*400/);
+  assert.match(styles, /text-overflow:\s*ellipsis/);
 });

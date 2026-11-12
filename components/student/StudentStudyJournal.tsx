@@ -11,9 +11,11 @@ import { MONTHS } from "@/lib/dates";
 import { portalToday } from "@/lib/student-task-due-dates";
 import {
   daysUntilExam,
+  emptyJournalCourseDay,
   emptyJournalDay,
   emptyJournalPrivacy,
   emptyJournalWeek,
+  fetchJournalCourseActivity,
   fetchJournalPrivacy,
   fetchStudyJournalWeek,
   fetchStudyJournalWeeks,
@@ -25,6 +27,7 @@ import {
   JOURNAL_STUDIED,
   JOURNAL_WEEKDAYS,
   JOURNAL_WHERE,
+  journalCourseDayLabel,
   journalWeekDates,
   journalWeekLabel,
   journalWeekStart,
@@ -32,10 +35,13 @@ import {
   saveJournalPrivacy,
   saveStudyJournalWeek,
   shiftJournalWeek,
+  type JournalCourseDay,
   type JournalDay,
   type JournalPrivacy,
   type StudyJournalWeek,
 } from "@/lib/study-journal";
+import { taskDueItemsFromOutline } from "@/lib/student-task-due-dates";
+import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
 type MenuOption = { id: string; label: string; emoji?: string };
 
@@ -61,12 +67,12 @@ function JournalSelect({
   const place = () => {
     const rect = trigger.current?.getBoundingClientRect();
     if (!rect) return;
-    const width = Math.max(rect.width, 220);
+    const width = Math.min(window.innerWidth - 16, Math.max(rect.width, 260));
     const left = Math.max(8, Math.min(rect.left, window.innerWidth - width - 8));
     const spaceBelow = window.innerHeight - rect.bottom - 12;
     const spaceAbove = rect.top - 12;
-    const up = spaceBelow < 220 && spaceAbove > spaceBelow;
-    const maxHeight = Math.max(120, Math.min(280, up ? spaceAbove : spaceBelow));
+    const up = spaceBelow < 240 && spaceAbove > spaceBelow;
+    const maxHeight = Math.max(140, Math.min(320, up ? spaceAbove : spaceBelow));
     setCoords({
       top: up ? rect.top - 6 : rect.bottom + 6,
       left,
@@ -113,10 +119,10 @@ function JournalSelect({
         {current ? (
           <>
             {current.emoji ? <span aria-hidden="true">{current.emoji}</span> : null}
-            {current.label}
+            <span className="journal-select-value">{current.label}</span>
           </>
         ) : (
-          placeholder
+          <span className="journal-select-value is-placeholder">{placeholder}</span>
         )}
       </button>
       {open && typeof document !== "undefined"
@@ -163,14 +169,17 @@ function JournalDayCard({
   weekday,
   day,
   isToday,
+  course,
   onChange,
 }: {
   date: string;
   weekday: string;
   day: JournalDay;
   isToday: boolean;
+  course: JournalCourseDay | undefined;
   onChange: (patch: Partial<JournalDay>) => void;
 }) {
+  const studiedExtras = day.studied && day.studied !== "no";
   return (
     <article className={`study-journal-day${isToday ? " is-today" : ""}`}>
       <header>
@@ -179,42 +188,45 @@ function JournalDayCard({
           {Number(date.slice(8, 10))} {MONTHS[Number(date.slice(5, 7)) - 1]}
         </p>
       </header>
+      <p className="journal-course-activity">{journalCourseDayLabel(course || emptyJournalCourseDay())}</p>
       <p className="journal-field-label">Did you study?</p>
       <JournalSelect
         name={`Did you study ${weekday}`}
-        placeholder="Yes / No"
+        placeholder="Choose"
         options={JOURNAL_STUDIED}
         value={day.studied}
         onChange={(studied) =>
           onChange({
             studied,
-            questionsDone: studied === "yes" ? day.questionsDone || 1 : null,
+            questionsDone: studied === "question" ? day.questionsDone || 1 : studied === "no" ? null : day.questionsDone,
           })
         }
       />
-      {day.studied === "yes" ? (
+      {studiedExtras ? (
         <>
           <input
             type="text"
             value={day.studiedWhat}
             onChange={(event) => onChange({ studiedWhat: event.target.value })}
-            placeholder="Course content / question"
+            placeholder={day.studied === "question" ? "Which question?" : "What did you work on?"}
           />
-          <label className="journal-field-label">
-            Questions done
-            <input
-              type="number"
-              min={0}
-              value={day.questionsDone ?? ""}
-              onChange={(event) => onChange({ questionsDone: event.target.value === "" ? null : Number(event.target.value) })}
-            />
-          </label>
+          {day.studied === "question" ? (
+            <label className="journal-field-label">
+              Questions done
+              <input
+                type="number"
+                min={0}
+                value={day.questionsDone ?? ""}
+                onChange={(event) => onChange({ questionsDone: event.target.value === "" ? null : Number(event.target.value) })}
+              />
+            </label>
+          ) : null}
         </>
       ) : null}
       <p className="journal-field-label">Did you stick to your plan?</p>
       <JournalSelect
         name={`Plan ${weekday}`}
-        placeholder="Yes / No / Didn't have a plan"
+        placeholder="Choose"
         options={JOURNAL_PLAN}
         value={day.stuckToPlan}
         onChange={(stuckToPlan) => onChange({ stuckToPlan })}
@@ -222,7 +234,7 @@ function JournalDayCard({
       <p className="journal-field-label">How did today go?</p>
       <JournalSelect
         name={`How did ${weekday} go`}
-        placeholder="How did today go?"
+        placeholder="Choose"
         options={JOURNAL_MOODS}
         value={day.mood}
         onChange={(mood) => onChange({ mood })}
@@ -240,16 +252,20 @@ function JournalDayCard({
 export default function StudentStudyJournal({ compact = false }: { compact?: boolean }) {
   const { course } = useLmsCourse();
   const { user } = useStudentSession();
+  const outline = useVisibleCourseOutline();
   const [weekStart, setWeekStart] = useState(journalWeekStart());
   const [week, setWeek] = useState<StudyJournalWeek | null>(null);
   const [weeks, setWeeks] = useState<StudyJournalWeek[]>([]);
   const [privacy, setPrivacy] = useState<JournalPrivacy>(emptyJournalPrivacy);
+  const [activity, setActivity] = useState<Record<string, JournalCourseDay>>({});
   const [status, setStatus] = useState("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const iac = course.id === DEFAULT_LMS_COURSE_ID;
   const today = portalToday();
   const dates = journalWeekDates(weekStart);
+  const tasks = taskDueItemsFromOutline(outline);
+  const taskKey = tasks.map((task) => `${task.assignmentLessonId}:${task.label}`).join("|");
 
   useEffect(() => {
     if (!user?.id || !iac) return;
@@ -259,19 +275,21 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
       fetchStudyJournalWeek(user.id, weekStart),
       fetchJournalPrivacy(user.id),
       compact ? Promise.resolve({ ok: true, weeks: [] as StudyJournalWeek[], error: "" }) : fetchStudyJournalWeeks(user.id),
-    ]).then(([result, nextPrivacy, history]) => {
+      fetchJournalCourseActivity(user.id, tasks),
+    ]).then(([result, nextPrivacy, history, courseDays]) => {
       if (cancelled) return;
       setWeek(result.week);
       setPrivacy(nextPrivacy.privacy);
       const others = history.weeks.filter((item) => item.weekStart !== result.week.weekStart);
       setWeeks([...others, result.week]);
+      setActivity(courseDays);
       setStatus(result.error || nextPrivacy.error || history.error || "");
     });
     return () => {
       cancelled = true;
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [user?.id, weekStart, iac, compact]);
+  }, [user?.id, weekStart, iac, compact, taskKey]);
 
   const persist = async (next: StudyJournalWeek) => {
     if (!user?.id) return;
@@ -373,6 +391,7 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
               weekday={todayWeekday}
               day={todayDay}
               isToday
+              course={activity[today]}
               onChange={(patch) => setDay(today, patch)}
             />
           </div>
@@ -449,6 +468,7 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
               weekday={JOURNAL_WEEKDAYS[index]}
               day={week?.days[date] || emptyJournalDay()}
               isToday={date === today}
+              course={activity[date]}
               onChange={(patch) => setDay(date, patch)}
             />
           ))}

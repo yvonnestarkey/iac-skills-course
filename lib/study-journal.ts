@@ -1,6 +1,7 @@
-import { addDays, isoDate, mondayOf, MONTHS, parseISO } from "./dates";
+import { addDays, isoDate, isoToSastDateAndTime, mondayOf, MONTHS, parseISO } from "./dates";
 import { assembleStudentProgress, emptyStudentProgress, type StudentProgressView } from "./lesson-progress";
 import { portalToday } from "./student-task-due-dates";
+import { unpackSubmissionContent } from "./student-submissions";
 import { getSupabase } from "./supabase";
 import { hasSubmissionContent } from "./task1-gate";
 
@@ -28,7 +29,10 @@ export const JOURNAL_MOODS = [
 export type JournalMoodId = (typeof JOURNAL_MOODS)[number]["id"];
 
 export const JOURNAL_STUDIED = [
-  { id: "yes", label: "Yes" },
+  { id: "task", label: "Worked on Task" },
+  { id: "revision", label: "Revision" },
+  { id: "question", label: "Question" },
+  { id: "class", label: "Class" },
   { id: "no", label: "No" },
 ] as const;
 
@@ -68,6 +72,12 @@ export type JournalQuestionStats = {
   lastQuestionOn: string | null;
   questionsDone: number;
   estimatedByExam: number | null;
+};
+
+export type JournalCourseDay = {
+  loggedIn: boolean;
+  completed: number;
+  submitted: string[];
 };
 
 export type StudyJournalWeek = {
@@ -173,8 +183,78 @@ export function daysUntilExam(examOn: string | null | undefined, today = portalT
 export function questionsDoneOnDay(day: JournalDay | undefined): number {
   if (!day) return 0;
   if (day.questionsDone != null && day.questionsDone > 0) return day.questionsDone;
-  if (day.studiedWhat || day.studied === "yes") return 1;
+  if (day.studied === "question" || day.studiedWhat) return 1;
   return 0;
+}
+
+export function emptyJournalCourseDay(): JournalCourseDay {
+  return { loggedIn: false, completed: 0, submitted: [] };
+}
+
+export function journalCourseDayLabel(day: JournalCourseDay | undefined): string {
+  if (!day || (!day.loggedIn && !day.completed && !day.submitted.length)) return "No login";
+  const parts: string[] = [];
+  if (day.submitted.length) {
+    const unique = [...new Set(day.submitted)];
+    parts.push(unique.length === 1 ? `Submitted ${unique[0]}` : `Submitted ${unique.join(", ")}`);
+  }
+  if (day.completed > 0) {
+    parts.push(`Completed ${day.completed} lesson${day.completed === 1 ? "" : "s"}`);
+  }
+  return parts.join(" · ") || "No login";
+}
+
+function sastDateOf(value: unknown): string {
+  return isoToSastDateAndTime(typeof value === "string" ? value : null).date;
+}
+
+export function courseActivityByDate(
+  progress: Array<{
+    lesson_id?: string | null;
+    completed?: boolean | null;
+    opened_at?: string | null;
+    last_opened_at?: string | null;
+    updated_at?: string | null;
+  }>,
+  submissions: Array<{
+    lesson_id?: string | null;
+    submitted_at?: string | null;
+    updated_at?: string | null;
+    body?: string | null;
+    link_url?: string | null;
+    content?: string | null;
+  }>,
+  tasks: Array<{ label: string; assignmentLessonId: string | null }>
+): Record<string, JournalCourseDay> {
+  const byDate: Record<string, JournalCourseDay> = {};
+  const ensure = (date: string) => {
+    if (!date) return null;
+    if (!byDate[date]) byDate[date] = emptyJournalCourseDay();
+    return byDate[date];
+  };
+  progress.forEach((row) => {
+    const login = sastDateOf(row.last_opened_at) || sastDateOf(row.opened_at) || sastDateOf(row.updated_at);
+    const bucket = ensure(login);
+    if (bucket) bucket.loggedIn = true;
+    if (!row.completed) return;
+    const done = ensure(sastDateOf(row.updated_at) || sastDateOf(row.last_opened_at) || login);
+    if (!done) return;
+    done.loggedIn = true;
+    done.completed += 1;
+  });
+  const taskByLesson = new Map(
+    tasks.filter((task) => task.assignmentLessonId).map((task) => [task.assignmentLessonId as string, task.label])
+  );
+  submissions.forEach((row) => {
+    const unpacked = unpackSubmissionContent(row);
+    if (!hasSubmissionContent(unpacked)) return;
+    const bucket = ensure(sastDateOf(row.submitted_at) || sastDateOf(unpacked.updated_at) || sastDateOf(row.updated_at));
+    if (!bucket) return;
+    bucket.loggedIn = true;
+    const label = taskByLesson.get(String(row.lesson_id || "")) || "Task";
+    if (!bucket.submitted.includes(label)) bucket.submitted.push(label);
+  });
+  return byDate;
 }
 
 export function questionStatsFromWeeks(
@@ -246,7 +326,7 @@ export function emptyJournalWeek(weekStart: string, extras: Partial<StudyJournal
 export function dayFromUnknown(value: unknown): JournalDay {
   const row = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
   return {
-    studied: asText(row.studied),
+    studied: asText(row.studied) === "yes" ? "task" : asText(row.studied),
     studiedWhat: asText(row.studiedWhat),
     questionsDone: asInt(row.questionsDone),
     stuckToPlan: asText(row.stuckToPlan),
@@ -428,6 +508,26 @@ export async function fetchOwnStudentProgress(userId: string): Promise<StudentPr
     submissions: submissions.data || [],
   });
   return assembled.byUser[userId] || emptyStudentProgress();
+}
+
+export async function fetchJournalCourseActivity(
+  userId: string,
+  tasks: Array<{ label: string; assignmentLessonId: string | null }>
+): Promise<Record<string, JournalCourseDay>> {
+  const client = getSupabase();
+  if (!client) return {};
+  const progress = await client
+    .from("lesson_progress")
+    .select("lesson_id, completed, opened_at, last_opened_at, updated_at")
+    .eq("user_id", userId);
+  const rows = progress.error
+    ? ((await client.from("lesson_progress").select("lesson_id, completed, updated_at").eq("user_id", userId)).data || [])
+    : progress.data || [];
+  const submissions = await client
+    .from("student_submissions")
+    .select("lesson_id, submitted_at, updated_at, body, link_url, content")
+    .eq("student_id", userId);
+  return courseActivityByDate(rows || [], submissions.data || [], tasks);
 }
 
 export function submittedTaskCount(

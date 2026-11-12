@@ -6066,6 +6066,7 @@ a.student-dash-resume-btn {
   background: #fff;
   border: 1px solid var(--line);
   box-shadow: 0 10px 28px rgba(63, 98, 92, 0.08);
+  overflow: visible;
 }
 
 .study-journal-head {
@@ -6160,6 +6161,11 @@ a.student-dash-resume-btn {
 
 .study-journal-day.is-today {
   border-color: var(--link);
+  background: #fdf4f7;
+}
+
+.study-journal-day.is-today header {
+  background: var(--link);
 }
 
 .study-journal-day header {
@@ -6198,6 +6204,21 @@ a.student-dash-resume-btn {
   width: 100%;
 }
 
+.journal-course-activity {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(63, 98, 92, 0.08);
+  color: var(--dark);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.study-journal-day.is-today .journal-course-activity {
+  background: rgba(153, 15, 73, 0.1);
+}
+
 .journal-select-trigger {
   display: flex;
   align-items: center;
@@ -6211,11 +6232,24 @@ a.student-dash-resume-btn {
   color: var(--dark);
   font-size: 13px;
   text-align: left;
+  overflow: hidden;
+}
+
+.journal-select-value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.journal-select-value.is-placeholder {
+  color: var(--muted);
+  font-weight: 500;
 }
 
 .journal-select-menu {
   position: fixed;
-  z-index: 80;
+  z-index: 400;
   display: grid;
   gap: 4px;
   overflow: auto;
