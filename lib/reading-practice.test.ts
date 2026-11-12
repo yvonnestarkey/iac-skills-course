@@ -78,13 +78,15 @@ test("Reading & RTFQ practice is on the dashboard and in the Tools workspace", (
   const manager = readFileSync(resolve("components/coach/ContentManager.tsx"), "utf8");
   const sql = readFileSync(resolve("supabase/reading-practice-exercises.sql"), "utf8");
   const gate = readFileSync(resolve("components/reading/ReadingToolGate.tsx"), "utf8");
-  const tilesAt = dashboard.indexOf("student-dash-tiles");
+  const tiles = readFileSync(resolve("components/student/StudentDashTiles.tsx"), "utf8");
+  const tilesAt = dashboard.indexOf("<StudentDashTiles");
   const dashAt = dashboard.indexOf("<StudentReadingPractice");
   const feedbackAt = dashboard.indexOf("<StudentAssignmentFeedback");
   const evalAt = dashboard.indexOf("/student/evaluator");
   assert.match(dashboard, /StudentReadingPractice/);
-  assert.match(dashboard, /student-dash-tiles/);
+  assert.match(dashboard, /StudentDashTiles/);
   assert.match(dashboard, /student-hub-btn/);
+  assert.match(tiles, /student-dash-tiles-col/);
   assert.ok(tilesAt >= 0 && dashAt > tilesAt && feedbackAt > dashAt && evalAt > feedbackAt);
   assert.doesNotMatch(dashboard, /student-hub-card-featured/);
   assert.doesNotMatch(dashboard, /Task2ReadingResults/);

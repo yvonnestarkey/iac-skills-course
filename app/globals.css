@@ -5709,27 +5709,26 @@ a.student-dash-resume-btn {
 }
 
 .student-dash-tiles {
-  column-count: 2;
-  column-gap: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
   margin: 24px 0 16px;
 }
 
-.student-dash-tiles > * {
-  display: inline-block;
-  width: 100%;
-  margin: 0 0 22px;
-  padding: 6px;
-  break-inside: avoid;
-  vertical-align: top;
-}
-
-.shell.sidebar-collapsed .student-dash-tiles {
-  column-count: 3;
+.student-dash-tiles-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
 }
 
 .student-dash-tiles .study-journal,
-.student-dash-tiles .student-reading-practice {
-  margin: 0 0 22px;
+.student-dash-tiles .student-reading-practice,
+.student-dash-tiles .student-upcoming-events,
+.student-dash-tiles .student-task-dates,
+.student-dash-tiles .student-assignment-feedback {
+  margin: 0;
   max-width: none;
   min-width: 0;
 }
@@ -6133,9 +6132,8 @@ a.student-reading-practice-btn:hover {
 }
 
 @media (max-width: 860px) {
-  .student-dash-tiles,
-  .shell.sidebar-collapsed .student-dash-tiles {
-    column-count: 1;
+  .student-dash-tiles {
+    flex-direction: column;
   }
 }
 

@@ -10,6 +10,7 @@ test("student screens can collapse the sidebar with double arrows", () => {
   const studentLayout = readFileSync(resolve("app/(student)/layout.tsx"), "utf8");
   const preview = readFileSync(resolve("components/coach/CoachPreviewShell.tsx"), "utf8");
   const styles = readFileSync(resolve("app/globals.css"), "utf8");
+  const tiles = readFileSync(resolve("components/student/StudentDashTiles.tsx"), "utf8");
 
   assert.match(nav, /iac-sidebar-collapsed/);
   assert.match(nav, /collapsed/);
@@ -25,5 +26,6 @@ test("student screens can collapse the sidebar with double arrows", () => {
   assert.match(styles, /grid-template-columns:\s*293px minmax\(0, 1fr\)/);
   assert.match(styles, /\.shell\.sidebar-collapsed[\s\S]*44px/);
   assert.match(styles, /\.student-dash-tiles/);
-  assert.match(styles, /\.shell\.sidebar-collapsed \.student-dash-tiles[\s\S]*column-count:\s*3/);
+  assert.match(styles, /\.student-dash-tiles-col/);
+  assert.match(tiles, /collapsed \? 3 : 2/);
 });

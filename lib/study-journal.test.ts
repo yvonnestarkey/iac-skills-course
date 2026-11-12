@@ -163,7 +163,7 @@ test("the dashboard journal is today's card and saves into the full weekly journ
   const compactAt = journal.indexOf("is-compact");
   const weekAt = journal.indexOf("My weekly study plan");
   assert.match(dash, /StudentStudyJournal compact/);
-  assert.match(dash, /student-dash-tiles/);
+  assert.match(dash, /StudentDashTiles/);
   assert.match(journal, /Go to journal/);
   assert.match(journal, /compact = false/);
   assert.match(journal, /is-compact/);

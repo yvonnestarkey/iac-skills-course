@@ -7,6 +7,7 @@ import StudentDashboardQuote from "@/components/student/StudentDashboardQuote";
 import StudentDashboardSlide from "@/components/student/StudentDashboardSlide";
 import StudentStudyJournal from "@/components/student/StudentStudyJournal";
 import StudentAssignmentFeedback from "@/components/student/StudentAssignmentFeedback";
+import StudentDashTiles from "@/components/student/StudentDashTiles";
 import StudentPersonalNotes from "@/components/student/StudentPersonalNotes";
 import StudentReadingPractice from "@/components/student/StudentReadingPractice";
 import StudentTaskDueDates from "@/components/student/StudentTaskDueDates";
@@ -73,13 +74,13 @@ export default function StudentDashboard() {
       />
       <StudentDashboardQuote />
       <StudentDashboardSlide />
-      <div className="student-dash-tiles">
+      <StudentDashTiles>
         <StudentStudyJournal compact />
         <StudentUpcomingEvents />
         <StudentTaskDueDates />
         <StudentReadingPractice />
         <StudentAssignmentFeedback />
-      </div>
+      </StudentDashTiles>
 
       {unlocked ? null : <PurchaseCta />}
 
