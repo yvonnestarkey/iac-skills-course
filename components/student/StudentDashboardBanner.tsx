@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import ExamCountdownBadge from "@/components/student/ExamCountdownBadge";
 import LinkedText from "@/components/ui/LinkedText";
 import { fetchPublishedDashboardPost, type DashboardPost } from "@/lib/dashboard-posts";
 import { DEFAULT_LMS_COURSE_ID } from "@/lib/lms-catalog";
 import { useLmsCourse } from "@/lib/lms-course-context";
+import { daysUntilExam, JOURNAL_EXAM_ON } from "@/lib/study-journal";
 
 export default function StudentDashboardBanner({
   name,
@@ -54,18 +56,27 @@ export default function StudentDashboardBanner({
               </Link>
             ) : null}
           </div>
-          {name ? (
-            <div className="dashboard-banner-welcome">
-              <h1>Welcome back, {name}</h1>
-              {typeof pct === "number" ? (
-                <div className="student-progress-row">
-                  <strong className="student-progress-pct">{pct}% Complete</strong>
-                  <div className="student-progress" aria-hidden="true">
-                    <span style={{ width: `${pct}%` }} />
-                  </div>
+          {name || iac ? (
+            <div className="dashboard-banner-welcome-stack">
+              {name ? (
+                <div className="dashboard-banner-welcome">
+                  <h1>Welcome back, {name}</h1>
+                  {typeof pct === "number" ? (
+                    <div className="student-progress-row">
+                      <strong className="student-progress-pct">{pct}% Complete</strong>
+                      <div className="student-progress" aria-hidden="true">
+                        <span style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
+                  ) : null}
+                  {paceMessage ? <p className="muted small student-dash-pace">{paceMessage}</p> : null}
                 </div>
               ) : null}
-              {paceMessage ? <p className="muted small student-dash-pace">{paceMessage}</p> : null}
+              {iac ? (
+                <div className="dashboard-banner-exam">
+                  <ExamCountdownBadge days={daysUntilExam(JOURNAL_EXAM_ON)} />
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>

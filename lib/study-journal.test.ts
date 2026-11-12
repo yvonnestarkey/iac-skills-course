@@ -206,6 +206,17 @@ test("daily study options, floating menus, magenta today, and automatic course a
   assert.match(styles, /\.journal-exam-cal[\s\S]*width:\s*76px/);
 });
 
+test("the dashboard banner shows the days-left countdown under welcome back", () => {
+  const banner = readFileSync(resolve("components/student/StudentDashboardBanner.tsx"), "utf8");
+  const badge = readFileSync(resolve("components/student/ExamCountdownBadge.tsx"), "utf8");
+  const journal = readFileSync(resolve("components/student/StudentStudyJournal.tsx"), "utf8");
+  assert.match(banner, /dashboard-banner-welcome-stack/);
+  assert.match(banner, /dashboard-banner-exam/);
+  assert.match(banner, /ExamCountdownBadge/);
+  assert.match(badge, /journal-exam-cal/);
+  assert.match(journal, /ExamCountdownBadge/);
+});
+
 test("day cards fit inside their block and drop columns on smaller screens", () => {
   const styles = readFileSync(resolve("app/globals.css"), "utf8");
   assert.match(styles, /repeat\(auto-fit, minmax\(min\(100%, 248px\), 1fr\)\)/);

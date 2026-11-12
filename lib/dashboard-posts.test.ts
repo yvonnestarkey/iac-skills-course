@@ -108,6 +108,9 @@ test("banner announcements, quote card, login slide, and coach tools stay wired"
   assert.doesNotMatch(banner, /dashboardQuoteForDate/);
   assert.match(banner, /fetchPublishedDashboardPost\("announcement"\)/);
   assert.match(banner, /Announcement/);
+  assert.match(banner, /ExamCountdownBadge/);
+  assert.match(banner, /dashboard-banner-exam/);
+  assert.match(banner, /JOURNAL_EXAM_ON/);
   assert.match(dashboard, /StudentDashboardQuote/);
   assert.match(dashboard, /StudentDashboardSlide/);
   assert.match(quote, /dashboardQuoteForDate/);
