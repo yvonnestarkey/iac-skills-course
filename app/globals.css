@@ -6083,13 +6083,92 @@ a.student-dash-resume-btn {
   font-size: clamp(26px, 3vw, 34px);
 }
 
-.study-journal-nav {
-  display: flex;
-  flex-wrap: wrap;
+.study-journal-tools {
+  display: grid;
+  justify-items: end;
   gap: 8px;
 }
 
-.study-journal-exam,
+.study-journal-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.journal-exam-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.journal-exam-cal {
+  position: relative;
+  width: 38px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--link);
+  box-shadow: 2px 2px 0 rgba(31, 123, 112, 0.35);
+}
+
+.journal-exam-cal-rings {
+  position: absolute;
+  top: -5px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.journal-exam-cal-rings::before,
+.journal-exam-cal-rings::after {
+  content: "";
+  width: 7px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-radius: 99px;
+  background: var(--link);
+}
+
+.journal-exam-cal-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding-top: 4px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.journal-exam-tags {
+  display: grid;
+  gap: 3px;
+}
+
+.journal-exam-tags span {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.journal-exam-tags span:first-child {
+  background: var(--link);
+  transform: rotate(-6deg);
+}
+
+.journal-exam-tags span:last-child {
+  background: var(--dark);
+  transform: rotate(5deg);
+}
+
 .study-journal-need {
   display: flex;
   flex-wrap: wrap;
@@ -6111,7 +6190,6 @@ a.student-dash-resume-btn {
   min-width: min(280px, 100%);
 }
 
-.study-journal-exam label,
 .study-journal-analytics label {
   display: grid;
   gap: 6px;
@@ -6120,7 +6198,6 @@ a.student-dash-resume-btn {
   color: var(--dark);
 }
 
-.study-journal-exam input[type="date"],
 .study-journal-day input,
 .study-journal-analytics input,
 .study-journal-day textarea,
@@ -6133,30 +6210,22 @@ a.student-dash-resume-btn {
   background: #fffaf4;
 }
 
-.study-journal-countdown {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--medium);
-}
-
 .study-journal-days {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
-  overflow: visible;
 }
 
 .study-journal-day {
   display: grid;
   align-content: start;
   gap: 8px;
+  min-width: 0;
   padding: 0 0 12px;
   border-radius: 18px;
   border: 1px solid var(--sand-line);
   background: #fffdf8;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .study-journal-day.is-today {
@@ -6225,6 +6294,7 @@ a.student-dash-resume-btn {
   gap: 8px;
   width: 100%;
   min-height: 40px;
+  max-width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--sand-line);
   border-radius: 10px;
@@ -6235,7 +6305,14 @@ a.student-dash-resume-btn {
   overflow: hidden;
 }
 
+.journal-select-trigger svg {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--muted);
+}
+
 .journal-select-value {
+  flex: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -6278,9 +6355,9 @@ a.student-dash-resume-btn {
   background: var(--sand);
 }
 
-.journal-select-trigger span,
-.journal-select-menu span {
-  font-size: 20px;
+.journal-select-emoji {
+  flex-shrink: 0;
+  font-size: 18px;
   line-height: 1;
 }
 
@@ -6330,7 +6407,7 @@ a.student-dash-resume-btn {
 
 @media (max-width: 700px) {
   .study-journal-head,
-  .study-journal-exam,
+  .study-journal-tools,
   .study-journal-days,
   .study-journal-analytics-row,
   .study-journal-progress-copy {

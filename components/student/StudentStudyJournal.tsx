@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { ChevronDown } from "lucide-react";
 import StudentCourseProgress from "@/components/student/StudentCourseProgress";
 import { DEFAULT_LMS_COURSE_ID } from "@/lib/lms-catalog";
 import { useLmsCourse } from "@/lib/lms-course-context";
@@ -118,12 +119,17 @@ function JournalSelect({
       >
         {current ? (
           <>
-            {current.emoji ? <span aria-hidden="true">{current.emoji}</span> : null}
+            {current.emoji ? (
+              <span className="journal-select-emoji" aria-hidden="true">
+                {current.emoji}
+              </span>
+            ) : null}
             <span className="journal-select-value">{current.label}</span>
           </>
         ) : (
           <span className="journal-select-value is-placeholder">{placeholder}</span>
         )}
+        <ChevronDown size={16} aria-hidden="true" />
       </button>
       {open && typeof document !== "undefined"
         ? createPortal(
@@ -152,7 +158,11 @@ function JournalSelect({
                     setOpen(false);
                   }}
                 >
-                  {option.emoji ? <span aria-hidden="true">{option.emoji}</span> : null}
+                  {option.emoji ? (
+                    <span className="journal-select-emoji" aria-hidden="true">
+                      {option.emoji}
+                    </span>
+                  ) : null}
                   {option.label}
                 </button>
               ))}
@@ -160,6 +170,25 @@ function JournalSelect({
             document.body
           )
         : null}
+    </div>
+  );
+}
+
+function ExamCountdownBadge({ days }: { days: number | null }) {
+  const count = days == null ? "—" : String(Math.max(0, days));
+  const caption =
+    days == null ? "Exam date coming soon." : days < 0 ? "Exam date has passed." : days === 0 ? "Exam day." : `${days} day${days === 1 ? "" : "s"} left`;
+  return (
+    <div className="journal-exam-badge" title={`Countdown to exam · ${JOURNAL_EXAM_LABEL}`}>
+      <span className="journal-exam-cal" aria-hidden="true">
+        <span className="journal-exam-cal-rings" />
+        <span className="journal-exam-cal-num">{count}</span>
+      </span>
+      <span className="journal-exam-tags" aria-hidden="true">
+        <span>Days</span>
+        <span>Left</span>
+      </span>
+      <span className="visually-hidden">{caption} Exam {JOURNAL_EXAM_LABEL}.</span>
     </div>
   );
 }
@@ -179,7 +208,6 @@ function JournalDayCard({
   course: JournalCourseDay | undefined;
   onChange: (patch: Partial<JournalDay>) => void;
 }) {
-  const studiedExtras = day.studied && day.studied !== "no";
   return (
     <article className={`study-journal-day${isToday ? " is-today" : ""}`}>
       <header>
@@ -195,34 +223,15 @@ function JournalDayCard({
         placeholder="Choose"
         options={JOURNAL_STUDIED}
         value={day.studied}
-        onChange={(studied) =>
-          onChange({
-            studied,
-            questionsDone: studied === "question" ? day.questionsDone || 1 : studied === "no" ? null : day.questionsDone,
-          })
-        }
+        onChange={(studied) => onChange({ studied })}
       />
-      {studiedExtras ? (
-        <>
-          <input
-            type="text"
-            value={day.studiedWhat}
-            onChange={(event) => onChange({ studiedWhat: event.target.value })}
-            placeholder={day.studied === "question" ? "Which question?" : "What did you work on?"}
-          />
-          {day.studied === "question" ? (
-            <label className="journal-field-label">
-              Questions done
-              <input
-                type="number"
-                min={0}
-                value={day.questionsDone ?? ""}
-                onChange={(event) => onChange({ questionsDone: event.target.value === "" ? null : Number(event.target.value) })}
-              />
-            </label>
-          ) : null}
-        </>
-      ) : null}
+      <p className="journal-field-label">Which question did you do?</p>
+      <input
+        type="text"
+        value={day.studiedWhat}
+        onChange={(event) => onChange({ studiedWhat: event.target.value, questionsDone: event.target.value.trim() ? day.questionsDone || 1 : null })}
+        placeholder="e.g. Paper 1 Q2"
+      />
       <p className="journal-field-label">Did you stick to your plan?</p>
       <JournalSelect
         name={`Plan ${weekday}`}
@@ -342,14 +351,6 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
   const todayIndex = dates.indexOf(today);
   const todayWeekday = JOURNAL_WEEKDAYS[todayIndex] || JOURNAL_WEEKDAYS[0];
   const todayDay = week?.days[today] || emptyJournalDay();
-  const countdownLabel =
-    countdown == null
-      ? "Exam date coming soon."
-      : countdown < 0
-        ? "Exam date has passed."
-        : countdown === 0
-          ? "Exam day."
-          : `${countdown} day${countdown === 1 ? "" : "s"} to exam`;
 
   const privacyNotice = !privacy.promptSeen ? (
     <p className="notice study-journal-privacy">
@@ -377,13 +378,14 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
             <div>
               <p className="kicker">Study journal</p>
               <h2>Today</h2>
-              <p className="muted small">
-                {todayWeekday} · {countdownLabel}
-              </p>
+              <p className="muted small">{todayWeekday}</p>
             </div>
-            <Link href="/student/journal" className="ghost">
-              Go to journal
-            </Link>
+            <div className="study-journal-tools">
+              <Link href="/student/journal" className="ghost">
+                Go to journal
+              </Link>
+              <ExamCountdownBadge days={countdown} />
+            </div>
           </div>
           <div className="study-journal-days">
             <JournalDayCard
@@ -412,22 +414,20 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
             <h2>My weekly study plan</h2>
             <p className="muted small">Seven-day week · {journalWeekLabel(weekStart)}</p>
           </div>
-          <div className="study-journal-nav">
-            <button type="button" className="ghost" onClick={() => setWeekStart((current) => shiftJournalWeek(current, -1))}>
-              ← Previous
-            </button>
-            <button type="button" className="ghost" onClick={() => setWeekStart(journalWeekStart())}>
-              This week
-            </button>
-            <button type="button" className="ghost" onClick={() => setWeekStart((current) => shiftJournalWeek(current, 1))}>
-              Next →
-            </button>
+          <div className="study-journal-tools">
+            <div className="study-journal-nav">
+              <button type="button" className="ghost" onClick={() => setWeekStart((current) => shiftJournalWeek(current, -1))}>
+                ← Previous
+              </button>
+              <button type="button" className="ghost" onClick={() => setWeekStart(journalWeekStart())}>
+                This week
+              </button>
+              <button type="button" className="ghost" onClick={() => setWeekStart((current) => shiftJournalWeek(current, 1))}>
+                Next →
+              </button>
+            </div>
+            <ExamCountdownBadge days={countdown} />
           </div>
-        </div>
-
-        <div className="study-journal-exam">
-          <p className="journal-field-label">Countdown to exam · {JOURNAL_EXAM_LABEL}</p>
-          <p className="study-journal-countdown">{countdownLabel}</p>
         </div>
 
         <div className="study-journal-need">

@@ -145,7 +145,11 @@ test("daily answers are floating dropdowns, goals come first, and analytics are 
   assert.match(journal, /createPortal/);
   assert.match(journal, /JOURNAL_EXAM_ON/);
   assert.match(journal, /questionStatsFromWeeks/);
+  assert.match(journal, /Which question did you do\?/);
+  assert.match(journal, /ChevronDown/);
+  assert.match(journal, /ExamCountdownBadge/);
   assert.doesNotMatch(journal, /type="date"/);
+  assert.doesNotMatch(journal, /studiedExtras/);
   assert.match(progress, /hideCoachColumns/);
   assert.match(progress, /ActivityGrid/);
   assert.match(grid, /hideCoachColumns/);
@@ -195,4 +199,6 @@ test("daily study options, floating menus, magenta today, and automatic course a
   assert.match(styles, /\.study-journal-day\.is-today header[\s\S]*background:\s*var\(--link\)/);
   assert.match(styles, /journal-select-menu[\s\S]*z-index:\s*400/);
   assert.match(styles, /text-overflow:\s*ellipsis/);
+  assert.match(styles, /journal-exam-badge/);
+  assert.match(styles, /\.study-journal-day[\s\S]*overflow:\s*hidden/);
 });
