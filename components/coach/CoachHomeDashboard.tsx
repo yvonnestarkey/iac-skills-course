@@ -180,7 +180,7 @@ export default function CoachHomeDashboard() {
         >
           <span className="kicker">Disengaged</span>
           <b>{ready ? disengaged.length : "—"}</b>
-          <span className="muted small">No login in a week</span>
+          <span className="muted small">Paid students, no login in a week</span>
         </button>
         <button
           type="button"
@@ -189,7 +189,7 @@ export default function CoachHomeDashboard() {
         >
           <span className="kicker">Quiet</span>
           <b>{ready ? quiet.length : "—"}</b>
-          <span className="muted small">Logged in, not heard from you</span>
+          <span className="muted small">Paid students logged in, not heard from you</span>
         </button>
       </div>
 

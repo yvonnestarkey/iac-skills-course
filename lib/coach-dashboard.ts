@@ -233,8 +233,18 @@ export function isActiveRosterStudent(student: { accessActive?: boolean; status?
   return student.accessActive !== false && student.status !== "paused";
 }
 
-export function isDisengagedStudent(student: Pick<Student, "lastActive" | "accessActive" | "status">): boolean {
-  if (!isActiveRosterStudent(student)) return false;
+export function isPaidCourseStudent(student: {
+  courseAccess?: string | null;
+  accessActive?: boolean;
+  status?: string;
+}): boolean {
+  return isActiveRosterStudent(student) && courseAccessFromEntitlementStatus(student.courseAccess) === "full";
+}
+
+export function isDisengagedStudent(
+  student: Pick<Student, "lastActive" | "accessActive" | "status" | "courseAccess">
+): boolean {
+  if (!isPaidCourseStudent(student)) return false;
   const days = daysAgo(student.lastActive);
   return days === null || days >= COACH_STALE_DAYS;
 }
@@ -251,11 +261,11 @@ export function heardFromCoachWithinDays(
 }
 
 export function isQuietStudent(
-  student: Pick<Student, "lastActive" | "accessActive" | "status">,
+  student: Pick<Student, "lastActive" | "accessActive" | "status" | "courseAccess">,
   lastHeardAt: string | null | undefined,
   now: Date = new Date()
 ): boolean {
-  if (!isActiveRosterStudent(student)) return false;
+  if (!isPaidCourseStudent(student)) return false;
   if (isDisengagedStudent(student)) return false;
   return !heardFromCoachWithinDays(lastHeardAt, COACH_STALE_DAYS, now);
 }

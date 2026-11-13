@@ -103,21 +103,50 @@ test("disengaged students have not been in for a week; quiet students have", () 
     id: "stale",
     name: "Sipho",
     email: "sipho@test.com",
+    courseAccess: "full",
     lastActive: isoDate(addDays(today(), -8)),
   });
-  const never = student({ id: "never", name: "Naledi", email: "naledi@test.com", lastActive: undefined });
-  const recent = student({ id: "recent", name: "Lebo", email: "lebo@test.com", lastActive: isoDate(addDays(today(), -1)) });
+  const never = student({
+    id: "never",
+    name: "Naledi",
+    email: "naledi@test.com",
+    courseAccess: "full",
+    lastActive: undefined,
+  });
+  const recent = student({
+    id: "recent",
+    name: "Lebo",
+    email: "lebo@test.com",
+    courseAccess: "full",
+    lastActive: isoDate(addDays(today(), -1)),
+  });
   const paused = student({
     id: "paused",
     name: "Paused",
     email: "paused@test.com",
+    courseAccess: "full",
     status: "paused",
     lastActive: isoDate(addDays(today(), -20)),
+  });
+  const freeStale = student({
+    id: "free-stale",
+    name: "Free Sipho",
+    email: "free-sipho@test.com",
+    courseAccess: "free_preview",
+    lastActive: isoDate(addDays(today(), -8)),
+  });
+  const freeRecent = student({
+    id: "free-recent",
+    name: "Free Lebo",
+    email: "free-lebo@test.com",
+    courseAccess: "free_preview",
+    lastActive: isoDate(addDays(today(), -1)),
   });
   assert.equal(isDisengagedStudent(stale), true);
   assert.equal(isDisengagedStudent(never), true);
   assert.equal(isDisengagedStudent(recent), false);
   assert.equal(isDisengagedStudent(paused), false);
+  assert.equal(isDisengagedStudent(freeStale), false);
 
   const now = new Date("2026-11-12T10:00:00.000Z");
   const oldNote = "2026-11-01T08:00:00.000Z";
@@ -127,6 +156,7 @@ test("disengaged students have not been in for a week; quiet students have", () 
   assert.equal(isQuietStudent(recent, oldNote, now), true);
   assert.equal(isQuietStudent(recent, freshNote, now), false);
   assert.equal(isQuietStudent(stale, oldNote, now), false);
+  assert.equal(isQuietStudent(freeRecent, oldNote, now), false);
 
   const heard = mergeLastHeardByStudent(
     [recent, stale],
@@ -137,10 +167,11 @@ test("disengaged students have not been in for a week; quiet students have", () 
   );
   assert.equal(heard[recent.id], freshNote);
   assert.deepEqual(
-    coachWatchStudents([stale, never, recent, paused], "disengaged").map((item) => item.id),
+    coachWatchStudents([stale, never, recent, paused, freeStale], "disengaged").map((item) => item.id),
     ["never", "stale"]
   );
   assert.equal(coachWatchStudents([recent], "quiet", { [recent.id]: oldNote }, now)[0]?.id, "recent");
+  assert.equal(coachWatchStudents([freeRecent], "quiet", { [freeRecent.id]: oldNote }, now).length, 0);
 });
 
 test("SAST morning, afternoon, and evening greetings stay locked to Johannesburg", () => {
