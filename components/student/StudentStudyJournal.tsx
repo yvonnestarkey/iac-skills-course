@@ -412,11 +412,20 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
       ) : null}
       <StudentCourseProgress />
       <section className="study-journal-sheet">
+        <img
+          className="study-journal-bg"
+          src={course.dashboardBannerUrl || "/student-dashboard-banner.jpg"}
+          alt=""
+        />
+        <div className="study-journal-overlay">
         <div className="study-journal-head">
-          <div>
-            <p className="kicker">Study journal</p>
-            <h2>My weekly study plan</h2>
-            <p className="muted small">Seven-day week · {journalWeekLabel(weekStart)}</p>
+          <div className="study-journal-title">
+            <img className="study-journal-cover" src="/study-journal-cover.png" alt="Study journal" />
+            <div>
+              <p className="kicker">Study journal</p>
+              <h2>My weekly study plan</h2>
+              <p className="muted small">Seven-day week · {journalWeekLabel(weekStart)}</p>
+            </div>
           </div>
           <div className="study-journal-tools">
             <div className="study-journal-nav">
@@ -505,6 +514,7 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
           />
         </div>
         {status ? <p className="muted small">{status}</p> : null}
+        </div>
       </section>
     </div>
   );

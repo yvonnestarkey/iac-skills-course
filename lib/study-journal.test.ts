@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 import {
@@ -179,9 +179,13 @@ test("the dashboard journal is today's card and saves into the full weekly journ
   assert.match(journal, /compact = false/);
   assert.match(journal, /is-compact/);
   assert.match(journal, /setDay\(today, patch\)/);
+  assert.match(journal, /study-journal-cover\.png/);
+  assert.match(journal, /study-journal-bg/);
+  assert.match(journal, /dashboardBannerUrl/);
   assert.ok(compactAt >= 0 && weekAt > compactAt);
   assert.doesNotMatch(journal.slice(compactAt, weekAt), /ExamCountdownBadge/);
   assert.doesNotMatch(journal.slice(compactAt, weekAt), /Yvonne can see/);
+  assert.doesNotMatch(journal.slice(compactAt, journal.indexOf("Go to journal")), /study-journal-cover/);
   assert.match(journal.slice(weekAt), /ExamCountdownBadge/);
   assert.doesNotMatch(journal.slice(weekAt), /privacyNotice/);
   assert.match(journal, /\{privacyNotice\}/);
@@ -218,6 +222,9 @@ test("daily study options, floating menus, magenta today, and automatic course a
   assert.match(journal, /createPortal/);
   assert.match(styles, /\.study-journal-day\.is-today header[\s\S]*background:\s*var\(--link\)/);
   assert.match(styles, /journal-select-menu[\s\S]*z-index:\s*400/);
+  assert.match(styles, /\.study-journal-bg[\s\S]*object-fit:\s*cover/);
+  assert.match(styles, /\.study-journal:not\(\.is-compact\) \.study-journal-head[\s\S]*backdrop-filter:\s*blur\(14px\)/);
+  assert.equal(existsSync(resolve("public/study-journal-cover.png")), true);
   assert.match(styles, /text-overflow:\s*ellipsis/);
   assert.match(styles, /journal-exam-badge/);
   assert.match(styles, /\.study-journal-day[\s\S]*overflow:\s*hidden/);

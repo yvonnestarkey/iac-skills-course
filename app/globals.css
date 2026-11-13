@@ -6411,6 +6411,75 @@ a.student-reading-practice-btn:hover {
   overflow: visible;
 }
 
+.study-journal:not(.is-compact) .study-journal-sheet {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #d6e2e4;
+}
+
+.study-journal-bg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+
+.study-journal-overlay {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 16px;
+  padding: 22px 24px 20px;
+}
+
+.study-journal-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.study-journal-cover {
+  flex: 0 0 auto;
+  width: 190px;
+  height: 124px;
+  object-fit: contain;
+  background: #000;
+  border-radius: 16px;
+  box-shadow: 0 10px 22px rgba(23, 32, 30, 0.28);
+}
+
+.study-journal:not(.is-compact) .study-journal-head {
+  align-items: center;
+  margin-bottom: 0;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(238, 243, 241, 0.58);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  box-shadow: 0 0 28px 12px rgba(238, 243, 241, 0.28);
+}
+
+.study-journal:not(.is-compact) .study-journal-need,
+.study-journal:not(.is-compact) .study-journal-analytics {
+  margin: 0;
+  border: 0;
+  background: rgba(238, 243, 241, 0.52);
+  backdrop-filter: blur(18px) saturate(1.12);
+  -webkit-backdrop-filter: blur(18px) saturate(1.12);
+  box-shadow: 0 0 32px 16px rgba(238, 243, 241, 0.28);
+}
+
+.study-journal:not(.is-compact) .study-journal-day {
+  box-shadow: 0 12px 24px rgba(23, 32, 30, 0.16);
+}
+
 .study-journal-head {
   display: flex;
   justify-content: space-between;
@@ -6772,6 +6841,11 @@ a.student-reading-practice-btn:hover {
 
   .study-journal-head {
     flex-direction: column;
+  }
+
+  .study-journal-cover {
+    width: 132px;
+    height: 86px;
   }
 }
 
