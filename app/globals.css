@@ -6441,23 +6441,25 @@ a.student-reading-practice-btn:hover {
 .study-journal-title {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 6px;
   min-width: 0;
 }
 
 .study-journal-cover {
   flex: 0 0 auto;
+  display: block;
   width: auto;
-  height: 76px;
+  height: 210px;
   object-fit: contain;
+  object-position: left center;
   background: transparent;
-  filter: drop-shadow(0 8px 14px rgba(23, 32, 30, 0.28));
+  filter: drop-shadow(0 10px 16px rgba(23, 32, 30, 0.25));
 }
 
 .study-journal:not(.is-compact) .study-journal-head {
   align-items: center;
   margin-bottom: 0;
-  padding: 12px 14px;
+  padding: 0 14px 0 0;
   border-radius: 18px;
   background: rgba(238, 243, 241, 0.58);
   backdrop-filter: blur(14px) saturate(1.1);
@@ -6843,7 +6845,7 @@ a.student-reading-practice-btn:hover {
   }
 
   .study-journal-cover {
-    height: 58px;
+    height: 140px;
   }
 }
 

@@ -224,6 +224,7 @@ test("daily study options, floating menus, magenta today, and automatic course a
   assert.match(styles, /journal-select-menu[\s\S]*z-index:\s*400/);
   assert.match(styles, /\.study-journal-bg[\s\S]*object-fit:\s*cover/);
   assert.match(styles, /\.study-journal-cover \{[^}]*background:\s*transparent/);
+  assert.match(styles, /\.study-journal-cover \{[^}]*height:\s*210px/);
   assert.doesNotMatch(styles, /\.study-journal-cover \{[^}]*background:\s*#000/);
   assert.match(styles, /\.study-journal:not\(\.is-compact\) \.study-journal-head[\s\S]*backdrop-filter:\s*blur\(14px\)/);
   assert.equal(existsSync(resolve("public/study-journal-cover.png")), true);
