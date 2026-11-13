@@ -1,11 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import InboxPdfPicker from "@/components/inbox/InboxPdfPicker";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
 import ComposerBox from "@/components/ui/ComposerBox";
 import LinkedText from "@/components/ui/LinkedText";
 import {
+  canPostInboxMessage,
   fetchCoachStudentThread,
+  inboxPreviewText,
   isWaiting,
   markCoachThreadRead,
   postInboxMessage,
@@ -19,6 +22,7 @@ import type { Student } from "@/lib/types";
 export default function AskCoachThread({ student }: { student: Student }) {
   const [messages, setMessages] = useState<InboxMessage[]>([]);
   const [text, setText] = useState("");
+  const [pdf, setPdf] = useState<File | null>(null);
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -57,8 +61,7 @@ export default function AskCoachThread({ student }: { student: Student }) {
   const pending = isWaiting(messages);
 
   const send = async () => {
-    const body = text.trim();
-    if (!body) return;
+    if (!canPostInboxMessage(text, Boolean(pdf))) return;
     setBusy(true);
     setStatus("");
     const result = await postInboxMessage({
@@ -66,8 +69,9 @@ export default function AskCoachThread({ student }: { student: Student }) {
       studentEmail: student.email,
       from: "coach",
       kind: "reply",
-      body,
+      body: text,
       context: "Coach reply",
+      file: pdf,
     });
     setBusy(false);
     if (!result.ok) {
@@ -76,6 +80,7 @@ export default function AskCoachThread({ student }: { student: Student }) {
       return;
     }
     setText("");
+    setPdf(null);
     if (result.emailError) {
       setStatus(`Saved in the classroom, but the student email was not sent. ${result.emailError}`);
     }
@@ -105,7 +110,7 @@ export default function AskCoachThread({ student }: { student: Student }) {
       <p className="muted small">Complete history with {student.name}. Replies here also reach their student inbox.</p>
       {pending ? (
         <div className="waiting">
-          Waiting on you: <LinkedText text={messages[messages.length - 1]?.body || ""} />
+          Waiting on you: <LinkedText text={inboxPreviewText(messages[messages.length - 1] || { body: "", pdfName: null, pdfUrl: null })} />
         </div>
       ) : null}
       {status ? <p className="notice">{status}</p> : null}
@@ -122,8 +127,9 @@ export default function AskCoachThread({ student }: { student: Student }) {
         rows={4}
         disabled={busy}
       />
+      <InboxPdfPicker file={pdf} onChange={setPdf} disabled={busy} />
       <div className="actions">
-        <button className="primary" id="send-coach" type="button" disabled={busy || !text.trim()} onClick={send}>
+        <button className="primary" id="send-coach" type="button" disabled={busy || !canPostInboxMessage(text, Boolean(pdf))} onClick={send}>
           {pending ? "Reply" : "Send message"}
         </button>
         {pending ? (

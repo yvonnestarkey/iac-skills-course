@@ -7099,6 +7099,63 @@ a.planner-video-btn:visited:hover {
   padding-right: 4px;
 }
 
+.inbox-pdf-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+}
+
+.inbox-pdf-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.inbox-pdf-pick.is-disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.inbox-pdf-pick input {
+  display: none;
+}
+
+.inbox-pdf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f7eef2;
+  color: var(--dark);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.inbox-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 4px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--sand-line);
+  background: #fff;
+  color: var(--link);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.inbox-pdf:hover {
+  text-decoration: none;
+  background: #f7eef2;
+}
+
 .composer-box {
   position: relative;
   margin: 8px 0 12px;

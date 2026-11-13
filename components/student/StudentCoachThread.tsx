@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import InboxPdfPicker from "@/components/inbox/InboxPdfPicker";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
 import ComposerBox from "@/components/ui/ComposerBox";
-import { fetchOwnInboxMessages, isWaiting, postInboxMessage, type InboxMessage } from "@/lib/inbox";
+import { canPostInboxMessage, fetchOwnInboxMessages, isWaiting, postInboxMessage, type InboxMessage } from "@/lib/inbox";
 import { useStudentSession } from "@/lib/student-session";
 
 export default function StudentCoachThread({
@@ -20,6 +21,7 @@ export default function StudentCoachThread({
   const { user } = useStudentSession();
   const [messages, setMessages] = useState<InboxMessage[]>([]);
   const [text, setText] = useState("");
+  const [pdf, setPdf] = useState<File | null>(null);
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -35,7 +37,7 @@ export default function StudentCoachThread({
   }, [load]);
 
   const send = async () => {
-    if (!user?.email || !text.trim()) return;
+    if (!user?.email || !canPostInboxMessage(text, Boolean(pdf))) return;
     setBusy(true);
     setStatus("");
     const result = await postInboxMessage({
@@ -46,6 +48,7 @@ export default function StudentCoachThread({
       body: text,
       context: context || "Student dashboard",
       lessonId,
+      file: pdf,
     });
     setBusy(false);
     if (!result.ok) {
@@ -54,6 +57,7 @@ export default function StudentCoachThread({
     }
     if (result.message) setMessages((current) => [...current, result.message!]);
     setText("");
+    setPdf(null);
     setStatus("Sent. Your coach will see this in Inbox.");
   };
 
@@ -73,8 +77,9 @@ export default function StudentCoachThread({
           if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) send();
         }}
       />
+      <InboxPdfPicker file={pdf} onChange={setPdf} disabled={busy} />
       <div className="actions">
-        <button className="primary" type="button" disabled={busy || !text.trim()} onClick={send}>
+        <button className="primary" type="button" disabled={busy || !canPostInboxMessage(text, Boolean(pdf))} onClick={send}>
           Send to coach
         </button>
       </div>

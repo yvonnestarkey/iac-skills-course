@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import InboxPdfPicker from "@/components/inbox/InboxPdfPicker";
 import ComposerBox from "@/components/ui/ComposerBox";
 import LinkedText from "@/components/ui/LinkedText";
-import { postInboxMessagesToStudents } from "@/lib/inbox";
+import { canPostInboxMessage, postInboxMessagesToStudents } from "@/lib/inbox";
 import type { Student } from "@/lib/types";
 
 export default function ActivityMessageModal({
@@ -16,18 +17,20 @@ export default function ActivityMessageModal({
   onSent: (sent: number) => void;
 }) {
   const [body, setBody] = useState("");
+  const [pdf, setPdf] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const count = students.length;
   const names = students.map((student) => student.name).join(", ");
 
   const send = async () => {
-    if (!body.trim() || !count || busy) return;
+    if (!canPostInboxMessage(body, Boolean(pdf)) || !count || busy) return;
     setBusy(true);
     setError("");
     const result = await postInboxMessagesToStudents(
       students.map((student) => ({ id: student.id, email: student.email })),
-      body
+      body,
+      pdf
     );
     setBusy(false);
     if (result.sent) onSent(result.sent);
@@ -58,7 +61,7 @@ export default function ActivityMessageModal({
             </p>
           </div>
           <div className="notify-modal-actions">
-            <button className="primary" onClick={() => void send()} disabled={!body.trim() || !count || busy}>
+            <button className="primary" onClick={() => void send()} disabled={!canPostInboxMessage(body, Boolean(pdf)) || !count || busy}>
               {busy ? "Sending…" : `Send message${count ? ` (${count})` : ""}`}
             </button>
             <button className="ghost" onClick={onClose} disabled={busy}>
@@ -81,6 +84,7 @@ export default function ActivityMessageModal({
               rows={6}
               disabled={busy}
             />
+            <InboxPdfPicker file={pdf} onChange={setPdf} disabled={busy} />
             {body.trim() ? (
               <div className="notify-preview">
                 <p className="muted small">Preview</p>

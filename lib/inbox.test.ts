@@ -3,7 +3,11 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 import {
+  canPostInboxMessage,
   coachSentStatsByStudentId,
+  inboxMessageEmailText,
+  inboxPdfStoragePath,
+  inboxPreviewText,
   mergeThread,
   notificationRowToMessage,
   postInboxMessagesToStudents,
@@ -30,6 +34,8 @@ function message(partial: Partial<InboxMessage> & Pick<InboxMessage, "id" | "bod
     createdAt: "2026-10-13T06:12:00.000Z",
     read: true,
     readAt: "2026-10-13T06:12:00.000Z",
+    pdfUrl: null,
+    pdfName: null,
     ...partial,
   };
 }
@@ -82,6 +88,31 @@ test("bulk inbox send refuses an empty body", async () => {
   const result = await postInboxMessagesToStudents([{ id: "s1", email: "ada@example.com" }], "  ");
   assert.equal(result.ok, false);
   assert.equal(result.sent, 0);
+});
+
+test("inbox messages can be a PDF on its own and keep a download link in the thread", () => {
+  assert.equal(canPostInboxMessage("  ", false), false);
+  assert.equal(canPostInboxMessage("", true), true);
+  assert.equal(inboxPdfStoragePath("abc-123", "My notes.pdf", 9), "inbox/abc-123/9-My-notes.pdf");
+  assert.equal(inboxPreviewText({ body: "", pdfName: "script.pdf", pdfUrl: "https://files.example/script.pdf" }), "script.pdf");
+  assert.match(inboxMessageEmailText("Please see attached.", "script.pdf", "https://files.example/script.pdf"), /script\.pdf/);
+  const thread = readFileSync(resolve("components/inbox/InboxThreadView.tsx"), "utf8");
+  const picker = readFileSync(resolve("components/inbox/InboxPdfPicker.tsx"), "utf8");
+  const student = readFileSync(resolve("components/student/StudentCoachThread.tsx"), "utf8");
+  const coach = readFileSync(resolve("components/coach/AskCoachThread.tsx"), "utf8");
+  const inbox = readFileSync(resolve("components/coach/CoachInbox.tsx"), "utf8");
+  const group = readFileSync(resolve("components/coach/ActivityMessageModal.tsx"), "utf8");
+  const sql = readFileSync(resolve("supabase/inbox-pdfs.sql"), "utf8");
+  const send = readFileSync(resolve("lib/inbox.ts"), "utf8");
+  assert.match(thread, /message\.pdfUrl/);
+  assert.match(picker, /Attach PDF/);
+  assert.match(student, /InboxPdfPicker/);
+  assert.match(coach, /InboxPdfPicker/);
+  assert.match(inbox, /InboxPdfPicker/);
+  assert.match(group, /InboxPdfPicker/);
+  assert.match(sql, /pdf_url/);
+  assert.match(sql, /students upload inbox pdfs/);
+  assert.match(send, /pdf_url: pdfUrl \|\| null/);
 });
 
 test("student inbox messages email Yvonne and skip test accounts", () => {

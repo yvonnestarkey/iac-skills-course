@@ -1,3 +1,4 @@
+import { FileText } from "lucide-react";
 import { formatInboxTime, isInboxReceipt, messageLabel, type InboxMessage, type InboxRole } from "@/lib/inbox";
 import LinkedText from "@/components/ui/LinkedText";
 
@@ -22,7 +23,13 @@ export default function InboxThreadView({
             message.kind === "feedback" ? "feedback" : ""
           }`}
         >
-          <LinkedText text={message.body} />
+          {message.body.trim() ? <LinkedText text={message.body} /> : null}
+          {message.pdfUrl ? (
+            <a className="inbox-pdf" href={message.pdfUrl} target="_blank" rel="noopener noreferrer">
+              <FileText size={16} />
+              {message.pdfName || "Open PDF"}
+            </a>
+          ) : null}
           <div className="muted small">
             {formatInboxTime(message.createdAt)} · {messageLabel(message, viewer)}
             {message.context ? ` · ${message.context}` : ""}

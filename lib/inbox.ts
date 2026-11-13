@@ -15,6 +15,8 @@ export interface InboxMessage {
   body: string;
   context: string | null;
   lessonId: string | null;
+  pdfUrl: string | null;
+  pdfName: string | null;
   createdAt: string;
   read: boolean;
   readAt: string | null;
@@ -37,6 +39,9 @@ export interface InboxDraft {
   body: string;
   context?: string;
   lessonId?: string;
+  pdfUrl?: string | null;
+  pdfName?: string | null;
+  file?: File | null;
 }
 
 export type CoachSentMessageStat = {
@@ -45,6 +50,38 @@ export type CoachSentMessageStat = {
 };
 
 export const EMPTY_COACH_SENT_STAT: CoachSentMessageStat = { count: 0, lastAt: null };
+
+export const INBOX_PDF_SQL_HINT =
+  "Paste supabase/inbox-pdfs.sql in the Supabase SQL editor, then try again.";
+
+export function canPostInboxMessage(body: string, hasPdf = false): boolean {
+  return Boolean(body.trim() || hasPdf);
+}
+
+export function inboxPreviewText(message: Pick<InboxMessage, "body" | "pdfName" | "pdfUrl">): string {
+  const body = String(message.body || "").trim();
+  if (body) return body;
+  if (message.pdfUrl) return message.pdfName || "PDF";
+  return "";
+}
+
+export function inboxMessageEmailText(body: string, pdfName?: string | null, pdfUrl?: string | null): string {
+  const text = body.trim();
+  const pdf = pdfUrl ? `${pdfName || "PDF"}\n${pdfUrl}` : "";
+  return [text, pdf].filter(Boolean).join("\n\n");
+}
+
+export function sanitizeInboxPdfName(name: string): string {
+  const cleaned = String(name || "")
+    .replace(/[^A-Za-z0-9._-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return cleaned.toLowerCase().endsWith(".pdf") ? cleaned : `${cleaned || "file"}.pdf`;
+}
+
+export function inboxPdfStoragePath(ownerId: string, fileName: string, now = Date.now()): string {
+  const owner = String(ownerId || "shared").replace(/[^A-Za-z0-9._-]+/g, "-") || "shared";
+  return `inbox/${owner}/${now}-${sanitizeInboxPdfName(fileName)}`;
+}
 
 export function studentMessagesHref(studentId: string): string {
   return `/coach/students/${studentId}/messages`;
@@ -88,6 +125,8 @@ interface InboxRow {
   body: string;
   context: string | null;
   lesson_id: string | null;
+  pdf_url?: string | null;
+  pdf_name?: string | null;
   created_at: string;
   read?: boolean | null;
   read_at?: string | null;
@@ -98,6 +137,17 @@ function describe(error: { message?: string; hint?: string; code?: string }): st
   if (error.code) parts.push(`(${error.code})`);
   if (error.hint) parts.push(error.hint);
   return parts.join(" ");
+}
+
+function inboxPdfMissing(message: string): boolean {
+  return /pdf_url|pdf_name|does not exist|schema cache|could not find/i.test(message);
+}
+
+function inboxError(message: string): string {
+  if (inboxPdfMissing(message) || /storage|inbox\/|not allowed|policy/i.test(message)) {
+    return INBOX_PDF_SQL_HINT;
+  }
+  return message || "Could not send that message.";
 }
 
 function fromRow(row: InboxRow): InboxMessage {
@@ -111,6 +161,8 @@ function fromRow(row: InboxRow): InboxMessage {
     body: row.body,
     context: row.context,
     lessonId: row.lesson_id,
+    pdfUrl: String(row.pdf_url || "").trim() || null,
+    pdfName: String(row.pdf_name || "").trim() || null,
     createdAt: row.created_at,
     read: row.read === true || Boolean(readAt),
     readAt,
@@ -214,6 +266,8 @@ export function notificationRowToMessage(row: Record<string, unknown>, fallbackE
     body,
     context: row.context || row.title ? String(row.context || row.title) : null,
     lessonId: row.lesson_id ? String(row.lesson_id) : null,
+    pdfUrl: String(row.pdf_url || "").trim() || null,
+    pdfName: String(row.pdf_name || "").trim() || null,
     createdAt: String(row.created_at || ""),
     read: Boolean(row.read) || Boolean(row.read_at),
     readAt: row.read_at ? String(row.read_at) : null,
@@ -231,7 +285,7 @@ function matchesStudent(row: Record<string, unknown>, student: { id: string; ema
 }
 
 export function threadContentKey(row: InboxMessage): string {
-  return `${row.from}|${row.body.trim()}|${(row.createdAt || "").slice(0, 16)}`;
+  return `${row.from}|${row.body.trim()}|${row.pdfUrl || ""}|${(row.createdAt || "").slice(0, 16)}`;
 }
 
 export function mergeThread(rows: InboxMessage[]): InboxMessage[] {
@@ -436,6 +490,28 @@ export async function markCoachThreadRead(student: {
   return { ok: true };
 }
 
+export async function uploadInboxPdf(
+  file: File,
+  ownerId?: string | null
+): Promise<{ ok: true; url: string; name: string } | { ok: false; error: string }> {
+  const { client, user, error: authError } = await authClient();
+  if (!client) return { ok: false, error: authError || "Supabase is not configured." };
+  if (!user) return { ok: false, error: authError || "Sign in required." };
+  if (!file.size) return { ok: false, error: "That file looks empty. Choose the PDF again." };
+  if (file.size > 20 * 1024 * 1024) return { ok: false, error: "That PDF is larger than 20 MB. Compress it, then try again." };
+  const looksLikePdf = file.type.includes("pdf") || file.name.toLowerCase().endsWith(".pdf");
+  if (!looksLikePdf) return { ok: false, error: "Please attach a PDF file." };
+  const path = inboxPdfStoragePath(ownerId || user.id, file.name);
+  const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
+    upsert: false,
+    contentType: "application/pdf",
+  });
+  if (uploaded.error) return { ok: false, error: inboxError(uploaded.error.message) };
+  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
+  if (!data?.publicUrl) return { ok: false, error: "Could not get a URL for that PDF." };
+  return { ok: true, url: data.publicUrl, name: file.name.trim() || "file.pdf" };
+}
+
 export async function postInboxMessage(
   draft: InboxDraft
 ): Promise<{ ok: boolean; error?: string; message?: InboxMessage; emailError?: string }> {
@@ -444,7 +520,15 @@ export async function postInboxMessage(
   if (!user) return { ok: false, error: authError || "Sign in required." };
 
   const body = draft.body.trim();
-  if (!body) return { ok: false, error: "Write a message first." };
+  let pdfUrl = String(draft.pdfUrl || "").trim();
+  let pdfName = String(draft.pdfName || "").trim();
+  if (draft.file) {
+    const uploaded = await uploadInboxPdf(draft.file, draft.from === "student" ? user.id : draft.studentId || user.id);
+    if (uploaded.ok === false) return { ok: false, error: uploaded.error };
+    pdfUrl = uploaded.url;
+    pdfName = uploaded.name;
+  }
+  if (!canPostInboxMessage(body, Boolean(pdfUrl))) return { ok: false, error: "Write a message or attach a PDF." };
 
   const studentOwned = draft.from === "student";
   const { data, error } = await client
@@ -457,11 +541,13 @@ export async function postInboxMessage(
       body,
       context: draft.context || null,
       lesson_id: draft.lessonId || null,
+      pdf_url: pdfUrl || null,
+      pdf_name: pdfName || null,
     })
     .select("*")
     .single();
 
-  if (error) return { ok: false, error: describe(error) };
+  if (error) return { ok: false, error: inboxError(describe(error)) };
   const message = fromRow(data as InboxRow);
   if (draft.from === "coach") {
     await markCoachThreadResolved({
@@ -469,12 +555,13 @@ export async function postInboxMessage(
       studentEmail: message.studentEmail,
     });
   }
+  const emailText = inboxMessageEmailText(body, message.pdfName, message.pdfUrl);
   let emailError = "";
   if (draft.from === "coach" && message.studentEmail.includes("@")) {
     const emailed = await requestClassroomEmails({
       kind: draft.kind === "feedback" ? "assignment_feedback" : "message",
       title: draft.context || (draft.kind === "feedback" ? "Assignment feedback" : "Message from your coach"),
-      message: body,
+      message: emailText,
       recipients: [
         {
           email: message.studentEmail,
@@ -492,7 +579,7 @@ export async function postInboxMessage(
       studentId: message.studentId,
       studentEmail: message.studentEmail,
       title: draft.context || "Assignment feedback",
-      message: body,
+      message: emailText,
       sendEmail: false,
     });
   }
@@ -509,11 +596,20 @@ export async function postInboxMessage(
 
 export async function postInboxMessagesToStudents(
   students: Array<{ id: string; email: string }>,
-  body: string
+  body: string,
+  file?: File | null
 ): Promise<{ ok: boolean; sent: number; error?: string; emailError?: string }> {
   const text = body.trim();
-  if (!text) return { ok: false, sent: 0, error: "Write a message first." };
+  if (!canPostInboxMessage(text, Boolean(file))) return { ok: false, sent: 0, error: "Write a message or attach a PDF." };
   if (!students.length) return { ok: false, sent: 0, error: "Pick at least one student." };
+  let pdfUrl = "";
+  let pdfName = "";
+  if (file) {
+    const uploaded = await uploadInboxPdf(file, students[0]?.id);
+    if (uploaded.ok === false) return { ok: false, sent: 0, error: uploaded.error };
+    pdfUrl = uploaded.url;
+    pdfName = uploaded.name;
+  }
   let sent = 0;
   let lastError = "";
   let emailError = "";
@@ -525,6 +621,8 @@ export async function postInboxMessagesToStudents(
       kind: "reply",
       body: text,
       context: "Coach reply",
+      pdfUrl,
+      pdfName,
     });
     if (result.ok) sent += 1;
     else lastError = result.error || lastError;

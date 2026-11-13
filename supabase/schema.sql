@@ -112,6 +112,8 @@ create table if not exists public.inbox_messages (
   body           text not null,
   context        text,
   lesson_id      text,
+  pdf_url        text,
+  pdf_name       text,
   created_at     timestamptz not null default now(),
   read           boolean not null default false,
   read_at        timestamptz

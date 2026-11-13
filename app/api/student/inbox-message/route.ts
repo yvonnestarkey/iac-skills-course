@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     const [{ data: message }, { data: profile }] = await Promise.all([
       client
         .from("inbox_messages")
-        .select("id, student_id, student_email, from_role, body, context")
+        .select("id, student_id, student_email, from_role, body, context, pdf_url, pdf_name")
         .eq("id", messageId)
         .maybeSingle(),
       studentName
@@ -45,7 +45,11 @@ export async function POST(request: Request) {
     if (String(message.student_id || "") && String(message.student_id) !== user.id) {
       return NextResponse.json({ error: "This message could not be found." }, { status: 404 });
     }
-    messageBody = String(message.body || "").trim();
+    const pdfUrl = String((message as { pdf_url?: string }).pdf_url || "").trim();
+    const pdfName = String((message as { pdf_name?: string }).pdf_name || "").trim();
+    messageBody = [String(message.body || "").trim(), pdfUrl ? `${pdfName || "PDF"}\n${pdfUrl}` : ""]
+      .filter(Boolean)
+      .join("\n\n");
     context = context || String(message.context || "").trim();
     studentEmail = studentEmail || String(message.student_email || "").trim() || String(profile?.email || "").trim();
     studentName = studentName || String(profile?.full_name || "").trim();

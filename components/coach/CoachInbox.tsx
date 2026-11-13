@@ -1,15 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import InboxPdfPicker from "@/components/inbox/InboxPdfPicker";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
 import ComposerBox from "@/components/ui/ComposerBox";
 import LinkedText from "@/components/ui/LinkedText";
 import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import { fetchLiveAssignmentLessons } from "@/lib/content";
 import {
+  canPostInboxMessage,
   fetchInboxMessages,
   formatInboxTime,
   groupInboxByStudent,
+  inboxPreviewText,
   markCoachThreadRead,
   postInboxMessage,
   refreshCoachAlerts,
@@ -23,6 +26,7 @@ export default function CoachInbox() {
   const [threads, setThreads] = useState<InboxThread[]>([]);
   const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
   const [text, setText] = useState("");
+  const [pdf, setPdf] = useState<File | null>(null);
   const [lessonId, setLessonId] = useState("");
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
@@ -85,7 +89,7 @@ export default function CoachInbox() {
   };
 
   const send = async (kind: InboxKind) => {
-    if (!selected || !text.trim()) return;
+    if (!selected || !canPostInboxMessage(text, Boolean(pdf))) return;
     const lesson = assignmentLessons.find((item) => item.id === lessonId);
     const context =
       kind === "feedback"
@@ -103,6 +107,7 @@ export default function CoachInbox() {
       body: text,
       context,
       lessonId: lessonId || undefined,
+      file: pdf,
     });
     setBusy(false);
     if (!result.ok) {
@@ -110,6 +115,7 @@ export default function CoachInbox() {
       return;
     }
     setText("");
+    setPdf(null);
     setStatus(
       result.emailError
         ? `Saved in the classroom, but the student email was not sent. ${result.emailError}`
@@ -175,7 +181,10 @@ export default function CoachInbox() {
                       {formatInboxTime(thread.lastAt)}
                     </span>
                     <span className="inbox-preview">
-                      <LinkedText text={thread.messages[thread.messages.length - 1]?.body || ""} interactive={false} />
+                      <LinkedText
+                        text={inboxPreviewText(thread.messages[thread.messages.length - 1] || { body: "", pdfName: null, pdfUrl: null })}
+                        interactive={false}
+                      />
                     </span>
                   </button>
                 </div>
@@ -219,11 +228,12 @@ export default function CoachInbox() {
                 rows={4}
                 disabled={busy}
               />
+              <InboxPdfPicker file={pdf} onChange={setPdf} disabled={busy} />
               <div className="actions">
-                <button className="primary" type="button" disabled={busy || !text.trim()} onClick={() => send("reply")}>
+                <button className="primary" type="button" disabled={busy || !canPostInboxMessage(text, Boolean(pdf))} onClick={() => send("reply")}>
                   Reply
                 </button>
-                <button className="ghost" type="button" disabled={busy || !text.trim()} onClick={() => send("feedback")}>
+                <button className="ghost" type="button" disabled={busy || !canPostInboxMessage(text, Boolean(pdf))} onClick={() => send("feedback")}>
                   Leave assignment feedback
                 </button>
                 <button className="ghost" type="button" disabled={busy || !selected.queued} onClick={() => void markRead()}>
