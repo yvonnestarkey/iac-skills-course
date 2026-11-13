@@ -247,6 +247,7 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
   const [week, setWeek] = useState<StudyJournalWeek | null>(null);
   const [weeks, setWeeks] = useState<StudyJournalWeek[]>([]);
   const [privacy, setPrivacy] = useState<JournalPrivacy>(emptyJournalPrivacy);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [activity, setActivity] = useState<Record<string, JournalCourseDay>>({});
   const [status, setStatus] = useState("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -386,18 +387,31 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
 
   return (
     <div className="study-journal">
-      <aside className="study-tool-switch">
-        <p>
-          The Study Journal is to help you keep track of what you&apos;ve actually DONE. Use this to quickly document
-          your actual studying after you&apos;ve done it.
-        </p>
-        <p>
-          You can plan your studying in advance using the <Link href="/student/planner">Study Planner</Link>.
-        </p>
-      </aside>
+      <div className="study-journal-page-bar">
+        <Link href="/student/dashboard">← Student dashboard</Link>
+        <button
+          type="button"
+          className="ghost"
+          aria-expanded={detailsOpen}
+          onClick={() => setDetailsOpen((open) => !open)}
+        >
+          Details & Privacy
+        </button>
+      </div>
+      {detailsOpen ? (
+        <aside className="study-tool-switch">
+          <p>
+            The Study Journal is to help you keep track of what you&apos;ve actually DONE. Use this to quickly document
+            your actual studying after you&apos;ve done it.
+          </p>
+          <p>
+            You can plan your studying in advance using the <Link href="/student/planner">Study Planner</Link>.
+          </p>
+          {privacyNotice}
+        </aside>
+      ) : null}
       <StudentCourseProgress />
       <section className="study-journal-sheet">
-        {privacyNotice}
         <div className="study-journal-head">
           <div>
             <p className="kicker">Study journal</p>

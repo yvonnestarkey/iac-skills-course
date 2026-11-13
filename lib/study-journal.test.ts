@@ -102,6 +102,12 @@ test("study journal sits on the dashboard and above Study Clinic in the sidebar"
   assert.match(journal, /keep track of what you&apos;ve actually DONE/);
   assert.match(journal, /href="\/student\/planner"/);
   assert.match(journal, /Study Planner/);
+  assert.match(journal, /Details & Privacy/);
+  assert.match(journal, /← Student dashboard/);
+  assert.doesNotMatch(page, /← Student dashboard/);
+  const progressAt = journal.lastIndexOf("<StudentCourseProgress");
+  assert.ok(journal.indexOf("study-journal-page-bar") < progressAt);
+  assert.ok(progressAt < journal.lastIndexOf("study-journal-sheet"));
   assert.match(progress, /task\$\{tasks.total === 1 \? "" : "s"\} submitted/);
   assert.match(progress, /watched to 80%/);
   assert.match(sql, /create table if not exists public\.student_study_journal/);
@@ -126,6 +132,8 @@ test("the study journal is visible to Yvonne until the student opts out", () => 
   assert.match(journal, /Yvonne can see your planner/);
   assert.match(journal, /Click here/);
   assert.match(journal, /keep this private so only you can see it/);
+  assert.match(journal, /Details & Privacy/);
+  assert.ok(journal.lastIndexOf("{privacyNotice}") < journal.lastIndexOf("<StudentCourseProgress"));
   assert.match(sql, /student_study_journal_settings/);
   assert.match(sql, /staff read shared study journals/);
   assert.match(sql, /s\.private = true/);
@@ -175,6 +183,7 @@ test("the dashboard journal is today's card and saves into the full weekly journ
   assert.doesNotMatch(journal.slice(compactAt, weekAt), /ExamCountdownBadge/);
   assert.doesNotMatch(journal.slice(compactAt, weekAt), /Yvonne can see/);
   assert.match(journal.slice(weekAt), /ExamCountdownBadge/);
+  assert.doesNotMatch(journal.slice(weekAt), /privacyNotice/);
   assert.match(journal, /\{privacyNotice\}/);
 });
 
