@@ -7,6 +7,7 @@ import {
   assignmentSubmittedNotifySubject,
   shouldNotifyCoachOfLessonSubmission,
 } from "@/lib/student-submissions";
+import { claimDueScheduledSends } from "@/lib/scheduled-sends-admin";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +22,7 @@ export async function POST(request: Request) {
   const body = (await request.json().catch(() => ({}))) as { lessonId?: string };
   const lessonId = String(body.lessonId || "").trim();
   if (!lessonId) return NextResponse.json({ error: "Missing lesson." }, { status: 400 });
+  void claimDueScheduledSends({ studentId: user.id });
 
   const client = getServiceSupabase();
   let lessonTitle = lessonId;

@@ -1626,7 +1626,8 @@ input[type="tel"]:focus {
 }
 
 .coach-dash-reminders,
-.coach-journal-needs {
+.coach-journal-needs,
+.coach-scheduled-sends {
   margin-bottom: 22px;
 }
 
@@ -10286,6 +10287,23 @@ a.planner-video-btn:visited:hover {
   align-items: flex-start;
   margin-top: 12px;
 }
+.schedule-send-fields {
+  margin-top: 14px;
+}
+.schedule-send-when {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+.schedule-send-when label,
+.schedule-send-fields > label {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 13px;
+}
+
 .drip-lesson-option {
   margin-top: 18px;
   padding-top: 14px;

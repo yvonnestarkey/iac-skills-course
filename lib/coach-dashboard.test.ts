@@ -172,6 +172,7 @@ test("coach tools sit in three columns and keep the previous destinations", () =
   assert.match(dash, /Send a group message/);
   assert.match(dash, /CoachReminders/);
   assert.match(dash, /CoachJournalNeeds/);
+  assert.match(dash, /CoachScheduledSends/);
   assert.match(reminders, /Type a student name/);
   assert.match(reminders, /In a week/);
   assert.match(dash, /router\.push\(item\.href\)/);

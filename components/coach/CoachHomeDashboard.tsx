@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import CoachJournalNeeds from "@/components/coach/CoachJournalNeeds";
 import CoachReminders from "@/components/coach/CoachReminders";
+import CoachScheduledSends from "@/components/coach/CoachScheduledSends";
 import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import {
   COACH_DASHBOARD_GROUPS,
@@ -242,6 +243,8 @@ export default function CoachHomeDashboard() {
       <CoachJournalNeeds students={students} onMessage={messageStudents} />
 
       <CoachReminders students={students} onMessage={messageStudents} />
+
+      <CoachScheduledSends />
 
       <div className="coach-dash-grid">
         {COACH_DASHBOARD_GROUPS.map((group) => (

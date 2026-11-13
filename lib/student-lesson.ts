@@ -927,6 +927,9 @@ async function upsertOwnProgress(lessonId: string, patch: ProgressPatch): Promis
     ({ error } = await client.from("lesson_progress").upsert(basic));
   }
   if (error) return { ok: false, error: error.message };
+  if (completed && !Boolean(existing?.completed) && typeof fetch !== "undefined") {
+    void fetch("/api/student/notifications/catch-up", { method: "POST" }).catch(() => undefined);
+  }
   return { ok: true };
 }
 

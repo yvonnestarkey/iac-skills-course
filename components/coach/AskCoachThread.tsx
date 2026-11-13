@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import ScheduleSendFields from "@/components/coach/ScheduleSendFields";
 import InboxPdfPicker from "@/components/inbox/InboxPdfPicker";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
 import ComposerBox from "@/components/ui/ComposerBox";
@@ -13,9 +14,16 @@ import {
   markCoachThreadRead,
   postInboxMessage,
   refreshCoachAlerts,
+  uploadInboxPdf,
   studentRowMatches,
   type InboxMessage,
 } from "@/lib/inbox";
+import {
+  createScheduledSend,
+  emptyScheduleFields,
+  scheduledSendFinished,
+  scheduledWriteFromFields,
+} from "@/lib/scheduled-sends";
 import { getSupabase } from "@/lib/supabase";
 import type { Student } from "@/lib/types";
 
@@ -23,6 +31,7 @@ export default function AskCoachThread({ student }: { student: Student }) {
   const [messages, setMessages] = useState<InboxMessage[]>([]);
   const [text, setText] = useState("");
   const [pdf, setPdf] = useState<File | null>(null);
+  const [schedule, setSchedule] = useState(emptyScheduleFields);
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -64,6 +73,50 @@ export default function AskCoachThread({ student }: { student: Student }) {
     if (!canPostInboxMessage(text, Boolean(pdf))) return;
     setBusy(true);
     setStatus("");
+    if (schedule.mode !== "now") {
+      let pdfUrl = "";
+      let pdfName = "";
+      if (pdf) {
+        const uploaded = await uploadInboxPdf(pdf, student.id);
+        if (uploaded.ok === false) {
+          setBusy(false);
+          setStatus(uploaded.error);
+          return;
+        }
+        pdfUrl = uploaded.url;
+        pdfName = uploaded.name;
+      }
+      const planned = scheduledWriteFromFields(schedule, {
+        channel: "message",
+        body: text,
+        pdfUrl,
+        pdfName,
+        audience: "student",
+        audienceLabel: student.name,
+        recipients: [{ id: student.id, email: student.email, name: student.name }],
+      });
+      if (planned.ok === false || !("write" in planned)) {
+        setBusy(false);
+        setStatus(planned.ok === false ? planned.error : "Could not schedule that message.");
+        return;
+      }
+      const saved = await createScheduledSend(planned.write);
+      setBusy(false);
+      if (!saved.ok) {
+        setStatus(saved.error || "Could not schedule that message.");
+        return;
+      }
+      setText("");
+      setPdf(null);
+      setSchedule(emptyScheduleFields());
+      if (scheduledSendFinished(saved.data)) {
+        setStatus("Sent.");
+        await load();
+      } else {
+        setStatus("Scheduled.");
+      }
+      return;
+    }
     const result = await postInboxMessage({
       studentId: student.id,
       studentEmail: student.email,
@@ -128,9 +181,10 @@ export default function AskCoachThread({ student }: { student: Student }) {
         disabled={busy}
       />
       <InboxPdfPicker file={pdf} onChange={setPdf} disabled={busy} />
+      <ScheduleSendFields value={schedule} onChange={setSchedule} disabled={busy} />
       <div className="actions">
         <button className="primary" id="send-coach" type="button" disabled={busy || !canPostInboxMessage(text, Boolean(pdf))} onClick={send}>
-          {pending ? "Reply" : "Send message"}
+          {schedule.mode === "now" ? (pending ? "Reply" : "Send message") : "Schedule message"}
         </button>
         {pending ? (
           <button className="ghost" type="button" disabled={busy} onClick={() => void markRead()}>

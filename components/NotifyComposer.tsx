@@ -2,22 +2,31 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import ScheduleSendFields from "@/components/coach/ScheduleSendFields";
 import ComposerBox from "@/components/ui/ComposerBox";
 import LinkedText from "@/components/ui/LinkedText";
 import { audienceCopy, postAnnouncement } from "@/lib/comms";
 import { insertCoachNotifications, resolveNotificationTargets } from "@/lib/notifications";
+import {
+  createScheduledSend,
+  emptyScheduleFields,
+  scheduledSendFinished,
+  scheduledWriteFromFields,
+} from "@/lib/scheduled-sends";
 import { useStore } from "@/lib/store";
 
 export default function NotifyComposer() {
   const { data, notifyDraft, setNotifyDraft, mutate, setNotice } = useStore();
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const [schedule, setSchedule] = useState(emptyScheduleFields);
   const [busy, setBusy] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     setSubject(notifyDraft?.subject || "");
     setBody("");
+    setSchedule(emptyScheduleFields());
   }, [notifyDraft]);
 
   if (pathname.startsWith("/student") || !notifyDraft) return null;
@@ -39,6 +48,38 @@ export default function NotifyComposer() {
         name: student.name,
       })),
     });
+    const planned = scheduledWriteFromFields(schedule, {
+      channel: "notification",
+      title: subject,
+      body,
+      audience: notifyDraft.audience,
+      audienceLabel: notifyDraft.audienceLabel,
+      recipients: targets.map((student) => ({ id: student.id, email: student.email, name: student.name || student.email })),
+    });
+    if (planned.ok === false) {
+      alert(planned.error);
+      setNotice(planned.error);
+      setBusy(false);
+      return;
+    }
+    if ("write" in planned) {
+      const saved = await createScheduledSend(planned.write);
+      if (!saved.ok) {
+        alert(saved.error || "Could not schedule that notification.");
+        setNotice(saved.error || "Could not schedule that notification.");
+        setBusy(false);
+        return;
+      }
+      setNotice(
+        scheduledSendFinished(saved.data)
+          ? `Sent to ${notifyDraft.audienceLabel}.`
+          : `Scheduled for ${notifyDraft.audienceLabel}.`
+      );
+      setNotifyDraft(null);
+      setBusy(false);
+      return;
+    }
+
     const result = await insertCoachNotifications({
       students: targets,
       title: subject,
@@ -84,7 +125,7 @@ export default function NotifyComposer() {
           </div>
           <div className="notify-modal-actions">
             <button className="primary" onClick={send} disabled={!subject.trim() || !body.trim() || !count || busy}>
-              {busy ? "Sending…" : "Send notification"}
+              {busy ? "Sending…" : schedule.mode === "now" ? "Send notification" : "Schedule notification"}
             </button>
             <button className="ghost" onClick={() => setNotifyDraft(null)}>
               Cancel
@@ -129,6 +170,7 @@ export default function NotifyComposer() {
                 </p>
               </div>
             ) : null}
+            <ScheduleSendFields value={schedule} onChange={setSchedule} disabled={busy} />
           </div>
         </div>
       </section>

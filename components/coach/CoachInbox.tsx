@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import ScheduleSendFields from "@/components/coach/ScheduleSendFields";
 import InboxPdfPicker from "@/components/inbox/InboxPdfPicker";
 import InboxThreadView from "@/components/inbox/InboxThreadView";
 import ComposerBox from "@/components/ui/ComposerBox";
@@ -16,9 +17,16 @@ import {
   markCoachThreadRead,
   postInboxMessage,
   refreshCoachAlerts,
+  uploadInboxPdf,
   type InboxKind,
   type InboxThread,
 } from "@/lib/inbox";
+import {
+  createScheduledSend,
+  emptyScheduleFields,
+  scheduledSendFinished,
+  scheduledWriteFromFields,
+} from "@/lib/scheduled-sends";
 import { useStore } from "@/lib/store";
 
 export default function CoachInbox() {
@@ -27,6 +35,7 @@ export default function CoachInbox() {
   const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
   const [text, setText] = useState("");
   const [pdf, setPdf] = useState<File | null>(null);
+  const [schedule, setSchedule] = useState(emptyScheduleFields);
   const [lessonId, setLessonId] = useState("");
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
@@ -99,6 +108,54 @@ export default function CoachInbox() {
         : "Coach reply";
     setBusy(true);
     setStatus("");
+    const student = identityFor(selected);
+    if (schedule.mode !== "now") {
+      let pdfUrl = "";
+      let pdfName = "";
+      if (pdf) {
+        const uploaded = await uploadInboxPdf(pdf, student.id);
+        if (uploaded.ok === false) {
+          setBusy(false);
+          setStatus(uploaded.error);
+          return;
+        }
+        pdfUrl = uploaded.url;
+        pdfName = uploaded.name;
+      }
+      const planned = scheduledWriteFromFields(schedule, {
+        channel: "message",
+        messageKind: kind === "feedback" ? "feedback" : "reply",
+        title: kind === "feedback" ? context : "Message from your coach",
+        body: text,
+        pdfUrl,
+        pdfName,
+        audience: "student",
+        audienceLabel: student.name,
+        recipients: [{ id: student.id, email: selected.studentEmail, name: student.name }],
+      });
+      if (planned.ok === false || !("write" in planned)) {
+        setBusy(false);
+        setStatus(planned.ok === false ? planned.error : "Could not schedule that message.");
+        return;
+      }
+      const saved = await createScheduledSend(planned.write);
+      setBusy(false);
+      if (!saved.ok) {
+        setStatus(saved.error || "Could not schedule that message.");
+        return;
+      }
+      setText("");
+      setPdf(null);
+      setSchedule(emptyScheduleFields());
+      if (scheduledSendFinished(saved.data)) {
+        setStatus(kind === "feedback" ? "Feedback sent to the student dashboard." : "Reply sent.");
+        refreshCoachAlerts();
+        await load();
+      } else {
+        setStatus("Scheduled.");
+      }
+      return;
+    }
     const result = await postInboxMessage({
       studentId: selected.studentId,
       studentEmail: selected.studentEmail,
@@ -229,12 +286,13 @@ export default function CoachInbox() {
                 disabled={busy}
               />
               <InboxPdfPicker file={pdf} onChange={setPdf} disabled={busy} />
+              <ScheduleSendFields value={schedule} onChange={setSchedule} disabled={busy} />
               <div className="actions">
                 <button className="primary" type="button" disabled={busy || !canPostInboxMessage(text, Boolean(pdf))} onClick={() => send("reply")}>
-                  Reply
+                  {schedule.mode === "now" ? "Reply" : "Schedule reply"}
                 </button>
                 <button className="ghost" type="button" disabled={busy || !canPostInboxMessage(text, Boolean(pdf))} onClick={() => send("feedback")}>
-                  Leave assignment feedback
+                  {schedule.mode === "now" ? "Leave assignment feedback" : "Schedule assignment feedback"}
                 </button>
                 <button className="ghost" type="button" disabled={busy || !selected.queued} onClick={() => void markRead()}>
                   Mark as read

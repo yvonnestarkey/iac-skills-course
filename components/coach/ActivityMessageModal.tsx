@@ -1,10 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import ScheduleSendFields from "@/components/coach/ScheduleSendFields";
 import InboxPdfPicker from "@/components/inbox/InboxPdfPicker";
 import ComposerBox from "@/components/ui/ComposerBox";
 import LinkedText from "@/components/ui/LinkedText";
-import { canPostInboxMessage, postInboxMessagesToStudents } from "@/lib/inbox";
+import { canPostInboxMessage, postInboxMessagesToStudents, uploadInboxPdf } from "@/lib/inbox";
+import {
+  createScheduledSend,
+  emptyScheduleFields,
+  scheduledSendFinished,
+  scheduledWriteFromFields,
+} from "@/lib/scheduled-sends";
 import type { Student } from "@/lib/types";
 
 export default function ActivityMessageModal({
@@ -18,6 +25,7 @@ export default function ActivityMessageModal({
 }) {
   const [body, setBody] = useState("");
   const [pdf, setPdf] = useState<File | null>(null);
+  const [schedule, setSchedule] = useState(emptyScheduleFields);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const count = students.length;
@@ -27,6 +35,43 @@ export default function ActivityMessageModal({
     if (!canPostInboxMessage(body, Boolean(pdf)) || !count || busy) return;
     setBusy(true);
     setError("");
+    let pdfUrl = "";
+    let pdfName = "";
+    if (pdf && schedule.mode !== "now") {
+      const uploaded = await uploadInboxPdf(pdf, students[0]?.id);
+      if (uploaded.ok === false) {
+        setBusy(false);
+        setError(uploaded.error);
+        return;
+      }
+      pdfUrl = uploaded.url;
+      pdfName = uploaded.name;
+    }
+    const planned = scheduledWriteFromFields(schedule, {
+      channel: "message",
+      body,
+      pdfUrl,
+      pdfName,
+      audience: count === 1 ? "student" : "filtered",
+      audienceLabel: names,
+      recipients: students.map((student) => ({ id: student.id, email: student.email, name: student.name })),
+    });
+    if (planned.ok === false) {
+      setBusy(false);
+      setError(planned.error);
+      return;
+    }
+    if ("write" in planned) {
+      const saved = await createScheduledSend(planned.write);
+      setBusy(false);
+      if (!saved.ok) {
+        setError(saved.error || "Could not schedule that message.");
+        return;
+      }
+      if (scheduledSendFinished(saved.data)) onSent(count);
+      onClose();
+      return;
+    }
     const result = await postInboxMessagesToStudents(
       students.map((student) => ({ id: student.id, email: student.email })),
       body,
@@ -62,7 +107,7 @@ export default function ActivityMessageModal({
           </div>
           <div className="notify-modal-actions">
             <button className="primary" onClick={() => void send()} disabled={!canPostInboxMessage(body, Boolean(pdf)) || !count || busy}>
-              {busy ? "Sending…" : `Send message${count ? ` (${count})` : ""}`}
+              {busy ? "Sending…" : schedule.mode === "now" ? `Send message${count ? ` (${count})` : ""}` : "Schedule message"}
             </button>
             <button className="ghost" onClick={onClose} disabled={busy}>
               Cancel
@@ -85,6 +130,7 @@ export default function ActivityMessageModal({
               disabled={busy}
             />
             <InboxPdfPicker file={pdf} onChange={setPdf} disabled={busy} />
+            <ScheduleSendFields value={schedule} onChange={setSchedule} disabled={busy} />
             {body.trim() ? (
               <div className="notify-preview">
                 <p className="muted small">Preview</p>
