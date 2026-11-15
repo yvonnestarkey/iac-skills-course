@@ -121,6 +121,8 @@ test("standard plan is six US$60 instalments and referral plan is six US$57 inst
   assert.equal(planInstallmentTotalCents({ product: FALLBACK_PRODUCT }), 36000);
   assert.equal(planInstallmentAmountCents({ product: FALLBACK_PRODUCT, referralCode: "JAN27-TEST" }), 5700);
   assert.equal(planInstallmentTotalCents({ product: FALLBACK_PRODUCT, referralCode: "JAN27-TEST" }), 34200);
+  assert.equal(planInstallmentAmountCents({ product: FALLBACK_PRODUCT, promoPercent: 10 }), 5400);
+  assert.equal(planInstallmentTotalCents({ product: FALLBACK_PRODUCT, promoPercent: 10 }), 32400);
   const drafts = futurePlanInvoiceDrafts({
     enrolledAt: new Date("2027-01-15T00:00:00.000Z"),
     purchaseId: "p1",

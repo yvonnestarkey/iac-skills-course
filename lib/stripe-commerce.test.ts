@@ -26,6 +26,7 @@ test("referral and promo discounts do not stack", () => {
   assert.equal(checkoutDiscount({ option: "once_off", product: FALLBACK_PRODUCT, referralCode: "JAN27-TEST" }), 1635);
   assert.equal(checkoutDiscount({ option: "plan_6", product: FALLBACK_PRODUCT, referralCode: "JAN27-TEST" }), 300);
   assert.equal(checkoutDiscount({ option: "once_off", product: FALLBACK_PRODUCT, promoPercent: 10 }), 3270);
+  assert.equal(checkoutDiscount({ option: "plan_6", product: FALLBACK_PRODUCT, promoPercent: 10 }), 600);
 });
 
 test("plan referral is baked into each invoice amount rather than a repeating coupon", () => {
