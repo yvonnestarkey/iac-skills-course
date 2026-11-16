@@ -7,6 +7,7 @@ import { getServiceSupabase } from "./supabase-admin";
 export const GOOGLE_CALENDAR_SQL_HINT =
   "Paste supabase/google-calendar-coaching.sql in the Supabase SQL editor, then try again.";
 export const GOOGLE_CALENDAR_IMPORT_FROM = "2026-01-01T00:00:00.000Z";
+export const IAC_CALENDAR_EVENT_MARKER = "IAC January 2027";
 export const GOOGLE_CALENDAR_SCOPE =
   "https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/userinfo.email";
 export const CALENDAR_IGNORE_EMAILS = [
@@ -147,6 +148,13 @@ export function calendarMeetingUrl(event: GoogleCalendarEvent): string {
 
 export function isTimedCalendarEvent(event: GoogleCalendarEvent): boolean {
   return Boolean(calendarEventStart(event));
+}
+
+export function isIacOneOnOneCalendarEvent(event: GoogleCalendarEvent): boolean {
+  const title = asText(event.summary);
+  if (!title.toLowerCase().includes(IAC_CALENDAR_EVENT_MARKER.toLowerCase())) return false;
+  if (/\bbuffer\b/i.test(title)) return false;
+  return true;
 }
 
 export function matchCalendarStudent(
@@ -463,6 +471,7 @@ export async function importGoogleCalendarEvent(
 ): Promise<{ ok: boolean; status: CalendarImportStatus; error?: string }> {
   const eventId = asText(event.id);
   if (!eventId) return { ok: false, status: "error", error: "Calendar event is missing an id." };
+  if (!isIacOneOnOneCalendarEvent(event)) return { ok: true, status: "skipped" };
   if (!isTimedCalendarEvent(event) && asText(event.status).toLowerCase() !== "cancelled") {
     return { ok: true, status: "skipped" };
   }

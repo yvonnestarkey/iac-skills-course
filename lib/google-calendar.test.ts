@@ -11,6 +11,7 @@ import {
   googleCalendarRedirectUri,
   googleCalendarWebhookUrl,
   googleWebhookChannelMatches,
+  isIacOneOnOneCalendarEvent,
   isTimedCalendarEvent,
   matchCalendarStudent,
   studentDeclinedEvent,
@@ -25,7 +26,7 @@ test("a Calendly 1-on-1 with one student attendee maps onto that profile", () =>
   const event = {
     id: "evt-1",
     status: "confirmed",
-    summary: "Yvonne and Ada Molefe",
+    summary: "Ada Molefe — IAC January 2027",
     description: "Email: ada@example.com",
     hangoutLink: "https://meet.google.com/abc-defg-hij",
     start: { dateTime: "2026-11-20T16:00:00.000Z" },
@@ -43,6 +44,13 @@ test("a Calendly 1-on-1 with one student attendee maps onto that profile", () =>
   assert.equal(calendarMeetingUrl(event), "https://meet.google.com/abc-defg-hij");
   assert.equal(isTimedCalendarEvent(event), true);
   assert.equal(studentDeclinedEvent(event, "ada@example.com"), false);
+});
+
+test("only IAC January 2027 1-on-1s are imported; buffer blocks are ignored", () => {
+  assert.equal(isIacOneOnOneCalendarEvent({ summary: "Ada Molefe — IAC January 2027" }), true);
+  assert.equal(isIacOneOnOneCalendarEvent({ summary: "Willemien van Dis and Yvonne Starkey" }), false);
+  assert.equal(isIacOneOnOneCalendarEvent({ summary: "[10-minute buffer after IAC January 2027 event]" }), false);
+  assert.equal(isIacOneOnOneCalendarEvent({ summary: "[10-minute buffer before IAC January 2027 event]" }), false);
 });
 
 test("group events and declined invites are not treated as that student's booking", () => {

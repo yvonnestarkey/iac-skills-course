@@ -90,8 +90,9 @@ export default function GoogleCalendarConnect() {
       <p className="kicker">Coach tools</p>
       <h1>Google Calendar</h1>
       <p className="muted">
-        Connect the calendar that receives Calendly 1-on-1s. When a student books, the appointment is saved on their
-        profile and their booking link is closed so they cannot set up a second session.
+        Connect the calendar that receives Calendly 1-on-1s. Only events whose name includes “IAC January 2027” are
+        imported. Buffer blocks are ignored. When a student books, the appointment is saved on their profile and their
+        booking link is closed so they cannot set up a second session.
       </p>
       {error ? <p className="waiting">{error}</p> : null}
       {notice ? <p className="muted">{notice}</p> : null}
