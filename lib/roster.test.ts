@@ -55,6 +55,16 @@ test("roster course access distinguishes full and preview students", () => {
   assert.equal(courseAccessLabel(full.courseAccess, false), "Deregistered");
 });
 
+test("country is South Africa keeps students in that country and does not crash on blanks", () => {
+  const sa = { ...full, country: "South Africa" };
+  const blank = { ...preview, country: null as string | null };
+  const rule = { id: "r1", field: "country" as const, operator: "is" as const, values: ["South Africa"] };
+  assert.equal(matchRosterRule(sa, rule), true);
+  assert.equal(matchRosterRule(blank, rule), false);
+  assert.equal(matchesRosterStudent(sa, { search: "", logic: "and", rules: [rule] }), true);
+  assert.equal(matchesRosterStudent(blank, { search: "", logic: "and", rules: [rule] }), false);
+});
+
 test("activity and roster hide inactive students unless searched or filtered", () => {
   const inactive = { ...full, accessActive: false as const };
   const empty = { search: "", rules: [], logic: "and" as const };

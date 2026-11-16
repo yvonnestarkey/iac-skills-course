@@ -115,9 +115,9 @@ export default function RosterFilterBuilder({
                   <option value="">Select…</option>
                   {options
                     .filter((option) => option.value.trim())
-                    .map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
+                    .map((option, index) => (
+                      <option key={`${option.value}-${index}`} value={option.value}>
+                        {option.label || option.value}
                       </option>
                     ))}
                 </select>

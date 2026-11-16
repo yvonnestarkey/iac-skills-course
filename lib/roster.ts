@@ -269,7 +269,9 @@ export function uniqueRosterOptions(
     rosterRuleValues(student, field).forEach((value) => add(value, undefined, true));
   });
 
-  extras.sort((a, b) => a.label.localeCompare(b.label, undefined, { numeric: true, sensitivity: "base" }));
+  extras.sort((a, b) =>
+    String(a.label || a.value).localeCompare(String(b.label || b.value), undefined, { numeric: true, sensitivity: "base" })
+  );
   const base = Array.from(seen.values()).filter((option) => extras.every((extra) => optionKey(extra.value) !== optionKey(option.value)));
   const otherIndex = base.findIndex((option) => optionKey(option.value) === "other");
   if (otherIndex >= 0) {
@@ -350,6 +352,13 @@ export function parseRosterOnboarding(row: Record<string, unknown>): RosterOnboa
   };
 }
 
+function asRuleText(value: unknown): string {
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  if (typeof value === "boolean") return value ? "true" : "false";
+  if (typeof value !== "string") return "";
+  return value.trim();
+}
+
 export function rosterRuleValue(student: {
   name: string;
   email: string;
@@ -385,7 +394,7 @@ export function rosterRuleValue(student: {
     case "onboardingCompleted":
       return student.onboardingCompleted ? "true" : "false";
     case "country":
-      return student.country || "";
+      return asRuleText(student.country);
     case "ctaYear":
       return student.ctaYear || "";
     case "ctaUniversity":
@@ -418,20 +427,22 @@ export function matchRosterRule(
   student: Parameters<typeof rosterRuleValue>[0],
   rule: RosterFilterRule
 ): boolean {
-  const values = rosterRuleValues(student, rule.field).map((value) => value.trim()).filter(Boolean);
+  const values = rosterRuleValues(student, rule.field).map(asRuleText).filter(Boolean);
   const empty = !values.length;
   if (rule.operator === "is_empty") return empty;
   if (rule.operator === "is_not_empty") return !empty;
-  const selected = (rule.values || []).map((value) => value.trim()).filter(Boolean);
+  const selected = (rule.values || []).map(asRuleText).filter(Boolean);
   if (!selected.length) return true;
   if (rule.field === "diagnosis") {
     const ids = values.map((value) => value.toLowerCase());
     return selected.some((value) => ids.includes(value.toLowerCase()));
   }
-  const hay = values[0].toLowerCase();
-  if (rule.operator === "contains") return hay.includes(selected[0].toLowerCase());
-  if (rule.operator === "starts_with") return hay.startsWith(selected[0].toLowerCase());
-  if (rule.operator === "equals" || rule.operator === "is") return hay === selected[0].toLowerCase();
+  const hay = (values[0] || "").toLowerCase();
+  const needle = (selected[0] || "").toLowerCase();
+  if (!hay) return false;
+  if (rule.operator === "contains") return hay.includes(needle);
+  if (rule.operator === "starts_with") return hay.startsWith(needle);
+  if (rule.operator === "equals" || rule.operator === "is") return hay === needle;
   return true;
 }
 
@@ -442,7 +453,7 @@ export function matchRosterRules(
 ): boolean {
   const active = rules.filter((rule) => {
     if (rule.operator === "is_empty" || rule.operator === "is_not_empty") return true;
-    return (rule.values || []).some((value) => value.trim());
+    return (rule.values || []).some((value) => asRuleText(value));
   });
   if (!active.length) return true;
   const matches = active.map((rule) => matchRosterRule(student, rule));

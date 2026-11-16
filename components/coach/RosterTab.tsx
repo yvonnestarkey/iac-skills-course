@@ -585,7 +585,7 @@ function cellFor(
         </span>
       );
     case "country":
-      return <span className="muted small">{student.country || "—"}</span>;
+      return <span className="muted small">{typeof student.country === "string" && student.country.trim() ? student.country : "—"}</span>;
     case "ctaUniversity":
       return <span className="muted small">{student.ctaUniversity || "—"}</span>;
     case "ctaYear":
