@@ -46,11 +46,13 @@ export const DEFAULT_LIVE_CALENDAR_TOOLTIP =
 export const COACHING_BOOKING_NOTE =
   "Click on the link to find a time that works for you and book your session. Please note that you need to set up ONE session. Additional sessions will be agreed upon if they're needed and if you're submitting tasks.";
 
+export const COACHING_BOOKING_URL = "https://calendar.app.google/2bPLVu1Vdnh7LpMh7";
+
 export const DEFAULT_COACHING_CONFIG: CoachingPageConfig = {
   title: "1-on-1 Coaching Session",
   description:
     "Book a private session with Yvonne. After you meet, your Fireflies summary, recording, and coach notes will appear here.",
-  calendly_url: "",
+  calendly_url: COACHING_BOOKING_URL,
   banner_image_url: null,
   dashboard_banner_url: "/student-dashboard-banner.jpg",
   recording_section_title: "Session Recording and Notes",
@@ -145,11 +147,17 @@ export function coachingSessionStatusLabel(status: CoachingSessionStatus): strin
   return "Scheduled";
 }
 
+export function coachingBookingUrl(value: unknown): string {
+  const url = asText(value);
+  if (!url || /calendly\.com/i.test(url)) return COACHING_BOOKING_URL;
+  return url;
+}
+
 function configFromRow(row: Record<string, unknown>): CoachingPageConfig {
   return {
     title: String(row.title || DEFAULT_COACHING_CONFIG.title),
     description: String(row.description || ""),
-    calendly_url: asText(row.calendly_url) || "",
+    calendly_url: coachingBookingUrl(row.calendly_url),
     banner_image_url: asText(row.banner_image_url),
     dashboard_banner_url: asText(row.dashboard_banner_url) || asText(row.dashboard_banner),
     recording_section_title: asText(row.recording_section_title) || DEFAULT_COACHING_CONFIG.recording_section_title,

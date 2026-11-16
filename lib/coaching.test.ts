@@ -5,7 +5,9 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 import {
   COACHING_BOOKING_NOTE,
+  COACHING_BOOKING_URL,
   bookedOneOnOneSession,
+  coachingBookingUrl,
   coachingSessionWriteRow,
   emptyCoachingSessionWrite,
   missingCoachingColumn,
@@ -15,6 +17,15 @@ import {
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const studentId = "11111111-1111-4111-8111-111111111111";
+
+test("1-on-1 booking uses the Google Appointment Schedule link instead of Calendly", () => {
+  assert.equal(COACHING_BOOKING_URL, "https://calendar.app.google/2bPLVu1Vdnh7LpMh7");
+  assert.equal(coachingBookingUrl(""), COACHING_BOOKING_URL);
+  assert.equal(coachingBookingUrl("https://calendly.com/yvonne/iac"), COACHING_BOOKING_URL);
+  assert.equal(coachingBookingUrl(COACHING_BOOKING_URL), COACHING_BOOKING_URL);
+  const sql = readFileSync(join(root, "supabase/coaching-google-booking.sql"), "utf8");
+  assert.match(sql, /calendar\.app\.google\/2bPLVu1Vdnh7LpMh7/);
+});
 
 test("student coaching page shows the one-session booking note under the heading", () => {
   const source = readFileSync(join(root, "components/student/StudentCoachingPage.tsx"), "utf8");

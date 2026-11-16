@@ -15,7 +15,7 @@ values (
   1,
   '1-on-1 Coaching Session',
   'Book a private session with Yvonne. After you meet, your Fireflies summary, recording, and coach notes will appear here.',
-  'https://calendly.com',
+  'https://calendar.app.google/2bPLVu1Vdnh7LpMh7',
   null
 )
 on conflict (id) do nothing;
