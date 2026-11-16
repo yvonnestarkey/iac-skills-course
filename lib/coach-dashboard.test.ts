@@ -188,6 +188,7 @@ test("coach tools sit in three columns and keep the previous destinations", () =
   assert.match(hrefs, /\/coach\/dashboard-posts/);
   assert.match(hrefs, /\/coach\/referrals/);
   assert.match(hrefs, /\/coach\/evaluator/);
+  assert.match(hrefs, /\/coach\/google-calendar/);
   assert.equal(coachDashboardTools().some((item) => item.href === "/coach/waitlist"), false);
 
   const home = readFileSync(resolve("app/coach/page.tsx"), "utf8");

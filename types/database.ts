@@ -138,6 +138,8 @@ export interface StudentCoachingSession {
   fireflies_meeting_id?: string | null;
   fireflies_pdf_url?: string | null;
   fireflies_transcript_url?: string | null;
+  google_event_id?: string | null;
+  meeting_url?: string | null;
   vimeo_recording_url?: string | null;
   recording_url?: string | null;
   pdf_summary_url?: string | null;

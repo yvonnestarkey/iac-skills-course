@@ -27,6 +27,8 @@ export interface StudentCoachingSession {
   firefliesMeetingId: string | null;
   firefliesPdfUrl: string | null;
   firefliesTranscriptUrl: string | null;
+  googleEventId: string | null;
+  meetingUrl: string | null;
   vimeoRecordingUrl: string | null;
   recordingUrl: string | null;
   pdfSummaryUrl: string | null;
@@ -88,6 +90,8 @@ function sessionFromRow(row: Record<string, unknown>): StudentCoachingSession {
     firefliesMeetingId: asText(row.fireflies_meeting_id),
     firefliesPdfUrl: asText(row.fireflies_pdf_url) || asText(row.pdf_summary_url),
     firefliesTranscriptUrl: asText(row.fireflies_transcript_url),
+    googleEventId: asText(row.google_event_id),
+    meetingUrl: asText(row.meeting_url),
     vimeoRecordingUrl: asText(row.vimeo_recording_url) || asText(row.recording_url),
     recordingUrl: asText(row.recording_url) || asText(row.vimeo_recording_url),
     pdfSummaryUrl: asText(row.pdf_summary_url) || asText(row.fireflies_pdf_url),
@@ -115,6 +119,30 @@ export function sessionHasDeliverables(session: StudentCoachingSession): boolean
 
 export function sessionHasUnseenDeliverables(session: StudentCoachingSession): boolean {
   return session.status === "completed" && sessionHasDeliverables(session) && !session.deliverablesSeenAt;
+}
+
+export function sessionCountsAsBooked(session: Pick<StudentCoachingSession, "status">): boolean {
+  return session.status === "scheduled" || session.status === "completed";
+}
+
+export function studentCanBookOneOnOne(sessions: Array<Pick<StudentCoachingSession, "status">>): boolean {
+  return !sessions.some(sessionCountsAsBooked);
+}
+
+export function bookedOneOnOneSession(
+  sessions: StudentCoachingSession[]
+): StudentCoachingSession | null {
+  const booked = sessions.filter(sessionCountsAsBooked);
+  const upcoming = booked
+    .filter((session) => session.status === "scheduled")
+    .sort((a, b) => String(a.sessionAt || "").localeCompare(String(b.sessionAt || "")));
+  return upcoming[0] || booked[0] || null;
+}
+
+export function coachingSessionStatusLabel(status: CoachingSessionStatus): string {
+  if (status === "completed") return "Completed";
+  if (status === "cancelled") return "Cancelled";
+  return "Scheduled";
 }
 
 function configFromRow(row: Record<string, unknown>): CoachingPageConfig {

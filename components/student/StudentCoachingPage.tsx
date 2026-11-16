@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import {
   COACHING_BOOKING_NOTE,
   DEFAULT_COACHING_CONFIG,
+  bookedOneOnOneSession,
   fetchCoachingPageConfig,
   fetchStudentCoachingSessions,
   markCoachingDeliverablesSeen,
   sessionHasDeliverables,
+  studentCanBookOneOnOne,
   type CoachingPageConfig,
   type StudentCoachingSession,
 } from "@/lib/coaching";
@@ -47,17 +49,20 @@ export default function StudentCoachingPage() {
   useEffect(() => {
     if (!user?.id) return;
     let cancelled = false;
-    Promise.all([fetchCoachingPageConfig(), fetchStudentCoachingSessions(user.id)]).then(
-      ([nextConfig, nextSessions]) => {
-        if (cancelled) return;
-        setConfig(nextConfig);
-        setSessions(nextSessions);
-        setReady(true);
-        if (nextSessions.some((session) => session.status === "completed" && sessionHasDeliverables(session))) {
-          void markCoachingDeliverablesSeen(user.id);
-        }
+    (async () => {
+      await fetch("/api/student/coaching/sync", { method: "POST" }).catch(() => undefined);
+      const [nextConfig, nextSessions] = await Promise.all([
+        fetchCoachingPageConfig(),
+        fetchStudentCoachingSessions(user.id),
+      ]);
+      if (cancelled) return;
+      setConfig(nextConfig);
+      setSessions(nextSessions);
+      setReady(true);
+      if (nextSessions.some((session) => session.status === "completed" && sessionHasDeliverables(session))) {
+        void markCoachingDeliverablesSeen(user.id);
       }
-    );
+    })();
     return () => {
       cancelled = true;
     };
@@ -66,6 +71,9 @@ export default function StudentCoachingPage() {
   if (!ready) return <p className="student-loading">Loading coaching…</p>;
 
   const readySessions = sessions.filter(sessionIsReady);
+  const booked = bookedOneOnOneSession(sessions);
+  const canBook = studentCanBookOneOnOne(sessions);
+  const bookedWhen = booked?.sessionAt ? formatSastDateTime(booked.sessionAt) : "";
 
   return (
     <article className="lesson-body wide coaching-page">
@@ -79,12 +87,30 @@ export default function StudentCoachingPage() {
         <h1>{config.title}</h1>
         <p className="coaching-booking-note">{COACHING_BOOKING_NOTE}</p>
         <DescriptionBlock text={config.description} />
-        {config.calendly_url ? (
+        {canBook && config.calendly_url ? (
           <p className="coaching-cta">
             <a className="primary coaching-book-btn" href={config.calendly_url} target="_blank" rel="noopener noreferrer">
               Book Your 1-on-1 Session
             </a>
           </p>
+        ) : null}
+        {!canBook && booked ? (
+          <div className="coaching-booked">
+            <p className="coaching-booking-note">
+              {booked.status === "scheduled"
+                ? bookedWhen
+                  ? `Your 1-on-1 is booked for ${bookedWhen}. The booking link is closed so you only have one session.`
+                  : "Your 1-on-1 is booked. The booking link is closed so you only have one session."
+                : "You've already had your 1-on-1. Additional sessions will be agreed with Yvonne if they're needed."}
+            </p>
+            {booked.meetingUrl && booked.status === "scheduled" ? (
+              <p className="coaching-cta">
+                <a className="primary coaching-book-btn" href={booked.meetingUrl} target="_blank" rel="noopener noreferrer">
+                  Open your session
+                </a>
+              </p>
+            ) : null}
+          </div>
         ) : null}
       </section>
 

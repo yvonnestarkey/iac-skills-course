@@ -5,10 +5,12 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 import {
   COACHING_BOOKING_NOTE,
+  bookedOneOnOneSession,
   coachingSessionWriteRow,
   emptyCoachingSessionWrite,
   missingCoachingColumn,
   sessionHasDeliverables,
+  studentCanBookOneOnOne,
 } from "./coaching";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -23,6 +25,35 @@ test("student coaching page shows the one-session booking note under the heading
   );
   assert.match(source, /session\.recordingUrl/);
   assert.match(source, /session\.pdfSummaryUrl/);
+  assert.match(source, /studentCanBookOneOnOne/);
+  assert.match(source, /\/api\/student\/coaching\/sync/);
+});
+
+test("a scheduled or completed 1-on-1 closes the booking link", () => {
+  const scheduled = {
+    id: "1",
+    studentId,
+    status: "scheduled" as const,
+    sessionAt: "2026-11-20T16:00:00.000Z",
+    title: "Ada 1-on-1",
+    firefliesMeetingId: null,
+    firefliesPdfUrl: null,
+    firefliesTranscriptUrl: null,
+    googleEventId: "evt-1",
+    meetingUrl: "https://meet.google.com/ada",
+    vimeoRecordingUrl: null,
+    recordingUrl: null,
+    pdfSummaryUrl: null,
+    summaryText: null,
+    transcriptText: null,
+    coachNotes: null,
+    deliverablesSeenAt: null,
+  };
+  assert.equal(studentCanBookOneOnOne([]), true);
+  assert.equal(studentCanBookOneOnOne([scheduled]), false);
+  assert.equal(studentCanBookOneOnOne([{ ...scheduled, status: "cancelled" }]), true);
+  assert.equal(studentCanBookOneOnOne([{ ...scheduled, status: "completed" }]), false);
+  assert.equal(bookedOneOnOneSession([scheduled])?.id, "1");
 });
 
 test("coach profile can save a PDF summary and recording link onto the student page", () => {
@@ -71,6 +102,8 @@ test("a recording or PDF is enough for the student 1-on-1 area to show the sessi
       firefliesMeetingId: null,
       firefliesPdfUrl: null,
       firefliesTranscriptUrl: null,
+      googleEventId: null,
+      meetingUrl: null,
       vimeoRecordingUrl: null,
       recordingUrl: "https://vimeo.com/1",
       pdfSummaryUrl: null,

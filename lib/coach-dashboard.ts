@@ -131,6 +131,12 @@ export const COACH_DASHBOARD_GROUPS: CoachDashGroup[] = [
         href: "/coach/fireflies",
       },
       {
+        id: "google-calendar",
+        title: "Google Calendar",
+        description: "Bring 1-on-1 bookings onto student profiles and close extra booking links",
+        href: "/coach/google-calendar",
+      },
+      {
         id: "account",
         title: "Your profile",
         description: "Edit your name, email, and phone number",

@@ -6,6 +6,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   BarChart3,
   BookOpen,
+  CalendarDays,
   ClipboardList,
   CreditCard,
   Inbox,
@@ -58,6 +59,7 @@ const TOOL_ICONS: Record<string, LucideIcon> = {
   tools: LayoutGrid,
   drips: Mail,
   fireflies: Video,
+  "google-calendar": CalendarDays,
   account: UserRound,
   evaluator: Sparkles,
   bmcr: BarChart3,

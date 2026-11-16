@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { formatSastDateTime } from "@/lib/dates";
 import {
+  coachingSessionStatusLabel,
   coachingSessionToWrite,
   deleteCoachingSession,
   emptyCoachingSessionWrite,
@@ -22,6 +23,7 @@ export default function StudentCoachingSessionsPanel({ studentId }: { studentId:
   const [notice, setNotice] = useState("");
 
   const load = async () => {
+    await fetch("/api/student/coaching/sync", { method: "POST" }).catch(() => undefined);
     const rows = await fetchStudentCoachingSessions(studentId);
     setSessions(rows);
     setReady(true);
@@ -97,8 +99,8 @@ export default function StudentCoachingSessionsPanel({ studentId }: { studentId:
     <section className="card">
       <h2>1-on-1 coaching</h2>
       <p className="muted small">
-        Upload a PDF summary and paste a recording link. The student sees both on their 1-on-1 Coaching page. Fireflies
-        imports land here too, when they work.
+        Booked 1-on-1s from Google Calendar appear here as soon as they land on your calendar, and that closes the
+        student booking link. Upload a PDF summary or paste a recording after the call. Fireflies imports land here too.
       </p>
       {error ? <p className="waiting">{error}</p> : null}
       {notice ? <p className="muted">{notice}</p> : null}
@@ -174,13 +176,16 @@ export default function StudentCoachingSessionsPanel({ studentId }: { studentId:
       </div>
 
       {!ready ? <p className="empty">Loading coaching…</p> : null}
-      {ready && !sessions.length ? <p className="empty">No coaching sessions yet. Add a PDF or recording above.</p> : null}
+      {ready && !sessions.length ? (
+        <p className="empty">No coaching sessions yet. A Calendly booking on your Google Calendar will show here.</p>
+      ) : null}
       {sessions.length ? (
         <div className="work-list">
           {sessions.map((session) => (
             <article key={session.id} className="coaching-session-card">
               <p>
                 <strong>{session.title || "1-on-1 coaching"}</strong>
+                <span className="muted"> · {coachingSessionStatusLabel(session.status)}</span>
                 {session.sessionAt ? <span className="muted"> · {formatSastDateTime(session.sessionAt)}</span> : null}
               </p>
               {session.summaryText ? <p className="coaching-summary">{session.summaryText}</p> : null}
@@ -193,6 +198,11 @@ export default function StudentCoachingSessionsPanel({ studentId }: { studentId:
                 {session.pdfSummaryUrl ? (
                   <a className="ghost" href={session.pdfSummaryUrl} target="_blank" rel="noopener noreferrer">
                     Open PDF summary
+                  </a>
+                ) : null}
+                {session.meetingUrl && session.status === "scheduled" ? (
+                  <a className="ghost" href={session.meetingUrl} target="_blank" rel="noopener noreferrer">
+                    Open calendar event
                   </a>
                 ) : null}
                 {session.firefliesTranscriptUrl ? (
