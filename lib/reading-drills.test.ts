@@ -12,6 +12,7 @@ import {
   gradeBand,
   isInteractiveLesson,
   markingCostUsd,
+  MARKING_SCHEMA,
   normaliseMarking,
   paceBand,
   readingProfile,
@@ -201,4 +202,24 @@ test("the live link asks for an email and saves attempts under it", async () => 
   assert.match(save, /reading_live_attempts/);
   assert.match(sql, /create table if not exists public.reading_live_attempts/);
   assert.match(readFileSync(resolve("lib/course-tools.ts"), "utf8"), /\/coach\/tools\/live-sessions/);
+});
+
+test("the marking splits the answer into points, each with a verdict and what it is missing", () => {
+  const ex = getExercise("karoo")!;
+  const m = normaliseMarking(ex, {
+    rows: [{ id: "r6", earned: true }],
+    points: [
+      { text: "The CFO processes journals himself, so management could override controls.", row: "r6", earned: true, missing: "ignored" },
+      { text: "The company is struggling.", row: null, earned: true, missing: "" },
+      { text: "Loan breach.", row: "r99", earned: false, missing: "Say what it does to the statements." },
+      { text: "   ", row: null, earned: false, missing: "" },
+    ],
+  });
+  assert.equal(m.points!.length, 3, "blank points are dropped");
+  assert.deepEqual([m.points![0].earned, m.points![0].missing], [true, ""]);
+  assert.equal(m.points![1].earned, false, "no row, no mark");
+  assert.equal(m.points![2].row, null, "unknown row ids are dropped");
+  assert.ok(buildMarkingPrompt(ex, "x").includes("POINTS:"));
+  assert.ok(MARKING_SCHEMA.required.includes("points"));
+  assert.match(readFileSync(resolve("components/reading/DrillFlow.tsx"), "utf8"), /Your answer, marked point by point/);
 });

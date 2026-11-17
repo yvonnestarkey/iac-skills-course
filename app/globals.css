@@ -10771,6 +10771,9 @@ a.planner-video-btn:visited:hover {
 .rd-answer { width: 100%; min-height: 260px; font-family: var(--serif); font-size: 16px; line-height: 1.6; padding: 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); resize: vertical; }
 .rd-live-email input { width: 100%; max-width: 420px; font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); }
 .rd-answer-view { white-space: pre-wrap; font-family: var(--serif); }
+.rd-points tr.earned td:first-child { box-shadow: inset 3px 0 0 var(--rd-good); }
+.rd-points tr.missed td:first-child { box-shadow: inset 3px 0 0 var(--rd-bad); }
+.rd-points td.rd-quote { font-family: var(--serif); font-size: 15px; width: 42%; }
 
 .rd-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
 .rd-tile { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
