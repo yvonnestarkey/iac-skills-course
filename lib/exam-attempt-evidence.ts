@@ -1,7 +1,7 @@
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import { ensureCompleteAttemptPageImages } from "@/lib/exam-analysis-pages";
 import {
-  attemptHasAllRequiredFiles,
+  attemptHasAnyUploadedFile,
   examAttemptFromRow,
   type ExamAttempt,
   type ExamAttemptFileKind,
@@ -121,8 +121,8 @@ export async function prepareExamAttemptEvidence(attemptId: string): Promise<
   const { data, error } = await supabase.from("exam_attempts").select("*").eq("id", attemptId).limit(1).maybeSingle();
   if (error || !data) return { ok: false, error: error?.message || "That exam attempt was not found." };
   let attempt = examAttemptFromRow(data as { [key: string]: unknown });
-  if (!attemptHasAllRequiredFiles(attempt)) {
-    return { ok: false, error: "This attempt is missing one of the required PDFs." };
+  if (!attemptHasAnyUploadedFile(attempt)) {
+    return { ok: false, error: "This attempt has no PDFs to prepare." };
   }
   try {
     const completed = await ensureCompleteAttemptPageImages(attemptId);
@@ -144,10 +144,13 @@ export async function prepareExamAttemptEvidence(attemptId: string): Promise<
     ...official.notes,
   ];
 
-  const filesReadable = FILE_KINDS.every((kind) => {
-    const file = files[kind];
-    return Boolean(file.url) && (file.page_image_count > 0 || file.text_chars > 0 || file.page_count > 0);
-  });
+  const uploaded = FILE_KINDS.filter((kind) => files[kind].url);
+  const filesReadable =
+    uploaded.length > 0 &&
+    uploaded.every((kind) => {
+      const file = files[kind];
+      return file.page_image_count > 0 || file.text_chars > 0 || file.page_count > 0;
+    });
 
   const pack: EvidenceReadiness = {
     version: 1,

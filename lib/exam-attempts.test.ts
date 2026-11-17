@@ -6,6 +6,9 @@ import {
   EXAM_SCRIPT_ALREADY_UPLOADED,
   EXAM_SCRIPT_ONCE_WARNING,
   EXAM_SCRIPT_SCAN_NOTE,
+  attemptHasAllRequiredFiles,
+  attemptHasAnyUploadedFile,
+  attemptMarkingReportPages,
   attemptPaperName,
   attemptScriptSlotLocked,
   attemptStatusLabel,
@@ -77,7 +80,7 @@ test("coach profile lists only the PDFs the student uploaded on an attempt", () 
     [
       ["marked_script", "Paper 1", "https://x/p1.pdf", "paper-1.pdf"],
       ["marked_script_p2", "Paper 2", "https://x/p2.pdf", "Paper 2.pdf"],
-      ["marking_report", "Marking report", "https://x/report.pdf", "marks.pdf"],
+      ["marking_report", "Marking report 1", "https://x/report.pdf", "marks.pdf"],
     ]
   );
   const profile = readFileSync(resolve("components/coach/StudentProfile.tsx"), "utf8");
@@ -137,6 +140,8 @@ test("students upload Paper 1, Paper 2 and Paper 3 on one sitting attempt", () =
   assert.match(workspace, /Paper 1/);
   assert.match(workspace, /Paper 2/);
   assert.match(workspace, /Paper 3/);
+  assert.match(workspace, /marking_report_2/);
+  assert.match(workspace, /Zimbabwe students have/);
   assert.match(workspace, /eval-file-input/);
   assert.doesNotMatch(workspace, /No file chosen/);
   assert.doesNotMatch(start, /Which paper/);
@@ -175,15 +180,52 @@ test("coach uploads on behalf of a student land in that student's exam-attempt f
   });
   assert.match(path, /^exam-attempts\/22222222-2222-4222-8222-222222222222\/33333333-3333-4333-8333-333333333333\/marked_script\//);
   assert.equal(isExamAttemptFileKind("marked_script_p2"), true);
+  assert.equal(isExamAttemptFileKind("marking_report_2"), true);
   assert.equal(isExamAttemptFileKind("coach_report"), false);
   assert.equal(STUDENT_ATTEMPT_SOURCE, "student");
   const page = readFileSync(resolve("app/coach/evaluator/page.tsx"), "utf8");
   const panel = readFileSync(resolve("components/coach/CoachUploadStudentScripts.tsx"), "utf8");
   const route = readFileSync(resolve("app/api/coach/evaluator/student-scripts/route.ts"), "utf8");
+  const sql = readFileSync(resolve("supabase/exam-attempt-marking-report-2.sql"), "utf8");
   assert.match(page, /CoachUploadStudentScripts/);
   assert.match(panel, /Upload a student’s scripts/);
   assert.match(panel, /\/api\/coach\/evaluator\/student-scripts/);
+  assert.match(panel, /attemptHasAnyUploadedFile/);
+  assert.match(panel, /two marking reports/);
+  assert.match(panel, /second mark report/);
   assert.match(route, /STUDENT_ATTEMPT_SOURCE/);
   assert.match(route, /examAttemptFileStoragePath/);
   assert.match(route, /createExamAttempt/);
+  assert.match(route, /attemptHasAnyUploadedFile/);
+  assert.match(sql, /marking_report_2_url/);
+});
+
+test("a coach can submit an incomplete sitting and attach two marking reports", () => {
+  const partial = attempt({ marked_script_url: "https://x/p1.pdf", marked_script_name: "p1.pdf" });
+  assert.equal(attemptHasAnyUploadedFile(partial), true);
+  assert.equal(attemptHasAllRequiredFiles(partial), false);
+  const bothReports = attempt({
+    marking_report_url: "https://x/r1.pdf",
+    marking_report_name: "report-1.pdf",
+    marking_report_2_url: "https://x/r2.pdf",
+    marking_report_2_name: "report-2.pdf",
+    page_images: {
+      marking_report: [{ page: 1, path: "a", url: "https://x/r1-1.jpg" }],
+      marking_report_2: [
+        { page: 1, path: "b", url: "https://x/r2-1.jpg" },
+        { page: 2, path: "c", url: "https://x/r2-2.jpg" },
+      ],
+    },
+  });
+  const pages = attemptMarkingReportPages(bothReports);
+  assert.equal(pages.length, 3);
+  assert.deepEqual(
+    pages.map((page) => page.url),
+    ["https://x/r1-1.jpg", "https://x/r2-1.jpg", "https://x/r2-2.jpg"]
+  );
+  const files = attemptUploadedFiles(bothReports);
+  assert.deepEqual(
+    files.map((file) => file.kind),
+    ["marking_report", "marking_report_2"]
+  );
 });

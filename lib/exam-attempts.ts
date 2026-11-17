@@ -19,7 +19,8 @@ export type ExamAttemptFileKind =
   | "marked_script"
   | "marked_script_p2"
   | "marked_script_p3"
-  | "marking_report";
+  | "marking_report"
+  | "marking_report_2";
 
 export const EXAM_ATTEMPT_FILE_KINDS: ExamAttemptFileKind[] = [
   "bmcr_worksheet",
@@ -27,6 +28,7 @@ export const EXAM_ATTEMPT_FILE_KINDS: ExamAttemptFileKind[] = [
   "marked_script_p2",
   "marked_script_p3",
   "marking_report",
+  "marking_report_2",
 ];
 
 export const EXAM_ATTEMPT_SCRIPT_KINDS: ExamAttemptFileKind[] = [
@@ -34,6 +36,16 @@ export const EXAM_ATTEMPT_SCRIPT_KINDS: ExamAttemptFileKind[] = [
   "marked_script_p2",
   "marked_script_p3",
 ];
+
+export const EXAM_ATTEMPT_REQUIRED_KINDS: ExamAttemptFileKind[] = [
+  "bmcr_worksheet",
+  "marked_script",
+  "marked_script_p2",
+  "marked_script_p3",
+  "marking_report",
+];
+
+export const EXAM_ATTEMPT_MARKING_REPORT_KINDS: ExamAttemptFileKind[] = ["marking_report", "marking_report_2"];
 
 export type ExamAttemptPageImage = {
   page: number;
@@ -65,13 +77,16 @@ export type ExamAttempt = {
   marked_script_p3_name: string | null;
   marking_report_path: string | null;
   marking_report_url: string | null;
+  marking_report_name: string | null;
+  marking_report_2_path: string | null;
+  marking_report_2_url: string | null;
+  marking_report_2_name: string | null;
   /** Set when Yvonne releases the Script Evaluator report to the student. */
   evaluator_report_released_at: string | null;
   /** Coach-uploaded PDF that replaces the system report when released. */
   coach_report_path: string | null;
   coach_report_url: string | null;
   coach_report_name: string | null;
-  marking_report_name: string | null;
   page_images: Partial<Record<ExamAttemptFileKind, ExamAttemptPageImage[]>>;
   evidence_pack: Record<string, unknown> | null;
   evaluation_id: string | null;
@@ -86,11 +101,15 @@ export const EXAM_ATTEMPT_FILE_LABELS: Record<ExamAttemptFileKind, string> = {
   marked_script: "Paper 1",
   marked_script_p2: "Paper 2",
   marked_script_p3: "Paper 3",
-  marking_report: "Marking report",
+  marking_report: "Marking report 1",
+  marking_report_2: "Marking report 2",
 };
 
 export const EXAM_ATTEMPT_SCRIPT_PAPERS_SQL =
   "Paste supabase/exam-attempt-script-papers.sql in the Supabase SQL editor, then try again.";
+
+export const EXAM_ATTEMPT_MARKING_REPORT_2_SQL =
+  "Paste supabase/exam-attempt-marking-report-2.sql in the Supabase SQL editor, then try again.";
 
 export const EXAM_ATTEMPT_SQL_HINT =
   "Paste supabase/exam-attempts.sql in the Supabase SQL editor, then try again.";
@@ -170,15 +189,29 @@ export function attemptFileCount(attempt: ExamAttempt): number {
   return EXAM_ATTEMPT_FILE_KINDS.filter((kind) => attemptHasFile(attempt, kind)).length;
 }
 
+export function attemptHasAnyUploadedFile(attempt: ExamAttempt): boolean {
+  return attemptFileCount(attempt) > 0;
+}
+
 export function attemptHasAllRequiredFiles(attempt: ExamAttempt): boolean {
-  return attemptFileCount(attempt) >= EXAM_ATTEMPT_FILE_KINDS.length;
+  return EXAM_ATTEMPT_REQUIRED_KINDS.every((kind) => attemptHasFile(attempt, kind));
+}
+
+export function attemptMarkingReportPages(attempt: Pick<ExamAttempt, "page_images">): ExamAttemptPageImage[] {
+  const pages: ExamAttemptPageImage[] = [];
+  for (const kind of EXAM_ATTEMPT_MARKING_REPORT_KINDS) {
+    const stored = [...(attempt.page_images[kind] || [])].sort((left, right) => left.page - right.page);
+    for (const image of stored) {
+      pages.push({ ...image, page: pages.length + 1 });
+    }
+  }
+  return pages;
 }
 
 export function deriveAttemptStatus(attempt: Pick<ExamAttempt, "status"> & Partial<ExamAttempt>): ExamAttemptStatus {
   if (TERMINAL_STATUSES.includes(attempt.status)) return attempt.status;
-  const count = attemptFileCount(attempt as ExamAttempt);
-  if (count >= EXAM_ATTEMPT_FILE_KINDS.length) return "ready_to_submit";
-  if (count > 0) return "awaiting_documents";
+  if (attemptHasAllRequiredFiles(attempt as ExamAttempt)) return "ready_to_submit";
+  if (attemptFileCount(attempt as ExamAttempt) > 0) return "awaiting_documents";
   return "started";
 }
 
@@ -302,12 +335,15 @@ export function examAttemptFromRow(row: JsonRow): ExamAttempt {
     marked_script_p3_url: row.marked_script_p3_url ? String(row.marked_script_p3_url) : null,
     marked_script_p3_name: row.marked_script_p3_name ? String(row.marked_script_p3_name) : null,
     marking_report_path: row.marking_report_path ? String(row.marking_report_path) : null,
+    marking_report_url: row.marking_report_url ? String(row.marking_report_url) : null,
+    marking_report_name: row.marking_report_name ? String(row.marking_report_name) : null,
+    marking_report_2_path: row.marking_report_2_path ? String(row.marking_report_2_path) : null,
+    marking_report_2_url: row.marking_report_2_url ? String(row.marking_report_2_url) : null,
+    marking_report_2_name: row.marking_report_2_name ? String(row.marking_report_2_name) : null,
     evaluator_report_released_at: row.evaluator_report_released_at ? String(row.evaluator_report_released_at) : null,
     coach_report_path: row.coach_report_path ? String(row.coach_report_path) : null,
     coach_report_url: row.coach_report_url ? String(row.coach_report_url) : null,
     coach_report_name: row.coach_report_name ? String(row.coach_report_name) : null,
-    marking_report_url: row.marking_report_url ? String(row.marking_report_url) : null,
-    marking_report_name: row.marking_report_name ? String(row.marking_report_name) : null,
     page_images: asPageImages(row.page_images),
     evidence_pack: row.evidence_pack && typeof row.evidence_pack === "object" ? (row.evidence_pack as JsonRow) : null,
     evaluation_id: row.evaluation_id ? String(row.evaluation_id) : null,
@@ -598,6 +634,9 @@ export async function uploadExamAttemptFile(input: {
     .limit(1)
     .maybeSingle();
   if (error || !data) {
+    if (error && /marking_report_2/i.test(error.message)) {
+      return { ok: false, error: EXAM_ATTEMPT_MARKING_REPORT_2_SQL };
+    }
     if (error && /marked_script_p2|marked_script_p3|schema cache|column/i.test(error.message)) {
       return { ok: false, error: EXAM_ATTEMPT_SCRIPT_PAPERS_SQL };
     }

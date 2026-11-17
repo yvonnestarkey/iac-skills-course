@@ -11,6 +11,7 @@ export const ANALYSIS_FILE_KINDS = [
   "bmcr_worksheet",
   "marked_script",
   "marking_report",
+  "marking_report_2",
 ] as const satisfies readonly ExamAttemptFileKind[];
 
 type AnalysisKind = (typeof ANALYSIS_FILE_KINDS)[number];
@@ -130,6 +131,7 @@ export async function ensureCompleteAttemptPageImages(attemptId: string): Promis
     bmcr_worksheet: 0,
     marked_script: 0,
     marking_report: 0,
+    marking_report_2: 0,
   };
   const stamp = Date.now();
 
@@ -162,7 +164,7 @@ export async function ensureCompleteAttemptPageImages(attemptId: string): Promis
     }
   }
 
-  const added = rendered.bmcr_worksheet + rendered.marked_script + rendered.marking_report;
+  const added = rendered.bmcr_worksheet + rendered.marked_script + rendered.marking_report + rendered.marking_report_2;
   if (added === 0) return { ok: true, attempt, rendered };
 
   const { data, error } = await supabase

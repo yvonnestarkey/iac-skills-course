@@ -1,5 +1,10 @@
 import { findPastPaper } from "@/lib/past-papers";
-import { examAttemptFromRow, type ExamAttempt, type ExamAttemptFileKind } from "@/lib/exam-attempts";
+import {
+  attemptMarkingReportPages,
+  examAttemptFromRow,
+  type ExamAttempt,
+  type ExamAttemptFileKind,
+} from "@/lib/exam-attempts";
 import {
   loadOfficialSourcePack,
   summariseOfficialSourcePack,
@@ -73,14 +78,19 @@ export type EvaluatorAttemptEvidence = {
 
 function pagesForGroup(attempt: ExamAttempt, group: EvaluatorEvidenceGroup): EvaluatorEvidenceFile {
   const storedKind = GROUP_TO_STORED[group];
-  const stored = [...(attempt.page_images[storedKind] || [])]
-    .filter((item) => Number.isFinite(item.page) && item.url)
-    .sort((left, right) => left.page - right.page);
+  const stored =
+    group === "marking_report"
+      ? attemptMarkingReportPages(attempt)
+      : [...(attempt.page_images[storedKind] || [])]
+          .filter((item) => Number.isFinite(item.page) && item.url)
+          .sort((left, right) => left.page - right.page);
   const pages = stored.map((item) => ({ page: item.page, page_url: item.url }));
+  const secondName = group === "marking_report" ? String(attempt.marking_report_2_name || "").trim() : "";
+  const firstName = String(attempt[`${storedKind}_name`] || "").trim();
   return {
     group,
     stored_kind: storedKind,
-    name: attempt[`${storedKind}_name`],
+    name: [firstName, secondName].filter(Boolean).join(" · ") || null,
     page_count: pages.length,
     page_numbers: pages.map((item) => item.page),
     pages,

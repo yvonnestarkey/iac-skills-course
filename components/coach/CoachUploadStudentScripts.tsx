@@ -7,7 +7,7 @@ import {
   EXAM_ATTEMPT_SCRIPT_KINDS,
   EXAM_SCRIPT_ONCE_WARNING,
   EXAM_SCRIPT_SCAN_NOTE,
-  attemptHasAllRequiredFiles,
+  attemptHasAnyUploadedFile,
   attemptHasFile,
   attemptScriptSlotLocked,
   isAttemptSubmitted,
@@ -129,7 +129,7 @@ export default function CoachUploadStudentScripts() {
     setAttempt(null);
   }
 
-  const ready = attempt ? attemptHasAllRequiredFiles(attempt) : false;
+  const ready = attempt ? attemptHasAnyUploadedFile(attempt) : false;
   const submitted = attempt ? isAttemptSubmitted(attempt.status) : false;
   const scriptsReady = attempt ? EXAM_ATTEMPT_SCRIPT_KINDS.every((kind) => attemptHasFile(attempt, kind)) : false;
 
@@ -138,7 +138,8 @@ export default function CoachUploadStudentScripts() {
       <h3 style={{ marginTop: 0 }}>Upload a student’s scripts</h3>
       <p className="muted">
         When a student emails you their PDFs, upload them here. They are stored on that student’s exam attempt — same
-        folders, same Script Evaluator path, same one-upload-per-paper rule.
+        folders, same Script Evaluator path, same one-upload-per-paper rule. You can submit with missing papers or no
+        BMCR. Zimbabwe students can have two marking reports.
       </p>
 
       <div className="coaching-manual-form">
@@ -238,7 +239,7 @@ export default function CoachUploadStudentScripts() {
                         />
                       )}
                       <p className="muted small eval-upload-filename">
-                        {busyKind === kind ? "Uploading…" : fileName(attempt, kind) || "PDF required"}
+                        {busyKind === kind ? "Uploading…" : fileName(attempt, kind) || "Optional"}
                       </p>
                     </label>
                   );
@@ -250,10 +251,10 @@ export default function CoachUploadStudentScripts() {
                 </button>
               </p>
               {!ready ? (
-                <p className="muted small">
-                  Submit unlocks when the BMCR, all three papers, and the marking report are attached.
-                </p>
-              ) : null}
+                <p className="muted small">Attach at least one PDF, then submit. Missing papers, BMCR, or a second mark report are fine.</p>
+              ) : (
+                <p className="muted small">Submit with whatever they sent. Empty slots stay empty.</p>
+              )}
             </>
           )}
         </div>

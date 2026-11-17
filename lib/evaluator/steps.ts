@@ -7,7 +7,7 @@
  *   3. Assemble the dataset (code only, no model call)
  * The calibration script (runEvaluation) uses the same steps in one go.
  */
-import { examAttemptFromRow, type ExamAttempt } from "@/lib/exam-attempts";
+import { attemptMarkingReportPages, examAttemptFromRow, type ExamAttempt } from "@/lib/exam-attempts";
 import { findPastPaper } from "@/lib/past-papers";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import { evaluatorModel, newUsage } from "./anthropic";
@@ -58,7 +58,7 @@ export async function loadPaperContext(attemptId: string, paperIdOverride?: stri
   const wholeSitting = Boolean(attempt.page_images.marked_script_p2?.length || attempt.page_images.marked_script_p3?.length);
   const scriptKind = !wholeSitting || paperIndex <= 0 ? "marked_script" : paperIndex === 1 ? "marked_script_p2" : "marked_script_p3";
   const scriptPages = attempt.page_images[scriptKind] || [];
-  const reportPages = attempt.page_images.marking_report || [];
+  const reportPages = attemptMarkingReportPages(attempt);
   const bmcrPages = attempt.page_images.bmcr_worksheet || [];
   if (!scriptPages.length || !reportPages.length || !bmcrPages.length) {
     throw new Error(`Page images missing for the BMCR, the ${paperLabel} script or the marking report. Run evidence preparation first.`);

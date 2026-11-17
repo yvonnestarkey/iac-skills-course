@@ -2,10 +2,11 @@ import { after, NextResponse } from "next/server";
 import { getRequestUser, isStaffUser } from "@/lib/auth-server";
 import { prepareExamAttemptEvidence } from "@/lib/exam-attempt-evidence";
 import {
-  attemptHasAllRequiredFiles,
+  attemptHasAnyUploadedFile,
   attemptPaperName,
   createExamAttempt,
   deriveAttemptStatus,
+  EXAM_ATTEMPT_MARKING_REPORT_2_SQL,
   examAttemptFileStoragePath,
   examAttemptFromRow,
   examAttemptPageStoragePath,
@@ -111,7 +112,12 @@ export async function POST(request: Request) {
     const nextDraft = examAttemptFromRow({ ...existing, ...patch });
     patch.status = deriveAttemptStatus({ ...nextDraft, status: "started" });
     const { data, error } = await service.from("exam_attempts").update(patch).eq("id", attemptId).eq("user_id", studentId).select("*").maybeSingle();
-    if (error || !data) return NextResponse.json({ error: error?.message || "Could not attach that file." }, { status: 400 });
+    if (error || !data) {
+      if (error && /marking_report_2/i.test(error.message)) {
+        return NextResponse.json({ error: EXAM_ATTEMPT_MARKING_REPORT_2_SQL }, { status: 400 });
+      }
+      return NextResponse.json({ error: error?.message || "Could not attach that file." }, { status: 400 });
+    }
     return NextResponse.json({ ok: true, attempt: examAttemptFromRow(data as AttemptRow) });
   }
 
@@ -141,11 +147,8 @@ export async function POST(request: Request) {
     const attempt = await loadAttempt(service, attemptId, studentId);
     if (!attempt) return NextResponse.json({ error: "That exam attempt was not found." }, { status: 404 });
     if (!isAttemptSubmitted(attempt.status)) {
-      if (!attemptHasAllRequiredFiles(attempt)) {
-        return NextResponse.json(
-          { error: "Upload the completed BMCR worksheet, Paper 1, Paper 2, Paper 3, and the marking report first." },
-          { status: 400 }
-        );
+      if (!attemptHasAnyUploadedFile(attempt)) {
+        return NextResponse.json({ error: "Upload at least one PDF first." }, { status: 400 });
       }
       const now = new Date().toISOString();
       const { error } = await service

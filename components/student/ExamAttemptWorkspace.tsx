@@ -66,7 +66,13 @@ function UploadStatus({
   const name = fileName(attempt, kind);
   return (
     <p className="muted small eval-upload-filename">
-      {busy ? "Uploading and reading pages…" : present ? name || "PDF uploaded" : "PDF required"}
+      {busy
+        ? "Uploading and reading pages…"
+        : present
+          ? name || "PDF uploaded"
+          : kind === "marking_report_2"
+            ? "Optional"
+            : "PDF required"}
     </p>
   );
 }
@@ -235,17 +241,34 @@ export default function ExamAttemptWorkspace() {
             </div>
           </div>
 
-          <label className={`eval-upload-card${attemptHasFile(attempt, "marking_report") ? " is-ready" : ""}`}>
+          <div className={`eval-upload-card${attemptHasFile(attempt, "marking_report") ? " is-ready" : ""}`}>
             <span className="eval-upload-letter">C</span>
-            <strong>{EXAM_ATTEMPT_FILE_LABELS.marking_report}</strong>
-            <p className="muted small">The official marking report / mark schedule for this sitting — not the script itself.</p>
-            <HiddenPdfPicker
-              disabled={Boolean(busyKind)}
-              busy={busyKind === "marking_report"}
-              onPick={(file) => void onUpload("marking_report", file)}
-            />
-            <UploadStatus attempt={attempt} kind="marking_report" busy={busyKind === "marking_report"} />
-          </label>
+            <strong>Marking reports</strong>
+            <p className="muted small">
+              The official marking report / mark schedule for this sitting — not the script itself. Zimbabwe students have
+              two; upload both. One is enough if you only have one.
+            </p>
+            <div className="eval-script-slots">
+              <div className="eval-script-slot">
+                <span className="eval-script-slot-label">{EXAM_ATTEMPT_FILE_LABELS.marking_report}</span>
+                <HiddenPdfPicker
+                  disabled={Boolean(busyKind)}
+                  busy={busyKind === "marking_report"}
+                  onPick={(file) => void onUpload("marking_report", file)}
+                />
+                <UploadStatus attempt={attempt} kind="marking_report" busy={busyKind === "marking_report"} />
+              </div>
+              <div className="eval-script-slot">
+                <span className="eval-script-slot-label">{EXAM_ATTEMPT_FILE_LABELS.marking_report_2}</span>
+                <HiddenPdfPicker
+                  disabled={Boolean(busyKind)}
+                  busy={busyKind === "marking_report_2"}
+                  onPick={(file) => void onUpload("marking_report_2", file)}
+                />
+                <UploadStatus attempt={attempt} kind="marking_report_2" busy={busyKind === "marking_report_2"} />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
