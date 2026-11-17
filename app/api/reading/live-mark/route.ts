@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import { callStructured, newUsage } from "@/lib/evaluator/anthropic";
@@ -12,6 +11,7 @@ import {
   markingCostUsd,
   normaliseMarking,
 } from "@/lib/reading-drills";
+import { liveHash, requestAddress } from "@/lib/reading-live";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -19,8 +19,7 @@ export const maxDuration = 60;
 /** Shared wifi in a venue puts many students behind one address, so the address limit is generous. */
 const PER_ADDRESS_DAILY = 30;
 
-const hash = (value: string) =>
-  createHash("sha256").update(`${process.env.READING_LIVE_SALT || "rtr-live"}:${value}`).digest("hex").slice(0, 32);
+const hash = liveHash;
 
 /**
  * Marks a live-session answer. No sign-in, so spend is held down three ways: per browser, per address,
@@ -40,7 +39,7 @@ export async function POST(req: Request) {
   const db = getServiceSupabase();
   if (!db || !process.env.ANTHROPIC_API_KEY) return selfMark("Automatic marking is not set up yet.");
 
-  const address = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown";
+  const address = requestAddress(req);
   const addressHash = hash(address);
   const browserHash = hash(String(body.browserId || address).slice(0, 80));
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -76,15 +75,15 @@ export async function POST(req: Request) {
       model,
     });
     const marking = normaliseMarking(ex, raw);
-    await db.from("reading_live_calls").insert({
+    const { data: call } = await db.from("reading_live_calls").insert({
       ...log,
       input_tokens: usage.input_tokens,
       output_tokens: usage.output_tokens,
       cost_usd: markingCostUsd(model, usage.input_tokens, usage.output_tokens),
       answer: answer.slice(0, 6000),
       rows_earned: Object.entries(marking.rows).filter(([, r]) => r.earned).map(([id]) => id),
-    });
-    return NextResponse.json({ marking, markCallId: null });
+    }).select("id").single();
+    return NextResponse.json({ marking, markCallId: call?.id ?? null });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     await db.from("reading_live_calls").insert({

@@ -22,6 +22,13 @@ export const COURSE_TOOLS: CourseTool[] = [
     editable: true,
   },
   {
+    id: "live-sessions",
+    title: "Live-session attempts",
+    description: "Who did the open live links (e.g. Karoo Precision), their results and answers, matched to course accounts by email.",
+    href: "/coach/tools/live-sessions",
+    editable: false,
+  },
+  {
     id: "study-clinic",
     title: "Study Clinic",
     description: "Subject libraries on the student Study Clinic page. Add videos, PDFs, and links on each library page, or here.",

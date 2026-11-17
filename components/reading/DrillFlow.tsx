@@ -17,6 +17,7 @@ import {
   proximityTable,
   readingNote,
   READING_ONCE_COPY,
+  cleanLiveEmail,
   recommendUnused,
   rtfqRead,
   sentencesOf,
@@ -77,6 +78,15 @@ export default function DrillFlow({ exercise: ex, embedded = false, live: liveSe
   const [saveMsg, setSaveMsg] = useState("");
   const [history, setHistory] = useState<DrillAttempt[]>([]);
   const [ready, setReady] = useState(!user || liveSession);
+  const [liveEmail, setLiveEmail] = useState("");
+  useEffect(() => {
+    if (!liveSession) return;
+    let saved = "";
+    try {
+      saved = window.localStorage.getItem("rd-live-email") || "";
+    } catch {}
+    setLiveEmail((cur) => cur || saved || user?.email || "");
+  }, [liveSession, user?.email]);
 
   useEffect(() => {
     if (liveSession) return;
@@ -147,7 +157,21 @@ export default function DrillFlow({ exercise: ex, embedded = false, live: liveSe
     setAttempt(a);
     setStage("feedback");
     onComplete?.();
-    if (liveSession) return setSaveMsg("");
+    if (liveSession) {
+      setSaveMsg("Saving your attempt…");
+      try {
+        const res = await fetch("/api/reading/live-attempt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: liveEmail, browserId: liveBrowserId(), attempt: a, liveCallId: callId ?? null }),
+        });
+        const data = await res.json().catch(() => ({}));
+        setSaveMsg(res.ok ? `Saved under ${cleanLiveEmail(liveEmail)}.` : `Not saved: ${data.error || "please tell your coach."}`);
+      } catch {
+        setSaveMsg("Not saved: the connection dropped. Please tell your coach.");
+      }
+      return;
+    }
     if (!user?.id) return setSaveMsg("Sign in to keep your results.");
     const res = await saveDrillAttempt(user.id, a);
     setSaveMsg(res.ok ? "Saved to your record." : `Not saved: ${res.error}`);
@@ -221,9 +245,38 @@ export default function DrillFlow({ exercise: ex, embedded = false, live: liveSe
           <p className="rd-note">
             Exam pace for this case, reading and making notes: <b>{fmt(lo)} to {fmt(hi)}</b> (100 to 150 words a minute). The clock runs while you read.
           </p>
-          <p className="muted small">{liveSession ? "This is a practice run for the session: nothing is saved, and you do not need to sign in." : READING_ONCE_COPY}</p>
+          {liveSession ? (
+            <div className="rd-sheet rd-stack rd-live-email">
+              <label className="rd-eyebrow" htmlFor="rd-live-email">Your email address</label>
+              <input
+                id="rd-live-email"
+                type="email"
+                autoComplete="email"
+                value={liveEmail}
+                onChange={(e) => setLiveEmail(e.target.value)}
+                placeholder="you@example.com"
+              />
+              <span className="muted small">
+                Use the email you use for the course, if you have one. Your attempt is saved under it so your coach can see it and add it to your record.
+              </span>
+            </div>
+          ) : (
+            <p className="muted small">{READING_ONCE_COPY}</p>
+          )}
           <div>
-            <button className="primary" onClick={() => { setT0(Date.now()); setStage("read"); }}>
+            <button
+              className="primary"
+              disabled={liveSession && !cleanLiveEmail(liveEmail)}
+              onClick={() => {
+                if (liveSession) {
+                  try {
+                    window.localStorage.setItem("rd-live-email", cleanLiveEmail(liveEmail));
+                  } catch {}
+                }
+                setT0(Date.now());
+                setStage("read");
+              }}
+            >
               Start reading
             </button>
           </div>

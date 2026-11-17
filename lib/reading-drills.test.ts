@@ -187,3 +187,18 @@ test("Karoo applies the mark plan's caps and opens as a live link", async () => 
   assert.match(page, /getLiveExercise/);
   assert.doesNotMatch(middleware, /"\/live/, "the live link needs no sign-in");
 });
+
+test("the live link asks for an email and saves attempts under it", async () => {
+  const { cleanLiveEmail } = await import("./reading-drills");
+  assert.equal(cleanLiveEmail("  Thandi@Example.co.za "), "thandi@example.co.za");
+  assert.equal(cleanLiveEmail("thandi"), "");
+  assert.equal(cleanLiveEmail("a@b"), "");
+  const drill = readFileSync(resolve("components/reading/DrillFlow.tsx"), "utf8");
+  const save = readFileSync(resolve("app/api/reading/live-attempt/route.ts"), "utf8");
+  const sql = readFileSync(resolve("supabase/reading-live.sql"), "utf8");
+  assert.match(drill, /rd-live-email/);
+  assert.match(drill, /\/api\/reading\/live-attempt/);
+  assert.match(save, /reading_live_attempts/);
+  assert.match(sql, /create table if not exists public.reading_live_attempts/);
+  assert.match(readFileSync(resolve("lib/course-tools.ts"), "utf8"), /\/coach\/tools\/live-sessions/);
+});

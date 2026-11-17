@@ -121,6 +121,12 @@ export const LIVE = config.live;
 export function getLiveExercise(id: string): DrillExercise | null {
   return LIVE.exercises.includes(id) ? getExercise(id) : null;
 }
+
+/** The email a live-session student types before starting: trimmed, lower case, or "" if it doesn't look like an email. */
+export function cleanLiveEmail(value: unknown): string {
+  const email = String(value || "").trim().toLowerCase();
+  return email.length <= 200 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) ? email : "";
+}
 export const EXAM = config.exam;
 
 export function getExercise(id: string): DrillExercise | null {

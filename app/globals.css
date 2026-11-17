@@ -10769,6 +10769,7 @@ a.planner-video-btn:visited:hover {
 .rd-opt input { margin-top: 4px; accent-color: var(--medium); }
 .rd-opt.on { border-color: var(--medium); background: var(--paper); }
 .rd-answer { width: 100%; min-height: 260px; font-family: var(--serif); font-size: 16px; line-height: 1.6; padding: 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); resize: vertical; }
+.rd-live-email input { width: 100%; max-width: 420px; font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); }
 .rd-answer-view { white-space: pre-wrap; font-family: var(--serif); }
 
 .rd-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
