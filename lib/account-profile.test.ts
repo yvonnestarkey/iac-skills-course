@@ -136,11 +136,15 @@ test("coach student profile has a collapsed name and onboarding section", () => 
   assert.match(details, /aria-expanded=\{open\}/);
   assert.match(details, /coach-student-first-name/);
   assert.match(details, /coach-student-last-name/);
-  assert.match(details, /OnboardingFacts/);
+  assert.match(details, /coach-student-country/);
+  assert.match(details, /Save profile/);
   assert.match(details, /\/api\/coach\/student-profile/);
   assert.match(api, /export async function PATCH/);
   assert.match(api, /isStaffUser/);
+  assert.doesNotMatch(api, /validatePersonName/);
+  assert.match(admin, /updateCoachStudentProfile/);
   assert.match(admin, /auth\.admin\.updateUserById/);
+  assert.match(admin, /student_profiles/);
   assert.doesNotMatch(details, /SUPABASE_SERVICE_ROLE_KEY|getServiceSupabase|updateUserById/);
   assert.match(onboarding, /onboarding-first-name/);
   assert.match(onboarding, /"Name"/);

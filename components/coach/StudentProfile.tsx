@@ -340,7 +340,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
 
       <StudentProfileDetails
         student={student}
-        onNameSaved={(name) => setLive((current) => (current ? { ...current, name } : current))}
+        onSaved={(patch) => setLive((current) => (current ? { ...current, ...patch } : current))}
       />
 
       <section className="card" id="activity">
