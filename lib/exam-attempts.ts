@@ -401,12 +401,41 @@ export async function fetchExamAttempt(userId: string, attemptId: string): Promi
   return { ok: true, attempts: [mapped], attempt: mapped };
 }
 
+export function examAttemptFileStoragePath(input: {
+  userId: string;
+  attemptId: string;
+  kind: ExamAttemptFileKind;
+  fileName: string;
+  stamp?: number;
+}): string {
+  const safeName = input.fileName.replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || `${input.kind}.pdf`;
+  const stamp = input.stamp ?? Date.now();
+  return `exam-attempts/${input.userId}/${input.attemptId}/${input.kind}/${stamp}-${safeName}`;
+}
+
+export function examAttemptPageStoragePath(input: {
+  userId: string;
+  attemptId: string;
+  kind: ExamAttemptFileKind;
+  page: number;
+  stamp?: number;
+}): string {
+  const stamp = input.stamp ?? Date.now();
+  return `exam-attempts/${input.userId}/${input.attemptId}/${input.kind}/pages/${stamp}-p${String(input.page).padStart(3, "0")}.jpg`;
+}
+
+export function isExamAttemptFileKind(value: string): value is ExamAttemptFileKind {
+  return EXAM_ATTEMPT_FILE_KINDS.includes(value as ExamAttemptFileKind);
+}
+
 export async function createExamAttempt(input: {
   userId: string;
   sittingId: string;
   paperId?: string;
+  source?: ExamAttempt["source"];
+  client?: ReturnType<typeof getSupabase>;
 }): Promise<{ ok: true; attempt: ExamAttempt } | { ok: false; error: string; missingTable?: boolean }> {
-  const client = getSupabase();
+  const client = input.client || getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
   const sitting = findPastPaperSitting(input.sittingId);
   const mapped = input.paperId ? findPastPaper(input.paperId) : sitting ? findPastPaper(sitting.id) : null;
@@ -427,12 +456,15 @@ export async function createExamAttempt(input: {
     if (existing) return { ok: true, attempt: examAttemptFromRow(existing as JsonRow) };
   }
   const now = new Date().toISOString();
-  const { data: session } = await client.auth.getUser();
-  const source = attemptSourceForUser(
-    session.user
-      ? { id: session.user.id, email: session.user.email, app_metadata: session.user.app_metadata }
-      : { id: input.userId }
-  );
+  let source = input.source;
+  if (!source) {
+    const { data: session } = await client.auth.getUser();
+    source = attemptSourceForUser(
+      session.user
+        ? { id: session.user.id, email: session.user.email, app_metadata: session.user.app_metadata }
+        : { id: input.userId }
+    );
+  }
   const payload = {
     user_id: input.userId,
     exam_body: "IAC",
@@ -462,6 +494,10 @@ export async function createExamAttempt(input: {
   return { ok: true, attempt: examAttemptFromRow(data as JsonRow) };
 }
 
+export function isExamAttemptPdfFile(file: Pick<File, "type" | "name" | "size">): boolean {
+  return isPdfFile(file as File);
+}
+
 function isPdfFile(file: File): boolean {
   const type = (file.type || "").toLowerCase();
   const name = file.name.toLowerCase();
@@ -488,10 +524,16 @@ export async function uploadExamAttemptFile(input: {
   if (input.file.size > 50 * 1024 * 1024) return { ok: false, error: "That PDF is larger than 50 MB." };
   if (!isPdfFile(input.file)) return { ok: false, error: "Please upload a PDF file." };
 
-  const ownerId = session.user.id || input.userId;
+  const ownerId = session.user.id;
+  if (input.userId && input.userId !== ownerId) {
+    return { ok: false, error: "That exam attempt belongs to another student." };
+  }
   const existing = await fetchExamAttempt(ownerId, input.attemptId);
   if (existing.ok === false) return { ok: false, error: existing.error };
   if (!existing.attempt) return { ok: false, error: "That exam attempt was not found." };
+  if (existing.attempt.user_id !== ownerId) {
+    return { ok: false, error: "That exam attempt was not found." };
+  }
   if (isAttemptSubmitted(existing.attempt.status)) {
     return { ok: false, error: "This attempt is already submitted. Start a new exam attempt for another sitting." };
   }
@@ -499,9 +541,14 @@ export async function uploadExamAttemptFile(input: {
     return { ok: false, error: EXAM_SCRIPT_ALREADY_UPLOADED };
   }
 
-  const safeName = input.file.name.replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || `${input.kind}.pdf`;
   const stamp = Date.now();
-  const path = `exam-attempts/${ownerId}/${input.attemptId}/${input.kind}/${stamp}-${safeName}`;
+  const path = examAttemptFileStoragePath({
+    userId: ownerId,
+    attemptId: input.attemptId,
+    kind: input.kind,
+    fileName: input.file.name,
+    stamp,
+  });
   const uploaded = await client.storage.from("course-pdfs").upload(path, input.file, {
     upsert: false,
     contentType: "application/pdf",
@@ -514,7 +561,13 @@ export async function uploadExamAttemptFile(input: {
   if (input.pageImages?.length) {
     const stored: ExamAttemptPageImage[] = [];
     for (const page of input.pageImages) {
-      const pagePath = `exam-attempts/${ownerId}/${input.attemptId}/${input.kind}/pages/${stamp}-p${String(page.page).padStart(3, "0")}.jpg`;
+      const pagePath = examAttemptPageStoragePath({
+        userId: ownerId,
+        attemptId: input.attemptId,
+        kind: input.kind,
+        page: page.page,
+        stamp,
+      });
       const pageUpload = await client.storage.from("course-pdfs").upload(pagePath, page.blob, {
         upsert: false,
         contentType: "image/jpeg",

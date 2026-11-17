@@ -55,6 +55,7 @@ test("coach PDF upload is on the Script Evaluator reports page and the review ro
   const sql = readFileSync(resolve("supabase/exam-attempt-coach-report.sql"), "utf8");
   const student = readFileSync(resolve("components/student/ExamAttemptSubmitted.tsx"), "utf8");
   const status = readFileSync(resolve("app/api/exam-attempts/[id]/evaluator-status/route.ts"), "utf8");
+  assert.match(page, /CoachUploadStudentScripts/);
   assert.match(page, /Upload report PDF/);
   assert.match(page, /upload_report/);
   assert.match(route, /upload_report/);

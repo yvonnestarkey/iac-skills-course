@@ -7,6 +7,7 @@ import { getEvaluatorMode, kickPendingJobs, type EvaluatorJob } from "@/lib/eval
 import { EVALUATOR_READY_SITTINGS } from "@/lib/evaluator/ready-sittings";
 import { PAPER_NAMES } from "@/lib/evaluator/report-text";
 import { findPastPaper } from "@/lib/past-papers";
+import CoachUploadStudentScripts from "@/components/coach/CoachUploadStudentScripts";
 import StudentProfileLink from "@/components/coach/StudentProfileLink";
 import { profileDisplayName } from "@/lib/profiles";
 import { getServiceSupabase } from "@/lib/supabase-admin";
@@ -141,6 +142,8 @@ export default async function CoachEvaluatorPage({
       <h1>Script Evaluator reports</h1>
       <p className="muted">Each submission is evaluated paper by paper in the background. Students only see the report once you release it. You can also upload your own PDF and release that instead of the system report.</p>
       {query.notice ? <p className="notice">{query.notice}</p> : null}
+
+      <CoachUploadStudentScripts />
 
       <section className="card" style={{ padding: 16, margin: "16px 0" }}>
         <h3 style={{ marginTop: 0 }}>Who uses the new evaluator</h3>

@@ -13,9 +13,12 @@ import {
   attemptProfileFiles,
   attemptUploadedFiles,
   deriveAttemptStatus,
+  examAttemptFileStoragePath,
   examAttemptFromRow,
+  isExamAttemptFileKind,
   type ExamAttempt,
 } from "./exam-attempts";
+import { STUDENT_ATTEMPT_SOURCE } from "./staff-access";
 
 function attempt(overrides: Partial<ExamAttempt> = {}): ExamAttempt {
   return examAttemptFromRow({
@@ -160,4 +163,27 @@ test("a successfully uploaded script cannot be replaced, and the one-shot warnin
   assert.match(lib, /This paper is already uploaded/);
   assert.match(EXAM_SCRIPT_SCAN_NOTE, /INCLUDING BLANK PAGES/);
   assert.match(EXAM_SCRIPT_ONCE_WARNING, /cannot resubmit this/);
+});
+
+test("coach uploads on behalf of a student land in that student's exam-attempt folder", () => {
+  const path = examAttemptFileStoragePath({
+    userId: "22222222-2222-4222-8222-222222222222",
+    attemptId: "33333333-3333-4333-8333-333333333333",
+    kind: "marked_script",
+    fileName: "Paper 1.pdf",
+    stamp: 1,
+  });
+  assert.match(path, /^exam-attempts\/22222222-2222-4222-8222-222222222222\/33333333-3333-4333-8333-333333333333\/marked_script\//);
+  assert.equal(isExamAttemptFileKind("marked_script_p2"), true);
+  assert.equal(isExamAttemptFileKind("coach_report"), false);
+  assert.equal(STUDENT_ATTEMPT_SOURCE, "student");
+  const page = readFileSync(resolve("app/coach/evaluator/page.tsx"), "utf8");
+  const panel = readFileSync(resolve("components/coach/CoachUploadStudentScripts.tsx"), "utf8");
+  const route = readFileSync(resolve("app/api/coach/evaluator/student-scripts/route.ts"), "utf8");
+  assert.match(page, /CoachUploadStudentScripts/);
+  assert.match(panel, /Upload a student’s scripts/);
+  assert.match(panel, /\/api\/coach\/evaluator\/student-scripts/);
+  assert.match(route, /STUDENT_ATTEMPT_SOURCE/);
+  assert.match(route, /examAttemptFileStoragePath/);
+  assert.match(route, /createExamAttempt/);
 });
