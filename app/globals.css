@@ -8017,6 +8017,28 @@ a.planner-video-btn:visited:hover {
   margin: 8px 0 4px;
 }
 
+.profile-name-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .profile-name-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.student-profile-onboarding-heading,
+.student-profile-onboarding-toggle h3 {
+  margin: 20px 0 4px;
+  font-size: 16px;
+}
+
+.student-profile-onboarding-toggle {
+  margin-top: 18px;
+}
+
 .onboarding-field {
   display: grid;
   gap: 6px;

@@ -1,4 +1,6 @@
+import { isPlaceholderPersonName, joinPersonName } from "./account-profile";
 import { ensureStudentProfile } from "./profiles";
+import { onboardingSurveyAnswers, parseRosterOnboarding } from "./roster";
 import { getSupabase } from "./supabase";
 
 export const ONBOARDING_COUNTRIES = ["South Africa", "Zimbabwe", "Namibia"] as const;
@@ -33,6 +35,8 @@ export interface OnboardingNotes {
 }
 
 export interface OnboardingInput {
+  first_name?: string | null;
+  last_name?: string | null;
   phone: string | null;
   accountability_email: string | null;
   demographics: OnboardingDemographics;
@@ -197,13 +201,18 @@ export async function saveOnboarding(
   });
 
   const now = new Date().toISOString();
+  const typedName = joinPersonName(input.first_name, input.last_name);
+  const metaName =
+    typeof auth.user.user_metadata?.full_name === "string" ? auth.user.user_metadata.full_name.trim() : "";
+  const email = auth.user.email || "";
+  const fullName =
+    typedName ||
+    (metaName && !isPlaceholderPersonName(metaName, email) ? metaName : "") ||
+    email;
   const profilePayload = {
     id: auth.user.id,
-    email: auth.user.email || "",
-    full_name:
-      (typeof auth.user.user_metadata?.full_name === "string" && auth.user.user_metadata.full_name.trim()) ||
-      auth.user.email ||
-      "",
+    email,
+    full_name: fullName,
     phone_number: input.phone,
     accountability_email: input.accountability_email,
     updated_at: now,
@@ -255,6 +264,36 @@ export async function saveOnboarding(
     return { ok: false, error: "Onboarding was not marked complete. Try Start the course again." };
   }
 
+  if (typedName) {
+    const { error: authUpdateError } = await client.auth.updateUser({
+      data: { full_name: typedName, first_name: String(input.first_name || "").trim() || undefined },
+    });
+    if (authUpdateError) logSupabaseError("saveOnboarding.auth", { message: authUpdateError.message });
+  }
+
   await clearOnboardingSkipCookie();
   return { ok: true };
+}
+
+export async function fetchOwnOnboardingAnswers(userId: string): Promise<ReturnType<typeof onboardingSurveyAnswers>> {
+  const client = getSupabase();
+  if (!client) return [];
+  const [onboarding, profile] = await Promise.all([
+    client
+      .from("student_profiles")
+      .select("onboarding_completed, onboarding_skipped, demographics, qualitative_notes")
+      .eq("student_id", userId)
+      .maybeSingle(),
+    client.from("profiles").select("phone_number, accountability_email").eq("id", userId).maybeSingle(),
+  ]);
+  if (onboarding.error) {
+    logSupabaseError("fetchOwnOnboardingAnswers", onboarding.error);
+    return [];
+  }
+  const parsed = parseRosterOnboarding((onboarding.data || {}) as Record<string, unknown>);
+  return onboardingSurveyAnswers({
+    ...parsed,
+    phone: typeof profile.data?.phone_number === "string" ? profile.data.phone_number : null,
+    accountabilityEmail: typeof profile.data?.accountability_email === "string" ? profile.data.accountability_email : null,
+  });
 }

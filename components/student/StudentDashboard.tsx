@@ -120,7 +120,7 @@ export default function StudentDashboard() {
         </Link>
         <Link href="/student/account" className="student-hub-btn is-link">
           <strong>Your profile</strong>
-          <p>Name, email, and contacts.</p>
+          <p>Name, surname, and contacts.</p>
         </Link>
       </nav>
       <StudentPersonalNotes />

@@ -7,6 +7,10 @@ import BrandMark from "@/components/BrandMark";
 import ViewAsBanner from "@/components/coach/ViewAsBanner";
 import HelpTooltip from "@/components/ui/HelpTooltip";
 import {
+  editablePersonName,
+  validatePersonName,
+} from "@/lib/account-profile";
+import {
   ONBOARDING_COUNTRIES,
   ONBOARDING_CTA_YEARS,
   ONBOARDING_INSTITUTIONS,
@@ -20,7 +24,7 @@ import { useStudentSession } from "@/lib/student-session";
 import DataConsentChoices from "@/components/student/DataConsentChoices";
 import { saveMyConsent } from "@/lib/data-consent";
 
-const STEPS = ["IAC exam", "CTA / PGDA", "Notes", "Contact"] as const;
+const STEPS = ["Name", "IAC exam", "CTA / PGDA", "Notes", "Contact"] as const;
 const LAST_STEP = STEPS.length - 1;
 
 function FieldLabel({
@@ -53,6 +57,8 @@ export default function OnboardingForm({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [accountabilityEmail, setAccountabilityEmail] = useState("");
 
@@ -78,7 +84,11 @@ export default function OnboardingForm({
     }
     if (isCoachAccount(user) || onboarding === "done") {
       router.replace("/student/overview");
+      return;
     }
+    const names = editablePersonName(user.full_name, user.email);
+    setFirstName((current) => current || names.firstName);
+    setLastName((current) => current || names.lastName);
   }, [ready, user, onboarding, router]);
 
   if (!ready || !user || onboarding === "unknown" || onboarding === "done") {
@@ -98,11 +108,13 @@ export default function OnboardingForm({
     return "";
   };
 
+  const validateName = (): string => validatePersonName(firstName, lastName) || "";
+
   const goNext = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
     if (step >= LAST_STEP) return;
-    const message = step === 0 ? validateIac() : "";
+    const message = step === 0 ? validateName() : step === 1 ? validateIac() : "";
     if (message) {
       setError(message);
       return;
@@ -134,15 +146,23 @@ export default function OnboardingForm({
     event.stopPropagation();
     if (readOnly) return;
     if (step !== LAST_STEP) return;
+    const nameMessage = validateName();
+    if (nameMessage) {
+      setError(nameMessage);
+      setStep(0);
+      return;
+    }
     const message = validateIac();
     if (message) {
       setError(message);
-      setStep(0);
+      setStep(1);
       return;
     }
     setBusy(true);
     setError("");
     const result = await saveOnboarding(user.id, {
+      first_name: firstName.trim(),
+      last_name: lastName.trim(),
       phone: phone.trim() || null,
       accountability_email: accountabilityEmail.trim() || null,
       demographics: {
@@ -226,6 +246,38 @@ export default function OnboardingForm({
         <form onSubmit={onFormSubmit} onKeyDown={onFormKeyDown} noValidate>
           {step === 0 ? (
             <fieldset className="onboarding-step">
+              <legend>Your name</legend>
+              <div className="profile-name-row">
+                <div className="onboarding-field">
+                  <label className="student-notes-label" htmlFor="onboarding-first-name">
+                    First name
+                  </label>
+                  <input
+                    id="onboarding-first-name"
+                    type="text"
+                    autoComplete="given-name"
+                    value={firstName}
+                    onChange={(event) => setFirstName(event.target.value)}
+                  />
+                </div>
+                <div className="onboarding-field">
+                  <label className="student-notes-label" htmlFor="onboarding-last-name">
+                    Surname
+                  </label>
+                  <input
+                    id="onboarding-last-name"
+                    type="text"
+                    autoComplete="family-name"
+                    value={lastName}
+                    onChange={(event) => setLastName(event.target.value)}
+                  />
+                </div>
+              </div>
+            </fieldset>
+          ) : null}
+
+          {step === 1 ? (
+            <fieldset className="onboarding-step">
               <legend>IAC exam</legend>
               <p className="student-notes-label" id="onboarding-written-label">
                 Have you written the IAC exam before? <span className="muted">(required)</span>
@@ -269,7 +321,7 @@ export default function OnboardingForm({
             </fieldset>
           ) : null}
 
-          {step === 1 ? (
+          {step === 2 ? (
             <fieldset className="onboarding-step">
               <legend>Country &amp; CTA / PGDA</legend>
               <label className="student-notes-label" htmlFor="onboarding-country">
@@ -348,7 +400,7 @@ export default function OnboardingForm({
             </fieldset>
           ) : null}
 
-          {step === 2 ? (
+          {step === 3 ? (
             <fieldset className="onboarding-step">
               <legend>Notes</legend>
               <label className="student-notes-label" htmlFor="onboarding-struggling">
@@ -384,7 +436,7 @@ export default function OnboardingForm({
             </fieldset>
           ) : null}
 
-          {step === 3 ? (
+          {step === 4 ? (
             <fieldset className="onboarding-step">
               <legend>Contact</legend>
               <div className="onboarding-field">

@@ -16,6 +16,7 @@ import StudentDiagnosesPanel, { DiagnosisPills } from "@/components/coach/Studen
 import StudentCoachingSessionsPanel from "@/components/coach/StudentCoachingSessionsPanel";
 import CoachStudyJournalPanel from "@/components/coach/CoachStudyJournalPanel";
 import StudentPdfsPanel from "@/components/coach/StudentPdfsPanel";
+import StudentProfileDetails from "@/components/coach/StudentProfileDetails";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { accountStatusLabel } from "@/lib/student-registration";
 import { activityColumnsFromOutline, currentActivityPosition } from "@/lib/activity-grid";
@@ -336,6 +337,11 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         </>
       ) : null}
       {adminView === "data" ? <DataConsentPanel studentId={studentId} /> : null}
+
+      <StudentProfileDetails
+        student={student}
+        onNameSaved={(name) => setLive((current) => (current ? { ...current, name } : current))}
+      />
 
       <section className="card" id="activity">
         <div className="panel-head">

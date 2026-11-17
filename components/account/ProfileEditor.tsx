@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import HelpTooltip from "@/components/ui/HelpTooltip";
-import { normalizeAccountProfile, type AccountProfile } from "@/lib/account-profile";
+import {
+  editablePersonName,
+  joinPersonName,
+  normalizeAccountProfile,
+  type AccountProfile,
+} from "@/lib/account-profile";
 
 const EMPTY: AccountProfile = {
   email: "",
@@ -18,6 +23,8 @@ export default function ProfileEditor({
   showAccountability?: boolean;
 }) {
   const [profile, setProfile] = useState<AccountProfile>(EMPTY);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -34,7 +41,11 @@ export default function ProfileEditor({
           setError(body?.error || "Could not load your profile.");
           return;
         }
-        setProfile(normalizeAccountProfile(body?.profile));
+        const next = normalizeAccountProfile(body?.profile);
+        setProfile(next);
+        const names = editablePersonName(next.full_name, next.email);
+        setFirstName(names.firstName);
+        setLastName(names.lastName);
       } catch {
         if (!cancelled) setError("Could not load your profile.");
       } finally {
@@ -63,7 +74,7 @@ export default function ProfileEditor({
         method: "PATCH",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(profile),
+        body: JSON.stringify({ ...profile, full_name: joinPersonName(firstName, lastName) }),
       });
       const body = (await response.json().catch(() => null)) as {
         profile?: AccountProfile;
@@ -75,7 +86,13 @@ export default function ProfileEditor({
         setError(body?.error || "Could not save your profile.");
         return;
       }
-      if (body?.profile) setProfile(normalizeAccountProfile(body.profile));
+      if (body?.profile) {
+        const next = normalizeAccountProfile(body.profile);
+        setProfile(next);
+        const names = editablePersonName(next.full_name, next.email);
+        setFirstName(names.firstName);
+        setLastName(names.lastName);
+      }
       setNotice(body?.message || "Profile saved.");
       if (body?.email_confirmation_required) {
         window.setTimeout(() => window.location.reload(), 400);
@@ -91,17 +108,39 @@ export default function ProfileEditor({
 
   return (
     <form className="profile-editor" onSubmit={onSubmit}>
-      <div className="onboarding-field">
-        <label className="student-notes-label" htmlFor="profile-name">
-          Name
-        </label>
-        <input
-          id="profile-name"
-          type="text"
-          autoComplete="name"
-          value={profile.full_name}
-          onChange={(event) => setField("full_name", event.target.value)}
-        />
+      <div className="profile-name-row">
+        <div className="onboarding-field">
+          <label className="student-notes-label" htmlFor="profile-first-name">
+            First name
+          </label>
+          <input
+            id="profile-first-name"
+            type="text"
+            autoComplete="given-name"
+            value={firstName}
+            onChange={(event) => {
+              setFirstName(event.target.value);
+              setError("");
+              setNotice("");
+            }}
+          />
+        </div>
+        <div className="onboarding-field">
+          <label className="student-notes-label" htmlFor="profile-last-name">
+            Surname
+          </label>
+          <input
+            id="profile-last-name"
+            type="text"
+            autoComplete="family-name"
+            value={lastName}
+            onChange={(event) => {
+              setLastName(event.target.value);
+              setError("");
+              setNotice("");
+            }}
+          />
+        </div>
       </div>
       <div className="onboarding-field">
         <label className="student-notes-label" htmlFor="profile-email">
