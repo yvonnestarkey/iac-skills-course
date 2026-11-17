@@ -10654,6 +10654,8 @@ a.planner-video-btn:visited:hover {
 }
 
 /* ---------------------------------------------------------------- Read the Required (reading drills) */
+.rd-live { min-height: 100vh; padding: 24px 16px 48px; background: var(--bg, #fff); }
+.rd-live > .rd-page { margin: 0 auto; }
 .rd-page {
   --rd-pen: #2b4c9b;
   --rd-pen2: #b3322b;
@@ -10781,6 +10783,7 @@ a.planner-video-btn:visited:hover {
 .rd-prox.direct { background: #ffe36e; color: #1b2437; }
 .rd-prox.indirect { background: #e6ecf8; color: var(--rd-pen); }
 .rd-prox.thinking { border: 1px solid var(--line); color: var(--muted); }
+.rd-prox.communication { background: #e7f4ec; color: #1f6b43; }
 .rd-ok { color: var(--rd-good); font-weight: 600; }
 .rd-miss { color: var(--rd-bad); font-weight: 600; }
 .rd-table-wrap { overflow-x: auto; }

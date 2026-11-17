@@ -1,0 +1,413 @@
+{
+  "id": "karoo",
+  "title": "Karoo Precision",
+  "area": "Audit: risk of material misstatement",
+  "marks": 12,
+  "answer_minutes": 15,
+  "trains": [
+    "direct",
+    "indirect",
+    "lens"
+  ],
+  "case": [
+    {
+      "heading": "Karoo Precision Ltd",
+      "sentences": [
+        {
+          "id": "k0",
+          "text": "Karoo Precision Ltd (Karoo) is a JSE-listed industrial manufacturer whose share price dropped 35% this year",
+          "kind": "direct"
+        },
+        {
+          "id": "k1",
+          "text": "ahead of a planned rights issue to raise emergency capital.",
+          "kind": "direct"
+        },
+        {
+          "id": "k2",
+          "text": "After reporting its third consecutive annual operating loss and negative operating cash flows for the year ended 30 June 2026,",
+          "kind": "direct"
+        },
+        {
+          "id": "k3",
+          "text": "Karoo breached the interest-cover covenant on its R400 million long-term bank loan, with no lender waiver obtained by year-end.",
+          "kind": "direct"
+        },
+        {
+          "id": "k4",
+          "text": "Operations are further strained because 60% of Karoo’s raw materials are imported in US dollars on unhedged terms during a period of sharp rand depreciation.",
+          "kind": "indirect"
+        },
+        {
+          "id": "k5",
+          "text": "Shortly after year-end, Karoo’s largest customer (accounting for 30% of revenue and owing R45 million) entered business rescue,",
+          "kind": "direct"
+        },
+        {
+          "id": "k6",
+          "text": "while a key supplier sued Karoo for R30 million over cancelled supply contracts.",
+          "kind": "direct"
+        },
+        {
+          "id": "k7",
+          "text": "To cut costs, the Chief Financial Officer (CFO) retrenched two senior financial accountants mid-year",
+          "kind": "direct"
+        },
+        {
+          "id": "k8",
+          "text": "and now personally processes manual year-end journals.",
+          "kind": "direct"
+        },
+        {
+          "id": "k9",
+          "text": "Although Karoo’s independent Audit Committee appointed your firm as new external auditors for FY2026 to improve reporting credibility,",
+          "kind": "direct"
+        },
+        {
+          "id": "k10",
+          "text": "and its largest institutional shareholder has signed a non-binding letter of comfort,",
+          "kind": "direct"
+        },
+        {
+          "id": "k11",
+          "text": "the board has already drafted the annual financial statements on the going concern basis.",
+          "kind": "indirect"
+        }
+      ]
+    }
+  ],
+  "required": "Assess the risk of material misstatement at the financial statement level of Karoo Precision Ltd for the FY2026 audit. One of the 12 marks is for communication: clarity of expression.",
+  "recall": [
+    {
+      "question": "What kind of business is Karoo?",
+      "options": [
+        "A JSE-listed industrial manufacturer",
+        "An unlisted family-owned retailer",
+        "A bank that lends to manufacturers",
+        "An importer and distributor of US goods"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is your role?",
+      "options": [
+        "The external auditor, in your firm's first year on the audit",
+        "The external auditor, several years into the audit",
+        "The internal auditor reporting to the Audit Committee",
+        "The CFO preparing the annual financial statements"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "What is Karoo's main problem this year?",
+      "options": [
+        "Financial distress: losses, a broken loan covenant and a need for emergency capital",
+        "Fast growth that the finance team cannot keep up with",
+        "A planned listing on the JSE",
+        "A tax dispute with SARS"
+      ],
+      "correct": 0
+    },
+    {
+      "question": "On what basis has the board drafted the financial statements?",
+      "options": [
+        "The going concern basis",
+        "A liquidation basis",
+        "IFRS for SMEs",
+        "They have not been drafted yet"
+      ],
+      "correct": 0
+    }
+  ],
+  "rtfq": {
+    "shape": {
+      "options": [
+        "An assessment: the factors that increase the risk, the factors that reduce it, and a conclusion on the overall level",
+        "A list of the risks only",
+        "A list of audit procedures to respond to each risk",
+        "A calculation of planning materiality"
+      ],
+      "correct": 0,
+      "why": "“Assess” needs both sides and a conclusion. The mark plan gives marks for the two factors that reduce the risk and one for concluding that the risk is high. A list of risks only stops short."
+    },
+    "directions": {
+      "options": [
+        {
+          "text": "Stay at the financial statement level: risks that affect the statements as a whole",
+          "required": true
+        },
+        {
+          "text": "The FY2026 audit (year ended 30 June 2026)",
+          "required": true
+        },
+        {
+          "text": "One mark is for communication: clarity of expression",
+          "required": true
+        },
+        {
+          "text": "Give audit procedures for each risk",
+          "required": false
+        },
+        {
+          "text": "Recommend whether your firm should accept the engagement",
+          "required": false
+        },
+        {
+          "text": "Calculate materiality",
+          "required": false
+        }
+      ],
+      "why": "The level is the big one: financial statement level means risks that spread across the statements (pressure, incentives, weak controls, going concern, big judgements). Audit procedures are a different required and earn nothing here."
+    },
+    "lens": {
+      "options": [
+        "The external auditor: how each fact could cause a material misstatement in Karoo’s financial statements",
+        "The board: how to fix Karoo’s business problems",
+        "The bank: whether to call up the loan",
+        "An investor: whether to take up the rights issue"
+      ],
+      "correct": 0,
+      "why": "Every point has to end in the financial statements: who might manipulate them, what could be wrong in them. “The business is struggling” is business risk; it earns the mark only once you say what it does to the statements."
+    }
+  },
+  "caps": [
+    {
+      "rows": [
+        "r10",
+        "r11",
+        "r12",
+        "r13"
+      ],
+      "max": 3,
+      "label": "Going concern indicators (max 3)"
+    },
+    {
+      "rows": [
+        "r14",
+        "r15",
+        "r16"
+      ],
+      "max": 2,
+      "label": "IFRS judgements (max 2)"
+    },
+    {
+      "rows": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6",
+        "r7",
+        "r8",
+        "r9",
+        "r10",
+        "r11",
+        "r12",
+        "r13",
+        "r14",
+        "r15",
+        "r16",
+        "r17",
+        "r18",
+        "r19"
+      ],
+      "max": 11,
+      "label": "Part (a) (max 11)"
+    }
+  ],
+  "rows": [
+    {
+      "id": "r1",
+      "proximity": "direct",
+      "point": "Listed, share price down 35%: pressure on management to manipulate the financial statements to meet market and shareholder expectations",
+      "clues": [
+        "k0"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r2",
+      "proximity": "direct",
+      "point": "Planned rights issue for emergency capital: incentive to overstate assets and income, and understate liabilities and expenses, so Karoo looks like an attractive investment",
+      "clues": [
+        "k1"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r3",
+      "proximity": "direct",
+      "point": "Covenant breach, no waiver: incentive to manipulate profit or interest cover to hide or cure the breach, so the R400 million loan is not called up",
+      "clues": [
+        "k3"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r4",
+      "proximity": "indirect",
+      "point": "Covenant breach, no waiver at year-end: risk the R400 million loan is classified as non-current instead of current (IAS 1), and the default is not adequately disclosed",
+      "clues": [
+        "k3"
+      ],
+      "marks": 1,
+      "why": "The case gives the breach and the missing waiver. Apply IAS 1: no waiver by year-end means no right to defer settlement, so the loan is current."
+    },
+    {
+      "id": "r5",
+      "proximity": "direct",
+      "point": "Two senior financial accountants retrenched mid-year: understaffed finance function, weak review, higher risk of error across the statements",
+      "clues": [
+        "k7"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r6",
+      "proximity": "direct",
+      "point": "CFO personally processes manual year-end journals: no segregation of duties, opportunity for management override and fraudulent reporting",
+      "clues": [
+        "k8"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r7",
+      "proximity": "indirect",
+      "point": "First-year audit for your firm: risk that opening balances are materially misstated",
+      "clues": [
+        "k9"
+      ],
+      "marks": 1,
+      "why": "The case only says your firm is new. The step: a first audit means nobody in your firm audited last year's closing balances, which are this year's opening balances."
+    },
+    {
+      "id": "r8",
+      "proximity": "indirect",
+      "point": "First-year audit for your firm: risk that accounting policies are not applied consistently with prior years",
+      "clues": [
+        "k9"
+      ],
+      "marks": 1,
+      "why": "Same clue, a second step: a new auditor has not seen how the policies were applied before."
+    },
+    {
+      "id": "r9",
+      "proximity": "indirect",
+      "point": "Risk that the going concern basis is inappropriate, or that a material uncertainty is not (adequately) disclosed in terms of IAS 1",
+      "clues": [
+        "k11",
+        "k2",
+        "k3"
+      ],
+      "marks": 1,
+      "why": "The case says the board used the going concern basis. You draw the conclusion: with these indicators, that basis, or the missing disclosure, is itself a risk of material misstatement."
+    },
+    {
+      "id": "r10",
+      "proximity": "direct",
+      "point": "Going concern indicator: third consecutive operating loss and negative operating cash flows, sustained decline and cash burn",
+      "clues": [
+        "k2"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r11",
+      "proximity": "direct",
+      "point": "Going concern indicator: no waiver means the R400 million loan is repayable on demand, acute liquidity strain",
+      "clues": [
+        "k3"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r12",
+      "proximity": "indirect",
+      "point": "Going concern indicator: 60% unhedged US dollar imports while the rand depreciates squeeze margins and cash flows",
+      "clues": [
+        "k4"
+      ],
+      "marks": 1,
+      "why": "The case gives unhedged dollar imports and a weak rand. The step: a weaker rand makes every import cost more, with nothing in place to protect Karoo."
+    },
+    {
+      "id": "r13",
+      "proximity": "direct",
+      "point": "Going concern indicator: largest customer (30% of revenue) in business rescue and the R30 million supplier lawsuit threaten future revenue and cash",
+      "clues": [
+        "k5",
+        "k6"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r14",
+      "proximity": "indirect",
+      "point": "IAS 36: recurring losses and the 35% share price drop are impairment indicators; value in use estimates are subjective and open to bias to avoid impairment",
+      "clues": [
+        "k0",
+        "k2"
+      ],
+      "marks": 1,
+      "why": "The case gives losses and a falling share price. Apply IAS 36: these are indicators of impairment, which brings in subjective estimates."
+    },
+    {
+      "id": "r15",
+      "proximity": "indirect",
+      "point": "IAS 21 / IAS 2: unhedged dollar imports bring translation errors (spot rate, closing-rate retranslation of payables) and possible inventory write-downs to net realisable value",
+      "clues": [
+        "k4"
+      ],
+      "marks": 1,
+      "why": "The case gives dollar imports on unhedged terms. Apply IAS 21 and IAS 2 to see where the numbers can go wrong."
+    },
+    {
+      "id": "r16",
+      "proximity": "indirect",
+      "point": "IAS 10 / IFRS 9 / IAS 37: judgement on the post year-end business rescue (R45 million receivable, expected credit losses) and the R30 million lawsuit (provision or contingent liability)",
+      "clues": [
+        "k5",
+        "k6"
+      ],
+      "marks": 1,
+      "why": "The case gives two events after year-end. Apply IAS 10, IFRS 9 and IAS 37 to decide whether they adjust the figures, and how."
+    },
+    {
+      "id": "r17",
+      "proximity": "direct",
+      "point": "Reduces the risk: an independent Audit Committee appointing new auditors to improve reporting credibility shows active governance oversight",
+      "clues": [
+        "k9"
+      ],
+      "marks": 1,
+      "why": "The case even signals it with “Although”. Assess needs both sides, so the factors that reduce the risk earn marks too."
+    },
+    {
+      "id": "r18",
+      "proximity": "direct",
+      "point": "Reduces the risk, but only partly: the shareholder’s letter of comfort supports going concern, but it is non-binding, so the uncertainty remains",
+      "clues": [
+        "k10"
+      ],
+      "marks": 1
+    },
+    {
+      "id": "r19",
+      "proximity": "thinking",
+      "point": "Conclusion: the incentives, weak controls, complex judgements and going concern indicators outweigh the mitigating factors, so the risk at the financial statement level is high",
+      "clues": [],
+      "marks": 1
+    },
+    {
+      "id": "x1",
+      "proximity": "thinking",
+      "point": "Communication: clear, plain language, so the reader can follow each risk from the case fact to its effect on the financial statements",
+      "clues": [],
+      "marks": 1,
+      "why": "Communication is judged across the whole answer, not on one fact in the case.",
+      "skill": "communication"
+    }
+  ]
+}

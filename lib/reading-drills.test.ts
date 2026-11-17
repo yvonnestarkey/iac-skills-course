@@ -25,7 +25,7 @@ import {
 } from "./reading-drills";
 
 test("every exercise is complete and internally consistent", () => {
-  assert.equal(EXERCISES.length, 6);
+  assert.equal(EXERCISES.length, 7);
   for (const ex of EXERCISES) {
     const ids = new Set(sentencesOf(ex.case).map((s) => s.id));
     assert.equal(ids.size, sentencesOf(ex.case).length, `${ex.id}: sentence ids are unique`);
@@ -162,7 +162,7 @@ test("the Direct / Indirect table groups every row with its case wording, and li
   const { proximityTable, PROXIMITY_WHY } = await import("./reading-drills");
   for (const ex of EXERCISES) {
     const t = proximityTable(ex);
-    assert.equal(t.direct.length + t.indirect.length + t.thinking.length, ex.rows.length, ex.id);
+    assert.equal(t.direct.length + t.indirect.length + t.thinking.length, ex.rows.filter((r) => !r.skill).length, ex.id);
     for (const item of [...t.direct, ...t.indirect]) assert.ok(item.caseText.length > 0, `${ex.id} ${item.row.id} shows case wording`);
     assert.ok(t.traps.every((x) => x.why), ex.id);
   }
@@ -170,4 +170,20 @@ test("the Direct / Indirect table groups every row with its case wording, and li
   assert.ok(hv.direct.some((x) => x.row.id === "r4" && x.caseText.some((q) => q.includes("nine consecutive years"))));
   assert.equal(hv.indirect[0].why, PROXIMITY_WHY.indirect);
   assert.equal(hv.traps.length, 3);
+});
+
+test("Karoo applies the mark plan's caps and opens as a live link", async () => {
+  const { rowMarks, getLiveExercise } = await import("./reading-drills");
+  const ex = getExercise("karoo")!;
+  assert.equal(rowMarks(ex, ["r10", "r11", "r12", "r13"]), 3, "going concern indicators max 3");
+  assert.equal(rowMarks(ex, ["r14", "r15", "r16", "r1"]), 3, "IFRS judgements max 2");
+  assert.equal(rowMarks(ex, ex.rows.map((r) => r.id)), 12, "part (a) max 11, plus communication");
+  assert.equal(rowMarks(getExercise("mopane")!, ["r1", "r2"]), 2, "no caps: one row, one mark");
+  assert.ok(getLiveExercise("karoo"));
+  assert.equal(getLiveExercise("mopane"), null, "only listed exercises open as a live link");
+  assert.ok(buildMarkingPrompt(ex, "x").includes("x1 [communication]"));
+  const page = readFileSync(resolve("app/live/[exerciseId]/page.tsx"), "utf8");
+  const middleware = readFileSync(resolve("middleware.ts"), "utf8");
+  assert.match(page, /getLiveExercise/);
+  assert.doesNotMatch(middleware, /"\/live/, "the live link needs no sign-in");
 });

@@ -30,12 +30,34 @@ import CoachReadingReset from "@/components/reading/CoachReadingReset";
 import { fetchReadingHistory, saveDrillAttempt } from "@/lib/reading-drills-store";
 import { useStudentSession } from "@/lib/student-session";
 
+/** A random id kept in this browser, so the live link's daily marking limit is per student, not per shared wifi. */
+function liveBrowserId(): string {
+  try {
+    const key = "rd-live-browser";
+    const found = window.localStorage.getItem(key);
+    if (found) return found;
+    const id = crypto.randomUUID();
+    window.localStorage.setItem(key, id);
+    return id;
+  } catch {
+    return "";
+  }
+}
+
 const STEPS = ["Read", "Recall", "RTFQ", "Index", "Answer", "Feedback"];
 type Stage = "intro" | "read" | "recall" | "rtfq" | "index" | "answer" | "marking" | "self" | "feedback";
 const STEP_OF: Record<Stage, number> = { intro: 0, read: 0, recall: 1, rtfq: 2, index: 3, answer: 4, marking: 5, self: 5, feedback: 5 };
 
-/** One practice exercise. `embedded` = shown inside a course lesson, which completes when the feedback appears. */
-export default function DrillFlow({ exercise: ex, embedded = false, onComplete }: { exercise: DrillExercise; embedded?: boolean; onComplete?: () => void }) {
+/**
+ * One practice exercise. `embedded` = shown inside a course lesson, which completes when the feedback appears.
+ * `live` = the open live-session link (/live/<id>): no sign-in, no once-only rule, nothing saved, its own marking route.
+ */
+export default function DrillFlow({ exercise: ex, embedded = false, live: liveSession = false, onComplete }: {
+  exercise: DrillExercise;
+  embedded?: boolean;
+  live?: boolean;
+  onComplete?: () => void;
+}) {
   const { user } = useStudentSession();
   const [pool, setPool] = useState<DrillExercise[]>([]);
   const [session, setSession] = useState(0);
@@ -54,9 +76,10 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
   const [attempt, setAttempt] = useState<DrillAttempt | null>(null);
   const [saveMsg, setSaveMsg] = useState("");
   const [history, setHistory] = useState<DrillAttempt[]>([]);
-  const [ready, setReady] = useState(!user);
+  const [ready, setReady] = useState(!user || liveSession);
 
   useEffect(() => {
+    if (liveSession) return;
     if (!user?.id) {
       setReady(true);
       return;
@@ -72,16 +95,16 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
       }
       setReady(true);
     });
-  }, [user?.id, ex]);
+  }, [user?.id, ex, liveSession]);
   useEffect(() => {
-    if (embedded) return;
+    if (embedded || liveSession) return;
     fetch("/api/reading/exercises")
       .then((response) => response.json().catch(() => ({})))
       .then((payload) => {
         const extras = Array.isArray(payload.exercises) ? payload.exercises : [];
         setPool(extras.filter((item: DrillExercise) => item?.id && item?.title && item?.required));
       });
-  }, [embedded]);
+  }, [embedded, liveSession]);
   const top = useRef<HTMLElement>(null);
   useEffect(() => {
     if (!embedded) window.scrollTo({ top: 0 });
@@ -124,6 +147,7 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
     setAttempt(a);
     setStage("feedback");
     onComplete?.();
+    if (liveSession) return setSaveMsg("");
     if (!user?.id) return setSaveMsg("Sign in to keep your results.");
     const res = await saveDrillAttempt(user.id, a);
     setSaveMsg(res.ok ? "Saved to your record." : `Not saved: ${res.error}`);
@@ -134,10 +158,10 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
     setAnswerSec(answerStart ? (Date.now() - answerStart) / 1000 : 0);
     setStage("marking");
     try {
-      const res = await fetch("/api/reading/mark", {
+      const res = await fetch(liveSession ? "/api/reading/live-mark" : "/api/reading/mark", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ exerciseId: ex.id, answer }),
+        body: JSON.stringify({ exerciseId: ex.id, answer, ...(liveSession ? { browserId: liveBrowserId() } : {}) }),
       });
       const data = await res.json();
       if (res.ok && data.marking) return finish(data.marking as Marking, "model", data.markCallId);
@@ -154,14 +178,16 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
 
   return (
     <article ref={top} className={embedded ? "rd-page rd-embedded" : "lesson-body wide rd-page"}>
-      {embedded ? null : (
+      {embedded ? null : liveSession ? (
+        <p className="muted small">Live session · {ex.title} · {ex.area}</p>
+      ) : (
         <p className="muted small">
           <Link href="/student/reading">Reading & RTFQ Tool</Link> · {ex.title} · {ex.area}
         </p>
       )}
       <div className="rd-tool-top">
         <StepStrip names={STEPS} step={STEP_OF[stage]} t0={t0} countdownFrom={stage === "answer" ? ex.answer_minutes * 60 : undefined} countdownStart={answerStart} />
-        <CoachReadingReset
+        {liveSession ? null : <CoachReadingReset
           kind="exercise"
           taskKey={ex.id}
           onReset={() => {
@@ -181,7 +207,7 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
             setHistory((current) => current.filter((row) => row.exercise_id !== ex.id));
             setSession((n) => n + 1);
           }}
-        />
+        />}
       </div>
 
       {stage === "intro" ? (
@@ -195,7 +221,7 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
           <p className="rd-note">
             Exam pace for this case, reading and making notes: <b>{fmt(lo)} to {fmt(hi)}</b> (100 to 150 words a minute). The clock runs while you read.
           </p>
-          <p className="muted small">{READING_ONCE_COPY}</p>
+          <p className="muted small">{liveSession ? "This is a practice run for the session: nothing is saved, and you do not need to sign in." : READING_ONCE_COPY}</p>
           <div>
             <button className="primary" onClick={() => { setT0(Date.now()); setStage("read"); }}>
               Start reading
@@ -311,7 +337,7 @@ export default function DrillFlow({ exercise: ex, embedded = false, onComplete }
       {stage === "self" ? <SelfMark ex={ex} answer={answer} reason={selfReason} onDone={(m) => finish(m, "self")} /> : null}
 
       {stage === "feedback" && attempt && marking ? (
-        <Feedback ex={ex} a={attempt} marking={marking} notes={notes} pick={pick} saveMsg={saveMsg} history={history} pool={pool} embedded={embedded} />
+        <Feedback ex={ex} a={attempt} marking={marking} notes={notes} pick={pick} saveMsg={saveMsg} history={history} pool={pool} embedded={embedded} live={liveSession} />
       ) : null}
     </article>
   );
@@ -337,7 +363,7 @@ function SelfMark({ ex, answer, reason, onDone }: { ex: DrillExercise; answer: s
             <label key={r.id} className={`rd-opt${rows.has(r.id) ? " on" : ""}`}>
               <input type="checkbox" checked={rows.has(r.id)} onChange={() => setRows((cur) => { const n = new Set(cur); if (n.has(r.id)) n.delete(r.id); else n.add(r.id); return n; })} />
               <span>
-                {r.point} <span className={`rd-prox ${r.proximity}`}>{r.proximity}</span>
+                {r.point} <span className={`rd-prox ${r.skill || r.proximity}`}>{r.skill || r.proximity}</span>
               </span>
             </label>
           ))}
@@ -377,7 +403,7 @@ function SelfMark({ ex, answer, reason, onDone }: { ex: DrillExercise; answer: s
   );
 }
 
-function Feedback({ ex, a, marking, notes, pick, saveMsg, history, pool, embedded }: {
+function Feedback({ ex, a, marking, notes, pick, saveMsg, history, pool, embedded, live = false }: {
   ex: DrillExercise;
   a: DrillAttempt;
   marking: Marking;
@@ -387,6 +413,7 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, pool, embedde
   history: DrillAttempt[];
   pool: DrillExercise[];
   embedded: boolean;
+  live?: boolean;
 }) {
   const words = caseWords(ex);
   const [lo, hi] = paceWindow(words);
@@ -484,7 +511,7 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, pool, embedde
                       {r.point}
                       {m?.evidence ? <div className="muted small">You wrote: “{m.evidence}”</div> : null}
                     </td>
-                    <td className="c"><span className={`rd-prox ${r.proximity}`}>{r.proximity}</span></td>
+                    <td className="c"><span className={`rd-prox ${r.skill || r.proximity}`}>{r.skill || r.proximity}</span></td>
                     <td className="c">{sp == null ? "–" : sp ? <span className="rd-ok">Yes</span> : <span className="rd-miss">No</span>}</td>
                     <td className="c">{m?.earned ? <span className="rd-ok">Yes</span> : <span className="rd-miss">No</span>}</td>
                   </tr>
@@ -494,11 +521,22 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, pool, embedde
           </table>
         </div>
         <p className="muted small">Direct: the case states it, you only need to spot it and use it. Indirect: the case gives a clue and you take one step (apply a rule, draw the conclusion).</p>
+        {ex.caps?.length ? (
+          <p className="muted small">The marker caps some groups: {ex.caps.map((c) => c.label || `${c.rows.join(", ")} max ${c.max}`).join(" · ")}. Your result range already applies these.</p>
+        ) : null}
       </section>
 
       <ProximityLesson ex={ex} marking={marking} noted={noted} />
 
-      {embedded ? (
+      {live ? (
+        <section className="rd-sheet rd-stack">
+          <h2>Keep this page open</h2>
+          <p>We will go through the marker&apos;s rows together in the session. Look at the Direct rows you missed first: the case handed you those.</p>
+          <p className="muted small">
+            Want more practice like this? It is part of the <a href="https://iac.accountingstudyadvice.com/">IAC Skills Course</a>.
+          </p>
+        </section>
+      ) : embedded ? (
         <p className="muted small">This lesson is now marked complete. Your result is saved to your record.</p>
       ) : (
       <section className="rd-sheet rd-row">
