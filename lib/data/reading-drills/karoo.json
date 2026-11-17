@@ -224,7 +224,8 @@
       "clues": [
         "k0"
       ],
-      "marks": 1
+      "marks": 1,
+      "topic": "fraud-risk-factors"
     },
     {
       "id": "r2",
@@ -233,7 +234,8 @@
       "clues": [
         "k1"
       ],
-      "marks": 1
+      "marks": 1,
+      "topic": "fraud-risk-factors"
     },
     {
       "id": "r3",
@@ -242,7 +244,8 @@
       "clues": [
         "k3"
       ],
-      "marks": 1
+      "marks": 1,
+      "topic": "fraud-risk-factors"
     },
     {
       "id": "r4",
@@ -252,7 +255,8 @@
         "k3"
       ],
       "marks": 1,
-      "why": "The case gives the breach and the missing waiver. Apply IAS 1: no waiver by year-end means no right to defer settlement, so the loan is current."
+      "why": "The case gives the breach and the missing waiver. Apply IAS 1: no waiver by year-end means no right to defer settlement, so the loan is current.",
+      "topic": "covenant-classification"
     },
     {
       "id": "r5",
@@ -261,7 +265,8 @@
       "clues": [
         "k7"
       ],
-      "marks": 1
+      "marks": 1,
+      "topic": "audit-risk-levels"
     },
     {
       "id": "r6",
@@ -270,7 +275,8 @@
       "clues": [
         "k8"
       ],
-      "marks": 1
+      "marks": 1,
+      "topic": "fraud-risk-factors"
     },
     {
       "id": "r7",
@@ -280,7 +286,8 @@
         "k9"
       ],
       "marks": 1,
-      "why": "The case only says your firm is new. The step: a first audit means nobody in your firm audited last year's closing balances, which are this year's opening balances."
+      "why": "The case only says your firm is new. The step: a first audit means nobody in your firm audited last year's closing balances, which are this year's opening balances.",
+      "topic": "audit-risk-levels"
     },
     {
       "id": "r8",
@@ -290,7 +297,8 @@
         "k9"
       ],
       "marks": 1,
-      "why": "Same clue, a second step: a new auditor has not seen how the policies were applied before."
+      "why": "Same clue, a second step: a new auditor has not seen how the policies were applied before.",
+      "topic": "audit-risk-levels"
     },
     {
       "id": "r9",
@@ -302,7 +310,8 @@
         "k3"
       ],
       "marks": 1,
-      "why": "The case says the board used the going concern basis. You draw the conclusion: with these indicators, that basis, or the missing disclosure, is itself a risk of material misstatement."
+      "why": "The case says the board used the going concern basis. You draw the conclusion: with these indicators, that basis, or the missing disclosure, is itself a risk of material misstatement.",
+      "topic": "going-concern"
     },
     {
       "id": "r10",
@@ -311,7 +320,8 @@
       "clues": [
         "k2"
       ],
-      "marks": 1
+      "marks": 1,
+      "topic": "going-concern"
     },
     {
       "id": "r11",
@@ -320,7 +330,8 @@
       "clues": [
         "k3"
       ],
-      "marks": 1
+      "marks": 1,
+      "topic": "going-concern"
     },
     {
       "id": "r12",
@@ -330,7 +341,8 @@
         "k4"
       ],
       "marks": 1,
-      "why": "The case gives unhedged dollar imports and a weak rand. The step: a weaker rand makes every import cost more, with nothing in place to protect Karoo."
+      "why": "The case gives unhedged dollar imports and a weak rand. The step: a weaker rand makes every import cost more, with nothing in place to protect Karoo.",
+      "topic": "going-concern"
     },
     {
       "id": "r13",
@@ -340,7 +352,8 @@
         "k5",
         "k6"
       ],
-      "marks": 1
+      "marks": 1,
+      "topic": "going-concern"
     },
     {
       "id": "r14",
@@ -351,7 +364,8 @@
         "k2"
       ],
       "marks": 1,
-      "why": "The case gives losses and a falling share price. Apply IAS 36: these are indicators of impairment, which brings in subjective estimates."
+      "why": "The case gives losses and a falling share price. Apply IAS 36: these are indicators of impairment, which brings in subjective estimates.",
+      "topic": "audit-risk-levels"
     },
     {
       "id": "r15",
@@ -361,7 +375,8 @@
         "k4"
       ],
       "marks": 1,
-      "why": "The case gives dollar imports on unhedged terms. Apply IAS 21 and IAS 2 to see where the numbers can go wrong."
+      "why": "The case gives dollar imports on unhedged terms. Apply IAS 21 and IAS 2 to see where the numbers can go wrong.",
+      "topic": "audit-risk-levels"
     },
     {
       "id": "r16",
@@ -372,7 +387,8 @@
         "k6"
       ],
       "marks": 1,
-      "why": "The case gives two events after year-end. Apply IAS 10, IFRS 9 and IAS 37 to decide whether they adjust the figures, and how."
+      "why": "The case gives two events after year-end. Apply IAS 10, IFRS 9 and IAS 37 to decide whether they adjust the figures, and how.",
+      "topic": "audit-risk-levels"
     },
     {
       "id": "r17",
@@ -382,7 +398,8 @@
         "k9"
       ],
       "marks": 1,
-      "why": "The case even signals it with “Although”. Assess needs both sides, so the factors that reduce the risk earn marks too."
+      "why": "The case even signals it with “Although”. Assess needs both sides, so the factors that reduce the risk earn marks too.",
+      "topic": "audit-risk-levels"
     },
     {
       "id": "r18",
@@ -391,14 +408,16 @@
       "clues": [
         "k10"
       ],
-      "marks": 1
+      "marks": 1,
+      "topic": "audit-risk-levels"
     },
     {
       "id": "r19",
       "proximity": "thinking",
       "point": "Conclusion: the incentives, weak controls, complex judgements and going concern indicators outweigh the mitigating factors, so the risk at the financial statement level is high",
       "clues": [],
-      "marks": 1
+      "marks": 1,
+      "topic": "audit-risk-levels"
     },
     {
       "id": "x1",
