@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { formatSastDateTime } from "@/lib/dates";
 import StudentProfileLink from "@/components/coach/StudentProfileLink";
-import { LIVE, gradeBand, getExercise, type DrillAttempt } from "@/lib/reading-drills";
+import { LIVE, gradeBand, getExercise, type AnswerPoint, type DrillAttempt } from "@/lib/reading-drills";
 
 type LiveAttemptRow = {
   id: string;
@@ -13,7 +13,7 @@ type LiveAttemptRow = {
   pot_pct: number;
   marked_by: string;
   created_at: string;
-  attempt: DrillAttempt;
+  attempt: DrillAttempt & { points?: AnswerPoint[] };
   student: { id: string; name: string } | null;
 };
 
@@ -118,7 +118,23 @@ export default function LiveAttemptsPanel() {
                         </p>
                         <p className="small"><b>Rows earned:</b> {(a.rows_earned || []).join(", ") || "none"}</p>
                         {a.fix ? <p className="small"><b>Fix this first:</b> {a.fix}</p> : null}
-                        <div className="small" style={{ whiteSpace: "pre-wrap", borderLeft: "3px solid var(--line)", paddingLeft: 10 }}>{a.answer}</div>
+                        {a.points?.length ? (
+                          <table className="data-table">
+                            <thead><tr><th>#</th><th>Point</th><th>Mark?</th><th>What it is missing</th></tr></thead>
+                            <tbody>
+                              {a.points.map((p, i) => (
+                                <tr key={i}>
+                                  <td>{i + 1}</td>
+                                  <td>{p.text}</td>
+                                  <td>{p.earned ? `1 mark (${p.row})` : "No mark"}</td>
+                                  <td>{p.missing}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        ) : (
+                          <div className="small" style={{ whiteSpace: "pre-wrap", borderLeft: "3px solid var(--line)", paddingLeft: 10 }}>{a.answer}</div>
+                        )}
                       </td>
                     </tr>
                   ) : null}

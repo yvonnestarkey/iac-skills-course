@@ -76,7 +76,7 @@ export async function POST(req: Request) {
       toolDescription: "Record the RTFQ verdicts, the marker's rows earned, any excluded material used, and the one fix.",
       schema: MARKING_SCHEMA,
       usage,
-      maxTokens: 3000,
+      maxTokens: 5000,
       model,
     });
     const marking = normaliseMarking(ex, raw);

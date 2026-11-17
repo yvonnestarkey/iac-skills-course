@@ -65,7 +65,12 @@ export type Marking = {
   rows: Record<string, { earned: boolean; evidence: string }>;
   traps: string[];
   fix: string;
+  /** The student's answer split into the points they made, each marked. Absent for self-marking and older attempts. */
+  points?: AnswerPoint[];
 };
+
+/** One point from the student's own answer: their words, the row it earns (if any), and what it lacks. */
+export type AnswerPoint = { text: string; row: string | null; earned: boolean; missing: string };
 
 /** One saved practice attempt (a row of public.reading_attempts). */
 export type DrillAttempt = {
@@ -442,6 +447,13 @@ THE STUDENT'S ANSWER:
 ${answer.slice(0, 6000)}
 """
 
+POINTS: split the student's answer into the separate points they made, in their order (usually one sentence or bullet each; headings and filler are not points). For each point:
+- text: the student's own words (shorten with … if over 40 words).
+- row: the id of the marking row it earns, or null.
+- earned: true only if this point, on its own, earns that row.
+- missing: if not earned, one sentence to the student ("you") saying exactly what this point lacks to earn a mark, e.g. the case fact, the link to what the required asks about, or the consequence. If it repeats a row an earlier point already earned, say so. If it uses material the required rules out, say so. Empty when earned.
+The rows earned must match the points: a row is earned only if at least one point earns it.
+
 Record your marking with the tool. Include every row id. used_traps lists the ids of EXCLUDED, OFF or WRONG LEVEL sentences whose content the answer uses.`;
 }
 
@@ -464,8 +476,16 @@ export const MARKING_SCHEMA = {
     },
     used_traps: { type: "array", items: { type: "string" } },
     fix: { type: "string", description: "The single most useful thing to do differently next time, one sentence." },
+    points: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: { text: { type: "string" }, row: { type: ["string", "null"] }, earned: { type: "boolean" }, missing: { type: "string" } },
+        required: ["text", "row", "earned", "missing"],
+      },
+    },
   },
-  required: ["rtfq", "rows", "used_traps", "fix"],
+  required: ["rtfq", "rows", "used_traps", "fix", "points"],
 };
 
 type RawMarking = {
@@ -473,7 +493,20 @@ type RawMarking = {
   rows?: { id?: string; earned?: boolean; evidence?: string }[];
   used_traps?: string[];
   fix?: string;
+  points?: { text?: string; row?: string | null; earned?: boolean; missing?: string }[];
 };
+
+function normalisePoints(ex: DrillExercise, raw: RawMarking["points"]): AnswerPoint[] {
+  const ids = new Set(ex.rows.map((r) => r.id));
+  return (raw || [])
+    .filter((p) => p && String(p.text || "").trim())
+    .slice(0, 60)
+    .map((p) => {
+      const row = p.row && ids.has(String(p.row)) ? String(p.row) : null;
+      const earned = Boolean(p.earned && row);
+      return { text: String(p.text).trim(), row, earned, missing: earned ? "" : String(p.missing || "") };
+    });
+}
 
 /** Turn the model's answer into a complete, safe Marking (missing rows count as not earned). */
 export function normaliseMarking(ex: DrillExercise, raw: RawMarking): Marking {
@@ -492,6 +525,7 @@ export function normaliseMarking(ex: DrillExercise, raw: RawMarking): Marking {
     rows,
     traps: (raw.used_traps || []).map(String).filter((id) => trapIds.has(id)),
     fix: String(raw.fix || ""),
+    points: normalisePoints(ex, raw.points),
   };
 }
 

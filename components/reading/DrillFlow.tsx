@@ -163,7 +163,7 @@ export default function DrillFlow({ exercise: ex, embedded = false, live: liveSe
         const res = await fetch("/api/reading/live-attempt", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: liveEmail, browserId: liveBrowserId(), attempt: a, liveCallId: callId ?? null }),
+          body: JSON.stringify({ email: liveEmail, browserId: liveBrowserId(), attempt: { ...a, points: m.points || [] }, liveCallId: callId ?? null }),
         });
         const data = await res.json().catch(() => ({}));
         setSaveMsg(res.ok ? `Saved under ${cleanLiveEmail(liveEmail)}.` : `Not saved: ${data.error || "please tell your coach."}`);
@@ -539,6 +539,8 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, pool, embedde
         ))}
       </section>
 
+      <AnswerMarked ex={ex} answer={a.answer} marking={marking} />
+
       <section className="rd-sheet rd-stack">
         <h2>Buried Treasure: the marker&apos;s rows</h2>
         {notUsed.length ? (
@@ -605,6 +607,50 @@ function Feedback({ ex, a, marking, notes, pick, saveMsg, history, pool, embedde
       </section>
       )}
     </div>
+  );
+}
+
+/** The student's own answer, point by point: would each point get a mark, and what is that point missing? */
+function AnswerMarked({ ex, answer, marking }: { ex: DrillExercise; answer: string; marking: Marking }) {
+  const points = marking.points || [];
+  const rowPoint = Object.fromEntries(ex.rows.map((r) => [r.id, r.point]));
+  const earned = points.filter((p) => p.earned).length;
+  return (
+    <section className="rd-sheet rd-stack">
+      <h2>Your answer, marked point by point</h2>
+      {points.length ? (
+        <>
+          <p className="muted">
+            {earned} of your {points.length} point{points.length === 1 ? "" : "s"} would earn a mark. For each one that doesn&apos;t, the right-hand column says what that point is missing.
+          </p>
+          <div className="rd-table-wrap">
+            <table className="rd-table rd-points">
+              <thead>
+                <tr><th>#</th><th>What you wrote</th><th>Mark?</th><th>Why, or what it is missing</th></tr>
+              </thead>
+              <tbody>
+                {points.map((p, i) => (
+                  <tr key={i} className={p.earned ? "earned" : "missed"}>
+                    <td className="c">{i + 1}</td>
+                    <td className="rd-quote">{p.text}</td>
+                    <td className="c">{p.earned ? <span className="rd-ok">1 mark</span> : <span className="rd-miss">No mark</span>}</td>
+                    <td>{p.earned ? <span className="muted">Earns: {rowPoint[p.row || ""] || p.row}</span> : p.missing || "This point does not match anything the marker rewards."}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="muted small">A point that earns nothing is time spent in the exam with no return. Compare it with the marker&apos;s rows below to see the version that would have scored.</p>
+        </>
+      ) : (
+        <>
+          <p className="muted">
+            This answer was not marked point by point (it was self-marked, or marked before this was added). Here it is as you wrote it, to read next to the marker&apos;s rows below.
+          </p>
+          <div className="rd-answer-view">{answer}</div>
+        </>
+      )}
+    </section>
   );
 }
 
