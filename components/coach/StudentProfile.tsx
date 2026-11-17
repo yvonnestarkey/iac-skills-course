@@ -51,6 +51,7 @@ import {
   type ReferralArrangementStatus,
 } from "@/lib/referral-arrangements";
 import { useStore } from "@/lib/store";
+import { startViewAsStudent, VIEW_AS_STUDENT_HOME } from "@/lib/view-as-student";
 
 export default function StudentProfile({ studentId }: { studentId: string }) {
   const { data, notice } = useStore();
@@ -69,6 +70,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
   const [messageStats, setMessageStats] = useState<Record<string, CoachSentMessageStat>>({});
   const [arrangementStatus, setArrangementStatus] = useState<ReferralArrangementStatus>("waiting");
   const [adminView, setAdminView] = useState<"" | "registration" | "password" | "data">("");
+  const [viewAsBusy, setViewAsBusy] = useState(false);
+  const [viewAsError, setViewAsError] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -231,7 +234,25 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
           <span className={`badge ${accountStatusLabel(student) === "Active" ? "ok" : "warn"}`}>
             {accountStatusLabel(student)}
           </span>
-          <button className="primary" type="button" onClick={() => router.push(`/coach/students/${student.id}/surveys`)}>
+          <button
+            className="primary"
+            type="button"
+            disabled={viewAsBusy}
+            onClick={async () => {
+              setViewAsBusy(true);
+              setViewAsError("");
+              const result = await startViewAsStudent(student.id);
+              if (result.ok === false) {
+                setViewAsBusy(false);
+                setViewAsError(result.error);
+                return;
+              }
+              window.location.assign(VIEW_AS_STUDENT_HOME);
+            }}
+          >
+            {viewAsBusy ? "Opening…" : "View as student"}
+          </button>
+          <button className="ghost" type="button" onClick={() => router.push(`/coach/students/${student.id}/surveys`)}>
             Surveys
           </button>
           <button className="ghost" type="button" onClick={() => router.push(`/coach/students/${student.id}/messages`)}>
@@ -264,6 +285,7 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         </div>
       </div>
       {notice ? <div className="notice">{notice}</div> : null}
+      {viewAsError ? <p className="waiting">{viewAsError}</p> : null}
       {extraArrangement ? (
         <div className="dash-alert">
           {referralArrangementBanner(arrangementStatus, extraDiscountCents(extraArrangement.extraBps))}

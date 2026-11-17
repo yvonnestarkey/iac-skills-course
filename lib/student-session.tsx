@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { fetchOnboardingGate, clearOnboardingSkipCookie, clearOnboardingGateCache } from "./onboarding";
 import { ensureStudentProfile } from "./profiles";
@@ -24,6 +24,7 @@ import { fetchReadingHistory } from "./reading-drills-store";
 import type { EntitlementSource } from "./account-access";
 import type { EntitlementStatus } from "./commerce";
 import { fetchStudentSubmissions, type StudentSubmission } from "./student-submissions";
+import { fetchViewAsSession } from "./view-as-student";
 
 export type OnboardingGate = "unknown" | "needed" | "done";
 export type SessionEntitlement = EntitlementStatus | "staff" | "none" | null;
@@ -31,6 +32,9 @@ export type SessionEntitlement = EntitlementStatus | "staff" | "none" | null;
 interface StudentSessionValue {
   ready: boolean;
   user: StudentUser | null;
+  authUser: StudentUser | null;
+  viewAsStudent: StudentUser | null;
+  readOnly: boolean;
   outline: OutlineChapter[];
   completed: Record<string, boolean>;
   submissions: Record<string, StudentSubmission>;
@@ -54,6 +58,9 @@ const StudentSessionContext = createContext<StudentSessionValue | null>(null);
 export function StudentSessionProvider({ children, courseId }: { children: ReactNode; courseId?: string }) {
   const [ready, setReady] = useState(false);
   const [user, setUser] = useState<StudentUser | null>(null);
+  const [authUser, setAuthUser] = useState<StudentUser | null>(null);
+  const [viewAsStudent, setViewAsStudent] = useState<StudentUser | null>(null);
+  const viewAsRef = useRef<StudentUser | null>(null);
   const [outline, setOutline] = useState<OutlineChapter[]>([]);
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
   const [submissions, setSubmissions] = useState<Record<string, StudentSubmission>>({});
@@ -121,22 +128,39 @@ export function StudentSessionProvider({ children, courseId }: { children: React
     const start = async () => {
       const [nextUser, nextOutline] = await Promise.all([getStudentUser(), fetchCourseOutline({ courseId })]);
       if (cancelled) return;
-      setUser(nextUser);
-      setOutline(isCoachAccount(nextUser) ? nextOutline : publishedOutline(nextOutline));
-
-      if (nextUser) {
-        void ensureStudentProfile(nextUser);
-        if (isCoachAccount(nextUser)) {
-          setOnboarding("done");
-          await loadProgress(nextUser.id);
-          await loadCommerce(nextUser);
+      setAuthUser(nextUser);
+      let subject = nextUser;
+      let viewing: StudentUser | null = null;
+      if (isCoachAccount(nextUser)) {
+        const viewed = await fetchViewAsSession();
+        if (cancelled) return;
+        if (viewed.student) {
+          viewing = viewed.student;
+          subject = viewed.student;
+          viewAsRef.current = viewed.student;
+          setViewAsStudent(viewed.student);
+          setEntitlement(viewed.entitlement);
+          setEntitlementSource(viewed.entitlement_source);
+          setPreviewLessonIds(viewed.preview_lesson_ids);
         } else {
-          const [, gate] = await Promise.all([
-            loadProgress(nextUser.id),
-            fetchOnboardingGate(nextUser.id),
-            loadCommerce(nextUser),
-          ]);
-          if (!cancelled) setOnboarding(gate);
+          viewAsRef.current = null;
+          setViewAsStudent(null);
+        }
+      }
+      setUser(subject);
+      setOutline(isCoachAccount(subject) ? nextOutline : publishedOutline(nextOutline));
+
+      if (subject) {
+        if (!viewing) void ensureStudentProfile(subject);
+        if (isCoachAccount(subject)) {
+          setOnboarding("done");
+          await loadProgress(subject.id);
+          await loadCommerce(subject);
+        } else {
+          const tasks: Array<Promise<unknown>> = [loadProgress(subject.id), fetchOnboardingGate(subject.id)];
+          if (!viewing) tasks.push(loadCommerce(subject));
+          const results = await Promise.all(tasks);
+          if (!cancelled) setOnboarding(results[1] as Awaited<ReturnType<typeof fetchOnboardingGate>>);
         }
       } else {
         setOnboarding("unknown");
@@ -151,11 +175,18 @@ export function StudentSessionProvider({ children, courseId }: { children: React
     const subscription = client?.auth.onAuthStateChange((event, session) => {
       // Idle JWT refresh must not re-run the onboarding gate or flash "unknown".
       if (event === "TOKEN_REFRESHED" || event === "USER_UPDATED" || event === "INITIAL_SESSION") {
-        if (session?.user) setUser(studentUserFromAuth(session.user));
+        if (session?.user) {
+          const nextAuth = studentUserFromAuth(session.user);
+          setAuthUser(nextAuth);
+          if (!viewAsRef.current) setUser(nextAuth);
+        }
         return;
       }
 
       if (event === "SIGNED_OUT") {
+        viewAsRef.current = null;
+        setViewAsStudent(null);
+        setAuthUser(null);
         setUser(null);
         setCompleted({});
         setSubmissions({});
@@ -174,6 +205,8 @@ export function StudentSessionProvider({ children, courseId }: { children: React
       if (event !== "SIGNED_IN" || !session?.user) return;
 
       const nextUser = studentUserFromAuth(session.user);
+      setAuthUser(nextUser);
+      if (viewAsRef.current) return;
       setUser(nextUser);
       void loadProgress(nextUser.id);
       void loadCommerce(nextUser);
@@ -219,6 +252,9 @@ export function StudentSessionProvider({ children, courseId }: { children: React
     await signOutStudent();
     await clearOnboardingSkipCookie();
     clearOnboardingGateCache();
+    viewAsRef.current = null;
+    setViewAsStudent(null);
+    setAuthUser(null);
     setUser(null);
     setCompleted({});
     setSubmissions({});
@@ -235,6 +271,9 @@ export function StudentSessionProvider({ children, courseId }: { children: React
     () => ({
       ready,
       user,
+      authUser,
+      viewAsStudent,
+      readOnly: Boolean(viewAsStudent),
       outline,
       completed,
       submissions,
@@ -252,7 +291,7 @@ export function StudentSessionProvider({ children, courseId }: { children: React
       reloadOutline,
       signOut,
     }),
-    [ready, user, outline, completed, submissions, surveyReviews, readingAttempts, readingChecks, entitlement, entitlementSource, previewLessonIds, onboarding, setLessonCompleted, setSubmission, setSurveyReview, reloadProgress, reloadOutline, signOut]
+    [ready, user, authUser, viewAsStudent, outline, completed, submissions, surveyReviews, readingAttempts, readingChecks, entitlement, entitlementSource, previewLessonIds, onboarding, setLessonCompleted, setSubmission, setSurveyReview, reloadProgress, reloadOutline, signOut]
   );
 
   return <StudentSessionContext.Provider value={value}>{children}</StudentSessionContext.Provider>;

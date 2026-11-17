@@ -1,10 +1,11 @@
 "use client";
 
 import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { fetchOwnInboxMessages, markOwnInboxRead, type InboxMessage } from "./inbox";
+import { fetchCoachStudentThread, fetchOwnInboxMessages, markOwnInboxRead, type InboxMessage } from "./inbox";
 import {
   asNotificationList,
   fetchOwnNotifications,
+  fetchStudentNotifications,
   markOwnNotificationsRead,
   notificationFromRow,
   type StudentNotification,
@@ -25,7 +26,7 @@ export interface StudentInboxValue {
 const StudentInboxContext = createContext<StudentInboxValue | null>(null);
 
 function useStudentInboxState(): StudentInboxValue {
-  const { user } = useStudentSession();
+  const { user, readOnly } = useStudentSession();
   const [messages, setMessages] = useState<InboxMessage[]>([]);
   const [notifications, setNotifications] = useState<StudentNotification[]>([]);
   const [ready, setReady] = useState(false);
@@ -39,12 +40,20 @@ function useStudentInboxState(): StudentInboxValue {
 
     const load = async () => {
       try {
-        const [inbox, notes] = await Promise.all([fetchOwnInboxMessages(), fetchOwnNotifications()]);
+        const [inbox, notes] = await Promise.all([
+          readOnly
+            ? fetchCoachStudentThread({ id: user.id, email: user.email || "" })
+            : fetchOwnInboxMessages(),
+          readOnly
+            ? fetchStudentNotifications({ id: user.id, email: user.email || "" })
+            : fetchOwnNotifications(),
+        ]);
         if (cancelled) return;
         const nextMessages = Array.isArray(inbox.data) ? inbox.data.filter(Boolean) : [];
         const nextNotes = asNotificationList(notes.data);
         setMessages(nextMessages);
         setNotifications(nextNotes);
+        if (readOnly) return;
         const catchup = await fetch("/api/student/notifications/catch-up", { method: "POST" });
         if (!cancelled && catchup.ok) {
           const payload = (await catchup.json().catch(() => ({}))) as { inserted?: number };
@@ -106,12 +115,13 @@ function useStudentInboxState(): StudentInboxValue {
         cancelled = true;
       };
     }
-  }, [user?.id]);
+  }, [user?.id, user?.email, readOnly]);
 
   const inboxWaiting = (Array.isArray(messages) ? messages : []).filter((item) => item.from === "coach" && !item.read).length;
   const unreadCount = items.filter((item) => !item.read).length;
 
   const markNotificationsRead = useCallback(async (ids?: string[]) => {
+    if (readOnly) return;
     setNotifications((current) =>
       asNotificationList(current).map((item) => {
         if (item.read) return item;
@@ -124,9 +134,10 @@ function useStudentInboxState(): StudentInboxValue {
     } catch {
       /* Keep the local read state even if a table or column is missing. */
     }
-  }, []);
+  }, [readOnly]);
 
   const markAllRead = useCallback(async () => {
+    if (readOnly) return;
     const now = new Date().toISOString();
     setMessages((current) => current.map((item) => (item.read ? item : { ...item, read: true, readAt: now })));
     try {
@@ -134,7 +145,7 @@ function useStudentInboxState(): StudentInboxValue {
     } catch {
       /* Keep the local read state even if a table or column is missing. */
     }
-  }, [markNotificationsRead]);
+  }, [markNotificationsRead, readOnly]);
 
   return {
     messages: Array.isArray(messages) ? messages : [],

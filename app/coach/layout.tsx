@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import type { ReactNode } from "react";
 import TopBar from "@/components/TopBar";
 import CoachPreviewShell from "@/components/coach/CoachPreviewShell";
+import ViewAsBanner from "@/components/coach/ViewAsBanner";
 import { CoursePreviewProvider } from "@/lib/course-preview";
 import { isCoachAccount } from "@/lib/roles";
 import { StudentNavProvider } from "@/lib/student-nav";
@@ -22,12 +23,12 @@ export default function CoachLayout({ children }: { children: ReactNode }) {
 
 function CoachLayoutInner({ children }: { children: ReactNode }) {
   const { ready: storeReady, session, setSession } = useStore();
-  const { ready: authReady, user } = useStudentSession();
+  const { ready: authReady, user, authUser } = useStudentSession();
   const pathname = usePathname();
   const router = useRouter();
   const isPreview = pathname.startsWith("/coach/preview");
   const isDemoCoach = Boolean(session && session.role === "coach");
-  const isAuthCoach = isCoachAccount(user);
+  const isAuthCoach = isCoachAccount(authUser || user);
   const allowed = process.env.NODE_ENV === "production" ? isAuthCoach : isDemoCoach || isAuthCoach;
 
   useEffect(() => {
@@ -54,6 +55,7 @@ function CoachLayoutInner({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <ViewAsBanner />
       <TopBar />
       <div className="shell coach-shell">{children}</div>
     </>

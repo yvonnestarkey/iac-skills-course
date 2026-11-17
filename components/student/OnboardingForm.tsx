@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { FormEvent, KeyboardEvent, MouseEvent, ReactNode } from "react";
 import BrandMark from "@/components/BrandMark";
+import ViewAsBanner from "@/components/coach/ViewAsBanner";
 import HelpTooltip from "@/components/ui/HelpTooltip";
 import {
   ONBOARDING_COUNTRIES,
@@ -47,7 +48,7 @@ export default function OnboardingForm({
   skipOnboarding: () => Promise<void>;
 }) {
   const router = useRouter();
-  const { ready, user, signOut, onboarding } = useStudentSession();
+  const { ready, user, signOut, onboarding, readOnly } = useStudentSession();
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -131,6 +132,7 @@ export default function OnboardingForm({
   const startCourse = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
+    if (readOnly) return;
     if (step !== LAST_STEP) return;
     const message = validateIac();
     if (message) {
@@ -173,6 +175,7 @@ export default function OnboardingForm({
   const skipForNow = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
+    if (readOnly) return;
     setBusy(true);
     setError("");
     const skipped = await markOnboardingSkipped(user.id);
@@ -186,24 +189,27 @@ export default function OnboardingForm({
 
   return (
     <div className="student-player">
+      {readOnly ? <ViewAsBanner /> : null}
       <header className="student-player-bar">
         <BrandMark href="/onboarding" />
         <div className="topbar-right">
           {user.email ? <span className="muted small student-email">{user.email}</span> : null}
-          <button
-            className="ghost student-signout"
-            type="button"
-            onClick={async () => {
-              await signOut();
-              goToStudentLogin();
-            }}
-          >
-            Sign Out
-          </button>
+          {readOnly ? null : (
+            <button
+              className="ghost student-signout"
+              type="button"
+              onClick={async () => {
+                await signOut();
+                goToStudentLogin();
+              }}
+            >
+              Sign Out
+            </button>
+          )}
         </div>
       </header>
 
-      <section className="card login onboarding-card">
+      <section className={`card login onboarding-card${readOnly ? " view-as-readonly" : ""}`}>
         <p className="kicker">Welcome</p>
         <h1 className="brand">Before you start</h1>
         <p className="muted">A few questions so coaching can meet you where you are. This takes a couple of minutes.</p>

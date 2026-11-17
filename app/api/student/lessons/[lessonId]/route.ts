@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getLessonAccess } from "@/lib/lesson-access";
 import { getRequestUser } from "@/lib/auth-server";
+import { getClassroomSubjectUser } from "@/lib/view-as-student-server";
 import { getCourseProduct, resolveLessonContentAccess, stripProtectedLesson } from "@/lib/commerce";
 import { composeStaffAwareLessonAccess } from "@/lib/staff-access";
 import { getStaffCourseView } from "@/lib/staff-access-server";
@@ -13,8 +14,10 @@ const LESSON_COLUMNS =
 export const dynamic = "force-dynamic";
 
 export async function GET(_request: Request, context: { params: Promise<{ lessonId: string }> }) {
-  const user = await getRequestUser();
-  if (!user) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+  const actor = await getRequestUser();
+  if (!actor) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+  const user = (await getClassroomSubjectUser(actor)) || actor;
+  const viewingAsStudent = user.id !== actor.id;
 
   const { lessonId } = await context.params;
   const client = getServiceSupabase();
@@ -28,7 +31,7 @@ export async function GET(_request: Request, context: { params: Promise<{ lesson
   if (error) return NextResponse.json({ error: "Could not load lesson." }, { status: 500 });
   if (!data) return NextResponse.json({ error: "Lesson not found." }, { status: 404 });
 
-  const staffView = await getStaffCourseView();
+  const staffView = viewingAsStudent ? "student_gates" : await getStaffCourseView();
   const commercial = await resolveLessonContentAccess(user, lessonId, { staffView });
   const pedagogical = await getLessonAccess(user.id, lessonId);
   const composed = composeStaffAwareLessonAccess({

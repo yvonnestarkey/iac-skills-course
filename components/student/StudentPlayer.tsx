@@ -72,6 +72,7 @@ export default function StudentPlayer({
     surveyReviews,
     setSurveyReview,
     reloadProgress,
+    readOnly,
   } = useStudentSession();
   const outline = useVisibleCourseOutline();
   const { basePath } = useCoursePreview();
@@ -99,17 +100,19 @@ export default function StudentPlayer({
       setNotes(result.progress.notes);
     };
 
-    void load();
-    if (user && !isCoachAccount(user)) void logLessonOpened(lesson.id);
+    if (!readOnly) {
+      void load();
+      if (user && !isCoachAccount(user)) void logLessonOpened(lesson.id);
+    }
     return () => {
       cancelled = true;
       if (notesTimer.current) clearTimeout(notesTimer.current);
     };
-  }, [completedMap, lesson.id, user]);
+  }, [completedMap, lesson.id, user, readOnly]);
 
   const onWatchProgress = useCallback(
     (seconds: number, percent: number) => {
-      if (!user || isCoachAccount(user)) return;
+      if (!user || isCoachAccount(user) || readOnly) return;
       void saveVideoWatchProgress(lesson.id, seconds, percent).then((result) => {
         if (result.completed && !completedRef.current) {
           completedRef.current = true;
@@ -119,7 +122,7 @@ export default function StudentPlayer({
         }
       });
     },
-    [lesson.id, setLessonCompleted, user]
+    [lesson.id, setLessonCompleted, user, readOnly]
   );
 
   const persist = async (next: { completed: boolean; notes: string }, silent = false) => {

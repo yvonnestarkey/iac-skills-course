@@ -34,7 +34,7 @@ function DescriptionBlock({ text }: { text: string }) {
 }
 
 export default function StudentCoachingPage() {
-  const { user } = useStudentSession();
+  const { user, readOnly } = useStudentSession();
   const [config, setConfig] = useState<CoachingPageConfig>(DEFAULT_COACHING_CONFIG);
   const [sessions, setSessions] = useState<StudentCoachingSession[]>([]);
   const [ready, setReady] = useState(false);
@@ -52,14 +52,17 @@ export default function StudentCoachingPage() {
       setConfig(nextConfig);
       setSessions(nextSessions);
       setReady(true);
-      if (nextSessions.some((session) => session.status === "completed" && sessionHasDeliverables(session))) {
+      if (
+        !readOnly &&
+        nextSessions.some((session) => session.status === "completed" && sessionHasDeliverables(session))
+      ) {
         void markCoachingDeliverablesSeen(user.id);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [user?.id]);
+  }, [user?.id, readOnly]);
 
   if (!ready) return <p className="student-loading">Loading coaching…</p>;
 

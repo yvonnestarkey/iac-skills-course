@@ -298,6 +298,29 @@ h1 {
   border-color: #fff;
 }
 
+.view-as-banner-note {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.view-as-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.view-as-readonly button,
+.view-as-readonly input,
+.view-as-readonly textarea,
+.view-as-readonly select,
+.view-as-readonly [contenteditable="true"] {
+  pointer-events: none;
+}
+
+.view-as-readonly a {
+  pointer-events: auto;
+}
+
 .notify-btn {
   position: relative;
   display: flex;

@@ -7,6 +7,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { Mail, MessageCircle } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import CoachToolsBar from "@/components/coach/CoachToolsBar";
+import ViewAsBanner from "@/components/coach/ViewAsBanner";
 import AskQuestionDrawer from "@/components/student/AskQuestionDrawer";
 import SidebarCollapseButton from "@/components/student/SidebarCollapseButton";
 import StudentCourseNav from "@/components/student/StudentCourseNav";
@@ -42,7 +43,7 @@ function AuthenticatedShell({ children }: { children: ReactNode }) {
 
 function AuthenticatedChrome({ children }: { children: ReactNode }) {
   const { course, classroomPath } = useLmsCourse();
-  const { user, signOut } = useStudentSession();
+  const { user, signOut, readOnly } = useStudentSession();
   const { inboxWaiting, unreadCount, markAllRead } = useStudentInbox();
   const nav = useStudentNav();
   const pathname = usePathname();
@@ -62,6 +63,7 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
   }, [course.id]);
 
   useEffect(() => {
+    if (readOnly) return;
     if (!pathname.startsWith("/student/inbox")) return;
     if (!inboxWaiting && !unreadCount) return;
     let cancelled = false;
@@ -71,9 +73,9 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [pathname, markAllRead, router, inboxWaiting, unreadCount]);
+  }, [pathname, markAllRead, router, inboxWaiting, unreadCount, readOnly]);
 
-  const showAsk = ASK_QUESTION_ENABLED && course.id === DEFAULT_LMS_COURSE_ID;
+  const showAsk = ASK_QUESTION_ENABLED && course.id === DEFAULT_LMS_COURSE_ID && !readOnly;
   const theme = course.resumeBannerColor
     ? ({ ["--resume-banner"]: course.resumeBannerColor } as CSSProperties)
     : undefined;
@@ -85,6 +87,7 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
 
   return (
     <div className="student-player" style={theme}>
+      {readOnly ? <ViewAsBanner /> : null}
       {isCoachAccount(user) ? <CoachToolsBar /> : null}
       <header className="topbar">
         <BrandMark href={classroomPath} title={course.shortTitle} />
@@ -115,17 +118,21 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
               Coach tools
             </button>
           ) : null}
-          <Link
-            href={isCoachAccount(user) ? "/coach/account" : "/student/account"}
-            className={`ghost student-account-link ${
-              pathname.startsWith("/student/account") || pathname.startsWith("/coach/account") ? "on" : ""
-            }`}
-          >
-            Account
-          </Link>
-          <button className="ghost student-signout" type="button" onClick={leave}>
-            Sign Out
-          </button>
+          {readOnly ? null : (
+            <Link
+              href={isCoachAccount(user) ? "/coach/account" : "/student/account"}
+              className={`ghost student-account-link ${
+                pathname.startsWith("/student/account") || pathname.startsWith("/coach/account") ? "on" : ""
+              }`}
+            >
+              Account
+            </Link>
+          )}
+          {readOnly ? null : (
+            <button className="ghost student-signout" type="button" onClick={leave}>
+              Sign Out
+            </button>
+          )}
           {nav ? (
             <button
               className={`course-menu-btn ${nav.open ? "on" : ""}`}
@@ -149,7 +156,7 @@ function AuthenticatedChrome({ children }: { children: ReactNode }) {
             <StudentCourseNav />
           </div>
         </aside>
-        <main className="main">{children}</main>
+        <main className={`main${readOnly ? " view-as-readonly" : ""}`}>{children}</main>
       </div>
       {showAsk ? <AskQuestionDrawer isOpen={askOpen} onClose={() => setAskOpen(false)} /> : null}
     </div>
