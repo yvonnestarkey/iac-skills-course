@@ -28,3 +28,29 @@ alter table public.reading_live_calls enable row level security;
 drop policy if exists "staff read live calls" on public.reading_live_calls;
 create policy "staff read live calls" on public.reading_live_calls
   for select using (public.is_course_staff());
+
+-- One row per finished live-session attempt, saved under the email the student typed at the start.
+-- user_id is filled when the student happened to be signed in; otherwise the coach page matches the
+-- email to a course account, so attempts can be moved onto a profile later.
+create table if not exists public.reading_live_attempts (
+  id uuid primary key default gen_random_uuid(),
+  exercise_id text not null,
+  email text not null,
+  user_id uuid references auth.users (id) on delete set null,
+  browser_hash text not null default '',
+  pct int not null default 0,
+  pot_pct int not null default 0,
+  marked_by text not null default 'self',
+  live_call_id uuid references public.reading_live_calls (id) on delete set null,
+  attempt jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists reading_live_attempts_created_idx on public.reading_live_attempts (created_at desc);
+create index if not exists reading_live_attempts_email_idx on public.reading_live_attempts (lower(email), created_at desc);
+
+alter table public.reading_live_attempts enable row level security;
+
+drop policy if exists "staff read live attempts" on public.reading_live_attempts;
+create policy "staff read live attempts" on public.reading_live_attempts
+  for select using (public.is_course_staff());
