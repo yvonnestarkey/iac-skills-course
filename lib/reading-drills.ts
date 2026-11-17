@@ -11,6 +11,7 @@ import baobab from "@/lib/data/reading-drills/baobab.json";
 import lindiwe from "@/lib/data/reading-drills/lindiwe.json";
 import highveld from "@/lib/data/reading-drills/highveld.json";
 import marula from "@/lib/data/reading-drills/marula.json";
+import karoo from "@/lib/data/reading-drills/karoo.json";
 import khanyisa from "@/lib/data/reading-drills/reading-check-khanyisa.json";
 
 /* ---------------------------------------------------------------- types */
@@ -21,7 +22,10 @@ export type CaseSection = { heading: string; sentences: Sentence[] };
 export type RecallQuestion = { question: string; options: string[]; correct: number };
 export type Proximity = "direct" | "indirect" | "thinking";
 /** `why` (optional) explains the jump from the case to the point; without it, the feedback uses the general explanation for the type. */
-export type MarkRow = { id: string; proximity: Proximity; point: string; clues: string[]; marks: number; why?: string };
+/** `skill: "communication"` marks a row that is not Buried Treasure (e.g. the communication mark): kept out of the Direct / Indirect teaching. */
+export type MarkRow = { id: string; proximity: Proximity; point: string; clues: string[]; marks: number; why?: string; skill?: "communication" };
+/** A "max n" in the mark plan: the rows listed earn at most `max` marks together. Caps can nest (a smaller group inside a part). */
+export type MarkCap = { rows: string[]; max: number; label?: string };
 export type SkillKey = "read_speed" | "read_comp" | "shape" | "dir" | "lens" | "direct" | "indirect";
 export type Delivered = "yes" | "partly" | "no";
 
@@ -41,6 +45,7 @@ export type DrillExercise = {
     lens: { options: string[]; correct: number; why: string };
   };
   rows: MarkRow[];
+  caps?: MarkCap[];
 };
 
 export type ReadingCheckCase = { id: string; title: string; case: CaseSection[]; recall: RecallQuestion[] };
@@ -105,11 +110,17 @@ export type ReadingCheckResult = {
 /* ---------------------------------------------------------------- data */
 
 const ALL: Record<string, DrillExercise> = Object.fromEntries(
-  [mopane, ubuntu, baobab, lindiwe, highveld, marula].map((ex) => [ex.id, ex as unknown as DrillExercise])
+  [mopane, ubuntu, baobab, lindiwe, highveld, marula, karoo].map((ex) => [ex.id, ex as unknown as DrillExercise])
 );
 export const EXERCISES: DrillExercise[] = config.exercises.map((id) => ALL[id]).filter(Boolean);
 export const READING_CHECK = khanyisa as unknown as ReadingCheckCase;
 export const DAILY_MARKED_LIMIT = config.dailyMarkedLimit;
+
+/** Exercises that also run as an open live-session link (/live/<id>), with no sign-in and nothing saved to a record. */
+export const LIVE = config.live;
+export function getLiveExercise(id: string): DrillExercise | null {
+  return LIVE.exercises.includes(id) ? getExercise(id) : null;
+}
 export const EXAM = config.exam;
 
 export function getExercise(id: string): DrillExercise | null {
@@ -197,6 +208,20 @@ export function notedNotUsed(ex: DrillExercise, marking: Marking, noted: Set<str
   return ex.rows.filter((r) => r.proximity !== "thinking" && !marking.rows[r.id]?.earned && r.clues.some((c) => noted.has(c)));
 }
 
+/** Marks for a set of earned rows, applying the mark plan's "max n" caps (smallest group first, so caps can nest). */
+export function rowMarks(ex: Pick<DrillExercise, "rows" | "caps">, earnedIds: string[]): number {
+  const earned = new Set(earnedIds);
+  let units = ex.rows.filter((r) => earned.has(r.id)).map((r) => ({ ids: [r.id], value: r.marks || 1 }));
+  for (const cap of [...(ex.caps || [])].sort((a, b) => a.rows.length - b.rows.length)) {
+    const inCap = new Set(cap.rows);
+    const inside = units.filter((u) => u.ids.every((id) => inCap.has(id)));
+    if (!inside.length) continue;
+    const merged = { ids: inside.flatMap((u) => u.ids), value: Math.min(cap.max, inside.reduce((sum, u) => sum + u.value, 0)) };
+    units = [...units.filter((u) => !inside.includes(u)), merged];
+  }
+  return units.reduce((sum, u) => sum + u.value, 0);
+}
+
 /** Build the saved attempt from the run and the marking. */
 export function buildAttempt(input: {
   ex: DrillExercise;
@@ -220,8 +245,8 @@ export function buildAttempt(input: {
   const rowsI = ex.rows.filter((r) => r.proximity === "indirect");
   const earned = (r: MarkRow) => Boolean(marking.rows[r.id]?.earned);
   const rowsEarned = ex.rows.filter(earned);
-  const earnedMarks = rowsEarned.reduce((sum, r) => sum + (r.marks || 1), 0);
-  const potentialMarks = earnedMarks + notedNotUsed(ex, marking, noted).reduce((sum, r) => sum + (r.marks || 1), 0);
+  const earnedMarks = rowMarks(ex, rowsEarned.map((r) => r.id));
+  const potentialMarks = rowMarks(ex, [...rowsEarned, ...notedNotUsed(ex, marking, noted)].map((r) => r.id));
   const attempt: DrillAttempt = {
     exercise_id: ex.id,
     wpm: wordsPerMinute(caseWords(ex), input.readSec),
@@ -387,7 +412,9 @@ export function buildMarkingPrompt(ex: DrillExercise, answer: string): string {
 
 BURIED TREASURE: for each marking row below, decide whether the answer earned it. A row is earned when the answer makes that point, in substance, tied to the case (part of the point counts as earned). Generic statements that could apply to any company do not earn a row. Do not be generous with vague waffle.
 
-LANGUAGE for notes and "fix": plain, direct, second person ("you"). Never use the word "writing" for the skill; say "communication". Name skills only as RTFQ, Buried Treasure, Shape, Directions, Lens, Direct, Indirect. Keep each note under 30 words.
+COMMUNICATION: a row labelled [communication] is not Buried Treasure. Judge it on the whole answer: earned when the points are in plain, unambiguous language and the reader can follow each one from the case fact to its effect on what the required asks about.
+
+LANGUAGE for notes and "fix": plain, direct, second person ("you"). Never use the word "writing" for the skill; say "communication". Name skills only as RTFQ, Buried Treasure, Shape, Directions, Lens, Direct, Indirect, Communication. Keep each note under 30 words.
 
 THE CASE (sentence id: text [classification]):
 ${sentencesOf(ex.case).map((s) => `${s.id}: ${s.text}${s.kind ? ` [${KIND_LABEL[s.kind]}]` : ""}`).join("\n")}
@@ -400,7 +427,9 @@ WHAT THE REQUIRED ASKS FOR:
 - Lens: ${ex.rtfq.lens.options[ex.rtfq.lens.correct]}
 
 MARKING ROWS (id [Direct/Indirect/Thinking]: the point):
-${ex.rows.map((r) => `${r.id} [${r.proximity}]: ${r.point}`).join("\n")}
+${ex.rows.map((r) => `${r.id} [${r.skill || r.proximity}]: ${r.point}`).join("\n")}${
+    ex.caps?.length ? `\n\nMARK CAPS (for your information only; still record every row): ${ex.caps.map((c) => `${c.rows.join(", ")} together max ${c.max}`).join("; ")}.` : ""
+  }
 
 THE STUDENT'S ANSWER:
 """
@@ -533,7 +562,7 @@ export function proximityTable(ex: DrillExercise) {
   const text = Object.fromEntries(sentencesOf(ex.case).map((s) => [s.id, s.text]));
   const group = (p: Proximity) =>
     ex.rows
-      .filter((r) => r.proximity === p)
+      .filter((r) => r.proximity === p && !r.skill)
       .map((r) => ({ row: r, caseText: r.clues.map((c) => text[c]).filter(Boolean), why: r.why || PROXIMITY_WHY[p] }));
   const traps = sentencesOf(ex.case)
     .filter((s) => s.kind === "excluded" || s.kind === "off_required" || s.kind === "wrong_level")
