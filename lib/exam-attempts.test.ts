@@ -190,6 +190,8 @@ test("coach uploads on behalf of a student land in that student's exam-attempt f
   const sql = readFileSync(resolve("supabase/exam-attempt-marking-report-2.sql"), "utf8");
   assert.match(page, /CoachUploadStudentScripts/);
   assert.match(panel, /Upload a student’s scripts/);
+  assert.match(panel, /const \[open, setOpen\] = useState\(false\)/);
+  assert.match(panel, /aria-expanded=\{open\}/);
   assert.match(panel, /\/api\/coach\/evaluator\/student-scripts/);
   assert.match(panel, /attemptHasAnyUploadedFile/);
   assert.match(panel, /two marking reports/);

@@ -39,6 +39,7 @@ export default function CoachUploadStudentScripts() {
   const [busyKind, setBusyKind] = useState<ExamAttemptFileKind | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -182,7 +183,17 @@ export default function CoachUploadStudentScripts() {
 
   return (
     <section className="card" style={{ padding: 16, margin: "16px 0" }}>
-      <h3 style={{ marginTop: 0 }}>Upload a student’s scripts</h3>
+      <button
+        type="button"
+        className="eval-upload-toggle"
+        aria-expanded={open}
+        onClick={() => setOpen((current) => !current)}
+      >
+        <h3 style={{ margin: 0 }}>Upload a student’s scripts</h3>
+        <span aria-hidden="true">{open ? "▴" : "▾"}</span>
+      </button>
+      {open ? (
+        <>
       <p className="muted">
         When a student emails you their PDFs, upload them here. They are stored on that student’s exam attempt — same
         folders, same Script Evaluator path, same one-upload-per-paper rule. You can submit with missing papers or no
@@ -309,6 +320,8 @@ export default function CoachUploadStudentScripts() {
 
       {error ? <p className="notice">{error}</p> : null}
       {notice ? <p className="muted">{notice}</p> : null}
+        </>
+      ) : null}
     </section>
   );
 }

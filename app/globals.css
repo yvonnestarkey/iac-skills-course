@@ -10019,6 +10019,26 @@ a.planner-video-btn:visited:hover {
   font-size: 20px;
 }
 
+.eval-upload-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.eval-upload-toggle span {
+  color: var(--muted);
+  font-size: 16px;
+}
+
 .eval-upload-block {
   margin-top: 8px;
 }
