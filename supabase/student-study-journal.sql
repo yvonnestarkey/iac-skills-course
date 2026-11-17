@@ -51,6 +51,13 @@ create policy "staff read shared study journals"
     )
   );
 
+drop policy if exists "staff reset study journal needs" on public.student_study_journal;
+create policy "staff reset study journal needs"
+  on public.student_study_journal for update
+  to authenticated
+  using (public.is_course_staff())
+  with check (public.is_course_staff());
+
 drop policy if exists "students manage own study journal settings" on public.student_study_journal_settings;
 create policy "students manage own study journal settings"
   on public.student_study_journal_settings for all

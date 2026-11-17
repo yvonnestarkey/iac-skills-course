@@ -67,8 +67,8 @@ export default function CoachJournalNeeds({
         <p className="muted small">{ready ? `${waiting} waiting` : "Checking journals…"}</p>
       </div>
       <p className="muted small">
-        Each option from the weekly planner. Message someone, then mark them contacted to clear the alert. Their history stays on the
-        student profile.
+        Each option from the weekly planner. Message someone, then mark them contacted to clear the alert and reset their
+        journal. If they still need it, they choose again. History stays on the student profile.
       </p>
       {error ? <p className="waiting">{error}</p> : null}
       <ul className="coach-journal-need-list">

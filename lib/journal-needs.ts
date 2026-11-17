@@ -5,6 +5,9 @@ import { isUserId } from "./notifications";
 export const JOURNAL_NEEDS_SQL_HINT =
   "Paste supabase/student-journal-needs.sql in the Supabase SQL editor, then try again.";
 
+export const JOURNAL_NEED_RESET_SQL_HINT =
+  "Paste supabase/journal-need-reset.sql in the Supabase SQL editor, then try again.";
+
 export type JournalNeedEvent = {
   id: string;
   userId: string;
@@ -37,6 +40,24 @@ export function isOpenJournalNeed(event: Pick<JournalNeedEvent, "needId" | "clea
 
 export function journalNeedEventKey(userId: string, weekStart: string, needId: string): string {
   return `${userId}:${weekStart}:${needId}`;
+}
+
+export function journalNeedToSaveAfterContact(input: {
+  loadedNeed: string;
+  loadedOther: string;
+  draftNeed: string;
+  draftOther: string;
+  storedNeed: string;
+  storedOther: string;
+}): { weekNeed: string; weekNeedOther: string } {
+  const draftMatchesLoaded = input.draftNeed === input.loadedNeed && input.draftOther === input.loadedOther;
+  if (draftMatchesLoaded) {
+    return { weekNeed: input.storedNeed, weekNeedOther: input.storedOther };
+  }
+  return {
+    weekNeed: input.draftNeed,
+    weekNeedOther: input.draftNeed === "other" ? input.draftOther.trim() : "",
+  };
 }
 
 export function applyJournalNeedChange(
@@ -130,6 +151,9 @@ function tableMissing(message: string): boolean {
 }
 
 function needsError(message: string): string {
+  if (/student_study_journal/i.test(message) && /row-level security|not allowed|policy|unauthorized|403/i.test(message)) {
+    return JOURNAL_NEED_RESET_SQL_HINT;
+  }
   if (tableMissing(message) || /row-level security|not allowed|policy|unauthorized|403/i.test(message)) {
     return JOURNAL_NEEDS_SQL_HINT;
   }
@@ -221,6 +245,26 @@ export async function fetchCoachJournalNeeds(
   return { ok: true, error: events.error ? needsError(events.error.message) : undefined, groups: groupCoachJournalNeeds(open, names) };
 }
 
+async function resetStudentJournalNeed(
+  studentId: string,
+  weekStart: string,
+  needId: string
+): Promise<{ ok: boolean; error?: string }> {
+  const client = getSupabase();
+  if (!client || !isUserId(studentId) || !weekStart || !needId) return { ok: true };
+  const stamp = new Date().toISOString();
+  const knownNeed = JOURNAL_NEEDS.some((option) => option.id === needId);
+  const query = client
+    .from("student_study_journal")
+    .update({ week_need: "", week_need_other: "", updated_at: stamp })
+    .eq("user_id", studentId);
+  const updated = knownNeed
+    ? await query.or(`week_start.eq.${weekStart},week_need.eq.${needId}`)
+    : await query.eq("week_start", weekStart);
+  if (updated.error) return { ok: false, error: needsError(updated.error.message) };
+  return { ok: true };
+}
+
 export async function markJournalNeedContacted(
   eventIds: string[],
   studentId: string,
@@ -235,7 +279,7 @@ export async function markJournalNeedContacted(
   if (realIds.length) {
     const updated = await client.from("student_journal_need_events").update({ contacted_at: stamp }).in("id", realIds);
     if (updated.error) return { ok: false, error: needsError(updated.error.message) };
-    return { ok: true };
+    return resetStudentJournalNeed(studentId, weekStart, needId);
   }
   if (!isUserId(studentId) || !weekStart || !needId) return { ok: false, error: "Missing journal need." };
   const inserted = await client.from("student_journal_need_events").insert({
@@ -247,7 +291,7 @@ export async function markJournalNeedContacted(
     contacted_at: stamp,
   });
   if (inserted.error) return { ok: false, error: needsError(inserted.error.message) };
-  return { ok: true };
+  return resetStudentJournalNeed(studentId, weekStart, needId);
 }
 
 export async function fetchCoachJournalNeedAudit(studentId: string): Promise<{

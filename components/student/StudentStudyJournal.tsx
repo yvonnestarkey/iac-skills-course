@@ -41,6 +41,7 @@ import {
   type JournalPrivacy,
   type StudyJournalWeek,
 } from "@/lib/study-journal";
+import { journalNeedToSaveAfterContact } from "@/lib/journal-needs";
 import { taskDueItemsFromOutline } from "@/lib/student-task-due-dates";
 import { useVisibleCourseOutline } from "@/lib/visible-course-outline";
 
@@ -251,6 +252,7 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
   const [activity, setActivity] = useState<Record<string, JournalCourseDay>>({});
   const [status, setStatus] = useState("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const loadedNeed = useRef({ weekStart: "", need: "", other: "" });
 
   const iac = course.id === DEFAULT_LMS_COURSE_ID;
   const today = portalToday();
@@ -270,6 +272,11 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
     ]).then(([result, nextPrivacy, history, courseDays]) => {
       if (cancelled) return;
       setWeek(result.week);
+      loadedNeed.current = {
+        weekStart: result.week.weekStart,
+        need: result.week.weekNeed,
+        other: result.week.weekNeedOther,
+      };
       setPrivacy(nextPrivacy.privacy);
       const others = history.weeks.filter((item) => item.weekStart !== result.week.weekStart);
       setWeeks([...others, result.week]);
@@ -282,13 +289,59 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
     };
   }, [user?.id, weekStart, iac, compact, taskKey]);
 
+  useEffect(() => {
+    if (!user?.id || !iac) return;
+    const refreshNeed = () => {
+      if (document.visibilityState !== "visible") return;
+      void fetchStudyJournalWeek(user.id, weekStart).then((result) => {
+        setWeek((current) => {
+          if (!current || current.weekStart !== result.week.weekStart) return current;
+          const merged = journalNeedToSaveAfterContact({
+            loadedNeed: loadedNeed.current.need,
+            loadedOther: loadedNeed.current.other,
+            draftNeed: current.weekNeed,
+            draftOther: current.weekNeedOther,
+            storedNeed: result.week.weekNeed,
+            storedOther: result.week.weekNeedOther,
+          });
+          const unchanged =
+            current.weekNeed === loadedNeed.current.need && current.weekNeedOther === loadedNeed.current.other;
+          if (unchanged) {
+            loadedNeed.current = { weekStart: current.weekStart, need: merged.weekNeed, other: merged.weekNeedOther };
+          }
+          if (merged.weekNeed === current.weekNeed && merged.weekNeedOther === current.weekNeedOther) return current;
+          return { ...current, weekNeed: merged.weekNeed, weekNeedOther: merged.weekNeedOther };
+        });
+      });
+    };
+    document.addEventListener("visibilitychange", refreshNeed);
+    return () => document.removeEventListener("visibilitychange", refreshNeed);
+  }, [user?.id, weekStart, iac]);
+
   const persist = async (next: StudyJournalWeek) => {
     if (!user?.id) return;
-    const result = await saveStudyJournalWeek(user.id, next);
+    let toSave = next;
+    if (next.weekNeed === loadedNeed.current.need && next.weekNeedOther === loadedNeed.current.other) {
+      const latest = await fetchStudyJournalWeek(user.id, next.weekStart);
+      const merged = journalNeedToSaveAfterContact({
+        loadedNeed: loadedNeed.current.need,
+        loadedOther: loadedNeed.current.other,
+        draftNeed: next.weekNeed,
+        draftOther: next.weekNeedOther,
+        storedNeed: latest.week.weekNeed,
+        storedOther: latest.week.weekNeedOther,
+      });
+      if (merged.weekNeed !== next.weekNeed || merged.weekNeedOther !== next.weekNeedOther) {
+        toSave = { ...next, weekNeed: merged.weekNeed, weekNeedOther: merged.weekNeedOther };
+        setWeek(toSave);
+      }
+    }
+    const result = await saveStudyJournalWeek(user.id, toSave);
     if (result.ok === false) {
       setStatus(result.error);
       return;
     }
+    loadedNeed.current = { weekStart: toSave.weekStart, need: toSave.weekNeed, other: toSave.weekNeedOther };
     setPrivacy(result.privacy);
     setStatus(
       compact ? "Saved." : result.privacy.private ? "Saved. Private to you." : "Saved. Yvonne can see this planner."
@@ -450,8 +503,9 @@ export default function StudentStudyJournal({ compact = false }: { compact?: boo
             placeholder="Choose one"
             options={JOURNAL_NEEDS}
             value={week?.weekNeed || ""}
-            onChange={(weekNeed) => setField({ weekNeed })}
+            onChange={(weekNeed) => setField({ weekNeed, weekNeedOther: weekNeed === "other" ? week?.weekNeedOther || "" : "" })}
           />
+          <p className="muted small">If Yvonne has already been in touch, choose again if you still need this.</p>
           {week?.weekNeed === "other" ? (
             <input
               type="text"

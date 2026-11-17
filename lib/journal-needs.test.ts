@@ -7,6 +7,7 @@ import {
   applyJournalNeedChange,
   groupCoachJournalNeeds,
   isOpenJournalNeed,
+  journalNeedToSaveAfterContact,
   mergeOpenJournalNeeds,
   type JournalNeedEvent,
 } from "./journal-needs";
@@ -63,20 +64,49 @@ test("coach need alerts list every option and hide contacted or private students
   assert.equal(groups.find((group) => group.id === "nothing")?.alerts.length, 0);
 });
 
+test("contacted needs leave the journal empty so the student has to choose again", () => {
+  const restored = journalNeedToSaveAfterContact({
+    loadedNeed: "reality_check",
+    loadedOther: "",
+    draftNeed: "reality_check",
+    draftOther: "",
+    storedNeed: "",
+    storedOther: "",
+  });
+  assert.deepEqual(restored, { weekNeed: "", weekNeedOther: "" });
+  const reselected = journalNeedToSaveAfterContact({
+    loadedNeed: "",
+    loadedOther: "",
+    draftNeed: "reality_check",
+    draftOther: "",
+    storedNeed: "",
+    storedOther: "",
+  });
+  assert.deepEqual(reselected, { weekNeed: "reality_check", weekNeedOther: "" });
+});
+
 test("journal needs sit on the coach dashboard and keep an audit trail on the student profile", () => {
   const dash = readFileSync(resolve("components/coach/CoachHomeDashboard.tsx"), "utf8");
   const block = readFileSync(resolve("components/coach/CoachJournalNeeds.tsx"), "utf8");
   const panel = readFileSync(resolve("components/coach/CoachStudyJournalPanel.tsx"), "utf8");
+  const journal = readFileSync(resolve("components/student/StudentStudyJournal.tsx"), "utf8");
   const save = readFileSync(resolve("lib/study-journal.ts"), "utf8");
+  const needs = readFileSync(resolve("lib/journal-needs.ts"), "utf8");
   const sql = readFileSync(resolve("supabase/student-journal-needs.sql"), "utf8");
+  const reset = readFileSync(resolve("supabase/journal-need-reset.sql"), "utf8");
   assert.match(dash, /CoachJournalNeeds/);
   assert.match(block, /What they need/);
   assert.match(block, /Contacted/);
   assert.match(block, /Message/);
+  assert.match(block, /reset their/);
   assert.match(block, /group\.label/);
   assert.match(panel, /Needs history/);
   assert.match(panel, /fetchCoachJournalNeedAudit/);
+  assert.match(journal, /choose again if you still need this/);
   assert.match(save, /recordJournalNeedChange/);
+  assert.match(needs, /resetStudentJournalNeed/);
+  assert.match(needs, /week_need: ""/);
   assert.match(sql, /student_journal_need_events/);
   assert.match(sql, /contacted_at/);
+  assert.match(reset, /staff reset study journal needs/);
 });
