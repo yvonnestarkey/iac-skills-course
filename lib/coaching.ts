@@ -18,6 +18,8 @@ export interface CoachingPageConfig {
 
 export type CoachingSessionStatus = "scheduled" | "completed" | "cancelled";
 
+export type CoachingPdfFile = { url: string; name: string };
+
 export interface StudentCoachingSession {
   id: string;
   studentId: string;
@@ -32,6 +34,7 @@ export interface StudentCoachingSession {
   vimeoRecordingUrl: string | null;
   recordingUrl: string | null;
   pdfSummaryUrl: string | null;
+  pdfFiles: CoachingPdfFile[];
   summaryText: string | null;
   transcriptText: string | null;
   coachNotes: string | null;
@@ -82,6 +85,88 @@ function asTimestamp(value: unknown): string | null {
   return null;
 }
 
+function asHttpUrl(value: string): string | null {
+  const text = value.trim();
+  if (!text) return null;
+  try {
+    const url = new URL(text);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
+export function looksLikePdf(url: string): boolean {
+  return /\.pdf(?:$|[?#])/i.test(url);
+}
+
+export function pdfNameFromUrl(url: string): string {
+  try {
+    const path = new URL(url).pathname;
+    const leaf = decodeURIComponent(path.split("/").filter(Boolean).pop() || "");
+    return leaf.replace(/^\d+-/, "") || "PDF";
+  } catch {
+    return "PDF";
+  }
+}
+
+export function parseCoachingPdfFiles(value: unknown): CoachingPdfFile[] {
+  if (!Array.isArray(value)) return [];
+  const files: CoachingPdfFile[] = [];
+  const seen = new Set<string>();
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const raw = (item as { url?: unknown }).url;
+    const url = typeof raw === "string" ? asHttpUrl(raw) : null;
+    if (!url || seen.has(url)) continue;
+    seen.add(url);
+    const name = asText((item as { name?: unknown }).name) || pdfNameFromUrl(url);
+    files.push({ url, name });
+  }
+  return files;
+}
+
+export function coachingPdfFiles(session: Pick<StudentCoachingSession, "pdfFiles" | "pdfSummaryUrl" | "firefliesPdfUrl">): CoachingPdfFile[] {
+  const files: CoachingPdfFile[] = [];
+  const seen = new Set<string>();
+  const add = (url: string | null | undefined, name?: string | null) => {
+    if (!url || seen.has(url) || !looksLikePdf(url)) return;
+    seen.add(url);
+    files.push({ url, name: name?.trim() || pdfNameFromUrl(url) });
+  };
+  for (const file of session.pdfFiles || []) add(file.url, file.name);
+  add(session.pdfSummaryUrl);
+  add(session.firefliesPdfUrl);
+  return files;
+}
+
+export function transcriptSearchParts(text: string, query: string): Array<{ text: string; match: boolean }> {
+  const source = String(text || "");
+  const needle = query.trim();
+  if (!source) return [];
+  if (!needle) return [{ text: source, match: false }];
+  const lower = source.toLowerCase();
+  const find = needle.toLowerCase();
+  const parts: Array<{ text: string; match: boolean }> = [];
+  let index = 0;
+  while (index < source.length) {
+    const at = lower.indexOf(find, index);
+    if (at < 0) {
+      parts.push({ text: source.slice(index), match: false });
+      break;
+    }
+    if (at > index) parts.push({ text: source.slice(index, at), match: false });
+    parts.push({ text: source.slice(at, at + needle.length), match: true });
+    index = at + needle.length;
+  }
+  return parts.filter((part) => part.text);
+}
+
+export function transcriptMatchCount(text: string, query: string): number {
+  return transcriptSearchParts(text, query).filter((part) => part.match).length;
+}
+
 function sessionFromRow(row: Record<string, unknown>): StudentCoachingSession {
   return {
     id: String(row.id),
@@ -97,6 +182,7 @@ function sessionFromRow(row: Record<string, unknown>): StudentCoachingSession {
     vimeoRecordingUrl: asText(row.vimeo_recording_url) || asText(row.recording_url),
     recordingUrl: asText(row.recording_url) || asText(row.vimeo_recording_url),
     pdfSummaryUrl: asText(row.pdf_summary_url) || asText(row.fireflies_pdf_url),
+    pdfFiles: parseCoachingPdfFiles(row.pdf_files),
     summaryText: asText(row.summary_text),
     transcriptText: asText(row.transcript_text),
     coachNotes: asText(row.coach_notes),
@@ -108,10 +194,22 @@ function tableMissing(message: string): boolean {
   return /does not exist|schema cache|could not find/i.test(message);
 }
 
-export function sessionHasDeliverables(session: StudentCoachingSession): boolean {
+export function sessionHasDeliverables(
+  session: Pick<
+    StudentCoachingSession,
+    | "recordingUrl"
+    | "pdfSummaryUrl"
+    | "pdfFiles"
+    | "summaryText"
+    | "transcriptText"
+    | "firefliesTranscriptUrl"
+    | "coachNotes"
+  >
+): boolean {
   return Boolean(
     session.recordingUrl ||
       session.pdfSummaryUrl ||
+      session.pdfFiles?.length ||
       session.summaryText ||
       session.transcriptText ||
       session.firefliesTranscriptUrl ||
@@ -134,11 +232,17 @@ export function studentCanBookOneOnOne(sessions: Array<Pick<StudentCoachingSessi
 export function bookedOneOnOneSession(
   sessions: StudentCoachingSession[]
 ): StudentCoachingSession | null {
-  const booked = sessions.filter(sessionCountsAsBooked);
-  const upcoming = booked
-    .filter((session) => session.status === "scheduled")
-    .sort((a, b) => String(a.sessionAt || "").localeCompare(String(b.sessionAt || "")));
-  return upcoming[0] || booked[0] || null;
+  return bookedCoachingSessions(sessions)[0] || null;
+}
+
+export function bookedCoachingSessions(sessions: StudentCoachingSession[]): StudentCoachingSession[] {
+  return sessions
+    .filter(sessionCountsAsBooked)
+    .sort((a, b) => {
+      if (a.status !== b.status) return a.status === "scheduled" ? -1 : 1;
+      if (a.status === "scheduled") return String(a.sessionAt || "").localeCompare(String(b.sessionAt || ""));
+      return String(b.sessionAt || "").localeCompare(String(a.sessionAt || ""));
+    });
 }
 
 export function coachingSessionStatusLabel(status: CoachingSessionStatus): string {
@@ -229,20 +333,33 @@ export type CoachingSessionWrite = {
   date: string;
   recordingUrl: string;
   pdfSummaryUrl: string;
+  executiveSummary: string;
+  pdfFiles: CoachingPdfFile[];
 };
 
 export function emptyCoachingSessionWrite(studentId: string): CoachingSessionWrite {
-  return { studentId, title: "", date: "", recordingUrl: "", pdfSummaryUrl: "" };
+  return {
+    studentId,
+    title: "",
+    date: "",
+    recordingUrl: "",
+    pdfSummaryUrl: "",
+    executiveSummary: "",
+    pdfFiles: [],
+  };
 }
 
 export function coachingSessionToWrite(session: StudentCoachingSession): CoachingSessionWrite {
+  const pdfFiles = coachingPdfFiles(session);
   return {
     id: session.id,
     studentId: session.studentId,
     title: session.title || "",
     date: isoToSastDateAndTime(session.sessionAt).date,
     recordingUrl: session.recordingUrl || "",
-    pdfSummaryUrl: session.pdfSummaryUrl || "",
+    pdfSummaryUrl: pdfFiles[0]?.url || "",
+    executiveSummary: session.coachNotes || "",
+    pdfFiles,
   };
 }
 
@@ -253,36 +370,30 @@ export function missingCoachingColumn(message: string): string | null {
   return match?.[1] || null;
 }
 
-function asHttpUrl(value: string): string | null {
-  const text = value.trim();
-  if (!text) return null;
-  try {
-    const url = new URL(text);
-    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
-    return url.toString();
-  } catch {
-    return null;
-  }
-}
-
 export function coachingSessionWriteRow(
   input: CoachingSessionWrite
 ): { ok: true; row: Record<string, unknown> } | { ok: false; error: string } {
   const studentId = input.studentId.trim();
   if (!isUserId(studentId)) return { ok: false, error: "Missing student." };
   const recordingUrl = asHttpUrl(input.recordingUrl);
-  const pdfSummaryUrl = asHttpUrl(input.pdfSummaryUrl);
   if (input.recordingUrl.trim() && !recordingUrl) {
     return { ok: false, error: "Paste a full recording URL, starting with https://." };
   }
-  if (input.pdfSummaryUrl.trim() && !pdfSummaryUrl) {
+  const pdfFiles = parseCoachingPdfFiles(input.pdfFiles);
+  const typedPdfUrl = asHttpUrl(input.pdfSummaryUrl);
+  if (input.pdfSummaryUrl.trim() && !typedPdfUrl) {
     return { ok: false, error: "The summary PDF URL looks invalid. Upload the file again." };
   }
-  if (!recordingUrl && !pdfSummaryUrl) {
-    return { ok: false, error: "Upload a PDF summary or paste a recording link." };
+  if (typedPdfUrl && looksLikePdf(typedPdfUrl) && !pdfFiles.some((file) => file.url === typedPdfUrl)) {
+    pdfFiles.unshift({ url: typedPdfUrl, name: pdfNameFromUrl(typedPdfUrl) });
+  }
+  const executiveSummary = input.executiveSummary.trim();
+  if (!recordingUrl && !pdfFiles.length && !executiveSummary) {
+    return { ok: false, error: "Paste take-aways, upload a PDF, or add a recording link." };
   }
   const sessionAt = input.date.trim() ? sastDateAndTimeToIso(input.date, "12:00") : null;
   if (input.date.trim() && !sessionAt) return { ok: false, error: "That session date looks invalid." };
+  const pdfSummaryUrl = pdfFiles[0]?.url || null;
   const row: Record<string, unknown> = {
     student_id: studentId,
     status: "completed",
@@ -290,7 +401,8 @@ export function coachingSessionWriteRow(
     recording_url: recordingUrl,
     vimeo_recording_url: recordingUrl,
     pdf_summary_url: pdfSummaryUrl,
-    fireflies_pdf_url: pdfSummaryUrl,
+    pdf_files: pdfFiles,
+    coach_notes: executiveSummary || null,
     updated_at: new Date().toISOString(),
   };
   if (sessionAt) row.session_at = sessionAt;
@@ -301,15 +413,17 @@ export function coachingSessionWriteRow(
 export async function uploadCoachingSummaryPdf(
   studentId: string,
   file: File
-): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
+): Promise<{ ok: true; url: string; name: string } | { ok: false; error: string }> {
   const client = getSupabase();
   if (!client) return { ok: false, error: "Supabase is not configured." };
   if (!isUserId(studentId)) return { ok: false, error: "Missing student." };
-  const name = file.name.toLowerCase();
+  const original = file.name.trim() || "summary.pdf";
+  const lower = original.toLowerCase();
   if (!file.size) return { ok: false, error: "That file looks empty. Choose the PDF again." };
   if (file.size > 50 * 1024 * 1024) return { ok: false, error: "That PDF is larger than 50 MB. Compress it, then try again." };
-  if (!file.type.includes("pdf") && !name.endsWith(".pdf")) return { ok: false, error: "Please upload a PDF file." };
-  const path = `coaching-sessions/${studentId}/${Date.now()}-summary.pdf`;
+  if (!file.type.includes("pdf") && !lower.endsWith(".pdf")) return { ok: false, error: "Please upload a PDF file." };
+  const safe = original.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || "summary.pdf";
+  const path = `coaching-sessions/${studentId}/${Date.now()}-${safe}`;
   const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
     upsert: true,
     contentType: file.type || "application/pdf",
@@ -317,7 +431,7 @@ export async function uploadCoachingSummaryPdf(
   if (uploaded.error) return { ok: false, error: "Could not upload that PDF. Try again, or paste a public PDF URL." };
   const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
   if (!data?.publicUrl) return { ok: false, error: "Could not get a URL for that PDF." };
-  return { ok: true, url: data.publicUrl };
+  return { ok: true, url: data.publicUrl, name: original };
 }
 
 export async function saveManualCoachingSession(

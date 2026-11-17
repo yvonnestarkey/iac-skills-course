@@ -143,6 +143,7 @@ export interface StudentCoachingSession {
   vimeo_recording_url?: string | null;
   recording_url?: string | null;
   pdf_summary_url?: string | null;
+  pdf_files?: { url: string; name: string }[];
   summary_text?: string | null;
   transcript_text?: string | null;
   coach_notes?: string | null;

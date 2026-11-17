@@ -599,11 +599,11 @@ async function upsertCoachingSession(input: {
 }) {
   const client = getServiceSupabase();
   if (!client) throw new Error("Supabase is not configured.");
-  type ExistingSession = { id?: string; coach_notes?: string | null };
+  type ExistingSession = { id?: string };
   let existing: ExistingSession | null = null;
   const byMeeting = await client
     .from("student_coaching_sessions")
-    .select("id, coach_notes")
+    .select("id")
     .eq("fireflies_meeting_id", input.meetingId)
     .maybeSingle();
   if (byMeeting.error) {
@@ -618,7 +618,7 @@ async function upsertCoachingSession(input: {
     const end = new Date(input.sessionAt).getTime() + 36 * 60 * 60 * 1000;
     const nearby = await client
       .from("student_coaching_sessions")
-      .select("id, coach_notes, session_at")
+      .select("id, session_at")
       .eq("student_id", input.studentId)
       .gte("session_at", new Date(start).toISOString())
       .lte("session_at", new Date(end).toISOString())
@@ -641,7 +641,6 @@ async function upsertCoachingSession(input: {
     transcript_text: input.transcript || null,
     updated_at: new Date().toISOString(),
   };
-  if (!asText(existing?.coach_notes) && input.summary) patch.coach_notes = input.summary;
   for (let attempt = 0; attempt < 12; attempt += 1) {
     const result = existing?.id
       ? await client.from("student_coaching_sessions").update(patch).eq("id", existing.id).select("id")

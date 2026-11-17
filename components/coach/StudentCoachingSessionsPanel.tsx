@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { formatSastDateTime } from "@/lib/dates";
 import {
+  coachingPdfFiles,
   coachingSessionStatusLabel,
   coachingSessionToWrite,
   deleteCoachingSession,
@@ -79,18 +80,28 @@ export default function StudentCoachingSessionsPanel({ studentId }: { studentId:
     await load();
   };
 
-  const pickPdf = async (file: File | null) => {
-    if (!file) return;
+  const pickPdfs = async (list: FileList | null) => {
+    if (!list?.length) return;
     setBusy(true);
     setError("");
-    const result = await uploadCoachingSummaryPdf(studentId, file);
-    setBusy(false);
-    if (result.ok === false) {
-      setError(result.error);
-      return;
+    const added: CoachingSessionWrite["pdfFiles"] = [];
+    for (const file of Array.from(list)) {
+      const result = await uploadCoachingSummaryPdf(studentId, file);
+      if (result.ok === false) {
+        setError(result.error);
+        break;
+      }
+      added.push({ url: result.url, name: result.name });
     }
-    set({ pdfSummaryUrl: result.url });
-    setNotice("Summary PDF uploaded. Save to put it on the student’s 1-on-1 page.");
+    if (added.length) {
+      setForm((current) => ({ ...current, pdfFiles: [...current.pdfFiles, ...added] }));
+      setNotice(
+        added.length === 1
+          ? "PDF uploaded. Save to put it on the student’s 1-on-1 page."
+          : `${added.length} PDFs uploaded. Save to put them on the student’s 1-on-1 page.`
+      );
+    }
+    setBusy(false);
   };
 
   const editing = Boolean(form.id);
@@ -100,7 +111,8 @@ export default function StudentCoachingSessionsPanel({ studentId }: { studentId:
       <h2>1-on-1 coaching</h2>
       <p className="muted small">
         Booked 1-on-1s from Google Calendar appear here as soon as they land on your calendar, and that closes the
-        student booking link. Upload a PDF summary or paste a recording after the call. Fireflies imports land here too.
+        student booking link. After the call, paste take-aways into Executive summary, add the recording, and upload
+        one or more PDFs if relevant. Fireflies transcripts land on the student page automatically.
       </p>
       {error ? <p className="waiting">{error}</p> : null}
       {notice ? <p className="muted">{notice}</p> : null}
@@ -141,25 +153,49 @@ export default function StudentCoachingSessionsPanel({ studentId }: { studentId:
           placeholder="https://vimeo.com/… or Zoom recording"
           disabled={busy}
         />
-        <label className="student-notes-label" htmlFor="coaching-pdf">
-          PDF summary
+        <label className="student-notes-label" htmlFor="coaching-exec">
+          Executive summary (take-aways)
         </label>
-        <input
-          id="coaching-pdf"
-          className="select-line"
-          type="url"
-          value={form.pdfSummaryUrl}
-          onChange={(event) => set({ pdfSummaryUrl: event.target.value })}
-          placeholder="https://… (PDF) or upload below"
+        <textarea
+          id="coaching-exec"
+          className="select-line coaching-exec-input"
+          rows={8}
+          value={form.executiveSummary}
+          onChange={(event) => set({ executiveSummary: event.target.value })}
+          placeholder="Paste the take-aways from this session. Students see this on the right of the 1-on-1 board."
           disabled={busy}
         />
+        <label className="student-notes-label" htmlFor="coaching-pdfs">
+          PDFs (if relevant)
+        </label>
+        {form.pdfFiles.length ? (
+          <ul className="coaching-pdf-list">
+            {form.pdfFiles.map((file) => (
+              <li key={file.url}>
+                <a href={file.url} target="_blank" rel="noopener noreferrer">
+                  {file.name || "PDF"}
+                </a>
+                <button
+                  type="button"
+                  className="ghost"
+                  disabled={busy}
+                  onClick={() => set({ pdfFiles: form.pdfFiles.filter((item) => item.url !== file.url) })}
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
         <input
+          id="coaching-pdfs"
           className="select-line"
           type="file"
           accept="application/pdf,.pdf"
+          multiple
           disabled={busy}
           onChange={(event) => {
-            void pickPdf(event.target.files && event.target.files[0]);
+            void pickPdfs(event.target.files);
             event.target.value = "";
           }}
         />
@@ -177,54 +213,57 @@ export default function StudentCoachingSessionsPanel({ studentId }: { studentId:
 
       {!ready ? <p className="empty">Loading coaching…</p> : null}
       {ready && !sessions.length ? (
-        <p className="empty">No coaching sessions yet. A Calendly booking on your Google Calendar will show here.</p>
+        <p className="empty">No coaching sessions yet. A booking on your Google Calendar will show here.</p>
       ) : null}
       {sessions.length ? (
         <div className="work-list">
-          {sessions.map((session) => (
-            <article key={session.id} className="coaching-session-card">
-              <p>
-                <strong>{session.title || "1-on-1 coaching"}</strong>
-                <span className="muted"> · {coachingSessionStatusLabel(session.status)}</span>
-                {session.sessionAt ? <span className="muted"> · {formatSastDateTime(session.sessionAt)}</span> : null}
-              </p>
-              {session.summaryText ? <p className="coaching-summary">{session.summaryText}</p> : null}
-              <p className="coaching-actions">
-                {session.recordingUrl ? (
-                  <a className="primary" href={session.recordingUrl} target="_blank" rel="noopener noreferrer">
-                    Watch recording
-                  </a>
+          {sessions.map((session) => {
+            const pdfs = coachingPdfFiles(session);
+            return (
+              <article key={session.id} className="coaching-session-card">
+                <p>
+                  <strong>{session.title || "1-on-1 coaching"}</strong>
+                  <span className="muted"> · {coachingSessionStatusLabel(session.status)}</span>
+                  {session.sessionAt ? <span className="muted"> · {formatSastDateTime(session.sessionAt)}</span> : null}
+                </p>
+                {session.coachNotes ? <p className="coaching-summary">{session.coachNotes}</p> : null}
+                <p className="coaching-actions">
+                  {session.recordingUrl ? (
+                    <a className="primary" href={session.recordingUrl} target="_blank" rel="noopener noreferrer">
+                      Watch recording
+                    </a>
+                  ) : null}
+                  {pdfs.map((file) => (
+                    <a key={file.url} className="ghost" href={file.url} target="_blank" rel="noopener noreferrer">
+                      {file.name || "PDF"}
+                    </a>
+                  ))}
+                  {session.meetingUrl && session.status === "scheduled" ? (
+                    <a className="ghost" href={session.meetingUrl} target="_blank" rel="noopener noreferrer">
+                      Open calendar event
+                    </a>
+                  ) : null}
+                  {session.firefliesTranscriptUrl ? (
+                    <a className="ghost" href={session.firefliesTranscriptUrl} target="_blank" rel="noopener noreferrer">
+                      Open in Fireflies
+                    </a>
+                  ) : null}
+                  <button type="button" className="ghost" disabled={busy} onClick={() => edit(session)}>
+                    Edit
+                  </button>
+                  <button type="button" className="ghost" disabled={busy} onClick={() => void remove(session)}>
+                    Remove
+                  </button>
+                </p>
+                {session.transcriptText ? (
+                  <details className="coaching-transcript">
+                    <summary>Transcript</summary>
+                    <pre>{session.transcriptText}</pre>
+                  </details>
                 ) : null}
-                {session.pdfSummaryUrl ? (
-                  <a className="ghost" href={session.pdfSummaryUrl} target="_blank" rel="noopener noreferrer">
-                    Open PDF summary
-                  </a>
-                ) : null}
-                {session.meetingUrl && session.status === "scheduled" ? (
-                  <a className="ghost" href={session.meetingUrl} target="_blank" rel="noopener noreferrer">
-                    Open calendar event
-                  </a>
-                ) : null}
-                {session.firefliesTranscriptUrl ? (
-                  <a className="ghost" href={session.firefliesTranscriptUrl} target="_blank" rel="noopener noreferrer">
-                    Open in Fireflies
-                  </a>
-                ) : null}
-                <button type="button" className="ghost" disabled={busy} onClick={() => edit(session)}>
-                  Edit
-                </button>
-                <button type="button" className="ghost" disabled={busy} onClick={() => void remove(session)}>
-                  Remove
-                </button>
-              </p>
-              {session.transcriptText ? (
-                <details className="coaching-transcript">
-                  <summary>Transcript</summary>
-                  <pre>{session.transcriptText}</pre>
-                </details>
-              ) : null}
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       ) : null}
     </section>

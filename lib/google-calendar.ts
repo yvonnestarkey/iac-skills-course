@@ -1,5 +1,5 @@
 import { randomBytes } from "crypto";
-import { sessionHasDeliverables, type StudentCoachingSession } from "./coaching";
+import { parseCoachingPdfFiles, sessionHasDeliverables, type StudentCoachingSession } from "./coaching";
 import { guestEmails, normalizeEmail, staffEmails, uniqueNameMatch, type FirefliesStudentMatch } from "./fireflies";
 import { isCoachAccount } from "./roles";
 import { getServiceSupabase } from "./supabase-admin";
@@ -415,11 +415,12 @@ async function existingSessionForEvent(eventId: string, studentId: string, sessi
   return ((nearby.data || [])[0] as Record<string, unknown> | undefined) || null;
 }
 
-function sessionFromUnknown(row: Record<string, unknown>): Pick<StudentCoachingSession, "status" | "recordingUrl" | "pdfSummaryUrl" | "summaryText" | "transcriptText" | "firefliesTranscriptUrl" | "coachNotes"> {
+function sessionFromUnknown(row: Record<string, unknown>): Pick<StudentCoachingSession, "status" | "recordingUrl" | "pdfSummaryUrl" | "pdfFiles" | "summaryText" | "transcriptText" | "firefliesTranscriptUrl" | "coachNotes"> {
   return {
     status: asText(row.status) === "completed" ? "completed" : asText(row.status) === "cancelled" ? "cancelled" : "scheduled",
     recordingUrl: asText(row.recording_url) || asText(row.vimeo_recording_url),
     pdfSummaryUrl: asText(row.pdf_summary_url) || asText(row.fireflies_pdf_url),
+    pdfFiles: parseCoachingPdfFiles(row.pdf_files),
     summaryText: asText(row.summary_text),
     transcriptText: asText(row.transcript_text),
     firefliesTranscriptUrl: asText(row.fireflies_transcript_url),
