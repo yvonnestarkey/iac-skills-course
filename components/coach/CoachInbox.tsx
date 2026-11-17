@@ -211,6 +211,31 @@ export default function CoachInbox() {
         </div>
       ) : null}
       <div className="inbox-layout">
+        {queue.length ? (
+          <label className="inbox-queue-select" htmlFor="inbox-unread-select">
+            Unread
+            <select
+              id="inbox-unread-select"
+              value={selectedEmail || ""}
+              onChange={(event) => {
+                setSelectedEmail(event.target.value || null);
+                setStatus("");
+              }}
+            >
+              {queue.map((thread) => {
+                const student = identityFor(thread);
+                return (
+                  <option key={thread.studentEmail} value={thread.studentEmail}>
+                    {thread.waiting ? "Waiting · " : "Unread · "}
+                    {student.name}
+                  </option>
+                );
+              })}
+            </select>
+          </label>
+        ) : (
+          <p className="empty inbox-queue-select">The queue is clear. Open a student profile to read older threads.</p>
+        )}
         <aside className="inbox-list" aria-label="Students waiting on a reply">
           {queue.length ? (
             queue.map((thread) => {
@@ -265,7 +290,6 @@ export default function CoachInbox() {
                   </p>
                 </div>
               </div>
-              <InboxThreadView messages={selected.messages} viewer="coach" />
               {status ? <p className="notice">{status}</p> : null}
               <label className="student-notes-label" htmlFor="inbox-lesson">
                 Optional assignment
@@ -298,6 +322,7 @@ export default function CoachInbox() {
                   Mark as read
                 </button>
               </div>
+              <InboxThreadView messages={selected.messages} viewer="coach" />
             </>
           ) : (
             <p className="empty">Select a waiting student, or open a profile to message them.</p>

@@ -167,11 +167,6 @@ export default function AskCoachThread({ student }: { student: Student }) {
         </div>
       ) : null}
       {status ? <p className="notice">{status}</p> : null}
-      <InboxThreadView
-        messages={messages}
-        viewer="coach"
-        empty="No questions or messages yet."
-      />
       <ComposerBox
         id="coach-msg"
         value={text}
@@ -192,6 +187,11 @@ export default function AskCoachThread({ student }: { student: Student }) {
           </button>
         ) : null}
       </div>
+      <InboxThreadView
+        messages={messages}
+        viewer="coach"
+        empty="No questions or messages yet."
+      />
     </section>
   );
 }

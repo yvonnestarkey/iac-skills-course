@@ -66,7 +66,6 @@ export default function StudentCoachThread({
       <h2>{title}</h2>
       {isWaiting(messages) ? <div className="waiting">Your latest message is waiting for the coach.</div> : null}
       {status ? <p className="notice">{status}</p> : null}
-      <InboxThreadView messages={messages} viewer="student" empty="No messages yet. Ask a question below." />
       <ComposerBox
         value={text}
         onChange={setText}
@@ -83,6 +82,7 @@ export default function StudentCoachThread({
           Send to coach
         </button>
       </div>
+      <InboxThreadView messages={messages} viewer="student" empty="No messages yet. Write above to start this thread." />
     </section>
   );
 }

@@ -9,6 +9,7 @@ import {
   inboxPdfStoragePath,
   inboxPreviewText,
   mergeThread,
+  sortInboxMessagesNewestFirst,
   notificationRowToMessage,
   postInboxMessagesToStudents,
   studentMessagesHref,
@@ -88,6 +89,23 @@ test("bulk inbox send refuses an empty body", async () => {
   const result = await postInboxMessagesToStudents([{ id: "s1", email: "ada@example.com" }], "  ");
   assert.equal(result.ok, false);
   assert.equal(result.sent, 0);
+});
+
+test("threads show the newest message first so long conversations stay readable", () => {
+  const older = message({ id: "old", body: "First", createdAt: "2026-10-01T08:00:00.000Z" });
+  const newer = message({ id: "new", body: "Latest", createdAt: "2026-11-17T08:00:00.000Z" });
+  assert.deepEqual(
+    sortInboxMessagesNewestFirst([older, newer]).map((row) => row.id),
+    ["new", "old"]
+  );
+  const thread = readFileSync(resolve("components/inbox/InboxThreadView.tsx"), "utf8");
+  const inbox = readFileSync(resolve("components/coach/CoachInbox.tsx"), "utf8");
+  const styles = readFileSync(resolve("app/globals.css"), "utf8");
+  assert.match(thread, /sortInboxMessagesNewestFirst/);
+  assert.match(inbox, /inbox-queue-select/);
+  assert.match(inbox, /inbox-unread-select/);
+  assert.match(styles, /inbox-queue-select/);
+  assert.match(styles, /@media \(max-width: 900px\)[\s\S]*inbox-list \{\s*display:\s*none/);
 });
 
 test("inbox messages can be a PDF on its own and keep a download link in the thread", () => {

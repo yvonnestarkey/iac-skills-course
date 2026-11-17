@@ -182,6 +182,10 @@ export function isInboxReceipt(message: Pick<InboxMessage, "from" | "context">):
   return message.from === "coach" && message.context === INBOX_MARKED_READ_CONTEXT;
 }
 
+export function sortInboxMessagesNewestFirst(messages: InboxMessage[]): InboxMessage[] {
+  return [...messages].sort((left, right) => right.createdAt.localeCompare(left.createdAt) || right.id.localeCompare(left.id));
+}
+
 export function isWaiting(messages: InboxMessage[]): boolean {
   const last = messages[messages.length - 1];
   return Boolean(last && last.from === "student");

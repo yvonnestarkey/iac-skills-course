@@ -1,5 +1,12 @@
 import { FileText } from "lucide-react";
-import { formatInboxTime, isInboxReceipt, messageLabel, type InboxMessage, type InboxRole } from "@/lib/inbox";
+import {
+  formatInboxTime,
+  isInboxReceipt,
+  messageLabel,
+  sortInboxMessagesNewestFirst,
+  type InboxMessage,
+  type InboxRole,
+} from "@/lib/inbox";
 import LinkedText from "@/components/ui/LinkedText";
 
 export default function InboxThreadView({
@@ -11,7 +18,7 @@ export default function InboxThreadView({
   viewer: InboxRole;
   empty?: string;
 }) {
-  const visible = messages.filter((message) => !isInboxReceipt(message));
+  const visible = sortInboxMessagesNewestFirst(messages.filter((message) => !isInboxReceipt(message)));
   if (!visible.length) return <p className="empty">{empty}</p>;
 
   return (

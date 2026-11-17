@@ -4571,10 +4571,6 @@ button.diagnosis-pill {
   .dashboard-quote-card {
     padding: 16px 18px;
   }
-
-  .inbox-layout {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Dedicated /student/[lessonId] player — no coach chrome */
@@ -7295,6 +7291,10 @@ a.planner-video-btn:visited:hover {
   align-items: start;
 }
 
+.inbox-queue-select {
+  display: none;
+}
+
 .inbox-list {
   display: flex;
   flex-direction: column;
@@ -7347,6 +7347,52 @@ a.planner-video-btn:visited:hover {
   max-height: 420px;
   overflow-y: auto;
   padding-right: 4px;
+}
+
+@media (max-width: 900px) {
+  .inbox-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .inbox-list {
+    display: none;
+  }
+
+  .inbox-queue-select {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  .inbox-queue-select select {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: #fff;
+    font: inherit;
+    font-weight: 600;
+  }
+
+  .inbox-thread {
+    width: 100%;
+  }
+
+  .inbox-thread .thread,
+  .card .thread {
+    max-height: none;
+  }
+
+  .composer-box textarea {
+    padding-right: 14px;
+    padding-bottom: 48px;
+  }
 }
 
 .inbox-pdf-picker {
