@@ -11,14 +11,17 @@ import {
   attemptHasFile,
   attemptScriptSlotLocked,
   isAttemptSubmitted,
+  isExamAttemptPdfFile,
   type ExamAttempt,
   type ExamAttemptFileKind,
 } from "@/lib/exam-attempts";
 import { isEvaluatorReadySitting } from "@/lib/evaluator/ready-sittings";
 import { PAST_PAPER_SITTINGS } from "@/lib/past-papers";
-import { renderPdfPageImages } from "@/lib/pdf-page-images";
 import { fetchRosterStudents } from "@/lib/profiles";
+import { getSupabase } from "@/lib/supabase";
 import type { Student } from "@/lib/types";
+
+const SCRIPT_UPLOAD = "/api/coach/evaluator/student-scripts";
 
 const SITTINGS = PAST_PAPER_SITTINGS.filter((item) => isEvaluatorReadySitting(item.id));
 
@@ -64,7 +67,7 @@ export default function CoachUploadStudentScripts() {
     setBusy(true);
     setError("");
     setNotice("");
-    const response = await fetch("/api/coach/evaluator/student-scripts", {
+    const response = await fetch(SCRIPT_UPLOAD, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ action: "create", studentId, sittingId }),
@@ -87,34 +90,78 @@ export default function CoachUploadStudentScripts() {
       setError("This paper is already uploaded. You can only submit each exam script once.");
       return;
     }
-    setBusyKind(kind);
-    setError("");
-    const form = new FormData();
-    form.set("studentId", attempt.user_id);
-    form.set("attemptId", attempt.id);
-    form.set("kind", kind);
-    form.set("file", file);
-    try {
-      const pages = await renderPdfPageImages(file);
-      for (const page of pages) form.set(`page_${page.page}`, page.blob, `p${page.page}.jpg`);
-    } catch {
-      /* Evidence prep can still read the stored PDF. */
-    }
-    const response = await fetch("/api/coach/evaluator/student-scripts", { method: "POST", body: form });
-    const payload = (await response.json().catch(() => ({}))) as { error?: string; attempt?: ExamAttempt };
-    setBusyKind(null);
-    if (!response.ok || !payload.attempt) {
-      setError(payload.error || "Could not upload that PDF.");
+    if (!isExamAttemptPdfFile(file)) {
+      setError("Please upload a PDF file.");
       return;
     }
-    setAttempt(payload.attempt);
+    if (file.size > 50 * 1024 * 1024) {
+      setError("That PDF is larger than 50 MB.");
+      return;
+    }
+    setBusyKind(kind);
+    setError("");
+    const signedResponse = await fetch(SCRIPT_UPLOAD, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        action: "sign-upload",
+        studentId: attempt.user_id,
+        attemptId: attempt.id,
+        kind,
+        fileName: file.name,
+      }),
+    });
+    const signed = (await signedResponse.json().catch(() => ({}))) as {
+      error?: string;
+      path?: string;
+      token?: string;
+      signedUrl?: string;
+    };
+    if (!signedResponse.ok || !signed.path || !signed.token) {
+      setBusyKind(null);
+      setError(signed.error || "Could not start that PDF upload.");
+      return;
+    }
+    const client = getSupabase();
+    if (!client) {
+      setBusyKind(null);
+      setError("Supabase is not configured.");
+      return;
+    }
+    const uploaded = await client.storage.from("course-pdfs").uploadToSignedUrl(signed.path, signed.token, file, {
+      contentType: "application/pdf",
+    });
+    if (uploaded.error) {
+      setBusyKind(null);
+      setError(uploaded.error.message || "Could not upload that PDF.");
+      return;
+    }
+    const attachedResponse = await fetch(SCRIPT_UPLOAD, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        action: "attach",
+        studentId: attempt.user_id,
+        attemptId: attempt.id,
+        kind,
+        path: signed.path,
+        fileName: file.name,
+      }),
+    });
+    const attached = (await attachedResponse.json().catch(() => ({}))) as { error?: string; attempt?: ExamAttempt };
+    setBusyKind(null);
+    if (!attachedResponse.ok || !attached.attempt) {
+      setError(attached.error || "Could not attach that PDF.");
+      return;
+    }
+    setAttempt(attached.attempt);
   }
 
   async function onSubmit() {
     if (!attempt) return;
     setBusy(true);
     setError("");
-    const response = await fetch("/api/coach/evaluator/student-scripts", {
+    const response = await fetch(SCRIPT_UPLOAD, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ action: "submit", studentId: attempt.user_id, attemptId: attempt.id }),

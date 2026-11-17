@@ -449,6 +449,16 @@ export function examAttemptFileStoragePath(input: {
   return `exam-attempts/${input.userId}/${input.attemptId}/${input.kind}/${stamp}-${safeName}`;
 }
 
+export function isExamAttemptOwnedStoragePath(
+  path: string,
+  userId: string,
+  attemptId: string,
+  kind: ExamAttemptFileKind
+): boolean {
+  const prefix = `exam-attempts/${userId}/${attemptId}/${kind}/`;
+  return path.startsWith(prefix) && !path.includes("..") && !path.includes("//", prefix.length);
+}
+
 export function examAttemptPageStoragePath(input: {
   userId: string;
   attemptId: string;

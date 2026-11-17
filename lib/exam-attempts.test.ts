@@ -19,6 +19,7 @@ import {
   examAttemptFileStoragePath,
   examAttemptFromRow,
   isExamAttemptFileKind,
+  isExamAttemptOwnedStoragePath,
   type ExamAttempt,
 } from "./exam-attempts";
 import { STUDENT_ATTEMPT_SOURCE } from "./staff-access";
@@ -197,6 +198,18 @@ test("coach uploads on behalf of a student land in that student's exam-attempt f
   assert.match(route, /examAttemptFileStoragePath/);
   assert.match(route, /createExamAttempt/);
   assert.match(route, /attemptHasAnyUploadedFile/);
+  assert.match(route, /sign-upload/);
+  assert.match(route, /createSignedUploadUrl/);
+  assert.match(panel, /uploadToSignedUrl/);
+  assert.doesNotMatch(panel, /renderPdfPageImages/);
+  assert.equal(
+    isExamAttemptOwnedStoragePath(path, "22222222-2222-4222-8222-222222222222", "33333333-3333-4333-8333-333333333333", "marked_script"),
+    true
+  );
+  assert.equal(
+    isExamAttemptOwnedStoragePath(path, "22222222-2222-4222-8222-222222222222", "33333333-3333-4333-8333-333333333333", "marking_report"),
+    false
+  );
   assert.match(sql, /marking_report_2_url/);
 });
 

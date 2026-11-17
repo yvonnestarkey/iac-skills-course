@@ -9,14 +9,13 @@ import {
   EXAM_ATTEMPT_MARKING_REPORT_2_SQL,
   examAttemptFileStoragePath,
   examAttemptFromRow,
-  examAttemptPageStoragePath,
   isAttemptSubmitted,
   isExamAttemptFileKind,
+  isExamAttemptOwnedStoragePath,
   isExamAttemptPdfFile,
   requestScriptEvaluation,
   type ExamAttempt,
   type ExamAttemptFileKind,
-  type ExamAttemptPageImage,
 } from "@/lib/exam-attempts";
 import { newEvaluatorApplies } from "@/lib/evaluator/job-rules";
 import { createJobsForAttempt, getEvaluatorMode, jobsForAttempt, kickJob } from "@/lib/evaluator/jobs";
@@ -30,13 +29,55 @@ export const maxDuration = 60;
 
 type AttemptRow = Record<string, unknown>;
 
-async function loadAttempt(
-  service: NonNullable<ReturnType<typeof getServiceSupabase>>,
-  attemptId: string,
-  studentId: string
-): Promise<ExamAttempt | null> {
+type Service = NonNullable<ReturnType<typeof getServiceSupabase>>;
+
+async function loadAttempt(service: Service, attemptId: string, studentId: string): Promise<ExamAttempt | null> {
   const { data } = await service.from("exam_attempts").select("*").eq("id", attemptId).eq("user_id", studentId).maybeSingle();
   return data ? examAttemptFromRow(data as AttemptRow) : null;
+}
+
+async function openAttempt(
+  service: Service,
+  studentId: string,
+  attemptId: string,
+  kind: ExamAttemptFileKind
+): Promise<{ attempt: ExamAttempt } | { error: string; status: number }> {
+  const existing = await loadAttempt(service, attemptId, studentId);
+  if (!existing) return { error: "That exam attempt was not found.", status: 404 };
+  if (isAttemptSubmitted(existing.status)) return { error: "This attempt is already submitted.", status: 400 };
+  if (existing[`${kind}_url`] && (kind === "marked_script" || kind === "marked_script_p2" || kind === "marked_script_p3")) {
+    return { error: "This paper is already uploaded. You can only submit each exam script once.", status: 400 };
+  }
+  return { attempt: existing };
+}
+
+async function attachStoredFile(
+  service: Service,
+  existing: ExamAttempt,
+  studentId: string,
+  attemptId: string,
+  kind: ExamAttemptFileKind,
+  path: string,
+  fileName: string
+) {
+  const { data: publicFile } = service.storage.from("course-pdfs").getPublicUrl(path);
+  if (!publicFile?.publicUrl) return NextResponse.json({ error: "Could not get a URL for that file." }, { status: 400 });
+  const patch: Record<string, unknown> = {
+    [`${kind}_path`]: path,
+    [`${kind}_url`]: publicFile.publicUrl,
+    [`${kind}_name`]: fileName,
+    updated_at: new Date().toISOString(),
+  };
+  const nextDraft = examAttemptFromRow({ ...existing, ...patch });
+  patch.status = deriveAttemptStatus({ ...nextDraft, status: "started" });
+  const { data, error } = await service.from("exam_attempts").update(patch).eq("id", attemptId).eq("user_id", studentId).select("*").maybeSingle();
+  if (error || !data) {
+    if (error && /marking_report_2/i.test(error.message)) {
+      return NextResponse.json({ error: EXAM_ATTEMPT_MARKING_REPORT_2_SQL }, { status: 400 });
+    }
+    return NextResponse.json({ error: error?.message || "Could not attach that file." }, { status: 400 });
+  }
+  return NextResponse.json({ ok: true, attempt: examAttemptFromRow(data as AttemptRow) });
 }
 
 export async function POST(request: Request) {
@@ -45,90 +86,56 @@ export async function POST(request: Request) {
   const service = getServiceSupabase();
   if (!service) return NextResponse.json({ error: "Supabase is not configured." }, { status: 500 });
 
-  const contentType = request.headers.get("content-type") || "";
-  if (contentType.includes("multipart/form-data")) {
-    const form = await request.formData();
-    const studentId = String(form.get("studentId") || "");
-    const attemptId = String(form.get("attemptId") || "");
-    const kindValue = String(form.get("kind") || "");
-    const file = form.get("file");
-    if (!isUserId(studentId) || !isUserId(attemptId) || !isExamAttemptFileKind(kindValue)) {
-      return NextResponse.json({ error: "Choose the student, attempt, and which PDF this is." }, { status: 400 });
-    }
-    if (!(file instanceof File) || !file.size) return NextResponse.json({ error: "Choose a PDF to upload." }, { status: 400 });
-    if (file.size > 50 * 1024 * 1024) return NextResponse.json({ error: "That PDF is larger than 50 MB." }, { status: 400 });
-    if (!isExamAttemptPdfFile(file)) return NextResponse.json({ error: "Please upload a PDF file." }, { status: 400 });
-
-    const existing = await loadAttempt(service, attemptId, studentId);
-    if (!existing) return NextResponse.json({ error: "That exam attempt was not found." }, { status: 404 });
-    if (isAttemptSubmitted(existing.status)) {
-      return NextResponse.json({ error: "This attempt is already submitted." }, { status: 400 });
-    }
-    if (existing[`${kindValue}_url`] && (kindValue === "marked_script" || kindValue === "marked_script_p2" || kindValue === "marked_script_p3")) {
-      return NextResponse.json({ error: "This paper is already uploaded. You can only submit each exam script once." }, { status: 400 });
-    }
-
-    const stamp = Date.now();
-    const kind = kindValue as ExamAttemptFileKind;
-    const path = examAttemptFileStoragePath({
-      userId: studentId,
-      attemptId,
-      kind,
-      fileName: file.name,
-      stamp,
-    });
-    const uploaded = await service.storage.from("course-pdfs").upload(path, Buffer.from(await file.arrayBuffer()), {
-      upsert: false,
-      contentType: "application/pdf",
-    });
-    if (uploaded.error) return NextResponse.json({ error: uploaded.error.message || "Could not upload that PDF." }, { status: 400 });
-    const { data: publicFile } = service.storage.from("course-pdfs").getPublicUrl(path);
-    if (!publicFile?.publicUrl) return NextResponse.json({ error: "Could not get a URL for that file." }, { status: 400 });
-
-    const pageImages = { ...existing.page_images };
-    const stored: ExamAttemptPageImage[] = [];
-    for (const [key, value] of form.entries()) {
-      const match = /^page_(\d+)$/.exec(key);
-      if (!match || !(value instanceof File) || !value.size) continue;
-      const page = Number(match[1]);
-      const pagePath = examAttemptPageStoragePath({ userId: studentId, attemptId, kind, page, stamp });
-      const pageUpload = await service.storage.from("course-pdfs").upload(pagePath, Buffer.from(await value.arrayBuffer()), {
-        upsert: false,
-        contentType: "image/jpeg",
-      });
-      if (pageUpload.error) continue;
-      const { data: pageUrl } = service.storage.from("course-pdfs").getPublicUrl(pagePath);
-      if (pageUrl?.publicUrl) stored.push({ page, path: pagePath, url: pageUrl.publicUrl });
-    }
-    if (stored.length) pageImages[kind] = stored.sort((a, b) => a.page - b.page);
-
-    const patch: Record<string, unknown> = {
-      [`${kind}_path`]: path,
-      [`${kind}_url`]: publicFile.publicUrl,
-      [`${kind}_name`]: file.name,
-      page_images: pageImages,
-      updated_at: new Date().toISOString(),
-    };
-    const nextDraft = examAttemptFromRow({ ...existing, ...patch });
-    patch.status = deriveAttemptStatus({ ...nextDraft, status: "started" });
-    const { data, error } = await service.from("exam_attempts").update(patch).eq("id", attemptId).eq("user_id", studentId).select("*").maybeSingle();
-    if (error || !data) {
-      if (error && /marking_report_2/i.test(error.message)) {
-        return NextResponse.json({ error: EXAM_ATTEMPT_MARKING_REPORT_2_SQL }, { status: 400 });
-      }
-      return NextResponse.json({ error: error?.message || "Could not attach that file." }, { status: 400 });
-    }
-    return NextResponse.json({ ok: true, attempt: examAttemptFromRow(data as AttemptRow) });
-  }
-
   const body = (await request.json().catch(() => ({}))) as {
     action?: string;
     studentId?: string;
     sittingId?: string;
     attemptId?: string;
+    kind?: string;
+    fileName?: string;
+    path?: string;
   };
   const studentId = String(body.studentId || "");
   if (!isUserId(studentId)) return NextResponse.json({ error: "Choose a student." }, { status: 400 });
+
+  if (body.action === "sign-upload" || body.action === "attach") {
+    const attemptId = String(body.attemptId || "");
+    const kindValue = String(body.kind || "");
+    const fileName = String(body.fileName || "").trim();
+    if (!isUserId(attemptId) || !isExamAttemptFileKind(kindValue)) {
+      return NextResponse.json({ error: "Choose the student, attempt, and which PDF this is." }, { status: 400 });
+    }
+    if (!isExamAttemptPdfFile({ type: "application/pdf", name: fileName || "file.pdf", size: 1 })) {
+      return NextResponse.json({ error: "Please upload a PDF file." }, { status: 400 });
+    }
+    const opened = await openAttempt(service, studentId, attemptId, kindValue);
+    if ("error" in opened) return NextResponse.json({ error: opened.error }, { status: opened.status });
+
+    if (body.action === "sign-upload") {
+      const path = examAttemptFileStoragePath({
+        userId: studentId,
+        attemptId,
+        kind: kindValue,
+        fileName: fileName || `${kindValue}.pdf`,
+      });
+      const signed = await service.storage.from("course-pdfs").createSignedUploadUrl(path);
+      if (signed.error || !signed.data?.signedUrl || !signed.data.token) {
+        return NextResponse.json({ error: signed.error?.message || "Could not start that PDF upload." }, { status: 400 });
+      }
+      return NextResponse.json({
+        ok: true,
+        path: signed.data.path || path,
+        token: signed.data.token,
+        signedUrl: signed.data.signedUrl,
+      });
+    }
+
+    const path = String(body.path || "");
+    if (!isExamAttemptOwnedStoragePath(path, studentId, attemptId, kindValue)) {
+      return NextResponse.json({ error: "That file does not belong to this attempt." }, { status: 400 });
+    }
+    return attachStoredFile(service, opened.attempt, studentId, attemptId, kindValue, path, fileName || `${kindValue}.pdf`);
+  }
 
   if (body.action === "create") {
     const created = await createExamAttempt({
