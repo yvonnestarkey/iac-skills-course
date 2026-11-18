@@ -9,6 +9,7 @@ import {
   coachDashboardGreeting,
   coachDashboardTools,
   coachMarkingItems,
+  needsAssignmentFeedback,
   coachStudentCounts,
   coachWatchStudents,
   heardFromCoachWithinDays,
@@ -75,6 +76,12 @@ test("the marking queue keeps submitted assignments and links to the review page
     row({ id: "survey", isAssignment: false, surveyTitle: "Check-in" }),
     row({ id: "graded", status: "graded", surveyTitle: "Done" }),
     row({ id: "fresh", createdAt: "2026-11-11T08:00:00.000Z", studentName: "Lebo", surveyTitle: "Grassroots" }),
+    row({
+      id: "already-marked",
+      status: "submitted",
+      gradedAt: "2026-11-12T08:00:00.000Z",
+      feedback: "--- 2026-11-12T08:00:00.000Z ---\nNice work.",
+    }),
   ]);
   assert.deepEqual(
     items.map((item) => item.id),
@@ -83,6 +90,8 @@ test("the marking queue keeps submitted assignments and links to the review page
   assert.equal(items[0].href, "/coach/submissions/fresh");
   assert.equal(items[1].href, "/coach/submissions/lesson/abc");
   assert.equal(markingHref({ id: "survey-9" }), "/coach/submissions/survey-9");
+  assert.equal(needsAssignmentFeedback(row({ isAssignment: false })), false);
+  assert.equal(needsAssignmentFeedback(row({ status: "submitted", gradedAt: "2026-11-12T08:00:00.000Z" })), false);
 });
 
 test("submitted script evaluations without a released report are waiting", () => {

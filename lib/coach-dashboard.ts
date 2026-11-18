@@ -1,6 +1,7 @@
 import { courseAccessFromEntitlementStatus } from "./course-access";
 import type { SurveySubmissionRow } from "./custom-surveys";
 import { daysAgo, isoToSastDateAndTime, parsePortalTimestamp } from "./dates";
+import { hasWrittenFeedback } from "./feedback-log";
 import { EXAM_ATTEMPT_STATUSES, isAttemptSubmitted, type ExamAttemptStatus } from "./exam-attempts";
 import { fetchCoachSentMessages } from "./inbox";
 import { STAFF_TEST_ATTEMPT_SOURCE } from "./staff-access";
@@ -218,9 +219,18 @@ export function markingHref(row: Pick<SurveySubmissionRow, "id" | "href">): stri
   return row.href || `/coach/submissions/${row.id}`;
 }
 
+/** Outstanding assignment: a Task upload or assignment form that still needs your first review. */
+export function needsAssignmentFeedback(row: Pick<SurveySubmissionRow, "isAssignment" | "status" | "gradedAt" | "feedback">): boolean {
+  if (!row.isAssignment) return false;
+  if (row.status !== "submitted") return false;
+  if (String(row.gradedAt || "").trim()) return false;
+  if (hasWrittenFeedback(row.feedback)) return false;
+  return true;
+}
+
 export function coachMarkingItems(rows: SurveySubmissionRow[]): CoachMarkingItem[] {
   return rows
-    .filter((row) => row.isAssignment && row.status === "submitted")
+    .filter(needsAssignmentFeedback)
     .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))
     .map((row) => ({
       id: row.id,

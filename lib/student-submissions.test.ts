@@ -81,6 +81,8 @@ test("lesson uploads map onto the submissions queue and notify the coach", () =>
   assert.equal(lessonQueuePath("lesson:abc"), "/coach/submissions/lesson/abc");
   assert.equal(queueStatusToLesson("graded"), "approved");
   const saver = readFileSync(resolve("lib/student-submissions.ts"), "utf8");
+  assert.match(saver, /needsAssignmentFeedback/);
+  assert.match(saver, /fetchAllSurveySubmissions/);
   assert.match(saver, /delete payload\[missing\]/);
   assert.match(saver, /updated_at/);
   assert.equal(lessonStatusToQueue("submitted"), "submitted");

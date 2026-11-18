@@ -1,5 +1,10 @@
-import type { SurveyResponseStatus, SurveySubmissionRow } from "./custom-surveys";
-import { surveyResponseStatusLabel } from "./custom-surveys";
+import { needsAssignmentFeedback } from "./coach-dashboard";
+import {
+  fetchAllSurveySubmissions,
+  surveyResponseStatusLabel,
+  type SurveyResponseStatus,
+  type SurveySubmissionRow,
+} from "./custom-surveys";
 import { nextFeedbackLog } from "./feedback-log";
 import { notifyAssignmentFeedback } from "./notifications";
 import { getSupabase } from "./supabase";
@@ -297,7 +302,7 @@ export async function fetchLessonSubmissionsForCoach(): Promise<{
           feedbackFileUrl: item.feedbackFileUrl || "",
           gradedBy: "",
           gradedByName: "",
-          gradedAt: reviewed ? when : "",
+          gradedAt: item.gradedAt || (reviewed ? when : ""),
           createdAt: String(row.submitted_at || when),
           updatedAt: when,
           surveyTitle: titles.get(item.lesson_id) || item.lesson_id,
@@ -438,17 +443,12 @@ export async function fetchSubmissionsAwaitingFeedback(): Promise<{
   ok: boolean;
   rows: { studentId: string; lessonId: string }[];
 }> {
-  const client = getSupabase();
-  if (!client) return { ok: false, rows: [] };
-  const { data, error } = await client
-    .from("student_submissions")
-    .select("student_id, lesson_id, status")
-    .eq("status", "submitted");
-  if (error || !data) return { ok: false, rows: [] };
-  return {
-    ok: true,
-    rows: data.map((row) => ({ studentId: String(row.student_id), lessonId: String(row.lesson_id) })),
-  };
+  const [lessons, surveys] = await Promise.all([fetchLessonSubmissionsForCoach(), fetchAllSurveySubmissions()]);
+  if (!lessons.ok && !surveys.ok) return { ok: false, rows: [] };
+  const rows = [...(lessons.ok ? lessons.data : []), ...(surveys.ok ? surveys.data : [])]
+    .filter(needsAssignmentFeedback)
+    .map((row) => ({ studentId: row.studentId, lessonId: row.surveyId }));
+  return { ok: true, rows };
 }
 
 export async function fetchSubmissionCountsByStudent(): Promise<Record<string, number>> {
