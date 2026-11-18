@@ -17,6 +17,7 @@ import StudentCoachingSessionsPanel from "@/components/coach/StudentCoachingSess
 import CoachStudyJournalPanel from "@/components/coach/CoachStudyJournalPanel";
 import StudentPdfsPanel from "@/components/coach/StudentPdfsPanel";
 import StudentProfileDetails from "@/components/coach/StudentProfileDetails";
+import StudentCommitments from "@/components/student/StudentCommitments";
 import { canSendPasswordSetupLink } from "@/lib/account-activation";
 import { accountStatusLabel } from "@/lib/student-registration";
 import { activityColumnsFromOutline, currentActivityPosition } from "@/lib/activity-grid";
@@ -342,6 +343,8 @@ export default function StudentProfile({ studentId }: { studentId: string }) {
         student={student}
         onSaved={(patch) => setLive((current) => (current ? { ...current, ...patch } : current))}
       />
+
+      <StudentCommitments studentId={student.id} title="Commitments & answers" />
 
       <section className="card" id="activity">
         <div className="panel-head">

@@ -103,7 +103,7 @@ export const COACH_DASHBOARD_GROUPS: CoachDashGroup[] = [
       {
         id: "dashboard-posts",
         title: "Dashboard posts",
-        description: "Banner announcements and the login slide-in",
+        description: "Banner announcements and targeted login pop-ups",
         href: "/coach/dashboard-posts",
       },
       {

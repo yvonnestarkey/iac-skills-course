@@ -10,7 +10,7 @@ export const COURSE_TOOLS: CourseTool[] = [
   {
     id: "dashboard-posts",
     title: "Dashboard posts",
-    description: "Banner announcements and the motivational slide-in students see when they open the dashboard.",
+    description: "Banner announcements and targeted login pop-ups students see when they open the dashboard.",
     href: "/coach/dashboard-posts",
     editable: true,
   },

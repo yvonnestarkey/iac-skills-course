@@ -7,6 +7,7 @@ import PurchaseCta from "@/components/commerce/PurchaseCta";
 import ReferralCard from "@/components/commerce/ReferralCard";
 import DataConsentCard from "@/components/student/DataConsentCard";
 import StudentOnboardingDetails from "@/components/student/StudentOnboardingDetails";
+import StudentCommitments from "@/components/student/StudentCommitments";
 import { useBypassLessonLocks } from "@/lib/course-preview";
 import { accountAccessCopy } from "@/lib/account-access";
 import { shouldShowBuyCourseCta } from "@/lib/lesson-availability";
@@ -48,6 +49,8 @@ export default function StudentAccount() {
         </div>
         {onboardingOpen && user?.id ? <StudentOnboardingDetails userId={user.id} /> : null}
       </section>
+
+      {user?.id ? <StudentCommitments studentId={user.id} /> : null}
 
       <section className="card">
         <p className="kicker">Course access</p>

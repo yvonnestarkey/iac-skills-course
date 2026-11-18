@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import RichTextField from "@/components/ui/RichTextField";
+import LoginPopupFields from "@/components/coach/LoginPopupFields";
 import {
   currentPublishedPost,
   dashboardPostKindLabel,
@@ -16,6 +17,8 @@ import {
   type DashboardPostKind,
   type DashboardPostWrite,
 } from "@/lib/dashboard-posts";
+import { flattenPopupLessons } from "@/lib/student-popups";
+import { fetchCourseOutline } from "@/lib/student-lesson";
 
 function KindEditor({ kind }: { kind: DashboardPostKind }) {
   const [posts, setPosts] = useState<DashboardPost[]>([]);
@@ -24,6 +27,7 @@ function KindEditor({ kind }: { kind: DashboardPostKind }) {
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState(false);
+  const [lessons, setLessons] = useState<{ id: string; title: string }[]>([]);
 
   const load = async () => {
     const result = await listDashboardPosts(kind);
@@ -34,11 +38,14 @@ function KindEditor({ kind }: { kind: DashboardPostKind }) {
 
   useEffect(() => {
     void load();
+    if (kind !== "slide") return;
+    void fetchCourseOutline().then((outline) => setLessons(flattenPopupLessons(outline)));
   }, [kind]);
 
   const set = (next: Partial<DashboardPostWrite>) => setForm((current) => ({ ...current, ...next }));
   const live = currentPublishedPost(posts, kind);
-  const previous = posts.filter((post) => post.id !== live?.id);
+  const livePosts = kind === "slide" ? posts.filter((post) => post.status === "published") : live ? [live] : [];
+  const previous = kind === "slide" ? posts.filter((post) => post.status !== "published") : posts.filter((post) => post.id !== live?.id);
 
   const persist = async (status: DashboardPostWrite["status"]) => {
     setBusy(true);
@@ -103,7 +110,7 @@ function KindEditor({ kind }: { kind: DashboardPostKind }) {
       <h2>{dashboardPostKindLabel(kind)}</h2>
       <p className="muted small">
         {kind === "slide"
-          ? "Slides in from the right when a student opens the dashboard. A new post shows until they close it."
+          ? "Slides in from the right when a student opens the dashboard. Use filters so the right students see the right plan. They can dismiss for today or completely."
           : "Shows in the dashboard banner, in the space the weekly quote used to occupy."}
       </p>
       {error ? <p className="waiting">{error}</p> : null}
@@ -145,6 +152,7 @@ function KindEditor({ kind }: { kind: DashboardPostKind }) {
             placeholder="https://vimeo.com/… or YouTube"
             disabled={busy}
           />
+          <LoginPopupFields form={form} lessons={lessons} busy={busy} onChange={set} />
         </>
       ) : null}
       <p className="coaching-actions">
@@ -162,22 +170,24 @@ function KindEditor({ kind }: { kind: DashboardPostKind }) {
       </p>
 
       <h3>Live now</h3>
-      {ready && live ? (
-        <article className="work-item">
-          <div className="work-head">
-            <strong>{live.title || "Untitled"}</strong>
-            <span className="muted small">{formatDashboardPostWhen(live)}</span>
-          </div>
-          <p className="muted small">{live.body.slice(0, 180) || live.videoUrl || "No body"}</p>
-          <div className="actions">
-            <button type="button" className="ghost" disabled={busy} onClick={() => edit(live)}>
-              Edit
-            </button>
-            <button type="button" className="ghost" disabled={busy} onClick={() => void archive(live)}>
-              Take down
-            </button>
-          </div>
-        </article>
+      {ready && livePosts.length ? (
+        livePosts.map((post) => (
+          <article className="work-item" key={post.id}>
+            <div className="work-head">
+              <strong>{post.title || "Untitled"}</strong>
+              <span className="muted small">{formatDashboardPostWhen(post)}</span>
+            </div>
+            <p className="muted small">{post.body.slice(0, 180) || post.videoUrl || (post.filters.length ? `${post.filters.length} filter${post.filters.length === 1 ? "" : "s"}` : "No body")}</p>
+            <div className="actions">
+              <button type="button" className="ghost" disabled={busy} onClick={() => edit(post)}>
+                Edit
+              </button>
+              <button type="button" className="ghost" disabled={busy} onClick={() => void archive(post)}>
+                Take down
+              </button>
+            </div>
+          </article>
+        ))
       ) : (
         <p className="empty">Nothing live yet.</p>
       )}
@@ -222,10 +232,10 @@ export default function DashboardPostsManager() {
       <p className="kicker">Student dashboard</p>
       <h1>Dashboard posts</h1>
       <p className="muted">
-        Edit the banner announcement and the login slide-in. Previous posts stay here so you can bring one back.
+        Edit the banner announcement and the login pop-ups. Target students by planner, journal, script eval, coaching, and more.
       </p>
       <p className="muted small">
-        Paste <code>supabase/dashboard-posts.sql</code> in Supabase before the first publish.
+        Paste <code>supabase/dashboard-posts.sql</code> then <code>supabase/student-popups.sql</code> in Supabase before the first publish.
       </p>
       <KindEditor kind="announcement" />
       <KindEditor kind="slide" />

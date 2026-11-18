@@ -1,4 +1,12 @@
 import { formatSastDateTime } from "./dates";
+import {
+  parsePopupFilterLogic,
+  parsePopupFilters,
+  parsePopupItems,
+  type PopupFilterLogic,
+  type PopupFilterRule,
+  type PopupItem,
+} from "./student-popups";
 import { getSupabase } from "./supabase";
 
 export const DASHBOARD_POSTS_SQL_HINT =
@@ -20,6 +28,9 @@ export type DashboardPost = {
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  filters: PopupFilterRule[];
+  filterLogic: PopupFilterLogic;
+  items: PopupItem[];
 };
 
 export type DashboardPostWrite = {
@@ -29,6 +40,9 @@ export type DashboardPostWrite = {
   body: string;
   videoUrl: string;
   status: DashboardPostStatus;
+  filters: PopupFilterRule[];
+  filterLogic: PopupFilterLogic;
+  items: PopupItem[];
 };
 
 export function isDashboardPostKind(value: unknown): value is DashboardPostKind {
@@ -40,7 +54,7 @@ export function isDashboardPostStatus(value: unknown): value is DashboardPostSta
 }
 
 export function emptyDashboardPostWrite(kind: DashboardPostKind): DashboardPostWrite {
-  return { kind, title: "", body: "", videoUrl: "", status: "draft" };
+  return { kind, title: "", body: "", videoUrl: "", status: "draft", filters: [], filterLogic: "and", items: [] };
 }
 
 export function dashboardPostToWrite(post: DashboardPost): DashboardPostWrite {
@@ -51,6 +65,9 @@ export function dashboardPostToWrite(post: DashboardPost): DashboardPostWrite {
     body: post.body,
     videoUrl: post.videoUrl,
     status: post.status,
+    filters: post.filters,
+    filterLogic: post.filterLogic,
+    items: post.items,
   };
 }
 
@@ -95,6 +112,9 @@ export function postFromRow(row: Record<string, unknown>): DashboardPost {
     publishedAt: asText(row.published_at) || null,
     createdAt: asText(row.created_at),
     updatedAt: asText(row.updated_at),
+    filters: parsePopupFilters(row.filters),
+    filterLogic: parsePopupFilterLogic(row.filter_logic),
+    items: parsePopupItems(row.items),
   };
 }
 
@@ -115,6 +135,9 @@ export function dashboardPostWriteRow(
     body,
     video_url: videoUrl || null,
     status,
+    filters: input.kind === "slide" ? input.filters || [] : [],
+    filter_logic: input.kind === "slide" ? parsePopupFilterLogic(input.filterLogic) : "and",
+    items: input.kind === "slide" ? input.items || [] : [],
     updated_at: new Date().toISOString(),
   };
   if (status === "published") row.published_at = new Date().toISOString();
@@ -163,7 +186,7 @@ export async function saveDashboardPost(
   if (built.ok === false) return built;
   const { data: session } = await client.auth.getUser();
   const row = { ...built.row, created_by: session.user?.id || null };
-  if (input.status === "published") {
+  if (input.status === "published" && input.kind === "announcement") {
     await client
       .from("dashboard_posts")
       .update({ status: "archived", updated_at: new Date().toISOString() })

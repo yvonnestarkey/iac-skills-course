@@ -24,6 +24,9 @@ function post(overrides: Partial<DashboardPost> = {}): DashboardPost {
     publishedAt: "2026-11-10T08:00:00.000Z",
     createdAt: "2026-11-09T08:00:00.000Z",
     updatedAt: "2026-11-10T08:00:00.000Z",
+    filters: [],
+    filterLogic: "and",
+    items: [],
     ...overrides,
   };
 }
@@ -116,8 +119,9 @@ test("banner announcements, quote card, login slide, and coach tools stay wired"
   assert.match(quote, /dashboardQuoteForDate/);
   assert.match(quote, /dashboard-quote-card/);
   assert.match(slide, /ask-drawer/);
-  assert.match(slide, /fetchPublishedDashboardPost\("slide"\)/);
-  assert.match(slide, /slideDismissKey/);
+  assert.match(slide, /\/api\/student\/popups/);
+  assert.match(slide, /Dismiss completely/);
+  assert.match(slide, /Dismiss for today/);
   assert.match(manager, /Previous posts/);
   assert.match(manager, /KindEditor kind="announcement"/);
   assert.match(manager, /KindEditor kind="slide"/);
@@ -126,4 +130,8 @@ test("banner announcements, quote card, login slide, and coach tools stay wired"
   assert.match(tools, /id: "dashboard-posts"/);
   assert.match(sql, /create table if not exists public\.dashboard_posts/);
   assert.match(sql, /kind in \('announcement', 'slide'\)/);
+  assert.match(manager, /LoginPopupFields/);
+  const popupSql = readFileSync(resolve("supabase/student-popups.sql"), "utf8");
+  assert.match(popupSql, /student_popup_dismissals/);
+  assert.match(popupSql, /student_popup_responses/);
 });

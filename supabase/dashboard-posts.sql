@@ -8,6 +8,9 @@ create table if not exists public.dashboard_posts (
   title text not null default '',
   body text not null default '',
   video_url text,
+  filters jsonb not null default '[]'::jsonb,
+  filter_logic text not null default 'and',
+  items jsonb not null default '[]'::jsonb,
   status text not null default 'draft' check (status in ('draft', 'published', 'archived')),
   published_at timestamptz,
   created_at timestamptz not null default now(),
@@ -18,9 +21,10 @@ create table if not exists public.dashboard_posts (
 create index if not exists dashboard_posts_live_idx
   on public.dashboard_posts (kind, status, published_at desc);
 
-create unique index if not exists dashboard_posts_one_live_idx
+drop index if exists public.dashboard_posts_one_live_idx;
+create unique index if not exists dashboard_posts_one_live_announcement_idx
   on public.dashboard_posts (kind)
-  where status = 'published';
+  where status = 'published' and kind = 'announcement';
 
 alter table public.dashboard_posts enable row level security;
 

@@ -9844,7 +9844,28 @@ a.planner-video-btn:visited:hover {
 }
 
 .dash-slide-panel {
-  width: min(520px, 100%);
+  top: 16.5vh;
+  width: min(50vw, 640px);
+  height: 66.666vh;
+  max-width: 50%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 18px 0 0 18px;
+  overflow: hidden;
+}
+
+.dash-slide-frost {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+  background: rgba(244, 236, 224, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.dash-slide-frost .ask-drawer-head {
+  background: rgba(247, 250, 249, 0.72);
 }
 
 .dash-slide-body {
@@ -9882,6 +9903,99 @@ a.planner-video-btn:visited:hover {
   justify-content: flex-end;
   padding: 14px 18px;
   border-top: 1px solid var(--line);
+}
+
+.popup-dismiss-foot {
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: rgba(247, 250, 249, 0.72);
+}
+
+.popup-dismiss-foot .primary,
+.popup-dismiss-foot .ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.popup-dismiss-hint {
+  position: relative;
+  display: inline-flex;
+  color: var(--muted);
+}
+
+.popup-dismiss-tip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 220px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--dark);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.35;
+  z-index: 2;
+}
+
+.popup-dismiss-hint:hover .popup-dismiss-tip,
+.popup-dismiss-hint:focus .popup-dismiss-tip {
+  display: block;
+}
+
+.popup-activity,
+.popup-commit,
+.popup-question {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
+}
+
+.popup-activity {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.popup-commit {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+}
+
+.popup-commit em {
+  display: block;
+  font-style: normal;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.popup-filter-row,
+.popup-item-editor {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+@media (max-width: 900px) {
+  .dash-slide-panel {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 70vh;
+    border-radius: 18px 18px 0 0;
+  }
 }
 
 .dashboard-posts-manager {
