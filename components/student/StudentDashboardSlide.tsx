@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
-import { CircleHelp, X } from "lucide-react";
+import { CircleHelp } from "lucide-react";
 import LinkedText from "@/components/ui/LinkedText";
 import { embedSrcForVideo, YOUTUBE_EMBED_ALLOW, YOUTUBE_EMBED_REFERRER_POLICY } from "@/lib/video-embed";
 import type { DashboardPost } from "@/lib/dashboard-posts";
@@ -36,6 +37,7 @@ export default function StudentDashboardSlide() {
   const [error, setError] = useState("");
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const [mounted, setMounted] = useState(false);
 
   const load = async () => {
     if (course.id !== DEFAULT_LMS_COURSE_ID) return;
@@ -67,8 +69,12 @@ export default function StudentDashboardSlide() {
     });
     setAnswers(nextAnswers);
     setChecked(nextChecked);
-    window.setTimeout(() => setOpen(true), 280);
+    requestAnimationFrame(() => setOpen(true));
   };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -79,6 +85,15 @@ export default function StudentDashboardSlide() {
       cancelled = true;
     };
   }, [course.id, user?.id, viewAsStudent]);
+
+  useEffect(() => {
+    if (!post || !open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [post, open]);
 
   const act = async (body: Record<string, unknown>) => {
     if (readOnly || !post) return;
@@ -112,26 +127,21 @@ export default function StudentDashboardSlide() {
     }
   };
 
-  if (!post) return null;
+  if (!mounted || !post) return null;
   const embedSrc = embedSrcForVideo(post.videoUrl);
   const paragraphs = post.body
     .split(/\n+/)
     .map((part) => part.trim())
     .filter(Boolean);
 
-  return (
-    <div className={`ask-drawer dash-slide${open ? " open" : ""}`} role="dialog" aria-modal="true" aria-labelledby="dash-slide-title">
-      <button type="button" className="ask-drawer-backdrop" aria-label="Close for today" onClick={() => void dismiss("today")} />
-      <aside className="ask-drawer-panel dash-slide-panel" style={{ backgroundImage: `url(${POPUP_BG})` }}>
+  return createPortal(
+    <div className={`dash-slide${open ? " open" : ""}`} role="dialog" aria-modal="true" aria-labelledby="dash-slide-title">
+      <div className="dash-slide-backdrop" />
+      <aside className="dash-slide-panel" style={{ backgroundImage: `url(${POPUP_BG})` }}>
         <div className="dash-slide-frost">
-          <div className="ask-drawer-head">
-            <div>
-              <p className="kicker">Your focus plan</p>
-              <h2 id="dash-slide-title">{post.title || "A note from Yvonne"}</h2>
-            </div>
-            <button type="button" className="ask-drawer-close" onClick={() => void dismiss("today")} aria-label="Dismiss for today">
-              <X size={18} />
-            </button>
+          <div className="dash-slide-head">
+            <p className="kicker">Your focus plan</p>
+            <h2 id="dash-slide-title">{post.title || "A note from Yvonne"}</h2>
           </div>
           <div className="dash-slide-body">
             {embedSrc ? (
@@ -220,6 +230,7 @@ export default function StudentDashboardSlide() {
           </div>
         </div>
       </aside>
-    </div>
+    </div>,
+    document.body
   );
 }

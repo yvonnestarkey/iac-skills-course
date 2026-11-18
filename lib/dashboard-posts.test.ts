@@ -118,7 +118,8 @@ test("banner announcements, quote card, login slide, and coach tools stay wired"
   assert.match(dashboard, /StudentDashboardSlide/);
   assert.match(quote, /dashboardQuoteForDate/);
   assert.match(quote, /dashboard-quote-card/);
-  assert.match(slide, /ask-drawer/);
+  assert.match(slide, /createPortal/);
+  assert.match(slide, /dash-slide/);
   assert.match(slide, /\/api\/student\/popups/);
   assert.match(slide, /Dismiss completely/);
   assert.match(slide, /Dismiss for today/);

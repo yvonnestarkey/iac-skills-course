@@ -9843,8 +9843,36 @@ a.planner-video-btn:visited:hover {
   color: var(--medium);
 }
 
+.dash-slide {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+}
+
+.dash-slide.open {
+  pointer-events: auto;
+}
+
+.dash-slide-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(24, 28, 22, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.dash-slide.open .dash-slide-backdrop {
+  opacity: 1;
+}
+
 .dash-slide-panel {
+  position: absolute;
   top: 16.5vh;
+  right: 0;
+  display: grid;
   width: min(50vw, 640px);
   height: 66.666vh;
   max-width: 50%;
@@ -9853,6 +9881,13 @@ a.planner-video-btn:visited:hover {
   background-repeat: no-repeat;
   border-radius: 18px 0 0 18px;
   overflow: hidden;
+  box-shadow: 0 24px 60px rgba(24, 28, 22, 0.35);
+  transform: translateX(100%);
+  transition: transform 0.28s ease;
+}
+
+.dash-slide.open .dash-slide-panel {
+  transform: translateX(0);
 }
 
 .dash-slide-frost {
@@ -9864,8 +9899,15 @@ a.planner-video-btn:visited:hover {
   -webkit-backdrop-filter: blur(14px);
 }
 
-.dash-slide-frost .ask-drawer-head {
+.dash-slide-head {
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--line);
   background: rgba(247, 250, 249, 0.72);
+}
+
+.dash-slide-head h2 {
+  margin: 0 0 4px;
+  font-size: 22px;
 }
 
 .dash-slide-body {
@@ -10469,6 +10511,7 @@ a.planner-video-btn:visited:hover {
   .widget-fab,
   .widget-panel,
   .ask-drawer,
+  .dash-slide,
   .notify-btn,
   .course-menu-btn,
   .student-signout,

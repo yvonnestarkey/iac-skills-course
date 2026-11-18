@@ -16,7 +16,7 @@ import { ASK_QUESTION_ENABLED } from "@/lib/ask-question";
 import { DEFAULT_LMS_COURSE_ID } from "@/lib/lms-catalog";
 import { useLmsCourse } from "@/lib/lms-course-context";
 import { isCoachAccount } from "@/lib/roles";
-import { goToStudentLogin, safeStudentPath } from "@/lib/student-lesson";
+import { goToStudentLogin } from "@/lib/student-lesson";
 import { useStudentSession } from "@/lib/student-session";
 import { useStudentInbox, StudentInboxProvider } from "@/lib/use-student-inbox";
 import { StudentNavProvider, useStudentNav } from "@/lib/student-nav";
@@ -174,9 +174,8 @@ function StudentGate({ children }: { children: ReactNode }) {
     if (isLogin) {
       if (!user || onboarding === "unknown") return;
       if (isCoachAccount(user)) return;
-      const next = safeStudentPath(new URLSearchParams(window.location.search).get("next"));
       if (onboarding === "done") {
-        router.replace(next);
+        router.replace("/student");
         return;
       }
       router.replace("/onboarding");

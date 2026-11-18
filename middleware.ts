@@ -115,9 +115,6 @@ export async function middleware(request: NextRequest) {
 
   if ((isClassroom || isOnboarding || isCommercePath || isCoachPath) && !user) {
     const login = new URL("/login", request.url);
-    if (isClassroom && pathname !== "/student" && pathname !== "/iac-skills/learn") {
-      login.searchParams.set("next", pathname);
-    }
     return copyCookies(response, NextResponse.redirect(login));
   }
 

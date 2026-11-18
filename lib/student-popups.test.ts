@@ -102,9 +102,17 @@ test("login pop-up, coach editor, profile commitments, and SQL stay wired", () =
   const api = readFileSync(resolve("app/api/student/popups/route.ts"), "utf8");
   const sql = readFileSync(resolve("supabase/student-popups.sql"), "utf8");
   const css = readFileSync(resolve("app/globals.css"), "utf8");
+  const login = readFileSync(resolve("components/student/StudentLoginForm.tsx"), "utf8");
+  const shell = readFileSync(resolve("components/student/StudentShell.tsx"), "utf8");
   assert.match(slide, /Your focus plan/);
   assert.match(slide, /Dismiss completely/);
   assert.match(slide, /POPUP_BG/);
+  assert.match(slide, /createPortal/);
+  assert.match(slide, /document\.body/);
+  assert.match(login, /router\.replace\(gate === "done" \? "\/student" : "\/onboarding"\)/);
+  assert.match(shell, /router\.replace\("\/student"\)/);
+  assert.doesNotMatch(slide, /ask-drawer-backdrop/);
+  assert.match(css, /z-index: 80/);
   assert.match(editor, /Add filter/);
   assert.match(editor, /Add commitment/);
   assert.match(manager, /student-popups.sql/);

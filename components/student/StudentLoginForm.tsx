@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { ACTIVATE_PATH, loginActivateLinkLabel, loginActivatePrompt, loginForgot
 import { ensureStudentProfile } from "@/lib/profiles";
 import { fetchOnboardingGate } from "@/lib/onboarding";
 import { isCoachAccount } from "@/lib/roles";
-import { goToStudentLogin, safeStudentPath, studentUserFromAuth } from "@/lib/student-lesson";
+import { goToStudentLogin, studentUserFromAuth } from "@/lib/student-lesson";
 import { useStore } from "@/lib/store";
 import { passwordResetRedirectUrl } from "@/lib/invite-session";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
@@ -18,7 +18,6 @@ type Mode = "signin" | "signup";
 
 export default function StudentLoginForm({ initialMode = "signin" }: { initialMode?: Mode }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { ready, user, onboarding, signOut } = useStudentSession();
   const { setSession } = useStore();
   const [mode, setMode] = useState<Mode>(initialMode);
@@ -28,13 +27,12 @@ export default function StudentLoginForm({ initialMode = "signin" }: { initialMo
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const nextPath = safeStudentPath(searchParams.get("next"));
 
   useEffect(() => {
     if (!ready || !user || isCoachAccount(user) || onboarding === "unknown") return;
-    if (onboarding === "done") router.replace(nextPath);
+    if (onboarding === "done") router.replace("/student");
     else router.replace("/onboarding");
-  }, [ready, user, onboarding, nextPath, router]);
+  }, [ready, user, onboarding, router]);
 
   if (ready && isCoachAccount(user)) {
     return (
@@ -126,10 +124,10 @@ export default function StudentLoginForm({ initialMode = "signin" }: { initialMo
           return;
         }
         const gate = await fetchOnboardingGate(data.user.id);
-        router.replace(gate === "done" ? nextPath : "/onboarding");
+        router.replace(gate === "done" ? "/student" : "/onboarding");
         return;
       }
-      router.replace(nextPath);
+      router.replace("/student");
       return;
     }
 
