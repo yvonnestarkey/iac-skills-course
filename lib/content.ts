@@ -6,6 +6,7 @@ import { lessonMinutes } from "./lesson-duration";
 import { lessonIsAssignment } from "./lesson-type";
 import { firstLessonVideoUrl } from "./lesson-videos";
 import { getSupabase } from "./supabase";
+import { uploadCoachPdf } from "./coach-pdf-upload";
 import { asDraftFlag, LESSON_DRAFTS_SQL_HINT } from "./lesson-drafts";
 import { DEFAULT_LMS_COURSE_ID, scopeChapterRows } from "./lms-catalog";
 import type { Chapter, CourseData, FlatLesson, Lesson, LessonType } from "./types";
@@ -775,12 +776,7 @@ export async function uploadLessonBanner(file: File): Promise<DbResult<string>> 
 }
 
 export async function uploadLessonPdf(file: File): Promise<DbResult<string>> {
-  if (typeof window === "undefined") return { ok: false, error: "PDF uploads need a signed-in coach browser." };
-  const form = new FormData();
-  form.append("file", file);
-  const response = await fetch("/api/coach/pdf", { method: "POST", body: form });
-  const payload = (await response.json().catch(() => ({}))) as { error?: string; url?: string };
-  if (!response.ok) return { ok: false, error: payload.error || "Could not upload that PDF." };
-  if (payload.url) return { ok: true, data: payload.url };
-  return { ok: false, error: "Could not upload that PDF. Paste a public URL instead." };
+  const result = await uploadCoachPdf(file, "lesson-pdfs");
+  if (result.ok === false) return { ok: false, error: result.error };
+  return { ok: true, data: result.url };
 }

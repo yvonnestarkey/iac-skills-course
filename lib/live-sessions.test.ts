@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { test } from "node:test";
 import { formatSastDateTime, isoToSastDateAndTime, sastDateAndTimeToIso } from "./dates";
 import {
@@ -222,4 +224,22 @@ test("dashboard preview keeps the next 3 upcoming sessions and flags the next 48
   assert.equal(liveSessionIsSoon(later, now), false);
   assert.equal(formatCountdown(26 * 60 * 60 * 1000), "Starts in 1 day 2 hours");
   assert.equal(formatCountdown(90 * 1000), "Starts in 1 min");
+});
+
+test("live session PDFs upload through a signed coach URL instead of a pasted storage link", () => {
+  const source = readFileSync(resolve("lib/live-sessions.ts"), "utf8");
+  const helper = readFileSync(resolve("lib/coach-pdf-upload.ts"), "utf8");
+  const route = readFileSync(resolve("app/api/coach/pdf/route.ts"), "utf8");
+  const manager = readFileSync(resolve("components/coach/LiveSessionsManager.tsx"), "utf8");
+  assert.match(source, /uploadCoachPdf/);
+  assert.match(source, /live-sessions/);
+  assert.doesNotMatch(source, /Paste a public PDF URL instead/);
+  assert.match(helper, /sign-upload/);
+  assert.match(helper, /uploadToSignedUrl/);
+  assert.match(route, /createSignedUploadUrl/);
+  assert.match(route, /COACH_PDF_FOLDERS/);
+  assert.match(helper, /live-sessions/);
+  assert.match(manager, /uploadLiveSessionPdf/);
+  assert.match(manager, /type="file"/);
+  assert.match(manager, /Choose a PDF from your computer/);
 });

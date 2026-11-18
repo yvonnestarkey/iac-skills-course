@@ -39,14 +39,6 @@ function PdfField({
         <strong>{label}</strong>
       </label>
       <input
-        id={id}
-        type="url"
-        className="select-line"
-        placeholder="https://… (PDF)"
-        value={value}
-        onChange={(event) => onUrl(event.target.value)}
-      />
-      <input
         className="select-line live-session-file"
         type="file"
         accept="application/pdf,.pdf"
@@ -56,7 +48,24 @@ function PdfField({
           event.target.value = "";
         }}
       />
-      <p className="muted small">{hint}</p>
+      <input
+        id={id}
+        type="url"
+        className="select-line"
+        placeholder="Or paste a PDF URL"
+        value={value}
+        onChange={(event) => onUrl(event.target.value)}
+      />
+      {value ? (
+        <p className="muted small">
+          Uploaded:{" "}
+          <a href={value} target="_blank" rel="noopener noreferrer">
+            Open PDF
+          </a>
+        </p>
+      ) : (
+        <p className="muted small">{hint}</p>
+      )}
     </div>
   );
 }
@@ -242,7 +251,7 @@ export default function LiveSessionsManager() {
           <PdfField
             id="ls-summary"
             label="Session summary (PDF)"
-            hint="Upload or paste the summary notes PDF."
+            hint="Choose a PDF from your computer. Students get a download link after you save."
             value={form.summaryPdfUrl}
             disabled={busy}
             onUrl={(summaryPdfUrl) => set({ summaryPdfUrl })}
@@ -251,7 +260,7 @@ export default function LiveSessionsManager() {
           <PdfField
             id="ls-notes"
             label="Scribbles / notes (PDF)"
-            hint="Upload or paste the scribbles PDF — same as 22 September."
+            hint="Choose a PDF from your computer. Students get a download link after you save."
             value={form.notesPdfUrl}
             disabled={busy}
             onUrl={(notesPdfUrl) => set({ notesPdfUrl })}

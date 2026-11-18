@@ -1,3 +1,4 @@
+import { uploadCoachPdf } from "./coach-pdf-upload";
 import { formatSastDateTime, isoToSastDateAndTime, sastDateAndTimeToIso } from "./dates";
 import { getSupabase } from "./supabase";
 
@@ -247,19 +248,6 @@ export async function deleteLiveSession(id: string): Promise<{ ok: true } | { ok
 }
 
 export async function uploadLiveSessionPdf(file: File, kind: "summary" | "notes"): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
-  const client = getSupabase();
-  if (!client) return { ok: false, error: "Supabase is not configured." };
-  const name = file.name.toLowerCase();
-  if (!file.type.includes("pdf") && !name.endsWith(".pdf")) {
-    return { ok: false, error: "Please upload a PDF file." };
-  }
-  const path = `live-sessions/${kind}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.pdf`;
-  const uploaded = await client.storage.from("course-pdfs").upload(path, file, {
-    upsert: true,
-    contentType: file.type || "application/pdf",
-  });
-  if (uploaded.error) return { ok: false, error: "Could not upload that PDF. Paste a public PDF URL instead." };
-  const { data } = client.storage.from("course-pdfs").getPublicUrl(path);
-  if (!data?.publicUrl) return { ok: false, error: "Could not get a public URL for that PDF." };
-  return { ok: true, url: data.publicUrl };
+  const named = new File([file], `${kind}-${file.name}`, { type: file.type || "application/pdf" });
+  return uploadCoachPdf(named, "live-sessions");
 }

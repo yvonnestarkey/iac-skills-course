@@ -101,6 +101,7 @@ test("Study Clinic is a table, sidebar page, and Tools editor", () => {
   const pdfRoute = readFileSync(resolve("app/api/coach/pdf/route.ts"), "utf8");
   assert.match(pdfRoute, /getServiceSupabase/);
   assert.match(pdfRoute, /course-pdfs/);
+  assert.match(pdfRoute, /createSignedUploadUrl/);
   assert.match(tools, /study-clinic/);
   assert.match(manager, /StudyClinicResourceForm/);
   const coachRoute = readFileSync(resolve("app/api/coach/study-clinic/route.ts"), "utf8");
