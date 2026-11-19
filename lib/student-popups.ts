@@ -277,16 +277,37 @@ export function isPopupDismissed(dismissal: PopupDismissal | null | undefined, t
   return dismissal.mode === "today" && dismissal.onDate === today;
 }
 
-export function pickMatchingPopup<T extends { id: string; filters: PopupFilterRule[]; filterLogic: PopupFilterLogic }>(
+export function popupSetupStamp(post: { id: string; createdAt?: string | null; publishedAt?: string | null }): string {
+  return `${post.createdAt || post.publishedAt || ""}:${post.id}`;
+}
+
+export function sortPopupsBySetupOrder<T extends { id: string; createdAt?: string | null; publishedAt?: string | null }>(
+  posts: T[]
+): T[] {
+  return [...posts].sort((left, right) => popupSetupStamp(left).localeCompare(popupSetupStamp(right)) || left.id.localeCompare(right.id));
+}
+
+export function pickMatchingPopup<T extends {
+  id: string;
+  filters: PopupFilterRule[];
+  filterLogic: PopupFilterLogic;
+  createdAt?: string | null;
+  publishedAt?: string | null;
+}>(
   posts: T[],
   ctx: PopupContext,
   dismissals: PopupDismissal[],
-  today = portalToday()
+  today = portalToday(),
+  skip?: (post: T) => boolean
 ): T | null {
   const hidden = new Set(
     dismissals.filter((row) => isPopupDismissed(row, today)).map((row) => row.popupId)
   );
-  return posts.find((post) => !hidden.has(post.id) && popupMatchesFilters(post.filters, post.filterLogic, ctx)) || null;
+  return (
+    sortPopupsBySetupOrder(posts).find(
+      (post) => !hidden.has(post.id) && popupMatchesFilters(post.filters, post.filterLogic, ctx) && !skip?.(post)
+    ) || null
+  );
 }
 
 export function commitmentFollowThrough(

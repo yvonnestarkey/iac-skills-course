@@ -54,8 +54,8 @@ test("completed activities drop out of the pop-up and submitted scripts count as
 
 test("dismissed forever pop-ups are skipped; today dismissals expire next day", () => {
   const posts = [
-    { id: "old", filters: [], filterLogic: "and" as const },
-    { id: "fresh", filters: [], filterLogic: "and" as const },
+    { id: "old", createdAt: "2026-11-01T08:00:00.000Z", filters: [], filterLogic: "and" as const },
+    { id: "fresh", createdAt: "2026-11-10T08:00:00.000Z", filters: [], filterLogic: "and" as const },
   ];
   assert.equal(
     pickMatchingPopup(posts, ctx(), [{ popupId: "old", mode: "forever", onDate: "2026-11-17" }], "2026-11-18")?.id,
@@ -76,6 +76,23 @@ test("dismissed forever pop-ups are skipped; today dismissals expire next day", 
   assert.equal(
     pickMatchingPopup(posts, ctx(), [{ popupId: "fresh", mode: "today", onDate: "2026-11-17" }], "2026-11-18")?.id,
     "old"
+  );
+});
+
+test("matching pop-ups run in setup order and the next one is used after a dismiss", () => {
+  const posts = [
+    { id: "second", createdAt: "2026-11-12T08:00:00.000Z", filters: [], filterLogic: "and" as const },
+    { id: "first", createdAt: "2026-11-01T08:00:00.000Z", filters: [], filterLogic: "and" as const },
+    { id: "third", createdAt: "2026-11-18T08:00:00.000Z", filters: [], filterLogic: "and" as const },
+  ];
+  assert.equal(pickMatchingPopup(posts, ctx(), [])?.id, "first");
+  assert.equal(
+    pickMatchingPopup(posts, ctx(), [{ popupId: "first", mode: "forever", onDate: "2026-11-18" }])?.id,
+    "second"
+  );
+  assert.equal(
+    pickMatchingPopup(posts, ctx(), [], "2026-11-18", (post) => post.id === "first")?.id,
+    "second"
   );
 });
 
@@ -106,6 +123,8 @@ test("login pop-up, coach editor, profile commitments, and SQL stay wired", () =
   const shell = readFileSync(resolve("components/student/StudentShell.tsx"), "utf8");
   assert.match(slide, /Your focus plan/);
   assert.match(slide, /Dismiss completely/);
+  assert.match(slide, /setTimeout\(\(\) => void load\(\), 240\)/);
+  assert.match(api, /created_at/);
   assert.match(slide, /POPUP_BG/);
   assert.match(slide, /dash-slide-figure/);
   assert.doesNotMatch(slide, /POPUP_AVATAR/);

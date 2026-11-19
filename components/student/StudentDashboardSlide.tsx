@@ -69,7 +69,7 @@ export default function StudentDashboardSlide() {
     });
     setAnswers(nextAnswers);
     setChecked(nextChecked);
-    requestAnimationFrame(() => setOpen(true));
+    window.setTimeout(() => setOpen(true), 40);
   };
 
   useEffect(() => {
@@ -117,14 +117,13 @@ export default function StudentDashboardSlide() {
   const dismiss = async (mode: "today" | "forever") => {
     if (readOnly) {
       setOpen(false);
-      setPost(null);
+      window.setTimeout(() => void load(), 240);
       return;
     }
     const ok = await act({ action: "dismiss", mode });
-    if (ok) {
-      setOpen(false);
-      setPost(null);
-    }
+    if (!ok) return;
+    setOpen(false);
+    window.setTimeout(() => void load(), 240);
   };
 
   if (!mounted || !post) return null;

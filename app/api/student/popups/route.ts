@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
   if (!client) return NextResponse.json({ error: "Supabase is not configured." }, { status: 400 });
 
   const [postsQuery, entitlement, progress] = await Promise.all([
-    client.from("dashboard_posts").select("*").eq("kind", "slide").order("published_at", { ascending: false }),
+    client.from("dashboard_posts").select("*").eq("kind", "slide").order("created_at", { ascending: true }),
     getEntitlementRecord(studentId),
     client.from("lesson_progress").select("lesson_id, completed, video_percent").eq("user_id", studentId),
   ]);
@@ -125,16 +125,17 @@ export async function GET(request: NextRequest) {
   if (dismissalError) return NextResponse.json({ error: popupError(dismissalError.message) }, { status: 400 });
   const dismissals = ((dismissalRows || []) as Record<string, unknown>[]).map(asDismissal);
   const published = (listed.posts || []).filter((post) => post.status === "published");
-  const match = pickMatchingPopup(published, ctx, dismissals);
+  const match = pickMatchingPopup(published, ctx, dismissals, portalToday(), (post) => {
+    const popupResponses = responses.filter((row) => post.items.some((item) => item.id === row.itemId));
+    const items = visiblePopupItems(post.items, ctx, popupResponses);
+    return !popupHasContent(post.title, post.body, post.videoUrl, items);
+  });
   if (!match) return NextResponse.json({ popup: null });
 
   const popupResponses = responses.filter((row) =>
     match.items.some((item) => item.id === row.itemId)
   );
   const items = visiblePopupItems(match.items, ctx, popupResponses);
-  if (!popupHasContent(match.title, match.body, match.videoUrl, items)) {
-    return NextResponse.json({ popup: null });
-  }
   return NextResponse.json({
     popup: match,
     items,
