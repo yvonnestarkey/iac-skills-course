@@ -12,7 +12,6 @@ import { useLmsCourse } from "@/lib/lms-course-context";
 import { DEFAULT_LMS_COURSE_ID } from "@/lib/lms-catalog";
 import { useStudentSession } from "@/lib/student-session";
 import {
-  POPUP_AVATAR,
   POPUP_BG,
   popupActivityHref,
   type PopupItem,
@@ -140,7 +139,7 @@ export default function StudentDashboardSlide() {
       <div className="dash-slide-backdrop" />
       <aside className="dash-slide-panel">
         <img className="dash-slide-art" src={POPUP_BG} alt="" />
-        <img className="dash-slide-avatar" src={POPUP_AVATAR} alt="Yvonne" />
+        <img className="dash-slide-figure" src={POPUP_BG} alt="" />
         <div className="dash-slide-frost">
           <div className="dash-slide-head">
             <p className="kicker">Your focus plan</p>

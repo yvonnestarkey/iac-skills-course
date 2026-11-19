@@ -107,9 +107,10 @@ test("login pop-up, coach editor, profile commitments, and SQL stay wired", () =
   assert.match(slide, /Your focus plan/);
   assert.match(slide, /Dismiss completely/);
   assert.match(slide, /POPUP_BG/);
-  assert.match(slide, /POPUP_AVATAR/);
-  assert.match(slide, /dash-slide-avatar/);
-  assert.match(css, /object-position: 18% 42%/);
+  assert.match(slide, /dash-slide-figure/);
+  assert.doesNotMatch(slide, /POPUP_AVATAR/);
+  assert.match(css, /filter: blur\(16px\)/);
+  assert.match(css, /mask-image: radial-gradient/);
   assert.match(slide, /createPortal/);
   assert.match(slide, /document\.body/);
   assert.match(login, /router\.replace\(gate === "done" \? "\/student" : "\/onboarding"\)/);

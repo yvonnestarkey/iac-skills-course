@@ -11,7 +11,6 @@ export const STUDENT_POPUPS_SQL_HINT =
   "Paste supabase/student-popups.sql in the Supabase SQL editor, then try again.";
 
 export const POPUP_BG = "/student-popup-bg.jpg";
-export const POPUP_AVATAR = "/student-popup-avatar.jpg";
 
 export const POPUP_ACTIVITY_TYPES = [
   { id: "script_eval", label: "Submit your script evaluation", href: "/student/evaluator" },
