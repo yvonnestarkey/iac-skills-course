@@ -10,6 +10,6 @@
   "exam": { "pages": 9.6, "words": 4565, "readMin": 35, "readMax": 40 },
   "dailyMarkedLimit": 10,
   "exercises": ["mopane", "ubuntu", "baobab", "lindiwe", "highveld", "marula", "karoo"],
-  "_live": "Exercises that also open as a public live-session link, /live/<id>: no sign-in, nothing saved. Marking is limited per browser per day and in total per day.",
-  "live": { "exercises": ["karoo"], "perBrowserDaily": 3, "dailyCap": 200 }
+  "_live": "Exercises that also open as a public live-session link, /live/<id>: no sign-in; the visitor gives an email and the attempt is saved for the coach (Tools > Live-session attempts). Marking is limited per browser per day and in total per day.",
+  "live": { "exercises": ["mopane", "ubuntu", "karoo"], "perBrowserDaily": 3, "dailyCap": 200 }
 }

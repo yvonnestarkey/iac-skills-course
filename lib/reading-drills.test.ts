@@ -181,7 +181,8 @@ test("Karoo applies the mark plan's caps and opens as a live link", async () => 
   assert.equal(rowMarks(ex, ex.rows.map((r) => r.id)), 12, "part (a) max 11, plus communication");
   assert.equal(rowMarks(getExercise("mopane")!, ["r1", "r2"]), 2, "no caps: one row, one mark");
   assert.ok(getLiveExercise("karoo"));
-  assert.equal(getLiveExercise("mopane"), null, "only listed exercises open as a live link");
+  assert.ok(getLiveExercise("mopane") && getLiveExercise("ubuntu"), "the first two drills open for lecturers");
+  assert.equal(getLiveExercise("baobab"), null, "only listed exercises open as a live link");
   assert.ok(buildMarkingPrompt(ex, "x").includes("x1 [communication]"));
   const page = readFileSync(resolve("app/live/[exerciseId]/page.tsx"), "utf8");
   const middleware = readFileSync(resolve("middleware.ts"), "utf8");
