@@ -277,6 +277,24 @@ export function isPopupDismissed(dismissal: PopupDismissal | null | undefined, t
   return dismissal.mode === "today" && dismissal.onDate === today;
 }
 
+export function skipIdsFromQuery(value: string | null | undefined): string[] {
+  return String(value || "")
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
+}
+
+export function dismissalsWithSkip(
+  dismissals: PopupDismissal[],
+  skipIds: string[],
+  today = portalToday()
+): PopupDismissal[] {
+  return [
+    ...dismissals,
+    ...skipIds.map((popupId) => ({ popupId, mode: "forever" as const, onDate: today })),
+  ];
+}
+
 export function popupSetupStamp(post: { id: string; createdAt?: string | null; publishedAt?: string | null }): string {
   return `${post.createdAt || post.publishedAt || ""}:${post.id}`;
 }

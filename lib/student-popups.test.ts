@@ -5,8 +5,11 @@ import { test } from "node:test";
 import {
   activityIsDone,
   commitmentFollowThrough,
+  dismissalsWithSkip,
+  isPopupDismissed,
   pickMatchingPopup,
   popupMatchesFilters,
+  skipIdsFromQuery,
   visiblePopupItems,
   type PopupContext,
   type PopupItem,
@@ -79,6 +82,14 @@ test("dismissed forever pop-ups are skipped; today dismissals expire next day", 
   );
 });
 
+test("dismiss for today is one calendar day, not one pop-up per missed day", () => {
+  assert.equal(isPopupDismissed({ popupId: "p1", mode: "today", onDate: "2026-11-13" }, "2026-11-27"), false);
+  assert.equal(isPopupDismissed({ popupId: "p1", mode: "today", onDate: "2026-11-27" }, "2026-11-27"), true);
+  assert.deepEqual(skipIdsFromQuery("first,second"), ["first", "second"]);
+  const skipped = dismissalsWithSkip([], ["first"], "2026-11-27");
+  assert.equal(pickMatchingPopup([{ id: "first", filters: [], filterLogic: "and" }], ctx(), skipped)?.id, undefined);
+});
+
 test("matching pop-ups run in setup order and the next one is used after a dismiss", () => {
   const posts = [
     { id: "second", createdAt: "2026-11-12T08:00:00.000Z", filters: [], filterLogic: "and" as const },
@@ -124,7 +135,9 @@ test("login pop-up, coach editor, profile commitments, and SQL stay wired", () =
   assert.match(slide, /Your focus plan/);
   assert.match(slide, /Dismiss completely/);
   assert.match(slide, /setTimeout\(\(\) => void load\(\), 240\)/);
+  assert.match(slide, /skipped\.current/);
   assert.match(api, /created_at/);
+  assert.match(api, /skipIdsFromQuery/);
   assert.match(slide, /POPUP_BG/);
   assert.match(slide, /dash-slide-figure/);
   assert.doesNotMatch(slide, /POPUP_AVATAR/);

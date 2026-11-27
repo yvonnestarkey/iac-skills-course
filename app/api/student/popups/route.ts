@@ -8,11 +8,13 @@ import { getClassroomSubjectUser, readViewAsStudentId } from "@/lib/view-as-stud
 import { getServiceSupabase } from "@/lib/supabase-admin";
 import {
   commitmentFollowThrough,
+  dismissalsWithSkip,
   followThroughLabel,
   loadStudentPopupContext,
   pickMatchingPopup,
   popupError,
   popupHasContent,
+  skipIdsFromQuery,
   visiblePopupItems,
   type PopupDismissal,
   type PopupFollowThrough,
@@ -123,7 +125,10 @@ export async function GET(request: NextRequest) {
     .select("*")
     .eq("student_id", studentId);
   if (dismissalError) return NextResponse.json({ error: popupError(dismissalError.message) }, { status: 400 });
-  const dismissals = ((dismissalRows || []) as Record<string, unknown>[]).map(asDismissal);
+  const dismissals = dismissalsWithSkip(
+    ((dismissalRows || []) as Record<string, unknown>[]).map(asDismissal),
+    skipIdsFromQuery(request.nextUrl.searchParams.get("skip"))
+  );
   const published = (listed.posts || []).filter((post) => post.status === "published");
   const match = pickMatchingPopup(published, ctx, dismissals, portalToday(), (post) => {
     const popupResponses = responses.filter((row) => post.items.some((item) => item.id === row.itemId));

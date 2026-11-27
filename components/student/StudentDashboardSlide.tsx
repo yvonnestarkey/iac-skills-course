@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { CircleHelp } from "lucide-react";
@@ -38,11 +38,14 @@ export default function StudentDashboardSlide() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [mounted, setMounted] = useState(false);
+  const skipped = useRef<string[]>([]);
 
   const load = async () => {
     if (course.id !== DEFAULT_LMS_COURSE_ID) return;
     if (isCoachAccount(user) && !viewAsStudent) return;
-    const response = await fetch("/api/student/popups", { credentials: "same-origin" });
+    const skip = skipped.current.filter(Boolean);
+    const query = skip.length ? `?skip=${skip.map(encodeURIComponent).join(",")}` : "";
+    const response = await fetch(`/api/student/popups${query}`, { credentials: "same-origin" });
     const payload = (await response.json().catch(() => ({}))) as {
       popup?: DashboardPost | null;
       items?: PopupItem[];
@@ -115,13 +118,15 @@ export default function StudentDashboardSlide() {
   };
 
   const dismiss = async (mode: "today" | "forever") => {
-    if (readOnly) {
-      setOpen(false);
-      window.setTimeout(() => void load(), 240);
-      return;
+    if (!post) return;
+    skipped.current = [...skipped.current, post.id];
+    if (!readOnly) {
+      const ok = await act({ action: "dismiss", mode });
+      if (!ok) {
+        skipped.current = skipped.current.filter((id) => id !== post.id);
+        return;
+      }
     }
-    const ok = await act({ action: "dismiss", mode });
-    if (!ok) return;
     setOpen(false);
     window.setTimeout(() => void load(), 240);
   };
