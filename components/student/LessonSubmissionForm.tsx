@@ -14,6 +14,7 @@ import {
 import FeedbackLog from "@/components/feedback/FeedbackLog";
 import { hasWrittenFeedback } from "@/lib/feedback-log";
 import {
+  lessonQueueStatus,
   mergeSubmissionFiles,
   saveStudentSubmission,
   submissionFiles,
@@ -191,13 +192,14 @@ export default function LessonSubmissionForm({
     );
   };
 
+  const reviewStatus = saved ? lessonQueueStatus(saved) : "submitted";
   const label = practiceOnly
     ? bmcrId
       ? "Update BMCR"
       : "Save BMCR"
-    : saved?.status === "approved"
+    : reviewStatus === "graded"
       ? "Approved"
-      : saved?.status === "rejected"
+      : reviewStatus === "rejected" || reviewStatus === "resubmit"
         ? "Returned — update and resubmit"
         : saved
           ? "Update submission"
@@ -213,8 +215,10 @@ export default function LessonSubmissionForm({
       ) : (
         <p className="muted">Upload your marked PDF and complete the BMCR. If you forget a file, add it here — it will not replace the ones you already uploaded.</p>
       )}
-      {practiceOnly ? null : saved?.status === "approved" ? <p className="notice">Your coach approved this submission.</p> : null}
-      {practiceOnly ? null : saved?.status === "rejected" ? <p className="notice">Your coach asked for an update. Resubmit when you are ready.</p> : null}
+      {practiceOnly ? null : reviewStatus === "graded" ? <p className="notice">Your coach approved this submission.</p> : null}
+      {practiceOnly ? null : reviewStatus === "rejected" || reviewStatus === "resubmit" ? (
+        <p className="notice">Your coach asked for an update. Resubmit when you are ready.</p>
+      ) : null}
       {!practiceOnly && hasWrittenFeedback(saved?.feedback) ? (
         <aside className="survey-info-card survey-review-card">
           <strong>Coach feedback</strong>
@@ -226,7 +230,7 @@ export default function LessonSubmissionForm({
           ) : null}
         </aside>
       ) : null}
-      {!practiceOnly && saved?.status === "submitted" && requiresCoachApproval ? (
+      {!practiceOnly && reviewStatus === "submitted" && requiresCoachApproval ? (
         <p className="notice">Waiting for coach approval.</p>
       ) : null}
 

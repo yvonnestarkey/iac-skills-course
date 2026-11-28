@@ -9,6 +9,7 @@ import LinkedText from "@/components/ui/LinkedText";
 import SurveyAnswerValue from "@/components/ui/SurveyAnswerValue";
 import {
   fetchSurveySubmission,
+  inferredQueueStatus,
   isBmcrBlock,
   isInfoBlock,
   saveSurveyReview,
@@ -22,24 +23,19 @@ import {
 } from "@/lib/custom-surveys";
 import FeedbackLog from "@/components/feedback/FeedbackLog";
 import StudentProfileLink from "@/components/coach/StudentProfileLink";
-import { hasWrittenFeedback, parseFeedbackLog } from "@/lib/feedback-log";
+import { parseFeedbackLog } from "@/lib/feedback-log";
 import { fetchLessonBmcrEvaluation, parseBmcrAnswer, withDiagnostics, type BmcrValue } from "@/lib/bmcr";
 import { formatSastDateTime } from "@/lib/dates";
 import {
   fetchLessonSubmissionReview,
   isLessonQueueId,
+  lessonQueueStatus,
   saveLessonSubmissionReview,
   submissionFiles,
   type LessonSubmissionReview,
 } from "@/lib/student-submissions";
 
 const REVIEW_STATUSES: SurveyResponseStatus[] = ["graded", "rejected", "resubmit"];
-
-function lessonStatusLabel(status: string): string {
-  if (status === "approved") return "Graded";
-  if (status === "rejected") return "Rejected";
-  return "Submitted";
-}
 
 export default function SubmissionReview({ id, kind }: { id: string; kind?: "lesson" | "survey" }) {
   const router = useRouter();
@@ -71,8 +67,9 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
             return;
           }
           setLesson(result.review);
-          const reviewed = result.review.status === "approved" || result.review.status === "rejected" || hasWrittenFeedback(result.review.feedback);
-          setStatus(result.review.status === "submitted" ? "graded" : result.review.status === "approved" ? "graded" : "rejected");
+          const queueStatus = lessonQueueStatus(result.review);
+          const reviewed = queueStatus !== "submitted";
+          setStatus(queueStatus === "submitted" ? "graded" : queueStatus);
           setFeedback("");
           setFileUrl(result.review.feedbackFileUrl || "");
           setOutcomeOpen(!reviewed);
@@ -93,8 +90,9 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
           }
           setSurvey(result.survey);
           setResponse(result.response);
-          const reviewed = result.response.status !== "submitted" || hasWrittenFeedback(result.response.feedback);
-          setStatus(result.response.status === "submitted" ? "graded" : result.response.status);
+          const queueStatus = inferredQueueStatus(result.response);
+          const reviewed = queueStatus !== "submitted";
+          setStatus(queueStatus === "submitted" ? "graded" : queueStatus);
           setGrade(result.response.grade == null ? "" : String(result.response.grade));
           setFeedback("");
           setFileUrl(result.response.feedbackFileUrl || "");
@@ -213,6 +211,7 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
   const studentId = lesson?.student_id || response?.studentId || "";
   const studentEmail = lesson?.studentEmail || response?.studentEmail || "";
   const submittedAt = lesson?.submittedAt || response?.createdAt || "";
+  const badgeStatus = lesson ? lessonQueueStatus(lesson) : inferredQueueStatus(response!);
   return (
     <div className="coach-page submission-review">
       <button className="back-link" type="button" onClick={() => router.push("/coach/lists")}>
@@ -228,8 +227,8 @@ export default function SubmissionReview({ id, kind }: { id: string; kind?: "les
             {submittedAt ? ` · submitted ${formatSastDateTime(submittedAt) || submittedAt}` : ""}
           </p>
         </div>
-        <span className={`badge ${surveyResponseStatusClass(lesson ? (lesson.status === "approved" ? "graded" : lesson.status === "rejected" ? "rejected" : "submitted") : response!.status)}`}>
-          {lesson ? lessonStatusLabel(lesson.status) : surveyResponseStatusLabel(response!.status)}
+        <span className={`badge ${surveyResponseStatusClass(badgeStatus)}`}>
+          {surveyResponseStatusLabel(badgeStatus)}
         </span>
       </div>
       {pdfs.length ? (

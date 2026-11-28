@@ -2,10 +2,13 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { test } from "node:test";
+import { inferredQueueStatus } from "./custom-surveys";
+import { preservedGradedAt } from "./feedback-log";
 import {
   assignmentSubmittedNotifySubject,
   isLessonQueueId,
   lessonQueuePath,
+  lessonQueueStatus,
   lessonStatusToQueue,
   mergeSubmissionFiles,
   packSubmissionContent,
@@ -80,6 +83,8 @@ test("lesson uploads map onto the submissions queue and notify the coach", () =>
   assert.equal(lessonQueuePath("abc"), "/coach/submissions/lesson/abc");
   assert.equal(lessonQueuePath("lesson:abc"), "/coach/submissions/lesson/abc");
   assert.equal(queueStatusToLesson("graded"), "approved");
+  assert.equal(queueStatusToLesson("resubmit"), "resubmit");
+  assert.equal(lessonStatusToQueue("resubmit"), "resubmit");
   const saver = readFileSync(resolve("lib/student-submissions.ts"), "utf8");
   assert.match(saver, /needsAssignmentFeedback/);
   assert.match(saver, /fetchAllSurveySubmissions/);
@@ -110,4 +115,34 @@ test("lesson uploads map onto the submissions queue and notify the coach", () =>
   assert.match(form, /Add another PDF/);
   assert.match(form, /multiple/);
   assert.match(form, /mergeSubmissionFiles/);
+  assert.match(form, /lessonQueueStatus/);
+  assert.match(review, /lessonQueueStatus/);
+  assert.match(saver, /preservedGradedAt/);
+  assert.match(saver, /submission-resubmit-status\.sql/);
+});
+
+test("written feedback counts as graded instead of submitted and keeps the original review date", () => {
+  const stamped = "--- 2026-10-25T14:14:00.000Z ---\nTighten the required.";
+  assert.equal(
+    inferredQueueStatus({ status: "submitted", feedback: stamped }),
+    "graded"
+  );
+  assert.equal(
+    inferredQueueStatus({
+      status: "submitted",
+      feedback: "--- 2026-10-25T14:14:00.000Z ---\nStatus changed to Rejected.",
+    }),
+    "rejected"
+  );
+  assert.equal(
+    inferredQueueStatus({
+      status: "rejected",
+      feedback: "--- 2026-11-02T08:02:00.000Z ---\nStatus changed to Resubmit.",
+    }),
+    "resubmit"
+  );
+  assert.equal(lessonQueueStatus({ status: "submitted", feedback: stamped }), "graded");
+  assert.equal(preservedGradedAt("2026-10-25T14:14:00.000Z", stamped, "2026-11-28T00:00:00.000Z"), "2026-10-25T14:14:00.000Z");
+  assert.equal(preservedGradedAt("", stamped, "2026-11-28T00:00:00.000Z"), "2026-10-25T14:14:00.000Z");
+  assert.equal(preservedGradedAt("", "", "2026-11-28T00:00:00.000Z"), "2026-11-28T00:00:00.000Z");
 });

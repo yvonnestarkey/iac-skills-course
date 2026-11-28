@@ -62,3 +62,17 @@ export function latestFeedbackEntry(raw: string | null | undefined): FeedbackLog
 export function hasWrittenFeedback(raw: string | null | undefined): boolean {
   return parseFeedbackLog(raw).length > 0;
 }
+
+export function firstFeedbackAt(raw: string | null | undefined): string {
+  return parseFeedbackLog(raw).find((entry) => entry.at)?.at || "";
+}
+
+export function preservedGradedAt(
+  existing: string | null | undefined,
+  feedback: string | null | undefined,
+  fallbackNow: string
+): string {
+  const stored = String(existing || "").trim();
+  if (stored) return stored;
+  return firstFeedbackAt(feedback) || fallbackNow;
+}

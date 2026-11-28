@@ -36,11 +36,11 @@ import { formatSastDateTime, longDate, parseISO, today } from "@/lib/dates";
 import { completionProgress } from "@/lib/metrics";
 import { planCapacity, planStatus, slotLabel } from "@/lib/planner";
 import { fetchCourseOutline, type OutlineChapter } from "@/lib/student-lesson";
-import { hasWrittenFeedback } from "@/lib/feedback-log";
+import { firstFeedbackAt, hasWrittenFeedback } from "@/lib/feedback-log";
 import {
   fetchStudentSubmissions,
   lessonQueuePath,
-  lessonStatusToQueue,
+  lessonQueueStatus,
   submissionFiles,
   type StudentSubmission,
 } from "@/lib/student-submissions";
@@ -582,12 +582,12 @@ function AssignmentRow({
   onReview: () => void;
 }) {
   const [open, setOpen] = useState(false);
-  const queueStatus = lessonStatusToQueue(item.status);
-  const reviewed = item.status === "approved" || item.status === "rejected" || hasWrittenFeedback(item.feedback);
+  const queueStatus = lessonQueueStatus(item);
+  const reviewed = queueStatus !== "submitted";
   const written = hasWrittenFeedback(item.feedback);
   const pdfs = submissionFiles(item);
   const submittedAt = formatSastDateTime(item.submitted_at || (!item.gradedAt ? item.updated_at : undefined));
-  const gradedAt = formatSastDateTime(item.gradedAt || (reviewed ? item.updated_at : undefined));
+  const gradedAt = formatSastDateTime(item.gradedAt || firstFeedbackAt(item.feedback) || undefined);
   return (
     <div className="work-item">
       <div className="work-head assignment-head">

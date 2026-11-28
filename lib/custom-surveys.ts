@@ -8,7 +8,7 @@ import {
   parseBmcrAnswer,
   saveBmcrEvaluation,
 } from "./bmcr";
-import { nextFeedbackLog } from "./feedback-log";
+import { hasWrittenFeedback, latestFeedbackEntry, nextFeedbackLog, preservedGradedAt } from "./feedback-log";
 import { notifyAssignmentFeedback } from "./notifications";
 import { downloadRosterCsv } from "./roster";
 import { safeHref } from "./rich-text";
@@ -361,8 +361,38 @@ function asAnswers(value: unknown): Record<string, string> {
 }
 
 function asResponseStatus(value: unknown): SurveyResponseStatus {
-  if (value === "graded" || value === "rejected" || value === "resubmit") return value;
+  if (value === "approved" || value === "graded") return "graded";
+  if (value === "rejected" || value === "resubmit") return value;
   return "submitted";
+}
+
+function statusHintFromFeedback(feedback: string | null | undefined): SurveyResponseStatus | null {
+  const latest = (latestFeedbackEntry(feedback)?.text || "").toLowerCase();
+  if (/status changed to resubmit/.test(latest)) return "resubmit";
+  if (/status changed to rejected/.test(latest)) return "rejected";
+  if (/status changed to graded/.test(latest)) return "graded";
+  return null;
+}
+
+/** Feedback means the work was reviewed, even if the stored status never left submitted. */
+export function inferredQueueStatus(input: {
+  status?: string | null;
+  feedback?: string | null;
+  gradedAt?: string | null;
+  feedbackFileUrl?: string | null;
+}): SurveyResponseStatus {
+  const stored = asResponseStatus(input.status);
+  const hinted = statusHintFromFeedback(input.feedback);
+  if (stored === "submitted") {
+    if (hinted) return hinted;
+    const hasReview =
+      hasWrittenFeedback(input.feedback) ||
+      Boolean(String(input.gradedAt || "").trim()) ||
+      Boolean(String(input.feedbackFileUrl || "").trim());
+    return hasReview ? "graded" : "submitted";
+  }
+  if (hinted === "resubmit" && stored === "rejected") return "resubmit";
+  return stored;
 }
 
 function asGrade(value: unknown): number | null {
@@ -391,7 +421,12 @@ function responseFromRow(
     studentName: profile?.name || "",
     studentEmail: profile?.email || "",
     answers: asAnswers(row.answers),
-    status: asResponseStatus(row.status),
+    status: inferredQueueStatus({
+      status: String(row.status || ""),
+      feedback: String(row.feedback || ""),
+      gradedAt: String(row.graded_at || ""),
+      feedbackFileUrl: String(row.feedback_file_url || ""),
+    }),
     grade: asGrade(row.grade),
     feedback: String(row.feedback || ""),
     feedbackFileUrl: String(row.feedback_file_url || ""),
@@ -1029,15 +1064,17 @@ export async function saveSurveyReview(input: {
     gradeChanged: Boolean(previous && previous.grade !== input.grade),
     gradeLabel: input.grade == null ? "blank" : String(input.grade),
   });
+  const alreadyReviewed = Boolean(previous && previous.status !== "submitted");
+  const nextGradedAt = preservedGradedAt(previous?.gradedAt, previous?.feedback, alreadyReviewed ? "" : now);
   const payload: Record<string, unknown> = {
     status: input.status,
     grade: input.grade,
     feedback: storedFeedback,
     feedback_file_url: input.feedbackFileUrl.trim(),
     graded_by: session.user.id,
-    graded_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    updated_at: now,
   };
+  if (nextGradedAt) payload.graded_at = nextGradedAt;
   const optional = ["status", "grade", "feedback", "feedback_file_url", "graded_by", "graded_at", "updated_at"];
   let { data, error } = await client.from("custom_survey_responses").update(payload).eq("id", input.id).select("*").maybeSingle();
   for (let attempt = 0; attempt < optional.length && error; attempt += 1) {

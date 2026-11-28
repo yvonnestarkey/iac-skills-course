@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { test } from "node:test";
-import { appendFeedbackEntry, nextFeedbackLog, parseFeedbackLog } from "./feedback-log";
+import { appendFeedbackEntry, nextFeedbackLog, parseFeedbackLog, preservedGradedAt } from "./feedback-log";
 
 test("plain feedback becomes one log entry and later notes append", () => {
   const multiline = "Tighten the required.\n\nTag the bleed on the next script.";
@@ -32,4 +32,9 @@ test("coach review logs earlier comments and keeps the composer empty", () => {
   assert.match(log, /feedback-log-body/);
   assert.doesNotMatch(log, /Earlier feedback/);
   assert.match(css, /white-space:\s*pre-wrap/);
+});
+
+test("later status changes keep the first feedback date", () => {
+  const log = appendFeedbackEntry("", { at: "2026-10-25T14:14:00.000Z", text: "Tighten the required." });
+  assert.equal(preservedGradedAt("", log, "2026-11-28T12:00:00.000Z"), "2026-10-25T14:14:00.000Z");
 });

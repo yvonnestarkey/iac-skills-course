@@ -111,7 +111,7 @@ create table if not exists public.student_submissions (
   content      text not null default '',
   body         text not null default '',
   link_url     text not null default '',
-  status       text not null default 'submitted' check (status in ('submitted', 'approved', 'rejected')),
+  status       text not null default 'submitted' check (status in ('submitted', 'approved', 'rejected', 'resubmit')),
   submitted_at timestamptz not null default now(),
   created_at   timestamptz not null default now(),
   updated_at   timestamptz not null default now(),

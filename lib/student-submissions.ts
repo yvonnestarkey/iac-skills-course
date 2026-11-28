@@ -1,11 +1,12 @@
 import { needsAssignmentFeedback } from "./coach-dashboard";
 import {
   fetchAllSurveySubmissions,
+  inferredQueueStatus,
   surveyResponseStatusLabel,
   type SurveyResponseStatus,
   type SurveySubmissionRow,
 } from "./custom-surveys";
-import { nextFeedbackLog } from "./feedback-log";
+import { nextFeedbackLog, preservedGradedAt } from "./feedback-log";
 import { notifyAssignmentFeedback } from "./notifications";
 import { getSupabase } from "./supabase";
 import type { Submission, SubmissionFile, SubmissionStatus } from "../types/database";
@@ -29,7 +30,7 @@ export type LessonSubmissionReview = StudentSubmission & {
 };
 
 function asStatus(value: unknown): SubmissionStatus {
-  if (value === "approved" || value === "rejected" || value === "submitted") return value;
+  if (value === "approved" || value === "rejected" || value === "submitted" || value === "resubmit") return value;
   return "submitted";
 }
 
@@ -217,11 +218,29 @@ export function lessonQueuePath(id: string): string {
 export function lessonStatusToQueue(status: SubmissionStatus): SurveyResponseStatus {
   if (status === "approved") return "graded";
   if (status === "rejected") return "rejected";
+  if (status === "resubmit") return "resubmit";
   return "submitted";
 }
 
 export function queueStatusToLesson(status: SurveyResponseStatus): SubmissionStatus {
-  return status === "graded" ? "approved" : "rejected";
+  if (status === "graded") return "approved";
+  if (status === "resubmit") return "resubmit";
+  return "rejected";
+}
+
+export function lessonQueueStatus(
+  item: Pick<StudentSubmission, "status"> & {
+    feedback?: string | null;
+    gradedAt?: string | null;
+    feedbackFileUrl?: string | null;
+  }
+): SurveyResponseStatus {
+  return inferredQueueStatus({
+    status: item.status,
+    feedback: item.feedback,
+    gradedAt: item.gradedAt,
+    feedbackFileUrl: item.feedbackFileUrl,
+  });
 }
 
 export function shouldNotifyCoachOfLessonSubmission(email?: string | null): boolean {
@@ -288,7 +307,12 @@ export async function fetchLessonSubmissionsForCoach(): Promise<{
         });
         const student = names.get(item.student_id) || { name: "Student", email: "" };
         const when = item.updated_at || String(row.submitted_at || row.created_at || "");
-        const reviewed = item.status === "approved" || item.status === "rejected";
+        const queueStatus = inferredQueueStatus({
+          status: item.status,
+          feedback: item.feedback,
+          gradedAt: item.gradedAt,
+          feedbackFileUrl: item.feedbackFileUrl,
+        });
         const rowOut: SurveySubmissionRow = {
           id: `lesson:${item.id || `${item.student_id}:${item.lesson_id}`}`,
           surveyId: item.lesson_id,
@@ -296,13 +320,13 @@ export async function fetchLessonSubmissionsForCoach(): Promise<{
           studentName: student.name,
           studentEmail: student.email,
           answers: {},
-          status: lessonStatusToQueue(item.status),
+          status: queueStatus,
           grade: null,
           feedback: item.feedback || "",
           feedbackFileUrl: item.feedbackFileUrl || "",
           gradedBy: "",
           gradedByName: "",
-          gradedAt: item.gradedAt || (reviewed ? when : ""),
+          gradedAt: item.gradedAt || preservedGradedAt("", item.feedback, ""),
           createdAt: String(row.submitted_at || when),
           updatedAt: when,
           surveyTitle: titles.get(item.lesson_id) || item.lesson_id,
@@ -384,22 +408,35 @@ export async function saveLessonSubmissionReview(input: {
   const rawId = lessonIdFromQueue(input.id);
   const current = await fetchLessonSubmissionReview(input.id);
   const now = new Date().toISOString();
-  const previousStatus = current.review?.status;
+  const previousQueueStatus = current.review
+    ? inferredQueueStatus({
+        status: current.review.status,
+        feedback: current.review.feedback,
+        gradedAt: current.review.gradedAt,
+        feedbackFileUrl: current.review.feedbackFileUrl,
+      })
+    : "";
   const nextStatus = queueStatusToLesson(input.status);
   const storedFeedback = nextFeedbackLog(current.review?.feedback, {
     note: input.feedback,
     at: now,
-    statusChanged: Boolean(previousStatus && previousStatus !== nextStatus),
+    statusChanged: Boolean(previousQueueStatus && previousQueueStatus !== input.status),
     statusLabel: surveyResponseStatusLabel(input.status),
   });
+  const alreadyReviewed = Boolean(previousQueueStatus && previousQueueStatus !== "submitted");
+  const nextGradedAt = preservedGradedAt(
+    current.review?.gradedAt,
+    current.review?.feedback,
+    alreadyReviewed ? "" : now
+  );
   const payload: Record<string, unknown> = {
     status: nextStatus,
     feedback: storedFeedback,
     feedback_file_url: input.feedbackFileUrl.trim(),
     graded_by: session.user.id,
-    graded_at: now,
     updated_at: now,
   };
+  if (nextGradedAt) payload.graded_at = nextGradedAt;
   const optional = ["updated_at", "feedback", "feedback_file_url", "graded_by", "graded_at"];
   let { data, error } = await client.from("student_submissions").update(payload).eq("id", rawId).select("*").maybeSingle();
   for (let attempt = 0; attempt < optional.length && error; attempt += 1) {
@@ -409,7 +446,12 @@ export async function saveLessonSubmissionReview(input: {
     ({ data, error } = await client.from("student_submissions").update(payload).eq("id", rawId).select("*").maybeSingle());
   }
   const droppedReviewColumns = !("feedback" in payload);
-  if (error || !data) return { ok: false, error: error?.message || STUDENT_SUBMISSION_REVIEW_SQL };
+  if (error || !data) {
+    if (nextStatus === "resubmit") {
+      return { ok: false, error: "Paste supabase/submission-resubmit-status.sql in the Supabase SQL editor, then try Resubmit again." };
+    }
+    return { ok: false, error: error?.message || STUDENT_SUBMISSION_REVIEW_SQL };
+  }
   const loaded = await fetchLessonSubmissionReview(String((data as { id?: string }).id || rawId));
   if (loaded.review?.student_id) {
     const notified = await notifyAssignmentFeedback({

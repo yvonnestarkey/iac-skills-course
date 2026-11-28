@@ -1,6 +1,6 @@
 export type LessonType = "video" | "reading" | "assignment" | "upload" | "ask" | "survey" | "download";
 
-export type SubmissionStatus = "submitted" | "approved" | "rejected";
+export type SubmissionStatus = "submitted" | "approved" | "rejected" | "resubmit";
 
 export type UserRole = "student" | "coach" | "admin";
 
